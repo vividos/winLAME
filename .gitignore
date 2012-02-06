@@ -1,0 +1,38 @@
+# ignore built files and folders
+output/
+lib/
+test/
+*.suo
+build-log.txt
+intermediate/
+# ignore CVS files
+.cvsignore
+CVS/
+# ignore thumbnails created by windows
+Thumbs.db
+# ignore files build by Visual Studio
+*.obj
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.opt
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+[Bb]in
+[Dd]ebug*/
+*.lib
+*.sbr
+obj/
+[Rr]elease*/
+_ReSharper*/
+[Tt]est[Rr]esult*
