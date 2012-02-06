@@ -5,6 +5,11 @@ test/
 *.suo
 build-log.txt
 intermediate/
+docs/doxygen-warnings.txt
+docs/winLAME-source-docs.chm
+docs/html/
+*.wixpdb
+source/htmlhelp/index.hhk
 # ignore CVS files
 .cvsignore
 CVS/
