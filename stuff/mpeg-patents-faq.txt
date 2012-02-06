@@ -1,0 +1,408 @@
+Frequently Asked Questions: MPEG, Patents, and Audio Coding
+Eric Scheirer -- MIT Media Laboratory -- eds@media.mit.edu
+Version 0.9, 21 Oct 1998
+
+-----------------------------------------------
+
+This FAQ is written to try to inject some sanity in what is becoming
+an increasingly heated discussion about patent rights surrounding
+MPEG technology, especially for audio compression.
+
+I am not a lawyer, and thus my answers should not be taken as
+legal advice.  I am an independent source knowledgable of both
+audio coding technology (I developed one of the coders in MPEG-4)
+and the MPEG process (I am a US delegate to MPEG and an Editor
+of MPEG-4).  I have never received any payment from a company
+discussed in this FAQ; my current employ (Oct 1998) is as a
+graduate student at the MIT Media Lab.
+
+The answers are not provided on behalf of the Media Lab, MPEG, or
+any other organization.  I wrote them myself, and they're only my
+opinions.
+
+This is version 0.9 of 21 Oct 1998.
+
+--------------------------------------------------
+
+Contents:
+
+  0     For more information
+  1-18  MPEG-1 Layer 3 (MP3) and patents
+  19-24 MPEG-2 AAC and patents
+  25-29 MPEG-4 and patents
+  30-32 Content rights (the RIAA) and MPEG standards
+
+0. Where can I get more information on MPEG standards?
+
+The ISO home page is
+     <http://www.iso.ch>.
+The MPEG home page is
+     <http://www.cselt.it/mpeg>.
+The MPEG Audio home page is
+     <http://www.tnt.uni-hannover.de/project/mpeg/audio>.
+The "MPEG resource page" (a little out-of-date on AAC and MPEG-4) is
+     <http://www.mpeg.org> .
+A page of information on MP3 licenses is at
+    <http://www.mpeg.org/index.html/mp3-licensing-faq.html>
+
+1. What is MP3?
+
+MP3 is more properly known as MPEG-1 Layer 3 or MPEG-2 Layer 3.  It
+is a standard for the transmission and decoding of compressed audio.
+The remainder of this FAQ uses the more common "MP3" name for this
+standard.
+
+2. What is MPEG-3?
+
+There is no such thing as MPEG-3.  While in the process of working
+on MPEG-2, MPEG requested another work item to cover high-definition
+television standards.  However, when MPEG-2 was finished, it was
+found to satisfy the requirements and MPEG-3 was cancelled.
+
+3. How does MP3 work?
+
+The MPEG standards only cover *format* and *decoding*, not
+*encoding*.  Thus, this question is really asking how to
+store, format, and decode an MP3 file.
+
+The MP3 format is fairly simple; it contains the description of
+a number of different types of sound data (especially spectral
+frames) represented in a concise format.  To decode this, you
+create the sound that's described in the format.
+
+An overview of the format can be found:
+
+   K. Brandenburg, G. Stoll, "ISO-MPEG-1 Audio: a generic standard
+   for coding of high quality digital audio." J. Aud. Eng. Soc
+   42:10, pp. 780-794, Oct. 1994.
+
+and of course ISO (see above) is happy to sell you a copy of
+the formal specification.
+
+There is no fixed method for creating an MP3 file.  If you like, you
+can allocate the bits with a Ouija board; this is perfectly
+compliant to the standard.  The sound you get from decoding this
+file may leave something to be desired, though.    
+
+To arrive at a good, compact sound description is a very complex
+process.  MP3 is one of a type of compression scheme known as the *perceptual
+coder*.  A good introduction to this technique for the scientifically-
+minded reader is:
+
+  N. Jayant, J. Johnston, R. Safranek, "Signal compression based
+  on models of human perception."  Proc IEEE 81:1385-1421, Oct 1993.
+
+A full understanding of the technology requires a good background
+in signal processing and psychoacoustics (the science of hearing).
+Briefly:
+
+  - the sound is transformed into the frequency domain
+  - a hearing model is used to evaluate what parts of the
+    sound are "most important"
+  - bits are allocated to the various parts in decreasing order
+    of importance, with the most important parts of the sound
+    receiving the most bits
+  - all of the bits are compressed with a noiseless coding scheme
+    (Huffman coding, sort of like 'gzip')
+  - the result is packed into the standardized format
+
+The hearing model and the bit-allocation are, obviously, the
+most difficult parts of this, the parts which most directly
+control the sound quality, and the parts that are most actively
+protected by patent rights holders.
+
+5. Who owns MP3?
+
+MPEG standards are owned by the International Standardisation
+Organisation (ISO) <http://www.iso.ch>.  The technology to create
+them is donated by the companies that participate in the MPEG
+process.  Any company is free to develop contributions that improve a
+standard, and MPEG has a formal process by which it evaluates
+them.
+
+6. Who is FhG?
+
+FhG is Fraunhofer Gesellschaft, "the leading organization of applied
+research in Germany".  They contributed technology to the development
+of the MPEG-1 and MPEG-2 audio standards.
+
+7. So FhG owns MP3?
+
+No.  ISO owns and controls the MPEG standards (see #5).  FhG was
+one company to contribute technology to the MPEG-1 and MPEG-2 audio
+standards.
+
+8. Does FhG own a patent on MP3?
+
+No.  They own patents on technologies that are part of MPEG standards.
+Other companies also own patents on other parts of MPEG standards.
+There is no single company controlling MP3 or the other MPEG
+standards.
+
+9. Can FhG enforce their patents on MP3?
+
+There are two questions here: Are FhG's patents valid, and does the
+inclusion of their technology in MPEG put limits on their ability to
+enforce patents?
+
+For the second, no; under the agreement through which they made the
+technology available to MPEG they are allowed to pursue their patent
+claims.
+
+The first is a more difficult question.  There is serious question and
+little precedent in many countries surrounding software patents.  I
+have not looked at the specific claims made in FhG's patents; there
+may or may not also be issues of prior art that impact on the
+question.  It is not possible to say definitively that their patents
+are valid; however, if I were to go into business, I would definitely
+err on the side of caution in such a matter.
+
+10. Should FhG enforce their patents on MP3?
+
+This is a moral question, not a legal one.  Different people have
+different opinions.  The coder I developed at the Media Lab has
+been released into the public domain, at my request.  On the other
+hand, the Media Lab is part of a university, not a for-profit endeavor.
+If you want to use MP3 to steal copyrighted music, it's not
+clear to me that you're in much of a position to make moral
+judgments on others.
+
+11. If other companies also own patents on MP3 technology, why is
+    FhG the only company actively pursuing claims?
+
+This is up to each company of course, and only speculation is
+possible.  Some choices might be:
+
+  - Other companies want their technology to be freely available.
+  - Other companies don't care if free software infringes their
+      patents.
+  - Other companies are going to pursue claims, but haven't gotten
+      around to it yet.
+  - Other companies are waiting to see what happens with FhG's claims.
+  - Other companies are letting FhG do their dirty work for them.
+
+You can probably come up with some more of your own.
+
+12. Why does ISO accept patented technology into their standards?
+
+Because otherwise no one would contribute to ISO, and private coding
+technology would be superior to open standards.  By allowing companies
+to contribute technology, but still make money through patent rights,
+MPEG can develop the best audiovisual coding technology in the
+world and it can be open for all to use.  If ISO did not accept
+patented technology, it will remain as "trade secrets" under the
+control of a single company.
+
+ISO does require that all the technology accepted be licensable on
+fair and equal terms; however, this is "fair and equal" to the big
+companies that participate in MPEG, not to the hobbyist.  There are
+few hobbyists or those who represent them participating in ISO.
+(There is no barrier to doing so -- perhaps someone should do this!)
+
+13. Why does FhG patent their technology?  The world would be better
+    if it were free!
+
+Is it FhG's responsibility to make the world better, or only to make
+money?
+
+14. Why do international patent authories allow software techniques
+    to be patented?
+
+Because a significant amount of work and money goes into developing
+the techniques involved in this and other software.  Because patents
+are actually a way of sharing information -- techniques that are
+not patented are often simply held as trade secrets.  Because patent
+law is in a state of flux on this topic, and many patent examiners
+don't really understand the issues involved.
+
+Many readers of this FAQ live under democratic governments, where it
+is possible that these sorts of laws could be changed, given enough
+time and organization.  Several groups are already organized to
+attempt to make this happen.
+
+15. If I don't use their source, can I make my own MP3 decoder without
+    paying FhG?
+
+Legally, FhG may or may not have rights regarding patented technology
+that is necessary to make an MP3 decoder.  If they do, it is within
+their right to enforce it and prevent you from making any MP3 decoder,
+whether or not you had help from them to do it.
+
+16. If I don't use their source, can I make my own MP3 encoder without
+    paying FhG?
+
+If you infringe on their techniques, it is within their rights to seek
+recourse, whether or not you had help from them, or whether or not
+you intentionally or knowingly infriged.
+
+17. If I don't use any of their techniques, can I make my own MP3
+    encoder without paying FhG?
+
+Yes.
+
+18. If the open source community develops a new compression standard,
+    can we use it without paying FhG?
+
+Only if it doesn't infringe on FhG's patents.  These patents may or
+may not be tied to specific techniques in MP3; if they are more
+general than MP3, then it doesn't matter what coding standard you are
+using, you are still infringing their patent rights.
+
+"Open source" and "free" are not the same thing.  For example, for
+MPEG-4 (see below) free source code is available that shows you how to
+make an encoder and decoder.  This is not *truly* open source, since
+the ISO maintains a copyright, and you can only use it to develop
+conforming MPEG products, but it's better than a sharp stick in the
+eye.  But to distribute or sell a product based on the standard, you
+still have to (legally) pay licensing fees to the patent holders.
+
+19. What is MPEG-AAC?
+
+AAC is the new Advanced Audio Coding standard from MPEG (finished
+April 1997).  It provides much better quality at the same bitrate
+than MP3, or the same quality at 50-70% of the bitrate (file size).
+I'm not aware of any formal listening test that shows any coder
+to be better than AAC in terms of quality at a bitrate.
+
+AAC has been shown in independent tests to be superior to AC-3 and
+Lucent PAC coding:
+
+  Soulodre et al, "Subjective Evaluations of State-of-the-Art
+  Two-Channel Audio Codecs".  J. Aud. Eng. Soc 46:3, pp. 164-177
+  (March 1998).
+
+MPEG's own testing shows that at 128 kb/s stereo, AAC meets the
+European Broadcasting Union's standard of "indistinguishable
+quality".  This is a laxer criterion than statistical undetectibility;
+AAC does not quite reach this latter (very strict) standard at
+128 kb/s stereo.
+
+20. Who owns MPEG-AAC?
+
+MPEG standards are owned by the International Standardisation
+Organisation (ISO) <http://www.iso.ch>.  The technology to create
+them is donated by the companies that participate in the MPEG
+process.  Any company is free to develop contributions that improve a
+standard, and MPEG has a formal process by which it evaluates
+them.
+
+21. Who developed MPEG-AAC?
+
+ISO-MPEG developed the AAC standard.  Among the many contributing
+companies were FhG, AT&T, Dolby, Sony, the University of Hannover,
+and NEC.  FhG was "in charge" of the project in terms of
+integrating and optimizing contributions.
+
+22. Who holds patents on AAC?
+
+Presumably, at least some of the companies who contributed technology
+to the AAC standard.
+
+23. Can companies prevent me from writing encoders and decoders for
+AAC?
+
+See answers 9-14 above.  The situation is no different than for
+MP3.  There are indications that companies may be somewhat more
+aggressive about pursuing patent infringement on AAC decoders than
+they have been for MP3 decoders.
+
+24. How can I find out about getting licenses to use AAC?
+
+The AAC "licensing authority" is managed by Dolby.  Send email
+to <aacla@dolby.com>.
+
+25. What is MPEG-4?
+
+MPEG-4 is the newest MPEG audio standard (there's also an MPEG-4
+video standard and MPEG-4 systems standard, of course), which
+reached Final Draft in Oct 1998.
+
+Here is an overview taken from the beginning of the standard
+itself:
+
+   MPEG-4 is a new kind of audio standard that integrates many
+   different types of audio coding: natural sound with synthetic
+   sound, low bit-rate delivery with high-quality delivery, speech
+   with music, complex soundtracks with simple ones, and traditional
+   content with interactive and virtual-reality content.  By
+   standardizing individually sophisticated coding tools as well as a
+   novel, flexible framework for audio synchronization, mixing, and
+   downloaded post-production, the developers of the MPEG-4 Audio
+   standard have created new technology for a new, interactive world
+   of digital audio.
+
+   MPEG-4, unlike previous audio standards created by ISO/IEC and
+   other groups, does not target a single application such as
+   real-time telephony or high-quality audio compression.  Rather,
+   MPEG-4 Audio is a standard that applies to *every* application
+   requiring the use of advanced sound compression, synthesis,
+   manipulation, or playback.  As the MPEG-4 Audio tools are
+   integrated with the rest of the MPEG-4 standard, exciting new
+   possibilities for object-based audio coding, interactive
+   presentation, dynamic soundtracks, and other sorts of new media,
+   are enabled.
+
+There are four technical Subparts to MPEG-4 Audio:
+
+  Speech: CELP and HVXC techniques for low-bitrate speech coding
+  General Audio: Perceptual high-quality coding 
+  Structured Audio: Flexible, high-quality, low-bitrate audio synthesis
+  Text-to-Speech Interface: A standard for sending synthetic speech
+
+In addition, there's a tool for post-production, synchronization,
+and mixing of audio in the MPEG-4 Systems standard called AudioBIFS,
+and a tool for the management and protection of intellectual
+property rights.
+
+26. Who owns MPEG-4?
+
+MPEG standards are owned by the International Standardisation
+Organisation (ISO) <http://www.iso.ch>.  The technology to create
+them is donated by the companies that participate in the MPEG
+process.  Any company is free to develop contributions that improve a
+standard, and MPEG has a formal process by which it evaluates
+them.
+
+27. Who contributed technology to MPEG-4?
+
+Many companies.  Here is a partial list:
+
+Speech: Philips, NEC
+GA:     FhG, Univ. Hannover, Sony, Yamaha.
+        (GA also integrates all of the AAC technology, and presumably
+	 makes use of all the patents that AAC does)
+SA:     MIT Media Lab, Creative Labs
+TTSI:   ETRI Korea
+
+28. What is the patent status of MPEG-4?
+
+Details are hazy, but will firm up as the marketplace matures.
+Presumably most companies will continue to pursue their patent
+rights.  Notably, one of the major Subparts (Subpart 4, Structured
+Audio) has been placed in the public domain by its developer,
+the MIT Media Lab, and anyone is welcome to use it for free.  The
+same is true of the AudioBIFS technology in the Systems standard.
+
+29. Is Yamaha's TwinVQ part of MPEG-4?
+
+The TwinVQ technology was integrated with the AAC technology and
+some other new things to form the MPEG-4 GA tool.  A .VQF file
+is not a legal MPEG-4 bitstream.
+
+30. Who is the RIAA?
+
+The RIAA is the Recording Industry Association of America.  They're
+a trade association that looks out for the welfare of the record
+industry.
+
+31. Does RIAA own patents in MPEG technology?
+
+Not that I know of.  It is unlikely since RIAA is not a technical
+group.
+
+32. Why is the RIAA upset about MP3?
+
+Because people are using the MP3 standard to steal copyrighted
+music.  This is a copyright issue, not a patent issue.  More
+in-depth discussion of copyright will have to wait for a different
+FAQ.

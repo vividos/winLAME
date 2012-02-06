@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="8,00"
+	Name="docs"
+	ProjectGUID="{E8FD6382-A5B2-4AC7-B2D9-88A621504872}"
+	RootNamespace="docs"
+	>
+	<Platforms>
+		<Platform
+			Name="Win32"
+		/>
+	</Platforms>
+	<ToolFiles>
+	</ToolFiles>
+	<Configurations>
+		<Configuration
+			Name="Default|Win32"
+			OutputDirectory="html"
+			IntermediateDirectory="html"
+			ConfigurationType="10"
+			CharacterSet="2"
+			DeleteExtensionsOnClean="*.html;*.map;*.md5;*.png;*.css;*.dot;*.hhc;*.hhk;*.hhp;*.gif;$(TargetPath)"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+			/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			>
+			<File
+				RelativePath=".\doxygen.cfg"
+				>
+				<FileConfiguration
+					Name="Default|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Building help..."
+						CommandLine="doxygen $(InputFileName)&#x0D;&#x0A;..\buildtools\hhc html\index.hhp"
+						Outputs="html\index.html"
+					/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

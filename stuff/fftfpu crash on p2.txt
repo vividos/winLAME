@@ -1,0 +1,40 @@
+WINLAME verursachte einen Fehler durch eine ungültige Seite
+in Modul NLAME.DLL bei 015f:018e97d5.
+Register:
+EAX=006d1fd0 CS=015f EIP=018e97d5 EFLGS=00010293
+EBX=006d1fd8 SS=0167 ESP=01c828a4 EBP=01c83044
+ECX=00000030 DS=0167 ESI=00000008 FS=0fef
+EDX=00000010 ES=0167 EDI=ffffffff GS=0000
+Bytes bei CS:EIP:
+d8 24 08 d9 04 50 d8 04 08 d9 c2 d8 c1 d9 18 d9 
+Stapelwerte:
+ffffffff 0068b090 00000000 01c83044 
+00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+00000000 00000000 00000000 00000000 
+
+i386/fftfpu.nas:56:
+
+fht_FPU_3rd_part:
+
+.do_init:
+	mov	r3, 16		;k1*fsize = 4*fsize = k4
+	mov	r4, 8		;kx = k1/2
+	mov	r2, 48		;k3*fsize
+	mov	dword [sp(%$k)], 2	;k = 2
+	mov	r0, [sp(%$fz)]	;fi
+	lea	r1, [r0+8]		;gi = fi + kx
+
+.do:
+.do2:
+	;f
+	fld	dword [r0]
+	fsub	dword [r0+r3]
+
+	fld	dword [r0]
+	fadd	dword [r0+r3]
+
+	fld	dword [r0+r3*2]
+	fsub	dword [r0+r2]     <-- crash! r0 = eax, r2 = ecx
+
+	fld	dword [r0+r3*2]

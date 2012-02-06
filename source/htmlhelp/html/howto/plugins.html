@@ -1,0 +1,36 @@
+<html>
+ <head>
+  <title>winLAME help - How-To's</title>
+  <link rel="stylesheet" type="text/css" href="../winlame.css">
+ </head>
+<body class="back">
+
+<h1>How to use Winamp Input Plugins with winLAME</h1>
+
+<!-- begin of text -->
+
+<p>
+This document explains how Winamp Input Plugins can be used with winLAME to extend the range of input file types.
+</p>
+
+<p>
+If you are a regular user of Winamp (version 2.x), you probably know the various input plugins that are availabe, to play back different file formats in Winamp. They usually have the filename <b>"in_&lt;name&gt;.dll"</b> (where <b>name</b> usually is the name of the file format or the plugin) and reside in the "Plugins" subfolder of Winamp. There are plugins for almost any audio format that can be thought of. Plugins can be found on the <a href="http://classic.winamp.com" target="_blank">Winamp Classic</a> site.
+</p>
+
+<p>
+winLAME also can use the input plugins to extend the number of file formats that can be imported. Just copy the input plugin DLL (e.g. in_flac.dll) from Winamp's plugin folder to the winLAME folder (where winLAME.exe and the other DLL's can be found). To see if the plugin can be used, start winLAME and open the "About Box" (click on winLAME's icon and choose "about winLAME" from the system menu). Winamp input plugins that were found and can be used should be listed under "installed modules".
+</p>
+
+<p>
+Winamp input plugins used in winLAME can be configured comfortably using winLAME. On the <a href="../pages/input.html">Input Files Page</a> there is a button right to the others to configure the input plugins that are installed. When no plugin is installed, the button isn't available.
+</p>
+
+<p>
+Note that some input modules cannot be used together with Winamp, either due to their plugin nature (e.g. line-in plugins) or due to the fact that they don't use an output plugin to play back audio (e.g. copyright-protected modules, such as WMA players). Also, some input modules just don't work together with winLAME. For some input plugins (e.g. MIDI input plugin, in_midi.dll) some settings must be changed to produce audio data to the output plugin.
+</p>
+
+<p><a href="#">back to top</a> - <a href="index.html">back to the How To page</a></p>
+
+<!-- end of text -->
+</body>
+</html>

@@ -1,0 +1,277 @@
+From ww@STYX.ORG  Mon May 10 16:01:59 1999
+From: Will Waites <ww@STYX.ORG>
+To: cyborgs@picton.eecg.toronto.edu, jr@styx.org
+Subject: MPEG, Patents, and OpenSource
+Organization: 
+Content-Type: text/plain; charset=us-ascii
+Date:	Mon, 10 May 1999 16:00:46 -0400 (EDT)
+
+(article taken from http://news.webnoize.com/cgi-bin/n/item.rq?ID=4155)
+
+MPEG, Patents, and Open Source 
+by Eric D. Scheirer 
+
+Two  of  the  hottest  topics  in  computing today  are  MP3  and  the
+open-source movement. There have been many calls on Slashdot and other
+Linux forums  to develop "open-source open standards"  to compete with
+audio standards containing intellectual property that is encumbered by
+patents.
+
+Here  I'll try  to  identify and  explain  some of  the patent  issues
+relevant  to MPEG  audio  standards, and  discuss  the possibility  of
+developing an open-source format. I am  not a lawyer, so nothing I say
+should be  regarded as legal advice.  Most of what I  say is organized
+specifically  around MP3  technology, but  most of  the  general ideas
+apply to other MPEG audio standards as well.
+
+MPEG and patent rights
+
+"Why  does  MPEG  allow   patented  technology  into  supposedly  open
+standards?"
+
+When I speak  with Internet developers, I am  asked this question more
+than any other. Most of the  technologies we have come to depend on as
+part of the infrastructure of the Internet, such as Sendmail and HTTP,
+are not patented.  It seems surprising that a  technology beginning to
+hold similar importance -- MP3 for the distribution of music -- is not
+equally free and clear.
+
+To understand  the situation,  we have  to go back  many years  to the
+beginning of  MPEG development. In 1988,  when MPEG began  work on the
+MP3  standard,  the  Internet  was  not  a  serious  concern  for  any
+multimedia  developer.  The view  at  the  time  was that  "multimedia
+convergence" was beginning and would lead to a large reorganization of
+the consumer  electronics industry. Few people  foresaw the importance
+of the Internet.
+
+The companies interested in multimedia technology when MPEG was formed
+were  large media  and consumer  electronics companies.  The corporate
+culture   of  the   Internet-nimble,  smart,   fast-moving,  high-tech
+companies-had not  yet developed.  The old-model companies  working in
+MPEG are the ones most comfortable with buying and selling licenses to
+patents.
+
+As  part  of  its  first  activities, MPEG  developed  its  policy  on
+intellectual  property.  This policy  has  words  to  the effect  that
+patented technology  is permitted in MPEG standards,  but that patents
+must be  licensed on a fair  and equitable basis to  all comers.  This
+prevents patent-holders  from wielding their  portfolios as a  tool to
+keep  their  competitors from  building  decoders.  This model  seemed
+perfectly  fair to  the developers  of the  standard --  none  of them
+resented having to pay for  other companies' technology, and they were
+all working together on the standards anyway.
+
+The MPEG-1 audio standard, which provided the base technology for MP3,
+was completed  in 1992. At  this time, the  World Wide Web  was barely
+under development and digital music commerce was nonexistent.
+
+MP3 was used  only for niche applications, such  as CD-ROM videogames,
+until late 1997.
+
+By  this time,  the Internet  revolution was  in full  swing,  and the
+beginnings of an underground movement in the exchange of digital music
+were beginning.  New software  such as Winamp  emerged to  target this
+movement,  and  the  software-tools  market  and  the  music  movement
+fostered each other's growth.
+
+A problem arose. The sorts of  organizations that wanted to use MP3 --
+whether as part of a business model  or just for fun -- were no longer
+the sorts of organizations that had developed the standard and set the
+licensing  terms. The Internet  music company,  the hobbyist,  and the
+open-source developer have had no  voice in determining what "fair and
+equitable"  means,  and  had  no  patents  of  their  own  to  use  as
+leverage. So they are left out in the cold in setting licensing terms.
+
+In some sense, the MP3 community should have known what it was getting
+into  when  the  MP3  technology  was selected  for  the  exchange  of
+music. MP3 was a standard made by big companies for big companies. But
+of course, this is a strange way to put it, since these "decisions" in
+the MP3 community were made as  a consequence of evolution, not by any
+sort of formal group.
+
+MP3  has never  been promoted  as a  "free" format  by the  people who
+developed it  -- it was  early adopters on  the Internet who  chose to
+disregard  or not  learn  about the  patent-encumbered  status of  the
+technology.
+
+The current world of MP3 patents
+
+It  is important  to  understand the  difference  between patents  and
+copyrights as they  apply to technology like audio  coding. Both kinds
+of limitations apply to MP3 technology.
+
+On the one  hand, there is the copyright  that a particular programmer
+holds  on  a  particular  piece  of source  code  that  implements  an
+algorithm.  For example,  Fraunhofer (among  others)  developed source
+code that decodes  an MP3 file. They own the  copyright on this source
+code, and  can use  it as they  wish, selling  it, giving it  away, or
+keeping it all to themselves.
+
+If  you build  a  new  decoder without  looking  at Fraunhofer's  code
+(called a "clean-room" implementation),  you own the copyright on that
+code,  and Fraunhofer  has  no claim  to  it. So  you  can get  around
+Fraunhofer's  licensing  costs  on  the  copyright to  their  code  by
+building a new player yourself.
+
+On the other hand, some companies hold patent rights in the underlying
+technology.   These  patents   apply  not   only  to   one  particular
+implementation of  the idea,  but also to  any implementation  of that
+idea. In order to have technology in MPEG standards, companies have to
+agree to give  up certain rights on their patents.  A company owning a
+patent on an MPEG technology cannot keep it all to themselves, nor can
+they charge "unfair" licensing fees.
+
+But even if you build a clean-room implementation of the code, you are
+still governed by  the patent claims of the  patent holders. You can't
+get   around  the   patent-licensing  costs   by  building   your  own
+implementation  -- you  owe the  license fees  whether you  created it
+yourself or bought it from the rights holder.
+
+The patents for  MP3 are "pooled." This means that  one may approach a
+single organization, called the  licensing authority, to get a license
+that covers all of the patents  on the standard. This is a good thing,
+because otherwise you'd  have to go to all  the different companies to
+negotiate licenses separately, quite an ordeal.
+
+The licensing  authority asserts that  different terms of  payment are
+required for  different applications (there's a whole  chart here. You
+need one sort  of license to sell decoders,  another to sell encoders,
+and another to sell music encoded in MP3 format.
+
+I  use   the  word   "assert"  here  deliberately;   it  is   not  the
+patent-holder,  but  the  courts,  that ultimately  decide  whether  a
+particular use of a technology violates  a patent. It is not up to the
+patent  holders to decide  whether MP3  patents prohibit  another from
+using the codec a certain way.  Rather, they would sue if they thought
+one was in violation, and a court would rule.
+
+As far as  I know, terms asserted as "required"  by the MPEG licensing
+authority have never actually been tested in patent litigation.
+
+On developing open-source audio coders
+
+Even if MPEG had foreseen use  of its audio coding technology for such
+a wide range of Internet-related  purposes, there is another reason to
+allow the  use of  patented technology in  standards: all of  the best
+technology is held under patent.
+
+If MPEG had not allowed standards to contain patented technology (this
+is  the  approach taken  by,  for example,  the  W3C),  then the  open
+standard would simply not be  as good as the proprietary standards. In
+the long  run it was viewed  that this would fracture  the market, and
+would  inspire development  of multiple  independent  and incompatible
+solutions.
+
+Developing new audio coding technology is hard.
+
+Unlike many other sorts of applications, creating a totally new format
+for sound  compression requires years of research  by very experienced
+people.  Following  such research,  it's  a  fairly  simple matter  to
+actually build the player.  Development of the MPEG-AAC codec involved
+perhaps 100  person-years of collaborative  development by all  of the
+top researchers in the field.
+
+No other  Internet technology requires such intense  focus by experts.
+For example,  if it  were necessary, there  are thousands  of computer
+experts  with  the  skill  necessary  to build  a  new  Sendmail  from
+scratch.  Even operating systems,  very complex  in operation,  can be
+built successfully  by a large  team of above-average  programmers not
+individually working at the state-of-the-art in the field.
+
+But development  of new coding technology is  fundamentally a research
+problem;  perhaps  only  a  hundred  people  in  the  world  have  the
+background necessary  to make advances in  the field. All  of them are
+Ph.D.-level researchers with years of experience. The majority of them
+are already  employed by the research  labs that have  been working on
+the problem since its inception.
+
+The  MP3 technology is  already open  in important  ways --  anyone is
+welcome to buy the standard, read the source, and suggest improvements
+or  make their  own implementations.  Even the  technology is  open --
+patents are a  way of opening technology for  improvement, rather than
+keeping it  as trade secrets.  The MP3 algorithm itself  was developed
+through an  open peer-review process,  one of the major  advantages of
+the open-source idea.
+
+To use another  slogan of the open-source movement,  the technology is
+free in a "free speech" sense, but is not free in a "free beer" sense.
+
+To  use technologist  Eric Raymond's  terminology, the  development of
+audio  compressors  is, at  heart,  a  "cathedral" process:  carefully
+crafted  by individual  wizards or  small  bands of  mages working  in
+splendid isolation, with no beta  to be released before its time. This
+isn't because of  shortsightedness or over-protectiveness, it's simply
+the way of the technology.
+
+Which means that in order  to develop an open-source audio codec, some
+individual  or small  group of  individuals must  have the  support to
+spend years  researching the solution, the experience  to succeed, and
+the  philosophical   bent  to  release  it   open-source  rather  than
+potentially make lots of money by patenting it.
+
+There are  MP3 players that  use the open-source  development process,
+but this is different from  improving the codec itself, independent of
+particular implementations.  There are  no obvious improvements  to be
+made in the underlying technology, no matter how many eyes look at the
+source code.
+
+Some of  the call for  "open-source open standards" comes  from people
+who think of building a  "competitor to MP3" as a software-development
+process, rather than  as a research process.  This  is incorrect; only
+the  development of  a  particular  encoder or  decoder  program is  a
+software-development  task.  Making  a  new  standard  is  a  research
+problem, and software-development solutions don't necessarily apply.
+
+Are patents bad?
+
+A  deeper argument that  I haven't  addressed is  a bit  radical: that
+patents  encumbering   MP3  are  fundamentally   illegitimate  because
+software patents are intrinsically wrong.
+
+In general, there are too many patents issued today for ideas that are
+too vague, too  broad, and too speculative. Patents  are being used as
+weapons, contrary  to their original  purpose, which was  to encourage
+invention by protecting the rights of inventors.
+
+Patents   should  be  reserved   for  clearly   focused  technological
+improvements that have  been reduced to practice, lead  to advances in
+the art, and are truly not obvious.
+
+Advances in audio coding technology held as patents today truly do fit
+these categories. It  takes years of research --  with no guarantee of
+success  -- to  make improvements  in the  technical aspects  of audio
+compression.  A   person  of  "ordinary  skill"   can  appreciate  the
+developments  once they  are discovered,  but cannot  readily discover
+them  him/herself.  All of  the  innovations  are  quickly reduced  to
+practice, since the companies developing  them want to use them in new
+applications.
+
+Companies doing  research in  audio compression make  huge investments
+(millions  of $US)  based on  the  expectation that  they will  patent
+results when they're finished. In  my opinion, they take the risk, and
+are entitled to resultant benefits.
+
+Eric Scheirer is a Ph.D. candidate  at the MIT Media Laboratory. He is
+internationally  recognized   for  his  innovative   research  on  new
+technology for digital-audio coding, compression, analysis, retrieval,
+and  production.   He  developed  and  edited   the  Structured  Audio
+specification  in  the MPEG-4  standard  and  frequently provides  his
+expertise  to  MPEG,  the  VRML  Consortium,  the  MIDI  Manufacturers
+Association,  and other  industry groups.  Eric  has a  wide range  of
+experience speaking  and writing  for both technical  and nontechnical
+audiences.
+
+Eric  welcomes  questions  on   technical  aspects  of  digital  audio
+technology.  Email him  at eds@media.mit.edu;  selected  questions and
+answers will appear in future columns.
+
+-- 
+_______________________________________________________
+Will Waites             | There was a catch... Catch 22
+ww@STYX.ORG             |              -- Yossarian
+http://www.styx.org/~ww |______________________________
+________________________|
+
+
+
+

@@ -1,0 +1,17 @@
+
+ body { background-color:white; }
+ body,div,td { font-family:Verdana,Arial; font-size:8pt; color:black; }
+
+ a:link { color:#00cf00; }
+ a:visited { color:#8080ff; }
+ a:active { color:#cfcf00; }
+
+ h1,h2,h3 { font-family:Verdana,Arial; font-weight:bold; }
+
+ h1 { font-size:16pt; text-align:center; }
+ h2 { font-size:14pt; }
+ h3 { font-size:12pt; }
+
+ td.border { background-color:gray; }
+ .license { background-color:#f0f0f0; font-size:9pt; }
+ dt { font-size:10pt; }

@@ -1,0 +1,47 @@
+LIBRARY  libmad.dll
+EXPORTS
+
+;
+; libmad exports file
+;
+
+mad_header_init   @1
+mad_header_decode @2
+
+mad_frame_init    @3
+mad_frame_finish  @4
+mad_frame_decode  @5
+mad_frame_mute    @6
+
+mad_synth_init    @7
+mad_synth_frame   @8
+mad_synth_mute    @9
+
+mad_stream_init   @10
+mad_stream_finish @11
+mad_stream_buffer @12
+mad_stream_skip   @13
+mad_stream_sync   @14
+
+mad_bit_init      @15
+mad_bit_length    @16
+mad_bit_nextbyte  @17
+mad_bit_skip      @18
+mad_bit_read      @19
+mad_bit_crc       @20
+
+mad_timer_compare @21
+mad_timer_negate  @22
+mad_timer_abs     @23
+mad_timer_set     @24
+mad_timer_add     @25
+mad_timer_count   @26
+mad_timer_fraction @27
+mad_timer_string  @28
+
+mad_stream_errorstr @29
+
+mad_version       @32
+mad_copyright     @33
+mad_author        @34
+mad_build         @35

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
+
+ <assemblyIdentity version="1.0.0.0" processorArchitecture="X86"
+  name="noCompany.winLAME.winLAME" type="win32"/> 
+
+ <description>
+  winLAME is an encoder for several audio formats, including
+  mp3 (MPEG Layer 3), Ogg Vorbis and more. winLAME lets you set
+  up the encoding process with an easy-to-use wizard-style user
+  interface.
+
+  winLAME supports many input audio formats, and uses the LAME
+  mp3 encoding library for encoding and the MAD decoding library
+  for decoding.
+ </description>
+
+ <dependency>
+  <dependentAssembly>
+   <assemblyIdentity type="win32"
+    name="Microsoft.Windows.Common-Controls" version="6.0.0.0"
+    processorArchitecture="X86" publicKeyToken="6595b64144ccf1df"
+    language="*"/>
+  </dependentAssembly> 
+ </dependency> 
+ <dependency>
+  <dependentAssembly>
+   <assemblyIdentity type='win32' name='Microsoft.VC80.DebugCRT' version='8.0.50608.0' processorArchitecture='x86' publicKeyToken='1fc8b3b9a1e18e3b' />
+  </dependentAssembly>
+ </dependency>
+</assembly> 

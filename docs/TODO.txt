@@ -1,0 +1,17 @@
+TODO list for winLAME
+
+winLAME 2009 release:
+
+- format strings for cd extraction
+- check all tooltip texts
+- finish help
+- more translations
+- more tests
+
+future versions:
+- do "processing" page to resample, normalize, etc.
+- mp3 dither
+- cd extraction: different formatting for "various artist" albums
+- id3 tag editor
+- parallel encoding on multicore processors
+- cd extraction/encoding parallel

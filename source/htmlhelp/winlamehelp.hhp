@@ -1,0 +1,16 @@
+[OPTIONS]
+Auto Index=Yes
+Compatibility=1.1 or later
+Compiled file=..\..\output\release\winLAME.chm
+Contents file=toc.hhc
+Default Font=Arial,8,0
+Default topic=/html/index.html
+Display compile progress=No
+Full-text search=Yes
+Index file=index.hhk
+Language=0x409 Englisch (USA)
+Title=winLAME Help
+
+
+[INFOTYPES]
+

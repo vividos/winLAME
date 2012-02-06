@@ -1,0 +1,229 @@
+<?xml version='1.0'?>
+<!--
+
+ winLAME - a frontend for the LAME encoding engine
+ Copyright (c) 2005-2009 Michael Fink
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program; if not, write to the Free Software
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+ $Id: winLAME.wxs,v 1.16 2010/01/08 20:56:19 vividos Exp $
+
+For new releases, do the following: use new Product Id and Package Id GUIDs
+and add the previous UpgradeCode to the Upgrade section on the bottom of this
+file.
+
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?include config.wxi ?>
+
+  <Product
+      Id="$(var.ProductId)"
+      UpgradeCode="f36dad67-67a5-4d00-83fb-fe8a742c84f4"
+      Name="$(var.ProductName)"
+      Language="1033"
+      Version="$(var.Version)" Manufacturer="Michael Fink">
+    <Package
+      Id="*"
+      Description="$(var.ProductName) Installer"
+      Comments="This installs $(var.ProductName)"
+      Manufacturer="Michael Fink"
+      InstallerVersion="300"
+      InstallPrivileges="elevated"
+      AdminImage="no"
+      Compressed="yes"
+      ShortNames="no"
+      Languages="1033"
+      Keywords="winLAME mp3 encoding LAME Ogg Vorbis FLAC"
+      SummaryCodepage="1252"
+      Platform="x86" />
+
+    <Media Id="1" Cabinet="winLAME.cab" EmbedCab="yes" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Merge Id="Msvcrt90sp1Msm" Language="0" SourceFile="$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC90_CRT_x86.msm" DiskId="1" />
+      <Merge Id="PolicyMsvcrt90sp1Msm" Language="0" SourceFile="$(env.CommonProgramFiles)\Merge Modules\policy_9_0_Microsoft_VC90_CRT_x86.msm" DiskId="1" />
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="WinLame" Name="winLAME">
+          <Directory Id="INSTALLDIR" Name=".">
+            <Component Id="WinLameApp" Guid="3d23d3cd-6b1e-49ed-b0e7-56a04e4cbe0a">
+              <File Id="WinLameExe" Name="winLAME.exe" DiskId="1" KeyPath="yes" Source="..\..\output\Release\winLAME.exe" />
+              <RegistryKey Root="HKCR" Action="createAndRemoveOnUninstall" Key="Applications\winLAME.exe\SupportedTypes">
+                <RegistryValue Name=".wav" Type="string" Value="" />
+                <RegistryValue Name=".mp3" Type="string" Value="" />
+                <RegistryValue Name=".ogg" Type="string" Value="" />
+                <RegistryValue Name=".wma" Type="string" Value="" />
+                <RegistryValue Name=".flac" Type="string" Value="" />
+                <RegistryValue Name=".m3u" Type="string" Value="" />
+                <RegistryValue Name=".pls" Type="string" Value="" />
+                <RegistryValue Name=".cue" Type="string" Value="" />
+              </RegistryKey>
+            </Component>
+
+            <Component Id="WinLameShortcut" Guid="dbc07581-c039-4738-9539-0cc655215cd8">
+              <RegistryValue Id="RegistryKey1" Root="HKCU" Key="Software\winLAME\Install" Name="winLAMEShortcutPresent" KeyPath="yes" Type="string" Value="" />
+              <Shortcut Id="Shortcut1" Directory="WinLameShortcutFolder" Name="winLAME"
+                Target="[INSTALLDIR]winLAME.exe" Icon="WinLameShortcutIcon" IconIndex="0" Show="normal"
+                Description="Starts winLAME" Advertise="no" WorkingDirectory="INSTALLDIR" />
+              <Shortcut Id="Shortcut2" Directory="WinLameShortcutFolder" Name="winLAME (with Mr. Crash Error Reporting)"
+                Target="[INSTALLDIR]MrCrash.exe" Arguments='/start "[INSTALLDIR]winLAME.exe"' Icon="WinLameShortcutIcon" IconIndex="0" Show="normal"
+                Description="Starts winLAME (and Mr. Crash watches)" Advertise="no" WorkingDirectory="INSTALLDIR" />
+              <RemoveFolder Directory="WinLameShortcutFolder" On="uninstall" Id="Shortcut1" />
+            </Component>
+
+            <Component Id="WinLameRes0407" Guid="91cb7f8e-359d-4ece-9ee4-5b318cd6161e">
+              <File Id="WinLame0407Dll" Name="winLAME.0407.dll" DiskId="1" KeyPath="yes"
+                 Source="..\..\output\Release\winLAME.0407.dll" />
+            </Component>
+
+            <Component Id="MrCrashApp" Guid="8a1d428c-b4a7-4a47-a955-960e2c3e93d8">
+              <File Id="MrCrashExe" Name="MrCrash.exe" DiskId="1" KeyPath="yes" Source="..\libraries\MrCrash.exe" />
+            </Component>
+
+            <Component Id="NLameLibrary" Guid="270adf65-5e4b-4558-a200-1e6f45a6e1c8">
+              <File Id="NlameDll" Name="nLAME.dll" DiskId="1" KeyPath="yes"
+                 Source="..\..\output\Release\nLAME.dll" />
+            </Component>
+
+            <Component Id="SndFileLibrary" Guid="24be05fb-0208-4b00-9b3e-d35b1d7ed29c">
+              <File Id="LibSndFileDll" Name="libsndfile-1.dll" DiskId="1" KeyPath="yes"
+                 Source="..\..\output\Release\libsndfile-1.dll" />
+            </Component>
+
+            <Component Id="MadLibrary" Guid="ae392942-63d2-4e37-b5cc-c8c950a0112a">
+              <File Id="LibMadDll" Name="libmad.dll" DiskId="1" KeyPath="yes"
+                 Source="..\..\output\Release\libmad.dll" />
+            </Component>
+
+            <Component Id="WinLameHelp" Guid="1bacf4b3-b687-4716-96c5-1bad0fd00ed8">
+              <File Id="WinLameChm" Name="winLAME.chm" DiskId="1" KeyPath="yes"
+                 Source="..\..\output\Release\winLAME.chm" />
+            </Component>
+
+            <Component Id="ReadmeFiles" Guid="5224ddc3-9b66-4277-9fae-7f0f296e2e28">
+              <File Id="ReadmeTxt" Name="Readme.txt" DiskId="1" KeyPath="yes"
+                 Source="..\..\readme.txt" />
+              <File Id="CopyingTxt" Name="Copying.txt" DiskId="1" KeyPath="no"
+                 Source="..\..\Copying" />
+            </Component>
+
+            <Component Id="BassLibrary" Guid="e17b47f8-f028-41b1-9a34-100d077e4c86">
+              <File Id="BassDll" Name="bass.dll" DiskId="1" KeyPath="yes"
+                 Source="..\libraries\bass.dll" />
+            </Component>
+
+            <Component Id="BassCdLibrary" Guid="2880f073-fd0c-44bc-98c8-6d1dce3ad2d1">
+              <File Id="BassCdDll" Name="basscd.dll" DiskId="1" KeyPath="yes"
+                 Source="..\libraries\basscd.dll" />
+            </Component>
+
+            <Component Id="BassWmaLibrary" Guid="ce569d4b-61cf-498f-a2ff-9b3164def65e">
+              <File Id="BassWmaDll" Name="basswma.dll" DiskId="1" KeyPath="yes"
+                 Source="..\libraries\basswma.dll" />
+            </Component>
+
+            <Component Id="FlacLibrary" Guid="21bb4ae6-4b6b-4375-8219-02f79204a297">
+              <File Id="LibFlacDll" Name="libFLAC.dll" DiskId="1" KeyPath="yes"
+                 Source="..\libraries\libFLAC.dll" />
+            </Component>
+
+            <Component Id="OggVorbisLibrary" Guid="82eed013-ec92-4934-a5f2-f1db5f7bd12b">
+              <File Id="LibVorbisDll" Name="libvorbis.dll" DiskId="1" KeyPath="yes"
+                 Source="..\libraries\libvorbis.dll" />
+            </Component>
+
+            <Component Id="IclMathLibrary" Guid="a1c17f45-edf5-400c-9478-82857d449fce">
+              <File Id="LibMmdDll" Name="libmmd.dll" DiskId="1" KeyPath="yes"
+                 Source="..\libraries\libmmd.dll" />
+            </Component>
+
+          </Directory>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="WinLameShortcutFolder" Name="winLAME" />
+      </Directory>
+      <Directory Id="CommonAppDataFolder">
+        <Directory Id="winLAME" Name="winLAME">
+          <Component Id="Presets" Guid="5e9a3fc8-2bc1-4e89-8231-72ee18245153">
+            <File Id="PresetsXml" Name="presets.xml" DiskId="1" KeyPath="yes"
+              Source="..\presets.xml" />
+          </Component>
+        </Directory>
+      </Directory>
+    </Directory>
+    <Icon Id="WinLameShortcutIcon" SourceFile="..\winlame\res\winlame.ico" />
+
+    <Feature Id="WinLame" Title="winLAME Application"
+        Description="Installs the winLAME application." Level="1"
+        AllowAdvertise="no" TypicalDefault="install" ConfigurableDirectory="INSTALLDIR">
+      <ComponentRef Id="WinLameApp" />
+      <ComponentRef Id="WinLameShortcut" />
+      <ComponentRef Id="WinLameRes0407" />
+      <ComponentRef Id="MrCrashApp" />
+      <ComponentRef Id="NLameLibrary" />
+      <ComponentRef Id="SndFileLibrary" />
+      <ComponentRef Id="MadLibrary" />
+      <ComponentRef Id="WinLameHelp" />
+      <ComponentRef Id="Presets" />
+      <ComponentRef Id="ReadmeFiles" />
+      <ComponentRef Id="BassLibrary" />
+      <ComponentRef Id="BassCdLibrary" />
+      <ComponentRef Id="BassWmaLibrary" />
+      <ComponentRef Id="FlacLibrary" />
+      <ComponentRef Id="OggVorbisLibrary" />
+      <ComponentRef Id="IclMathLibrary" />
+      <MergeRef Id="Msvcrt90sp1Msm" />
+      <MergeRef Id="PolicyMsvcrt90sp1Msm" />
+    </Feature>
+
+    <UIRef Id="StandardUserInterface" />
+    <UIRef Id="ErrorTextList" />
+
+    <Property Id="ALLUSERS"><![CDATA[1]]></Property>
+    
+    <Property Id="SHOWCUSTOMSETUP"><![CDATA[0]]></Property>
+    <Property Id="SHOWLAUNCHREADME"><![CDATA[0]]></Property>
+    <!-- Property Id="READMEFILETOLAUNCHATEND"><![CDATA[readme.txt]]></Property -->
+    <Property Id="SHOWLAUNCHPROGRAM"><![CDATA[0]]></Property>
+    <!-- Property Id="PROGRAMFILETOLAUNCHATEND"><![CDATA[[INSTALLDIR]]]></Property -->
+    <Property Id="LAUNCHPROGRAM"><![CDATA[0]]></Property>
+    <Property Id="LAUNCHREADME"><![CDATA[0]]></Property>
+
+    <Property Id="ARPURLINFOABOUT"><![CDATA[http://winLAME.sourceforge.net/]]></Property>
+    <Property Id="ARPCOMMENTS"><![CDATA[For more information, please visit http://winLAME.sourceforge.net/]]></Property>
+    <Property Id="ARPPRODUCTICON" Value="WinLameShortcutIcon" />
+    <Property Id="ARPHELPLINK" Value="http://winLAME.sourceforge.net/" />
+
+    <Property Id="UPGRADEGUIDSOLD" Secure="yes" />
+    <Property Id="UPGRADEGUIDS" Secure="yes" />
+
+    <!-- upgrade section for winLAME 2009 versions -->
+    <Upgrade Id="f36dad67-67a5-4d00-83fb-fe8a742c84f4">
+      <UpgradeVersion Maximum="$(var.LastVersion)" Property="UPGRADEGUIDS" MigrateFeatures="yes" IncludeMaximum="yes" />
+    </Upgrade>
+
+    <!-- upgrade section for old versions, <= 0.0.4.0 -->
+    <Upgrade Id="6170bb18-ddf6-4d02-b37c-7713d8c43d6e">
+      <UpgradeVersion Maximum="0.0.4.0" Property="UPGRADEGUIDSOLD" MigrateFeatures="yes" IncludeMaximum="yes" />
+    </Upgrade>
+
+    <!-- add RemoveExistingProducts action for Upgrade to work -->
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallFinalize"/>
+    </InstallExecuteSequence>
+
+  </Product>
+</Wix>

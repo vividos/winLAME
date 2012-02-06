@@ -1,0 +1,46 @@
+<html>
+ <head>
+  <title>winLAME help - How-To's</title>
+  <link rel="stylesheet" type="text/css" href="../winlame.css">
+ </head>
+<body class="back">
+
+<h1>How to rip and encode a CD with winLAME</h1>
+
+<!-- begin of text -->
+
+<p>
+This document explains how to rip an audio CD and encode it to the mp3 or Ogg Vorbis format, using winLAME.
+</p>
+
+<h2>Prerequisites</h2>
+
+<p>
+You need several things to successfully rip audio data from an audio CD and encode it to a lossy audio format, like mp3 or Ogg Vorbis. To extract the audio data, you need an audio grabber or ripper program. Good ones are <a href="http://www.exactaudiocopy.de" target="_blank">ExactAudioCopy</a> or <a href="http://cdexos.sourceforge.net/" target="_blank">CDex</a>. You also need enough hard drive space to store the grabbed audio data. A full CD can use up to 700 MB space. For encoding you need winLAME. And of course you need an audio CD.
+</p>
+
+<h2>Ripping audio data</h2>
+
+<p>
+Ripping the audio data from CD should be fairly easy. Just refer to the online help or manuals of the respective programs. The audio data has to be stored as uncompressed wave files (extension .WAV) to be processed by winLAME.
+</p>
+
+<p>
+There are some settings for ExactAudioCopy to preserve the FreeDB information that EAC can query. Press F11 for the "Compression Options" and choose "Microsoft PCM" as the "Wave format" to use. Be sure to check the "Add ID3 tag" option. On the "ID3 Tag" tab you can adjust ID3 tag options to be used (note that winLAME can only process ID3v1 tags). When grabbing the audio tracks, be sure to rip "compressed" files (then ID3 tags are appended to the produced wave files). You can produce a .m3u playlist for further use in winLAME.
+</p>
+
+<h2>Encoding using winLAME</h2>
+
+<p>
+Once you have the grabbed wave files, just open winLAME and insert the files, either by dropping them from the Windows Explorer or by adding the files with the Open dialog. On the <a href="../pages/output.html">Output Page</a> you can set some output options, such as the generation of an output playlist. You also have to choose which encoder module you want to use. "LAME mp3 Encoder" uses the LAME encoder, whereas Ogg Vorbis encodes in the Ogg Vorbis format. The next pages depend on the encoder you chose. For LAME, it is best to use the "alt-preset standard" <a href="../pages/presets.html">preset</a>, which is automatically selected. When using <a href="../pages/oggvorbis.html">Ogg Vorbis</a>, use the Quality Management settings.
+</p>
+
+<p>
+Finally you get to the <a href="../pages/encode.html">Encode Page</a>, where you can start and control the encoding progress. You can send winLAME to the system tray to make room on your desktop while encoding, or adjust the encoder thread priority when your system is slowed down by the encode process. If all went well, you'll find the encoded files in your output folder.
+</p>
+
+<p><a href="#">back to top</a> - <a href="index.html">back to the How To page</a></p>
+
+<!-- end of text -->
+</body>
+</html>

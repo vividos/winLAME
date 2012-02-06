@@ -1,0 +1,24 @@
+To: 'Michael Fink' <Michael.Fink@asamnet.de>
+Subject: RE: [winlame] bug report
+Date: Thu, 17 Jan 2002 15:02:47 +0100
+
+Response when executing Rd9-full. Occurs when starting encoding:
+
+Illegal instruction in
+module NLAME.DLL at 0137:10037fb3.
+Registers:
+EAX=00000010 CS=0137 EIP=10037fb3 EFLGS=00010216
+EBX=006b3094 SS=013f ESP=01921e60 EBP=006af258
+ECX=00000002 DS=013f ESI=006aea58 FS=6547
+EDX=00000030 ES=013f EDI=006aea60 GS=0000
+Bytes in CS:EIP:
+f3 0f 10 3d 40 02 04 10 eb 03 90 90 90 d9 06 d8 
+Stack-dump:
+ffffffff 00000000 0192fcdc 006b3094 10009eea 006aea58 00000200 1001ce2e
+00000000 0068e9cc 0068e9cc 00000000 100131c5 0068e9cc 006aea58 00000000 
+
+Processor type: Pentium III 700 Mhz for notebooks
+
+Friendly greetings,
+
+Jeroen van Lieshout

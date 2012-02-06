@@ -1,0 +1,85 @@
+Index: include/lame.h
+===================================================================
+RCS file: /cvsroot/winlame/winlame/source/nlame/include/lame.h,v
+retrieving revision 1.12
+diff -u -r1.12 lame.h
+--- include/lame.h	10 Apr 2009 06:52:59 -0000	1.12
++++ include/lame.h	10 Apr 2009 06:53:42 -0000
+@@ -730,6 +730,24 @@
+         int                 mp3buf_size ); /* number of valid octets in this
+                                               stream                        */
+ 
++/*
++ * as above, but for the int data type.
++ * NOTE: 
++ * num_samples = number of samples in the L (or R)
++ * channel, not the total number of samples in pcm[]  
++ */
++int CDECL lame_encode_buffer_interleaved_int(
++        lame_global_flags*  gfp,           /* global context handle         */
++        int buffer[],                      /* PCM data for left and right
++                                              channel, interleaved          */
++        int nsamples,                      /* number of samples per channel,
++                                              _not_ number of samples in
++                                              pcm[]                         */
++        unsigned char*      mp3buf,        /* pointer to encoded MP3 stream */
++        int                 mp3buf_size ); /* number of valid octets in this
++                                              stream                        */
++
++
+ 
+ /* as lame_encode_buffer, but for 'float's.
+  * !! NOTE: !! data must still be scaled to be in the same range as
+Index: libmp3lame/lame.c
+===================================================================
+RCS file: /cvsroot/winlame/winlame/source/nlame/libmp3lame/lame.c,v
+retrieving revision 1.12
+diff -u -r1.12 lame.c
+--- libmp3lame/lame.c	10 Apr 2009 06:52:59 -0000	1.12
++++ libmp3lame/lame.c	10 Apr 2009 06:54:31 -0000
+@@ -1854,6 +1854,45 @@
+                                        mp3buf_size);
+ }
+ 
++
++
++int
++lame_encode_buffer_interleaved_int(lame_global_flags * gfp,
++                                   int buffer[],
++                                   int nsamples,
++                                   unsigned char *mp3buf, int mp3buf_size)
++{
++    lame_internal_flags *gfc = gfp->internal_flags;
++    int     i;
++    sample_t *in_buffer[2];
++
++    if (gfc->Class_ID != LAME_ID)
++        return -3;
++
++    if (nsamples == 0)
++        return 0;
++
++    if (update_inbuffer_size( gfc, nsamples ) != 0) {
++        return -2;
++    }
++
++    in_buffer[0] = gfc->in_buffer_0;
++    in_buffer[1] = gfc->in_buffer_1;
++    
++    /* make a copy of input buffer, changing type to sample_t */
++    for (i = 0; i < nsamples; i++) {
++                                /* internal code expects +/- 32768.0 */
++      in_buffer[0][i] = buffer[2 * i] * (1.0 / ( 1L << (8 * sizeof(int) - 16)));
++      if (gfc->channels_in>1)
++	  in_buffer[1][i] = buffer[2 * i + 1] * (1.0 / ( 1L << (8 * sizeof(int) - 16)));
++    }
++
++    return lame_encode_buffer_sample_t(gfp,in_buffer[0],in_buffer[1],
++				      nsamples, mp3buf, mp3buf_size);
++}
++
++
++
+ #if 0
+ static int
+ lame_encode(lame_global_flags * const gfp,

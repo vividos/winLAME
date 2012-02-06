@@ -1,0 +1,44 @@
+LIBRARY nlame.dll
+EXPORTS
+
+;
+; version info
+;
+nlame_lame_version_get           @1
+nlame_lame_version_get_num       @2
+nlame_lame_version_get_psy_num   @3
+nlame_lame_string_get            @4
+;
+; init, deinit
+;
+nlame_new                        @5
+nlame_delete                     @6
+;
+; variables set/get
+;
+nlame_var_set_int                @7
+nlame_var_get_int                @8
+nlame_var_set_float              @9
+nlame_var_get_float              @10
+nlame_init_params                @11
+;
+; callback function
+;
+nlame_callback_set               @12
+;
+; encoding
+;
+nlame_encode_buffer              @13
+nlame_encode_buffer_mono         @14
+nlame_encode_buffer_interleaved  @15
+nlame_encode_flush               @16
+nlame_encode_flush_nogap         @17
+nlame_reinit_bitstream           @18
+;
+; misc
+;
+nlame_write_vbr_infotag          @19
+nlame_histogram_get              @20
+nlame_get_api_version            @21
+nlame_id3tag_init                @22
+nlame_id3tag_setfield_latin1     @23
