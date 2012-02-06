@@ -6,7 +6,7 @@ REM -{ config here }-----------------------------
 
 set MSVC_PATH=C:\Program Files (x86)\Microsoft Visual Studio 9.0
 set PLATFORM_SDK_PATH=C:\Program Files\Microsoft SDKs\Windows\v6.0a
-set BOOST_PATH=D:\devel\packages\boost_1_43_0
+set BOOST_PATH=D:\devel\packages\boost_1_47_0
 set WIX_PATH=D:\devel\tools\wix-v3\bin
 set DOXYGEN_PATH=D:\devel\tools\doxygen\bin
 
