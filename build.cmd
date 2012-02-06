@@ -45,6 +45,18 @@ call create_installer.cmd >> ..\..\build-log.txt
 copy winLAME.msi ..\..\output\
 cd ..\..
 
+REM build source documentation
+echo Creating source documentation...
+echo. >> build-log.txt
+echo Creating source documentation... >> build-log.txt
+set PATHOLD=%PATH%
+set PATH=%PATH%;%DOXYGEN_PATH%
+cd docs
+call builddocs.bat >> ..\..\build-log.txt
+set PATH=%PATHOLD%
+set PATHOLD=
+cd ..\..
+
 REM finished
 echo Finished!
 
