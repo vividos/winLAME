@@ -21,13 +21,13 @@
 */
 /*! \file winlame.cpp
 
-   \brief contains the main function which just pops up the wlMainDlg
+   \brief contains the main function which just pops up the MainDlg
 
 */
 
 // needed includes
 #include "stdafx.h"
-#include "wlMainDlg.h"
+#include "MainDlg.h"
 
 // globals and defines
 #ifdef _DEBUG
@@ -70,7 +70,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #endif
 
    // start dialog
-   wlMainDlg dlg;
+   MainDlg dlg;
    dlg.RunDialog();
    
    _Module.Term();

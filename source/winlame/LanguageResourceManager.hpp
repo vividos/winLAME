@@ -27,10 +27,10 @@
 
 #pragma once
 
-class CLanguageResourceInfo
+class LanguageResourceInfo
 {
 public:
-   CLanguageResourceInfo(LPCTSTR pszDllName, UINT uiLanguageId, LPCTSTR pszLanguageName) throw()
+   LanguageResourceInfo(LPCTSTR pszDllName, UINT uiLanguageId, LPCTSTR pszLanguageName) throw()
       :m_cszDllName(pszDllName),
        m_uiLanguageId(uiLanguageId),
        m_cszLanguageName(pszLanguageName)
@@ -47,13 +47,13 @@ private:
    CString m_cszLanguageName;
 };
 
-class CLanguageResourceManager
+class LanguageResourceManager
 {
 public:
-   CLanguageResourceManager(LPCTSTR pszLangDllSearchPattern, UINT uiLangNameId, UINT uiLangNameNativeId) throw();
-   ~CLanguageResourceManager() throw();
+   LanguageResourceManager(LPCTSTR pszLangDllSearchPattern, UINT uiLangNameId, UINT uiLangNameNativeId) throw();
+   ~LanguageResourceManager() throw();
 
-   const std::vector<CLanguageResourceInfo>& LanguageResourceList() const  throw() { return m_vecLangResourceInfo; }
+   const std::vector<LanguageResourceInfo>& LanguageResourceList() const  throw() { return m_vecLangResourceInfo; }
 
    bool IsLangResourceAvail(UINT uiLanguageId) const throw();
 
@@ -68,7 +68,7 @@ private:
       const CString& cszResourceFilenameWithoutPath, HMODULE hMod) throw();
 
 private:
-   std::vector<CLanguageResourceInfo> m_vecLangResourceInfo;
+   std::vector<LanguageResourceInfo> m_vecLangResourceInfo;
    HMODULE m_hLoadedResourceDll;
    UINT m_uiLangNameId;
    UINT m_uiLangNameNativeId;

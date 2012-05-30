@@ -38,16 +38,16 @@
 
 #define WM_DELETEME (WM_APP+11)
 
-typedef CWinTraits<WS_VISIBLE | WS_CHILD, 0> wlInplaceEditCtrlTraits;
+typedef CWinTraits<WS_VISIBLE | WS_CHILD, 0> InplaceEditCtrlTraits;
 
 // classes
 
 //! in-place edit control for editable list view control
-class wlInplaceEditCtrl: public CWindowImpl<wlInplaceEditCtrl, CEdit, wlInplaceEditCtrlTraits>
+class InplaceEditCtrl: public CWindowImpl<InplaceEditCtrl, CEdit, InplaceEditCtrlTraits>
 {
 public:
    //! ctor
-   wlInplaceEditCtrl(int nItem, int nColumn)
+   InplaceEditCtrl(int nItem, int nColumn)
       :m_bFinished(false), m_nItem(nItem), m_nColumn(nColumn){}
 
    // message map
@@ -146,20 +146,20 @@ protected:
 };
 
 /// list control to let edit titles
-class wlTrackEditListCtrl:
-   public CWindowImpl<wlTrackEditListCtrl, CListViewCtrl>,
-   public CCustomDraw<wlTrackEditListCtrl>
+class TrackEditListCtrl:
+   public CWindowImpl<TrackEditListCtrl, CListViewCtrl>,
+   public CCustomDraw<TrackEditListCtrl>
 {
 public:
 protected:
    // message map
-BEGIN_MSG_MAP(wlTrackEditListCtrl)
+BEGIN_MSG_MAP(TrackEditListCtrl)
    MESSAGE_HANDLER(WM_LBUTTONDBLCLK, OnLeftButtonDblClick)
    MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
    MESSAGE_HANDLER(WM_DELETEME, OnDeleteMe)
    REFLECTED_NOTIFY_CODE_HANDLER(LVN_BEGINLABELEDIT, OnBeginLabelEdit) // item editing
 //   REFLECTED_NOTIFY_CODE_HANDLER(LVN_ENDLABELEDIT, OnEndLabelEdit)
-   CHAIN_MSG_MAP_ALT(CCustomDraw<wlTrackEditListCtrl>, 1)
+   CHAIN_MSG_MAP_ALT(CCustomDraw<TrackEditListCtrl>, 1)
 END_MSG_MAP()
 
    /// called before painting
@@ -244,7 +244,7 @@ END_MSG_MAP()
          return;
 
       // create edit-control
-      wlInplaceEditCtrl* pEdit = new wlInplaceEditCtrl(item,column);
+      InplaceEditCtrl* pEdit = new InplaceEditCtrl(item,column);
 
       RECT rect;
       GetItemRect(item, &rect, LVIR_LABEL);
@@ -276,7 +276,7 @@ END_MSG_MAP()
    /// called to dispose of the inplace edit control
    LRESULT OnDeleteMe(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
-      wlInplaceEditCtrl* pEdit = reinterpret_cast<wlInplaceEditCtrl*>(lParam);
+      InplaceEditCtrl* pEdit = reinterpret_cast<InplaceEditCtrl*>(lParam);
       delete pEdit;
       return 0;
    }

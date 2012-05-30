@@ -28,7 +28,7 @@
 #include "StdAfx.h"
 #include "LanguageResourceManager.hpp"
 
-CLanguageResourceManager::CLanguageResourceManager(LPCTSTR pszLangDllSearchPattern, UINT uiLangNameId, UINT uiLangNameNativeId) throw()
+LanguageResourceManager::LanguageResourceManager(LPCTSTR pszLangDllSearchPattern, UINT uiLangNameId, UINT uiLangNameNativeId) throw()
 :m_hLoadedResourceDll(NULL),
  m_uiLangNameId(uiLangNameId),
  m_uiLangNameNativeId(uiLangNameNativeId)
@@ -42,19 +42,19 @@ CLanguageResourceManager::CLanguageResourceManager(LPCTSTR pszLangDllSearchPatte
    // add english lang resource
    {
       CString cszLanguageName(MAKEINTRESOURCE(m_uiLangNameNativeId));
-      CLanguageResourceInfo info(_T(""), MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT), cszLanguageName);
+      LanguageResourceInfo info(_T(""), MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT), cszLanguageName);
       m_vecLangResourceInfo.push_back(info);
    }
 
    ScanResourceDlls(pszLangDllSearchPattern);
 }
 
-CLanguageResourceManager::~CLanguageResourceManager() throw()
+LanguageResourceManager::~LanguageResourceManager() throw()
 {
    UnloadLangResource();
 }
 
-bool CLanguageResourceManager::IsLangResourceAvail(UINT uiLanguageId) const throw()
+bool LanguageResourceManager::IsLangResourceAvail(UINT uiLanguageId) const throw()
 {
    for (size_t i=0,iMax=m_vecLangResourceInfo.size(); i<iMax; i++)
    {
@@ -64,13 +64,13 @@ bool CLanguageResourceManager::IsLangResourceAvail(UINT uiLanguageId) const thro
    return false;
 }
 
-void CLanguageResourceManager::LoadLangResource(UINT uiLanguageId) throw()
+void LanguageResourceManager::LoadLangResource(UINT uiLanguageId) throw()
 {
    ATLASSERT(IsLangResourceAvail(uiLanguageId));
 
    for (size_t i=0,iMax=m_vecLangResourceInfo.size(); i<iMax; i++)
    {
-      const CLanguageResourceInfo& info = m_vecLangResourceInfo[i];
+      const LanguageResourceInfo& info = m_vecLangResourceInfo[i];
 
       if (info.LanguageId() == uiLanguageId)
       {
@@ -93,7 +93,7 @@ void CLanguageResourceManager::LoadLangResource(UINT uiLanguageId) throw()
    }
 }
 
-void CLanguageResourceManager::UnloadLangResource() throw()
+void LanguageResourceManager::UnloadLangResource() throw()
 {
    if (m_hLoadedResourceDll != NULL)
    {
@@ -102,7 +102,7 @@ void CLanguageResourceManager::UnloadLangResource() throw()
    }
 }
 
-void CLanguageResourceManager::ScanResourceDlls(LPCTSTR pszLangDllSearchPattern) throw()
+void LanguageResourceManager::ScanResourceDlls(LPCTSTR pszLangDllSearchPattern) throw()
 {
    // search pattern must contain one asterisk
    ATLASSERT(CString(pszLangDllSearchPattern).Find(_T('*')) != -1);
@@ -148,7 +148,7 @@ void CLanguageResourceManager::ScanResourceDlls(LPCTSTR pszLangDllSearchPattern)
    ::FindClose(hFind);
 }
 
-void CLanguageResourceManager::AddLanguageResourceInfo(
+void LanguageResourceManager::AddLanguageResourceInfo(
    LPCTSTR pszLangDllSearchPattern,
    const CString& cszResourceFilename,
    const CString& cszResourceFilenameWithoutPath, HMODULE hMod) throw()
@@ -184,6 +184,6 @@ void CLanguageResourceManager::AddLanguageResourceInfo(
    }
 
    // add
-   CLanguageResourceInfo info(cszResourceFilename, uiLanguageId, cszLanguageName);
+   LanguageResourceInfo info(cszResourceFilename, uiLanguageId, cszLanguageName);
    m_vecLangResourceInfo.push_back(info);
 }

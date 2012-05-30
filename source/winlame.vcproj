@@ -227,83 +227,83 @@
 				Name="encoder source files"
 				>
 				<File
-					RelativePath="winlame\encoder\wlAacInputModule.cpp"
+					RelativePath=".\winlame\encoder\AacInputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlAacOutputModule.cpp"
+					RelativePath=".\winlame\encoder\AacOutputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlBassInputModule.cpp"
+					RelativePath=".\winlame\encoder\BassInputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlBassWmaOutputModule.cpp"
+					RelativePath=".\winlame\encoder\BassWmaOutputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlCdReadoutModule.cpp"
+					RelativePath=".\winlame\encoder\CdReadoutModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlEncoderImpl.cpp"
+					RelativePath=".\winlame\encoder\EncoderImpl.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlFlacInputModule.cpp"
+					RelativePath=".\winlame\encoder\FlacInputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\winlame\encoder\wlId3v1Tag.cpp"
+					RelativePath=".\winlame\encoder\Id3v1Tag.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlLameOutputModule.cpp"
+					RelativePath=".\winlame\encoder\LameOutputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlMadMpegInputModule.cpp"
+					RelativePath=".\winlame\encoder\MadMpegInputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlModuleManagerImpl.cpp"
+					RelativePath=".\winlame\encoder\ModuleManagerImpl.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlMonkeysAudioInputModule.cpp"
+					RelativePath=".\winlame\encoder\MonkeysAudioInputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlOggVorbisInputModule.cpp"
+					RelativePath=".\winlame\encoder\OggVorbisInputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlOggVorbisOutputModule.cpp"
+					RelativePath=".\winlame\encoder\OggVorbisOutputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlSampleContainer.cpp"
+					RelativePath=".\winlame\encoder\SampleContainer.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlSndFileInputModule.cpp"
+					RelativePath=".\winlame\encoder\SndFileInputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlTrackInfo.cpp"
+					RelativePath=".\winlame\encoder\TrackInfo.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlWaveMp3Header.cpp"
+					RelativePath=".\winlame\encoder\WaveMp3Header.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlWaveOutputModule.cpp"
+					RelativePath=".\winlame\encoder\WaveOutputModule.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlWinampPluginInputModule.cpp"
+					RelativePath=".\winlame\encoder\WinampPluginInputModule.cpp"
 					>
 				</File>
 			</Filter>
@@ -311,87 +311,87 @@
 				Name="encoder header files"
 				>
 				<File
-					RelativePath="winlame\encoder\wlAacInputModule.h"
+					RelativePath=".\winlame\encoder\AacInputModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlAacOutputModule.h"
+					RelativePath=".\winlame\encoder\AacOutputModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlBassInputModule.h"
+					RelativePath=".\winlame\encoder\BassInputModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlBassWmaOutputModule.h"
+					RelativePath=".\winlame\encoder\BassWmaOutputModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlCdReadoutModule.h"
+					RelativePath=".\winlame\encoder\CdReadoutModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlEncoderImpl.h"
+					RelativePath=".\winlame\encoder\EncoderImpl.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlFlacInputModule.h"
+					RelativePath=".\winlame\encoder\FlacInputModule.h"
 					>
 				</File>
 				<File
-					RelativePath=".\winlame\encoder\wlId3v1Tag.h"
+					RelativePath=".\winlame\encoder\Id3v1Tag.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlLameOutputModule.h"
+					RelativePath=".\winlame\encoder\LameOutputModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlMadMpegInputModule.h"
+					RelativePath=".\winlame\encoder\MadMpegInputModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlModuleInterface.h"
+					RelativePath=".\winlame\encoder\ModuleInterface.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlModuleManagerImpl.h"
+					RelativePath=".\winlame\encoder\ModuleManagerImpl.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlMonkeysAudioInputModule.h"
+					RelativePath=".\winlame\encoder\MonkeysAudioInputModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlOggVorbisInputModule.h"
+					RelativePath=".\winlame\encoder\OggVorbisInputModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlOggVorbisOutputModule.h"
+					RelativePath=".\winlame\encoder\OggVorbisOutputModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlSampleContainer.h"
+					RelativePath=".\winlame\encoder\SampleContainer.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlSndFileInputModule.h"
+					RelativePath=".\winlame\encoder\SndFileInputModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlTrackInfo.h"
+					RelativePath=".\winlame\encoder\TrackInfo.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlWaveMp3Header.h"
+					RelativePath=".\winlame\encoder\WaveMp3Header.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlWaveOutputModule.h"
+					RelativePath=".\winlame\encoder\WaveOutputModule.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\encoder\wlWinampPluginInputModule.h"
+					RelativePath=".\winlame\encoder\WinampPluginInputModule.h"
 					>
 				</File>
 			</Filter>
@@ -516,78 +516,78 @@
 			Name="ui files"
 			>
 			<File
-				RelativePath="winlame\wlCDRipTrackManager.cpp"
+				RelativePath=".\winlame\CDRipTrackManager.cpp"
 				>
 			</File>
 			<File
-				RelativePath="winlame\wlCDRipTrackManager.h"
+				RelativePath=".\winlame\CDRipTrackManager.h"
 				>
 			</File>
 			<Filter
 				Name="ui source files"
 				>
 				<File
+					RelativePath=".\winlame\AacSettingsPage.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\AboutDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\CDRipDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\CDRipPage.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\CommonStuff.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\EncodePage.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\winlame\ImageListComboBox.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlAacSettingsPage.cpp"
+					RelativePath=".\winlame\InputListCtrl.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlAboutDlg.cpp"
+					RelativePath=".\winlame\InputPage.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlCDRipDlg.cpp"
+					RelativePath=".\winlame\LameSimpleSettingsPage.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlCDRipPage.cpp"
+					RelativePath=".\winlame\MainDlg.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlCommonStuff.cpp"
+					RelativePath=".\winlame\OggVorbisSettingsPage.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlEncodePage.cpp"
+					RelativePath=".\winlame\OutputPage.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlInputListCtrl.cpp"
+					RelativePath=".\winlame\PresetsPage.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlInputPage.cpp"
+					RelativePath=".\winlame\WaveOutputSettingsPage.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlLameSimpleSettingsPage.cpp"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlMainDlg.cpp"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlOggVorbisSettingsPage.cpp"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlOutputPage.cpp"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlPresetsPage.cpp"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlWaveOutputSettingsPage.cpp"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlWmaOutputSettingsPage.cpp"
+					RelativePath=".\winlame\WmaOutputSettingsPage.cpp"
 					>
 				</File>
 			</Filter>
@@ -595,7 +595,75 @@
 				Name="ui header files"
 				>
 				<File
+					RelativePath=".\winlame\AacSettingsPage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\AboutDlg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\CDRipDlg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\CDRipPage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\CommonStuff.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\EncodePage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ErrorDlg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\HtmlHelp.h"
+					>
+				</File>
+				<File
 					RelativePath=".\winlame\ImageListComboBox.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\InputListCtrl.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\InputPage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\LameSimpleSettingsPage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\MainDlg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\OggVorbisSettingsPage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\OutputPage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\PageBase.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\PresetsPage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\SystemTrayIcon.h"
 					>
 				</File>
 				<File
@@ -603,79 +671,11 @@
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlAacSettingsPage.h"
+					RelativePath=".\winlame\WaveOutputSettingsPage.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlAboutDlg.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlCDRipDlg.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlCDRipPage.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlCommonStuff.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlEncodePage.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlErrorDlg.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlHtmlHelp.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlInputListCtrl.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlInputPage.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlLameSimpleSettingsPage.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlMainDlg.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlOggVorbisSettingsPage.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlOutputPage.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlPageBase.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlPresetsPage.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlSystemTrayIcon.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlWaveOutputSettingsPage.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlWmaOutputSettingsPage.h"
+					RelativePath=".\winlame\WmaOutputSettingsPage.h"
 					>
 				</File>
 			</Filter>
@@ -746,11 +746,11 @@
 				Name="preset source files"
 				>
 				<File
-					RelativePath="winlame\preset\wlPresetManagerImpl.cpp"
+					RelativePath=".\winlame\preset\PresetManagerImpl.cpp"
 					>
 				</File>
 				<File
-					RelativePath="winlame\preset\wlPropertyListBox.cpp"
+					RelativePath=".\winlame\preset\PropertyListBox.cpp"
 					>
 				</File>
 				<Filter
@@ -822,15 +822,15 @@
 				Name="preset header files"
 				>
 				<File
-					RelativePath="winlame\preset\wlPresetManagerImpl.h"
+					RelativePath=".\winlame\preset\PresetManagerImpl.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\preset\wlPropertyDlg.h"
+					RelativePath=".\winlame\preset\PropertyDlg.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\preset\wlPropertyListBox.h"
+					RelativePath=".\winlame\preset\PropertyListBox.h"
 					>
 				</File>
 				<Filter
@@ -875,6 +875,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\winlame\SettingsManager.cpp"
+					>
+				</File>
+				<File
 					RelativePath="winlame\stdafx.cpp"
 					>
 					<FileConfiguration
@@ -895,19 +899,15 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\winlame\UISettings.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\VariableManager.cpp"
+					>
+				</File>
+				<File
 					RelativePath="winlame\winlame.cpp"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlSettingsManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlUISettings.cpp"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlVariableManager.cpp"
 					>
 				</File>
 			</Filter>
@@ -915,6 +915,10 @@
 				Name="main program header files"
 				Filter="h;hpp;hxx;hm;inl"
 				>
+				<File
+					RelativePath=".\winlame\EncoderInterface.h"
+					>
+				</File>
 				<File
 					RelativePath=".\winlame\LangCountryMapper.cpp"
 					>
@@ -928,27 +932,23 @@
 					>
 				</File>
 				<File
+					RelativePath=".\winlame\PresetManagerInterface.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\SettingsManager.h"
+					>
+				</File>
+				<File
 					RelativePath="winlame\stdafx.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlEncoderInterface.h"
+					RelativePath=".\winlame\UIinterface.h"
 					>
 				</File>
 				<File
-					RelativePath="winlame\wlPresetManagerInterface.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlSettingsManager.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlUIinterface.h"
-					>
-				</File>
-				<File
-					RelativePath="winlame\wlVariableManager.h"
+					RelativePath=".\winlame\VariableManager.h"
 					>
 				</File>
 			</Filter>

@@ -27,17 +27,17 @@
 #pragma once
 
 #include "wlCommonStuff.h"
-#include "wlUIinterface.h"
+#include "UIinterface.h"
 #include "ImageListComboBox.h"
 
-class CLanguageResourceManager;
+class LanguageResourceManager;
 
-class COptionsDlg:
-   public CDialogImpl<COptionsDlg>,
-   public CWinDataExchange<COptionsDlg>
+class OptionsDlg:
+   public CDialogImpl<OptionsDlg>,
+   public CWinDataExchange<OptionsDlg>
 {
 public:
-   COptionsDlg(wlUISettings& uiSettings, CLanguageResourceManager& langResourceManager)
+   OptionsDlg(wlUISettings& uiSettings, LanguageResourceManager& langResourceManager)
       :m_uiSettings(uiSettings),
        m_langResourceManager(langResourceManager)
    {
@@ -48,7 +48,7 @@ public:
 // DLGRESIZE_CONTROL(IDC_CDRIP_OPT_COMBO_LANGUAGE, DLSZ_SIZE_X)
 // DLGRESIZE_CONTROL(IDC_CDRIP_OPT_BEVEL1, DLSZ_SIZE_X)
 
-   BEGIN_MSG_MAP(COptionsDlg)
+   BEGIN_MSG_MAP(OptionsDlg)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_ID_HANDLER(IDOK, OnExit)
       COMMAND_ID_HANDLER(IDCANCEL, OnExit)
@@ -57,7 +57,7 @@ public:
       REFLECT_NOTIFICATIONS()
    END_MSG_MAP()
 
-   BEGIN_DDX_MAP(COptionsDlg)
+   BEGIN_DDX_MAP(OptionsDlg)
       DDX_CONTROL(IDC_CDRIP_OPT_COMBO_LANGUAGE, m_cbLanguages)
       DDX_CONTROL(IDC_CDRIP_OPT_BEVEL1, m_bevel1);
       DDX_CONTROL(IDC_CDRIP_OPT_BEVEL2, m_bevel2);
@@ -76,11 +76,11 @@ public:
 
 private:
    wlUISettings& m_uiSettings;
-   CLanguageResourceManager& m_langResourceManager;
+   LanguageResourceManager& m_langResourceManager;
 
    CImageListComboBox m_cbLanguages;
 
-   wlBevelLine m_bevel1, m_bevel2;
+   BevelLine m_bevel1, m_bevel2;
 
    CButton m_btnSelectPath;
 

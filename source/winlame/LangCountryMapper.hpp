@@ -2,10 +2,10 @@
 
 #include <map>
 
-class CLangCountryMapper
+class LangCountryMapper
 {
 public:
-   CLangCountryMapper();
+   LangCountryMapper();
    LPCTSTR CountryCodeFromLanguageCode(UINT uiLanguageCode) const;
    int IndexFromLanguageCode(UINT uiLanguageCode) const;
 

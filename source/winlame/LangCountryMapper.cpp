@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "LangCountryMapper.hpp"
 
-CLangCountryMapper::CLangCountryMapper()
+LangCountryMapper::LangCountryMapper()
 {
    m_mapCountryCodeToIndex[_T("ad")] = 0;
    m_mapCountryCodeToIndex[_T("ae")] = 1;
@@ -252,7 +252,7 @@ CLangCountryMapper::CLangCountryMapper()
    m_mapCountryCodeToIndex[_T("zw")] = 246;
 }
 
-LPCTSTR CLangCountryMapper::CountryCodeFromLanguageCode(UINT uiLanguageCode) const
+LPCTSTR LangCountryMapper::CountryCodeFromLanguageCode(UINT uiLanguageCode) const
 {
    // map country codes, according to http://msdn.microsoft.com/en-us/library/0h88fahh(VS.85).aspx
    switch(uiLanguageCode)
@@ -395,7 +395,7 @@ LPCTSTR CLangCountryMapper::CountryCodeFromLanguageCode(UINT uiLanguageCode) con
    return NULL;
 }
 
-int CLangCountryMapper::IndexFromLanguageCode(UINT uiLanguageCode) const
+int LangCountryMapper::IndexFromLanguageCode(UINT uiLanguageCode) const
 {
    // get country code from language code
    LPCTSTR pszCountryCode = CountryCodeFromLanguageCode(uiLanguageCode);

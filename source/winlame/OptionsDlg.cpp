@@ -31,7 +31,7 @@
 #include "LanguageResourceManager.hpp"
 #include "LangCountryMapper.hpp"
 
-LRESULT COptionsDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+LRESULT OptionsDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_LOAD);
 
@@ -56,13 +56,13 @@ LRESULT COptionsDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
 
    // fill language combobox
    {
-      CLangCountryMapper langCountryMapper;
+      LangCountryMapper langCountryMapper;
 
-      const std::vector<CLanguageResourceInfo>& vecLangResourceList = m_langResourceManager.LanguageResourceList();
+      const std::vector<LanguageResourceInfo>& vecLangResourceList = m_langResourceManager.LanguageResourceList();
       int iSelectedLangIndex = -1;
       for (size_t i=0,iMax=vecLangResourceList.size(); i<iMax; i++)
       {
-         const CLanguageResourceInfo& info = vecLangResourceList[i];
+         const LanguageResourceInfo& info = vecLangResourceList[i];
 
          // map language id to image list index
          int iIconIndex = langCountryMapper.IndexFromLanguageCode(info.LanguageId());
@@ -107,7 +107,7 @@ LRESULT COptionsDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
    return 1;
 }
 
-LRESULT COptionsDlg::OnExit(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT OptionsDlg::OnExit(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    if (wID == IDOK)
    {
@@ -137,7 +137,7 @@ LRESULT COptionsDlg::OnExit(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BO
    return 0;
 }
 
-LRESULT COptionsDlg::OnButtonSelectPath(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT OptionsDlg::OnButtonSelectPath(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_SAVE, IDC_CDRIP_OPT_EDIT_TEMP_FOLDER);
 
@@ -150,7 +150,7 @@ LRESULT COptionsDlg::OnButtonSelectPath(WORD /*wNotifyCode*/, WORD wID, HWND /*h
    return 0;
 }
 
-LRESULT COptionsDlg::OnChangeFreedbUsername(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT OptionsDlg::OnChangeFreedbUsername(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_SAVE, IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME);
    if (-1 != m_uiSettings.freedb_username.Find(_T(' ')))
