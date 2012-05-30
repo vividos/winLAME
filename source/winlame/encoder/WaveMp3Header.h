@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: WaveMp3Header.h,v 1.4 2004/01/14 21:32:20 vividos Exp $
-
 */
 /*! \file WaveMp3Header.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup encoder */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlwavemp3header_h_
-#define __wlwavemp3header_h_
+// include guard
+#pragma once
 
 // needed includes
 #include <iosfwd>
@@ -56,5 +53,3 @@ void wlFixupWaveMp3Header(std::ofstream &ostr,unsigned int datalen,
    unsigned int numsamples);
 
 //@}
-
-#endif

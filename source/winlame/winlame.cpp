@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: winlame.cpp,v 1.19 2010/09/06 15:45:26 vividos Exp $
-
 */
 /*! \file winlame.cpp
 

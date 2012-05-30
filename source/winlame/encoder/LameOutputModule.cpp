@@ -17,8 +17,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: LameOutputModule.cpp,v 1.59 2010/01/08 19:58:43 vividos Exp $
-
 */
 /*! \file LameOutputModule.cpp
 

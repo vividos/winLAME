@@ -17,8 +17,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: SndFileInputModule.cpp,v 1.38 2011/01/23 17:02:43 vividos Exp $
-
 */
 /*! \file SndFileInputModule.cpp
 

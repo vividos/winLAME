@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: PropertyListBox.cpp,v 1.11 2009/11/02 20:30:50 vividos Exp $
-
 */
 /*! \file PropertyListBox.cpp
 

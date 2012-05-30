@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: PageBase.h,v 1.17 2011/01/21 17:50:26 vividos Exp $
-
 */
 /*! \file PageBase.h
 
@@ -31,9 +29,8 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlpagebase_h_
-#define __wlpagebase_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "UIinterface.h"
@@ -94,5 +91,3 @@ public:
 
 
 //@}
-
-#endif

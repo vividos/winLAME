@@ -17,8 +17,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: UIinterface.h,v 1.30 2011/01/21 17:50:26 vividos Exp $
-
 */
 /*! \file UIinterface.h
 
@@ -33,9 +31,8 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wluiinterface_h_
-#define __wluiinterface_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "SettingsManager.h"
@@ -182,5 +179,3 @@ public:
 
 
 //@}
-
-#endif

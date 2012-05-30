@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: InputListCtrl.h,v 1.9 2007/02/23 17:27:49 vividos Exp $
-
 */
 /*! \file InputListCtrl.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlinputlistctrl_h_
-#define __wlinputlistctrl_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "resource.h"
@@ -161,5 +158,3 @@ protected:
 
 
 //@}
-
-#endif

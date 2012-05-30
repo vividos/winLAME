@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: MadMpegInputModule.h,v 1.17 2009/04/10 22:04:55 vividos Exp $
-
 */
 /*! \file MadMpegInputModule.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup encoder */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlmadmpeginputmodule_h_
-#define __wlmadmpeginputmodule_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "ModuleInterface.h"
@@ -138,5 +135,3 @@ protected:
 
 
 //@}
-
-#endif

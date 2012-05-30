@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: PresetManagerImpl.cpp,v 1.25 2005/09/27 18:30:09 vividos Exp $
-
 */
 /*! \file PresetManagerImpl.cpp
 

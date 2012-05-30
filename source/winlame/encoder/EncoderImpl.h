@@ -17,8 +17,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: EncoderImpl.h,v 1.30 2011/01/25 19:32:38 vividos Exp $
-
 */
 /*! \file EncoderImpl.h
 
@@ -28,9 +26,8 @@
 /*! \ingroup encoder */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlencoderimpl_h_
-#define __wlencoderimpl_h_
+// include guard
+#pragma once
 
 // needed includes
 #include <string>
@@ -349,5 +346,3 @@ protected:
 
 
 //@}
-
-#endif

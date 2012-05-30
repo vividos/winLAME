@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: HtmlHelp.h,v 1.6 2004/01/14 21:32:20 vividos Exp $
-
 */
 /*! \file HtmlHelp.h
 
@@ -27,12 +25,11 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlhtmlhelp_h_
-#define __wlhtmlhelp_h_
+// include guard
+#pragma once
 
 // needed includes
-#include "htmlhelp.h"
+#include <htmlhelp.h>
 
 
 //! html help support class
@@ -83,5 +80,3 @@ protected:
 
 
 //@}
-
-#endif

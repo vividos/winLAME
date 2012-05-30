@@ -17,8 +17,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: MadMpegInputModule.cpp,v 1.39 2011/01/23 17:00:24 vividos Exp $
-
 */
 /*! \file MadMpegInputModule.cpp
 

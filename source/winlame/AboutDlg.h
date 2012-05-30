@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: AboutDlg.h,v 1.14 2010/01/08 18:05:50 vividos Exp $
-
 */
 /*! \file AboutDlg.h
 
@@ -28,9 +26,8 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlaboutdlg_h_
-#define __wlaboutdlg_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "resource.h"
@@ -219,5 +216,3 @@ protected:
 
 
 //@}
-
-#endif

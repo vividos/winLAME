@@ -17,8 +17,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: SndFileInputModule.h,v 1.18 2007/02/23 17:26:37 vividos Exp $
-
 */
 /*! \file SndFileInputModule.h
 
@@ -28,9 +26,8 @@
 /*! \ingroup encoder */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlsndfileinputmodule_h_
-#define __wlsndfileinputmodule_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "ModuleInterface.h"
@@ -117,5 +114,3 @@ protected:
 
 
 //@}
-
-#endif

@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: CDRipDlg.h,v 1.14 2009/11/02 19:54:26 vividos Exp $
-
 */
 /*! \file CDRipDlg.h
 
@@ -27,14 +25,13 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef wlcdripdlg_h_
-#define wlcdripdlg_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "resource.h"
 #include "freedb.hpp"
-#include "wlCommonStuff.h"
+#include "CommonStuff.h"
 #include "UIinterface.h"
 #include "TrackEditListCtrl.h"
 
@@ -214,5 +211,3 @@ protected:
 
 
 //@}
-
-#endif

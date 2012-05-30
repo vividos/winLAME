@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: SampleContainer.h,v 1.5 2004/01/14 21:32:20 vividos Exp $
-
 */
 /*! \file SampleContainer.h
 
@@ -30,9 +28,8 @@
 /*! \ingroup encoder */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlsamplecontainer_h_
-#define __wlsamplecontainer_h_
+// include guard
+#pragma once
 
 
 //! sample format type
@@ -143,5 +140,3 @@ protected:
 
 
 //@}
-
-#endif

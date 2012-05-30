@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: PresetManagerImpl.h,v 1.19 2004/01/14 21:32:20 vividos Exp $
-
 */
 /*! \file PresetManagerImpl.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup preset */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlpresetmanagerimpl_h_
-#define __wlpresetmanagerimpl_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "../PresetManagerInterface.h"
@@ -123,5 +120,3 @@ protected:
 
 
 //@}
-
-#endif

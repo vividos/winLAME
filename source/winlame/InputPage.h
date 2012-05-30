@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: InputPage.h,v 1.29 2011/01/21 17:50:26 vividos Exp $
-
 */
 /*! \file InputPage.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlinputpage_h_
-#define __wlinputpage_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "resource.h"
@@ -224,5 +221,3 @@ protected:
 
 
 //@}
-
-#endif

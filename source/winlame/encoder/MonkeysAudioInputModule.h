@@ -5,14 +5,12 @@
 /*! \ingroup encoder */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlmonkeysaudioinputmodule_h_
-#define __wlmonkeysaudioinputmodule_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "ModuleInterface.h"
 #include <string>
-
 
 
 // monkey namespace contains internal stuff used in MonkeysAudioInputModule
@@ -124,6 +122,3 @@ private:
 	//! last error occured
 	CString lasterror;
 };
-
-
-#endif	//__wlmonkeysaudioinputmodule_h_

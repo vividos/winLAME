@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: SettingsManager.h,v 1.11 2008/02/26 19:47:24 vividos Exp $
-
 */
 /*! \file SettingsManager.h
 
@@ -32,9 +30,8 @@
 /*! \ingroup settings */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlsettingsmanager_h_
-#define __wlsettingsmanager_h_
+// include guard
+#pragma once
 
 // needed includes
 #include <map>
@@ -68,5 +65,3 @@ protected:
 
 
 //@}
-
-#endif

@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: ModuleInterface.h,v 1.25 2010/01/08 19:58:43 vividos Exp $
-
 */
 /*! \file ModuleInterface.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup encoder */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlmoduleinterface_h_
-#define __wlmoduleinterface_h_
+// include guard
+#pragma once
 
 // needed includes
 #include <string>
@@ -154,5 +151,3 @@ public:
 CString wlGetAnsiCompatFilename(LPCTSTR pszFilename);
 
 //@}
-
-#endif

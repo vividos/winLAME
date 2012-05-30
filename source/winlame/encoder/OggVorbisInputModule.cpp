@@ -17,8 +17,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: OggVorbisInputModule.cpp,v 1.22 2009/11/02 20:30:52 vividos Exp $
-
 */
 /*! \file OggVorbisInputModule.cpp
 

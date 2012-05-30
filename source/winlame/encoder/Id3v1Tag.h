@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: Id3v1Tag.h,v 1.2 2009/11/02 20:30:52 vividos Exp $
-
 */
 /*! \file Id3v1Tag.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup encoder */
 /*! @{ */
 
-// prevent multiple including
-#ifndef wlid3v1tag_h_
-#define wlid3v1tag_h_
+// include guard
+#pragma once
 
 // needed includes
 
@@ -86,5 +83,3 @@ struct Id3v1Tag
 #pragma pack(pop)
 
 //@}
-
-#endif // wlid3v1tag_h_

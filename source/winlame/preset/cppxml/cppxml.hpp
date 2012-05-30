@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: cppxml.hpp,v 1.4 2005/12/11 17:24:58 vividos Exp $
-
 */
 /*! \file cppxml.hpp
 
@@ -42,9 +40,8 @@
 /*! \ingroup cppxml */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __cppxml_cppxml_hpp_
-#define __cppxml_cppxml_hpp_
+// include guard
+#pragma once
 
 // switch off some warnings
 #pragma warning( disable: 4786 )
@@ -223,5 +220,3 @@ public:
 };
 
 //@}
-
-#endif

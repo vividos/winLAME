@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: CDRipTrackManager.h,v 1.2 2005/03/10 15:59:56 vividos Exp $
-
 */
 /*! \file CDRipTrackManager.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef wlcdriptrackmanager_h_
-#define wlcdriptrackmanager_h_
+// include guard
+#pragma once
 
 // needed includes
 
@@ -94,5 +91,3 @@ private:
 };
 
 //@}
-
-#endif

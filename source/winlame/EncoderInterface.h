@@ -17,8 +17,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: EncoderInterface.h,v 1.27 2011/01/25 19:32:38 vividos Exp $
-
 */
 /*! \file EncoderInterface.h
 
@@ -41,9 +39,8 @@
 /*! \ingroup encoder */
 /*! @{ */
 
-// prevent multiple including
-#ifndef wlencoderinterface_h_
-#define wlencoderinterface_h_
+// include guard
+#pragma once
 
 // needed includes
 #include <string>
@@ -140,10 +137,10 @@ public:
    CString InputFilename() const throw() { return m_cszInputFilename; }
 
    /// returns track info; const version
-   const TrackInfo& TrackInfo() const throw() { return m_trackInfo; }
+   const TrackInfo& GetTrackInfo() const throw() { return m_trackInfo; }
 
    /// returns track info
-   TrackInfo& TrackInfo() throw() { return m_trackInfo; }
+   TrackInfo& GetTrackInfo() throw() { return m_trackInfo; }
 
 private:
    CString m_cszInputFilename;   ///< input filename
@@ -239,5 +236,3 @@ protected:
 };
 
 //@}
-
-#endif

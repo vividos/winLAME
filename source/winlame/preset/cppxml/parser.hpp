@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: parser.hpp,v 1.3 2002/09/03 18:44:50 vividos Exp $
-
 */
 /*! \file parser.hpp
 
@@ -25,9 +23,8 @@
 
 */
 
-// prevent multiple including
-#ifndef __cppxml_parser_hpp_
-#define __cppxml_parser_hpp_
+// include guard
+#pragma once
 
 // needed includes
 #include "cppxml.hpp"
@@ -111,5 +108,3 @@ protected:
 
 // end of namespace
 };
-
-#endif

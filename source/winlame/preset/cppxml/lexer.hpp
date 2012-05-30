@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: lexer.hpp,v 1.3 2002/09/03 18:44:41 vividos Exp $
-
 */
 /*! \file lexer.hpp
 
@@ -25,9 +23,8 @@
 
 */
 
-// prevent multiple including
-#ifndef __cppxml_lexer_hpp_
-#define __cppxml_lexer_hpp_
+// include guard
+#pragma once
 
 // needed includes
 #include "cppxml.hpp"

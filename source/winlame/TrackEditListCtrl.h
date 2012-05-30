@@ -17,8 +17,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: TrackEditListCtrl.h,v 1.3 2009/11/02 19:54:26 vividos Exp $
-
 */
 /*! \file TrackEditListCtrl.h
 
@@ -28,12 +26,10 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef TrackEditListCtrl_h_
-#define TrackEditListCtrl_h_
+// include guard
+#pragma once
 
 // needed includes
-
 
 
 #define WM_DELETEME (WM_APP+11)
@@ -317,7 +313,4 @@ END_MSG_MAP()
 };
 
 
-
 //@}
-
-#endif

@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: PropertyDlg.h,v 1.8 2009/04/10 22:05:25 vividos Exp $
-
 */
 /*! \file PropertyDlg.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup preset */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlpropertydlg_h_
-#define __wlpropertydlg_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "../resource.h"
@@ -105,5 +102,3 @@ protected:
 
 
 //@}
-
-#endif

@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: AacSettingsPage.h,v 1.11 2011/01/21 17:50:26 vividos Exp $
-
 */
 /*! \file AacSettingsPage.h
 
@@ -27,14 +25,13 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlaacsettingspage_h_
-#define __wlaacsettingspage_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "resource.h"
 #include "PageBase.h"
-#include "wlCommonStuff.h"
+#include "CommonStuff.h"
 
 
 // classes
@@ -124,5 +121,3 @@ protected:
 
 
 //@}
-
-#endif

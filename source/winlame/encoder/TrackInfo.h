@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: TrackInfo.h,v 1.12 2009/10/26 22:17:57 vividos Exp $
-
 */
 /*! \file TrackInfo.h
 
@@ -29,9 +27,8 @@
 /*! \ingroup encoder */
 /*! @{ */
 
-// prevent multiple including
-#ifndef wltrackinfo_h_
-#define wltrackinfo_h_
+// include guard
+#pragma once
 
 // needed includes
 #include <string>
@@ -125,5 +122,3 @@ protected:
 
 
 //@}
-
-#endif

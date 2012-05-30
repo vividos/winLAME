@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: SystemTrayIcon.h,v 1.8 2009/11/02 19:54:26 vividos Exp $
-
 */
 /*! \file SystemTrayIcon.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlsystemtrayicon_h_
-#define __wlsystemtrayicon_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "shellapi.h"
@@ -109,5 +106,3 @@ protected:
 
 
 //@}
-
-#endif

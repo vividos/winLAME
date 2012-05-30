@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: wlCdReadoutModule.h,v 1.6 2009/11/02 20:30:52 vividos Exp $
-
 */
 /*! \file wlCdReadoutModule.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup encoder */
 /*! @{ */
 
-// prevent multiple including
-#ifndef wlCdReadoutModule_h_
-#define wlCdReadoutModule_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "ModuleInterface.h"
@@ -73,5 +70,3 @@ protected:
 
 
 //@}
-
-#endif

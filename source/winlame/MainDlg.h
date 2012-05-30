@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: MainDlg.h,v 1.38 2011/01/21 17:50:26 vividos Exp $
-
 */
 /*! \file MainDlg.h
 
@@ -27,9 +25,8 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef __wlmaindlg_h_
-#define __wlmaindlg_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "resource.h"
@@ -342,5 +339,3 @@ protected:
 
 
 //@}
-
-#endif

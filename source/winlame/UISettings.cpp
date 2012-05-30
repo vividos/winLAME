@@ -17,8 +17,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: wlUISettings.cpp,v 1.23 2011/02/15 19:16:14 vividos Exp $
-
 */
 /*! \file wlUISettings.cpp
 
@@ -134,7 +132,7 @@ void wlUISettings::ReadSettings()
 
    // read last input path
    CString cszLastInputPath;
-   ReadStringValue(regRoot, LastInputPath, MAX_PATH, cszLastInputPath);
+   ReadStringValue(regRoot, g_pszLastInputPath, MAX_PATH, cszLastInputPath);
    if (!cszLastInputPath.IsEmpty())
       lastinputpath = cszLastInputPath;
 
@@ -180,7 +178,7 @@ void wlUISettings::ReadSettings()
    CString histkey, histentry;
    for(int i=0; i<10; i++)
    {
-      histkey.Format(OutputPathHistory, i);
+      histkey.Format(g_pszOutputPathHistory, i);
 
       histentry.Empty();
       ReadStringValue(regRoot, histkey, MAX_PATH, histentry);
@@ -204,10 +202,10 @@ void wlUISettings::StoreSettings()
 {
    // open root key
    CRegKey regRoot;
-   if (ERROR_SUCCESS!=regRoot.Open(HKEY_CURRENT_USER,RegistryRoot))
+   if (ERROR_SUCCESS!=regRoot.Open(HKEY_CURRENT_USER,g_pszRegistryRoot))
    {
       // try to create key
-      if (ERROR_SUCCESS!=regRoot.Create(HKEY_CURRENT_USER,RegistryRoot))
+      if (ERROR_SUCCESS!=regRoot.Create(HKEY_CURRENT_USER,g_pszRegistryRoot))
          return;
    }
 
@@ -215,69 +213,69 @@ void wlUISettings::StoreSettings()
 #pragma warning(disable: 4996) // 'ATL::CRegKey::QueryValue': CRegKey::QueryValue(TCHAR *value, TCHAR *valueName) has been superseded by CRegKey::QueryStringValue and CRegKey::QueryMultiStringValue
 
    // write output path
-   regRoot.SetValue(outputdir, OutputPath);
+   regRoot.SetValue(outputdir, g_pszOutputPath);
 
    // write last input path
-   regRoot.SetValue(lastinputpath.c_str(),LastInputPath);
+   regRoot.SetValue(lastinputpath.c_str(), g_pszLastInputPath);
 
    // write "use input file's folder as output location" value
    DWORD value = out_location_use_input_dir ? 1 : 0;
-   regRoot.SetValue(value,InputOutputSameFolder);
+   regRoot.SetValue(value, g_pszInputOutputSameFolder);
 
    // write "delete after encode" value
    value = delete_after_encode ? 1 : 0;
-   regRoot.SetValue(value,DeleteAfterEncode);
+   regRoot.SetValue(value, g_pszDeleteAfterEncode);
 
    // write "hide advanced" value
    value = hide_advanced_lame ? 1 : 0;
-   regRoot.SetValue(value,HideAdvancedLAME);
+   regRoot.SetValue(value, g_pszHideAdvancedLAME);
 
    // write "overwrite existing" value
    value = overwrite_existing ? 1 : 0;
-   regRoot.SetValue(value,g_pszOverwriteExisting);
+   regRoot.SetValue(value, g_pszOverwriteExisting);
 
    // write "warn about lossy transcoding" value
    value = warn_lossy_transcoding ? 1 : 0;
-   regRoot.SetValue(value,g_pszWarnLossyTrans);
+   regRoot.SetValue(value, g_pszWarnLossyTrans);
 
    // write "action after encoding" value
    value = after_encoding_action;
-   regRoot.SetValue(value,g_pszActionAfterEncoding);
+   regRoot.SetValue(value, g_pszActionAfterEncoding);
 
    // write "autostart after encoding" value
    value = cdrip_autostart_encoding ? 1 : 0;
-   regRoot.SetValue(value,wlCdripAutostartEncoding);
+   regRoot.SetValue(value, g_pszCdripAutostartEncoding);
 
    // write cd extraction temp folder
-   regRoot.SetValue(cdrip_temp_folder, wlCdripTempFolder);
+   regRoot.SetValue(cdrip_temp_folder, g_pszCdripTempFolder);
 
    // write freedb server
-   regRoot.SetValue(freedb_server, wlFreedbServer);
+   regRoot.SetValue(freedb_server, g_pszFreedbServer);
 
    // write freedb username
-   regRoot.SetValue(freedb_username, wlFreedbUsername);
+   regRoot.SetValue(freedb_username, g_pszFreedbUsername);
 
    // write "store disc infos in cdplayer.ini" value
    value = store_disc_infos_cdplayer_ini ? 1 : 0;
-   regRoot.SetValue(value,wlDiscInfosCdplayerIni);
+   regRoot.SetValue(value, g_pszDiscInfosCdplayerIni);
 
    // write "language id" value
    value = language_id;
-   regRoot.SetValue(value, wlLanguageId);
+   regRoot.SetValue(value, g_pszLanguageId);
 
    // store "output path history" entries
    TCHAR buffer[64];
    int i,max = outputhistory.size() > 10 ? 10 : outputhistory.size();
    for(i=0; i<max; i++)
    {
-      _sntprintf(buffer, 64, OutputPathHistory,i);
+      _sntprintf(buffer, 64, g_pszOutputPathHistory, i);
       regRoot.SetValue(outputhistory[i], buffer);
    }
 
    // delete the rest of the entries
    for(i=max; i<10; i++)
    {
-      _sntprintf(buffer, 64, OutputPathHistory,i);
+      _sntprintf(buffer, 64, g_pszOutputPathHistory, i);
       regRoot.DeleteValue(buffer);
    }
 #pragma warning(pop)

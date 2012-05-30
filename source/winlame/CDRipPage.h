@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-   $Id: CDRipPage.h,v 1.6 2011/01/21 17:50:26 vividos Exp $
-
 */
 /*! \file CDRipPage.h
 
@@ -27,14 +25,13 @@
 /*! \ingroup userinterface */
 /*! @{ */
 
-// prevent multiple including
-#ifndef wlcdrippage_h_
-#define wlcdrippage_h_
+// include guard
+#pragma once
 
 // needed includes
 #include "resource.h"
 #include "PageBase.h"
-#include "wlCommonStuff.h"
+#include "CommonStuff.h"
 
 
 struct CDRipDiscInfo;
@@ -138,5 +135,3 @@ protected:
 
 
 //@}
-
-#endif
