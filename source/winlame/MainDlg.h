@@ -31,7 +31,7 @@
 // needed includes
 #include "resource.h"
 #include "PageBase.h"
-#include "HtmlHelp.h"
+#include "HtmlHelper.h"
 #include "UIinterface.h"
 #include "LanguageResourceManager.hpp"
 
@@ -306,7 +306,7 @@ protected:
    bool helpavailable;
 
    //! html help object
-   HtmlHelp htmlhelp;
+   HtmlHelper htmlhelp;
 
    //! ui settings
    wlUISettings settings;

@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file HtmlHelp.h
+/*! \file HtmlHelper.h
 
    \brief contains a HTML help API wrapper class
 
@@ -34,11 +34,11 @@
 
 //! html help support class
 
-class HtmlHelp
+class HtmlHelper
 {
 public:
    //! ctor
-   HtmlHelp()
+   HtmlHelper()
    {
       // initialize html help; get cookie
       ::HtmlHelp(NULL,NULL,HH_INITIALIZE,(DWORD)&cookie);
@@ -46,7 +46,7 @@ public:
    }
 
    //! dtor
-   ~HtmlHelp()
+   ~HtmlHelper()
    {
       // uninitialize; return cookie
       ::HtmlHelp(NULL,NULL,HH_UNINITIALIZE,cookie);
