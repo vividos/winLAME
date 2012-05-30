@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file LanguageResourceManager.cpp
-
-   \brief language resource manager
-
-*/
+/// \file LanguageResourceManager.cpp
+/// \brief language resource manager
 
 #include "StdAfx.h"
 #include "LanguageResourceManager.hpp"

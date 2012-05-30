@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file PresetManagerImpl.h
-
-   \brief contains the preset manager implementation definition
-
-*/
-/*! \ingroup preset */
-/*! @{ */
+/// \file PresetManagerImpl.h
+/// \brief contains the preset manager implementation definition
+/// \ingroup preset
+/// @{
 
 // include guard
 #pragma once
@@ -36,44 +33,44 @@
 #include "cppxml/cppxml.hpp"
 
 
-//! preset manager implementation
+/// preset manager implementation
 
 class PresetManagerImpl:
    public PresetManagerInterface,
    public PropertyManagerInterface
 {
 public:
-   //! ctor
+   /// ctor
    PresetManagerImpl();
 
-   //! loads preset from an xml file
+   /// loads preset from an xml file
    virtual bool loadPreset(LPCTSTR filename);
 
-   //! merge preset from an xml file
+   /// merge preset from an xml file
    virtual bool mergePreset(LPCTSTR filename);
 
-   //! save preset
+   /// save preset
    virtual void savePreset();
 
-   //! sets currently used facility
+   /// sets currently used facility
    void setFacility(LPCTSTR facname);
 
-   //! returns number of presets
+   /// returns number of presets
    virtual int getPresetCount();
 
-   //! returns name of preset
+   /// returns name of preset
    virtual std::tstring getPresetName(int index);
 
-   //! returns preset description
+   /// returns preset description
    virtual std::tstring getPresetDescription(int index);
 
-   //! loads the specified settings into the settings manager
+   /// loads the specified settings into the settings manager
    virtual void setSettings(int index, SettingsManager &settings_mgr);
 
-   //! sets the default settings for all variables
+   /// sets the default settings for all variables
    virtual void setDefaultSettings(SettingsManager &settings_mgr);
 
-   //! shows the edit settings dialog for a specific preset
+   /// shows the edit settings dialog for a specific preset
    virtual void editSettingsDialog(int index);
 
 
@@ -89,34 +86,34 @@ public:
    virtual void SetItemValue(int group, int index, std::tstring val);
 
 protected:
-   //! retrieves xml node pointer for editing
+   /// retrieves xml node pointer for editing
    cppxml::xmlnode_ptr editLookupNode(int group, int index);
 
 protected:
-   //! xml filename
+   /// xml filename
    std::tstring xmlfilename;
 
-   //! preset xml document
+   /// preset xml document
    cppxml::xmldocument doc;
 
-   //! list of presets of current facility
+   /// list of presets of current facility
    cppxml::xmlnodelist_ptr presets_list;
 
-   //! currently edited/viewed preset
+   /// currently edited/viewed preset
    cppxml::xmlnode_ptr editing_preset;
 
-   //! indicates if preset xml document was changed
+   /// indicates if preset xml document was changed
    bool xmlchanged;
 
-   //! name of current facility
+   /// name of current facility
    std::tstring facility;
 
-   //! var manager for facilities
+   /// var manager for facilities
    VarMgrFacilities mgr_facility;
 
-   //! var manager for variables
+   /// var manager for variables
    VarMgrVariables mgr_variables;
 };
 
 
-//@}
+/// @}

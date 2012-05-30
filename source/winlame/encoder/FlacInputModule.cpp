@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file FlacInputModule.cpp
-
-   \brief contains the implementation of the Flac input module
-
-*/
+/// \file FlacInputModule.cpp
+/// \brief contains the implementation of the Flac input module
 
 // needed includes
 #include "stdafx.h"

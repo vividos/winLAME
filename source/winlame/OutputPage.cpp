@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file OutputPage.cpp
-
-   \brief contains implementation of the output settings page
-
-*/
+/// \file OutputPage.cpp
+/// \brief contains implementation of the output settings page
 
 // needed includes
 #include "stdafx.h"
@@ -194,7 +191,7 @@ void OutputPage::OnEnterPage()
          pui->deleteWizardPage(pos);
 }
 
-//! insert pages depending on selected module
+/// insert pages depending on selected module
 void InsertWizardPages(UIinterface *pui,int pos)
 {
    // find out output module id

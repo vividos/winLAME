@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file BassInputModule.h
-
-   \brief contains the Bass input module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file BassInputModule.h
+/// \brief contains the Bass input module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -33,7 +30,7 @@
 #include "bass.h"
 #include "basswma.h"
 
-//! Bass input module
+/// Bass input module
 
 class BassInputModule: public InputModule
 {
@@ -41,7 +38,7 @@ public:
    // ctor
    BassInputModule();
 
-   //! clones input module
+   /// clones input module
    virtual InputModule *cloneModule();
 
    // returns the module name
@@ -79,13 +76,13 @@ public:
    virtual void doneInput();
 
 protected:
-   //! last error occured
+   /// last error occured
    CString lasterror;
 
-   //! filter string
+   /// filter string
    CString filterstring;
 
-   //! decoding buffer
+   /// decoding buffer
    char *buffer;
 
    BASS_CHANNELINFO info;     ///< channel info
@@ -102,4 +99,4 @@ protected:
 };
 
 
-//@}
+/// @}

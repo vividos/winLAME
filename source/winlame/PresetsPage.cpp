@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file PresetsPage.cpp
-
-   \brief contains implementation of the preset selection page
-
-*/
+/// \file PresetsPage.cpp
+/// \brief contains implementation of the preset selection page
 
 // needed includes
 #include "stdafx.h"

@@ -18,13 +18,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file TrackEditListCtrl.h
-
-   \brief edit control for track list
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file TrackEditListCtrl.h
+/// \brief edit control for track list
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -38,11 +35,11 @@ typedef CWinTraits<WS_VISIBLE | WS_CHILD, 0> InplaceEditCtrlTraits;
 
 // classes
 
-//! in-place edit control for editable list view control
+/// in-place edit control for editable list view control
 class InplaceEditCtrl: public CWindowImpl<InplaceEditCtrl, CEdit, InplaceEditCtrlTraits>
 {
 public:
-   //! ctor
+   /// ctor
    InplaceEditCtrl(int nItem, int nColumn)
       :m_bFinished(false), m_nItem(nItem), m_nColumn(nColumn){}
 
@@ -313,4 +310,4 @@ END_MSG_MAP()
 };
 
 
-//@}
+/// @}

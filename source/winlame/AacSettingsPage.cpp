@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file AacSettingsPage.cpp
-
-   \brief contains implementation of the AAC settings page
-
-*/
+/// \file AacSettingsPage.cpp
+/// \brief contains implementation of the AAC settings page
 
 // needed includes
 #include "stdafx.h"
@@ -38,14 +35,14 @@ static char THIS_FILE[]=__FILE__;
 
 // arrays and mappings
 
-//! possible bitrate values
+/// possible bitrate values
 static int AacBitrates[] =
 {
 //   24000,32000,48000,56000,64000,96000,112000,128000,160000,192000
    24,32,48,56,64,96,112,128,160,192,224,256,320,384,448,576
 };
 
-//! possible bandwidth frequency values
+/// possible bandwidth frequency values
 int AacBandwidthValues[] =
 {
    8000, 11025, 16000, 18000, 19500, 22050, 24000, 32000, 44100, 48000

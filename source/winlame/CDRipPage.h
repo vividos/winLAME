@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file CDRipPage.h
-
-   \brief contains the output page
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file CDRipPage.h
+/// \brief contains the output page
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -41,7 +38,7 @@ struct CDRipTrackInfo;
 #define WM_LOCK_NEXT_BUTTON (WM_APP+2)
 
 
-//! cd extraction page
+/// cd extraction page
 
 class CDRipPage:
    public PageBase,
@@ -76,7 +73,7 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! inits the page
+   /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    /// called when dialog is about to be destroyed
@@ -89,7 +86,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called when the user clicks on the start
+   /// called when the user clicks on the start
    LRESULT OnButtonStart(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
    // called on entering the page
@@ -134,4 +131,4 @@ protected:
 };
 
 
-//@}
+/// @}

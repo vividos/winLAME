@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file UISettings.cpp
-
-   \brief contains functions to read and store the general UI settings in the registry
-
-*/
+/// \file UISettings.cpp
+/// \brief contains functions to read and store the general UI settings in the registry
 
 // needed includes
 #include "stdafx.h"
@@ -42,7 +39,7 @@ static char THIS_FILE[]=__FILE__;
 
 // constants
 
-//! registry root path
+/// registry root path
 LPCTSTR g_pszRegistryRoot = _T("Software\\winLAME");
 
 LPCTSTR g_pszOutputPath = _T("OutputPath");
@@ -90,6 +87,7 @@ UISettings::UISettings()
 #pragma warning(push)
 #pragma warning(disable: 4996) // 'ATL::CRegKey::QueryValue': CRegKey::QueryValue(TCHAR *value, TCHAR *valueName) has been superseded by CRegKey::QueryStringValue and CRegKey::QueryMultiStringValue
 
+/// reads string value from registry
 void ReadStringValue(CRegKey& regKey, LPCTSTR pszName, UINT uiMaxLength, CString& cszValue)
 {
    std::vector<TCHAR> buffer(uiMaxLength, 0);
@@ -98,6 +96,7 @@ void ReadStringValue(CRegKey& regKey, LPCTSTR pszName, UINT uiMaxLength, CString
       cszValue = &buffer[0];
 }
 
+/// reads int value from registry
 void ReadIntValue(CRegKey& regKey, LPCTSTR pszName, int& iValue)
 {
    DWORD value = 0;
@@ -105,6 +104,7 @@ void ReadIntValue(CRegKey& regKey, LPCTSTR pszName, int& iValue)
       iValue = static_cast<int>(value);
 }
 
+/// reads unsigned int value from registry
 void ReadUIntValue(CRegKey& regKey, LPCTSTR pszName, UINT& uiValue)
 {
    DWORD value = 0;
@@ -112,6 +112,7 @@ void ReadUIntValue(CRegKey& regKey, LPCTSTR pszName, UINT& uiValue)
       uiValue = value;
 }
 
+/// reads boolean value from registry
 void ReadBooleanValue(CRegKey& regKey, LPCTSTR pszName, bool& bValue)
 {
    DWORD value;

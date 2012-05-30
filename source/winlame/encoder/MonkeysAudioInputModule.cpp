@@ -4,9 +4,9 @@
    Copyright (c) 2004 DeXT
    Copyright (c) 2007 Michael Fink
 */
-/*!
-*   \author   Kjetil Haga (programmer.khaga@start.no)
-*/
+/// \file MonkeysAudioInputModule.cpp
+/// \author   Kjetil Haga (programmer.khaga@start.no)
+///
 
 #include "stdafx.h"
 #include "resource.h"

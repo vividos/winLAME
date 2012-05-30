@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file LameOutputModule.h
-
-   \brief contains the LAME output module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file LameOutputModule.h
+/// \brief contains the LAME output module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -36,7 +33,7 @@
 // forward references
 struct Id3v1Tag;
 
-//! lame output module
+/// lame output module
 
 class LameOutputModule: public OutputModule
 {
@@ -78,76 +75,76 @@ public:
    virtual void doneOutput();
 
 private:
-   //! encodes one frame
+   /// encodes one frame
    int encodeFrame();
 
-   //! adds id3v2 tag infos to nlame instance
+   /// adds id3v2 tag infos to nlame instance
    void AddLameID3v2Tag(const TrackInfo& trackinfo);
 
-   //! estimate ID3v2 padding length
+   /// estimate ID3v2 padding length
    unsigned int GetID3v2PaddingLength();
 
-   //! writes out ID3v2 tag
+   /// writes out ID3v2 tag
    void WriteID3v2Tag();
 
 protected:
-   //! nlame instance
+   /// nlame instance
    nlame_instance_t *inst;
 
-   //! output file stream
+   /// output file stream
    std::ofstream ostr;
 
-   //! output mp3 filename
+   /// output mp3 filename
    CString mp3filename;
 
-   //! indicates if we should write a vbr info tag
+   /// indicates if we should write a vbr info tag
    bool infotag;
 
-   //! encode buffer type
+   /// encode buffer type
    nlame_encode_buffer_type buftype;
 
-   //! current input buffer size for LAME
+   /// current input buffer size for LAME
    unsigned int lame_input_buffer_size;
 
-   //! lame input buffer
+   /// lame input buffer
    unsigned char* inbuffer;
 
-   //! inbuffer filled indicator
+   /// inbuffer filled indicator
    unsigned int inbuffer_fill;
 
-   //! mp3 output buffer
+   /// mp3 output buffer
    unsigned char *mp3buf;
 
-   //! last error occured
+   /// last error occured
    CString lasterror;
 
-   //! encoding description
+   /// encoding description
    CString description;
 
-   //! possible id3 tag to append to the file
+   /// possible id3 tag to append to the file
    Id3v1Tag* id3tag;
 
-   //! track info for writing ID3v2 tag
+   /// track info for writing ID3v2 tag
    TrackInfo m_trackInfoID3v2;
 
-   //! indicates if we encode for gapless output
+   /// indicates if we encode for gapless output
    bool nogap;
 
-   //! indicates if we encode the last file
+   /// indicates if we encode the last file
    bool nogap_lastfile;
 
-   //! saved nlame instance for nogap encoding
+   /// saved nlame instance for nogap encoding
    static nlame_instance_t *nogap_inst;
 
-   //! indicates if we should write a wave header
+   /// indicates if we should write a wave header
    bool waveheader;
 
-   //! number of samples encoded
+   /// number of samples encoded
    unsigned int samplecount;
 
-   //! number of data bytes written
+   /// number of data bytes written
    unsigned int datalen;
 };
 
 
-//@}
+/// @}

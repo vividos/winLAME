@@ -17,11 +17,8 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **/
-/*! \file aacinfo.h
-
-   \brief contains definitions of the aacinfo package
-
-*/
+/// \file aacinfo.h
+/// \brief contains definitions of the aacinfo package
 
 #ifdef __cplusplus
 extern "C" {

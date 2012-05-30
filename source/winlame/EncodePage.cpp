@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file EncodePage.cpp
-
-   \brief contains the encode page implementation
-
-*/
+/// \file EncodePage.cpp
+/// \brief contains the encode page implementation
 
 // needed includes
 #include "stdafx.h"
@@ -619,13 +616,12 @@ void EncodePage::UpdateInfo()
    }
 }
 
-/*! action codes:
-    1: just quit winLAME
-    2: shutdown windows and switch power off
-    3: log off current user
-    4: hibernate (write to disk); only available with > windows 2000
-    5: suspend (to ram); not available in windows NT
- */
+/// action codes:
+/// 1: just quit winLAME
+/// 2: shutdown windows and switch power off
+/// 3: log off current user
+/// 4: hibernate (write to disk); only available with > windows 2000
+/// 5: suspend (to ram); not available in windows NT
 void EncodePage::ShutdownWindows(int action)
 {
    if (action==2 || action==3)
@@ -678,7 +674,7 @@ void EncodePage::ShutdownWindows(int action)
    }
 }
 
-//! thread priority string id's
+/// thread priority string id's
 int c_aiThreadPrioIDs[] = {
    IDS_ENC_TP_IDLE, IDS_ENC_TP_NORMAL,
    IDS_ENC_TP_HIGH, IDS_ENC_TP_HIGHEST

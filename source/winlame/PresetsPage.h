@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file PresetsPage.h
-
-   \brief contains the presets page
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file PresetsPage.h
+/// \brief contains the presets page
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -36,14 +33,14 @@
 #include <atlctrls.h>
 
 
-//! presets selection page
+/// presets selection page
 
 class PresetsPage:
    public PageBase,
    public CDialogResize<PresetsPage>
 {
 public:
-   //! ctor
+   /// ctor
    PresetsPage()
    {
       IDD = IDD_DLG_PRESETS;
@@ -71,11 +68,11 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! inits the page
+   /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-   //! called when a presets listbox item selection changes
+   /// called when a presets listbox item selection changes
    LRESULT OnSelItemChanged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   //! called when the user double-clicks on a preset item
+   /// called when the user double-clicks on a preset item
    LRESULT OnLButtonDblClk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    // virtual functions from PageBase
@@ -87,12 +84,12 @@ END_MSG_MAP()
    virtual bool OnLeavePage();
 
 protected:
-   //! bevel lines
+   /// bevel lines
    BevelLine bevel1;
 
-   //! last selected index
+   /// last selected index
    static int lastindex;
 };
 
 
-//@}
+/// @}

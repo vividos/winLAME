@@ -17,15 +17,11 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file TrackInfo.h
-
-   \brief manages informations and properties of a track to encode
-
-   id3 tags can be passed in and can be generated from the properties
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file TrackInfo.h
+/// \brief manages informations and properties of a track to encode
+/// \details id3 tags can be passed in and can be generated from the properties
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -35,7 +31,7 @@
 #include <map>
 
 
-//! track text info enum
+/// track text info enum
 typedef enum
 {
    TrackInfoTitle=0,
@@ -45,7 +41,7 @@ typedef enum
    TrackInfoGenre,
 } TrackInfoTextType;
 
-//! track number info enum
+/// track number info enum
 typedef enum
 {
    TrackInfoYear=0,
@@ -53,29 +49,29 @@ typedef enum
 } TrackInfoNumberType;
 
 
-//! track info class
+/// track info class
 class TrackInfo
 {
 public:
-   //! ctor
+   /// ctor
    TrackInfo()
    {
    }
 
-   //! resets all infos
+   /// resets all infos
    void ResetInfos()
    {
       m_mapTextInfos.clear();
       m_mapNumberInfos.clear();
    }
 
-   //! sets a text info value
+   /// sets a text info value
    void TextInfo(TrackInfoTextType type, CString value)
    {
       m_mapTextInfos[type] = value;
    }
 
-   //! retrieves a text info value
+   /// retrieves a text info value
    CString TextInfo(TrackInfoTextType type, bool& avail) const
    {
       std::map<TrackInfoTextType, CString>::const_iterator iter = m_mapTextInfos.find(type);
@@ -83,13 +79,13 @@ public:
       return avail ? iter->second : _T("");
    }
 
-   //! sets a number info value
+   /// sets a number info value
    void NumberInfo(TrackInfoNumberType type, int value)
    {
       m_mapNumberInfos[type] = value;
    }
 
-   //! retrieves a number info value
+   /// retrieves a number info value
    int NumberInfo(TrackInfoNumberType type, bool& avail) const
    {
       std::map<TrackInfoNumberType, int>::const_iterator iter = m_mapNumberInfos.find(type);
@@ -97,13 +93,13 @@ public:
       return avail ? iter->second : -1;
    }
 
-   //! returns if track info is empty
+   /// returns if track info is empty
    bool IsEmpty() const throw() { return m_mapTextInfos.empty() && m_mapNumberInfos.empty(); }
 
-   //! converts genre ID to text
+   /// converts genre ID to text
    static CString GenreIDToText(unsigned int uGenreID);
 
-   //! converts genre text to id
+   /// converts genre text to id
    static unsigned int TextToGenreID(const CString& cszText);
 
    /// returns genre list array
@@ -113,12 +109,12 @@ public:
    static unsigned int GetGenreListLength();
 
 protected:
-   //! text infos map
+   /// text infos map
    std::map<TrackInfoTextType, CString> m_mapTextInfos;
 
-   //! number infos map
+   /// number infos map
    std::map<TrackInfoNumberType, int> m_mapNumberInfos;
 };
 
 
-//@}
+/// @}

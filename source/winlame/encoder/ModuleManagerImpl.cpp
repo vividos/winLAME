@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file ModuleManagerImpl.cpp
-
-   \brief contains the module manager implementation
-
-*/
+/// \file ModuleManagerImpl.cpp
+/// \brief contains the module manager implementation
 
 // needed includes
 #include "stdafx.h"
@@ -54,10 +51,10 @@ static char THIS_FILE[]=__FILE__;
 
 // global functions
 
-//! max number of input modules GetNewInputModule can return
+/// max number of input modules GetNewInputModule can return
 const int MaxInputModule = 8;
 
-//! returns a new input module by index
+/// returns a new input module by index
 InputModule *GetNewInputModule(int index)
 {
    InputModule *inmod = NULL;
@@ -90,10 +87,10 @@ InputModule *GetNewInputModule(int index)
    return inmod;
 }
 
-//! max number of output modules GetNewOutputModule can return
+/// max number of output modules GetNewOutputModule can return
 const int c_iMaxOutputModule = 5;
 
-//! returns a new output module by index
+/// returns a new output module by index
 OutputModule *GetNewOutputModule(int index)
 {
    OutputModule *outmod = NULL;

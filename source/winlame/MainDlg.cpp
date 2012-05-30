@@ -18,15 +18,11 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file MainDlg.cpp
-
-   \brief implementation of main dialog methods
-
-   contains implementation of the methods for the main dialog, such as
-   drawing the caption bar, switching between pages and finding out where
-   the chm help file resides
-
-*/
+/// \file MainDlg.cpp
+/// \brief implementation of main dialog methods
+/// \details contains implementation of the methods for the main dialog, such as
+/// drawing the caption bar, switching between pages and finding out where
+/// the chm help file resides
 
 // needed includes
 #include "stdafx.h"

@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file InputListCtrl.cpp
-
-   \brief contains the methods of the input list control
-
-*/
+/// \file InputListCtrl.cpp
+/// \brief contains the methods of the input list control
 
 // needed includes
 #include "stdafx.h"

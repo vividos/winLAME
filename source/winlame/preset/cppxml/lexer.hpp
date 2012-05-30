@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file lexer.hpp
-
-   \brief lexer declaration
-
-*/
+/// \file lexer.hpp
+/// \brief lexer declaration
 
 // include guard
 #pragma once
@@ -36,25 +33,25 @@
 namespace cppxml
 {
 
-/*! \ingroup cppxml */
-/*! @{ */
+/// \ingroup cppxml
+/// @{
 
 
-//! xml lexical analyzer
+/// xml lexical analyzer
 class xmllexer
 {
 public:
-   //! ctor
+   /// ctor
    xmllexer(std::istream &istr):istr(istr),cdata_mode(false),
       line(0),putback_char(-1){}
 
-   //! returns next token
+   /// returns next token
    cppxml::string get_next_token();
 
-   //! puts back a token; the last put_back'ed token is the next returned
+   /// puts back a token; the last put_back'ed token is the next returned
    void put_back(cppxml::string &token);
 
-   //! returns if token string is a single literal character
+   /// returns if token string is a single literal character
    bool is_literal(cppxml::string &str);
 
 protected:
@@ -66,23 +63,23 @@ protected:
    bool is_stringdelimiter(int c); // start-/endchar of a string
 
 protected:
-   //! cdata-mode doesn't care for whitespaces in generic strings
+   /// cdata-mode doesn't care for whitespaces in generic strings
    bool cdata_mode;
 
-   //! input stream
+   /// input stream
    std::istream &istr;
 
-   //! current line
+   /// current line
    int line;
 
-   //! internally put_back'ed char
+   /// internally put_back'ed char
    int putback_char;
 
-   //! list of put_back'ed token
+   /// list of put_back'ed token
    std::vector<cppxml::string> tokenstack;
 };
 
-//@}
+/// @}
 
 // end of namespace
 };

@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file winlame.cpp
-
-   \brief contains the main function which just pops up the MainDlg
-
-*/
+/// \file winlame.cpp
+/// \brief contains the main function which just pops up the MainDlg
 
 // needed includes
 #include "stdafx.h"
@@ -33,12 +30,12 @@
 #define new new(_NORMAL_BLOCK,__FILE__, __LINE__)
 #endif
 
-//! application module instance
+/// application module instance
 CAppModule _Module;
 
 
 
-//! win main function
+/// win main function
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
    LPSTR lpCmdLine, int nCmdShow)
 {

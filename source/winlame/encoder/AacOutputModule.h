@@ -18,13 +18,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file AacOutputModule.h
-
-   \brief contains the AAC output module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file AacOutputModule.h
+/// \brief contains the AAC output module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -35,7 +32,7 @@
 #include "faac.h"
 
 
-//! AAC output module
+/// AAC output module
 
 class AacOutputModule: public OutputModule
 {
@@ -69,33 +66,33 @@ public:
    virtual void doneOutput();
 
 protected:
-   //! encoder handle
+   /// encoder handle
    faacEncHandle handle;
 
-   //! size of input buffer in bytes
+   /// size of input buffer in bytes
    unsigned long aac_inbufsize;
 
-   //! size of output buffer in bytes
+   /// size of output buffer in bytes
    unsigned long aac_outbufsize;
 
-   //! output buffer
+   /// output buffer
    unsigned char *aac_outbuf;
 
-   //! sample buffer
+   /// sample buffer
    short *sbuffer;
 
-   //! sample buffer high watermark
+   /// sample buffer high watermark
    int sbufhigh;
 
-   //! bitrate control method
+   /// bitrate control method
    int brcmethod;
 
-   //! output file stream
+   /// output file stream
    std::ofstream ostr;
 
-   //! last error occured
+   /// last error occured
    CString lasterror;
 };
 
 
-//@}
+/// @}

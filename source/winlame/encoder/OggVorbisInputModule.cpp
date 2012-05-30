@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file OggVorbisInputModule.cpp
-
-   \brief contains the implementation of the ogg vorbis input module
-
-*/
+/// \file OggVorbisInputModule.cpp
+/// \brief contains the implementation of the ogg vorbis input module
 
 // needed includes
 #include "stdafx.h"
@@ -55,7 +52,7 @@ const int chmap[MAX_CHANNELS][MAX_CHANNELS] = {
    { 0, 2, 1, 5, 3, 4 }  // l, c, r, bl, br, lfe -> l, r, c, lfe, bl, br
 };
 
-//! ogg vorbis input buffer size
+/// ogg vorbis input buffer size
 const int ogg_inbufsize = 512*MAX_CHANNELS; // must be a multiple of max channels
 
 // OggVorbisInputModule methods

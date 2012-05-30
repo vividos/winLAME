@@ -18,13 +18,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file AacInputModule.h
-
-   \brief contains the AAC input module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file AacInputModule.h
+/// \brief contains the AAC input module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -47,17 +44,17 @@ extern "C" {
 
 // constants
 
-//! size of one AAC frame
+/// size of one AAC frame
 const int aac_framesize = 2048;
 
-//! max. numbers of channels the module is able to handle
+/// max. numbers of channels the module is able to handle
 const int aac_maxchannels = 8;
 
-//! calculated input buffer size
+/// calculated input buffer size
 const int aac_inbufsize = aac_framesize*aac_maxchannels;
 
 
-//! AAC input module
+/// AAC input module
 
 class AacInputModule: public InputModule
 {
@@ -65,7 +62,7 @@ public:
    // ctor
    AacInputModule();
 
-   //! clones input module
+   /// clones input module
    virtual InputModule *cloneModule();
 
    // returns the module name
@@ -103,30 +100,30 @@ public:
    virtual void doneInput();
 
 protected:
-   //! libfaad handle
+   /// libfaad handle
    faacDecHandle decoder;
 
-   //! file input buffer
+   /// file input buffer
    unsigned char inbuffer[aac_inbufsize];
 
-   //! high watermark for the inbuffer
+   /// high watermark for the inbuffer
    int highmark;
 
-   //! length of input file
+   /// length of input file
    unsigned long filelen;
 
-   //! current position
+   /// current position
    unsigned long filepos;
 
-   //! aac file info
+   /// aac file info
    faadAACInfo info;
 
-   //! input file stream
+   /// input file stream
    std::ifstream istr;
 
-   //! last error occured
+   /// last error occured
    CString lasterror;
 };
 
 
-//@}
+/// @}

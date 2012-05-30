@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file MainDlg.h
-
-   \brief contains the main dialog window
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file MainDlg.h
+/// \brief contains the main dialog window
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -36,7 +33,7 @@
 #include "LanguageResourceManager.hpp"
 
 
-//! main dialog class
+/// main dialog class
 
 class MainDlg:
    public CDialogImpl<MainDlg>,
@@ -44,16 +41,16 @@ class MainDlg:
    public CDialogResize<MainDlg>
 {
 public:
-   //! ctor
+   /// ctor
    MainDlg();
 
-   //! dtor
+   /// dtor
    ~MainDlg();
 
    // dialog id
    enum { IDD = IDD_MAINDLG };
 
-   //! runs the winLAME dialog
+   /// runs the winLAME dialog
    void RunDialog();
 
    // resize map
@@ -94,10 +91,10 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! initializes the main dialog
+   /// initializes the main dialog
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   //! called when the main dialog is about to be destroyed
+   /// called when the main dialog is about to be destroyed
    LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // destroy currently active page
@@ -106,7 +103,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called before a windows message is processed
+   /// called before a windows message is processed
    virtual BOOL PreTranslateMessage(MSG* pMsg)
    {
       // check for escape key pressed or released
@@ -128,7 +125,7 @@ END_MSG_MAP()
       return FALSE;
    }
 
-   //! called on exiting the main dialog
+   /// called on exiting the main dialog
    LRESULT OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       // closing via ESC key or menu entry?
@@ -144,7 +141,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! draws the caption bar
+   /// draws the caption bar
    LRESULT OnDrawItem(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // draws all sorts of owner drawn items
@@ -157,7 +154,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called on clicking on the back button
+   /// called on clicking on the back button
    LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       // activate last page
@@ -166,7 +163,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called on clicking on the next button
+   /// called on clicking on the next button
    LRESULT OnButtonNext(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       // activate next page
@@ -175,7 +172,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! sends a command message to the page window
+   /// sends a command message to the page window
    LRESULT OnSendToPage(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       // passes message to page window
@@ -184,7 +181,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called on clicking on the help button
+   /// called on clicking on the help button
    LRESULT OnHelpButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       if (helpavailable)
@@ -200,17 +197,17 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called when pressing F1
+   /// called when pressing F1
    LRESULT OnHelp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // same as pressing the help button
       return OnHelpButton(0,0,0,bHandled);
    }
 
-   //! called for every system command; used for the about box system menu entry
+   /// called for every system command; used for the about box system menu entry
    LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   //! called for processing key presses
+   /// called for processing key presses
    LRESULT OnKeyDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // ignore escape key
@@ -284,58 +281,58 @@ END_MSG_MAP()
    }
 
 protected:
-   //! app window icon
+   /// app window icon
    HICON wndicon;
 
-   //! small app window icon
+   /// small app window icon
    HICON wndicon_small;
 
-   //! all pages
+   /// all pages
    std::vector<PageBase *> pages;
 
-   //! currently activated page
+   /// currently activated page
    int currentpage;
 
-   //! tooltips ctrl
+   /// tooltips ctrl
    CToolTipCtrl tooltips;
 
-   //! help icon
+   /// help icon
    CImageList ilHelpIcon;
 
-   //! indicates if help file is available
+   /// indicates if help file is available
    bool helpavailable;
 
-   //! html help object
+   /// html help object
    HtmlHelper htmlhelp;
 
-   //! ui settings
+   /// ui settings
    UISettings settings;
 
-   //! app accelerator table
+   /// app accelerator table
    HACCEL actable;
 
-   //! size of page; for resizing
+   /// size of page; for resizing
    SIZE m_sizePage;
 
-   //! indicates if escape key is currently pressed
+   /// indicates if escape key is currently pressed
    bool m_bKeyDownEscape;
 
-   //! language resource manager
+   /// language resource manager
    LanguageResourceManager m_langResourceManager;
 
 protected:
-   //! draws the caption bar
+   /// draws the caption bar
    void DrawCaptionBar(HDC &hDC, RECT &rc);
 
-   //! activates a page; returns true if successful
+   /// activates a page; returns true if successful
    bool ActivatePage(int page);
 
-   //! retrieves winLAME base dir
+   /// retrieves winLAME base dir
    CString GetWinlameDir();
 
-   //! collects files specified at the command line
+   /// collects files specified at the command line
    void GetCommandLineFiles();
 };
 
 
-//@}
+/// @}

@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file CDRipDlg.h
-
-   \brief contains the dialog for cd ripping
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file CDRipDlg.h
+/// \brief contains the dialog for cd ripping
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -74,19 +71,19 @@ protected:
 };
 
 
-//! cd rip dialog
+/// cd rip dialog
 class CDRipDlg:
    public CDialogImpl<CDRipDlg>,
    public CWinDataExchange<CDRipDlg>,
    public CDialogResize<CDRipDlg>
 {
 public:
-   //! ctor
+   /// ctor
    CDRipDlg(UISettings& uiSettings, UIinterface& UIinterface);
 
    static bool IsCDExtractionAvail() throw();
 
-   //! dialog id
+   /// dialog id
    enum { IDD = IDD_CDSELECT };
 
    // resize map
@@ -138,12 +135,12 @@ BEGIN_DDX_MAP(CDRipDlg)
    DDX_CONTROL_HANDLE(IDC_CDSELECT_COMBO_GENRE, m_cbGenre)
 END_DDX_MAP()
 
-   //! called to init the dialog
+   /// called to init the dialog
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   //! called on exiting the dialog
+   /// called on exiting the dialog
    LRESULT OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       KillTimer(IDT_CDRIP_CHECK);
@@ -171,7 +168,7 @@ END_DDX_MAP()
    LRESULT OnChangedEditCtrl(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnEndLabelEdit(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! called when user presses a key
+   /// called when user presses a key
    LRESULT OnKeyDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       if (VK_RETURN == (int)wParam)
@@ -210,4 +207,4 @@ protected:
 };
 
 
-//@}
+/// @}

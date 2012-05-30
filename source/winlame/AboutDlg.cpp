@@ -17,14 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file AboutDlg.cpp
-
-   \brief contains the about dialog box implementation
-
-   GetHtmlString() loads an html from the resource, replaces %var% occurences
-   and shows it in the about box.
-
-*/
+/// \file AboutDlg.cpp
+/// \brief contains the about dialog box implementation
+/// \details GetHtmlString() loads an html from the resource, replaces %var%
+/// occurences and shows it in the about box.
 
 // needed includes
 #include "stdafx.h"
@@ -41,7 +37,7 @@ static char THIS_FILE[]=__FILE__;
 
 // global functions
 
-//! retrieves winLAME version number
+/// retrieves winLAME version number
 void GetWinlameVersion(CString& cszVersion)
 {
    // get exe file name

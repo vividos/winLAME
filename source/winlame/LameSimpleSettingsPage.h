@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file LameSimpleSettingsPage.h
-
-   \brief contains the basic settings page for the LAME encoder
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file LameSimpleSettingsPage.h
+/// \brief contains the basic settings page for the LAME encoder
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -48,13 +45,13 @@ IDC_LAME_SPIN_QUALITY
 IDC_LAME_COMBO_VBR_MODE
 IDC_LAME_STATIC_VBR_MODE
 */
-//! simple settings page for LAME
+/// simple settings page for LAME
 class LameSimpleSettingsPage:
    public PageBase,
    public CDialogResize<LameSimpleSettingsPage>
 {
 public:
-   //! ctor
+   /// ctor
    LameSimpleSettingsPage()
    {
       IDD = IDD_DLG_LAME_SIMPLE;
@@ -85,7 +82,7 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! inits the page
+   /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    /// called when the dialog is about to be destroyed
@@ -108,14 +105,14 @@ END_MSG_MAP()
    virtual bool OnLeavePage();
 
 protected:
-   //! bitrate spin button control
+   /// bitrate spin button control
    FixedValueSpinButtonCtrl m_bitrateSpin;
-   //! quality spin button control
+   /// quality spin button control
    FixedValueSpinButtonCtrl m_qualitySpin;
 
-   //! quality combobox
+   /// quality combobox
    CComboBox m_cbEncodingQuality;
-   //! VBR combobox
+   /// VBR combobox
    CComboBox m_cbVariableBitrateMode;
 
    BevelLine bevel1; ///< bevel line
@@ -123,4 +120,4 @@ protected:
 };
 
 
-//@}
+/// @}

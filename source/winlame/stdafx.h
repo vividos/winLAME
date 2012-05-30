@@ -17,15 +17,11 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file stdafx.h
-
-   \brief include file for include files used for precompiled headers
-
-   include file for standard system include files,
-   or project specific include files that are used frequently, but
-   are changed infrequently
-
-*/
+/// \file stdafx.h
+/// \brief include file for include files used for precompiled headers
+/// include file for standard system include files,
+/// or project specific include files that are used frequently, but
+/// are changed infrequently
 
 #pragma once
 

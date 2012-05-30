@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file MadMpegInputModule.cpp
-
-   \brief contains the implementation of the MAD mpeg input module
-
-*/
+/// \file MadMpegInputModule.cpp
+/// \brief contains the implementation of the MAD mpeg input module
 
 // needed includes
 #include "stdafx.h"
@@ -364,7 +361,7 @@ if the sampling frequency is 12000, 11025, or 8000, it is so-called MPEG 2.5.
    return 0;
 }
 
-/*! finds out tag; inspired by LAME's GetVbrTag() */
+/// finds out tag; inspired by LAME's GetVbrTag()
 bool MadMpegInputModule::checkVbrInfoTag(unsigned char *buffer)
 {
    // mpeg version

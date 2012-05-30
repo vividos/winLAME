@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file Tag.h
-
-   \brief id3 tag class
-
-*/
+/// \file Tag.h
+/// \brief id3 tag class
 
 #pragma once
 

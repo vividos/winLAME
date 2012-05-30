@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file Field.cpp
-
-   \brief id3 field class
-
-*/
+/// \file Field.cpp
+/// \brief id3 field class
 
 #include "StdAfx.h"
 #include "Field.h"

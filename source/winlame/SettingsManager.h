@@ -17,18 +17,14 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file SettingsManager.h
+/// \file SettingsManager.h
+/// \brief SettingsManagerInterface is an interface for encoder settings management
 
-   \brief SettingsManagerInterface is an interface for encoder settings management
+/// \defgroup settings Settings Management
+/// contains all classes and functions that have to do with settings management
 
-*/
-/*! \defgroup settings Settings Management
-
-   contains all classes and functions that have to do with settings management
-
-*/
-/*! \ingroup settings */
-/*! @{ */
+/// \ingroup settings
+/// @{
 
 // include guard
 #pragma once
@@ -38,30 +34,30 @@
 #include "VariableManager.h"
 
 
-//! settings list type
+/// settings list type
 typedef std::map<unsigned int,int> SettingsList;
 
 
-//! manages settings for encoding
+/// manages settings for encoding
 class SettingsManager
 {
 public:
-   //! ctor
+   /// ctor
    SettingsManager(){}
 
-   //! returns variable
+   /// returns variable
    int queryValueInt(unsigned short name);
 
-   //! sets new variable value
+   /// sets new variable value
    void setValue(unsigned short name, int val);
 
 protected:
-   //! map with settings
+   /// map with settings
    SettingsList settings;
 
-   //! variable manager for variables
+   /// variable manager for variables
    VarMgrVariables mgr_vars;
 };
 
 
-//@}
+/// @}

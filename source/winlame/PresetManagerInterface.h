@@ -17,18 +17,14 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file PresetManagerInterface.h
+/// \file PresetManagerInterface.h
+/// \brief PresetManagerInterface is an interface for the preset management
 
-   \brief PresetManagerInterface is an interface for the preset management
+/// \defgroup preset Preset Management
+/// contains all classes and functions that have to do with preset management
 
-*/
-/*! \defgroup preset Preset Management
-
-   contains all classes and functions that have to do with preset management
-
-*/
-/*! \ingroup preset */
-/*! @{ */
+/// \ingroup preset
+/// @{
 
 // include guard
 #pragma once
@@ -38,49 +34,49 @@
 #include "SettingsManager.h"
 
 
-//! encoder interface
+/// encoder interface
 class PresetManagerInterface
 {
 public:
-   //! returns a new preset manager object; use delete operator to delete it
+   /// returns a new preset manager object; use delete operator to delete it
    static PresetManagerInterface *getPresetManager();
 
-   //! loads preset from an xml file
+   /// loads preset from an xml file
    virtual bool loadPreset(LPCTSTR filename)=0;
 
-   //! merge preset from an xml file
+   /// merge preset from an xml file
    virtual bool mergePreset(LPCTSTR filename)=0;
 
-   //! save preset
+   /// save preset
    virtual void savePreset()=0;
 
-   //! sets currently used facility
+   /// sets currently used facility
    virtual void setFacility(LPCTSTR facname)=0;
 
-   //! returns number of presets
+   /// returns number of presets
    virtual int getPresetCount()=0;
 
-   //! returns name of preset
+   /// returns name of preset
    virtual std::tstring getPresetName(int index)=0;
 
-   //! returns preset description
+   /// returns preset description
    virtual std::tstring getPresetDescription(int index)=0;
 
-   //! loads the specified settings into the settings manager
+   /// loads the specified settings into the settings manager
    virtual void setSettings(int index, SettingsManager &settings_mgr)=0;
 
-   //! sets the default settings for all variables
+   /// sets the default settings for all variables
    virtual void setDefaultSettings(SettingsManager &settings_mgr)=0;
 
-   //! shows the edit settings dialog for a specific preset
+   /// shows the edit settings dialog for a specific preset
    virtual void editSettingsDialog(int index)=0;
 
-   //! dtor
+   /// dtor
    virtual ~PresetManagerInterface(){}
 protected:
-   //! ctor
+   /// ctor
    PresetManagerInterface(){}
 };
 
 
-//@}
+/// @}

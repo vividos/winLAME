@@ -18,13 +18,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file EncoderImpl.h
-
-   \brief contains the encoder implementation class definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file EncoderImpl.h
+/// \brief contains the encoder implementation class definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -36,12 +33,12 @@
 #include "ModuleManagerImpl.h"
 
 
-//! encoder implementation class
+/// encoder implementation class
 
 class EncoderImpl: public EncoderInterface
 {
 public:
-   //! ctor
+   /// ctor
    EncoderImpl()
    {
       running=false; paused=false; percent=0.f;
@@ -57,74 +54,74 @@ public:
       mutex = ::CreateMutex(NULL, FALSE, NULL);
    }
 
-   //! dtor
+   /// dtor
    virtual ~EncoderImpl()
    {
       lockAccess();
       ::CloseHandle(mutex);
    }
 
-   //! locks access to encoder object
+   /// locks access to encoder object
    virtual void lockAccess()
    {
       WaitForSingleObject(mutex,INFINITE);
    }
 
-   //! try locking access to encoder object
+   /// try locking access to encoder object
    virtual bool tryLockAccess()
    {
       return WAIT_OBJECT_0 == WaitForSingleObject(mutex,0);
    }
 
-   //! unlocks access again
+   /// unlocks access again
    virtual void unlockAccess()
    {
       ::ReleaseMutex(mutex);
    }
 
-   //! sets input filename
+   /// sets input filename
    virtual void setInputFilename(LPCTSTR infile)
    {
       infilename = infile;
    }
 
-   //! sets output path
+   /// sets output path
    virtual void setOutputPath(LPCTSTR outpath)
    {
       outpathname = outpath;
    }
 
-   //! sets the settings manager to use
+   /// sets the settings manager to use
    virtual void setSettingsManager(SettingsManager *mgr)
    {
       settings_mgr = mgr;
    }
 
-   //! sets the module manager to use
+   /// sets the module manager to use
    virtual void setModuleManager(ModuleManager *mgr)
    {
       mod_manager = mgr;
    }
 
-   //! sets output module to use
+   /// sets output module to use
    virtual void setOutputModule(int module_id)
    {
       out_module_id = module_id;
    }
 
-   //! sets output module per index
+   /// sets output module per index
    virtual void setOutputModulePerIndex(int idx)
    {
       out_module_id = mod_manager->getOutputModuleID(idx);
    }
 
-   //! sets error handler to use if an error occurs
+   /// sets error handler to use if an error occurs
    virtual void setErrorHandler(EncoderErrorHandler *thehandler)
    {
       handler = thehandler;
    }
 
-   //! set if files can be overwritten
+   /// set if files can be overwritten
    virtual void setOverwriteFiles(bool overwr)
    {
       overwrite = overwr;
@@ -136,20 +133,20 @@ public:
       delete_after_encode = del;
    }
 
-   //! set lossy transcoding warning
+   /// set lossy transcoding warning
    virtual void setWarnLossy(bool warn)
    {
       warn_lossy = warn;
    }
 
-   //! sets output playlist filename and enables playlist creation
+   /// sets output playlist filename and enables playlist creation
    virtual void setOutputPlaylistFilename(LPCTSTR plname)
    {
       playlist_filename = outpathname;
       playlist_filename += plname;
    }
 
-   //! sets thread prio; allowed values:  0: idle, 1: normal, 2: high, 3: highest
+   /// sets thread prio; allowed values:  0: idle, 1: normal, 2: high, 3: highest
    virtual void setThreadPriority(int prio)
    {
       if (!running || thread_handle==0) return;
@@ -185,7 +182,7 @@ public:
       ::SetPriorityClass((HANDLE)thread_handle,pclass);
    }
 
-   //! starts encoding thread; returns immediately
+   /// starts encoding thread; returns immediately
    virtual void startEncode()
    {
       if (running) return;
@@ -205,7 +202,7 @@ public:
       unlockAccess();
    }
 
-   //! returns if the encoder thread is running
+   /// returns if the encoder thread is running
    virtual bool isRunning()
    {
       if (tryLockAccess())
@@ -218,7 +215,7 @@ public:
          return true;
    }
 
-   //! pauses encoding
+   /// pauses encoding
    virtual void pauseEncoding()
    {
       lockAccess();
@@ -226,7 +223,7 @@ public:
       unlockAccess();
    }
 
-   //! returns if the encoder is currently paused
+   /// returns if the encoder is currently paused
    virtual bool isPaused()
    {
       lockAccess();
@@ -235,7 +232,7 @@ public:
       return pa;
    }
 
-   //! stops encoding
+   /// stops encoding
    virtual void stopEncode()
    {
       // forces encoder to stop
@@ -250,7 +247,7 @@ public:
       }
    }
 
-   //! returns if there were errors during encoding
+   /// returns if there were errors during encoding
    virtual int getError()
    {
       lockAccess();
@@ -259,7 +256,7 @@ public:
       return err;
    }
 
-   //! returns the percent done of the encoding process
+   /// returns the percent done of the encoding process
    virtual float queryPercentDone()
    {
       lockAccess();
@@ -268,7 +265,7 @@ public:
       return perc;
    }
 
-   //! returns encoding description string
+   /// returns encoding description string
    virtual CString getEncodingDescription()
    {
       lockAccess();
@@ -278,7 +275,7 @@ public:
    }
 
 protected:
-   //! static thread procedure
+   /// static thread procedure
    static void __cdecl threadProc(void *ptr)
    {
       EncoderImpl* enc = reinterpret_cast<EncoderImpl*>(ptr);
@@ -286,63 +283,63 @@ protected:
       _endthread();
    }
 
-   //! the real encoder function
+   /// the real encoder function
    void encode();
 
    void GenerateTempOutFilename(const CString& cszOriginalFilename, CString& cszTempFilename);
 
 protected:
-   //! input filename
+   /// input filename
    CString infilename;
 
-   //! output pathname
+   /// output pathname
    CString outpathname;
 
-   //! the settings manager to use
+   /// the settings manager to use
    SettingsManager *settings_mgr;
 
-   //! module manager
+   /// module manager
    ModuleManager *mod_manager;
 
-   //! error handler interface
+   /// error handler interface
    EncoderErrorHandler *handler;
 
-   //! id of the output module to use
+   /// id of the output module to use
    int out_module_id;
 
-   //! indicates if files can be overwritten
+   /// indicates if files can be overwritten
    bool overwrite;
 
    /// indicates if source file should be deleted after encoding
    bool delete_after_encode;
 
-   //! warn about lossy transcoding
+   /// warn about lossy transcoding
    bool warn_lossy;
 
-   //! indicates percent done
+   /// indicates percent done
    float percent;
 
-   //! indicates if encoder is paused
+   /// indicates if encoder is paused
    bool paused;
 
-   //! indicates if encoder is running
+   /// indicates if encoder is running
    bool running;
 
-   //! error indicator
+   /// error indicator
    int error;
 
-   //! encoding description
+   /// encoding description
    CString desc;
 
-   //! playlist filename
+   /// playlist filename
    CString playlist_filename;
 
-   //! current thread handle
+   /// current thread handle
    unsigned long thread_handle;
 
-   //! mutex to lock encoder object access
+   /// mutex to lock encoder object access
    HANDLE mutex;
 };
 
 
-//@}
+/// @}

@@ -17,11 +17,8 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **/
-/*! \file filestream.h
-
-   \brief helper stuf for aacinfo
-
-*/
+/// \file filestream.h
+/// \brief helper stuf for aacinfo
 
 #ifndef FILESTREAM_H
 #define FILESTREAM_H

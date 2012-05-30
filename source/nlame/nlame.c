@@ -275,6 +275,7 @@ void nlame_delete(nlame_instance_t* inst)
 
 /* preset functions */
 
+/*! set alt-preset VBR type */
 int lame_set_alt_preset_vbr(lame_global_flags* gfp, int type)
 {
    if ((type < nle_preset_first || type > nle_preset_last) &&
@@ -283,6 +284,7 @@ int lame_set_alt_preset_vbr(lame_global_flags* gfp, int type)
    return lame_set_preset(gfp,type);
 }
 
+/*! set alt-preset ABR bitrate */
 int lame_set_alt_preset_abr(lame_global_flags* gfp, int abr)
 {
    if (abr<8 || abr>320)
@@ -291,6 +293,7 @@ int lame_set_alt_preset_abr(lame_global_flags* gfp, int abr)
    return lame_set_preset(gfp,abr);
 }
 
+/*! set alt-preset CBR bitrate */
 int lame_set_alt_preset_cbr(lame_global_flags* gfp, int cbr)
 {
    int ret = lame_set_alt_preset_abr(gfp,cbr);

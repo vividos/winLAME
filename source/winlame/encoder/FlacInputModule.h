@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file FlacInputModule.h
-
-   \brief contains the FLAC input module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file FlacInputModule.h
+/// \brief contains the FLAC input module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -42,7 +39,7 @@ typedef struct {
    TrackInfo* trackInfo;                      ///< track info
 } FLAC_context;
 
-//! FLAC input module
+/// FLAC input module
 
 class FlacInputModule: public InputModule
 {
@@ -50,7 +47,7 @@ public:
    // ctor
    FlacInputModule();
 
-   //! clones input module
+   /// clones input module
    virtual InputModule *cloneModule();
 
    // returns the module name
@@ -88,13 +85,13 @@ public:
    virtual void doneInput();
 
 protected:
-   //! length of input file
+   /// length of input file
    unsigned long filelen;
 
-   //! last error occured
+   /// last error occured
    CString lasterror;
 
-   //! local variables
+   /// local variables
    FLAC__FileDecoder *pFLACDec;
 
    /// flac context
@@ -108,4 +105,4 @@ protected:
 };
 
 
-//@}
+/// @}

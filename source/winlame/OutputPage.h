@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file OutputPage.h
-
-   \brief contains the output page
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file OutputPage.h
+/// \brief contains the output page
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -34,14 +31,14 @@
 #include "CommonStuff.h"
 
 
-//! output settings page
+/// output settings page
 
 class OutputPage:
    public PageBase,
    public CDialogResize<OutputPage>
 {
 public:
-   //! ctor
+   /// ctor
    OutputPage()
    {
       IDD = IDD_DLG_OUTPUT;
@@ -78,13 +75,13 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! inits the page
+   /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   //! called when the page is about to be destroyed
+   /// called when the page is about to be destroyed
    LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   //! called when the user clicks on the button to select the output path
+   /// called when the user clicks on the button to select the output path
    LRESULT OnButtonSelectOutputPath(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       UISettings &settings = pui->getUISettings();
@@ -105,7 +102,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called when the state of the "finished action" check changes
+   /// called when the state of the "finished action" check changes
    LRESULT OnCheckFinishedAction(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       int check = SendDlgItemMessage(IDC_OUT_CHECK_FINISHED_ACTION, BM_GETCHECK);
@@ -115,7 +112,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called when the state of the "create playlist" check changes
+   /// called when the state of the "create playlist" check changes
    LRESULT OnCheckCreatePlaylist(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       int check = SendDlgItemMessage(IDC_OUT_CREATEPLAYLIST, BM_GETCHECK);
@@ -125,7 +122,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called when check "use input dir as output location" is clicked
+   /// called when check "use input dir as output location" is clicked
    LRESULT OnCheckUseInputFolder(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       BOOL check = SendDlgItemMessage(IDC_OUT_USE_INDIR, BM_GETCHECK) == BST_CHECKED ? FALSE : TRUE;
@@ -135,7 +132,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called when output path combo box selection ends
+   /// called when output path combo box selection ends
    LRESULT OnOutPathSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       // on selection, remove selected item from history
@@ -153,7 +150,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! refreshes output dir history combobox
+   /// refreshes output dir history combobox
    void RefreshHistory();
 
    // virtual functions from PageBase
@@ -165,13 +162,13 @@ END_MSG_MAP()
    virtual bool OnLeavePage();
 
 protected:
-   BevelLine bevel1; //!< bevel line
-   BevelLine bevel2; //!< bevel line
-   BevelLine bevel3; //!< bevel line
+   BevelLine bevel1; ///< bevel line
+   BevelLine bevel2; ///< bevel line
+   BevelLine bevel3; ///< bevel line
 
-   //! icon list for image buttons
+   /// icon list for image buttons
    CImageList ilIcons;
 };
 
 
-//@}
+/// @}

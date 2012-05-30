@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file Id3v1Tag.h
-
-   \brief manages id3 tag reading and writing
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file Id3v1Tag.h
+/// \brief manages id3 tag reading and writing
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -82,4 +79,4 @@ struct Id3v1Tag
 
 #pragma pack(pop)
 
-//@}
+/// @}

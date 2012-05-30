@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file CdReadoutModule.h
-
-   \brief contains the Bass input module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file CdReadoutModule.h
+/// \brief contains the Bass input module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -32,7 +29,7 @@
 #include "ModuleInterface.h"
 #include "SndFileInputModule.h"
 
-//! CD readout input module
+/// CD readout input module
 
 class CDReadoutModule: public SndFileInputModule
 {
@@ -41,7 +38,7 @@ public:
    CDReadoutModule();
    virtual ~CDReadoutModule(){}
 
-   //! clones input module
+   /// clones input module
    virtual InputModule *cloneModule();
 
    // returns the module name
@@ -69,4 +66,4 @@ protected:
 };
 
 
-//@}
+/// @}

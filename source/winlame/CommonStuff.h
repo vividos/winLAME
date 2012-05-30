@@ -17,16 +17,12 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file CommonStuff.h
-
-   \brief commonly used functions and UI classes
-
-   contains commonly used functions and UI classes, such as a bevel line
-   control and functions to add tooltips and to browse for a folder
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file CommonStuff.h
+/// \brief commonly used functions and UI classes
+/// \details contains commonly used functions and UI classes, such as a bevel line
+/// control and functions to add tooltips and to browse for a folder
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -36,13 +32,13 @@
 
 // functions
 
-//! adds tool tips for every child dlg item found for hWnd
-/*! the tooltip text is the string resource that has the same ID value as
-    the control */
+/// \brief adds tool tips for every child dlg item found for hWnd
+/// \details the tooltip text is the string resource that has the same ID value as
+/// the control
 void AddTooltips(HWND hWnd, CToolTipCtrl &ctrl);
 
 
-//! lets the user browse for a folder
+/// lets the user browse for a folder
 bool BrowseForFolder(HWND hParentWnd, CString &dirname,UINT captionid=0);
 
 
@@ -57,7 +53,7 @@ inline int AppMessageBox(HWND hWnd, UINT nResourceId, UINT nFlags)
 }
 
 
-//! bevel line class
+/// bevel line class
 
 class BevelLine: public CWindowImpl<BevelLine>
 {
@@ -66,7 +62,7 @@ BEGIN_MSG_MAP(BevelLine)
    MESSAGE_HANDLER(WM_PAINT, OnPaint)
 END_MSG_MAP()
 
-   //! paints the bevel line
+   /// paints the bevel line
    LRESULT OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 };
 
@@ -76,9 +72,9 @@ END_MSG_MAP()
 class FixedValueSpinButtonCtrl: public CWindowImpl<FixedValueSpinButtonCtrl>
 {
 public:
-   //! ctor
+   /// ctor
    FixedValueSpinButtonCtrl(){ values = NULL; arrsize = 0; }
-   //! dtor
+   /// dtor
    virtual ~FixedValueSpinButtonCtrl(){ delete values; }
 
    // message map
@@ -86,7 +82,7 @@ BEGIN_MSG_MAP(FixedValueSpinButtonCtrl)
    MESSAGE_HANDLER(OCM_NOTIFY, OnReflectedNotify) // reflected notifications
 END_MSG_MAP()
 
-   //! called when a notification was reflected back to the control
+   /// called when a notification was reflected back to the control
    LRESULT OnReflectedNotify(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // we got a reflected notification
@@ -131,7 +127,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! sets the fixed integer values to use
+   /// sets the fixed integer values to use
    void SetFixedValues(const int *pvalues, int size)
    {
       // allocate memory
@@ -153,7 +149,7 @@ END_MSG_MAP()
       ::SendMessage(m_hWnd, UDM_SETRANGE32, (WPARAM)pvalues[smallest], (LPARAM)pvalues[biggest]);
    }
 
-   //! finds nearest value of the value passed
+   /// finds nearest value of the value passed
    int FindNearest(int value)
    {
       if (arrsize==0) return value;
@@ -173,23 +169,23 @@ END_MSG_MAP()
       return newval;
    }
 
-   //! sets the buddy window for a spin button control
+   /// sets the buddy window for a spin button control
    HWND SetBuddy(HWND hWnd)
    {
       return (HWND)::SendMessage(m_hWnd, UDM_SETBUDDY, (WPARAM)hWnd, 0L);
    }
 
-   //! sets the current position for a spin button control
+   /// sets the current position for a spin button control
    int SetPos(int nPos)
    {
       return (int)(short)LOWORD( ::SendMessage(m_hWnd, UDM_SETPOS, 0, MAKELPARAM(nPos, 0)) );
    }
 
 protected:
-   //! vector containing all possible values
+   /// vector containing all possible values
    int *values;
 
-   //! size of the vector
+   /// size of the vector
    int arrsize;
 };
 
@@ -225,4 +221,4 @@ END_MSG_MAP()
 };
 
 
-//@}
+/// @}

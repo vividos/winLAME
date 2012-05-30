@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file AacInputModule.cpp
-
-   \brief contains the implementation of the AAC input module
-
-*/
+/// \file AacInputModule.cpp
+/// \brief contains the implementation of the AAC input module
 
 // needed includes
 #include "stdafx.h"

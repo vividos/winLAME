@@ -1,9 +1,9 @@
-/*!
-*	\author	Kjetil Haga (programmer.khaga@start.no)
-*/
+/// \file MonkeysAudioInputModule.h
+/// \author Kjetil Haga (programmer.khaga@start.no)
+///
 
-/*! \ingroup encoder */
-/*! @{ */
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -52,7 +52,7 @@ namespace monkey
 
 
 
-//! monkey's audio input module
+/// monkey's audio input module
 class MonkeysAudioInputModule : public InputModule
 {
 public:
@@ -107,18 +107,18 @@ public:
    virtual ~MonkeysAudioInputModule();
 
 private:
-	//! pointers to functions
+	/// pointers to functions
 	static monkey::MAC_DLL dll;
 
-	//! handle to mac file
+	/// handle to mac file
 	monkey::APE_DECOMPRESS_HANDLE	macfile;
 	
-	//! counts the samples already decoded
+	/// counts the samples already decoded
 	int samplecount;
 
-	//! number of samples in file
+	/// number of samples in file
 	int totalsamples;
 	
-	//! last error occured
+	/// last error occured
 	CString lasterror;
 };

@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file parser.hpp
-
-   \brief nodebuilder and parser declaration
-
-*/
+/// \file parser.hpp
+/// \brief nodebuilder and parser declaration
 
 // include guard
 #pragma once
@@ -36,15 +33,15 @@
 namespace cppxml
 {
 
-/*! \ingroup cppxml */
-/*! @{ */
+/// \ingroup cppxml
+/// @{
 
 
-//! node builder builds up a node structure
+/// node builder builds up a node structure
 class xmlnodebuilder: public xmleventhandler
 {
 public:
-   //! ctor
+   /// ctor
    xmlnodebuilder(xmlnode *node);
 
    // handler
@@ -66,7 +63,7 @@ protected:
 };
 
 
-//! error enum values
+/// error enum values
 enum xmlparse_error
 {
    xml_ok=0,
@@ -74,28 +71,28 @@ enum xmlparse_error
 };
 
 
-//! parses the xml document
+/// parses the xml document
 class xmlparser
 {
 public:
-   //! ctor
+   /// ctor
    xmlparser(xmleventhandler &eventhandler,std::istream &istr)
       :eventhandler(eventhandler),lexer(istr){}
 
-   //! starts parsing
+   /// starts parsing
    bool parse(bool fulldoc=true);
 
 protected:
-   //! parses header, such as processing instructions or doctype tags
+   /// parses header, such as processing instructions or doctype tags
    bool parse_header();
 
-   //! parses a single node; calls itself recursively
+   /// parses a single node; calls itself recursively
    bool parse_node();
 
-   //! parses tag attributes
+   /// parses tag attributes
    bool parse_attributes();
 
-   //! parses a <!-- --> comment
+   /// parses a <!-- --> comment
    bool parse_comment();
 
 protected:
@@ -104,7 +101,7 @@ protected:
    xmlparse_error err;
 };
 
-//@}
+/// @}
 
 // end of namespace
 };

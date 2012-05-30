@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file SampleContainer.cpp
-
-   \brief functions to convert samples from and to interleaved and channel array format
-
-*/
+/// \file SampleContainer.cpp
+/// \brief functions to convert samples from and to interleaved and channel array format
 
 // needed includes
 #include "stdafx.h"

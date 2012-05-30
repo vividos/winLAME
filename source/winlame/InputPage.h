@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file InputPage.h
-
-   \brief contains the input page and a list ctrl to show the files to encode
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file InputPage.h
+/// \brief contains the input page and a list ctrl to show the files to encode
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -34,18 +31,18 @@
 #include "InputListCtrl.h"
 
 
-//! input modules config selection dialog
+/// input modules config selection dialog
 
 class InputConfigDlg: public CDialogImpl<InputConfigDlg>
 {
 public:
-   //! ctor
+   /// ctor
    InputConfigDlg(){}
 
-   //! sets module indices to use
+   /// sets module indices to use
    void Init(ModuleManager* mgr, std::vector<int> indices);
 
-   //! dialog id
+   /// dialog id
    enum { IDD = IDD_INMODULE_CFG };
 
    // message map
@@ -57,13 +54,13 @@ BEGIN_MSG_MAP(InputPage)
    REFLECT_NOTIFICATIONS()
 END_MSG_MAP()
 
-   //! called to init the dialog
+   /// called to init the dialog
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   //! called when double-clicking on a listbox item
+   /// called when double-clicking on a listbox item
    LRESULT OnListBoxDoubleClick(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   //! called on exiting the dialog
+   /// called on exiting the dialog
    LRESULT OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       EndDialog(0);
@@ -71,22 +68,22 @@ END_MSG_MAP()
    }
 
 protected:
-   //! module manager to use
+   /// module manager to use
    ModuleManager* mgr;
 
-   //! module indices
+   /// module indices
    std::vector<int> indices;
 };
 
 
-//! input files page
+/// input files page
 
 class InputPage:
    public PageBase,
    public CDialogResize<InputPage>
 {
 public:
-   //! ctor
+   /// ctor
    InputPage()
    {
       IDD = IDD_DLG_INPUT;
@@ -124,17 +121,17 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! inits the page
+   /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   //! called when page is about to be destroyed
+   /// called when page is about to be destroyed
    LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       ilIcons.Destroy();
       return 0;
    }
 
-   //! called when the button for adding input files is pressed
+   /// called when the button for adding input files is pressed
    LRESULT OnButtonInputFileSel(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       // open file dialog
@@ -142,21 +139,21 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called when the user clicks on the button to delete all selected files
+   /// called when the user clicks on the button to delete all selected files
    LRESULT OnButtonDeleteAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   //! called when button "config" was pressed
+   /// called when button "config" was pressed
    LRESULT OnButtonConfig(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   //! called when button "CD Rip" was pressed
+   /// called when button "CD Rip" was pressed
    LRESULT OnButtonCDRip(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   //! called when user dropped files on the list ctrl
+   /// called when user dropped files on the list ctrl
    LRESULT OnDropFiles(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-   //! called for processing key presses
+   /// called for processing key presses
    LRESULT OnKeyDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-   //! called when the selected item in the list ctrl changes
+   /// called when the selected item in the list ctrl changes
    LRESULT OnListItemChanged(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
-   //! called when user double-clicks on an item in list
+   /// called when user double-clicks on an item in list
    LRESULT OnDoubleClickedList(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
-   //! called when user presses the play button
+   /// called when user presses the play button
    LRESULT OnButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    // virtual functions from PageBase
@@ -168,25 +165,25 @@ END_MSG_MAP()
    virtual bool OnLeavePage();
 
 protected:
-   //! plays the file
+   /// plays the file
    void PlayFile(LPCTSTR filename);
 
-   //! inserts a filename with icon in the list ctrl
+   /// inserts a filename with icon in the list ctrl
    void InsertFilename(LPCTSTR fname);
 
-   //! opens up the file dialog
+   /// opens up the file dialog
    void OpenFileDialog();
 
-   //! imports .m3u playlist
+   /// imports .m3u playlist
    void ImportM3uPlaylist(LPCTSTR filename);
 
-   //! imports .pls playlist
+   /// imports .pls playlist
    void ImportPlsPlaylist(LPCTSTR filename);
 
-   //! imports cue sheets
+   /// imports cue sheets
    void ImportCueSheet(LPCTSTR filename);
 
-   //! inserts filename with icon
+   /// inserts filename with icon
    void InsertFileWithIcon(LPCTSTR pszRealFilename, LPCTSTR pszFilenameForIcon,
       int nSamplefreq, int nBps, int nLength);
 
@@ -197,27 +194,27 @@ protected:
    void UpdateTimeCount();
 
 protected:
-   //! icon list for image buttons
+   /// icon list for image buttons
    CImageList ilIcons;
 
-   //! indicates if the system image list is already set
+   /// indicates if the system image list is already set
    bool setsysimagelist;
 
-   //! list ctrl
+   /// list ctrl
    InputListCtrl listctrl;
 
-   //! string with all file filters
+   /// string with all file filters
    CString filterstring;
 
-   //! indicates if InsertFilename() currently recurses through directory trees
+   /// indicates if InsertFilename() currently recurses through directory trees
    bool recursive;
 
-   //! id's of all modules that allow configuration
+   /// id's of all modules that allow configuration
    std::vector<int> config_modules_id;
 
-   //! string with input file errors
+   /// string with input file errors
    CString input_errors;
 };
 
 
-//@}
+/// @}

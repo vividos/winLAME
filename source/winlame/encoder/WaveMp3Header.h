@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file WaveMp3Header.h
-
-   \brief contains functions to write riff wave mp3 header
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file WaveMp3Header.h
+/// \brief contains functions to write riff wave mp3 header
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -34,22 +31,20 @@
 
 // global functions
 
-//! writes riff wave mp3 header to output stream
-/*! \param ostr output file stream to write to
-    \param channels number of channels, either 1 or 2
-    \param samplerate mp3 file sample rate
-    \param bitrate bitrate of the mp3
-    \param codec_delay codec sample delay when decoding
-*/
+/// writes riff wave mp3 header to output stream
+/// \param ostr output file stream to write to
+/// \param channels number of channels, either 1 or 2
+/// \param samplerate mp3 file sample rate
+/// \param bitrate bitrate of the mp3
+/// \param codec_delay codec sample delay when decoding
 void WriteWaveMp3Header(std::ofstream &ostr,unsigned int channels,
    unsigned int samplerate,unsigned int bitrate,unsigned short codec_delay);
 
-//! fixes fact chunk and riff header lengths; seeks around in the file
-/*! \param ostr output file stream to write to
-    \param datalen number of mp3 data bytes written
-    \param numsamples number of samples written
-*/
+/// fixes fact chunk and riff header lengths; seeks around in the file
+/// \param ostr output file stream to write to
+/// \param datalen number of mp3 data bytes written
+/// \param numsamples number of samples written
 void FixupWaveMp3Header(std::ofstream &ostr,unsigned int datalen,
    unsigned int numsamples);
 
-//@}
+/// @}

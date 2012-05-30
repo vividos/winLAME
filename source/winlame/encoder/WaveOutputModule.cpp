@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file WaveOutputModule.cpp
-
-   \brief contains the implementation of the wave output module
-
-*/
+/// \file WaveOutputModule.cpp
+/// \brief contains the implementation of the wave output module
 
 // needed includes
 #include "stdafx.h"

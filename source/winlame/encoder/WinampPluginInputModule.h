@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file WinampPluginInputModule.h
-
-   \brief contains the winamp plugin input module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file WinampPluginInputModule.h
+/// \brief contains the winamp plugin input module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -33,26 +30,26 @@
 #include "winamp/in2.h"
 
 
-//! winamp plugin input module
+/// winamp plugin input module
 
 class WinampPluginInputModule: public InputModule
 {
 public:
    // ctor
    WinampPluginInputModule();
-   //! dtor
+   /// dtor
    virtual ~WinampPluginInputModule();
 
-   //! clones input module
+   /// clones input module
    virtual InputModule *cloneModule();
 
-   //! sets module handle
+   /// sets module handle
    void setDLLModuleHandle(HMODULE mod);
 
-   //! returns true when input module can be configured
+   /// returns true when input module can be configured
    virtual bool canConfigure(){ return inmod != NULL; }
 
-   //! called to configure module
+   /// called to configure module
    virtual void configureModule();
 
    // returns the module name
@@ -90,43 +87,43 @@ public:
    virtual void doneInput();
 
 protected:
-   //! scans the installed input modules
+   /// scans the installed input modules
    void scanModules(bool init=true, LPCTSTR filename=NULL);
 
 protected:
-   //! last error occured
+   /// last error occured
    CString lasterror;
 
-   //! filter string
+   /// filter string
    CString filterstring;
 
-   //! winamp module name
+   /// winamp module name
    CString module_name;
 
-   //! input filename
+   /// input filename
    CString in_filename;
 
-   //! current input module
+   /// current input module
    In_Module *inmod;
 
-   //! dummy output module
+   /// dummy output module
    Out_Module outmod;
 
-   //! number of samples in file
+   /// number of samples in file
    unsigned __int64 numsamples;
 
-   //! number of samples already decoded
+   /// number of samples already decoded
    unsigned __int64 samplecount;
 
-   //! dll module handle
+   /// dll module handle
    HMODULE mod;
 
-   //! determines if mod should be freed
+   /// determines if mod should be freed
    bool free_mod;
 
-   //! indicates if plugin was started
+   /// indicates if plugin was started
    bool started;
 };
 
 
-//@}
+/// @}

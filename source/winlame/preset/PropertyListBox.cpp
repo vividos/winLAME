@@ -17,13 +17,9 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file PropertyListBox.cpp
-
-   \brief contains implementation of the preset selection page
-
-   \ingroup preset
-
-*/
+/// \file PropertyListBox.cpp
+/// \brief contains implementation of the preset selection page
+/// \ingroup preset
 
 // needed includes
 #include "stdafx.h"

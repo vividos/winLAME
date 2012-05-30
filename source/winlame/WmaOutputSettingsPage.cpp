@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file WmaOutputSettingsPage.cpp
-
-   \brief contains implementation of the Wma output settings page
-
-*/
+/// \file WmaOutputSettingsPage.cpp
+/// \brief contains implementation of the Wma output settings page
 
 // needed includes
 #include "stdafx.h"
@@ -34,7 +31,7 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-//! suggested bitrate values
+/// suggested bitrate values
 static int WmaBitrates[] =
 {
    32,48,64,80,96,128,160,192,256,320

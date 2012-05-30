@@ -17,14 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file CommonStuff.cpp
-
-   \brief common UI function implementations
-
-   contains the drawing code for the bevel line, and the tooltips and
-   folder-browse function
-
-*/
+/// \file CommonStuff.cpp
+/// \brief common UI function implementations
+/// \details contains the drawing code for the bevel line, and the tooltips and
+/// folder-browse function
 
 // needed includes
 #include "stdafx.h"

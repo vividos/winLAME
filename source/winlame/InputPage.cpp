@@ -17,14 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file InputPage.cpp
-
-   \brief contains the methods of the input page
-
-   code to delete selected list ctrl items, handle dropped files, insert files
-   into the list and the enter and leave page functions
-
-*/
+/// \file InputPage.cpp
+/// \brief contains the methods of the input page
+/// \details code to delete selected list ctrl items, handle dropped files, insert files
+/// into the list and the enter and leave page functions
 
 // needed includes
 #include "stdafx.h"

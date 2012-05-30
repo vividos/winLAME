@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file AacSettingsPage.h
-
-   \brief contains the basic settings page for the AAC encoder
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file AacSettingsPage.h
+/// \brief contains the basic settings page for the AAC encoder
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -36,13 +33,13 @@
 
 // classes
 
-//! settings page for AAC settings
+/// settings page for AAC settings
 class AacSettingsPage:
    public PageBase,
    public CDialogResize<AacSettingsPage>
 {
 public:
-   //! ctor
+   /// ctor
    AacSettingsPage()
    {
       IDD = IDD_DLG_AAC;
@@ -75,17 +72,17 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! inits the page
+   /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   //! called when user clicks on the bandwidth check
+   /// called when user clicks on the bandwidth check
    LRESULT OnCheckBandwidth(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       UpdateBandwidth();
       return 0;
    }
 
-   //! called when slider is moved
+   /// called when slider is moved
    LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // check if the vbr quality slider was moved
@@ -94,10 +91,10 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! updates quality value
+   /// updates quality value
    void UpdateQuality();
 
-   //! shows bandwidth edit control
+   /// shows bandwidth edit control
    void UpdateBandwidth();
 
    // virtual functions from PageBase
@@ -115,9 +112,9 @@ protected:
    /// bandwidth spin button control
    FixedValueSpinButtonCtrl bandwidthSpin;
 
-   //! bevel lines
+   /// bevel lines
    BevelLine bevel1, bevel2;
 };
 
 
-//@}
+/// @}

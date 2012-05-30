@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file EncoderImpl.cpp
-
-   \brief contains the actual encoder implementation
-
-*/
+/// \file EncoderImpl.cpp
+/// \brief contains the actual encoder implementation
 
 // needed includes
 #include "stdafx.h"

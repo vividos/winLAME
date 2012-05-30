@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file TrackInfo.cpp
-
-   \brief routines to manage track infos, as well as id3v1 tag parsing and creating routines
-
-*/
+/// \file TrackInfo.cpp
+/// \brief routines to manage track infos, as well as id3v1 tag parsing and creating routines
 
 // needed includes
 #include "stdafx.h"
@@ -36,7 +33,7 @@ static char THIS_FILE[]=__FILE__;
 #endif
 
 
-//! genre ID to string mapping
+/// genre ID to string mapping
 const TCHAR* g_aId3GenreIDtoString[] =
 {
    // 0..19

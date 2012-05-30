@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file LameSimpleSettingsPage.cpp
-
-   \brief contains implementation of the basic settings page
-
-*/
+/// \file LameSimpleSettingsPage.cpp
+/// \brief contains implementation of the basic settings page
 
 // needed includes
 #include "stdafx.h"
@@ -37,13 +34,13 @@ static char THIS_FILE[]=__FILE__;
 
 // arrays and mappings
 
-//! bitrate values
+/// bitrate values
 const int LameBitrates[] =
 {
    8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 192, 224, 256, 320
 };
 
-//! quality values
+/// quality values
 const int LameQualities[] =
 {
    0, 1, 2, 3, 4, 5, 6, 7, 8, 9

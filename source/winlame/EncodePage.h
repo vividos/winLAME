@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file EncodePage.h
-
-   \brief contains the definition of the encode page
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file EncodePage.h
+/// \brief contains the definition of the encode page
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -39,7 +36,7 @@
 // systray activation message
 #define WL_SYSTRAY_ACTIVE WM_APP+1
 
-//! encode page class
+/// encode page class
 
 class EncodePage:
    public PageBase,
@@ -47,7 +44,7 @@ class EncodePage:
    public CDialogResize<EncodePage>
 {
 public:
-   //! ctor
+   /// ctor
    EncodePage()
    {
       IDD = IDD_DLG_ENCODE;
@@ -65,7 +62,7 @@ public:
       pausetime=0;
    }
 
-   //! dtor
+   /// dtor
    virtual ~EncodePage()
    {
       delete encoder;
@@ -99,10 +96,10 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! inits the page
+   /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   //! called when page is about to be destroyed
+   /// called when page is about to be destroyed
    LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // simulate click on stop button
@@ -120,16 +117,16 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called when user clicked on start (or pause) button
+   /// called when user clicked on start (or pause) button
    LRESULT OnClickedStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   //! called when user clicked on stop button
+   /// called when user clicked on stop button
    LRESULT OnClickedStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   //! called when user clicked on "send to tray" button
+   /// called when user clicked on "send to tray" button
    LRESULT OnClickedToTray(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   //! called when user clicked on systray image
+   /// called when user clicked on systray image
    LRESULT OnSystrayActive(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   //! called when slider is moved
+   /// called when slider is moved
    LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // check if the vbr quality slider was moved
@@ -138,7 +135,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called for each "update info" timer interval
+   /// called for each "update info" timer interval
    LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       if (wParam == IDT_ENC_UPDATEINFO && !noupdate)
@@ -148,7 +145,7 @@ END_MSG_MAP()
 
    // virtual function from EncoderErrorHandler
 
-   //! error handler function
+   /// error handler function
    virtual EncoderErrorHandler::ErrorAction handleError(LPCTSTR infilename,
       LPCTSTR modulename, int errnum, LPCTSTR errormsg, bool bSkipDisabled=false);
 
@@ -161,13 +158,13 @@ END_MSG_MAP()
    virtual bool OnLeavePage();
 
 protected:
-   //! updates encoding information
+   /// updates encoding information
    void UpdateInfo();
 
-   //! updates thread priority
+   /// updates thread priority
    void UpdateThreadPrio();
 
-   //! shuts down windows, depending on the action code
+   /// shuts down windows, depending on the action code
    void ShutdownWindows(int action);
 
 protected:
@@ -175,42 +172,42 @@ protected:
    BevelLine bevel2;  ///< bevel line
    BevelLine bevel3;  ///< bevel line
 
-   //! icon list for image buttons
+   /// icon list for image buttons
    CImageList ilIcons;
 
-   //! encoder instance
+   /// encoder instance
    EncoderInterface *encoder;
 
-   //! indicates if infos about a new file to encode are available
+   /// indicates if infos about a new file to encode are available
    bool newfile;
 
-   //! current file to encode
+   /// current file to encode
    int curfile;
 
-   //! indicates if UpdateInfo() should be called
+   /// indicates if UpdateInfo() should be called
    bool noupdate;
 
-   //! millisecond the last file to encode was started
+   /// millisecond the last file to encode was started
    DWORD starttimer;
 
-   //! start of pausing encoding
+   /// start of pausing encoding
    DWORD startpause;
 
-   //! total time of paused encoding
+   /// total time of paused encoding
    DWORD pausetime;
 
-   //! system tray icon object
+   /// system tray icon object
    SystemTrayIcon trayicon;
 
-   //! idle tray icon
+   /// idle tray icon
    HICON idle_icon;
 
-   //! tray icon while working
+   /// tray icon while working
    HICON working_icon;
 
-   //! indicates if window is in systray
+   /// indicates if window is in systray
    bool intray;
 };
 
 
-//@}
+/// @}

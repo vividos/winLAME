@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file SystemTrayIcon.h
-
-   \brief contains a wrapper class for handling a system tray icon
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file SystemTrayIcon.h
+/// \brief contains a wrapper class for handling a system tray icon
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -33,20 +30,20 @@
 #undef ExtractIcon
 
 
-//! wrapper class for a system tray icon
+/// wrapper class for a system tray icon
 class SystemTrayIcon
 {
 public:
-   //! ctor
+   /// ctor
    SystemTrayIcon(){ active=false; }
 
-   //! dtor
+   /// dtor
    ~SystemTrayIcon()
    {
       if (active) RemoveIcon();
    }
 
-   //! creates icon in the system tray
+   /// creates icon in the system tray
    bool Init(HWND hParent, UINT uID, HICON hIcon, UINT notifyMessage, LPCTSTR pszTooltip)
    {
       nid.cbSize = sizeof(NOTIFYICONDATA);
@@ -70,14 +67,14 @@ public:
       return ::Shell_NotifyIcon(NIM_ADD, &nid)==TRUE;
    }
 
-   //! removes the system tray icon
+   /// removes the system tray icon
    bool RemoveIcon()
    {
       active=false;
       return ::Shell_NotifyIcon(NIM_DELETE, &nid)==TRUE;
    }
 
-   //! sets icon for tray
+   /// sets icon for tray
    bool SetIcon(HICON hIcon)
    {
       nid.hIcon = hIcon;
@@ -86,7 +83,7 @@ public:
    }
 
 
-   //! sets a new tooltip text
+   /// sets a new tooltip text
    bool SetTooltipText(LPCTSTR pszTooltip)
    {
       nid.uFlags = NIF_TIP;
@@ -97,12 +94,12 @@ public:
    }
 
 protected:
-   //! notify icon data
+   /// notify icon data
    NOTIFYICONDATA nid;
 
-   //! indicates if icon is active
+   /// indicates if icon is active
    bool active;
 };
 
 
-//@}
+/// @}

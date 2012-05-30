@@ -17,13 +17,9 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file PresetManagerImpl.cpp
-
-   \brief contains the preset manager implementation
-
-   \ingroup preset
-
-*/
+/// \file PresetManagerImpl.cpp
+/// \brief contains the preset manager implementation
+/// \ingroup preset
 
 // needed includes
 #include "stdafx.h"

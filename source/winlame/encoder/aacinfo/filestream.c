@@ -17,11 +17,8 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **/
-/*! \file filestream.c
-
-   \brief contains implementation of the aacinfo functionality
-
-*/
+/// \file filestream.c
+/// \brief contains implementation of the aacinfo functionality
 
 /* Not very portable yet */
 

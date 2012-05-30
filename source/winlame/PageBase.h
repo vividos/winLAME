@@ -17,17 +17,14 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file PageBase.h
-
-   \brief PageBase is a common base class for all wizard child dialogs
-
-   a bit of tweaking must be used to get this work; IDD is not an enum
-   but must be filled in with the real dialog id in the constructor of
-   the derived class
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file PageBase.h
+/// \brief PageBase is a common base class for all wizard child dialogs
+/// \details
+/// a bit of tweaking must be used to get this work; IDD is not an enum
+/// but must be filled in with the real dialog id in the constructor of
+/// the derived class
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -36,44 +33,44 @@
 #include "UIinterface.h"
 
 
-//! common page base class
+/// common page base class
 
 class PageBase:
    public CDialogImpl<PageBase>,
    public CWinDataExchange<PageBase>
 {
 public:
-   //! ctor
+   /// ctor
    PageBase(){ pui=NULL; helpID=0; }
 
-   //! dtor
+   /// dtor
    virtual ~PageBase(){}
 
-   //! dialog id
+   /// dialog id
    int IDD;
 
-   //! caption string resource id
+   /// caption string resource id
    int captionID;
 
-   //! description string resource id
+   /// description string resource id
    int descID;
 
-   //! html help path string id
+   /// html help path string id
    int helpID;
 
-   //! pointer to the ui interface
+   /// pointer to the ui interface
    UIinterface *pui;
 
-   //! called when leaving the page; returns if we really should leave
+   /// called when leaving the page; returns if we really should leave
    virtual bool OnLeavePage(){ return true; }
 
-   //! called on entering the page
+   /// called on entering the page
    virtual void OnEnterPage(){}
 
-   //! returns if page should be removed
+   /// returns if page should be removed
    virtual bool ShouldRemovePage() const { return false; }
 
-   //! creates the dialog; overlaps the version in CDialogImpl<T>
+   /// creates the dialog; overlaps the version in CDialogImpl<T>
    HWND Create(HWND hWndParent, LPARAM dwInitParam = NULL)
    {
       // copied from ATL
@@ -90,4 +87,4 @@ public:
 };
 
 
-//@}
+/// @}

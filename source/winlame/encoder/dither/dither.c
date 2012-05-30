@@ -17,11 +17,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-/*! \file dither.c
-
-   \brief contains implementation of the linear dither function
-
-*/
+/// \file dither.c
+/// \brief contains implementation of the linear dither function
 
 # include <string.h>
 

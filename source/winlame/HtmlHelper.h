@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file HtmlHelper.h
-
-   \brief contains a HTML help API wrapper class
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file HtmlHelper.h
+/// \brief contains a HTML help API wrapper class
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -32,12 +29,12 @@
 #include <htmlhelp.h>
 
 
-//! html help support class
+/// html help support class
 
 class HtmlHelper
 {
 public:
-   //! ctor
+   /// ctor
    HtmlHelper()
    {
       // initialize html help; get cookie
@@ -45,7 +42,7 @@ public:
       chmfile = NULL;
    }
 
-   //! dtor
+   /// dtor
    ~HtmlHelper()
    {
       // uninitialize; return cookie
@@ -53,7 +50,7 @@ public:
       delete chmfile;
    }
 
-   //! initializes the html help api
+   /// initializes the html help api
    void Init(HWND parent, LPCTSTR chmhelpfile)
    {
       hParent = parent;
@@ -61,22 +58,22 @@ public:
       lstrcpy(chmfile,chmhelpfile);
    }
 
-   //! displays a topic in the html help file
+   /// displays a topic in the html help file
    void DisplayTopic(LPCTSTR topic)
    {
       ::HtmlHelp(hParent,chmfile,HH_DISPLAY_TOPIC,(DWORD)topic);
    }
 
 protected:
-   //! parent window
+   /// parent window
    HWND hParent;
 
-   //! location of chm file
+   /// location of chm file
    LPTSTR chmfile;
 
-   //! good tasting cookie
+   /// good tasting cookie
    DWORD cookie;
 };
 
 
-//@}
+/// @}

@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file WmaOutputSettingsPage.h
-
-   \brief contains the settings page for the Wma output module
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file WmaOutputSettingsPage.h
+/// \brief contains the settings page for the Wma output module
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -34,14 +31,14 @@
 #include "CommonStuff.h"
 
 
-//! Wma output settings page class
+/// Wma output settings page class
 
 class WmaOutputSettingsPage:
    public PageBase,
    public CDialogResize<WmaOutputSettingsPage>
 {
 public:
-   //! ctor
+   /// ctor
    WmaOutputSettingsPage()
    {
       IDD = IDD_DLG_WMA;
@@ -66,7 +63,7 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! inits the page
+   /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    // virtual functions from PageBase
@@ -88,4 +85,4 @@ protected:
 };
 
 
-//@}
+/// @}

@@ -17,11 +17,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
-/*! \file dither.h
-
-   \brief linear dither functions
-
-*/
+/// \file dither.h
+/// \brief linear dither functions
 
 # ifndef AUDIO_H
 # define AUDIO_H

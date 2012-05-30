@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file OggVorbisInputModule.h
-
-   \brief contains the ogg vorbis input module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file OggVorbisInputModule.h
+/// \brief contains the ogg vorbis input module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -34,7 +31,7 @@
 #include "vorbis/vorbisfile.h"
 
 
-//! ogg vorbis input module
+/// ogg vorbis input module
 
 class OggVorbisInputModule: public InputModule
 {
@@ -44,7 +41,7 @@ public:
    // dtor
    virtual ~OggVorbisInputModule();
 
-   //! clones input module
+   /// clones input module
    virtual InputModule *cloneModule();
 
    // returns the module name
@@ -82,25 +79,25 @@ public:
    virtual void doneInput();
 
 protected:
-   //! last error occured
+   /// last error occured
    CString lasterror;
 
-   //! number of samples decoded
+   /// number of samples decoded
    __int64 numsamples;
 
-   //! maximum number of samples
+   /// maximum number of samples
    __int64 maxsamples;
 
-   //! input file
+   /// input file
    FILE *infile;
 
-   //! decoding file struct
+   /// decoding file struct
    OggVorbis_File vf;
 
-   //! module handle for DLL containing vorbisfile functions
+   /// module handle for DLL containing vorbisfile functions
    HMODULE dll;
 
-   //! indicates if dll handle should be free'd
+   /// indicates if dll handle should be free'd
    bool free_handle;
 
    // vorbisfile function pointers
@@ -122,4 +119,4 @@ protected:
 };
 
 
-//@}
+/// @}

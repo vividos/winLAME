@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file OggVorbisSettingsPage.cpp
-
-   \brief contains implementation of the ogg vorbis settings page
-
-*/
+/// \file OggVorbisSettingsPage.cpp
+/// \brief contains implementation of the ogg vorbis settings page
 
 // needed includes
 #include "stdafx.h"
@@ -38,7 +35,7 @@ static char THIS_FILE[]=__FILE__;
 
 // arrays
 
-//! possible bitrates for the fixed value spin button ctrl
+/// possible bitrates for the fixed value spin button ctrl
 static int OggVorbisBitrates[] = 
 {
    64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 500
@@ -47,12 +44,11 @@ static int OggVorbisBitrates[] =
 
 // global functions
 
-//! calculates approximate bitrate for given quality value
-/*! this function is Copyright (c) 2002 John Edwards
-    see source code for OggDropXPd.
-    input: quality value, range 0.f ... 10.f
-    output: estimated bitrate in kbps
-*/
+/// \brief calculates approximate bitrate for given quality value
+/// \details this function is Copyright (c) 2002 John Edwards
+/// see source code for OggDropXPd.
+/// input: quality value, range 0.f ... 10.f
+/// output: estimated bitrate in kbps
 float OggVorbisCalculateBitrate(float quality)
 {
    float bitrate;

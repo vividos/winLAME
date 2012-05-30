@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file MadMpegInputModule.h
-
-   \brief contains the MAD mpeg input module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file MadMpegInputModule.h
+/// \brief contains the MAD mpeg input module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -37,11 +34,11 @@
 
 // constants
 
-//! input buffer size
+/// input buffer size
 const int mad_inbufsize = 4096;
 
 
-//! mad mpeg input module
+/// mad mpeg input module
 
 class MadMpegInputModule: public InputModule
 {
@@ -49,7 +46,7 @@ public:
    // ctor
    MadMpegInputModule();
 
-   //! clones input module
+   /// clones input module
    virtual InputModule *cloneModule();
 
    // returns the module name
@@ -90,48 +87,48 @@ public:
    virtual void doneInput();
 
 private:
-   //! checks for Xing / VBR info tag and adjusts bitrate
+   /// checks for Xing / VBR info tag and adjusts bitrate
    bool checkVbrInfoTag(unsigned char *buffer);
 
-   //! retrieves id3v2 tag infos
+   /// retrieves id3v2 tag infos
    static bool GetId3v2TagInfos(const CString& cszFilename, TrackInfo& trackinfo);
 
 protected:
    // mad structs
 
-   //! first decoded frame header
+   /// first decoded frame header
    struct mad_header init_header;
 
-   //! stream struct
+   /// stream struct
    struct mad_stream stream;
-   //! frame struct
+   /// frame struct
    struct mad_frame frame;
-   //! struct for synthesizing output samples
+   /// struct for synthesizing output samples
    struct mad_synth synth;
 /*
-   //! dither structs
+   /// dither structs
    struct audio_dither left_dither, right_dither;
    struct audio_stats stats;
 */
 
-   //! end of MPEG stream
+   /// end of MPEG stream
    bool eos;
 
-   //! input file stream
+   /// input file stream
    std::ifstream istr;
 
-   //! file input buffer
+   /// file input buffer
    unsigned char inbuffer[mad_inbufsize];
 
-   //! number of samples decoded
+   /// number of samples decoded
    __int64 numsamples;
 
-   //! number of samples in the mpeg file
+   /// number of samples in the mpeg file
    __int64 maxsamples;
 
-   //! last error occured
+   /// last error occured
    CString lasterror;
 };
 
 
-//@}
+/// @}

@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file Field.h
-
-   \brief id3 field class
-
-*/
+/// \file Field.h
+/// \brief id3 field class
 #pragma once
 
 #include <boost/shared_ptr.hpp>

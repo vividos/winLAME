@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file SettingsManager.cpp
-
-   \brief SettingsManagerInterface is an interface for encoder settings management
-
-*/
+/// \file SettingsManager.cpp
+/// \brief SettingsManagerInterface is an interface for encoder settings management
 
 // needed includes
 #include "stdafx.h"

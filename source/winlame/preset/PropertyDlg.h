@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file PropertyDlg.h
-
-   \brief contains the settings property dialog
-
-*/
-/*! \ingroup preset */
-/*! @{ */
+/// \file PropertyDlg.h
+/// \brief contains the settings property dialog
+/// \ingroup preset
+/// @{
 
 // include guard
 #pragma once
@@ -33,21 +30,21 @@
 #include "PropertyListBox.h"
 
 
-//! property dialog
+/// property dialog
 
 class PropertyDlg: public CDialogImpl<PropertyDlg>
 {
 public:
-   //! ctor
+   /// ctor
    PropertyDlg(){}
 
-   //! sets the property manager interface for the list box
+   /// sets the property manager interface for the list box
    void SetPropertyManagerInterface(PropertyManagerInterface *mgr)
    {
       listbox.SetPropertyManager(mgr);
    }
 
-   //! dialog id
+   /// dialog id
    enum { IDD = IDD_DLG_PRESET_PROPERTY };
 
    // message map
@@ -59,7 +56,7 @@ BEGIN_MSG_MAP(AboutDlg)
    REFLECT_NOTIFICATIONS()
 END_MSG_MAP()
 
-   //! initializes dialog class
+   /// initializes dialog class
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       CenterWindow(GetParent());
@@ -72,7 +69,7 @@ END_MSG_MAP()
       return 1;
    }
 
-   //! called on exiting dialog
+   /// called on exiting dialog
    LRESULT OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       // exits dialog
@@ -80,7 +77,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called when resizing dialog
+   /// called when resizing dialog
    LRESULT OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       int cx = LOWORD(lParam);
@@ -96,9 +93,9 @@ END_MSG_MAP()
    }
 
 protected:
-   //! the property listbox control
+   /// the property listbox control
    PropertyListBox listbox;
 };
 
 
-//@}
+/// @}

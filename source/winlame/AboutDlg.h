@@ -17,14 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file AboutDlg.h
-
-   \brief contains the about dialog window class
-
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file AboutDlg.h
+/// \brief contains the about dialog window class
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -39,21 +35,21 @@
 #endif
 
 
-//! about dialog
+/// about dialog
 
 class AboutDlg: public CAxDialogImpl<AboutDlg>
 {
 public:
-   //! ctor
+   /// ctor
    AboutDlg(){ min_cx = min_cy = last_cx = last_cy = -1; }
 
-   //! dialog id
+   /// dialog id
    enum { IDD = IDD_ABOUTDLG };
 
-   //! sets module manager to use
+   /// sets module manager to use
    void SetModuleManager(ModuleManager *mgr){ module_manager = mgr; };
 
-   //! sets filename of presets.xml file
+   /// sets filename of presets.xml file
    void SetPresetsXmlFilename(const CString& cszFilename){ m_cszPresetsXmlFilename = cszFilename; }
 
    // message map
@@ -65,7 +61,7 @@ BEGIN_MSG_MAP(AboutDlg)
    COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnExit)
 END_MSG_MAP()
 
-   //! inits about dialog
+   /// inits about dialog
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       CenterWindow(GetParent());
@@ -116,7 +112,7 @@ END_MSG_MAP()
       return 1;
    }
 
-   //! called before resizing, to determinate min window size
+   /// called before resizing, to determinate min window size
    LRESULT OnGetMinMaxInfo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       MINMAXINFO *minmax = (MINMAXINFO *)lParam;
@@ -126,7 +122,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called on resizing window
+   /// called on resizing window
    LRESULT OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // calculate width/height change
@@ -165,7 +161,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called on exiting the about dialog
+   /// called on exiting the about dialog
    LRESULT OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       // exits dialog
@@ -180,39 +176,39 @@ END_MSG_MAP()
    }
 
 protected:
-   //! retrieves the html document from the resource
+   /// retrieves the html document from the resource
    void GetHtmlString(CComBSTR &string);
 
-   //! ActiveX host window
+   /// ActiveX host window
    CAxWindow browser;
 
-   //! resize handle ctrl
+   /// resize handle ctrl
    CStatic sizehandle;
 
-   //! module manager to use
+   /// module manager to use
    ModuleManager *module_manager;
 
-   //! filename of presets.xml file
+   /// filename of presets.xml file
    CString m_cszPresetsXmlFilename;
 
-   //! window icon
+   /// window icon
    HICON wndicon;
 
-   //! size icon bitmap
+   /// size icon bitmap
    HBITMAP sizebmp;
 
-   //! min x window size
+   /// min x window size
    int min_cx;
 
-   //! min y window size
+   /// min y window size
    int min_cy;
 
-   //! last x window size
+   /// last x window size
    int last_cx;
 
-   //! last y window size
+   /// last y window size
    int last_cy;
 };
 
 
-//@}
+/// @}

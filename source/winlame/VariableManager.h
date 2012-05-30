@@ -18,17 +18,15 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file VariableManager.h
+/// \file VariableManager.h
+/// \brief manager for variables and their properties
+/// \details
+/// manager for variables, their string names, descriptions and default values
+/// also, herein are defined the enum values for the variable ID's to use in
+/// the settings manager
 
-   \brief manager for variables and their properties
-
-   manager for variables, their string names, descriptions and default values
-   also, herein are defined the enum values for the variable ID's to use in
-   the settings manager
-
-*/
-/*! \ingroup settings */
-/*! @{ */
+/// \ingroup settings
+/// @{
 
 // include guard
 #pragma once
@@ -37,32 +35,32 @@
 struct SettingsVarMap;
 
 
-//! class for managing settings variables
+/// class for managing settings variables
 class VariableManager
 {
 public:
    // ctor
    VariableManager(){ varmap=NULL; }
 
-   //! looks up variable ID per name
+   /// looks up variable ID per name
    int lookupID(LPCTSTR name);
 
-   //! looks up variable name per ID
+   /// looks up variable name per ID
    LPCTSTR lookupName(int varID);
 
-   //! looks up variable description per ID
+   /// looks up variable description per ID
    LPCTSTR lookupDescription(int varID);
 
-   //! looks up default variable value per ID
+   /// looks up default variable value per ID
    int lookupDefaultValue(int varID);
 
 protected:
-   //! variable map
+   /// variable map
    const SettingsVarMap *varmap;
 };
 
 
-//! facility ID's
+/// facility ID's
 
 enum
 {
@@ -74,7 +72,7 @@ enum
 };
 
 
-//! variable ID's
+/// variable ID's
 
 enum
 {
@@ -124,7 +122,7 @@ enum
 };
 
 
-//! manager class for the facilities
+/// manager class for the facilities
 class VarMgrFacilities: public VariableManager
 {
 public:
@@ -132,7 +130,7 @@ public:
 };
 
 
-//! manager class for the variables
+/// manager class for the variables
 class VarMgrVariables: public VariableManager
 {
 public:
@@ -140,4 +138,4 @@ public:
 };
 
 
-//@}
+/// @}

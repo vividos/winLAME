@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file WaveOutputSettingsPage.h
-
-   \brief contains the settings page for the wave output module
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file WaveOutputSettingsPage.h
+/// \brief contains the settings page for the wave output module
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -34,14 +31,14 @@
 #include "CommonStuff.h"
 
 
-//! wave output settings page class
+/// wave output settings page class
 
 class WaveOutputSettingsPage:
    public PageBase,
    public CDialogResize<WaveOutputSettingsPage>
 {
 public:
-   //! ctor
+   /// ctor
    WaveOutputSettingsPage()
    {
       IDD = IDD_DLG_WAVE;
@@ -66,7 +63,7 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! inits the page
+   /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    // virtual functions from PageBase
@@ -78,9 +75,9 @@ END_MSG_MAP()
    virtual bool OnLeavePage();
 
 protected:
-   //! bevel line
+   /// bevel line
    BevelLine bevel1;
 };
 
 
-//@}
+/// @}

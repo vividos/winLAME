@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file ModuleManagerImpl.h
-
-   \brief contains the module manager implementation class definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file ModuleManagerImpl.h
+/// \brief contains the module manager implementation class definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -34,101 +31,101 @@
 #include "ModuleInterface.h"
 
 
-//! module manager implementation class
+/// module manager implementation class
 
 class ModuleManagerImpl: public ModuleManager
 {
 public:
-   //! ctor
+   /// ctor
    ModuleManagerImpl();
-   //! dtor
+   /// dtor
    ~ModuleManagerImpl();
 
    // info functions
 
-   //! returns currently available filter string for open file dialog
+   /// returns currently available filter string for open file dialog
    virtual void getFilterString(CString& filterstring);
 
-   //! returns infos about audio file; returns false when not supported
+   /// returns infos about audio file; returns false when not supported
    virtual bool getAudioFileInfo(LPCTSTR filename,
       int &length, int &bitrate, int &samplefreq, CString& errormsg);
 
    // input module
 
-   //! returns the number of available input modules
+   /// returns the number of available input modules
    virtual int getInputModuleCount()
    {
       return in_modules.size();
    }
 
-   //! returns the name of the input module
+   /// returns the name of the input module
    virtual CString getInputModuleName(int index)
    {
       return in_modules[index]->getModuleName();
    }
 
-   //! returns the input module ID
+   /// returns the input module ID
    virtual int getInputModuleID(int index)
    {
       return in_modules[index]->getModuleID();
    }
 
-   //! returns the input module filter string
+   /// returns the input module filter string
    virtual CString getInputModuleFilterString(int index)
    {
       return in_modules[index]->getFilterString();
    }
 
-   //! returns input module instance
+   /// returns input module instance
    virtual InputModule* getInputModuleInstance(int index)
    {
       return in_modules[index];
    }
 
-   /*! chooses an input module suitable for opening file with given filename;
-       pointer has to be deleted! */
+   /// chooses an input module suitable for opening file with given filename;
+   /// pointer has to be deleted!
    InputModule *chooseInputModule(LPCTSTR filename);
 
    // output module
 
-   //! returns the number of available output modules
+   /// returns the number of available output modules
    virtual int getOutputModuleCount()
    {
       return out_modules.size();
    }
 
-   //! returns the name of an output module
+   /// returns the name of an output module
    virtual CString getOutputModuleName(int index)
    {
       return out_modules[index]->getModuleName();
    }
 
-   //! returns the output module ID
+   /// returns the output module ID
    virtual int getOutputModuleID(int index)
    {
       return out_modules[index]->getModuleID();
    }
 
-   //! retrieves a module version string
+   /// retrieves a module version string
    virtual void getModuleVersionString(CString& version, int module_id, int special=0);
 
-   //! returns output module with given module id; pointer has to be deleted!
+   /// returns output module with given module id; pointer has to be deleted!
    OutputModule *getOutputModule(int module_id);
 
 protected:
-   //! adds winamp input modules to in_modules list
+   /// adds winamp input modules to in_modules list
    void addWinampModules();
 
 protected:
-   //! all available output modules
+   /// all available output modules
    std::vector<OutputModule*> out_modules;
 
-   //! all available input modules
+   /// all available input modules
    std::vector<InputModule*> in_modules;
 
-   //! output module ID to index mapping
+   /// output module ID to index mapping
    std::map<int,int> out_id_to_modidx;
 };
 
 
-//@}
+/// @}

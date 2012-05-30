@@ -18,13 +18,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file WaveOutputModule.h
-
-   \brief contains the wave output module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file WaveOutputModule.h
+/// \brief contains the wave output module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -34,7 +31,7 @@
 #include "sndfile.h"
 
 
-//! wave output module
+/// wave output module
 
 class WaveOutputModule: public OutputModule
 {
@@ -71,27 +68,27 @@ public:
    virtual void doneOutput();
 
 protected:
-   //! file handle
+   /// file handle
    SNDFILE *sndfile;
 
-   //! soundfile info
+   /// soundfile info
    SF_INFO sfinfo;
 
-   //! last error occured
+   /// last error occured
    CString lasterror;
 
-   //! indicates if a raw file is to be written
+   /// indicates if a raw file is to be written
    bool rawfile;
 
-   //! write waveformatextensible header
+   /// write waveformatextensible header
    bool wavex;
 
-   //! output format
+   /// output format
    int outfmt;
 
-   //! file format
+   /// file format
    int filefmt;
 };
 
 
-//@}
+/// @}

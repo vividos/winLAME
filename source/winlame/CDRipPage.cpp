@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file CDRipPage.cpp
-
-   \brief contains implementation of the output settings page
-
-*/
+/// \file CDRipPage.cpp
+/// \brief contains implementation of the output settings page
 
 // needed includes
 #include "stdafx.h"

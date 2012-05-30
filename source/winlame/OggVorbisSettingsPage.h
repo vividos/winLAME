@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file OggVorbisSettingsPage.h
-
-   \brief contains the settings page for the ogg vorbis encoder
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file OggVorbisSettingsPage.h
+/// \brief contains the settings page for the ogg vorbis encoder
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -34,14 +31,14 @@
 #include "CommonStuff.h"
 
 
-//! ogg vorbis settings page class
+/// ogg vorbis settings page class
 
 class OggVorbisSettingsPage:
    public PageBase,
    public CDialogResize<OggVorbisSettingsPage>
 {
 public:
-   //! ctor
+   /// ctor
    OggVorbisSettingsPage()
    {
       IDD = IDD_DLG_OGGVORBIS;
@@ -77,10 +74,10 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! inits the page
+   /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   //! called when the bitrate mode changes
+   /// called when the bitrate mode changes
    LRESULT OnSetBitrateMode(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       // look which radio button was activated
@@ -91,10 +88,10 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! called when the text of the "nominal bitrate" edit control changes
+   /// called when the text of the "nominal bitrate" edit control changes
    LRESULT OnChangeEditNominalBitrate(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   //! called when slider is moved
+   /// called when slider is moved
    LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // check if the vbr quality slider was moved
@@ -106,13 +103,13 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! updates controls when bitrate mode changes
+   /// updates controls when bitrate mode changes
    void UpdateBitrateMode(int pos,bool init=false);
 
-   //! updates quality value
+   /// updates quality value
    void UpdateQuality();
 
-   //! user clicked on quick quality spin control
+   /// user clicked on quick quality spin control
    void OnQuickQualitySpin(WORD wCount, WORD wType);
 
    // virtual functions from PageBase
@@ -124,12 +121,12 @@ END_MSG_MAP()
    virtual bool OnLeavePage();
 
 protected:
-   FixedValueSpinButtonCtrl bitrateNominalSpin;  //!< nominal bitrate spin button control
-   FixedValueSpinButtonCtrl bitrateMinSpin;      //!< min bitrate spin button control
-   FixedValueSpinButtonCtrl bitrateMaxSpin;      //!< max bitrate spin button control
-   BevelLine bevel1; //!< bevel line
-   BevelLine bevel2; //!< bevel line
+   FixedValueSpinButtonCtrl bitrateNominalSpin;  ///< nominal bitrate spin button control
+   FixedValueSpinButtonCtrl bitrateMinSpin;      ///< min bitrate spin button control
+   FixedValueSpinButtonCtrl bitrateMaxSpin;      ///< max bitrate spin button control
+   BevelLine bevel1; ///< bevel line
+   BevelLine bevel2; ///< bevel line
 };
 
 
-//@}
+/// @}

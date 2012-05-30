@@ -17,11 +17,9 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file Frame.h
+/// \file Frame.h
+/// \brief id3 frame class
 
-   \brief id3 frame class
-
-*/
 #pragma once
 
 #include <boost/shared_ptr.hpp>

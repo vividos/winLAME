@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file OggVorbisOutputModule.h
-
-   \brief contains the ogg vorbis output module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file OggVorbisOutputModule.h
+/// \brief contains the ogg vorbis output module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -34,7 +31,7 @@
 #include "vorbis/codec.h"
 
 
-//! ogg vorbis output module
+/// ogg vorbis output module
 
 class OggVorbisOutputModule: public OutputModule
 {
@@ -73,40 +70,40 @@ public:
    virtual void doneOutput();
 
 protected:
-   //! output file stream
+   /// output file stream
    std::ofstream ostr;
 
-   //! last error occured
+   /// last error occured
    CString lasterror;
 
-   //! chosen bitrate mode
+   /// chosen bitrate mode
    int brmode;
 
-   //! base quality (when brmode==0)
+   /// base quality (when brmode==0)
    float base_quality;
 
-   //! end of stream marker
+   /// end of stream marker
    bool eos;
 
-   //! take physical pages, weld into a logical stream of packets
+   /// take physical pages, weld into a logical stream of packets
    ogg_stream_state os;
 
-   //! one ogg bitstream page. vorbis packets are inside
+   /// one ogg bitstream page. vorbis packets are inside
    ogg_page         og;
    
-   //! one raw packet of data for decode
+   /// one raw packet of data for decode
    ogg_packet       op;
 
-   //! struct that stores all the static vorbis bitstream settings
+   /// struct that stores all the static vorbis bitstream settings
    vorbis_info      vi;
 
-   //! struct that stores all the bitstream user comments
+   /// struct that stores all the bitstream user comments
    vorbis_comment   vc;
 
-   //! central working state for the packet->PCM decoder
+   /// central working state for the packet->PCM decoder
    vorbis_dsp_state vd;
 
-   //! local working space for packet->PCM decode
+   /// local working space for packet->PCM decode
    vorbis_block     vb;
 
    HMODULE vorbisenc;
@@ -156,4 +153,4 @@ protected:
 };
 
 
-//@}
+/// @}

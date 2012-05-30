@@ -18,18 +18,14 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file UIinterface.h
+/// \file UIinterface.h
+/// \brief UIinterface is an interface class for interacting with the UI of winLAME
 
-   \brief UIinterface is an interface class for interacting with the UI of winLAME
+/// \defgroup userinterface User Interface
+/// contains all classes that have to do with the user interface
 
-*/
-/*! \defgroup userinterface User Interface
-
-   contains all classes that have to do with the user interface
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -44,138 +40,138 @@
 class PageBase;
 class LanguageResourceManager;
 
-//! list of filenames
+/// list of filenames
 typedef std::vector<EncoderJob> EncoderJobList;
 
 
 // classes
 
-//! general UI settings
+/// general UI settings
 struct UISettings
 {
-   //! ctor
+   /// ctor
    UISettings();
 
-   //! reads settings from the registry
+   /// reads settings from the registry
    void ReadSettings();
 
-   //! stores settings in the registry
+   /// stores settings in the registry
    void StoreSettings();
 
-   //! list of filenames to encode
+   /// list of filenames to encode
    EncoderJobList encoderjoblist;
 
-   //! output directory
+   /// output directory
    CString outputdir;
 
-   //! output directory history list
+   /// output directory history list
    std::vector<CString> outputhistory;
 
-   //! last input files folder
+   /// last input files folder
    std::tstring lastinputpath;
 
-   //! indicates if source files should be deleted after encoding
+   /// indicates if source files should be deleted after encoding
    bool delete_after_encode;
 
-   //! indicates if existing files will be overwritten
+   /// indicates if existing files will be overwritten
    bool overwrite_existing;
 
-   //! warn about lossy transcoding
+   /// warn about lossy transcoding
    bool warn_lossy_transcoding;
 
-   //! indicates if an output playlist should be created
+   /// indicates if an output playlist should be created
    bool create_playlist;
 
-   //! playlist filename
+   /// playlist filename
    CString playlist_filename;
 
-   //! action to perform after all files were encoded
+   /// action to perform after all files were encoded
    int after_encoding_action;
 
-   //! indicates if advanced lame settings should be hidden
+   /// indicates if advanced lame settings should be hidden
    bool hide_advanced_lame;
 
-   //! last selected output module id
+   /// last selected output module id
    int output_module;
 
-   //! use input dir as output location
+   /// use input dir as output location
    bool out_location_use_input_dir;
 
-   //! indicates if presets are available
+   /// indicates if presets are available
    bool preset_avail;
 
-   //! current filename of presets.xml file
+   /// current filename of presets.xml file
    CString presets_filename;
 
-   //! current encoder thread priority
+   /// current encoder thread priority
    int thread_prio;
 
-   //! autostart encoding after cd ripping?
+   /// autostart encoding after cd ripping?
    bool cdrip_autostart_encoding;
 
-   //! indicates that last page was cdrip page
+   /// indicates that last page was cdrip page
    bool last_page_was_cdrip_page;
 
-   //! temporary folder for cd ripping
+   /// temporary folder for cd ripping
    CString cdrip_temp_folder;
 
-   //! freedb servername
+   /// freedb servername
    CString freedb_server;
 
-   //! freedb username
+   /// freedb username
    CString freedb_username;
 
-   //! indicates if disc infos retrieved by freedb should be stored in cdplayer.ini
+   /// indicates if disc infos retrieved by freedb should be stored in cdplayer.ini
    bool store_disc_infos_cdplayer_ini;
 
-   //! language id
+   /// language id
    UINT language_id;
 
-   //! settings manager
+   /// settings manager
    SettingsManager settings_manager;
 
-   //! preset manager
+   /// preset manager
    PresetManagerInterface *preset_manager;
 
-   //! module manager
+   /// module manager
    ModuleManager *module_manager;
 };
 
 
-//! ui interface
+/// ui interface
 class UIinterface
 {
 public:
-   //! ctor
+   /// ctor
    UIinterface(){}
 
-   //! returns the currently displayed wizard page
+   /// returns the currently displayed wizard page
    virtual int getCurrentWizardPage()=0;
 
-   //! returns wizard page count
+   /// returns wizard page count
    virtual int getWizardPageCount()=0;
 
-   //! inserts a wizard page at a given position
+   /// inserts a wizard page at a given position
    virtual void insertWizardPage(int at, PageBase *page)=0;
 
-   //! returns the wizard page dialog ID
+   /// returns the wizard page dialog ID
    virtual int getWizardPageID(int at)=0;
 
-   //! deletes a wizard page from the given position
+   /// deletes a wizard page from the given position
    virtual void deleteWizardPage(int at)=0;
 
-   //! sets a new current page
+   /// sets a new current page
    virtual void setCurrentPage(int page)=0;
 
-   //! locks or unlocks the wizard back and next buttons
+   /// locks or unlocks the wizard back and next buttons
    virtual void lockWizardButtons(bool lock, bool only_lock_next=false)=0;
 
-   //! returns user interface settings struct
+   /// returns user interface settings struct
    virtual UISettings& getUISettings()=0;
 
-   //! returns language resource manager
+   /// returns language resource manager
    virtual LanguageResourceManager& GetLanguageResourceManager() = 0;
 };
 
 
-//@}
+/// @}

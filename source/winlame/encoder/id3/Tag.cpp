@@ -17,11 +17,9 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file Tag.cpp
+/// \file Tag.cpp
+/// \brief id3 tag class
 
-   \brief id3 tag class
-
-*/
 #include "StdAfx.h"
 #include "Tag.h"
 #include <id3tag.h>

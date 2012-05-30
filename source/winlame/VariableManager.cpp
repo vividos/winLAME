@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file VariableManager.cpp
-
-   \brief contains the variable mapping lists and lookup functions
-
-*/
+/// \file VariableManager.cpp
+/// \brief contains the variable mapping lists and lookup functions
 
 // needed includes
 #include "stdafx.h"
@@ -38,7 +35,7 @@ static char THIS_FILE[]=__FILE__;
 
 
 
-//! variable mapping struct
+/// variable mapping struct
 struct SettingsVarMap
 {
    unsigned short id;   ///< settings id

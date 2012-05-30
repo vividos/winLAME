@@ -17,14 +17,11 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file ErrorDlg.h
-
-   \brief shows an error dialog which lets the user decide what to do (try continue,
-   skip file or stop encoding)
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file ErrorDlg.h
+/// \brief shows an error dialog which lets the user decide what to do (try continue,
+/// skip file or stop encoding)
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -34,12 +31,12 @@
 #include "CommonStuff.h"
 
 
-//! error dialog class
+/// error dialog class
 
 class ErrorDlg: public CDialogImpl<ErrorDlg>
 {
 public:
-   //! ctor
+   /// ctor
    ErrorDlg(){}
 
    enum { IDD = IDD_ERRORDLG };
@@ -55,7 +52,7 @@ END_MSG_MAP()
 //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   //! inits error dialog
+   /// inits error dialog
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // place window
@@ -97,7 +94,7 @@ END_MSG_MAP()
       return 1;  // let the system set the focus
    }
 
-   //! called when exiting the dialog
+   /// called when exiting the dialog
    LRESULT OnEndDialog(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       // ends dialog with the id of pressed button as return value
@@ -105,7 +102,7 @@ END_MSG_MAP()
       return 0;
    }
 
-   //! initializes the error dialog
+   /// initializes the error dialog
    void Init(LPCTSTR thefilename, LPCTSTR themodulename, int theerrorcode, LPCTSTR theerrormsg,
       bool bSkipDisabled)
    {
@@ -118,30 +115,30 @@ END_MSG_MAP()
    }
 
 protected:
-   //! currently processing filename
+   /// currently processing filename
    LPCTSTR filename;
 
-   //! module which reported the error
+   /// module which reported the error
    LPCTSTR modulename;
 
-   //! error code returned
+   /// error code returned
    int errorcode;
 
-   //! error message
+   /// error message
    LPCTSTR errormsg;
 
-   //! application icon
+   /// application icon
    HICON appicon;
 
-   //! error icon
+   /// error icon
    HICON icon;
 
    /// indicates if "skip" button is disabled
    bool m_bSkipDisabled;
 
-   //! bevel line
+   /// bevel line
    BevelLine bevel1;
 };
 
 
-//@}
+/// @}

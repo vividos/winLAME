@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file SndFileInputModule.cpp
-
-   \brief contains the implementation of the libsndfile input module
-
-*/
+/// \file SndFileInputModule.cpp
+/// \brief contains the implementation of the libsndfile input module
 
 // needed includes
 #include "stdafx.h"
@@ -36,6 +33,7 @@
 #pragma comment(linker, "/delayload:libsndfile-1.dll")
 #endif
 
+/// SndFile open function for wchar paths
 extern "C"
 SNDFILE*
 sf_wchar_open (LPCWSTR wpath, int mode, SF_INFO *sfinfo);
@@ -43,7 +41,7 @@ sf_wchar_open (LPCWSTR wpath, int mode, SF_INFO *sfinfo);
 
 // constants
 
-//! sndfile input buffer size
+/// sndfile input buffer size
 const int sndfile_inbufsize = 512;
 
 

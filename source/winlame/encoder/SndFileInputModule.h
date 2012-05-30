@@ -18,13 +18,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file SndFileInputModule.h
-
-   \brief contains the libsndfile input module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file SndFileInputModule.h
+/// \brief contains the libsndfile input module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -34,7 +31,7 @@
 #include "sndfile.h"
 
 
-//! libsndfile input module
+/// libsndfile input module
 
 class SndFileInputModule: public InputModule
 {
@@ -43,7 +40,7 @@ public:
    SndFileInputModule();
    virtual ~SndFileInputModule(){}
 
-   //! clones input module
+   /// clones input module
    virtual InputModule *cloneModule();
 
    // returns the module name
@@ -84,33 +81,33 @@ public:
    virtual void doneInput();
 
 protected:
-   //! searches for id3 tag chunk in the wave file
+   /// searches for id3 tag chunk in the wave file
    bool waveGetId3(LPCTSTR wavfile, TrackInfo &trackinfo);
 
 protected:
-   //! file handle
+   /// file handle
    SNDFILE *sndfile;
 
-   //! soundfile info
+   /// soundfile info
    SF_INFO sfinfo;
 
-   //! counts the samples already decoded
+   /// counts the samples already decoded
    int samplecount;
 
-   //! last error occured
+   /// last error occured
    CString lasterror;
 
-   //! sample buffer
+   /// sample buffer
    void *buffer;
 
-   //! output bits
+   /// output bits
    int outbits;
 
 #ifdef SNDFILE_1
-   //! filter string
+   /// filter string
    CString filterstring;
 #endif
 };
 
 
-//@}
+/// @}

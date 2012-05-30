@@ -18,11 +18,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file LameOutputModule.cpp
-
-   \brief contains the implementation of the LAME output module
-
-*/
+/// \file LameOutputModule.cpp
+/// \brief contains the implementation of the LAME output module
 
 // needed includes
 #include "stdafx.h"
@@ -137,7 +134,7 @@ void LameOutputModule::prepareOutput(SettingsManager &mgr)
    waveheader = mgr.queryValueInt(LameWriteWaveHeader)!=0;
 }
 
-//! error callback
+/// error callback
 void LameErrorCallback(const char* format, va_list ap)
 {
    USES_CONVERSION;
@@ -387,11 +384,10 @@ skip_nogap:
    return 0;
 }
 
-/*! encodes exactly one frame, consisting of 576 samples per channel. this is
-    done due to the fact that LAME expects that number of samples, or it will
-    produce different output, e.g. when feeding less than 576 samples per call
-    to nlame_encode_buffer_*().
-*/
+/// encodes exactly one frame, consisting of 576 samples per channel. this is
+/// done due to the fact that LAME expects that number of samples, or it will
+/// produce different output, e.g. when feeding less than 576 samples per call
+/// to nlame_encode_buffer_*().
 int LameOutputModule::encodeFrame()
 {
    int bufsize = nlame_const_maxmp3buffer;

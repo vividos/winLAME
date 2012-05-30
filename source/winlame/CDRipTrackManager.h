@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file CDRipTrackManager.h
-
-   \brief contains the cd audio extraction manager
-
-*/
-/*! \ingroup userinterface */
-/*! @{ */
+/// \file CDRipTrackManager.h
+/// \brief contains the cd audio extraction manager
+/// \ingroup userinterface
+/// @{
 
 // include guard
 #pragma once
@@ -90,4 +87,4 @@ private:
    static CDRipTrackManager* m_pManagerInstance;
 };
 
-//@}
+/// @}

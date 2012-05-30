@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file File.cpp
-
-   \brief id3 file class
-
-*/
+/// \file File.cpp
+/// \brief id3 file class
 
 #include "StdAfx.h"
 #include "File.h"

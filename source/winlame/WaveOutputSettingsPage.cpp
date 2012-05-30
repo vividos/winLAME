@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file WaveOutputSettingsPage.cpp
-
-   \brief contains implementation of the wave output settings page
-
-*/
+/// \file WaveOutputSettingsPage.cpp
+/// \brief contains implementation of the wave output settings page
 
 // needed includes
 #include "stdafx.h"

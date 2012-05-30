@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file OptionsDlg.cpp
-
-   \brief options dialog
-
-*/
+/// \file OptionsDlg.cpp
+/// \brief options dialog
 
 #include "stdafx.h"
 #include "resource.h"

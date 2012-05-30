@@ -17,11 +17,8 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file parser.cpp
-
-   \brief parser implementation
-
-*/
+/// \file parser.cpp
+/// \brief parser implementation
 
 // needed includes
 #include "parser.hpp"

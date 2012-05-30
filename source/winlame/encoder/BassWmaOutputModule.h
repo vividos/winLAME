@@ -17,13 +17,10 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file BassWmaOutputModule.h
-
-   \brief contains the basswma output module definition
-
-*/
-/*! \ingroup encoder */
-/*! @{ */
+/// \file BassWmaOutputModule.h
+/// \brief contains the basswma output module definition
+/// \ingroup encoder
+/// @{
 
 // include guard
 #pragma once
@@ -34,7 +31,7 @@
 #include "basswma.h"
 
 
-//! basswma output module
+/// basswma output module
 
 class BassWmaOutputModule: public OutputModule
 {
@@ -71,7 +68,7 @@ public:
    virtual void doneOutput();
 
 protected:
-   //! last error occured
+   /// last error occured
    CString lasterror;
 
    HWMENCODE handle; ///< encoder handle
@@ -82,4 +79,4 @@ protected:
 };
 
 
-//@}
+/// @}

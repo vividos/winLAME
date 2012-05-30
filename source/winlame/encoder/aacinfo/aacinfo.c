@@ -17,11 +17,8 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 **
 **/
-/*! \file aacinfo.c
-
-   \brief contains implementation of the aacinfo functionality
-
-*/
+/// \file aacinfo.c
+/// \brief contains implementation of the aacinfo functionality
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
