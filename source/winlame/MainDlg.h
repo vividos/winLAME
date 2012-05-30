@@ -273,7 +273,7 @@ END_MSG_MAP()
       }
    }
 
-   virtual wlUISettings& getUISettings()
+   virtual UISettings& getUISettings()
    {
       return settings;
    }
@@ -309,7 +309,7 @@ protected:
    HtmlHelper htmlhelp;
 
    //! ui settings
-   wlUISettings settings;
+   UISettings settings;
 
    //! app accelerator table
    HACCEL actable;

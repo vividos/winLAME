@@ -86,7 +86,7 @@ LRESULT BevelLine::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandl
    return 0;
 }
 
-void wlAddTooltips(HWND hWnd, CToolTipCtrl &ctrl)
+void AddTooltips(HWND hWnd, CToolTipCtrl &ctrl)
 {
    // get first child window
    hWnd = ::GetWindow(hWnd,GW_CHILD);
@@ -118,7 +118,7 @@ void wlAddTooltips(HWND hWnd, CToolTipCtrl &ctrl)
 #define BIF_USENEWUI 0x0050   ///< constant to use new UI when selecting folders
 #endif
 
-bool wlBrowseForFolder(HWND hParentWnd, CString& cszPathname, UINT nCaptionID)
+bool BrowseForFolder(HWND hParentWnd, CString& cszPathname, UINT nCaptionID)
 {
    if (nCaptionID==0)
       nCaptionID = IDS_COMMON_SELECTDIR;

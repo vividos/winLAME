@@ -148,6 +148,6 @@ public:
 
 
 /// returns a filename compatible for ansi APIs such as fopen()
-CString wlGetAnsiCompatFilename(LPCTSTR pszFilename);
+CString GetAnsiCompatFilename(LPCTSTR pszFilename);
 
 //@}

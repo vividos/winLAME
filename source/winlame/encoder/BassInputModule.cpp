@@ -172,7 +172,7 @@ int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
    }
 
    /* try streaming the file/url */
-   CString cszAnsiFilename = wlGetAnsiCompatFilename(infilename);
+   CString cszAnsiFilename = GetAnsiCompatFilename(infilename);
    if ((chan=BASS_StreamCreateFile(FALSE,T2CA(cszAnsiFilename),0,0,BASS_STREAM_DECODE)) ||
       (chan=BASS_StreamCreateURL(T2CA(cszAnsiFilename),0,BASS_STREAM_DECODE,0,0)) ||
       (basswma && (chan=BASS_WMA_StreamCreateFile(FALSE,T2CA(cszAnsiFilename),0,0,BASS_STREAM_DECODE)))) {

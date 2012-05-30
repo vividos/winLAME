@@ -192,7 +192,7 @@ int SndFileInputModule::initInput(LPCTSTR infilename,
    sndfile = sf_wchar_open(infilename,SFM_READ,&sfinfo);
 #else
    USES_CONVERSION;
-   sndfile = sf_open(T2CA(wlGetAnsiCompatFilename(infilename)),SFM_READ,&sfinfo);
+   sndfile = sf_open(T2CA(GetAnsiCompatFilename(infilename)),SFM_READ,&sfinfo);
 #endif
 
    if (sndfile==NULL)

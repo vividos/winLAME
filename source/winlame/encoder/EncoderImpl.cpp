@@ -88,13 +88,13 @@ void EncoderImpl::encode()
       switch(handler->handleError(infilename, inmod->getModuleName(),
          -res, inmod->getLastError()))
       {
-      case EncoderErrorHandler::wlContinue:
+      case EncoderErrorHandler::Continue:
          break;
-      case EncoderErrorHandler::wlSkipFile:
+      case EncoderErrorHandler::SkipFile:
          error=1;
          goto skipfile;
          break;
-      case EncoderErrorHandler::wlStopEncode:
+      case EncoderErrorHandler::StopEncode:
          error=-1;
          goto skipfile;
          break;
@@ -176,7 +176,7 @@ void EncoderImpl::encode()
       {
          // note: could do a message box here, but we really want the encoding progress
          // without any message boxes waiting.
-//         if (wlMessageBox(GetActiveWindow(), _T("The output file already exists. Do you want to overwrite it?"), MB_YESNO | MB_ICONEXCLAMATION) == IDNO)
+//         if (AppMessageBox(GetActiveWindow(), _T("The output file already exists. Do you want to overwrite it?"), MB_YESNO | MB_ICONEXCLAMATION) == IDNO)
 //         {
             // skip this file
             error=2;
@@ -233,9 +233,9 @@ void EncoderImpl::encode()
                EncoderErrorHandler::ErrorAction action = handler->handleError(outfilename, cszCaption, dwError, cszErrorMessage, true);
                switch (action)
                {
-               case EncoderErrorHandler::wlContinue:
+               case EncoderErrorHandler::Continue:
                   break;
-               case EncoderErrorHandler::wlStopEncode:
+               case EncoderErrorHandler::StopEncode:
                   error=-2;
                   goto skipfile;
                   break;
@@ -263,14 +263,14 @@ void EncoderImpl::encode()
       switch(handler->handleError(infilename, outmod->getModuleName(),
          -res, outmod->getLastError()))
       {
-      case EncoderErrorHandler::wlContinue:
+      case EncoderErrorHandler::Continue:
          break;
-      case EncoderErrorHandler::wlSkipFile:
+      case EncoderErrorHandler::SkipFile:
          error=2;
          unlockAccess();
          goto skipfile;
          break;
-      case EncoderErrorHandler::wlStopEncode:
+      case EncoderErrorHandler::StopEncode:
          error=-2;
          unlockAccess();
          goto skipfile;
@@ -323,9 +323,9 @@ void EncoderImpl::encode()
       if (in_lossy && out_lossy && warn_lossy && !warned_about_lossy)
       {
          // warn user about transcoding
-         extern bool wlWarnAboutTranscode();
+         extern bool WarnAboutTranscode();
 
-         if (!wlWarnAboutTranscode())
+         if (!WarnAboutTranscode())
          {
             // stop encoding
             error=-2;
@@ -350,13 +350,13 @@ void EncoderImpl::encode()
          switch(handler->handleError(infilename, inmod->getModuleName(),
             -ret, inmod->getLastError()))
          {
-         case EncoderErrorHandler::wlContinue:
+         case EncoderErrorHandler::Continue:
             break;
-         case EncoderErrorHandler::wlSkipFile:
+         case EncoderErrorHandler::SkipFile:
             error=3;
             goto skipfile;
             break;
-         case EncoderErrorHandler::wlStopEncode:
+         case EncoderErrorHandler::StopEncode:
             error=-3;
             goto skipfile;
             break;
@@ -375,13 +375,13 @@ void EncoderImpl::encode()
          switch(handler->handleError(infilename, outmod->getModuleName(),
             -ret, outmod->getLastError()))
          {
-         case EncoderErrorHandler::wlContinue:
+         case EncoderErrorHandler::Continue:
             break;
-         case EncoderErrorHandler::wlSkipFile:
+         case EncoderErrorHandler::SkipFile:
             error=4;
             goto skipfile;
             break;
-         case EncoderErrorHandler::wlStopEncode:
+         case EncoderErrorHandler::StopEncode:
             error=-4;
             goto skipfile;
             break;

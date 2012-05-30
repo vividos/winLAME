@@ -113,7 +113,7 @@ void PresetsPage::OnEnterPage()
          pui->deleteWizardPage(pos);
 }
 
-extern void wlInsertWizardPages(UIinterface *pui,int pos);
+extern void InsertWizardPages(UIinterface *pui,int pos);
 
 bool PresetsPage::OnLeavePage()
 {
@@ -121,7 +121,7 @@ bool PresetsPage::OnLeavePage()
    lastindex = listbox.GetCurSel();
 
    // set default values
-   wlUISettings &settings = pui->getUISettings();
+   UISettings &settings = pui->getUISettings();
    settings.preset_manager->setDefaultSettings(settings.settings_manager);
 
    // set selected preset
@@ -129,7 +129,7 @@ bool PresetsPage::OnLeavePage()
       settings.preset_manager->setSettings(lastindex-1,settings.settings_manager);
 
    // insert config pages depending on output selection
-   wlInsertWizardPages(pui,pui->getCurrentWizardPage()+1);
+   InsertWizardPages(pui,pui->getCurrentWizardPage()+1);
 
    // hide all pages when hideLameSettings is set to 1 in the preset
    if (1==pui->getUISettings().settings_manager.queryValueInt(LameHideSettings))

@@ -41,7 +41,7 @@
     \param bitrate bitrate of the mp3
     \param codec_delay codec sample delay when decoding
 */
-void wlWriteWaveMp3Header(std::ofstream &ostr,unsigned int channels,
+void WriteWaveMp3Header(std::ofstream &ostr,unsigned int channels,
    unsigned int samplerate,unsigned int bitrate,unsigned short codec_delay);
 
 //! fixes fact chunk and riff header lengths; seeks around in the file
@@ -49,7 +49,7 @@ void wlWriteWaveMp3Header(std::ofstream &ostr,unsigned int channels,
     \param datalen number of mp3 data bytes written
     \param numsamples number of samples written
 */
-void wlFixupWaveMp3Header(std::ofstream &ostr,unsigned int datalen,
+void FixupWaveMp3Header(std::ofstream &ostr,unsigned int datalen,
    unsigned int numsamples);
 
 //@}

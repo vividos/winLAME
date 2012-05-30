@@ -51,10 +51,10 @@ typedef std::vector<EncoderJob> EncoderJobList;
 // classes
 
 //! general UI settings
-struct wlUISettings
+struct UISettings
 {
    //! ctor
-   wlUISettings();
+   UISettings();
 
    //! reads settings from the registry
    void ReadSettings();
@@ -171,7 +171,7 @@ public:
    virtual void lockWizardButtons(bool lock, bool only_lock_next=false)=0;
 
    //! returns user interface settings struct
-   virtual wlUISettings& getUISettings()=0;
+   virtual UISettings& getUISettings()=0;
 
    //! returns language resource manager
    virtual LanguageResourceManager& GetLanguageResourceManager() = 0;

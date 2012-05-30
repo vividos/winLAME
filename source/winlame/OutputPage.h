@@ -87,11 +87,11 @@ END_MSG_MAP()
    //! called when the user clicks on the button to select the output path
    LRESULT OnButtonSelectOutputPath(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
-      wlUISettings &settings = pui->getUISettings();
+      UISettings &settings = pui->getUISettings();
       CString path = settings.outputdir;
 
       // lets user select a path
-      if (wlBrowseForFolder(m_hWnd, path))
+      if (BrowseForFolder(m_hWnd, path))
       {
          // move history entries
          settings.outputhistory.insert(settings.outputhistory.begin(),
@@ -139,7 +139,7 @@ END_MSG_MAP()
    LRESULT OnOutPathSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       // on selection, remove selected item from history
-      wlUISettings &settings = pui->getUISettings();
+      UISettings &settings = pui->getUISettings();
 
       int sel = SendDlgItemMessage(wID,CB_GETCURSEL);
       if (sel>0 && unsigned(sel)<=settings.outputhistory.size())

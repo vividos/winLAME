@@ -35,7 +35,7 @@ class OptionsDlg:
    public CWinDataExchange<OptionsDlg>
 {
 public:
-   OptionsDlg(wlUISettings& uiSettings, LanguageResourceManager& langResourceManager)
+   OptionsDlg(UISettings& uiSettings, LanguageResourceManager& langResourceManager)
       :m_uiSettings(uiSettings),
        m_langResourceManager(langResourceManager)
    {
@@ -73,7 +73,7 @@ public:
    LRESULT OnChangeFreedbUsername(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 private:
-   wlUISettings& m_uiSettings;
+   UISettings& m_uiSettings;
    LanguageResourceManager& m_langResourceManager;
 
    CImageListComboBox m_cbLanguages;

@@ -280,7 +280,7 @@ int FlacInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
 
    FLAC__file_decoder_set_client_data(pFLACDec, context);
 
-   if(!FLAC__file_decoder_set_filename(pFLACDec, T2CA(wlGetAnsiCompatFilename(infilename))))
+   if(!FLAC__file_decoder_set_filename(pFLACDec, T2CA(GetAnsiCompatFilename(infilename))))
    {
       if(pFLACDec)
       {

@@ -82,7 +82,7 @@ class CDRipDlg:
 {
 public:
    //! ctor
-   CDRipDlg(wlUISettings& uiSettings, UIinterface& UIinterface);
+   CDRipDlg(UISettings& uiSettings, UIinterface& UIinterface);
 
    static bool IsCDExtractionAvail() throw();
 
@@ -204,7 +204,7 @@ protected:
 
    bool m_bAcquiredDiscInfo;
 
-   wlUISettings& m_uiSettings;
+   UISettings& m_uiSettings;
 
    UIinterface& m_UIinterface;
 };

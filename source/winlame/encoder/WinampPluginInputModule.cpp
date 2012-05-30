@@ -341,7 +341,7 @@ int WinampPluginInputModule::initInput(LPCTSTR infilename,
    int length_in_ms=0;
    {
       USES_CONVERSION;
-      inmod->Play(const_cast<char*>(T2CA(wlGetAnsiCompatFilename(infilename))));
+      inmod->Play(const_cast<char*>(T2CA(GetAnsiCompatFilename(infilename))));
 
       bool loop = true;
       do
@@ -409,7 +409,7 @@ int WinampPluginInputModule::decodeSamples(SampleContainer &samples)
       mutex_lock();
 
       USES_CONVERSION;
-      inmod->Play(const_cast<char*>(T2CA(wlGetAnsiCompatFilename(in_filename))));
+      inmod->Play(const_cast<char*>(T2CA(GetAnsiCompatFilename(in_filename))));
       started = true;
 
       // release mutex

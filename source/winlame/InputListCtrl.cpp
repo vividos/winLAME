@@ -77,7 +77,7 @@ void InputListCtrl::InsertFile(LPCTSTR filename, int icon, int samplerate,
    int bitrate, int length)
 {
    // create new entry
-   wlAudioFileEntry *entry = new wlAudioFileEntry;
+   AudioFileEntry *entry = new AudioFileEntry;
    entry->filename = filename;
    entry->samplerate = samplerate;
    entry->bitrate = bitrate;
@@ -128,8 +128,8 @@ void InputListCtrl::InsertFile(LPCTSTR filename, int icon, int samplerate,
 
 LPCTSTR InputListCtrl::GetFileName(int index)
 {
-   wlAudioFileEntry *entry =
-      reinterpret_cast<wlAudioFileEntry*>(GetItemData(index));
+   AudioFileEntry *entry =
+      reinterpret_cast<AudioFileEntry*>(GetItemData(index));
 
    return entry == NULL ? _T("") : entry->filename;
 }
@@ -147,8 +147,8 @@ int InputListCtrl::SortCompare(LPARAM lParam1, LPARAM lParam2,
    LPARAM lParamSort)
 {
    // get pointers
-   wlAudioFileEntry *entry1 = reinterpret_cast<wlAudioFileEntry*>(lParam1);
-   wlAudioFileEntry *entry2 = reinterpret_cast<wlAudioFileEntry*>(lParam2);
+   AudioFileEntry *entry1 = reinterpret_cast<AudioFileEntry*>(lParam1);
+   AudioFileEntry *entry2 = reinterpret_cast<AudioFileEntry*>(lParam2);
    InputListCtrl *This = reinterpret_cast<InputListCtrl*>(lParamSort);
 
    bool result = true;
@@ -247,7 +247,7 @@ LRESULT InputListCtrl::OnReflectedNotify(UINT uMsg, WPARAM wParam, LPARAM lParam
       {
          LPNMLISTVIEW lpnmListView = reinterpret_cast<LPNMLISTVIEW>(pnmh);
 
-         wlAudioFileEntry* pEntry = reinterpret_cast<wlAudioFileEntry*>(lpnmListView->lParam);
+         AudioFileEntry* pEntry = reinterpret_cast<AudioFileEntry*>(lpnmListView->lParam);
 
          if (pEntry != NULL)
          {

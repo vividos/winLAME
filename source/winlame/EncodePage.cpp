@@ -43,9 +43,9 @@ static char THIS_FILE[]=__FILE__;
 static HWND mainwnd = NULL;
 
 /// warns about transcoding
-bool wlWarnAboutTranscode()
+bool WarnAboutTranscode()
 {
-   return wlMessageBox(::GetActiveWindow(), IDS_WARN_TRANSCODE, MB_YESNO | MB_ICONEXCLAMATION) == IDYES;
+   return AppMessageBox(::GetActiveWindow(), IDS_WARN_TRANSCODE, MB_YESNO | MB_ICONEXCLAMATION) == IDYES;
 }
 
 
@@ -85,7 +85,7 @@ LRESULT EncodePage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
    ::SetWindowText(GetDlgItem(IDC_ENC_INFO3),_T(""));
    ::SetWindowText(GetDlgItem(IDC_ENC_INFO4),_T(""));
 
-   wlUISettings &settings = pui->getUISettings();
+   UISettings &settings = pui->getUISettings();
 
    CProgressBarCtrl progressAll(GetDlgItem(IDC_ENC_PROGRESS_FILES));
    progressAll.SetRange(0,settings.encoderjoblist.size()*100);
@@ -171,10 +171,10 @@ LRESULT EncodePage::OnClickedStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
          (LPARAM)ilIcons.ExtractIcon(3) );
 
       // set some encoder options
-      wlUISettings &settings = pui->getUISettings();
+      UISettings &settings = pui->getUISettings();
 
       // set param if this is the last file
-      settings.settings_manager.setValue(wlGeneralIsLastFile,
+      settings.settings_manager.setValue(GeneralIsLastFile,
          unsigned(curfile+1) >= settings.encoderjoblist.size() ? 1 : 0);
 
       // set input path
@@ -389,19 +389,19 @@ EncoderErrorHandler::ErrorAction EncodePage::handleError(LPCTSTR infilename,
    ErrorDlg dlg;
    dlg.Init(infilename, modulename, errnum, errormsg, bSkipDisabled);
 
-   EncoderErrorHandler::ErrorAction ret = EncoderErrorHandler::wlContinue;
+   EncoderErrorHandler::ErrorAction ret = EncoderErrorHandler::Continue;
    switch(dlg.DoModal())
    {
    case IDC_ERR_BUTTON_CONTINUE:
-      ret = EncoderErrorHandler::wlContinue;
+      ret = EncoderErrorHandler::Continue;
       break;
 
    case IDC_ERR_BUTTON_SKIPFILE:
-      ret = EncoderErrorHandler::wlSkipFile;
+      ret = EncoderErrorHandler::SkipFile;
       break;
 
    case IDC_ERR_BUTTON_STOP:
-      ret = EncoderErrorHandler::wlStopEncode;
+      ret = EncoderErrorHandler::StopEncode;
       break;
    }
    return ret;
@@ -425,7 +425,7 @@ void EncodePage::OnEnterPage()
 
 bool EncodePage::OnLeavePage()
 {
-   wlUISettings& settings = pui->getUISettings();
+   UISettings& settings = pui->getUISettings();
 
    settings.last_page_was_cdrip_page = false;
 
@@ -469,7 +469,7 @@ bool EncodePage::OnLeavePage()
 
 void EncodePage::UpdateInfo()
 {
-   wlUISettings &settings = pui->getUISettings();
+   UISettings &settings = pui->getUISettings();
 
    if (encoder->isRunning())
    {
@@ -679,7 +679,7 @@ void EncodePage::ShutdownWindows(int action)
 }
 
 //! thread priority string id's
-int wlThreadPrioIDs[] = {
+int c_aiThreadPrioIDs[] = {
    IDS_ENC_TP_IDLE, IDS_ENC_TP_NORMAL,
    IDS_ENC_TP_HIGH, IDS_ENC_TP_HIGHEST
 };
@@ -695,6 +695,6 @@ void EncodePage::UpdateThreadPrio()
 
    // update status text
    CString text;
-   text.LoadString(wlThreadPrioIDs[pos]);
+   text.LoadString(c_aiThreadPrioIDs[pos]);
    SetDlgItemText(IDC_ENC_STATIC_THREADPRIO,text);
 }

@@ -304,7 +304,7 @@ void SampleContainer::deinterleaveChannel(unsigned char*samples, int numsamples,
 
 /*
 void SampleContainer::interleaveSamples(int channels,int bitpersample, int numsamples, void**samples)
-//void wlInterleaveSamples(int channels, int len, short **buffer, short *destbuffer)
+//void InterleaveSamples(int channels, int len, short **buffer, short *destbuffer)
 {
    void *destbuf = interleaved;
    if (channels==1)

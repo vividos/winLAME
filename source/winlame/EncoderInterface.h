@@ -115,7 +115,7 @@ public:
    virtual ~EncoderErrorHandler() throw() {}
 
    //! action to perform when error is handled
-   enum ErrorAction { wlContinue=0, wlSkipFile, wlStopEncode };
+   enum ErrorAction { Continue=0, SkipFile, StopEncode };
 
    //! error handler function
    virtual ErrorAction handleError(LPCTSTR infilename,

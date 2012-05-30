@@ -37,7 +37,7 @@ static char THIS_FILE[]=__FILE__;
 
 
 //! genre ID to string mapping
-const TCHAR* wlId3GenreIDtoString[] =
+const TCHAR* g_aId3GenreIDtoString[] =
 {
    // 0..19
    _T("Blues"), _T("Classic Rock"), _T("Country"), _T("Dance"), _T("Disco"), _T("Funk"), _T("Grunge"), _T("Hip-Hop"),
@@ -75,14 +75,14 @@ CString TrackInfo::GenreIDToText(unsigned int uGenreID)
    if (uGenreID == (unsigned int)-1)
       return _T("");
 
-   ATLASSERT(uGenreID < sizeof(wlId3GenreIDtoString)/sizeof(*wlId3GenreIDtoString));
-   return wlId3GenreIDtoString[uGenreID];
+   ATLASSERT(uGenreID < sizeof(g_aId3GenreIDtoString)/sizeof(*g_aId3GenreIDtoString));
+   return g_aId3GenreIDtoString[uGenreID];
 }
 
 unsigned int TrackInfo::TextToGenreID(const CString& cszText)
 {
-   for (unsigned int i=0; i<sizeof(wlId3GenreIDtoString)/sizeof(*wlId3GenreIDtoString); i++)
-      if (wlId3GenreIDtoString[i] == cszText)
+   for (unsigned int i=0; i<sizeof(g_aId3GenreIDtoString)/sizeof(*g_aId3GenreIDtoString); i++)
+      if (g_aId3GenreIDtoString[i] == cszText)
          return i;
 
    return (unsigned int)-1;
@@ -90,10 +90,10 @@ unsigned int TrackInfo::TextToGenreID(const CString& cszText)
 
 LPCTSTR* TrackInfo::GetGenreList()
 {
-   return wlId3GenreIDtoString;
+   return g_aId3GenreIDtoString;
 }
 
 unsigned int TrackInfo::GetGenreListLength()
 {
-   return sizeof(wlId3GenreIDtoString) / sizeof(*wlId3GenreIDtoString);
+   return sizeof(g_aId3GenreIDtoString) / sizeof(*g_aId3GenreIDtoString);
 }

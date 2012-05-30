@@ -109,7 +109,7 @@ MainDlg::MainDlg()
       // found file; warn user about it
       CString cszWarning;
       cszWarning.Format(IDS_WARNING_LOCAL_PRESETS_XML_FILE_SS, cszUserSpecificAppFolder, cszMachineWideAppFolder);
-      wlMessageBox(m_hWnd, cszWarning, MB_ICONEXCLAMATION | MB_OK);
+      AppMessageBox(m_hWnd, cszWarning, MB_ICONEXCLAMATION | MB_OK);
    }
 
    // first try to check for user-dependend config file
@@ -185,7 +185,7 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    tooltips.Create(m_hWnd);
 
    // add tool tips for every control
-   wlAddTooltips(m_hWnd,tooltips);
+   AddTooltips(m_hWnd,tooltips);
 
    // activate tooltips
    tooltips.Activate(TRUE);
@@ -298,7 +298,7 @@ void MainDlg::RunDialog()
        0==settings.module_manager->getOutputModuleCount() )
    {
       // show warning message box
-      wlMessageBox(m_hWnd, IDS_ERR_NOMODULES, MB_OK | MB_ICONSTOP);
+      AppMessageBox(m_hWnd, IDS_ERR_NOMODULES, MB_OK | MB_ICONSTOP);
 
       // exit winLAME
       PostQuitMessage(0);
@@ -418,7 +418,7 @@ bool MainDlg::ActivatePage(int page)
    newpage->OnEnterPage();
 
    // add tool tips for every control
-   wlAddTooltips(newpage->m_hWnd,tooltips);
+   AddTooltips(newpage->m_hWnd,tooltips);
 
    // enable or disable the buttons below
    lockWizardButtons(false);

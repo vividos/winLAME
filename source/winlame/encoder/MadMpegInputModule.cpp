@@ -153,7 +153,7 @@ int MadMpegInputModule::initInput(LPCTSTR infilename,
 
    // open infile
    USES_CONVERSION;
-   istr.open(T2CA(wlGetAnsiCompatFilename(infilename)),std::ios::in|std::ios::binary);
+   istr.open(T2CA(GetAnsiCompatFilename(infilename)),std::ios::in|std::ios::binary);
    if (!istr.is_open())
    {
       lasterror.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);

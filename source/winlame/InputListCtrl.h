@@ -47,7 +47,7 @@ typedef struct
 
    //! length
    int length;
-} wlAudioFileEntry;
+} AudioFileEntry;
 
 
 //! input file list ctrl
@@ -138,7 +138,7 @@ END_MSG_MAP()
 protected:
 
    //! all audio file entries
-   std::vector<wlAudioFileEntry*> allentries;
+   std::vector<AudioFileEntry*> allentries;
 
    //! indicates if user drags item
    bool dragging;

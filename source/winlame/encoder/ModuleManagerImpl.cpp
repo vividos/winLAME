@@ -54,11 +54,11 @@ static char THIS_FILE[]=__FILE__;
 
 // global functions
 
-//! max number of input modules wlGetNewInputModule can return
-const int wlMaxInputModule = 8;
+//! max number of input modules GetNewInputModule can return
+const int MaxInputModule = 8;
 
 //! returns a new input module by index
-InputModule *wlGetNewInputModule(int index)
+InputModule *GetNewInputModule(int index)
 {
    InputModule *inmod = NULL;
    switch(index)
@@ -90,11 +90,11 @@ InputModule *wlGetNewInputModule(int index)
    return inmod;
 }
 
-//! max number of output modules wlGetNewOutputModule can return
-const int wlMaxOutputModule = 5;
+//! max number of output modules GetNewOutputModule can return
+const int c_iMaxOutputModule = 5;
 
 //! returns a new output module by index
-OutputModule *wlGetNewOutputModule(int index)
+OutputModule *GetNewOutputModule(int index)
 {
    OutputModule *outmod = NULL;
    switch(index)
@@ -210,9 +210,9 @@ ModuleManagerImpl::ModuleManagerImpl()
    // check which output modules are available
    int i;
    OutputModule *outmod;
-   for(i=0; i<wlMaxOutputModule; i++)
+   for(i=0; i<c_iMaxOutputModule; i++)
    {
-      outmod = wlGetNewOutputModule(i);
+      outmod = GetNewOutputModule(i);
 
       if (outmod!=NULL)
       {
@@ -229,9 +229,9 @@ ModuleManagerImpl::ModuleManagerImpl()
 
    // check which input modules are available
    InputModule *inmod;
-   for(i=0; i<wlMaxInputModule; i++)
+   for(i=0; i<MaxInputModule; i++)
    {
-      inmod = wlGetNewInputModule(i);
+      inmod = GetNewInputModule(i);
 
       if (inmod!=NULL)
       {
@@ -329,7 +329,7 @@ OutputModule *ModuleManagerImpl::getOutputModule(int module_id)
       if (pos == out_id_to_modidx.end())
          continue; // should not happen, normally
 
-      outmod = wlGetNewOutputModule(pos->second);
+      outmod = GetNewOutputModule(pos->second);
       break;
    }
 
@@ -410,7 +410,7 @@ void ModuleManagerImpl::addWinampModules()
    }
 }
 
-CString wlGetAnsiCompatFilename(LPCTSTR pszFilename)
+CString GetAnsiCompatFilename(LPCTSTR pszFilename)
 {
    CString cszFilename;
    DWORD dwRet = GetShortPathName(pszFilename, cszFilename.GetBuffer(MAX_PATH), MAX_PATH);

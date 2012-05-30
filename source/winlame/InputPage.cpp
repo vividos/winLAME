@@ -309,7 +309,7 @@ LRESULT InputPage::OnDropFiles(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
 
    // print out errors occured
    if (!input_errors.IsEmpty())
-      wlMessageBox(m_hWnd, input_errors, MB_OK | MB_ICONEXCLAMATION);
+      AppMessageBox(m_hWnd, input_errors, MB_OK | MB_ICONEXCLAMATION);
 
    return 0;
 }
@@ -489,7 +489,7 @@ void InputPage::OpenFileDialog()
 
       // print out errors occured
       if (!input_errors.IsEmpty())
-         wlMessageBox(m_hWnd, input_errors, MB_OK | MB_ICONEXCLAMATION);
+         AppMessageBox(m_hWnd, input_errors, MB_OK | MB_ICONEXCLAMATION);
    }
 
    delete[] buffer;
@@ -557,7 +557,7 @@ void InputPage::InsertFilename(LPCTSTR filename)
             break;
 
          // set playlist filename as output playlist, too
-         wlUISettings &settings = pui->getUISettings();
+         UISettings &settings = pui->getUISettings();
          settings.create_playlist = true;
 
          // produce playlist filename
@@ -638,7 +638,7 @@ bool InputPage::OnLeavePage()
    if (max==0)
    {
       // pop up a message box
-      wlMessageBox(m_hWnd, IDS_INPUT_NOINFILES, MB_OK | MB_ICONEXCLAMATION);
+      AppMessageBox(m_hWnd, IDS_INPUT_NOINFILES, MB_OK | MB_ICONEXCLAMATION);
       return false;
    }
 

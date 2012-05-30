@@ -18,7 +18,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file wlUISettings.cpp
+/*! \file UISettings.cpp
 
    \brief contains functions to read and store the general UI settings in the registry
 
@@ -62,9 +62,9 @@ LPCTSTR g_pszDiscInfosCdplayerIni = _T("StoreDiscInfosInCdplayerIni");
 LPCTSTR g_pszLanguageId = _T("LanguageId");
 
 
-// wlUISettings methods
+// UISettings methods
 
-wlUISettings::wlUISettings()
+UISettings::UISettings()
 :delete_after_encode(false),
    output_module(0),
    out_location_use_input_dir(false),
@@ -120,7 +120,7 @@ void ReadBooleanValue(CRegKey& regKey, LPCTSTR pszName, bool& bValue)
 }
 #pragma warning(pop)
 
-void wlUISettings::ReadSettings()
+void UISettings::ReadSettings()
 {
    // open root key
    CRegKey regRoot;
@@ -198,7 +198,7 @@ void wlUISettings::ReadSettings()
    regRoot.Close();
 }
 
-void wlUISettings::StoreSettings()
+void UISettings::StoreSettings()
 {
    // open root key
    CRegKey regRoot;

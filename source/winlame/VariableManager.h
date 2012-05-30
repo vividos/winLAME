@@ -66,11 +66,11 @@ protected:
 
 enum
 {
-   wlFacilityLAME = 1,
-   wlFacilityOggVorbis,
-   wlFacilityWave,
-   wlFacilityAAC,
-   wlFacilityWma
+   FacilityLAME = 1,
+   FacilityOggVorbis,
+   FacilityWave,
+   FacilityAAC,
+   FacilityWma
 };
 
 
@@ -114,7 +114,7 @@ enum
    AacQuality,
    AacAutoBandwidth,
 
-   wlGeneralIsLastFile,
+   GeneralIsLastFile,
 
    WmaBitrate,
    WmaQuality,

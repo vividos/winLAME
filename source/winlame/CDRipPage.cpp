@@ -105,7 +105,7 @@ LRESULT CDRipPage::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHan
 
 void CDRipPage::OnEnterPage()
 {
-   wlUISettings& settings = pui->getUISettings();
+   UISettings& settings = pui->getUISettings();
 
    PostMessage(WM_LOCK_NEXT_BUTTON);
 
@@ -165,7 +165,7 @@ LRESULT CDRipPage::OnButtonStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
    // check if disc is inserted
    if (FALSE == BASS_CD_IsReady(discinfo.m_nDiscDrive))
    {
-      wlMessageBox(m_hWnd, IDS_CDRIP_PAGE_ERROR_NO_CD_IN_DRIVE, MB_OK | MB_ICONEXCLAMATION);
+      AppMessageBox(m_hWnd, IDS_CDRIP_PAGE_ERROR_NO_CD_IN_DRIVE, MB_OK | MB_ICONEXCLAMATION);
       return 0;
    }
 
@@ -173,7 +173,7 @@ LRESULT CDRipPage::OnButtonStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
    CString cszCDID(BASS_CD_GetID(discinfo.m_nDiscDrive, BASS_CDID_CDDB));
    if (cszCDID != discinfo.m_cszCDID)
    {
-      wlMessageBox(m_hWnd, IDS_CDRIP_PAGE_ERROR_WRONG_CD, MB_OK | MB_ICONEXCLAMATION);
+      AppMessageBox(m_hWnd, IDS_CDRIP_PAGE_ERROR_WRONG_CD, MB_OK | MB_ICONEXCLAMATION);
       return 0;
    }
 
@@ -270,7 +270,7 @@ void CDRipPage::ExtractAudio()
       CString cszTrackUriStart;
       cszTrackUriStart.Format(_T("%s%u\\"), g_pszCDRipPrefix, n);
 
-      wlFilenameList& fnlist = pui->getUISettings().filenamelist;
+      FilenameList& fnlist = pui->getUISettings().filenamelist;
       unsigned int nMax2 = fnlist.size();
       for(unsigned int i=0; i<nMax2; i++)
       {
@@ -310,7 +310,7 @@ bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo,
 
    if (!outmod.isAvailable())
    {
-      wlMessageBox(m_hWnd, IDS_CDRIP_PAGE_WAVE_OUTPUT_NOT_AVAIL, MB_OK | MB_ICONSTOP);
+      AppMessageBox(m_hWnd, IDS_CDRIP_PAGE_WAVE_OUTPUT_NOT_AVAIL, MB_OK | MB_ICONSTOP);
       return false;
    }
 
@@ -331,7 +331,7 @@ bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo,
       {
          CString cszText;
          cszText.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, cszTempFilename);
-         wlMessageBox(m_hWnd, cszText, MB_OK | MB_ICONSTOP);
+         AppMessageBox(m_hWnd, cszText, MB_OK | MB_ICONSTOP);
          return false;
       }
    }

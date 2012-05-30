@@ -100,7 +100,7 @@ LRESULT CDRipFreedbListDlg::OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*
 
 // CDRipDlg methods
 
-CDRipDlg::CDRipDlg(wlUISettings& uiSettings, UIinterface& UIinterface)
+CDRipDlg::CDRipDlg(UISettings& uiSettings, UIinterface& UIinterface)
 :m_uiSettings(uiSettings),
  m_bDriveActive(false),
  m_bAcquiredDiscInfo(false),
@@ -668,7 +668,7 @@ void CDRipDlg::FreedbLookup()
    HMODULE dll = LoadLibrary(_T("ws2_32.dll"));
    if (dll == NULL)
    {
-      wlMessageBox(m_hWnd, IDS_CDRIP_NO_INTERNET_AVAIL, MB_OK | MB_ICONSTOP);
+      AppMessageBox(m_hWnd, IDS_CDRIP_NO_INTERNET_AVAIL, MB_OK | MB_ICONSTOP);
       return;
    }
    FreeLibrary(dll);
@@ -678,7 +678,7 @@ void CDRipDlg::FreedbLookup()
    const char* cdtext = BASS_CD_GetID(nDrive, BASS_CDID_CDDB);
    if (!cdtext || strlen(cdtext) == 0)
    {
-      wlMessageBox(m_hWnd, IDS_CDRIP_ERROR_NOCDINFO, MB_OK | MB_ICONSTOP);
+      AppMessageBox(m_hWnd, IDS_CDRIP_ERROR_NOCDINFO, MB_OK | MB_ICONSTOP);
       return;
    }
 
@@ -710,7 +710,7 @@ void CDRipDlg::FreedbLookup()
       unsigned int nMax = results.size();
       if (nMax == 0)
       {
-         wlMessageBox(m_hWnd, IDS_CDRIP_NO_CDINFO_AVAIL, MB_OK | MB_ICONEXCLAMATION);
+         AppMessageBox(m_hWnd, IDS_CDRIP_NO_CDINFO_AVAIL, MB_OK | MB_ICONEXCLAMATION);
       }
       else
       {
@@ -745,7 +745,7 @@ void CDRipDlg::FreedbLookup()
       cszTemp.Replace(_T("\n"), _T(""));
       cszTemp.Replace(_T("\r"), _T(""));
       cszText += cszTemp;
-      wlMessageBox(m_hWnd, cszText, MB_OK | MB_ICONSTOP);
+      AppMessageBox(m_hWnd, cszText, MB_OK | MB_ICONSTOP);
    }
    catch(const std::string& strError)
    {
@@ -757,11 +757,11 @@ void CDRipDlg::FreedbLookup()
          cszText += CString(strError.c_str());
          cszText += _T(")");
       }
-      wlMessageBox(m_hWnd, cszText, MB_OK | MB_ICONSTOP);
+      AppMessageBox(m_hWnd, cszText, MB_OK | MB_ICONSTOP);
    }
    catch(...)
    {
-      wlMessageBox(m_hWnd, IDS_CDRIP_ERROR_FREEDB, MB_OK | MB_ICONSTOP);
+      AppMessageBox(m_hWnd, IDS_CDRIP_ERROR_FREEDB, MB_OK | MB_ICONSTOP);
    }
 
    WSACleanup();

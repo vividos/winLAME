@@ -72,15 +72,15 @@ LRESULT OutputPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
          (LPARAM)(LPCTSTR)modmgr->getOutputModuleName(i));
 
    // insert all possible "shutdown" actions
-   UINT wlActionStringIDs[] = {
+   UINT ActionStringIDs[] = {
       IDS_OUT_ACTION_EXIT, IDS_OUT_ACTION_SHUTDOWN, IDS_OUT_ACTION_LOGOFF,
       IDS_OUT_ACTION_HIBERNATE, IDS_OUT_ACTION_SUSPEND
    };
 
    CString action;
-   for(int j=0; j<sizeof(wlActionStringIDs)/sizeof(wlActionStringIDs[0]); j++)
+   for(int j=0; j<sizeof(ActionStringIDs)/sizeof(ActionStringIDs[0]); j++)
    {
-      action.LoadString(wlActionStringIDs[j]);
+      action.LoadString(ActionStringIDs[j]);
       SendDlgItemMessage(IDC_OUT_COMBO_FINISHED_ACTION, CB_ADDSTRING, 0,
          (LPARAM)(LPCTSTR)action);
    }
@@ -96,7 +96,7 @@ LRESULT OutputPage::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    ilIcons.Destroy();
 
    // store setting values
-   wlUISettings &settings = pui->getUISettings();
+   UISettings &settings = pui->getUISettings();
 
    // get control values
    settings.delete_after_encode = BST_CHECKED==SendDlgItemMessage(IDC_OUT_DELAFTER, BM_GETCHECK);
@@ -108,7 +108,7 @@ LRESULT OutputPage::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
 
 void OutputPage::RefreshHistory()
 {
-   wlUISettings &settings = pui->getUISettings();
+   UISettings &settings = pui->getUISettings();
 
    // reset combobox
    SendDlgItemMessage(IDC_OUT_OUTPATH, CB_RESETCONTENT);
@@ -129,7 +129,7 @@ void OutputPage::RefreshHistory()
 
 void OutputPage::OnEnterPage()
 {
-   wlUISettings &settings = pui->getUISettings();
+   UISettings &settings = pui->getUISettings();
 
    // initially set output dir when not set
    if (settings.outputdir.IsEmpty())
@@ -195,10 +195,10 @@ void OutputPage::OnEnterPage()
 }
 
 //! insert pages depending on selected module
-void wlInsertWizardPages(UIinterface *pui,int pos)
+void InsertWizardPages(UIinterface *pui,int pos)
 {
    // find out output module id
-   wlUISettings &settings = pui->getUISettings();
+   UISettings &settings = pui->getUISettings();
    int modid = settings.module_manager->getOutputModuleID(settings.output_module);
 
    switch(modid)
@@ -228,7 +228,7 @@ void wlInsertWizardPages(UIinterface *pui,int pos)
 
 bool OutputPage::OnLeavePage()
 {
-   wlUISettings& settings = pui->getUISettings();
+   UISettings& settings = pui->getUISettings();
 
    // get control values
    GetDlgItemText(IDC_OUT_OUTPATH, settings.outputdir.GetBuffer(MAX_PATH), MAX_PATH);
@@ -274,7 +274,7 @@ bool OutputPage::OnLeavePage()
       // check for empty outputdir string
       if (settings.outputdir.IsEmpty())
       {
-         wlMessageBox(m_hWnd, IDS_OUT_OUTDIR_EMPTY, MB_OK | MB_ICONEXCLAMATION);
+         AppMessageBox(m_hWnd, IDS_OUT_OUTDIR_EMPTY, MB_OK | MB_ICONEXCLAMATION);
          return false;
       }
 
@@ -290,7 +290,7 @@ bool OutputPage::OnLeavePage()
       struct _stat filestat;
       if (-1==::_tstat(path, &filestat) && !(path.GetLength()==2 && path[1]==':'))
       {
-         if (IDNO == wlMessageBox(m_hWnd, IDS_OUT_CREATE, MB_YESNO | MB_ICONQUESTION))
+         if (IDNO == AppMessageBox(m_hWnd, IDS_OUT_CREATE, MB_YESNO | MB_ICONQUESTION))
             return false;
 
          // create the output directory
@@ -326,7 +326,7 @@ bool OutputPage::OnLeavePage()
    }
 
    // insert pages depending on selected module
-   wlInsertWizardPages(pui,pos);
+   InsertWizardPages(pui,pos);
 
    // insert cd rip page when a cdrip-filename is in the file list
    {

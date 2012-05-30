@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/*! \file wlCdReadoutModule.cpp
+/*! \file CdReadoutModule.cpp
 
    \brief contains the implementation of the Bass CD Readout module
 

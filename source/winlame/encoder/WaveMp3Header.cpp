@@ -100,7 +100,7 @@ chunk data, data 0x007145f6
 chunk LIST, data 0x00000040
 */
 
-void wlWriteWaveMp3Header(std::ofstream &ostr,unsigned int channels,
+void WriteWaveMp3Header(std::ofstream &ostr,unsigned int channels,
    unsigned int samplerate,unsigned int bitrate,unsigned short codec_delay)
 {
    // write riff header
@@ -147,7 +147,7 @@ void wlWriteWaveMp3Header(std::ofstream &ostr,unsigned int channels,
    ostr.write(reinterpret_cast<char*>(&data),4);
 }
 
-void wlFixupWaveMp3Header(std::ofstream &ostr,unsigned int datalen,
+void FixupWaveMp3Header(std::ofstream &ostr,unsigned int datalen,
    unsigned int numsamples)
 {
    // whole riff file size

@@ -329,7 +329,7 @@ skip_nogap:
    mp3filename = outfilename;
 //   infotag = mgr.queryValueInt(LameVBRWriteTag)==1;
 
-   nogap_lastfile = mgr.queryValueInt(wlGeneralIsLastFile)==1;
+   nogap_lastfile = mgr.queryValueInt(GeneralIsLastFile)==1;
 
    // generate info tag?
    nlame_var_set_int(inst,nle_var_vbr_generate_info_tag,infotag?1:0);
@@ -377,7 +377,7 @@ skip_nogap:
    if (waveheader)
    {
       // write wave header
-      wlWriteWaveMp3Header(ostr,
+      WriteWaveMp3Header(ostr,
          nlame_var_get_int(inst, nle_var_channel_mode)==nle_mode_mono ? 1 : 2,
          nlame_var_get_int(inst, nle_var_out_samplerate),
          nlame_var_get_int(inst, nle_var_bitrate),
@@ -499,7 +499,7 @@ void LameOutputModule::doneOutput()
    if (waveheader)
    {
       // fix up fact chunk and riff header lengths; seeks around a bit
-      wlFixupWaveMp3Header(ostr,datalen,samplecount);
+      FixupWaveMp3Header(ostr,datalen,samplecount);
    }
 
    // close file

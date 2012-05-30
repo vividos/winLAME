@@ -134,11 +134,11 @@ int VariableManager::lookupDefaultValue(int varID)
 // facility varmap
 
 WL_VARMAP_START(varMapFacility)
-   WL_VARMAP_ENTRY1(wlFacilityLAME,     _T("lame"),     _T("LAME"))
-   WL_VARMAP_ENTRY1(wlFacilityOggVorbis,_T("oggvorbis"),_T("Ogg Vorbis"))
-   WL_VARMAP_ENTRY1(wlFacilityWave,     _T("wave"),     _T("Wave"))
-   WL_VARMAP_ENTRY1(wlFacilityAAC,      _T("aac"),      _T("AAC"))
-   WL_VARMAP_ENTRY1(wlFacilityWma,      _T("wma"),      _T("WMA"))
+   WL_VARMAP_ENTRY1(FacilityLAME,     _T("lame"),     _T("LAME"))
+   WL_VARMAP_ENTRY1(FacilityOggVorbis,_T("oggvorbis"),_T("Ogg Vorbis"))
+   WL_VARMAP_ENTRY1(FacilityWave,     _T("wave"),     _T("Wave"))
+   WL_VARMAP_ENTRY1(FacilityAAC,      _T("aac"),      _T("AAC"))
+   WL_VARMAP_ENTRY1(FacilityWma,      _T("wma"),      _T("WMA"))
 WL_VARMAP_END()
 
 
@@ -195,7 +195,7 @@ WL_VARMAP_START(varMapVariables)
    WL_VARMAP_ENTRY(WaveFileFormat,      _T("waveFileFmt"),    _T("File Format"),0)
    WL_VARMAP_ENTRY(WaveWriteWavEx,      _T("waveWavEx"),      _T("Write WavEx Header"),0)
 
-   WL_VARMAP_ENTRY(wlGeneralIsLastFile,   _T("isLastFile"),     _T("is last file"),      0)
+   WL_VARMAP_ENTRY(GeneralIsLastFile,   _T("isLastFile"),     _T("is last file"),      0)
 WL_VARMAP_END()
 
 
@@ -215,7 +215,7 @@ VarMgrVariables::VarMgrVariables()
 // global methods
 
 /// looks up facility name by module id
-LPCTSTR wlLookupNamePerModuleID(int modID)
+LPCTSTR LookupNamePerModuleID(int modID)
 {
    VarMgrFacilities fac;
    return fac.lookupName(modID);

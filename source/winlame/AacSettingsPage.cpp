@@ -178,7 +178,7 @@ bool AacSettingsPage::OnLeavePage()
    if (mpeg==0 && value==2)
    {
       // give user a message explaining that fact
-      wlMessageBox(m_hWnd, IDS_AAC_NO_MPEG2_LTP, MB_OK|MB_ICONEXCLAMATION);
+      AppMessageBox(m_hWnd, IDS_AAC_NO_MPEG2_LTP, MB_OK|MB_ICONEXCLAMATION);
       return false;
    }
 

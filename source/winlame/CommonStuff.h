@@ -39,19 +39,19 @@
 //! adds tool tips for every child dlg item found for hWnd
 /*! the tooltip text is the string resource that has the same ID value as
     the control */
-void wlAddTooltips(HWND hWnd, CToolTipCtrl &ctrl);
+void AddTooltips(HWND hWnd, CToolTipCtrl &ctrl);
 
 
 //! lets the user browse for a folder
-bool wlBrowseForFolder(HWND hParentWnd, CString &dirname,UINT captionid=0);
+bool BrowseForFolder(HWND hParentWnd, CString &dirname,UINT captionid=0);
 
 
-inline int wlMessageBox(HWND hWnd, LPCTSTR pszText, UINT nFlags)
+inline int AppMessageBox(HWND hWnd, LPCTSTR pszText, UINT nFlags)
 {
    return AtlMessageBox(hWnd, pszText, IDS_APP_CAPTION, nFlags);
 }
 
-inline int wlMessageBox(HWND hWnd, UINT nResourceId, UINT nFlags)
+inline int AppMessageBox(HWND hWnd, UINT nResourceId, UINT nFlags)
 {
    return AtlMessageBox(hWnd, nResourceId, IDS_APP_CAPTION, nFlags);
 }
