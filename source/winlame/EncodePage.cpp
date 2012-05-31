@@ -70,10 +70,6 @@ LRESULT EncodePage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
 
    ::EnableWindow(GetDlgItem(IDC_ENC_STOP),FALSE);
 
-   // set up range of slider control
-   SendDlgItemMessage(IDC_ENC_SLIDER_THREADPRIO, TBM_SETRANGEMIN, FALSE, 0);
-   SendDlgItemMessage(IDC_ENC_SLIDER_THREADPRIO, TBM_SETRANGEMAX, FALSE, 3);
-
    // set info text strings
    CString text;
    text.LoadString(IDS_ENC_STOPPED);
@@ -198,9 +194,6 @@ LRESULT EncodePage::OnClickedStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
       if (settings.create_playlist)
          encoder->setOutputPlaylistFilename(settings.playlist_filename);
       encoder->startEncode();
-
-      // when thread runs, set thread priority
-      encoder->setThreadPriority(settings.thread_prio);
 
       // update info every 100 ms
       SetTimer(IDT_ENC_UPDATEINFO,100);
@@ -405,11 +398,6 @@ EncoderErrorHandler::ErrorAction EncodePage::handleError(LPCTSTR infilename,
 
 void EncodePage::OnEnterPage()
 {
-   // set thread priority slider pos
-   int value = pui->getUISettings().thread_prio;
-   SendDlgItemMessage(IDC_ENC_SLIDER_THREADPRIO,TBM_SETPOS,TRUE,(LPARAM)value);
-   UpdateThreadPrio();
-
    // disable start button when no input files
    // (e.g. when, after encoding, the user pressed back and next again
    if (pui->getUISettings().encoderjoblist.empty())
@@ -424,10 +412,6 @@ bool EncodePage::OnLeavePage()
    UISettings& settings = pui->getUISettings();
 
    settings.last_page_was_cdrip_page = false;
-
-   // get thread priority slider pos
-   settings.thread_prio =
-      SendDlgItemMessage(IDC_ENC_SLIDER_THREADPRIO,TBM_GETPOS);
 
    // to prevent encoding of the files already encoded, delete them from the list
    if (curfile>0)
@@ -671,25 +655,4 @@ void EncodePage::ShutdownWindows(int action)
       ::PostQuitMessage(0);
       break;
    }
-}
-
-/// thread priority string id's
-int c_aiThreadPrioIDs[] = {
-   IDS_ENC_TP_IDLE, IDS_ENC_TP_NORMAL,
-   IDS_ENC_TP_HIGH, IDS_ENC_TP_HIGHEST
-};
-
-void EncodePage::UpdateThreadPrio()
-{
-   // get new pos
-   int pos = SendDlgItemMessage(IDC_ENC_SLIDER_THREADPRIO,TBM_GETPOS);
-   pui->getUISettings().thread_prio = pos;
-
-   // set thread priority
-   encoder->setThreadPriority(pos);
-
-   // update status text
-   CString text;
-   text.LoadString(c_aiThreadPrioIDs[pos]);
-   SetDlgItemText(IDC_ENC_STATIC_THREADPRIO,text);
 }

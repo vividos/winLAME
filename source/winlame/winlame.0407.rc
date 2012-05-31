@@ -116,9 +116,6 @@ BEGIN
     PUSHBUTTON      "start", IDC_ENC_START, 6, 11, 16, 14, BS_ICON
     PUSHBUTTON      "stop", IDC_ENC_STOP, 22, 11, 16, 14, BS_ICON
     PUSHBUTTON      "totray", IDC_ENC_TOTRAY, 42, 11, 16, 14, BS_ICON
-    LTEXT           "Thread-Priorität", IDC_STATIC, 139, 8, 53, 8, NOT WS_VISIBLE | WS_DISABLED
-    LTEXT           "%s", IDC_ENC_STATIC_THREADPRIO, 139, 18, 48, 8, NOT WS_VISIBLE | WS_DISABLED
-    CONTROL         "", IDC_ENC_SLIDER_THREADPRIO, TRACKBAR_CLASS, NOT WS_VISIBLE | WS_TABSTOP | WS_DISABLED | TBS_AUTOTICKS, 192, 9, 39, 12
     LTEXT           "Fortschrittsinformation", IDC_ENC_BEVEL2, 0, 26, 291, 8
     LTEXT           "Bearbeite Datei %u von %u", IDC_ENC_INFO1, 6, 35, 279, 8, SS_NOPREFIX
     CONTROL         "", IDC_ENC_PROGRESS_FILES, PROGRESS_CLASS, WS_BORDER | PBS_SMOOTH, 6, 46, 279, 11
@@ -499,10 +496,6 @@ BEGIN
     IDS_ENC_REMAINING_UUU         "Verbleibende Zeit: %02u:%02u:%02u"
     IDS_ENC_TRAY_TOOLTIP          "winLAME: Datei %u/%u; %u.%1u %% fertig."
     IDS_ENC_TRAY_FINISHED         "winLAME: Alle Dateien wurden encodet"
-    IDS_ENC_TP_IDLE               "idle"
-    IDS_ENC_TP_NORMAL             "normal"
-    IDS_ENC_TP_HIGH               "higher"
-    IDS_ENC_TP_HIGHEST            "highest"
     IDC_INPUT_BUTTON_PLAY         "Spielt die selektierte Datei mit der Anwendung, die mit dem Dateityp assoziiert ist"
     IDC_INPUT_LIST_INPUTFILES     "Die Liste der Quelldateien"
     IDC_INPUT_BUTTON_INFILESEL    "Fügt Dateien zur Liste der Quelldateien hinzu"
@@ -643,7 +636,6 @@ BEGIN
     IDC_AAC_CHECK_USELFE          "Wenn angehakt, wird der Low Frequency Enhancement-Kanal benutzt"
     IDC_AAC_SPIN_BITRATE          "Ändern Sie die Bitrate"
     IDC_AAC_SPIN_BANDWIDTH        "Ändern Sie die Bandbreite"
-    IDC_ENC_SLIDER_THREADPRIO     "Ändern Sie die CPU-Priorität des Encoding-Threads"
     IDC_OGGV_RADIO_BRMODE1        "Wählt Quality Management Mode; empfohlen"
     IDC_OGGV_RADIO_BRMODE2        "Wählt variable Bitrate aus"
     IDC_OGGV_RADIO_BRMODE3        "Wählt durchschnittliche Bitrate aus"

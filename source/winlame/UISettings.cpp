@@ -67,7 +67,6 @@ UISettings::UISettings()
    out_location_use_input_dir(false),
    preset_avail(false),
    hide_advanced_lame(true),
-   thread_prio(0),
    overwrite_existing(true),
    warn_lossy_transcoding(true),
    after_encoding_action(-1),

@@ -88,7 +88,6 @@ BEGIN_MSG_MAP(EncodePage)
    COMMAND_HANDLER(IDC_ENC_STOP, BN_CLICKED, OnClickedStop)
    COMMAND_HANDLER(IDC_ENC_TOTRAY, BN_CLICKED, OnClickedToTray)
    MESSAGE_HANDLER(WL_SYSTRAY_ACTIVE, OnSystrayActive)
-   MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
    MESSAGE_HANDLER(WM_TIMER, OnTimer)
    CHAIN_MSG_MAP(CDialogResize<EncodePage>)
 END_MSG_MAP()
@@ -127,15 +126,6 @@ END_MSG_MAP()
    /// called when user clicked on systray image
    LRESULT OnSystrayActive(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when slider is moved
-   LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-   {
-      // check if the vbr quality slider was moved
-      if ( (HWND)lParam == GetDlgItem(IDC_ENC_SLIDER_THREADPRIO))
-         UpdateThreadPrio();
-      return 0;
-   }
-
    /// called for each "update info" timer interval
    LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
@@ -161,9 +151,6 @@ END_MSG_MAP()
 protected:
    /// updates encoding information
    void UpdateInfo();
-
-   /// updates thread priority
-   void UpdateThreadPrio();
 
    /// shuts down windows, depending on the action code
    void ShutdownWindows(int action);

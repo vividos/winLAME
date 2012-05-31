@@ -195,9 +195,6 @@ public:
    /// sets output playlist filename and enables playlist creation
    virtual void setOutputPlaylistFilename(LPCTSTR plname)=0;
 
-   /// sets thread prio; allowed values:  0: idle, 1: normal, 2: high, 3: highest
-   virtual void setThreadPriority(int prio)=0;
-
    /// starts encoding thread; returns immediately
    virtual void startEncode()=0;
 

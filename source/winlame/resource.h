@@ -84,8 +84,6 @@
 #define IDC_ENC_INFO2                           3310
 #define IDC_ENC_INFO3                           3311
 #define IDC_ENC_INFO4                           3312
-#define IDC_ENC_SLIDER_THREADPRIO               3313
-#define IDC_ENC_STATIC_THREADPRIO               3314
 #define IDC_LAME_EDIT_QUALITY                   3400
 #define IDC_LAME_SPIN_QUALITY                   3401
 #define IDC_LAME_RADIO_TYPE2                    3402
@@ -264,10 +262,6 @@
 #define IDS_ENC_REMAINING_UUU                   40705
 #define IDS_ENC_TRAY_TOOLTIP                    40706
 #define IDS_ENC_TRAY_FINISHED                   40707
-#define IDS_ENC_TP_IDLE                         40708
-#define IDS_ENC_TP_NORMAL                       40709
-#define IDS_ENC_TP_HIGH                         40710
-#define IDS_ENC_TP_HIGHEST                      40711
 #define IDS_HTML_INPUT                          40800
 #define IDS_HTML_OUTPUT                         40801
 #define IDS_HTML_PRESETS                        40802

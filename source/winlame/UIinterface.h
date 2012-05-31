@@ -103,9 +103,6 @@ struct UISettings
    /// current filename of presets.xml file
    CString presets_filename;
 
-   /// current encoder thread priority
-   int thread_prio;
-
    /// autostart encoding after cd ripping?
    bool cdrip_autostart_encoding;
 

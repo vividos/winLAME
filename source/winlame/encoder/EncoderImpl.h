@@ -146,42 +146,6 @@ public:
       playlist_filename += plname;
    }
 
-   /// sets thread prio; allowed values:  0: idle, 1: normal, 2: high, 3: highest
-   virtual void setThreadPriority(int prio)
-   {
-      if (!running || thread_handle==0) return;
-      int tprio, pclass;
-
-      switch(prio)
-      {
-      case 0:
-         tprio = THREAD_PRIORITY_IDLE;
-         pclass = IDLE_PRIORITY_CLASS;
-         break;
-
-      case 1:
-         tprio = THREAD_PRIORITY_NORMAL;
-         pclass = NORMAL_PRIORITY_CLASS;
-         break;
-
-      case 2:
-         tprio = THREAD_PRIORITY_ABOVE_NORMAL;
-         pclass = NORMAL_PRIORITY_CLASS;
-         break;
-
-      case 3:
-         tprio = THREAD_PRIORITY_HIGHEST;
-         pclass = HIGH_PRIORITY_CLASS;
-         break;
-
-      default:
-         return;
-      }
-
-      ::SetThreadPriority((HANDLE)thread_handle,tprio);
-      ::SetPriorityClass((HANDLE)thread_handle,pclass);
-   }
-
    /// starts encoding thread; returns immediately
    virtual void startEncode()
    {
