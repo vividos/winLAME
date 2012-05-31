@@ -46,6 +46,13 @@ class EncodePage:
 public:
    /// ctor
    EncodePage()
+      :newfile(false),
+       curfile(0),
+       starttimer(0),
+       noupdate(false),
+       intray(false),
+       startpause(0),
+       pausetime(0)
    {
       IDD = IDD_DLG_ENCODE;
       captionID = IDS_DLG_CAP_ENCODE;
@@ -54,12 +61,6 @@ public:
 
       // create new encoder object
       encoder = EncoderInterface::getNewEncoder();
-      curfile=0;
-      starttimer=0;
-      noupdate=false;
-      intray=false;
-      startpause=0;
-      pausetime=0;
    }
 
    /// dtor

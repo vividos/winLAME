@@ -264,8 +264,7 @@ LRESULT MainDlg::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    if ((wParam & 0xFFF0)==IDM_ABOUTBOX)
    {
       // show about dialog
-      AboutDlg dlg;
-      dlg.SetModuleManager(settings.module_manager);
+      AboutDlg dlg(*settings.module_manager);
       dlg.SetPresetsXmlFilename(settings.presets_filename);
       dlg.DoModal();
    }

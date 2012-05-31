@@ -37,7 +37,15 @@ class ErrorDlg: public CDialogImpl<ErrorDlg>
 {
 public:
    /// ctor
-   ErrorDlg(){}
+   ErrorDlg(LPCTSTR thefilename, LPCTSTR themodulename, int theerrorcode, LPCTSTR theerrormsg,
+      bool bSkipDisabled)
+      :filename(thefilename),
+       modulename(themodulename),
+       errorcode(theerrorcode),
+       errormsg(theerrormsg),
+       m_bSkipDisabled(bSkipDisabled)
+   {
+   }
 
    enum { IDD = IDD_ERRORDLG };
 
@@ -100,18 +108,6 @@ END_MSG_MAP()
       // ends dialog with the id of pressed button as return value
       EndDialog(wID);
       return 0;
-   }
-
-   /// initializes the error dialog
-   void Init(LPCTSTR thefilename, LPCTSTR themodulename, int theerrorcode, LPCTSTR theerrormsg,
-      bool bSkipDisabled)
-   {
-      // sets all needed variables
-      filename = thefilename;
-      modulename = themodulename;
-      errorcode = theerrorcode;
-      errormsg = theerrormsg;
-      m_bSkipDisabled = bSkipDisabled;
    }
 
 protected:

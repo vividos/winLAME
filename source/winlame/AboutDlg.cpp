@@ -145,11 +145,11 @@ void AboutDlg::GetHtmlString(CComBSTR& str)
       {
          // retrieve list of installed input module names
          varname = _T("<ul>");
-         int max = module_manager->getInputModuleCount();
+         int max = m_moduleManager.getInputModuleCount();
          for(int i=0; i<max; i++)
          {
             varname += _T("<li>");
-            varname += module_manager->getInputModuleName(i);
+            varname += m_moduleManager.getInputModuleName(i);
             varname += _T("</li>");
          }
          varname += _T("</ul>");
@@ -158,33 +158,33 @@ void AboutDlg::GetHtmlString(CComBSTR& str)
       {
          // retrieve list of installed output module names
          varname = _T("<ul>");
-         int max = module_manager->getOutputModuleCount();
+         int max = m_moduleManager.getOutputModuleCount();
          for(int i=0; i<max; i++)
          {
             varname += _T("<li>");
-            varname += module_manager->getOutputModuleName(i);
+            varname += m_moduleManager.getOutputModuleName(i);
             varname += _T("</li>");
          }
          varname += _T("</ul>");
       }
       else if (varname==_T("lameversion"))
-         module_manager->getModuleVersionString(varname,ID_OM_LAME,0);
+         m_moduleManager.getModuleVersionString(varname,ID_OM_LAME,0);
       else if (varname==_T("lamecompiler"))
-         module_manager->getModuleVersionString(varname,ID_OM_LAME,1);
+         m_moduleManager.getModuleVersionString(varname,ID_OM_LAME,1);
       else if (varname==_T("lamecpufeat"))
-         module_manager->getModuleVersionString(varname,ID_OM_LAME,2);
+         m_moduleManager.getModuleVersionString(varname,ID_OM_LAME,2);
       else if (varname==_T("libsndfileversion"))
-         module_manager->getModuleVersionString(varname,ID_IM_SNDFILE);
+         m_moduleManager.getModuleVersionString(varname,ID_IM_SNDFILE);
       else if (varname==_T("madversion"))
-         module_manager->getModuleVersionString(varname,ID_IM_MAD,0);
+         m_moduleManager.getModuleVersionString(varname,ID_IM_MAD,0);
       else if (varname==_T("madbuild"))
-         module_manager->getModuleVersionString(varname,ID_IM_MAD,3);
+         m_moduleManager.getModuleVersionString(varname,ID_IM_MAD,3);
       else if (varname==_T("vorbisversion"))
-         module_manager->getModuleVersionString(varname,ID_OM_OGGV);
+         m_moduleManager.getModuleVersionString(varname,ID_OM_OGGV);
       else if (varname==_T("bassver"))
-         module_manager->getModuleVersionString(varname,ID_IM_BASS);
+         m_moduleManager.getModuleVersionString(varname,ID_IM_BASS);
       else if (varname==_T("flacver"))
-         module_manager->getModuleVersionString(varname,ID_IM_FLAC);
+         m_moduleManager.getModuleVersionString(varname,ID_IM_FLAC);
       else if (varname==_T("stlportversion"))
       {
 #ifdef _STLPORT_MAJOR

@@ -78,7 +78,9 @@ UISettings::UISettings()
    freedb_server(_T("freedb.freedb.org")),
    freedb_username(_T("default")),
    store_disc_infos_cdplayer_ini(true),
-   language_id(MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT))
+   language_id(MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)),
+   preset_manager(NULL),
+   module_manager(NULL)
 {
    ::GetTempPath(MAX_PATH, cdrip_temp_folder.GetBuffer(MAX_PATH));
    cdrip_temp_folder.ReleaseBuffer();
@@ -100,7 +102,7 @@ void ReadStringValue(CRegKey& regKey, LPCTSTR pszName, UINT uiMaxLength, CString
 void ReadIntValue(CRegKey& regKey, LPCTSTR pszName, int& iValue)
 {
    DWORD value = 0;
-   if (ERROR_SUCCESS==regKey.QueryValue(value, g_pszActionAfterEncoding))
+   if (ERROR_SUCCESS==regKey.QueryValue(value, pszName))
       iValue = static_cast<int>(value);
 }
 
@@ -108,7 +110,7 @@ void ReadIntValue(CRegKey& regKey, LPCTSTR pszName, int& iValue)
 void ReadUIntValue(CRegKey& regKey, LPCTSTR pszName, UINT& uiValue)
 {
    DWORD value = 0;
-   if (ERROR_SUCCESS==regKey.QueryValue(value, g_pszActionAfterEncoding))
+   if (ERROR_SUCCESS==regKey.QueryValue(value, pszName))
       uiValue = value;
 }
 

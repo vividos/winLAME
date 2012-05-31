@@ -26,13 +26,18 @@
 #pragma once
 
 // needed includes
-
+#include <boost/noncopyable.hpp>
 
 extern LPCTSTR g_pszCDRipPrefix;
 
 struct CDRipDiscInfo
 {
-   CDRipDiscInfo():m_bVariousArtists(false), m_nYear(0), m_nDiscDrive(0){}
+   CDRipDiscInfo()
+      :m_bVariousArtists(false),
+       m_nYear(0),
+       m_nDiscDrive(0)
+   {
+   }
 
    CString m_cszDiscTitle;
    CString m_cszDiscArtist;
@@ -46,7 +51,13 @@ struct CDRipDiscInfo
 
 struct CDRipTrackInfo
 {
-   CDRipTrackInfo():m_nTrackOnDisc(0), m_nTrackLength(0), m_bActive(true) {}
+   CDRipTrackInfo()
+      :m_nTrackOnDisc(0),
+       m_nTrackLength(0),
+       m_bActive(true)
+   {
+   }
+
    unsigned int m_nTrackOnDisc;
    CString m_cszTrackTitle;
 
@@ -58,7 +69,7 @@ struct CDRipTrackInfo
 };
 
 
-class CDRipTrackManager
+class CDRipTrackManager: public boost::noncopyable
 {
 public:
    static CDRipTrackManager* getCDRipTrackManager();
@@ -79,10 +90,6 @@ public:
 protected:
    CDRipDiscInfo m_discInfo;
    std::vector<CDRipTrackInfo> m_vecTrackInfo;
-private:
-   CDRipTrackManager(){}
-   CDRipTrackManager(const CDRipTrackManager&){}
-   CDRipTrackManager& operator=(const CDRipTrackManager&){ return *this; }
 
    static CDRipTrackManager* m_pManagerInstance;
 };

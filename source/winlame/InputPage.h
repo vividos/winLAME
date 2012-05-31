@@ -32,15 +32,19 @@
 
 
 /// input modules config selection dialog
-
+/// \todo check if needed anymore
 class InputConfigDlg: public CDialogImpl<InputConfigDlg>
 {
 public:
    /// ctor
-   InputConfigDlg(){}
+   InputConfigDlg(ModuleManager& moduleManager, const std::vector<int>& vecIndices)
+      :m_moduleManager(moduleManager),
+       m_vecIndices(vecIndices)
+   {
+   }
 
    /// sets module indices to use
-   void Init(ModuleManager* mgr, std::vector<int> indices);
+   void Init();
 
    /// dialog id
    enum { IDD = IDD_INMODULE_CFG };
@@ -68,11 +72,11 @@ END_MSG_MAP()
    }
 
 protected:
-   /// module manager to use
-   ModuleManager* mgr;
+   /// ref to module manager
+   ModuleManager& m_moduleManager;
 
    /// module indices
-   std::vector<int> indices;
+   const std::vector<int>& m_vecIndices;
 };
 
 
@@ -85,6 +89,7 @@ class InputPage:
 public:
    /// ctor
    InputPage()
+      :setsysimagelist(false)
    {
       IDD = IDD_DLG_INPUT;
       captionID = IDS_DLG_CAP_INPUT;

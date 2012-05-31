@@ -383,8 +383,7 @@ EncoderErrorHandler::ErrorAction EncodePage::handleError(LPCTSTR infilename,
    LPCTSTR modulename, int errnum, LPCTSTR errormsg, bool bSkipDisabled)
 {
    // show error dialog
-   ErrorDlg dlg;
-   dlg.Init(infilename, modulename, errnum, errormsg, bSkipDisabled);
+   ErrorDlg dlg(infilename, modulename, errnum, errormsg, bSkipDisabled);
 
    EncoderErrorHandler::ErrorAction ret = EncoderErrorHandler::Continue;
    switch(dlg.DoModal())

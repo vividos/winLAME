@@ -41,7 +41,14 @@ class PageBase:
 {
 public:
    /// ctor
-   PageBase(){ pui=NULL; helpID=0; }
+   PageBase()
+      :IDD(0),
+       captionID(0),
+       descID(0),
+       helpID(0),
+       pui(NULL)
+   {
+   }
 
    /// dtor
    virtual ~PageBase(){}

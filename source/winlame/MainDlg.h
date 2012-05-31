@@ -266,7 +266,7 @@ END_MSG_MAP()
       else
       {
          ::EnableWindow(GetDlgItem(IDC_MDLG_BACK),currentpage==0 ? FALSE : TRUE );
-         ::EnableWindow(GetDlgItem(IDC_MDLG_NEXT),unsigned(currentpage)==pages.size()-1 ? FALSE : TRUE );
+         ::EnableWindow(GetDlgItem(IDC_MDLG_NEXT),unsigned(currentpage)==(pages.size()-1) ? FALSE : TRUE );
       }
    }
 

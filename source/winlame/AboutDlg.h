@@ -41,13 +41,14 @@ class AboutDlg: public CAxDialogImpl<AboutDlg>
 {
 public:
    /// ctor
-   AboutDlg(){ min_cx = min_cy = last_cx = last_cy = -1; }
+   AboutDlg(ModuleManager& moduleManager)
+      :m_moduleManager(moduleManager)
+   {
+      min_cx = min_cy = last_cx = last_cy = -1;
+   }
 
    /// dialog id
    enum { IDD = IDD_ABOUTDLG };
-
-   /// sets module manager to use
-   void SetModuleManager(ModuleManager *mgr){ module_manager = mgr; };
 
    /// sets filename of presets.xml file
    void SetPresetsXmlFilename(const CString& cszFilename){ m_cszPresetsXmlFilename = cszFilename; }
@@ -185,8 +186,8 @@ protected:
    /// resize handle ctrl
    CStatic sizehandle;
 
-   /// module manager to use
-   ModuleManager *module_manager;
+   /// ref to module manager
+   ModuleManager& m_moduleManager;
 
    /// filename of presets.xml file
    CString m_cszPresetsXmlFilename;

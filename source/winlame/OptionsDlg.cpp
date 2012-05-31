@@ -151,7 +151,6 @@ LRESULT OptionsDlg::OnChangeFreedbUsername(WORD /*wNotifyCode*/, WORD wID, HWND 
    if (-1 != m_uiSettings.freedb_username.Find(_T(' ')))
    {
       AppMessageBox(m_hWnd, IDS_CDRIP_FREEDB_USERNAME_NO_SPACES, MB_OK | MB_ICONEXCLAMATION);
-      int iPos = 0;
       m_uiSettings.freedb_username.Replace(_T(" "), _T(""));
       DoDataExchange(DDX_LOAD, IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME);
    }

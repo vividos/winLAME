@@ -47,18 +47,12 @@ static char THIS_FILE[]=__FILE__;
 
 // InputConfigDlg methods
 
-void InputConfigDlg::Init(ModuleManager* mymgr, std::vector<int> myindices)
-{
-   mgr = mymgr;
-   indices = myindices;
-}
-
 LRESULT InputConfigDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-   int max = indices.size();
+   int max = m_vecIndices.size();
    for(int i=0; i<max; i++)
    {
-      InputModule* mod = mgr->getInputModuleInstance(indices[i]);
+      InputModule* mod = m_moduleManager.getInputModuleInstance(m_vecIndices[i]);
 
       CString cszName = mod->getModuleName();
       SendDlgItemMessage(IDC_INCFG_LISTBOX,LB_ADDSTRING,0, (LPARAM)(LPCTSTR)cszName);
@@ -73,7 +67,7 @@ LRESULT InputConfigDlg::OnListBoxDoubleClick(WORD wNotifyCode, WORD wID, HWND hW
 
    if (i!=LB_ERR)
    {
-      InputModule* mod = mgr->getInputModuleInstance(indices[i]);
+      InputModule* mod = m_moduleManager.getInputModuleInstance(m_vecIndices[i]);
       mod->configureModule();
    }
 
@@ -223,8 +217,7 @@ LRESULT InputPage::OnButtonConfig(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL
       return 0;
 
    // start config selection dialog
-   InputConfigDlg dlg;
-   dlg.Init(pui->getUISettings().module_manager, config_modules_id);
+   InputConfigDlg dlg(*pui->getUISettings().module_manager, config_modules_id);
    dlg.DoModal();
 
    return 0;
@@ -604,19 +597,19 @@ void InputPage::OnEnterPage()
    // insert all filenames into the list ctrl
    EncoderJobList& fnlist = pui->getUISettings().encoderjoblist;
    int max = fnlist.size();
-   std::tstring filename;
+   CString filename;
    for(int i=0;i<max;i++)
    {
       filename = fnlist[i].InputFilename();
-      if (0 == filename.find(g_pszCDRipPrefix))
+      if (0 == filename.Find(g_pszCDRipPrefix))
       {
-         unsigned long nIndex = _tcstoul(filename.c_str()+_tcslen(g_pszCDRipPrefix), NULL, 10);
+         unsigned long nIndex = _tcstoul(filename.Mid(_tcslen(g_pszCDRipPrefix)), NULL, 10);
          CDRipTrackInfo& trackinfo = pManager->GetTrackInfo(nIndex);
 
-         InsertFileWithIcon(filename.c_str(), cszTestCdaFilename, 44100, 44100*16*2, trackinfo.m_nTrackLength);
+         InsertFileWithIcon(filename, cszTestCdaFilename, 44100, 44100*16*2, trackinfo.m_nTrackLength);
       }
       else
-         InsertFilename(filename.c_str());
+         InsertFilename(filename);
    }
 
    _tremove(cszTestCdaFilename);

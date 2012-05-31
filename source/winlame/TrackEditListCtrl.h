@@ -31,7 +31,7 @@
 
 #define WM_DELETEME (WM_APP+11)
 
-typedef CWinTraits<WS_VISIBLE | WS_CHILD, 0> InplaceEditCtrlTraits;
+typedef CWinTraits<(WS_VISIBLE | WS_CHILD), 0> InplaceEditCtrlTraits;
 
 // classes
 
@@ -151,7 +151,6 @@ BEGIN_MSG_MAP(TrackEditListCtrl)
    MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
    MESSAGE_HANDLER(WM_DELETEME, OnDeleteMe)
    REFLECTED_NOTIFY_CODE_HANDLER(LVN_BEGINLABELEDIT, OnBeginLabelEdit) // item editing
-//   REFLECTED_NOTIFY_CODE_HANDLER(LVN_ENDLABELEDIT, OnEndLabelEdit)
    CHAIN_MSG_MAP_ALT(CCustomDraw<TrackEditListCtrl>, 1)
 END_MSG_MAP()
 
@@ -293,19 +292,6 @@ END_MSG_MAP()
       }
 
       return 0;
-   }
-
-   /// called when editing a label has been finished
-   LRESULT OnEndLabelEdit(int idCtrl, LPNMHDR pnmh, BOOL& bHandled)
-   {
-      NMLVDISPINFO* pLvDispInfo = reinterpret_cast<NMLVDISPINFO*>(pnmh);
-      if (pLvDispInfo->item.iItem == -1)
-         return 0;
-
-      // get edited text
-      LPCTSTR pszText = pLvDispInfo->item.pszText;
-
-      return 1;
    }
 };
 

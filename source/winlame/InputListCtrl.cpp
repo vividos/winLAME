@@ -38,9 +38,12 @@ COLORREF g_clrAlternateListColor = RGB(232,232,232);
 // InputListCtrl methods
 
 InputListCtrl::InputListCtrl()
+:dragging(false),
+ dragFrom(-1),
+ sortcolumn(0),
+ sortreverse(false),
+ lastsortcolumn(-1)
 {
-   dragging=false;
-   lastsortcolumn = -1;
 }
 
 InputListCtrl::~InputListCtrl()
@@ -309,7 +312,7 @@ LRESULT InputListCtrl::OnMouseMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL
                }
 
                // move all selected items to new pos
-               if (selitems.size()!=0)
+               if (!selitems.empty())
                {
                   // move items up
                   if (hit<selitems[0])
@@ -411,7 +414,7 @@ void InputListCtrl::MoveItem(int moveTo)
 
    // insert the dropped item
    lvi.iItem = moveTo;
-   int newindex = InsertItem(&lvi);
+   InsertItem(&lvi);
 
    // fill in all of the columns
    HWND hdWnd = GetDlgItem(0);

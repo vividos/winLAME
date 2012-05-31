@@ -38,6 +38,7 @@ static char THIS_FILE[]=__FILE__;
 // CDRipPage methods
 
 CDRipPage::CDRipPage()
+:m_bFinishedAllTracks(false)
 {
    IDD = IDD_DLG_CDRIP;
    captionID = IDS_DLG_CAP_CDRIP;
@@ -300,7 +301,7 @@ bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo,
 
    DWORD nError = BASS_ErrorGetCode();
 
-   if (hStream == 0)
+   if (hStream == 0 || nError != BASS_OK)
       return false;
 
    WaveOutputModule outmod;
@@ -337,19 +338,18 @@ bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo,
 
    unsigned int nCurPos = 100;
 
-   signed short* pBuffer = new signed short[nBufferSize];
-   std::auto_ptr<signed short> apAutoDeleteBuffer(pBuffer);
+   std::vector<signed short> vecBuffer(nBufferSize);
 
    bool bFinished = true;
 
    while(BASS_ACTIVE_STOPPED != BASS_ChannelIsActive(hStream))
    {
-      DWORD nAvail = BASS_ChannelGetData(hStream, pBuffer, nBufferSize*sizeof(pBuffer[0]));
+      DWORD nAvail = BASS_ChannelGetData(hStream, &vecBuffer[0], nBufferSize*sizeof(vecBuffer[0]));
 
       if (nAvail == 0)
          break; // couldn't read more samples
 
-      samplecont.putSamplesInterleaved(pBuffer, nAvail / sizeof(pBuffer[0]) / 2);
+      samplecont.putSamplesInterleaved(&vecBuffer[0], nAvail / sizeof(vecBuffer[0]) / 2);
 
       nCurLength += nAvail;
 
