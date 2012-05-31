@@ -113,10 +113,6 @@ public:
    OutputModule *getOutputModule(int module_id);
 
 protected:
-   /// adds winamp input modules to in_modules list
-   void addWinampModules();
-
-protected:
    /// all available output modules
    std::vector<OutputModule*> out_modules;
 

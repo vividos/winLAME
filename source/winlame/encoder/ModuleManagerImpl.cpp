@@ -33,7 +33,6 @@
 #include "OggVorbisInputModule.h"
 #include "AacInputModule.h"
 #include "AacOutputModule.h"
-#include "WinampPluginInputModule.h"
 #include "FlacInputModule.h"
 #include "BassInputModule.h"
 #include "BassWmaOutputModule.h"
@@ -238,9 +237,6 @@ ModuleManagerImpl::ModuleManagerImpl()
             delete inmod;
       }
    }
-
-   // add extra input modules
-   addWinampModules();
 }
 
 ModuleManagerImpl::~ModuleManagerImpl()
@@ -357,54 +353,6 @@ void ModuleManagerImpl::getModuleVersionString(CString& version,
    }
 
    version.Empty();
-}
-
-void ModuleManagerImpl::addWinampModules()
-{
-   // do search path
-   CString winamp_path(_T("./"));
-   CString searchpath(winamp_path);
-   searchpath += _T("in_*.dll");
-
-   // start search for input plugins
-   WIN32_FIND_DATA fds;
-   HANDLE hnd = NULL;
-
-   if (INVALID_HANDLE_VALUE != (hnd = ::FindFirstFile(searchpath, &fds)))
-   {
-      do
-      {
-         CString dllname(winamp_path);
-         dllname += fds.cFileName;
-
-         // try to load module
-         HMODULE dll = ::LoadLibrary(dllname);
-         if (dll!=NULL)
-         {
-            WinampPluginInputModule *mod = new WinampPluginInputModule;
-            mod->setDLLModuleHandle(dll);
-
-            // module available?
-            if (mod->isAvailable())
-            {
-               // then remember it
-               in_modules.push_back(mod);
-
-               ATLTRACE(_T("winLAME: using Winamp module %s: %s\n"), fds.cFileName, mod->getModuleName());
-            }
-            else
-            {
-               // discard module
-               delete mod;
-               mod = NULL;
-               ::FreeLibrary(dll);
-            }
-         }
-      }
-      while (TRUE==::FindNextFile(hnd,&fds));
-
-      ::FindClose(hnd);
-   }
 }
 
 CString GetAnsiCompatFilename(LPCTSTR pszFilename)

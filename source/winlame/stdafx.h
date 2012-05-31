@@ -106,7 +106,6 @@ inline void* __cdecl operator new(size_t nSize, LPCSTR lpszFileName, int nLine)
 #define ID_IM_MAD                       6
 #define ID_IM_OGGV                      7
 #define ID_IM_AAC                       8
-#define ID_IM_WINAMP                    9
 #define ID_IM_FLAC                      10
 #define ID_IM_BASS                      11
 #define ID_OM_BASSWMA                   12

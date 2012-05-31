@@ -309,8 +309,7 @@ void EncoderImpl::encode()
          in_id == ID_IM_MAD ||
          in_id == ID_IM_OGGV ||
          in_id == ID_IM_AAC ||
-         in_id == ID_IM_BASS ||
-         in_id == ID_IM_WINAMP;
+         in_id == ID_IM_BASS;
 
       bool out_lossy = out_id == ID_OM_LAME ||
          out_id == ID_OM_OGGV ||
