@@ -41,7 +41,7 @@ class PropertyManagerInterface
 {
 public:
    /// ctor
-   PropertyManagerInterface(){};
+   PropertyManagerInterface(){}
 
    /// returns number of groups
    virtual int GetGroupCount()=0;
@@ -66,7 +66,12 @@ class PropertyListBox: public CWindowImpl<PropertyListBox, CListBox>
 {
 public:
    /// ctor
-   PropertyListBox(){ inplaceCtrl = NULL; readonly=true; }
+   PropertyListBox()
+      :inplaceCtrl(NULL),
+       readonly(true),
+       propmanager(NULL)
+   {
+   }
 
    /// sets the property manager
    void SetPropertyManager(PropertyManagerInterface *mgr){ propmanager = mgr; }

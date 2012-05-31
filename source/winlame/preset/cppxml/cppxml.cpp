@@ -34,7 +34,7 @@ cppxml::xmlnode_ptr cppxml::get_nodelist_item(cppxml::xmlnodelist &nodelist,unsi
 
    cppxml::xmlnodelist::iterator iter = nodelist.begin();
    cppxml::xmlnodelist::iterator stop = nodelist.end();
-   for(unsigned int i=0; i<index && iter!=stop; i++) iter++;
+   for(unsigned int i=0; i<index && iter!=stop; i++) ++iter;
 
    if (iter!=nodelist.end())
       node = (*iter);
@@ -84,7 +84,7 @@ cppxml::xmlnode_ptr cppxml::xmlnode::select_single_node(const char *nodedesc)
    get_nodes(nodelist,nodedesc,true);
 
    // only take first node found
-   if (nodelist.size()>0)
+   if (!nodelist.empty())
       node = *(nodelist.begin());
 
    return node;
@@ -134,7 +134,7 @@ void cppxml::xmlnode::get_nodes(
       stop = childnodes.end();
 
       // go through all collected child nodes and process them further
-      for(;iter!=stop;iter++)
+      for(;iter!=stop;++iter)
       {
          cppxml::xmlnode_ptr node(*iter);
          node->get_nodes(nodelist,pos+1,onlyone);
@@ -186,7 +186,7 @@ void cppxml::xmlnode::get_nodes(
       iter = childnodes.begin();
       stop = childnodes.end();
 
-      for(int count=0;iter!=stop;iter++)
+      for(int count=0;iter!=stop;++iter)
       {
          cppxml::xmlnode_ptr child(*iter);
 
@@ -210,7 +210,7 @@ void cppxml::xmlnode::get_nodes(
       stop = children.end();
 
       // go through all child nodes
-      for(int count=0;iter!=stop;iter++)
+      for(int count=0;iter!=stop;++iter)
       {
          cppxml::xmlnode_ptr child(*iter);
 
@@ -252,13 +252,13 @@ bool cppxml::xmlnode::write(std::ostream &ostr, unsigned int indent)
    ostr << "<" << name.c_str();
 
    // write attributes
-   if (attributes.size()>0)
+   if (!attributes.empty())
    {
       xmlattrmap::iterator iter,stop;
       iter = attributes.begin();
       stop = attributes.end();
 
-      for(;iter!=stop; iter++)
+      for(;iter!=stop; ++iter)
       {
          xmlattrmap::value_type attr = *iter;
 
@@ -268,7 +268,7 @@ bool cppxml::xmlnode::write(std::ostream &ostr, unsigned int indent)
    }
 
    // no child nodes
-   if (children.size()==0)
+   if (children.empty())
    {
       ostr << "/>" << std::endl;
       return true;
@@ -287,7 +287,7 @@ bool cppxml::xmlnode::write(std::ostream &ostr, unsigned int indent)
       stop = children.end();
 
       // write all child nodes
-      for(;iter!=stop; iter++)
+      for(;iter!=stop; ++iter)
       {
          xmlnode_ptr &nodeptr = *iter;
          nodeptr->write(ostr,indent+1);

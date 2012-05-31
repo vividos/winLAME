@@ -207,7 +207,7 @@ void PresetManagerImpl::setSettings(int index, SettingsManager &settings_mgr)
       iter2 = values->begin();
       stop = values->end();
 
-      for(;iter2!=stop; iter2++)
+      for(;iter2!=stop; ++iter2)
       {
          cppxml::xmlnode_ptr node(*iter2);
 
@@ -332,7 +332,7 @@ cppxml::xmlnode_ptr PresetManagerImpl::editLookupNode(int group, int index)
    {
       // search for node
       cppxml::xmlnodelist::iterator iter = nodelist->begin();
-      for(int i=0; i<index; i++) iter++;
+      for(int i=0; i<index; i++) ++iter;
 
       // search for node
       cppxml::xmlnode_ptr node(cppxml::get_nodelist_item(*nodelist,index));

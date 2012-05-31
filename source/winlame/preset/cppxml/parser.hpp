@@ -77,7 +77,7 @@ class xmlparser
 public:
    /// ctor
    xmlparser(xmleventhandler &eventhandler,std::istream &istr)
-      :eventhandler(eventhandler),lexer(istr){}
+      :eventhandler(eventhandler),lexer(istr),err(xml_ok){}
 
    /// starts parsing
    bool parse(bool fulldoc=true);

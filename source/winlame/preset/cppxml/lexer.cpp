@@ -29,7 +29,7 @@
 cppxml::string cppxml::xmllexer::get_next_token()
 {
    cppxml::string ret;
-   if (tokenstack.size()>0)
+   if (!tokenstack.empty())
    {
       ret=tokenstack.back();
       tokenstack.pop_back();
