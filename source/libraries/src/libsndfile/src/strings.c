@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2001-2010 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2001-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -32,9 +32,9 @@ static void hexdump (void *data, int len) ;
 
 int
 psf_store_string (SF_PRIVATE *psf, int str_type, const char *str)
-{	static char lsf_name [] = PACKAGE "-" VERSION ;
-	static char bracket_name [] = " (" PACKAGE "-" VERSION ")" ;
-	int		k, str_len, len_remaining, str_flags ;
+{	char	new_str [128] ;
+	size_t	len_remaining, str_len ;
+	int		k, str_flags ;
 
 	if (str == NULL)
 		return SFE_STR_BAD_STRING ;
@@ -88,40 +88,26 @@ psf_store_string (SF_PRIVATE *psf, int str_type, const char *str)
 	if (k == 0)
 		psf->str_end = psf->str_storage ;
 
-	len_remaining = SIGNED_SIZEOF (psf->str_storage) - (psf->str_end - psf->str_storage) ;
-
-	if (len_remaining < str_len + 2)
-		return SFE_STR_MAX_DATA ;
-
 	switch (str_type)
 	{	case SF_STR_SOFTWARE :
 				/* In write mode, want to append libsndfile-version to string. */
 				if (psf->file.mode == SFM_WRITE || psf->file.mode == SFM_RDWR)
-				{	psf->strings [k].type = str_type ;
-					psf->strings [k].str = psf->str_end ;
-					psf->strings [k].flags = str_flags ;
-
-					memcpy (psf->str_end, str, str_len + 1) ;
-					psf->str_end += str_len ;
-
-					/*
-					** If the supplied string does not already contain a
-					** libsndfile-X.Y.Z component, then add it.
-					*/
-					if (strstr (str, PACKAGE) == NULL && len_remaining > (int) (strlen (bracket_name) + str_len + 2))
-					{	if (strlen (str) == 0)
-							psf_safe_strncat (psf->str_end, lsf_name, len_remaining) ;
+				{	if (strstr (str, PACKAGE) == NULL)
+					{	/*
+						** If the supplied string does not already contain a
+						** libsndfile-X.Y.Z component, then add it.
+						*/
+						if (strlen (str) == 0)
+							snprintf (new_str, sizeof (new_str), "%s-%s", PACKAGE, VERSION) ;
 						else
-							psf_safe_strncat (psf->str_end, bracket_name, len_remaining) ;
-						psf->str_end += strlen (psf->str_end) ;
-						} ;
+							snprintf (new_str, sizeof (new_str), "%s (%s-%s)", str, PACKAGE, VERSION) ;
+						}
+					else
+						snprintf (new_str, sizeof (new_str), "%s", str) ;
 
-					/* Plus one to catch string terminator. */
-					psf->str_end += 1 ;
-					break ;
+					str = new_str ;
 					} ;
-
-				/* Fall though if not write mode. */
+				break ;
 
 		case SF_STR_TITLE :
 		case SF_STR_COPYRIGHT :
@@ -132,19 +118,27 @@ psf_store_string (SF_PRIVATE *psf, int str_type, const char *str)
 		case SF_STR_LICENSE :
 		case SF_STR_TRACKNUMBER :
 		case SF_STR_GENRE :
-				psf->strings [k].type = str_type ;
-				psf->strings [k].str = psf->str_end ;
-				psf->strings [k].flags = str_flags ;
-
-				/* Plus one to catch string terminator. */
-				memcpy (psf->str_end, str, str_len + 1) ;
-				psf->str_end += str_len + 1 ;
 				break ;
 
 		default :
-			psf_log_printf (psf, "%s : SFE_STR_BAD_TYPE\n", __FUNCTION__) ;
+			psf_log_printf (psf, "%s : SFE_STR_BAD_TYPE\n", __func__) ;
 			return SFE_STR_BAD_TYPE ;
 		} ;
+
+	str_len = strlen (str) ;
+
+	len_remaining = SIGNED_SIZEOF (psf->str_storage) - (psf->str_end - psf->str_storage) ;
+
+	if (len_remaining < str_len + 2)
+		return SFE_STR_MAX_DATA ;
+
+	psf->strings [k].type = str_type ;
+	psf->strings [k].str = psf->str_end ;
+	psf->strings [k].flags = str_flags ;
+
+	memcpy (psf->str_end, str, str_len + 1) ;
+	/* Plus one to catch string terminator. */
+	psf->str_end += str_len + 1 ;
 
 	psf->str_flags |= str_flags ;
 

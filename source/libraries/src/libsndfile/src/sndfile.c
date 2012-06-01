@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2010 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -21,6 +21,7 @@
 #include	<stdlib.h>
 #include	<string.h>
 #include	<ctype.h>
+#include	<assert.h>
 
 #include	"sndfile.h"
 #include	"sfendian.h"
@@ -64,7 +65,7 @@ ErrorStruct SndfileErrors [] =
 
 	/* Private error values and their associated strings. */
 	{	SFE_ZERO_MAJOR_FORMAT	, "Error : major format is 0." },
-	{	SFE_ZERO_MINOR_FORMAT	, "Error : major format is 0." },
+	{	SFE_ZERO_MINOR_FORMAT	, "Error : minor format is 0." },
 	{	SFE_BAD_FILE			, "File does not exist or is not a regular file (possibly a pipe?)." },
 	{	SFE_BAD_FILE_READ		, "File exists but no data could be read." },
 	{	SFE_OPEN_FAILED			, "Could not open file." },
@@ -173,6 +174,7 @@ ErrorStruct SndfileErrors [] =
 	{	SFE_PAF_VERSION			, "Error in PAF file, bad version." },
 	{	SFE_PAF_UNKNOWN_FORMAT	, "Error in PAF file, unknown format." },
 	{	SFE_PAF_SHORT_HEADER	, "Error in PAF file. File shorter than minimal header." },
+	{	SFE_PAF_BAD_CHANNELS	, "Error in PAF file. Bad channel count." },
 
 	{	SFE_SVX_NO_FORM			, "Error in 8SVX / 16SV file, no 'FORM' marker." },
 	{	SFE_SVX_NO_BODY			, "Error in 8SVX / 16SV file, no 'BODY' marker." },
@@ -307,7 +309,7 @@ sf_open	(const char *path, int mode, SF_INFO *sfinfo)
 {	SF_PRIVATE 	*psf ;
 
 	/* Ultimate sanity check. */
-	SF_ASSERT (sizeof (sf_count_t) == 8) ;
+	assert (sizeof (sf_count_t) == 8) ;
 
 	if ((psf = calloc (1, sizeof (SF_PRIVATE))) == NULL)
 	{	sf_errno = SFE_MALLOC_FAILED ;
@@ -553,7 +555,6 @@ sf_format_check	(const SF_INFO *info)
 
 	switch (SF_CONTAINER (info->format))
 	{	case SF_FORMAT_WAV :
-		case SF_FORMAT_WAVEX :
 				/* WAV now allows both endian, RIFF or RIFX (little or big respectively) */
 				if (subformat == SF_FORMAT_PCM_U8 || subformat == SF_FORMAT_PCM_16)
 					return 1 ;
@@ -564,6 +565,19 @@ sf_format_check	(const SF_INFO *info)
 				if (subformat == SF_FORMAT_GSM610 && info->channels == 1)
 					return 1 ;
 				if (subformat == SF_FORMAT_G721_32 && info->channels == 1)
+					return 1 ;
+				if (subformat == SF_FORMAT_ULAW || subformat == SF_FORMAT_ALAW)
+					return 1 ;
+				if (subformat == SF_FORMAT_FLOAT || subformat == SF_FORMAT_DOUBLE)
+					return 1 ;
+				break ;
+
+		case SF_FORMAT_WAVEX :
+				if (endian == SF_ENDIAN_BIG || endian == SF_ENDIAN_CPU)
+					return 0 ;
+				if (subformat == SF_FORMAT_PCM_U8 || subformat == SF_FORMAT_PCM_16)
+					return 1 ;
+				if (subformat == SF_FORMAT_PCM_24 || subformat == SF_FORMAT_PCM_32)
 					return 1 ;
 				if (subformat == SF_FORMAT_ULAW || subformat == SF_FORMAT_ALAW)
 					return 1 ;
@@ -640,9 +654,7 @@ sf_format_check	(const SF_INFO *info)
 				break ;
 
 		case SF_FORMAT_PAF :
-				if (subformat == SF_FORMAT_PCM_S8 || subformat == SF_FORMAT_PCM_16)
-					return 1 ;
-				if (subformat == SF_FORMAT_PCM_24 || subformat == SF_FORMAT_PCM_32)
+				if (subformat == SF_FORMAT_PCM_S8 || subformat == SF_FORMAT_PCM_16 || subformat == SF_FORMAT_PCM_24)
 					return 1 ;
 				break ;
 
@@ -668,7 +680,7 @@ sf_format_check	(const SF_INFO *info)
 				break ;
 
 		case SF_FORMAT_IRCAM :
-				if (subformat == SF_FORMAT_PCM_16 || subformat == SF_FORMAT_PCM_24 || subformat == SF_FORMAT_PCM_32)
+				if (subformat == SF_FORMAT_PCM_16 || subformat == SF_FORMAT_PCM_32)
 					return 1 ;
 				if (subformat == SF_FORMAT_ULAW || subformat == SF_FORMAT_ALAW || subformat == SF_FORMAT_FLOAT)
 					return 1 ;
@@ -2259,7 +2271,7 @@ format_from_extension (SF_PRIVATE *psf)
 	if (strlen (cptr) > sizeof (buffer) - 1)
 		return 0 ;
 
-	strncpy (buffer, cptr, sizeof (buffer)) ;
+	psf_strlcpy (buffer, sizeof (buffer), cptr) ;
 	buffer [sizeof (buffer) - 1] = 0 ;
 
 	/* Convert everything in the buffer to lower case. */

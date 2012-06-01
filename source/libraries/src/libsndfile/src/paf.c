@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2009 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -163,6 +163,9 @@ paf_read_header	(SF_PRIVATE *psf)
 {	PAF_FMT		paf_fmt ;
 	int			marker ;
 
+	if (psf->filelength < PAF_HEADER_LENGTH)
+		return SFE_PAF_SHORT_HEADER ;
+
 	memset (&paf_fmt, 0, sizeof (paf_fmt)) ;
 	psf_binheader_readf (psf, "pm", 0, &marker) ;
 
@@ -199,8 +202,8 @@ paf_read_header	(SF_PRIVATE *psf)
 		psf->endian = SF_ENDIAN_BIG ;
 		} ;
 
-	if (psf->filelength < PAF_HEADER_LENGTH)
-		return SFE_PAF_SHORT_HEADER ;
+	if (paf_fmt.channels > SF_MAX_CHANNELS)
+		return SFE_PAF_BAD_CHANNELS ;
 
 	psf->datalength = psf->filelength - psf->dataoffset ;
 
@@ -356,11 +359,10 @@ paf24_init (SF_PRIVATE *psf)
 	*/
 	psf->last_op = 0 ;
 
-	if (! (psf->codec_data = malloc (paf24size)))
+	if (! (psf->codec_data = calloc (1, paf24size)))
 		return SFE_MALLOC_FAILED ;
 
 	ppaf24 = (PAF24_PRIVATE*) psf->codec_data ;
-	memset (ppaf24, 0, paf24size) ;
 
 	ppaf24->channels	= psf->sf.channels ;
 	ppaf24->samples		= ppaf24->data ;

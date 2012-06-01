@@ -1,10 +1,22 @@
-Version 1.0.22 (2009-10-04)
+Version 1.0.25 (2011-07-13)
+  * Fix for Secunia Advisory SA45125, heap overflow in PAF file handler.
+  * Accept broken WAV files with blockalign == 0.
+  * Minor bug fixes and improvements.
+
+Version 1.0.24 (2011-03-23)
+  * WAV files now have an 18 byte u-law and A-law fmt chunk.
+  * Document virtual I/O functionality.
+  * Two new methods rawHandle() and takeOwnership() in sndfile.hh.
+  * AIFF fix for non-zero offset value in SSND chunk.
+  * Minor bug fixes and improvements.
+
+Version 1.0.23 (2010-10-10)
   * Add version metadata to Windows DLL.
   * Add a missing 'inline' to sndfile.hh.
   * Update docs.
   * Minor bug fixes and improvements.
 
-Version 1.0.22 (2009-10-04)
+Version 1.0.22 (2010-10-04)
   * Couple of fixes for SDS file writer.
   * Fixes arising from static analysis.
   * Handle FLAC files with ID3 meta data at start of file.

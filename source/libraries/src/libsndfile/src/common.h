@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2010 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -20,7 +20,6 @@
 #define SNDFILE_COMMON_H
 
 #include "sfconfig.h"
-#include "float_cast.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -114,13 +113,6 @@
 #define		SF_MAX_CHANNELS	256
 
 
-#define	SF_ASSERT(expr) \
-			{	if (! (expr)) \
-				{	printf ("%s %d : assert '" #expr "' failed!\n", __FILE__, __LINE__) ;\
-					exit (1) ; \
-					} ;\
-			}
-
 /*
 *	Macros for spliting the format file of SF_INFI into contrainer type,
 **	codec type and endian-ness.
@@ -159,6 +151,8 @@ enum
 
 enum
 {	/* Work in progress. */
+	SF_FORMAT_SPEEX			= 0x5000000,
+	SF_FORMAT_OGGFLAC		= 0x5000001,
 
 	/* Formats supported read only. */
 	SF_FORMAT_TXW			= 0x4030000,		/* Yamaha TX16 sampler file */
@@ -558,6 +552,7 @@ enum
 	SFE_PAF_VERSION,
 	SFE_PAF_UNKNOWN_FORMAT,
 	SFE_PAF_SHORT_HEADER,
+	SFE_PAF_BAD_CHANNELS,
 
 	SFE_SVX_NO_FORM,
 	SFE_SVX_NO_BODY,
@@ -665,7 +660,7 @@ void	psf_log_SF_INFO 	(SF_PRIVATE *psf) ;
 int32_t	psf_rand_int32 (void) ;
 
 void append_snprintf (char * dest, size_t maxlen, const char * fmt, ...) ;
-void psf_strncpy_crlf (char *dest, const char *src, size_t destmax, size_t srcmax) ;
+void psf_strlcpy_crlf (char *dest, const char *src, size_t destmax, size_t srcmax) ;
 
 /* Functions used when writing file headers. */
 
@@ -781,6 +776,11 @@ int		rf64_open	(SF_PRIVATE *psf) ;
 
 /* In progress. Do not currently work. */
 
+int		ogg_vorbis_open	(SF_PRIVATE *psf) ;
+int		ogg_speex_open	(SF_PRIVATE *psf) ;
+int		ogg_pcm_open	(SF_PRIVATE *psf) ;
+
+
 int		mpeg_open	(SF_PRIVATE *psf) ;
 int		ogg_open	(SF_PRIVATE *psf) ;
 int		rx2_open	(SF_PRIVATE *psf) ;
@@ -832,15 +832,32 @@ void pchk4_store (PRIV_CHUNK4 * pchk, int marker, sf_count_t offset, sf_count_t 
 int pchk4_find (PRIV_CHUNK4 * pchk, int marker) ;
 
 /*------------------------------------------------------------------------------------
-** Other helper functions.
+** Functions that work like OpenBSD's strlcpy/strlcat to replace strncpy/strncat.
+**
+** See : http://www.gratisoft.us/todd/papers/strlcpy.html
+**
+** These functions are available on *BSD, but are not avaialble everywhere so we
+** implement them here.
+**
+** The argument order has been changed to that of strncpy/strncat to cause
+** compiler errors if code is carelessly converted from one to the other.
 */
 
 static inline void
-psf_safe_strncat (char *dest, const char *src, size_t n)
-{	strncat (dest, src, n) ;
+psf_strlcat (char *dest, size_t n, const char *src)
+{	strncat (dest, src, n - strlen (dest) - 1) ;
 	dest [n - 1] = 0 ;
-} /* psf_safe_strncat */
+} /* psf_strlcat */
 
+static inline void
+psf_strlcpy (char *dest, size_t n, const char *src)
+{	strncpy (dest, src, n - 1) ;
+	dest [n - 1] = 0 ;
+} /* psf_strlcpy */
+
+/*------------------------------------------------------------------------------------
+** Other helper functions.
+*/
 
 void	*psf_memset (void *s, int c, sf_count_t n) ;
 

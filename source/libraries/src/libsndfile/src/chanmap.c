@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2009 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2009-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -78,8 +78,8 @@ static const AIFF_CAF_CHANNEL_MAP three_chan [] =
 } ; /* three_chan */
 
 
-//static const int four_channel_ambisonc_b [4] =
-//	{	SF_CHANNEL_MAP_AMBISONIC_B_W, SF_CHANNEL_MAP_AMBISONIC_B_X, SF_CHANNEL_MAP_AMBISONIC_B_Y, SF_CHANNEL_MAP_AMBISONIC_B_Z } ;
+static const int four_channel_ambisonc_b [4] =
+	{	SF_CHANNEL_MAP_AMBISONIC_B_W, SF_CHANNEL_MAP_AMBISONIC_B_X, SF_CHANNEL_MAP_AMBISONIC_B_Y, SF_CHANNEL_MAP_AMBISONIC_B_Z } ;
 static const int four_channel_quad [4] =
 	{	SF_CHANNEL_MAP_LEFT, SF_CHANNEL_MAP_RIGHT, SF_CHANNEL_MAP_REAR_LEFT, SF_CHANNEL_MAP_REAR_RIGHT } ;
 static const int four_channel_mpeg_40a [4] =
@@ -94,7 +94,7 @@ static const int four_channel_dvd_10 [4] =
 	{	SF_CHANNEL_MAP_LEFT, SF_CHANNEL_MAP_RIGHT, SF_CHANNEL_MAP_CENTER, SF_CHANNEL_MAP_LFE } ;
 
 static const AIFF_CAF_CHANNEL_MAP four_chan [] =
-{//	{	(107 << 16) | 4, four_channel_ambisonc_b, "ambisonic B (W,  X, Y, Z)" },
+{	{	(107 << 16) | 4, four_channel_ambisonc_b, "ambisonic B (W,  X, Y, Z)" },
 	{	(108 << 16) | 4, four_channel_quad, "quad (Lfront, Rfront, Lrear, Rrear)" },
 	{	(115 << 16) | 4, four_channel_mpeg_40a, "MPEG 4.0 A (L, R, C, Cs)" },
 	{	(116 << 16) | 4, four_channel_mpeg_40b, "MPEG 4.0 B (C, L, R, Cs)" },

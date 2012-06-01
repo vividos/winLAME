@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2010 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
 ** Copyright (C) 2004-2005 David Viens <davidv@plogue.com>
 **
 ** This program is free software; you can redistribute it and/or modify
@@ -66,6 +66,7 @@
 #define clm_MARKER	 (MAKE_MARKER ('c', 'l', 'm', ' '))
 #define elmo_MARKER	 (MAKE_MARKER ('e', 'l', 'm', 'o'))
 #define cart_MARKER	 (MAKE_MARKER ('c', 'a', 'r', 't'))
+#define FLLR_MARKER	 (MAKE_MARKER ('F', 'L', 'L', 'R'))
 
 #define exif_MARKER	 (MAKE_MARKER ('e', 'x', 'i', 'f'))
 #define ever_MARKER	 (MAKE_MARKER ('e', 'v', 'e', 'r'))
@@ -83,7 +84,6 @@
 #define IART_MARKER	 (MAKE_MARKER ('I', 'A', 'R', 'T'))
 #define INAM_MARKER	 (MAKE_MARKER ('I', 'N', 'A', 'M'))
 #define IENG_MARKER	 (MAKE_MARKER ('I', 'E', 'N', 'G'))
-#define IART_MARKER	 (MAKE_MARKER ('I', 'A', 'R', 'T'))
 #define IGNR_MARKER	 (MAKE_MARKER ('I', 'G', 'N', 'R'))
 #define ICOP_MARKER	 (MAKE_MARKER ('I', 'C', 'O', 'P'))
 #define IPRD_MARKER	 (MAKE_MARKER ('I', 'P', 'R', 'D'))
@@ -597,8 +597,7 @@ wav_read_header	 (SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 			case plst_MARKER :
 			case DISP_MARKER :
 			case MEXT_MARKER :
-					parsestage |= HAVE_other ;
-
+			case FLLR_MARKER :
 					psf_binheader_readf (psf, "4", &dword) ;
 					psf_log_printf (psf, "%M : %u\n", marker, dword) ;
 					dword += (dword & 1) ;
@@ -606,7 +605,6 @@ wav_read_header	 (SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 					break ;
 
 			default :
-					parsestage |= HAVE_other ;
 					if (psf_isprint ((marker >> 24) & 0xFF) && psf_isprint ((marker >> 16) & 0xFF)
 						&& psf_isprint ((marker >> 8) & 0xFF) && psf_isprint (marker & 0xFF))
 					{	psf_binheader_readf (psf, "4", &dword) ;
@@ -617,6 +615,8 @@ wav_read_header	 (SF_PRIVATE *psf, int *blockalign, int *framesperblock)
 					if (psf_ftell (psf) & 0x03)
 					{	psf_log_printf (psf, "  Unknown chunk marker at position %d. Resynching.\n", dword - 4) ;
 						psf_binheader_readf (psf, "j", -3) ;
+						/* File is too messed up so we prevent editing in RDWR mode here. */
+						parsestage |= HAVE_other ;
 						break ;
 						} ;
 					psf_log_printf (psf, "*** Unknown chunk marker (%X) at position %D. Exiting parser.\n", marker, psf_ftell (psf) - 4) ;
@@ -757,27 +757,27 @@ wav_write_fmt_chunk (SF_PRIVATE *psf)
 					break ;
 
 		case SF_FORMAT_ULAW :
-					fmt_size = 2 + 2 + 4 + 4 + 2 + 2 ;
+					fmt_size = 2 + 2 + 4 + 4 + 2 + 2 + 2 ;
 
 					/* fmt : format, channels, samplerate */
 					psf_binheader_writef (psf, "4224", fmt_size, WAVE_FORMAT_MULAW, psf->sf.channels, psf->sf.samplerate) ;
 					/*  fmt : bytespersec */
 					psf_binheader_writef (psf, "4", psf->sf.samplerate * psf->bytewidth * psf->sf.channels) ;
-					/*  fmt : blockalign, bitwidth */
-					psf_binheader_writef (psf, "22", psf->bytewidth * psf->sf.channels, 8) ;
+					/*  fmt : blockalign, bitwidth, extrabytes */
+					psf_binheader_writef (psf, "222", psf->bytewidth * psf->sf.channels, 8, 0) ;
 
 					add_fact_chunk = SF_TRUE ;
 					break ;
 
 		case SF_FORMAT_ALAW :
-					fmt_size = 2 + 2 + 4 + 4 + 2 + 2 ;
+					fmt_size = 2 + 2 + 4 + 4 + 2 + 2 + 2 ;
 
 					/* fmt : format, channels, samplerate */
 					psf_binheader_writef (psf, "4224", fmt_size, WAVE_FORMAT_ALAW, psf->sf.channels, psf->sf.samplerate) ;
 					/*  fmt : bytespersec */
 					psf_binheader_writef (psf, "4", psf->sf.samplerate * psf->bytewidth * psf->sf.channels) ;
-					/*  fmt : blockalign, bitwidth */
-					psf_binheader_writef (psf, "22", psf->bytewidth * psf->sf.channels, 8) ;
+					/*  fmt : blockalign, bitwidth, extrabytes */
+					psf_binheader_writef (psf, "222", psf->bytewidth * psf->sf.channels, 8, 0) ;
 
 					add_fact_chunk = SF_TRUE ;
 					break ;

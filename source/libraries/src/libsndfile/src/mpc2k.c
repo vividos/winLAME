@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 2008-2009 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 2008-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -38,7 +38,7 @@
 **	1 byte: loopMode (0 no loop, 1 forward looping)
 **	1 byte: number of beat in loop
 **	1 uint16: sampleRate
-**	
+**
 **	DATA
 **	Data are always non compressed 16 bits interleaved
 */
@@ -63,8 +63,7 @@ static int		mpc2k_read_header (SF_PRIVATE *psf) ;
 
 int
 mpc2k_open	(SF_PRIVATE *psf)
-{	int		subformat ;
-	int		error = 0 ;
+{	int		error = 0 ;
 
 	if (psf->file.mode == SFM_READ || (psf->file.mode == SFM_RDWR && psf->filelength > 0))
 	{	if ((error = mpc2k_read_header (psf)))
@@ -73,8 +72,6 @@ mpc2k_open	(SF_PRIVATE *psf)
 
 	if ((SF_CONTAINER (psf->sf.format)) != SF_FORMAT_MPC2K)
 		return	SFE_BAD_OPEN_FORMAT ;
-
-	subformat = SF_CODEC (psf->sf.format) ;
 
 	if (psf->file.mode == SFM_WRITE || psf->file.mode == SFM_RDWR)
 	{	if (mpc2k_write_header (psf, SF_FALSE))

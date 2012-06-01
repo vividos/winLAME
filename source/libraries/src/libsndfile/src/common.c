@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2010 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -23,9 +23,7 @@
 #include	<ctype.h>
 #include	<math.h>
 #include	<time.h>
-#ifdef HAVE_SYS_TIME_H
 #include	<sys/time.h>
-#endif
 
 #include	"sndfile.h"
 #include	"sfendian.h"
@@ -1036,14 +1034,14 @@ psf_binheader_readf (SF_PRIVATE *psf, char const *format, ...)
 
 			case 'b' :
 					charptr = va_arg (argptr, char*) ;
-					count = va_arg (argptr, int) ;
+					count = va_arg (argptr, size_t) ;
 					if (count > 0)
 						byte_count += header_read (psf, charptr, count) ;
 					break ;
 
 			case 'G' :
 					charptr = va_arg (argptr, char*) ;
-					count = va_arg (argptr, int) ;
+					count = va_arg (argptr, size_t) ;
 					if (count > 0)
 						byte_count += header_gets (psf, charptr, count) ;
 					break ;
@@ -1062,14 +1060,14 @@ psf_binheader_readf (SF_PRIVATE *psf, char const *format, ...)
 
 			case 'p' :
 					/* Get the seek position first. */
-					count = va_arg (argptr, int) ;
+					count = va_arg (argptr, size_t) ;
 					header_seek (psf, count, SEEK_SET) ;
 					byte_count = count ;
 					break ;
 
 			case 'j' :
 					/* Get the seek position first. */
-					count = va_arg (argptr, int) ;
+					count = va_arg (argptr, size_t) ;
 					header_seek (psf, count, SEEK_CUR) ;
 					byte_count += count ;
 					break ;
@@ -1333,7 +1331,7 @@ append_snprintf (char * dest, size_t maxlen, const char * fmt, ...)
 
 
 void
-psf_strncpy_crlf (char *dest, const char *src, size_t destmax, size_t srcmax)
+psf_strlcpy_crlf (char *dest, const char *src, size_t destmax, size_t srcmax)
 {	/* Must be minus 2 so it can still expand a single trailing '\n' or '\r'. */
 	char * destend = dest + destmax - 2 ;
 	const char * srcend = src + srcmax ;
@@ -1365,7 +1363,7 @@ psf_strncpy_crlf (char *dest, const char *src, size_t destmax, size_t srcmax)
 
 	/* Make sure dest is terminated. */
 	*dest = 0 ;
-} /* psf_strncpy_crlf */
+} /* psf_strlcpy_crlf */
 
 /*==============================================================================
 */

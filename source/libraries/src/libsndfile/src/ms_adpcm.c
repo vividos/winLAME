@@ -1,5 +1,5 @@
 /*
-** Copyright (C) 1999-2009 Erik de Castro Lopo <erikd@mega-nerd.com>
+** Copyright (C) 1999-2011 Erik de Castro Lopo <erikd@mega-nerd.com>
 **
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU Lesser General Public License as published by
@@ -142,10 +142,9 @@ wav_w64_msadpcm_init	(SF_PRIVATE *psf, int blockalign, int samplesperblock)
 
 	pmssize = sizeof (MSADPCM_PRIVATE) + blockalign + 3 * psf->sf.channels * samplesperblock ;
 
-	if (! (psf->codec_data = malloc (pmssize)))
+	if (! (psf->codec_data = calloc (1, pmssize)))
 		return SFE_MALLOC_FAILED ;
 	pms = (MSADPCM_PRIVATE*) psf->codec_data ;
-	memset (pms, 0, pmssize) ;
 
 	pms->samples	= pms->dummydata ;
 	pms->block		= (unsigned char*) (pms->dummydata + psf->sf.channels * samplesperblock) ;
