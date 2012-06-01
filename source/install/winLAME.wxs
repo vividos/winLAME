@@ -107,11 +107,6 @@ file.
                  Source="..\..\output\Release\libmad.dll" />
             </Component>
 
-            <Component Id="WinLameHelp" Guid="1bacf4b3-b687-4716-96c5-1bad0fd00ed8">
-              <File Id="WinLameChm" Name="winLAME.chm" DiskId="1" KeyPath="yes"
-                 Source="..\..\output\Release\winLAME.chm" />
-            </Component>
-
             <Component Id="ReadmeFiles" Guid="5224ddc3-9b66-4277-9fae-7f0f296e2e28">
               <File Id="ReadmeTxt" Name="Readme.txt" DiskId="1" KeyPath="yes"
                  Source="..\..\readme.txt" />
@@ -176,7 +171,6 @@ file.
       <ComponentRef Id="NLameLibrary" />
       <ComponentRef Id="SndFileLibrary" />
       <ComponentRef Id="MadLibrary" />
-      <ComponentRef Id="WinLameHelp" />
       <ComponentRef Id="Presets" />
       <ComponentRef Id="ReadmeFiles" />
       <ComponentRef Id="BassLibrary" />

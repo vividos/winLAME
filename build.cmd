@@ -24,18 +24,6 @@ set INCLUDE=%INCLUDE%;%BOOST_PATH%
 REM build solution
 vcbuild /logfile:build-log.txt /M4 /nohtmllog /rebuild /time /useenv winlame.sln "Release|Win32"
 
-REM build html help
-echo Creating HTML Help...
-echo. >> build-log.txt
-echo Creating HTML Help... >> build-log.txt
-cd source\htmlhelp\
-set PATHOLD=%PATH%
-set PATH=%PATH%;%DOXYGEN_PATH%
-call buildhelp.bat >> ..\..\build-log.txt
-set PATH=%PATHOLD%
-set PATHOLD=
-cd ..\..
-
 REM build installer
 echo Creating Installer...
 echo. >> build-log.txt
