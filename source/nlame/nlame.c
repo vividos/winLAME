@@ -141,8 +141,12 @@ const char* nlame_get_string_compiler()
       "Microsoft Visual C++ 2005"
 #elif (_MSC_VER <= 1500)
       "Microsoft Visual C++ 2008"
+#elif (_MSC_VER <= 1600)
+      "Microsoft Visual C++ 2010"
+#elif (_MSC_VER <= 1700)
+      "Microsoft Visual C++ 2012"
 #else
-      "Microsoft Visual C++ > 2008"
+      "Microsoft Visual C++ > 2012"
 #endif
       " (%d.%d.%d.%d)",
       _MSC_VER/100, (_MSC_VER%100)/10, (_MSC_VER%10), _MSC_FULL_VER%100000);
