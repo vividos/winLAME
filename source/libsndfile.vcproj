@@ -587,7 +587,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\libraries\src\libsndfile\win32\libsndfile.rc"
+				RelativePath=".\libraries\src\libsndfile\src\version-metadata.rc"
 				>
 			</File>
 		</Filter>
