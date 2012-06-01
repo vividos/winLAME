@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libid3tag", "source\libid3t
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "docs", "docs\docs.vcproj", "{E8FD6382-A5B2-4AC7-B2D9-88A621504872}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "install", "source\install\install.vcproj", "{D1388785-D0BD-4A67-BC45-573C0DEE639A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -76,6 +78,11 @@ Global
 		{E8FD6382-A5B2-4AC7-B2D9-88A621504872}.Default|Win32.Build.0 = Default|Win32
 		{E8FD6382-A5B2-4AC7-B2D9-88A621504872}.Release|Win32.ActiveCfg = Default|Win32
 		{E8FD6382-A5B2-4AC7-B2D9-88A621504872}.Release|Win32.Build.0 = Default|Win32
+		{D1388785-D0BD-4A67-BC45-573C0DEE639A}.Debug|Win32.ActiveCfg = Release|Win32
+		{D1388785-D0BD-4A67-BC45-573C0DEE639A}.Default|Win32.ActiveCfg = Release|Win32
+		{D1388785-D0BD-4A67-BC45-573C0DEE639A}.Default|Win32.Build.0 = Release|Win32
+		{D1388785-D0BD-4A67-BC45-573C0DEE639A}.Release|Win32.ActiveCfg = Release|Win32
+		{D1388785-D0BD-4A67-BC45-573C0DEE639A}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

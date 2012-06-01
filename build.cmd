@@ -24,15 +24,6 @@ set INCLUDE=%INCLUDE%;%BOOST_PATH%
 REM build solution
 vcbuild /logfile:build-log.txt /M4 /nohtmllog /rebuild /time /useenv winlame.sln "Release|Win32"
 
-REM build installer
-echo Creating Installer...
-echo. >> build-log.txt
-echo Creating Installer... >> build-log.txt
-cd source\install
-call create_installer.cmd >> ..\..\build-log.txt
-copy winLAME.msi ..\..\output\
-cd ..\..
-
 REM finished
 echo Finished!
 
