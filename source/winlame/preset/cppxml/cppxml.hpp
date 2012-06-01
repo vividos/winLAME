@@ -48,12 +48,7 @@
 #include <list>
 #include <map>
 #include <iostream>
-
-// boost smart pointer stuff
-#define BOOST_NO_MEMBER_TEMPLATES
-#define BOOST_NO_TEMPLATE_PARTIAL_SPECIALIZATION
-#include "smart_ptr.hpp"   // the boost::shared_ptr class
-
+#include <boost/shared_ptr.hpp>
 
 /// cppxml namespace
 namespace cppxml

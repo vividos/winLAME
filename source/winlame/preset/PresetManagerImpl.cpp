@@ -315,7 +315,7 @@ void PresetManagerImpl::SetItemValue(int group, int index, std::tstring val)
 
 cppxml::xmlnode_ptr PresetManagerImpl::editLookupNode(int group, int index)
 {
-   cppxml::xmlnode_ptr node(NULL);
+   cppxml::xmlnode_ptr node;
 
    // get list of "value" nodes
    cppxml::xmlnodelist_ptr nodelist = editing_preset->select_nodes("value");

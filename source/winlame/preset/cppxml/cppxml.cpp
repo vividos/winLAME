@@ -30,7 +30,7 @@
 
 cppxml::xmlnode_ptr cppxml::get_nodelist_item(cppxml::xmlnodelist &nodelist,unsigned int index)
 {
-   cppxml::xmlnode_ptr node(NULL);
+   cppxml::xmlnode_ptr node;
 
    cppxml::xmlnodelist::iterator iter = nodelist.begin();
    cppxml::xmlnodelist::iterator stop = nodelist.end();
@@ -77,7 +77,7 @@ cppxml::xmlnodelist_ptr cppxml::xmlnode::select_nodes(const char *nodedesc)
 
 cppxml::xmlnode_ptr cppxml::xmlnode::select_single_node(const char *nodedesc)
 {
-   xmlnode_ptr node(NULL);
+   xmlnode_ptr node;
 
    // retrieve nodes
    xmlnodelist nodelist;
