@@ -904,6 +904,10 @@
 				Filter="h;hpp;hxx;hm;inl"
 				>
 				<File
+					RelativePath=".\winlame\DynamicLibrary.h"
+					>
+				</File>
+				<File
 					RelativePath=".\winlame\EncoderInterface.h"
 					>
 				</File>
