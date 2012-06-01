@@ -27,6 +27,7 @@
 #include "resource.h"
 #include "AacOutputModule.h"
 #include "neaacdec.h"
+#include "DynamicLibrary.h"
 
 // linker options
 #if _MSC_VER < 1400
@@ -56,11 +57,7 @@ AacOutputModule::AacOutputModule()
 
 bool AacOutputModule::isAvailable()
 {
-   HMODULE dll = ::LoadLibrary(_T("libfaac.dll"));
-   bool avail = dll != NULL;
-   if (avail) ::FreeLibrary(dll);
-
-   return avail;
+   return DynamicLibrary(_T("libfaac.dll")).IsLoaded();
 }
 
 void AacOutputModule::getDescription(CString& desc)

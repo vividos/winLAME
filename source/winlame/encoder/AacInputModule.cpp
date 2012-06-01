@@ -28,6 +28,7 @@
 #include "AacInputModule.h"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "DynamicLibrary.h"
 
 // linker options
 #if _MSC_VER < 1400
@@ -62,11 +63,7 @@ InputModule *AacInputModule::cloneModule()
 
 bool AacInputModule::isAvailable()
 {
-   HMODULE dll = ::LoadLibrary(_T("libfaad2.dll"));
-   bool avail = dll != NULL;
-   if (avail) ::FreeLibrary(dll);
-
-   return avail;
+   return DynamicLibrary(_T("libfaad2.dll")).IsLoaded();
 }
 
 void AacInputModule::getDescription(CString& desc)

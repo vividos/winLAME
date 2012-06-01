@@ -29,6 +29,7 @@
 #include "encoder/TrackInfo.h"
 #include <shellapi.h>
 #include <atlctrlx.h> // CWaitCursor
+#include "DynamicLibrary.h"
 
 // CDRipFreedbListDlg methods
 
@@ -100,11 +101,7 @@ CDRipDlg::CDRipDlg(UISettings& uiSettings, UIinterface& UIinterface)
 
 bool CDRipDlg::IsCDExtractionAvail() throw()
 {
-   HMODULE hMod = ::LoadLibrary(_T("basscd.dll"));
-   bool bAvail = hMod != NULL;
-   FreeLibrary(hMod);
-
-   return bAvail;
+   return DynamicLibrary(_T("basscd.dll")).IsLoaded();
 }
 
 LRESULT CDRipDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
@@ -654,13 +651,11 @@ LRESULT CDRipDlg::OnEndLabelEdit(int idCtrl, LPNMHDR pnmh, BOOL& bHandled)
 
 void CDRipDlg::FreedbLookup()
 {
-   HMODULE dll = LoadLibrary(_T("ws2_32.dll"));
-   if (dll == NULL)
+   if (!DynamicLibrary(_T("ws2_32.dll")).IsLoaded())
    {
       AppMessageBox(m_hWnd, IDS_CDRIP_NO_INTERNET_AVAIL, MB_OK | MB_ICONSTOP);
       return;
    }
-   FreeLibrary(dll);
 
    DWORD nDrive = GetCurrentDrive();
 
