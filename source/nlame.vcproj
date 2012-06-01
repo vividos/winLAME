@@ -368,28 +368,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="nlame\libmp3lame\pcm.c"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="nlame\libmp3lame\presets.c"
 				>
 				<FileConfiguration
@@ -566,28 +544,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="nlame\libmp3lame\tools.c"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="nlame\libmp3lame\util.c"
 				>
 				<FileConfiguration
@@ -741,10 +697,6 @@
 				>
 			</File>
 			<File
-				RelativePath="nlame\libmp3lame\pcm.h"
-				>
-			</File>
-			<File
 				RelativePath="nlame\libmp3lame\psymodel.h"
 				>
 			</File>
@@ -766,10 +718,6 @@
 			</File>
 			<File
 				RelativePath="nlame\libmp3lame\tables.h"
-				>
-			</File>
-			<File
-				RelativePath="nlame\libmp3lame\tools.h"
 				>
 			</File>
 			<File
