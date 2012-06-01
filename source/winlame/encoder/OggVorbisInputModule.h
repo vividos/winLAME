@@ -89,29 +89,10 @@ protected:
    __int64 maxsamples;
 
    /// input file
-   FILE *infile;
+   FILE* infile;
 
    /// decoding file struct
    OggVorbis_File vf;
-
-   /// module handle for DLL containing vorbisfile functions
-   HMODULE dll;
-
-   /// indicates if dll handle should be free'd
-   bool free_handle;
-
-   // vorbisfile function pointers
-
-   vorbis_info *(*ov_info_func)(OggVorbis_File *vf,int link);
-
-   int (*ov_open_func)(FILE *f,OggVorbis_File *vf,char *initial,long ibytes);
-
-   int *(*ov_clear_func)(OggVorbis_File *vf);
-
-   ogg_int64_t (*ov_pcm_total_func)(OggVorbis_File *vf,int i);
-
-   long (*ov_read_func)(OggVorbis_File *vf,char *buffer,int length,
-      int bigendianp,int word,int sgned,int *bitstream);
 
    // msvcrt function pointers
    FILE* (*msvcrt_wfopen)(const wchar_t*, const wchar_t*);

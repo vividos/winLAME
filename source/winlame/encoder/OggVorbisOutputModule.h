@@ -105,51 +105,6 @@ protected:
 
    /// local working space for packet->PCM decode
    vorbis_block     vb;
-
-   HMODULE vorbisenc;
-   HMODULE vorbis;
-   HMODULE ogg;
-
-   // vorbisenc.dll function pointer
-
-   int (*vorbis_encode_init_func)(vorbis_info *vi,long channels,long rate,
-      long max_bitrate,long nominal_bitrate,long min_bitrate);
-
-   int (*vorbis_encode_init_vbr_func)(vorbis_info *vi,long channels,
-      long rate,float base_quality);
-
-   // vorbis.dll function pointer
-
-   void (*vorbis_info_init_func)(vorbis_info *vi);
-   void (*vorbis_info_clear_func)(vorbis_info *vi);
-   void (*vorbis_dsp_clear_func)(vorbis_dsp_state *v);
-   int  (*vorbis_block_init_func)(vorbis_dsp_state *v, vorbis_block *vb);
-   int  (*vorbis_block_clear_func)(vorbis_block *vb);
-
-   void (*vorbis_comment_init_func)(vorbis_comment *vc);
-   void (*vorbis_comment_add_func)(vorbis_comment *vc, char *comment);
-   void (*vorbis_comment_add_tag_func)(vorbis_comment *vc, char *tag, char *contents);
-   void (*vorbis_comment_clear_func)(vorbis_comment *vc);
-
-   int (*vorbis_analysis_init_func)(vorbis_dsp_state *v,vorbis_info *vi);
-   int (*vorbis_analysis_func)(vorbis_block *vb,ogg_packet *op);
-   int (*vorbis_analysis_headerout_func)(vorbis_dsp_state *v,vorbis_comment *vc,
-      ogg_packet *op,ogg_packet *op_comm,ogg_packet *op_code);
-   float **(*vorbis_analysis_buffer_func)(vorbis_dsp_state *v,int vals);
-   int (*vorbis_analysis_wrote_func)(vorbis_dsp_state *v,int vals);
-   int (*vorbis_analysis_blockout_func)(vorbis_dsp_state *v,vorbis_block *vb);
-   int (*vorbis_synthesis_headerin_func)(vorbis_info *vi,vorbis_comment *vc,ogg_packet *op);
-   int (*vorbis_bitrate_addblock_func)(vorbis_block *vb);
-   int (*vorbis_bitrate_flushpacket_func)(vorbis_dsp_state *vd,ogg_packet *op);
-
-   // ogg.dll function pointer
-
-   int (*ogg_stream_init_func)(ogg_stream_state *os,int serialno);
-   int (*ogg_stream_packetin_func)(ogg_stream_state *os, ogg_packet *op);
-   int (*ogg_stream_flush_func)(ogg_stream_state *os, ogg_page *og);
-   int (*ogg_stream_pageout_func)(ogg_stream_state *os, ogg_page *og);
-   int (*ogg_page_eos_func)(ogg_page *og);
-   int (*ogg_stream_clear_func)(ogg_stream_state *os);
 };
 
 

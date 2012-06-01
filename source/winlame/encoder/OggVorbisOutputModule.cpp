@@ -37,6 +37,9 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
+// link to libvorbis.dll
+#pragma comment(lib, "libvorbis.lib")
+
 
 // channel remap stuff
 const int MAX_CHANNELS = 6; ///< make this higher to support files with more channels
@@ -56,115 +59,16 @@ const int chmap[MAX_CHANNELS][MAX_CHANNELS] = {
 OggVorbisOutputModule::OggVorbisOutputModule()
 {
    module_id = ID_OM_OGGV;
-   vorbisenc = vorbis = ogg = NULL;
 }
 
 OggVorbisOutputModule::~OggVorbisOutputModule()
 {
-   // free libraries
-   if (vorbis == vorbisenc && vorbis == ogg && vorbis != NULL)
-   {
-      // all handles are the same
-      ::FreeLibrary(vorbis);
-   }
-   else
-   {
-      if (vorbis!=NULL) ::FreeLibrary(vorbis);
-      if (vorbisenc!=NULL) ::FreeLibrary(vorbisenc);
-      if (ogg!=NULL) ::FreeLibrary(ogg);
-   }
-   vorbisenc = vorbis = ogg = NULL;
 }
 
 bool OggVorbisOutputModule::isAvailable()
 {
-   bool avail=false;
-
-   for(int i=0; i<2 && !avail; i++)
-   {
-      if (i==0)
-      {
-         vorbisenc = vorbis = ogg = ::LoadLibrary(_T("libvorbis.dll"));
-         if (vorbisenc == NULL)
-            continue;
-      }
-      if (i==1)
-      {
-         vorbisenc = ::LoadLibrary(_T("vorbisenc.dll"));
-         vorbis =::LoadLibrary(_T("vorbis.dll"));
-         ogg =::LoadLibrary(_T("ogg.dll"));
-      }
-
-      // check if all libraries could be loaded
-      if (vorbisenc==NULL || vorbis==NULL || ogg==NULL)
-      {
-         if (vorbisenc!=NULL) ::FreeLibrary(vorbisenc);
-         if (vorbis!=NULL) ::FreeLibrary(vorbis);
-         if (ogg!=NULL) ::FreeLibrary(ogg);
-         continue;
-      }
-
-      // retrieve all function pointers
-
-      // in vorbisenc.dll
-
-      vorbis_encode_init_func = (int (*)(vorbis_info *vi,long channels,long rate,
-         long max_bitrate,long nominal_bitrate,long min_bitrate))::GetProcAddress(vorbisenc,"vorbis_encode_init");
-
-      vorbis_encode_init_vbr_func = (int (*)(vorbis_info *vi,long channels,
-         long rate,float base_quality))::GetProcAddress(vorbisenc,"vorbis_encode_init_vbr");
-
-      // in vorbis.dll
-
-      vorbis_info_init_func = (void (*)(vorbis_info *vi))::GetProcAddress(vorbis,"vorbis_info_init");
-      vorbis_info_clear_func = (void (*)(vorbis_info *vi))::GetProcAddress(vorbis,"vorbis_info_clear");
-      vorbis_dsp_clear_func = (void (*)(vorbis_dsp_state *v))::GetProcAddress(vorbis,"vorbis_dsp_clear");
-      vorbis_block_init_func = (int  (*)(vorbis_dsp_state *v, vorbis_block *vb))::GetProcAddress(vorbis,"vorbis_block_init");
-      vorbis_block_clear_func = (int  (*)(vorbis_block *vb))::GetProcAddress(vorbis,"vorbis_block_clear");
-      vorbis_comment_init_func = (void (*)(vorbis_comment *vc))::GetProcAddress(vorbis,"vorbis_comment_init");
-      vorbis_comment_add_func = (void (*)(vorbis_comment *vc, char *comment))::GetProcAddress(vorbis,"vorbis_comment_add");
-      vorbis_comment_add_tag_func = (void (*)(vorbis_comment *vc, char *tag, char *contents))::GetProcAddress(vorbis,"vorbis_comment_add_tag");
-      vorbis_comment_clear_func = (void (*)(vorbis_comment *vc))::GetProcAddress(vorbis,"vorbis_comment_clear");
-      vorbis_analysis_init_func = (int (*)(vorbis_dsp_state *v,vorbis_info *vi))::GetProcAddress(vorbis,"vorbis_analysis_init");
-      vorbis_analysis_func = (int (*)(vorbis_block *vb,ogg_packet *op))::GetProcAddress(vorbis,"vorbis_analysis");
-      vorbis_analysis_headerout_func = (int (*)(vorbis_dsp_state *v,vorbis_comment *vc,
-         ogg_packet *op,ogg_packet *op_comm,ogg_packet *op_code))::GetProcAddress(vorbis,"vorbis_analysis_headerout");
-      vorbis_analysis_buffer_func = (float **(*)(vorbis_dsp_state *v,int vals))::GetProcAddress(vorbis,"vorbis_analysis_buffer");
-      vorbis_analysis_wrote_func = (int (*)(vorbis_dsp_state *v,int vals))::GetProcAddress(vorbis,"vorbis_analysis_wrote");
-      vorbis_analysis_blockout_func = (int (*)(vorbis_dsp_state *v,vorbis_block *vb))::GetProcAddress(vorbis,"vorbis_analysis_blockout");
-      vorbis_synthesis_headerin_func = (int (*)(vorbis_info *vi,vorbis_comment *vc,ogg_packet *op))::GetProcAddress(vorbis,"vorbis_synthesis_headerin");
-      vorbis_bitrate_addblock_func = (int (*)(vorbis_block *vb))::GetProcAddress(vorbis,"vorbis_bitrate_addblock");
-      vorbis_bitrate_flushpacket_func = (int (*)(vorbis_dsp_state *vd,ogg_packet *op))::GetProcAddress(vorbis,"vorbis_bitrate_flushpacket");
-
-      // in ogg.dll
-
-      ogg_stream_init_func = (int (*)(ogg_stream_state *os,int serialno))::GetProcAddress(ogg,"ogg_stream_init");
-      ogg_stream_packetin_func = (int (*)(ogg_stream_state *os, ogg_packet *op))::GetProcAddress(ogg,"ogg_stream_packetin");
-      ogg_stream_flush_func = (int (*)(ogg_stream_state *os, ogg_page *og))::GetProcAddress(ogg,"ogg_stream_flush");
-      ogg_stream_pageout_func = (int (*)(ogg_stream_state *os, ogg_page *og))::GetProcAddress(ogg,"ogg_stream_pageout");
-      ogg_page_eos_func = (int (*)(ogg_page *og))::GetProcAddress(ogg,"ogg_page_eos");
-      ogg_stream_clear_func = (int (*)(ogg_stream_state *os))::GetProcAddress(ogg,"ogg_stream_clear");
-
-      // check if all function pointers are there
-      avail = vorbisenc != NULL && vorbis != NULL && ogg != NULL;
-
-      avail = avail &&
-         vorbis_info_init_func  != NULL && vorbis_block_init_func != NULL &&
-         vorbis_block_clear_func != NULL && vorbis_comment_init_func != NULL &&
-         vorbis_comment_add_func != NULL && vorbis_comment_add_tag_func != NULL &&
-         vorbis_comment_clear_func != NULL && vorbis_analysis_init_func != NULL &&
-         vorbis_analysis_func != NULL && vorbis_analysis_headerout_func != NULL &&
-         vorbis_analysis_buffer_func != NULL && vorbis_analysis_wrote_func != NULL &&
-         vorbis_analysis_blockout_func != NULL && vorbis_synthesis_headerin_func != NULL &&
-         vorbis_dsp_clear_func != NULL && vorbis_info_clear_func != NULL;
-
-      avail = avail &&
-         ogg_stream_init_func != NULL && ogg_stream_packetin_func != NULL &&
-         ogg_stream_flush_func != NULL && ogg_stream_pageout_func != NULL &&
-         ogg_page_eos_func != NULL && ogg_stream_clear_func != NULL;
-   }
-
-   return avail;
+   // we don't do delay-loading anymore, so it's available always
+   return true;
 }
 
 void OggVorbisOutputModule::getDescription(CString& desc)
@@ -207,34 +111,34 @@ void OggVorbisOutputModule::getVersionString(CString& version, int special)
       // take the second and read it back in; the vc.vendor
       // then is filled with build version
       vorbis_info vi;
-      vorbis_info_init_func(&vi);
-      vorbis_encode_init_func(&vi,2,44100, -1, 192000, -1);
+      vorbis_info_init(&vi);
+      vorbis_encode_init(&vi,2,44100, -1, 192000, -1);
 
       vorbis_block vb;
       vorbis_dsp_state vd;
-      vorbis_analysis_init_func(&vd,&vi);
-      vorbis_block_init_func(&vd,&vb);
+      vorbis_analysis_init(&vd,&vi);
+      vorbis_block_init(&vd,&vb);
 
       vorbis_comment vc;
-      vorbis_comment_init_func(&vc);
+      vorbis_comment_init(&vc);
 
       ogg_packet header;
       ogg_packet header_comm;
       ogg_packet header_code;
 
-      vorbis_analysis_headerout_func(&vd,&vc,&header,&header_comm,&header_code);
+      vorbis_analysis_headerout(&vd,&vc,&header,&header_comm,&header_code);
 
-      vorbis_synthesis_headerin_func(&vi,&vc,&header_comm);
+      vorbis_synthesis_headerin(&vi,&vc,&header_comm);
 
       USES_CONVERSION;
       version = _T("(");
       version += A2CT(vc.vendor);
       version += _T(")");
 
-      vorbis_block_clear_func(&vb);
-      vorbis_dsp_clear_func(&vd);
-      vorbis_comment_clear_func(&vc);
-      vorbis_info_clear_func(&vi);
+      vorbis_block_clear(&vb);
+      vorbis_dsp_clear(&vd);
+      vorbis_comment_clear(&vc);
+      vorbis_info_clear(&vi);
    }
 }
 
@@ -281,7 +185,7 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
    /********** Encode setup ************/
 
    /* choose an encoding mode */
-   vorbis_info_init_func(&vi);
+   vorbis_info_init(&vi);
 
    int ret = 0;
 
@@ -289,14 +193,14 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
    {
    case 0: // base quality mode
       base_quality = mgr.queryValueInt(OggBaseQuality)/1000.f;
-      ret = vorbis_encode_init_vbr_func(&vi,channels,samplerate,base_quality);
+      ret = vorbis_encode_init_vbr(&vi,channels,samplerate,base_quality);
       break;
 
    case 1: // variable bitrate mode
       {
          int min_bitrate = mgr.queryValueInt(OggVarMinBitrate);
          int max_bitrate = mgr.queryValueInt(OggVarMaxBitrate);
-         ret = vorbis_encode_init_func(&vi,channels,samplerate,
+         ret = vorbis_encode_init(&vi,channels,samplerate,
             max_bitrate*1000, -1, min_bitrate*1000);
       }
       break;
@@ -304,7 +208,7 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
    case 2: // average bitrate mode
       {
          int average_bitrate = mgr.queryValueInt(OggVarNominalBitrate);
-         ret = vorbis_encode_init_func(&vi,channels,samplerate,
+         ret = vorbis_encode_init(&vi,channels,samplerate,
             -1, average_bitrate*1000, -1);
       }
       break;
@@ -312,7 +216,7 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
    case 3: // constant bitrate mode
       {
          int const_bitrate = mgr.queryValueInt(OggVarNominalBitrate);
-         ret = vorbis_encode_init_func(&vi,channels,samplerate,
+         ret = vorbis_encode_init(&vi,channels,samplerate,
             const_bitrate*1000, const_bitrate*1000, const_bitrate*1000);
       }
       break;
@@ -340,13 +244,13 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
 
       lasterror += _T(")");
 
-      vorbis_info_clear_func(&vi);
+      vorbis_info_clear(&vi);
 
       return ret;
    }
 
    /* add a comment */
-   vorbis_comment_init_func(&vc);
+   vorbis_comment_init(&vc);
 
    // add track properties
    {
@@ -359,21 +263,21 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
       if (avail && !prop.IsEmpty())
       {
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag_func(&vc, "TITLE", &buffer[0]);
+         vorbis_comment_add_tag(&vc, "TITLE", &buffer[0]);
       }
 
       prop = trackinfo.TextInfo(TrackInfoArtist, avail);
       if (avail && !prop.IsEmpty())
       {
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag_func(&vc, "ARTIST", &buffer[0]);
+         vorbis_comment_add_tag(&vc, "ARTIST", &buffer[0]);
       }
 
       prop = trackinfo.TextInfo(TrackInfoAlbum, avail);
       if (avail && !prop.IsEmpty())
       {
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag_func(&vc, "ALBUM", &buffer[0]);
+         vorbis_comment_add_tag(&vc, "ALBUM", &buffer[0]);
       }
 
       int iYear = trackinfo.NumberInfo(TrackInfoYear, avail);
@@ -381,14 +285,14 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
       {
          prop.Format(_T("%i"), iYear);
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag_func(&vc, "DATE", &buffer[0]);
+         vorbis_comment_add_tag(&vc, "DATE", &buffer[0]);
       }
 
       prop = trackinfo.TextInfo(TrackInfoComment, avail);
       if (avail && !prop.IsEmpty())
       {
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag_func(&vc, "COMMENT", &buffer[0]); // should be DESCRIPTION?
+         vorbis_comment_add_tag(&vc, "COMMENT", &buffer[0]); // should be DESCRIPTION?
       }
 
       int iTrack = trackinfo.NumberInfo(TrackInfoTrack, avail);
@@ -396,7 +300,7 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
       {
          prop.Format(_T("%i"), iTrack);
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag_func(&vc, "TRACKNUMBER", &buffer[0]);
+         vorbis_comment_add_tag(&vc, "TRACKNUMBER", &buffer[0]);
       }
 
       CString cszGenre = trackinfo.TextInfo(TrackInfoGenre, avail);
@@ -405,20 +309,20 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
          if (!cszGenre.IsEmpty())
          {
             UnicodeToUTF8(cszGenre, buffer);
-            vorbis_comment_add_tag_func(&vc, "GENRE", &buffer[0]);
+            vorbis_comment_add_tag(&vc, "GENRE", &buffer[0]);
          }
       }
    }
 
    /* set up the analysis state and auxiliary encoding storage */
-   vorbis_analysis_init_func(&vd,&vi);
-   vorbis_block_init_func(&vd,&vb);
+   vorbis_analysis_init(&vd,&vi);
+   vorbis_block_init(&vd,&vb);
 
    /* set up our packet->stream encoder */
    /* pick a random serial number; that way we can more likely build
       chained streams just by concatenation */
    srand(static_cast<unsigned int>(time(NULL)));
-   ogg_stream_init_func(&os,rand());
+   ogg_stream_init(&os,rand());
 
 
    /* Vorbis streams begin with three headers; the initial header (with
@@ -433,19 +337,19 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
       ogg_packet header_comm;
       ogg_packet header_code;
 
-      vorbis_analysis_headerout_func(&vd,&vc,&header,&header_comm,&header_code);
+      vorbis_analysis_headerout(&vd,&vc,&header,&header_comm,&header_code);
       /* automatically placed in its own page */
-      ogg_stream_packetin_func(&os,&header); 
+      ogg_stream_packetin(&os,&header); 
 
-      ogg_stream_packetin_func(&os,&header_comm);
-      ogg_stream_packetin_func(&os,&header_code);
+      ogg_stream_packetin(&os,&header_comm);
+      ogg_stream_packetin(&os,&header_code);
 
       /* We don't have to write out here, but doing so makes streaming 
          much easier, so we do, flushing ALL pages. This ensures the actual
          audio data will start on a new page */
       while(!eos)
       {
-         int result=ogg_stream_flush_func(&os,&og);
+         int result=ogg_stream_flush(&os,&og);
          if(result==0)
             break;
 
@@ -471,7 +375,7 @@ int OggVorbisOutputModule::encodeSamples(SampleContainer &samples)
 
    if (numsamples!=0)
    {
-      float **sbuffer=vorbis_analysis_buffer_func(&vd,numsamples);
+      float **sbuffer=vorbis_analysis_buffer(&vd,numsamples);
 
       // copy samples to analysis buffer
      if (channels > 2)
@@ -496,28 +400,28 @@ int OggVorbisOutputModule::encodeSamples(SampleContainer &samples)
    }
 
    /* tell the library how much we actually submitted */
-   vorbis_analysis_wrote_func(&vd,numsamples);
+   vorbis_analysis_wrote(&vd,numsamples);
 
    /* vorbis does some data preanalysis, then divvies up blocks for
       more involved (potentially parallel) processing.  Get a single
       block for encoding now */
 
-   while(vorbis_analysis_blockout_func(&vd,&vb)==1)
+   while(vorbis_analysis_blockout(&vd,&vb)==1)
    {
       /* analysis, assume we want to use bitrate management */
-      vorbis_analysis_func(&vb,&op);
-      vorbis_bitrate_addblock_func(&vb);
+      vorbis_analysis(&vb,&op);
+      vorbis_bitrate_addblock(&vb);
 
-      while(vorbis_bitrate_flushpacket_func(&vd,&op))
+      while(vorbis_bitrate_flushpacket(&vd,&op))
       {
 
       /* weld the packet into the bitstream */
-      ogg_stream_packetin_func(&os,&op);
+      ogg_stream_packetin(&os,&op);
 
       /* write out pages (if any) */
       while(!eos)
       {
-         int result=ogg_stream_pageout_func(&os,&og);
+         int result=ogg_stream_pageout(&os,&og);
          if (result==0)
             break;
 
@@ -527,7 +431,7 @@ int OggVorbisOutputModule::encodeSamples(SampleContainer &samples)
          /* this could be set above, but for illustrative purposes, I do
             it here (to show that vorbis does know where the stream ends) */
 
-         if(ogg_page_eos_func(&og)) eos=true;
+         if(ogg_page_eos(&og)) eos=true;
       }
 
       }
@@ -541,7 +445,7 @@ void OggVorbisOutputModule::doneOutput()
    if (!lasterror.IsEmpty())
       return;
 
-   vorbis_analysis_wrote_func(&vd,0);
+   vorbis_analysis_wrote(&vd,0);
 
    // put out the last ogg block
 
@@ -552,11 +456,11 @@ void OggVorbisOutputModule::doneOutput()
 
    /* clean up and exit.  vorbis_info_clear() must be called last */
 
-   ogg_stream_clear_func(&os);
-   vorbis_block_clear_func(&vb);
-   vorbis_dsp_clear_func(&vd);
-   vorbis_comment_clear_func(&vc);
-   vorbis_info_clear_func(&vi);
+   ogg_stream_clear(&os);
+   vorbis_block_clear(&vb);
+   vorbis_dsp_clear(&vd);
+   vorbis_comment_clear(&vc);
+   vorbis_info_clear(&vi);
 
    /* ogg_page and ogg_packet structs always point to storage in
       libvorbis.  They're never freed or manipulated directly */
