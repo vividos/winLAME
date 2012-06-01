@@ -194,27 +194,8 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    SendDlgItemMessage(IDC_MDLG_HELP, BM_SETIMAGE, IMAGE_ICON,
       (LPARAM)ilHelpIcon.ExtractIcon(0) );
 
-   // check if html help file is available
-   CString helpfilename = GetWinlameDir();
-   helpfilename += "winlame.chm";
-
+   // html help is not available
    helpavailable = false;
-   {
-      struct _stat buffer;
-      USES_CONVERSION;
-      helpavailable = 0 == _tstat(helpfilename, &buffer);
-
-      if (helpavailable)
-      {
-         // init the html help api
-         htmlhelp.Init(m_hWnd,helpfilename);
-      }
-      else
-      {
-         // remove the button
-         ::ShowWindow(GetDlgItem(IDC_MDLG_HELP),SW_HIDE);
-      }
-   }
 
    // add menu items to system menu
 
