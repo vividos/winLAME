@@ -25,14 +25,6 @@
 #include "OggVorbisSettingsPage.h"
 #include <cmath>
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 // arrays
 
 /// possible bitrates for the fixed value spin button ctrl

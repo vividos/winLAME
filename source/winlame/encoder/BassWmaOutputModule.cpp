@@ -26,16 +26,7 @@
 #include "resource.h"
 #include "BassWmaOutputModule.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 // linker options
-
 // already in BassInputModule.cpp
 //#if _MSC_VER < 1400
 //#pragma comment(linker, "/delayload:bass.dll")

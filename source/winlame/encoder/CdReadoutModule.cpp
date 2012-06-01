@@ -26,14 +26,6 @@
 #include "CDReadoutModule.h"
 #include "CDRipTrackManager.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 // CDReadoutModule methods
 
 CDReadoutModule::CDReadoutModule()

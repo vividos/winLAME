@@ -25,14 +25,6 @@
 #include <mmreg.h>
 #include <fstream>
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 /*! \verbatim from mmreg.h:
 //
 // MPEG Layer3 WAVEFORMATEX structure

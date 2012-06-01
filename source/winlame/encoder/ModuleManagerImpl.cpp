@@ -39,15 +39,6 @@
 #include "MonkeysAudioInputModule.h"
 #include "CDReadoutModule.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
-
 // global functions
 
 /// max number of input modules GetNewInputModule can return

@@ -37,14 +37,6 @@
 #include <sys/stat.h>
 #include <direct.h>
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 // OutputPage methods
 
 LRESULT OutputPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)

@@ -30,13 +30,6 @@
 #include "Id3v1Tag.h"
 #include "id3/file.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 // static variables
 
 nlame_instance_t *LameOutputModule::nogap_inst = NULL;

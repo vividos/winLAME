@@ -15,15 +15,6 @@
 #include <cassert>
 #include "Id3v1Tag.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
-
 // static references
 monkey::MAC_DLL MonkeysAudioInputModule::dll;
 

@@ -25,14 +25,6 @@
 #include "stdafx.h"
 #include "PropertyListBox.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 // consts
 
 const UINT P_GROUP = 0x80000000L;      ///< property group flag

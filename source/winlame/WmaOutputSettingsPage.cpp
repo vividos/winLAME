@@ -24,13 +24,6 @@
 #include "stdafx.h"
 #include "WmaOutputSettingsPage.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 /// suggested bitrate values
 static int WmaBitrates[] =
 {

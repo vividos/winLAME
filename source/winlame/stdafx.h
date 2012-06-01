@@ -81,16 +81,7 @@ extern CAppModule _Module;
 #endif
 
 #define _CRTDBG_MAP_ALLOC
-
 #include <crtdbg.h>
-
-#define DEBUG_NEW new(THIS_FILE, __LINE__)
-
-inline void* __cdecl operator new(size_t nSize, LPCSTR lpszFileName, int nLine)
-{
-   return _malloc_dbg(nSize, _NORMAL_BLOCK, lpszFileName, nLine);
-}
-
 
 // delete macros so that std::min and std::max can be used
 #undef min

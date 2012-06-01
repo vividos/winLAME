@@ -28,16 +28,7 @@
 #include "AacOutputModule.h"
 #include "neaacdec.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 // linker options
-
 #if _MSC_VER < 1400
 #pragma comment(linker, "/delayload:libfaac.dll")
 #endif

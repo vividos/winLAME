@@ -37,17 +37,8 @@
 #include <sys/stat.h>
 #include <shlobj.h>
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 #define IDM_ABOUTBOX 16    ///< menu id for about box
 #define IDM_OPTIONS 48     ///< menu id for options
-
-
 
 // extern functions
 

@@ -24,14 +24,6 @@
 #include "stdafx.h"
 #include "WaveOutputSettingsPage.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 // WaveOutputSettingsPage methods
 
 LRESULT WaveOutputSettingsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)

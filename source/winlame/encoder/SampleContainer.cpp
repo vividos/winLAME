@@ -25,14 +25,6 @@
 #include "SampleContainer.h"
 #include <cstring>
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 SampleContainer::SampleContainer()
 {
    channel_array = NULL;

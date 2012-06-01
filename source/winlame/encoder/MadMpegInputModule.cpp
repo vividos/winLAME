@@ -31,16 +31,7 @@
 #include <sys/stat.h>
 #include "id3/File.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 // linker options
-
 #if _MSC_VER < 1400
 #pragma comment(linker, "/delayload:libmad.dll")
 #endif

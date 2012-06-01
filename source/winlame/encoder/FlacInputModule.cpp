@@ -29,16 +29,7 @@
 #include <sys/stat.h>
 #include "FLAC/metadata.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 // linker options
-
 #if _MSC_VER < 1400
 #pragma comment(linker, "/delayload:libFLAC.dll")
 #endif

@@ -24,14 +24,6 @@
 #include "stdafx.h"
 #include "InputListCtrl.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 /// darker color for alternate lines list control
 COLORREF g_clrAlternateListColor = RGB(232,232,232);
 

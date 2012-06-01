@@ -26,13 +26,6 @@
 #include "resource.h"
 #include "WaveOutputModule.h"
 
-// debug helper
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 extern "C"
 SNDFILE*
 sf_wchar_open (LPCWSTR wpath, int mode, SF_INFO *sfinfo);
