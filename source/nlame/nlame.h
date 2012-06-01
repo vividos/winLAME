@@ -295,7 +295,7 @@ typedef enum
    /*! select ATH adaptive adjustment type */
    nle_var_athaa_type = 30,
    /*! select the loudness approximation used by the ATH adaptive auto-leveling */
-   nle_var_athaa_loudapprox = 31,
+   /* nle_var_athaa_loudapprox = 31, removed in lame-3.99.5 */
    /*! predictability limit (ISO tonality formula) */
    /* nle_var_athaa_cwlimit = 32, removed in lame-3.98 */
 

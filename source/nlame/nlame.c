@@ -352,7 +352,7 @@ int nlame_var_set_int(nlame_instance_t* inst, nlame_var_int_type type, int value
       nlame_var_set_switch_type(nle_var_ath_type,ATHtype);
       nlame_var_set_switch_type(nle_var_ath_short,ATHshort);
       nlame_var_set_switch_type(nle_var_athaa_type,athaa_type);
-      nlame_var_set_switch_type(nle_var_athaa_loudapprox,athaa_loudapprox);
+//      nlame_var_set_switch_type(nle_var_athaa_loudapprox,athaa_loudapprox);
 //      nlame_var_set_switch_type(nle_var_athaa_cwlimit,cwlimit);
 
       // misc settings
@@ -420,7 +420,7 @@ int nlame_var_get_int(nlame_instance_t* inst, nlame_var_int_type type)
       nlame_var_get_switch_type(nle_var_ath_type,ATHtype);
       nlame_var_get_switch_type(nle_var_ath_short,ATHshort);
       nlame_var_get_switch_type(nle_var_athaa_type,athaa_type);
-      nlame_var_get_switch_type(nle_var_athaa_loudapprox,athaa_loudapprox);
+//      nlame_var_get_switch_type(nle_var_athaa_loudapprox,athaa_loudapprox);
 //      nlame_var_get_switch_type(nle_var_athaa_cwlimit,cwlimit);
 
       // misc settings
