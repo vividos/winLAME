@@ -33,7 +33,6 @@
 #define IDD_DLG_WMA                             114
 #define IDD_ERRORDLG                            115
 #define IDD_DLG_PRESET_PROPERTY                 116
-#define IDD_INMODULE_CFG                        117
 #define IDD_CDRIP                               118
 #define IDD_CDSELECT                            119
 #define IDD_DLG_LAME_SIMPLE                     120
@@ -45,7 +44,6 @@
 #define IDC_MDLG_EXIT                           3003
 #define IDC_MDLG_CAPTIONBAR                     3004
 #define IDC_MDLG_FRAME                          3005
-#define IDC_STATIC_SEPARATOR                    3006
 #define IDC_STATIC_WINLAME_LOGO                 3007
 #define IDC_STATIC_MAIN_BEVEL                   3008
 #define IDC_STATIC_MAIN_BEVEL2                  3009
@@ -56,7 +54,6 @@
 #define IDC_INPUT_BUTTON_DELETE                 3103
 #define IDC_INPUT_MENU_SELALL                   3104
 #define IDC_INPUT_BUTTON_CDRIP                  3105
-#define IDC_INPUT_BUTTON_CONFIG                 3106
 #define IDC_OUT_COMBO_OUTMODULE                 3200
 #define IDC_OUT_DELAFTER                        3201
 #define IDC_OUT_OUTPATH                         3202
@@ -192,7 +189,6 @@
 #define IDC_CDRIP_OPT_BEVEL2                    4307
 #define IDC_FREEDB_LIST_TRACKS                  4400
 #define IDC_ABOUT_FRAME                         4401
-#define IDC_INCFG_LISTBOX                       4403
 #define IDC_PROP_LISTBOX                        4404
 #define ID_TRAY_ABOUT                           30000
 #define ID_TRAY_PAUSE                           30001

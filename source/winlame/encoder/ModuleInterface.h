@@ -81,12 +81,6 @@ public:
    /// dtor
    virtual ~InputModule(){}
 
-   /// returns true when input module can be configured
-   virtual bool canConfigure(){ return false; }
-
-   /// called to configure module
-   virtual void configureModule(){}
-
    /// clones input module
    virtual InputModule *cloneModule()=0;
 

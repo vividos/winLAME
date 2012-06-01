@@ -30,56 +30,6 @@
 #include "PageBase.h"
 #include "InputListCtrl.h"
 
-
-/// input modules config selection dialog
-/// \todo check if needed anymore
-class InputConfigDlg: public CDialogImpl<InputConfigDlg>
-{
-public:
-   /// ctor
-   InputConfigDlg(ModuleManager& moduleManager, const std::vector<int>& vecIndices)
-      :m_moduleManager(moduleManager),
-       m_vecIndices(vecIndices)
-   {
-   }
-
-   /// sets module indices to use
-   void Init();
-
-   /// dialog id
-   enum { IDD = IDD_INMODULE_CFG };
-
-   // message map
-BEGIN_MSG_MAP(InputPage)
-   MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-   COMMAND_HANDLER(IDOK, BN_CLICKED, OnExit)
-   COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnExit)
-   COMMAND_HANDLER(IDC_INCFG_LISTBOX, LBN_DBLCLK, OnListBoxDoubleClick)
-   REFLECT_NOTIFICATIONS()
-END_MSG_MAP()
-
-   /// called to init the dialog
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-
-   /// called when double-clicking on a listbox item
-   LRESULT OnListBoxDoubleClick(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-
-   /// called on exiting the dialog
-   LRESULT OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-   {
-      EndDialog(0);
-      return 0;
-   }
-
-protected:
-   /// ref to module manager
-   ModuleManager& m_moduleManager;
-
-   /// module indices
-   const std::vector<int>& m_vecIndices;
-};
-
-
 /// input files page
 
 class InputPage:
@@ -117,7 +67,6 @@ BEGIN_MSG_MAP(InputPage)
    COMMAND_HANDLER(IDC_INPUT_BUTTON_INFILESEL, BN_CLICKED, OnButtonInputFileSel)
    COMMAND_HANDLER(IDC_INPUT_BUTTON_DELETE, BN_CLICKED, OnButtonDeleteAll)
    COMMAND_HANDLER(IDC_INPUT_BUTTON_CDRIP, BN_CLICKED, OnButtonCDRip)
-   COMMAND_HANDLER(IDC_INPUT_BUTTON_CONFIG, BN_CLICKED, OnButtonConfig)
    CHAIN_MSG_MAP(CDialogResize<InputPage>)
    REFLECT_NOTIFICATIONS()
 END_MSG_MAP()
@@ -146,8 +95,6 @@ END_MSG_MAP()
 
    /// called when the user clicks on the button to delete all selected files
    LRESULT OnButtonDeleteAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   /// called when button "config" was pressed
-   LRESULT OnButtonConfig(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when button "CD Rip" was pressed
    LRESULT OnButtonCDRip(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    /// called when user dropped files on the list ctrl
@@ -213,9 +160,6 @@ protected:
 
    /// indicates if InsertFilename() currently recurses through directory trees
    bool recursive;
-
-   /// id's of all modules that allow configuration
-   std::vector<int> config_modules_id;
 
    /// string with input file errors
    CString input_errors;

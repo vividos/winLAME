@@ -11,16 +11,6 @@
 // Dialog resources
 //
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
-IDD_INMODULE_CFG DIALOGEX 0, 0, 220, 92
-STYLE DS_MODALFRAME | DS_SHELLFONT | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_SYSMENU
-CAPTION "Wählen Sie das Input-Modul aus, das konfiguriert werden soll ..."
-FONT 8, "MS Shell Dlg", 0, 0, 1
-BEGIN
-    LISTBOX         IDC_INCFG_LISTBOX, 3, 3, 214, 68, WS_TABSTOP | WS_VSCROLL | LBS_NOINTEGRALHEIGHT
-    DEFPUSHBUTTON   "&Verlassen", IDOK, 84, 75, 50, 14
-END
-
-LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 IDD_MAINDLG DIALOGEX 0, 0, 300, 207
 STYLE DS_SHELLFONT | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_GROUP | WS_POPUP | WS_SYSMENU | WS_CLIPCHILDREN | WS_THICKFRAME | WS_MAXIMIZEBOX
 CAPTION "winLAME"
@@ -46,8 +36,6 @@ BEGIN
     PUSHBUTTON      "input", IDC_INPUT_BUTTON_INFILESEL, 0, 0, 16, 14, BS_ICON
     PUSHBUTTON      "del", IDC_INPUT_BUTTON_DELETE, 20, 0, 16, 14, BS_ICON
     PUSHBUTTON      "play", IDC_INPUT_BUTTON_PLAY, 40, 0, 16, 14, BS_ICON
-    CONTROL         "", IDC_STATIC_SEPARATOR, WC_STATIC, SS_ETCHEDVERT, 80, 0, 1, 15
-    PUSHBUTTON      "config", IDC_INPUT_BUTTON_CONFIG, 85, 0, 16, 14, BS_ICON
     CONTROL         "", IDC_INPUT_LIST_INPUTFILES, WC_LISTVIEW, WS_TABSTOP | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | LVS_REPORT, 0, 19, 291, 123, WS_EX_STATICEDGE
     PUSHBUTTON      "play", IDC_INPUT_BUTTON_CDRIP, 60, 0, 16, 14, BS_ICON
     RTEXT           "Zeit: %02u:%02u", IDC_STATIC_TIMECOUNT, 146, 7, 141, 8
@@ -642,8 +630,6 @@ BEGIN
     IDC_OGGV_RADIO_BRMODE4        "Wählt konstante Bitrate aus"
     IDC_INPUT_MENU_SELALL         "Wählt alle Dateien in der Liste der Quelldateien aus"
     IDC_INPUT_BUTTON_CDRIP        "Wählen Sie die CD-Tracks aus"
-    IDC_INPUT_BUTTON_CONFIG       "Öffnet eine Liste der Eingabe-Module, die konfiguriert werden können"
-    IDC_INCFG_LISTBOX             "Liste aller konfigurierbaren Eingabe-Module"
     ID_TRAY_ABOUT                 "Zeit den winLAME-Infodialog"
     ID_TRAY_PAUSE                 "Pausiert oder setzt das Encoden fort"
     ID_TRAY_START                 "Startet das Encoden"

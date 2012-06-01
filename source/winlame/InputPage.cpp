@@ -44,37 +44,6 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-
-// InputConfigDlg methods
-
-LRESULT InputConfigDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-{
-   int max = m_vecIndices.size();
-   for(int i=0; i<max; i++)
-   {
-      InputModule* mod = m_moduleManager.getInputModuleInstance(m_vecIndices[i]);
-
-      CString cszName = mod->getModuleName();
-      SendDlgItemMessage(IDC_INCFG_LISTBOX,LB_ADDSTRING,0, (LPARAM)(LPCTSTR)cszName);
-   }
-
-   return 1;
-}
-
-LRESULT InputConfigDlg::OnListBoxDoubleClick(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-{
-   int i = ::SendMessage(hWndCtl,LB_GETCURSEL,0,0);
-
-   if (i!=LB_ERR)
-   {
-      InputModule* mod = m_moduleManager.getInputModuleInstance(m_vecIndices[i]);
-      mod->configureModule();
-   }
-
-   return 0;
-}
-
-
 // InputPage methods
 
 LRESULT InputPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
@@ -91,8 +60,6 @@ LRESULT InputPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& b
       (LPARAM)ilIcons.ExtractIcon(2) );
    SendDlgItemMessage(IDC_INPUT_BUTTON_CDRIP, BM_SETIMAGE, IMAGE_ICON,
       (LPARAM)ilIcons.ExtractIcon(7) );
-   SendDlgItemMessage(IDC_INPUT_BUTTON_CONFIG, BM_SETIMAGE, IMAGE_ICON,
-      (LPARAM)ilIcons.ExtractIcon(6) );
 
    HWND tmpWnd = GetDlgItem(IDC_INPUT_LIST_INPUTFILES);
 
@@ -133,25 +100,6 @@ LRESULT InputPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& b
       LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_UNDERLINEHOT );
 
    filterstring.Empty();
-
-   // determine input modules that allow configuration
-   config_modules_id.clear();
-
-   ModuleManager* module_manager = pui->getUISettings().module_manager;
-   int max = module_manager->getInputModuleCount();
-   for(int j=0; j<max; j++)
-   {
-      InputModule* module = module_manager->getInputModuleInstance(j);
-      if (module->canConfigure())
-         config_modules_id.push_back(j);
-   }
-
-   // disable config button when no modules are available
-   if (config_modules_id.empty())
-   {
-      ::ShowWindow(GetDlgItem(IDC_INPUT_BUTTON_CONFIG),SW_HIDE);
-      ::ShowWindow(GetDlgItem(IDC_STATIC_SEPARATOR),SW_HIDE);
-   }
 
    // disable cd extract button if cd ripping is not available
    if (!CDRipDlg::IsCDExtractionAvail())
@@ -209,18 +157,6 @@ void InputPage::UpdateTimeCount()
    cszText.Format(IDS_INPUT_TIME_UU, nTime/60, nTime%60);
 
    SetDlgItemText(IDC_STATIC_TIMECOUNT, cszText);
-}
-
-LRESULT InputPage::OnButtonConfig(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-{
-   if (config_modules_id.empty())
-      return 0;
-
-   // start config selection dialog
-   InputConfigDlg dlg(*pui->getUISettings().module_manager, config_modules_id);
-   dlg.DoModal();
-
-   return 0;
 }
 
 LRESULT InputPage::OnButtonCDRip(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
