@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="doxygen"
+	>
+	<Tool
+		Name="VCNMakeTool"
+		BuildCommandLine=""
+		ReBuildCommandLine=""
+		CleanCommandLine=""
+		Output=""
+		PreprocessorDefinitions=""
+		IncludeSearchPath=""
+		ForcedIncludes=""
+		AssemblySearchPath=""
+		ForcedUsingAssemblies=""
+		CompileAsManaged=""
+	/>
+	<UserMacro
+		Name="PATH"
+		Value="%PATH%;D:\devel\tools\doxygen\bin"
+		InheritsFromParent="true"
+		Delimiter=";"
+		PerformEnvironmentSet="true"
+	/>
+</VisualStudioPropertySheet>
