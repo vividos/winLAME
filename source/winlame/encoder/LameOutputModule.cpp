@@ -37,14 +37,6 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-
-// linker options
-
-#if _MSC_VER < 1400
-#pragma comment(linker, "/delayload:nlame.dll")
-#endif
-
-
 // static variables
 
 nlame_instance_t *LameOutputModule::nogap_inst = NULL;
@@ -78,31 +70,8 @@ LameOutputModule::~LameOutputModule()
 
 bool LameOutputModule::isAvailable()
 {
-   HMODULE dll = ::LoadLibrary(_T("nlame.dll"));
-   bool avail = dll != NULL;
-
-   if (avail)
-   {
-      typedef int(*nlame_get_api_version_t)();
-
-      nlame_get_api_version_t p_get_api_version =
-         reinterpret_cast<nlame_get_api_version_t>(::GetProcAddress(dll, "nlame_get_api_version"));
-
-      avail = p_get_api_version != NULL; // insist on having nlame_get_api_version()
-
-      // check if version is new enough for this
-      if (avail)
-      {
-         // need at least version 1
-         // the version that first implemented nle_var_quality_value_high, etc.
-         // see nlame.h for more
-         avail = p_get_api_version() >= 1;
-      }
-   }
-
-   ::FreeLibrary(dll);
-
-   return avail;
+   // need at least version with the header we compiled against
+   return nlame_get_api_version() >= NLAME_CURRENT_API_VERSION;
 }
 
 void LameOutputModule::getVersionString(CString& version, int special)
