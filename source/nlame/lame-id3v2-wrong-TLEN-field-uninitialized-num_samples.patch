@@ -1,8 +1,0 @@
-31c31
-< /* $Id: lame-id3v2-wrong-TLEN-field-uninitialized-num_samples.patch,v 1.1 2009/10/27 18:36:58 vividos Exp $ */
----
-> /* $Id: lame-id3v2-wrong-TLEN-field-uninitialized-num_samples.patch,v 1.1 2009/10/27 18:36:58 vividos Exp $ */
-203a204,206
-> 
->     if (gfp->num_samples == MAX_U_32_NUM)
->        return;
