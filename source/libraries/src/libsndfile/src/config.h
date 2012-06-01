@@ -42,9 +42,6 @@
 /* Set to 1 to enable experimental code. */
 #define ENABLE_EXPERIMENTAL_CODE 0
 
-/* Major version of GCC or 3 otherwise. */
-/* #undef GCC_MAJOR_VERSION */
-
 /* Define to 1 if you have the <alsa/asoundlib.h> header file. */
 /* #undef HAVE_ALSA_ASOUNDLIB_H */
 
@@ -66,11 +63,8 @@
 /* Define to 1 if you have the <endian.h> header file. */
 /* #undef HAVE_ENDIAN_H */
 
-/* Define to 1 if you have libflac 1.1.1 */
-/* #undef HAVE_FLAC_1_1_1 1 */
-
-/* Define to 1 if you have the <FLAC/all.h> header file. */
-/* #undef HAVE_FLAC_ALL_H 1 */
+/* Will be set to 1 if flac, ogg and vorbis are available. */
+/* #undef HAVE_EXTERNAL_LIBS */
 
 /* Set to 1 if the compile supports the struct hack. */
 #define HAVE_FLEXIBLE_ARRAY 1
@@ -96,6 +90,9 @@
 /* Define to 1 if you have the `getpagesize' function. */
 #define HAVE_GETPAGESIZE 1
 
+/* Define to 1 if you have the `gettimeofday' function. */
+/* #undef HAVE_GETTIMEOFDAY */
+
 /* Define to 1 if you have the `gmtime' function. */
 #define HAVE_GMTIME 1
 
@@ -110,6 +107,12 @@
 
 /* Define to 1 if you have the <locale.h> header file. */
 #undef HAVE_LOCALE_H
+
+/* Define to 1 if you have the `localtime' function. */
+#undef HAVE_LOCALTIME
+
+/* Define to 1 if you have the `localtime_r' function. */
+#undef HAVE_LOCALTIME_R
 
 /* Define if you have C99's lrint function. */
 /* #undef HAVE_LRINT */
@@ -132,6 +135,9 @@
 /* Define to 1 if you have the `open' function. */
 #define HAVE_OPEN 1
 
+/* Define to 1 if you have the `pipe' function. */
+#undef HAVE_PIPE
+
 /* Define to 1 if you have the `pread' function. */
 /* #undef HAVE_PREAD */
 
@@ -146,6 +152,9 @@
 
 /* Define to 1 if you have the `setlocale' function. */
 #undef HAVE_SETLOCALE
+
+/* Define to 1 if you have the <sndio.h> header file. */
+#undef HAVE_SNDIO_H
 
 /* Define to 1 if you have the `snprintf' function. */
 #define HAVE_SNPRINTF 1
@@ -186,8 +195,18 @@
 /* Define to 1 if you have the `vsnprintf' function. */
 #define HAVE_VSNPRINTF 1
 
+/* Define to 1 if you have the `waitpid' function. */
+#undef HAVE_WAITPID
+
 /* Define to 1 if you have the `write' function. */
 #define HAVE_WRITE 1
+
+/* Define to the sub-directory in which libtool stores uninstalled libraries.
+   */
+#undef LT_OBJDIR
+
+/* Define to 1 if your C compiler doesn't accept -c and -o together. */
+#undef NO_MINUS_C_MINUS_O
 
 /* Set to 1 if compiling for MacOSX */
 #define OS_IS_MACOSX 0
@@ -205,13 +224,16 @@
 #define PACKAGE_NAME "libsndfile"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libsndfile 1.0.23"
+#define PACKAGE_STRING "libsndfile 1.0.25"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libsndfile"
 
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.0.23"
+#define PACKAGE_VERSION "1.0.25"
 
 /* Set to maximum allowed value of sf_count_t type. */
 #undef SF_COUNT_MAX
@@ -271,7 +293,13 @@
 #define USE_WINDOWS_API 1
 
 /* Version number of package */
-#define VERSION "1.0.20"
+#define VERSION "1.0.25"
+
+/* Set to 1 if windows DLL is being built. */
+#undef WIN32_TARGET_DLL
+
+/* Target processor is big endian. */
+#undef WORDS_BIGENDIAN
 
 /* Number of bits in a file offset, on hosts where this is settable. */
 /* #undef _FILE_OFFSET_BITS */
@@ -281,3 +309,6 @@
 
 /* Define for large files, on AIX-style hosts. */
 /* #undef _LARGE_FILES */
+
+/* Set to 1 to use C99 printf/snprintf in MinGW. */
+#undef __USE_MINGW_ANSI_STDIO

@@ -20,6 +20,7 @@
 #define SNDFILE_COMMON_H
 
 #include "sfconfig.h"
+#include "float_cast.h"
 
 #include <stdlib.h>
 #include <string.h>
