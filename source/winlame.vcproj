@@ -81,7 +81,7 @@
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="libraries\lib;&quot;..\lib\$(ConfigurationName)&quot;"
 				IgnoreDefaultLibraryNames="msvcp80.lib"
-				DelayLoadDLLs="libfaad2.dll;libfaac.dll;bass.dll;basscd.dll;basswma.dll;libflac.dll;nlame.dll;libmad.dll;libsndfile-1.dll;ws2_32.dll"
+				DelayLoadDLLs="libfaad2.dll;libfaac.dll;bass.dll;basscd.dll;basswma.dll;libflac.dll;libmad.dll;libsndfile-1.dll;ws2_32.dll"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TargetDir)pdb\$(TargetName).pdb"
 				SubSystem="2"
