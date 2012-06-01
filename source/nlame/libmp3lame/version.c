@@ -4,7 +4,7 @@
  *      Copyright (c) 1999 A.L. Faber
  *
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
@@ -13,7 +13,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Library General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
+ * You should have received a copy of the GNU Library General Public
  * License along with this library; if not, write to the
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
@@ -26,7 +26,7 @@
   Contains functions which describe the version of LAME.
 
   \author A.L. Faber
-  \version \$Id: version.c,v 1.10 2009/04/10 06:52:59 vividos Exp $
+  \version \$Id: version.c,v 1.32.2.2 2011/11/18 09:18:28 robert Exp $
   \ingroup libmp3lame
 */
 
@@ -42,10 +42,6 @@
 #include "version.h"    /* macros of version numbers */
 
 
-/*! Stringify \a x. */
-#define STR(x)   #x
-/*! Stringify \a x, perform macro expansion. */
-#define XSTR(x)  STR(x)
 
 
 
@@ -61,18 +57,18 @@ get_lame_version(void)
 
 #if   LAME_ALPHA_VERSION
     static /*@observer@ */ const char *const str =
-        XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION) " "
-        "(alpha " XSTR(LAME_PATCH_VERSION) ", " __DATE__ " " __TIME__ ")";
+        STR(LAME_MAJOR_VERSION) "." STR(LAME_MINOR_VERSION) " "
+        "(alpha " STR(LAME_PATCH_VERSION) ", " __DATE__ " " __TIME__ ")";
 #elif LAME_BETA_VERSION
     static /*@observer@ */ const char *const str =
-        XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION) " "
-        "(beta " XSTR(LAME_PATCH_VERSION) ", " __DATE__ ")";
+        STR(LAME_MAJOR_VERSION) "." STR(LAME_MINOR_VERSION) " "
+        "(beta " STR(LAME_PATCH_VERSION) ", " __DATE__ ")";
 #elif LAME_RELEASE_VERSION && (LAME_PATCH_VERSION > 0)
     static /*@observer@ */ const char *const str =
-        XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION) "." XSTR(LAME_PATCH_VERSION);
+        STR(LAME_MAJOR_VERSION) "." STR(LAME_MINOR_VERSION) "." STR(LAME_PATCH_VERSION);
 #else
     static /*@observer@ */ const char *const str =
-        XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION);
+        STR(LAME_MAJOR_VERSION) "." STR(LAME_MINOR_VERSION);
 #endif
 
     return str;
@@ -94,16 +90,16 @@ get_lame_short_version(void)
 
 #if   LAME_ALPHA_VERSION
     static /*@observer@ */ const char *const str =
-        XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION) " (alpha)";
+        STR(LAME_MAJOR_VERSION) "." STR(LAME_MINOR_VERSION) " (alpha " STR(LAME_PATCH_VERSION) ")";
 #elif LAME_BETA_VERSION
     static /*@observer@ */ const char *const str =
-        XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION) " (beta)";
+        STR(LAME_MAJOR_VERSION) "." STR(LAME_MINOR_VERSION) " (beta " STR(LAME_PATCH_VERSION) ")";
 #elif LAME_RELEASE_VERSION && (LAME_PATCH_VERSION > 0)
     static /*@observer@ */ const char *const str =
-        XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION) "." XSTR(LAME_PATCH_VERSION);
+        STR(LAME_MAJOR_VERSION) "." STR(LAME_MINOR_VERSION) "." STR(LAME_PATCH_VERSION);
 #else
     static /*@observer@ */ const char *const str =
-        XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION);
+        STR(LAME_MAJOR_VERSION) "." STR(LAME_MINOR_VERSION);
 #endif
 
     return str;
@@ -121,21 +117,40 @@ get_lame_very_short_version(void)
 {
     /* adding date and time to version string makes it harder for output
        validation */
-
 #if   LAME_ALPHA_VERSION
-    static /*@observer@ */ const char *const str =
-        "LAME" XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION) "a";
+#define P "a"
 #elif LAME_BETA_VERSION
-    static /*@observer@ */ const char *const str =
-        "LAME" XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION) "b";
+#define P "b"
 #elif LAME_RELEASE_VERSION && (LAME_PATCH_VERSION > 0)
-    static /*@observer@ */ const char *const str =
-        "LAME" XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION) "r";
+#define P "r"
 #else
-    static /*@observer@ */ const char *const str =
-        "LAME" XSTR(LAME_MAJOR_VERSION) "." XSTR(LAME_MINOR_VERSION) " ";
+#define P ""
 #endif
+    static /*@observer@ */ const char *const str =
+#if (LAME_PATCH_VERSION > 0)
+      "LAME" STR(LAME_MAJOR_VERSION) "." STR(LAME_MINOR_VERSION) P STR(LAME_PATCH_VERSION)
+#else
+      "LAME" STR(LAME_MAJOR_VERSION) "." STR(LAME_MINOR_VERSION) P
+#endif
+      ;
+    return str;
+}
 
+/*! Get the _very_ short LAME version string. */
+/*!
+  It's used in the LAME VBR tag only, limited to 9 characters max.
+  Due to some 3rd party HW/SW decoders, it has to start with LAME.
+
+  \param void   
+  \return a pointer to the short version of the LAME version string.
+ */
+const char*
+get_lame_tag_encoder_short_version(void)
+{
+    static /*@observer@ */ const char *const str =
+            /* FIXME: new scheme / new version counting / drop versioning here ? */
+    "LAME" STR(LAME_MAJOR_VERSION) "." STR(LAME_MINOR_VERSION) P
+    ;
     return str;
 }
 
@@ -149,15 +164,15 @@ get_psy_version(void)
 {
 #if   PSY_ALPHA_VERSION > 0
     static /*@observer@ */ const char *const str =
-        XSTR(PSY_MAJOR_VERSION) "." XSTR(PSY_MINOR_VERSION)
-        " (alpha " XSTR(PSY_ALPHA_VERSION) ", " __DATE__ " " __TIME__ ")";
+        STR(PSY_MAJOR_VERSION) "." STR(PSY_MINOR_VERSION)
+        " (alpha " STR(PSY_ALPHA_VERSION) ", " __DATE__ " " __TIME__ ")";
 #elif PSY_BETA_VERSION > 0
     static /*@observer@ */ const char *const str =
-        XSTR(PSY_MAJOR_VERSION) "." XSTR(PSY_MINOR_VERSION)
-        " (beta " XSTR(PSY_BETA_VERSION) ", " __DATE__ ")";
+        STR(PSY_MAJOR_VERSION) "." STR(PSY_MINOR_VERSION)
+        " (beta " STR(PSY_BETA_VERSION) ", " __DATE__ ")";
 #else
     static /*@observer@ */ const char *const str =
-        XSTR(PSY_MAJOR_VERSION) "." XSTR(PSY_MINOR_VERSION);
+        STR(PSY_MAJOR_VERSION) "." STR(PSY_MINOR_VERSION);
 #endif
 
     return str;
