@@ -185,15 +185,6 @@ void AboutDlg::GetHtmlString(CComBSTR& str)
          m_moduleManager.getModuleVersionString(varname,ID_IM_BASS);
       else if (varname==_T("flacver"))
          m_moduleManager.getModuleVersionString(varname,ID_IM_FLAC);
-      else if (varname==_T("stlportversion"))
-      {
-#ifdef _STLPORT_MAJOR
-         varname.Format(_T("%u.%u.%u"),
-            _STLPORT_MAJOR, _STLPORT_MINOR, _STLPORT_PATCHLEVEL);
-#else
-         varname = _T("5.0");
-#endif
-      }
       else if (varname==_T("wtlversion"))
       {
          varname.Format(_T("%u.%u"),
