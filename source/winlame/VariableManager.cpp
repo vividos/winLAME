@@ -24,6 +24,7 @@
 // needed includes
 #include "stdafx.h"
 #include "VariableManager.h"
+#include "ModuleInterface.h"
 #include "resource.h"
 
 /// variable mapping struct

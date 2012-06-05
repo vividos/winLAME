@@ -25,6 +25,7 @@
 // needed includes
 #include "stdafx.h"
 #include "AboutDlg.h"
+#include "ModuleInterface.h"
 #include <cstdio>
 
 // global functions

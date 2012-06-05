@@ -32,6 +32,7 @@
 #include "WmaOutputSettingsPage.h"
 #include "EncoderInterface.h"
 #include "CDRipPage.h"
+#include "ModuleInterface.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
