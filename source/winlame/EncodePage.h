@@ -36,6 +36,9 @@
 // systray activation message
 #define WL_SYSTRAY_ACTIVE WM_APP+1
 
+// timer id for updating info
+#define IDT_ENC_UPDATEINFO 67
+
 /// encode page class
 
 class EncodePage:

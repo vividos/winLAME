@@ -86,8 +86,3 @@ extern CAppModule _Module;
 // delete macros so that std::min and std::max can be used
 #undef min
 #undef max
-
-// timer id's
-
-#define IDT_CDRIP_CHECK                 66
-#define IDT_ENC_UPDATEINFO              67

@@ -32,6 +32,9 @@
 #include "UIinterface.h"
 #include "TrackEditListCtrl.h"
 
+/// timer id for timer checking for cd in drive
+#define IDT_CDRIP_CHECK 66
+
 /// dialog that provides a list of found freedb entries
 class CDRipFreedbListDlg:
    public CDialogImpl<CDRipFreedbListDlg>,
