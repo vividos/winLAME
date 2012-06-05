@@ -32,108 +32,13 @@
 
 // needed includes
 #include "SettingsManager.h"
-#include "PresetManagerInterface.h"
-#include "EncoderInterface.h"
-
+#include "UISettings.h"
 
 // forward declarations
 class PageBase;
 class LanguageResourceManager;
 
-/// list of filenames
-typedef std::vector<EncoderJob> EncoderJobList;
-
-
 // classes
-
-/// general UI settings
-struct UISettings
-{
-   /// ctor
-   UISettings();
-
-   /// reads settings from the registry
-   void ReadSettings();
-
-   /// stores settings in the registry
-   void StoreSettings();
-
-   /// list of filenames to encode
-   EncoderJobList encoderjoblist;
-
-   /// output directory
-   CString outputdir;
-
-   /// output directory history list
-   std::vector<CString> outputhistory;
-
-   /// last input files folder
-   std::tstring lastinputpath;
-
-   /// indicates if source files should be deleted after encoding
-   bool delete_after_encode;
-
-   /// indicates if existing files will be overwritten
-   bool overwrite_existing;
-
-   /// warn about lossy transcoding
-   bool warn_lossy_transcoding;
-
-   /// indicates if an output playlist should be created
-   bool create_playlist;
-
-   /// playlist filename
-   CString playlist_filename;
-
-   /// action to perform after all files were encoded
-   int after_encoding_action;
-
-   /// indicates if advanced lame settings should be hidden
-   bool hide_advanced_lame;
-
-   /// last selected output module id
-   int output_module;
-
-   /// use input dir as output location
-   bool out_location_use_input_dir;
-
-   /// indicates if presets are available
-   bool preset_avail;
-
-   /// current filename of presets.xml file
-   CString presets_filename;
-
-   /// autostart encoding after cd ripping?
-   bool cdrip_autostart_encoding;
-
-   /// indicates that last page was cdrip page
-   bool last_page_was_cdrip_page;
-
-   /// temporary folder for cd ripping
-   CString cdrip_temp_folder;
-
-   /// freedb servername
-   CString freedb_server;
-
-   /// freedb username
-   CString freedb_username;
-
-   /// indicates if disc infos retrieved by freedb should be stored in cdplayer.ini
-   bool store_disc_infos_cdplayer_ini;
-
-   /// language id
-   UINT language_id;
-
-   /// settings manager
-   SettingsManager settings_manager;
-
-   /// preset manager
-   PresetManagerInterface *preset_manager;
-
-   /// module manager
-   ModuleManager *module_manager;
-};
-
 
 /// ui interface
 class UIinterface
