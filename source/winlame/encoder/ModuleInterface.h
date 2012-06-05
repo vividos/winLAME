@@ -32,6 +32,22 @@
 #include "SampleContainer.h"
 
 
+// input and output module ids
+
+#define ID_OM_LAME                      1
+#define ID_OM_OGGV                      2
+#define ID_OM_WAVE                      3
+#define ID_OM_AAC                       4
+#define ID_IM_SNDFILE                   5
+#define ID_IM_MAD                       6
+#define ID_IM_OGGV                      7
+#define ID_IM_AAC                       8
+#define ID_IM_FLAC                      10
+#define ID_IM_BASS                      11
+#define ID_OM_BASSWMA                   12
+#define ID_IM_CDRIP                     13
+
+
 /// module base class
 
 class ModuleBase
