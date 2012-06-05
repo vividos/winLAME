@@ -16,6 +16,7 @@
 #define IDR_HTML_ABOUT                          83
 #define IDB_BITMAP_FLAGS                        84
 #define IDR_TRAYICON                            85
+#define IDR_MAINFRAME                           86
 #define IDD_MAINDLG                             100
 #define IDD_ABOUTDLG                            101
 #define IDD_DLG_INPUT                           102
@@ -38,6 +39,12 @@
 #define IDD_DLG_LAME_SIMPLE                     120
 #define IDD_FREEDB_LIST                         121
 #define IDD_CDRIP_OPTIONS                       122
+#define IDC_WIZARDPAGE_STATIC_CAPTION           1000
+#define IDC_WIZARDPAGE_STATIC_BACKGROUND        1001
+#define IDC_WIZARDPAGE_BUTTON_ACTION1           1002
+#define IDC_WIZARDPAGE_BUTTON_ACTION2           1003
+#define IDC_WIZARDPAGE_STATIC_FRAME             1004
+#define IDD_WIZARDPAGE_HOST                     1005
 #define IDC_MDLG_NEXT                           3000
 #define IDC_MDLG_BACK                           3001
 #define IDC_MDLG_HELP                           3002
