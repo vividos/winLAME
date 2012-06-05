@@ -25,32 +25,24 @@
 
 #pragma once
 
-#define WINVER         0x0502 
-#define _WIN32_WINNT   0x0502 ///< Windows Server 2003 with SP1, Windows XP with SP2
-#define _WIN32_IE      0x0600 ///< Internet Explorer 6.0
-
-#pragma warning(disable: 4100) // unreferenced formal parameter
+#define WINVER         0x0601 
+#define _WIN32_WINNT   0x0601
+#define _WIN32_IE      0x0700
 
 #define WIN32_LEAN_AND_MEAN
 #define VC_EXTRALEAN
 
-// define this to prevent the following warning in atlapp.hpp:
-// warning C4996: '_vswprintf': swprintf has been changed to conform with the ISO C standard, adding an extra character count parameter. To use traditional Microsoft swprintf, set _CRT_NON_CONFORMING_SWPRINTFS.
-#if _MSC_VER >= 1400
-#  define _CRT_NON_CONFORMING_SWPRINTFS
-#endif
-
 // ATL includes
 #include <atlbase.h>
-#if _ATL_VER >= 0x0700
-   #include <atlcoll.h>
-   #include <atlstr.h>
-   #include <atltypes.h>
-   #define _WTL_NO_CSTRING
-   #define _WTL_NO_WTYPES
-#else
-   #define _WTL_USE_CSTRING
+#if _ATL_VER < 0x0700
+#error ATL7 or higher must be used to compile
 #endif
+
+#include <atlcoll.h>
+#include <atlstr.h>
+#include <atltypes.h>
+#define _WTL_NO_CSTRING
+#define _WTL_NO_WTYPES
 
 #include <atlapp.h>
 
@@ -65,14 +57,18 @@ extern CAppModule _Module;
 #include <atlmisc.h>
 #include <atlctrls.h>
 #include <atldlgs.h>
+#include <atlctrlw.h>
 #include <atlddx.h>
 #include <atlframe.h>
+#include <atlribbon.h>
 
+// undefine macros so that std::min and std::max can be used
+#undef min
+#undef max
 
 // Standard C++ Library includes
 #include <string>
 #include <vector>
-
 
 #ifdef _UNICODE
 #define tstring wstring
@@ -80,9 +76,12 @@ extern CAppModule _Module;
 #define tstring string
 #endif
 
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
+// Boost includes
+// don't link to several boost libraries
+#define BOOST_DATE_TIME_NO_LIB
+#define BOOST_REGEX_NO_LIB
 
-// delete macros so that std::min and std::max can be used
-#undef min
-#undef max
+#include <boost/noncopyable.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/thread.hpp>
+#include <boost/asio.hpp>
