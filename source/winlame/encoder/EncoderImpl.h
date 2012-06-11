@@ -255,7 +255,7 @@ protected:
       SettingsManager& settingsManager, TrackInfo& trackInfo, SampleContainer& sampleContainer,
       int& error);
 
-   /// prepares output module for work; step 1 of 2
+   /// prepares output module for work; step 1 of 2; see InitOutputModule()
    bool PrepareOutputModule(InputModule& inputModule, OutputModule& outputModule,
       SettingsManager& settingsManager,
       const CString& cszInputFilename, CString& cszOutputFilename, int& error);
@@ -273,6 +273,11 @@ protected:
 
    /// generates temporary output filename
    void GenerateTempOutFilename(const CString& cszOriginalFilename, CString& cszTempFilename);
+
+   /// inits output module; step 2 of 2; see PrepareOutputModule()
+   bool InitOutputModule(OutputModule& outputModule, const CString& cszTempOutputFilename,
+      SettingsManager& settingsManager, TrackInfo& trackInfo, SampleContainer& sampleContainer,
+      int& error);
 
    /// formats encoding description
    void FormatEncodingDescription(InputModule& inputModule, OutputModule& outputModule,

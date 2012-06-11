@@ -113,32 +113,14 @@ void EncoderImpl::encode()
       // generate temporary name, in case the output module doesn't support unicode filenames
       GenerateTempOutFilename(outfilename, temp_outfilename);
 
-      // init output module
-      int res = outmod->initOutput(temp_outfilename,*settings_mgr,
-         trackinfo,sample_container);
-
+      bool bRet = InitOutputModule(*outmod, temp_outfilename, *settings_mgr, trackinfo,
+         sample_container, error);
       init_outmod = true;
-
-      // catch errors
-      if (handler!=NULL && res<0)
+      
+      if (!bRet)
       {
-         switch(handler->handleError(infilename, outmod->getModuleName(),
-            -res, outmod->getLastError()))
-         {
-         case EncoderErrorHandler::Continue:
-            break;
-         case EncoderErrorHandler::SkipFile:
-            error=2;
-            bSkipFile = true;
-            break;
-         case EncoderErrorHandler::StopEncode:
-            error=-2;
-            bSkipFile = true;
-            break;
-         }
-
-         if (bSkipFile)
-            break;
+         bSkipFile = true;
+         break;
       }
 
       FormatEncodingDescription(*inmod, *outmod, sample_container);
@@ -414,6 +396,33 @@ void EncoderImpl::GenerateTempOutFilename(const CString& cszOriginalFilename, CS
       uiIndex++;
    }
    while (::GetFileAttributes(cszTempFilename) != INVALID_FILE_ATTRIBUTES);
+}
+
+bool EncoderImpl::InitOutputModule(OutputModule& outputModule, const CString& cszTempOutputFilename, SettingsManager& settingsManager,
+   TrackInfo& trackInfo, SampleContainer& sampleContainer, int& error)
+{
+   // init output module
+   int res = outputModule.initOutput(cszTempOutputFilename, settingsManager,
+      trackInfo, sampleContainer);
+
+   // catch errors
+   if (handler!=NULL && res<0)
+   {
+      switch(handler->handleError(infilename, outputModule.getModuleName(),
+         -res, outputModule.getLastError()))
+      {
+      case EncoderErrorHandler::Continue:
+         break;
+      case EncoderErrorHandler::SkipFile:
+         error=2;
+         return false;
+      case EncoderErrorHandler::StopEncode:
+         error=-2;
+         return false;
+      }
+   }
+
+   return true;
 }
 
 void EncoderImpl::FormatEncodingDescription(InputModule& inputModule, OutputModule& outputModule,
