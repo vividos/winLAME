@@ -76,43 +76,10 @@ void EncoderImpl::encode()
    if (!bSkipFile)
    do
    {
-      // prepare output module
-      outmod->prepareOutput(*settings_mgr);
-
-      // do output filename
-      outfilename = GetOutputFilename(infilename, *outmod);
-
-      // ugly hack: when input module is cd extraction, remove guid from output filename
-      if (inmod->getModuleID() == ID_IM_CDRIP)
+      if (!PrepareOutputModule(*inmod, *outmod, *settings_mgr, infilename, outfilename, error))
       {
-         int iPos1 = outfilename.ReverseFind(_T('{'));
-         int iPos2 = outfilename.ReverseFind(_T('}'));
-
-         outfilename.Delete(iPos1, iPos2-iPos1+1);
-      }
-
-      // test if input and output file name is the same file
-      if (!CheckSameInputOutputFilenames(infilename, outfilename, *outmod))
-      {
-         error=2;
          bSkipFile = true;
          break;
-      }
-
-      // check if outfilename already exists
-      if (!overwrite)
-      {
-         // test if file exists
-         if (::GetFileAttributes(outfilename) != 0xFFFFFFFF)
-         {
-            // note: could do a message box here, but we really want the encoding progress
-            // without any message boxes waiting.
-
-            // skip this file
-            error=2;
-            bSkipFile = true;
-            break;
-         }
       }
 
       // check if we only need copying a cd ripped file to another filename
@@ -269,6 +236,50 @@ bool EncoderImpl::PrepareInputModule(InputModule& inputModule, CString& cszInput
 
       case EncoderErrorHandler::StopEncode:
          error=-1;
+         return false;
+      }
+   }
+
+   return true;
+}
+
+bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& outputModule,
+   SettingsManager& settingsManager, const CString& cszInputFilename, CString& cszOutputFilename,
+   int& error)
+{
+   // prepare output module
+   outputModule.prepareOutput(settingsManager);
+
+   // do output filename
+   cszOutputFilename = GetOutputFilename(cszInputFilename, outputModule);
+
+   // ugly hack: when input module is cd extraction, remove guid from output filename
+   if (inputModule.getModuleID() == ID_IM_CDRIP)
+   {
+      int iPos1 = cszOutputFilename.ReverseFind(_T('{'));
+      int iPos2 = cszOutputFilename.ReverseFind(_T('}'));
+
+      cszOutputFilename.Delete(iPos1, iPos2-iPos1+1);
+   }
+
+   // test if input and output file name is the same file
+   if (!CheckSameInputOutputFilenames(cszInputFilename, cszOutputFilename, outputModule))
+   {
+      error=2;
+      return false;
+   }
+
+   // check if outfilename already exists
+   if (!overwrite)
+   {
+      // test if file exists
+      if (::GetFileAttributes(cszOutputFilename) != INVALID_FILE_ATTRIBUTES)
+      {
+         // note: could do a message box here, but we really want the encoding progress
+         // without any message boxes waiting.
+
+         // skip this file
+         error=2;
          return false;
       }
    }

@@ -255,6 +255,11 @@ protected:
       SettingsManager& settingsManager, TrackInfo& trackInfo, SampleContainer& sampleContainer,
       int& error);
 
+   /// prepares output module for work; step 1 of 2
+   bool PrepareOutputModule(InputModule& inputModule, OutputModule& outputModule,
+      SettingsManager& settingsManager,
+      const CString& cszInputFilename, CString& cszOutputFilename, int& error);
+
    /// creates output filename from input filename
    CString GetOutputFilename(const CString& cszInputFilename, OutputModule& outputModule);
 
