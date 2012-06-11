@@ -250,7 +250,22 @@ protected:
    /// the real encoder function
    void encode();
 
+   /// creates output filename from input filename
+   CString GetOutputFilename(const CString& cszInputFilename, OutputModule& outputModule);
+
+   /// checks if a direct copy of the cd extracted wave file is possible
+   bool CheckCDExtractDirectCopy(InputModule& inputModule, OutputModule& outputModule,
+      SettingsManager& settingsManager);
+
+   /// generates temporary output filename
    void GenerateTempOutFilename(const CString& cszOriginalFilename, CString& cszTempFilename);
+
+   /// formats encoding description
+   void FormatEncodingDescription(InputModule& inputModule, OutputModule& outputModule,
+      SampleContainer& sampleContainer);
+
+   /// writes playlist entry
+   void WritePlaylistEntry(const CString& cszOutputFilename);
 
 protected:
    /// input filename

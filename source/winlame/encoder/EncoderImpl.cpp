@@ -93,17 +93,7 @@ void EncoderImpl::encode()
    outmod->prepareOutput(*settings_mgr);
 
    // do output filename
-   CString outfilename;
-   {
-      outfilename = outpathname;
-      int iPos = infilename.ReverseFind(_T('\\'));
-      int iPos2 = infilename.ReverseFind(_T('.'));
-
-      if (iPos != -1 && iPos2 != -1)
-         outfilename += infilename.Mid(iPos+1, iPos2-iPos);
-
-      outfilename += outmod->getOutputExtension();
-   }
+   CString outfilename = GetOutputFilename(infilename, *outmod);
 
    // ugly hack: when input module is cd extraction, remove guid from output filename
    if (inmod->getModuleID() == ID_IM_CDRIP)
@@ -114,7 +104,7 @@ void EncoderImpl::encode()
       outfilename.Delete(iPos1, iPos2-iPos1+1);
    }
 
-   bool inputFilenameSameAsOutput = false;
+//   bool inputFilenameSameAsOutput = false;
 
    // test if input and output file name is the same file
    for(i=0; i<2; i++)
@@ -176,65 +166,35 @@ void EncoderImpl::encode()
    }
 
    // check if we only need copying a cd ripped file to another filename
+   if (CheckCDExtractDirectCopy(*inmod, *outmod, *settings_mgr))
    {
-      unsigned int in_id = inmod->getModuleID();
-      unsigned int out_id = outmod->getModuleID();
+      inmod->doneInput(false);
+      delete inmod;
+      inmod = NULL;
 
-      if (in_id == ID_IM_CDRIP && out_id == ID_OM_WAVE)
+      BOOL fRet = MoveFile(infilename, outfilename);
+      if (fRet == FALSE)
       {
-         extern const int SndFileOutputFormat[];
+         extern CString GetLastErrorString();
+         DWORD dwError = GetLastError();
+         CString cszErrorMessage = GetLastErrorString();
 
-         // we have the right input and output modules; now check if output
-         // parameters are 44100 Hz, 16 bit, stereo
-         if (settings_mgr->queryValueInt(WaveRawAudioFile)==0 &&
-             settings_mgr->queryValueInt(WaveWriteWavEx)==0 &&
-             SndFileOutputFormat[settings_mgr->queryValueInt(WaveOutputFormat)] == SF_FORMAT_PCM_16 &&
-             settings_mgr->queryValueInt(WaveFileFormat) == 0/*FILE_WAV*/)
+         CString cszCaption;
+         cszCaption.LoadString(IDS_CDRIP_ERROR_CAPTION);
+         EncoderErrorHandler::ErrorAction action = handler->handleError(outfilename, cszCaption, dwError, cszErrorMessage, true);
+         switch (action)
          {
-            inmod->doneInput(false);
-            delete inmod;
-            inmod = NULL;
-
-            BOOL fRet = MoveFile(infilename, outfilename);
-            if (fRet == FALSE)
-            {
-               DWORD dwError = GetLastError();
-
-               LPVOID lpMsgBuf = NULL;
-               ::FormatMessage(
-                  FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                  NULL,
-                  dwError,
-                  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // default language
-                  reinterpret_cast<LPTSTR>(&lpMsgBuf), 0, NULL);
-
-               CString cszErrorMessage;
-               if (lpMsgBuf)
-               {
-                  cszErrorMessage = reinterpret_cast<LPTSTR>(lpMsgBuf);
-                  LocalFree(lpMsgBuf);
-               }
-
-               cszErrorMessage.TrimRight(_T("\r\n"));
-
-               CString cszCaption;
-               cszCaption.LoadString(IDS_CDRIP_ERROR_CAPTION);
-               EncoderErrorHandler::ErrorAction action = handler->handleError(outfilename, cszCaption, dwError, cszErrorMessage, true);
-               switch (action)
-               {
-               case EncoderErrorHandler::Continue:
-                  break;
-               case EncoderErrorHandler::StopEncode:
-                  error=-2;
-                  goto skipfile;
-                  break;
-               }
-
-            }
-            unlockAccess();
-            goto skip_movefile;
+         case EncoderErrorHandler::Continue:
+            break;
+         case EncoderErrorHandler::StopEncode:
+            error=-2;
+            goto skipfile;
+            break;
          }
+
       }
+      unlockAccess();
+      goto skip_movefile;
    }
 
    // generate temporary name, in case the output module doesn't support unicode filenames
@@ -268,32 +228,13 @@ void EncoderImpl::encode()
       }
    }
 
-   // format encoding description
-   {
-      CString cszInputDesc, cszContainerInfo, cszOutputDesc;
-      inmod->getDescription(cszInputDesc);
-      outmod->getDescription(cszOutputDesc);
-
-#ifdef _DEBUG
-      // get sample container description
-      cszContainerInfo.Format(
-         _T("Sample Container: ")
-         _T("Input: %u bit, %u channels, sample rate %u Hz, ")
-         _T("Output: %u bit\r\n")
-         ,
-         sample_container.getInputModuleBitsPerSample(),
-         sample_container.getInputModuleChannels(),
-         sample_container.getInputModuleSampleRate(),
-         sample_container.getOutputModuleBitsPerSample());
-#endif
-
-      CString cszText;
-      desc.Format(IDS_ENCODER_ENCODE_INFO, cszInputDesc, cszContainerInfo, cszOutputDesc);
-   }
+   FormatEncodingDescription(*inmod, *outmod, sample_container);
 
    unlockAccess();
 
    // check if transcoding
+   // TODO move this to the wizard pages; warning about lossy conversion shouldn't be
+   // done while actually encoding.
    {
       unsigned int in_id = inmod->getModuleID();
       unsigned int out_id = outmod->getModuleID();
@@ -392,23 +333,7 @@ skip_movefile:
 
    // write playlist entry, when enabled
    if (running && !playlist_filename.IsEmpty())
-   {
-      USES_CONVERSION;
-      FILE* fd = _tfopen(playlist_filename, _T("at"));
-      fseek(fd, 0L, SEEK_END);
-      if (fd != NULL)
-      {
-         // get filename, without path
-         CString filename(outfilename);
-         int iPos = filename.ReverseFind('\\');
-         if (iPos != -1)
-            filename.Delete(0, iPos+1);
-
-         // write to playlist file
-         _ftprintf(fd, _T("%s\n"), filename);
-         fclose(fd);
-      }
-   }
+      WritePlaylistEntry(outfilename);
 
    if (running)
       fCompletedTrack = true;
@@ -448,6 +373,46 @@ skipfile:
    // end thread
    running = false;
    paused = false;
+}
+
+CString EncoderImpl::GetOutputFilename(const CString& cszInputFilename, OutputModule& outputModule)
+{
+   CString cszOutputFilename = outpathname;
+   int iPos = cszInputFilename.ReverseFind(_T('\\'));
+   int iPos2 = cszInputFilename.ReverseFind(_T('.'));
+
+   if (iPos != -1 && iPos2 != -1)
+      cszOutputFilename += cszInputFilename.Mid(iPos+1, iPos2-iPos);
+
+   cszOutputFilename += outputModule.getOutputExtension();
+
+   return cszOutputFilename;
+}
+
+bool EncoderImpl::CheckCDExtractDirectCopy(InputModule& inputModule, OutputModule& outputModule,
+   SettingsManager& settingsManager)
+{
+   bool bFound = false;
+
+   unsigned int in_id = inputModule.getModuleID();
+   unsigned int out_id = outputModule.getModuleID();
+
+   if (in_id == ID_IM_CDRIP && out_id == ID_OM_WAVE)
+   {
+      extern const int SndFileOutputFormat[];
+
+      // we have the right input and output modules; now check if output
+      // parameters are 44100 Hz, 16 bit, stereo
+      if (settingsManager.queryValueInt(WaveRawAudioFile)==0 &&
+          settingsManager.queryValueInt(WaveWriteWavEx)==0 &&
+          SndFileOutputFormat[settingsManager.queryValueInt(WaveOutputFormat)] == SF_FORMAT_PCM_16 &&
+          settingsManager.queryValueInt(WaveFileFormat) == 0/*FILE_WAV*/)
+      {
+         return true;
+      }
+   }
+
+   return false;
 }
 
 void EncoderImpl::GenerateTempOutFilename(const CString& cszOriginalFilename, CString& cszTempFilename)
@@ -493,4 +458,70 @@ void EncoderImpl::GenerateTempOutFilename(const CString& cszOriginalFilename, CS
       uiIndex++;
    }
    while (::GetFileAttributes(cszTempFilename) != INVALID_FILE_ATTRIBUTES);
+}
+
+void EncoderImpl::FormatEncodingDescription(InputModule& inputModule, OutputModule& outputModule,
+                                            SampleContainer& sampleContainer)
+{
+   CString cszInputDesc, cszContainerInfo, cszOutputDesc;
+   inputModule.getDescription(cszInputDesc);
+   outputModule.getDescription(cszOutputDesc);
+
+#ifdef _DEBUG
+   // get sample container description
+   cszContainerInfo.Format(
+      _T("Sample Container: ")
+      _T("Input: %u bit, %u channels, sample rate %u Hz, ")
+      _T("Output: %u bit\r\n")
+      ,
+      sampleContainer.getInputModuleBitsPerSample(),
+      sampleContainer.getInputModuleChannels(),
+      sampleContainer.getInputModuleSampleRate(),
+      sampleContainer.getOutputModuleBitsPerSample());
+#endif
+
+   CString cszText;
+   desc.Format(IDS_ENCODER_ENCODE_INFO, cszInputDesc, cszContainerInfo, cszOutputDesc);
+}
+
+CString GetLastErrorString()
+{
+   DWORD dwError = GetLastError();
+
+   LPVOID lpMsgBuf = NULL;
+   ::FormatMessage(
+      FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+      NULL,
+      dwError,
+      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // default language
+      reinterpret_cast<LPTSTR>(&lpMsgBuf), 0, NULL);
+
+   CString cszErrorMessage;
+   if (lpMsgBuf)
+   {
+      cszErrorMessage = reinterpret_cast<LPTSTR>(lpMsgBuf);
+      LocalFree(lpMsgBuf);
+   }
+
+   cszErrorMessage.TrimRight(_T("\r\n"));
+
+   return cszErrorMessage;
+}
+
+void EncoderImpl::WritePlaylistEntry(const CString& cszOutputFilename)
+{
+   FILE* fd = _tfopen(playlist_filename, _T("at"));
+   fseek(fd, 0L, SEEK_END);
+   if (fd == NULL)
+      return;
+
+   // get filename, without path
+   CString cszFilename = cszOutputFilename;
+   int iPos = cszFilename.ReverseFind('\\');
+   if (iPos != -1)
+      cszFilename.Delete(0, iPos+1);
+
+   // write to playlist file
+   _ftprintf(fd, _T("%s\n"), cszFilename);
+   fclose(fd);
 }
