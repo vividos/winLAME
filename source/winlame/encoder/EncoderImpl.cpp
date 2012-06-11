@@ -235,34 +235,11 @@ void EncoderImpl::encode()
    // check if transcoding
    // TODO move this to the wizard pages; warning about lossy conversion shouldn't be
    // done while actually encoding.
+   if (!CheckWarnTranscoding(*inmod, *outmod))
    {
-      unsigned int in_id = inmod->getModuleID();
-      unsigned int out_id = outmod->getModuleID();
-
-      bool in_lossy = in_id == ID_IM_MAD ||
-         in_id == ID_IM_MAD ||
-         in_id == ID_IM_OGGV ||
-         in_id == ID_IM_AAC ||
-         in_id == ID_IM_BASS;
-
-      bool out_lossy = out_id == ID_OM_LAME ||
-         out_id == ID_OM_OGGV ||
-         out_id == ID_OM_AAC ||
-         out_id == ID_OM_BASSWMA;
-
-      if (in_lossy && out_lossy && warn_lossy && !warned_about_lossy)
-      {
-         // warn user about transcoding
-         extern bool WarnAboutTranscode();
-
-         if (!WarnAboutTranscode())
-         {
-            // stop encoding
-            error=-2;
-            goto skipfile;
-         }
-         warned_about_lossy = true;
-      }
+      // stop encoding
+      error=-2;
+      goto skipfile;
    }
 
    // main loop
@@ -506,6 +483,38 @@ CString GetLastErrorString()
    cszErrorMessage.TrimRight(_T("\r\n"));
 
    return cszErrorMessage;
+}
+
+bool EncoderImpl::CheckWarnTranscoding(InputModule& inputModule, OutputModule& outputModule)
+{
+   unsigned int in_id = inputModule.getModuleID();
+   unsigned int out_id = outputModule.getModuleID();
+
+   bool in_lossy = in_id == ID_IM_MAD ||
+      in_id == ID_IM_MAD ||
+      in_id == ID_IM_OGGV ||
+      in_id == ID_IM_AAC ||
+      in_id == ID_IM_BASS;
+
+   bool out_lossy = out_id == ID_OM_LAME ||
+      out_id == ID_OM_OGGV ||
+      out_id == ID_OM_AAC ||
+      out_id == ID_OM_BASSWMA;
+
+   if (in_lossy && out_lossy && warn_lossy && !warned_about_lossy)
+   {
+      // warn user about transcoding
+      extern bool WarnAboutTranscode();
+
+      if (!WarnAboutTranscode())
+      {
+         return false;
+
+      }
+      warned_about_lossy = true;
+   }
+
+   return true;
 }
 
 void EncoderImpl::WritePlaylistEntry(const CString& cszOutputFilename)

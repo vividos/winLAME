@@ -264,6 +264,9 @@ protected:
    void FormatEncodingDescription(InputModule& inputModule, OutputModule& outputModule,
       SampleContainer& sampleContainer);
 
+   /// checks if we should warn about transcoding
+   bool CheckWarnTranscoding(InputModule& inputModule, OutputModule& outputModule);
+
    /// writes playlist entry
    void WritePlaylistEntry(const CString& cszOutputFilename);
 
