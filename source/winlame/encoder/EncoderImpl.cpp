@@ -46,7 +46,7 @@ void EncoderImpl::encode()
 {
    lockAccess();
 
-   int i,ret=0;
+   int i=0;
    percent = 0.f;
    error=0;
    bool init_outmod = false;
@@ -69,6 +69,11 @@ void EncoderImpl::encode()
       trackinfo,sample_container);
 
    inmod->resolveRealFilename(infilename);
+
+   // earliest place to not disturb "goto" scope
+   // TODO remove goto
+   CString outfilename;
+   CString temp_outfilename;
 
    // catch errors
    if (handler!=NULL && res<0)
@@ -93,7 +98,7 @@ void EncoderImpl::encode()
    outmod->prepareOutput(*settings_mgr);
 
    // do output filename
-   CString outfilename = GetOutputFilename(infilename, *outmod);
+   outfilename = GetOutputFilename(infilename, *outmod);
 
    // ugly hack: when input module is cd extraction, remove guid from output filename
    if (inmod->getModuleID() == ID_IM_CDRIP)
@@ -198,7 +203,6 @@ void EncoderImpl::encode()
    }
 
    // generate temporary name, in case the output module doesn't support unicode filenames
-   CString temp_outfilename;
    GenerateTempOutFilename(outfilename, temp_outfilename);
 
    // init output module
@@ -242,68 +246,10 @@ void EncoderImpl::encode()
       goto skipfile;
    }
 
-   // main loop
-   do
-   {
-      // call input module
-      ret = inmod->decodeSamples(sample_container);
-
-      // no more samples?
-      if (ret==0) break;
-
-      // catch errors
-      if (handler!=NULL && ret<0)
-      {
-         switch(handler->handleError(infilename, inmod->getModuleName(),
-            -ret, inmod->getLastError()))
-         {
-         case EncoderErrorHandler::Continue:
-            break;
-         case EncoderErrorHandler::SkipFile:
-            error=3;
-            goto skipfile;
-            break;
-         case EncoderErrorHandler::StopEncode:
-            error=-3;
-            goto skipfile;
-            break;
-         }
-      }
-
-      // get percent done
-      percent = inmod->percentDone();
-
-      // stuff all samples received into output module
-      ret = outmod->encodeSamples(sample_container);
-
-      // catch errors
-      if (handler!=NULL && ret<0)
-      {
-         switch(handler->handleError(infilename, outmod->getModuleName(),
-            -ret, outmod->getLastError()))
-         {
-         case EncoderErrorHandler::Continue:
-            break;
-         case EncoderErrorHandler::SkipFile:
-            error=4;
-            goto skipfile;
-            break;
-         case EncoderErrorHandler::StopEncode:
-            error=-4;
-            goto skipfile;
-            break;
-         }
-      }
-
-      // check if we should stop the thread
-      if (!running)
-         break;
-
-      // sleep if we should pause
-      while(paused)
-         Sleep(50);
-   }
-   while(true); // outer encoding loop
+   bool bSkipFile = false;
+   MainLoop(*inmod, *outmod, sample_container, bSkipFile);
+   if (bSkipFile)
+      goto skipfile;
 
    // jump target when skipping main encoding loop for MoveFile() optimization
 skip_movefile:
@@ -316,7 +262,6 @@ skip_movefile:
       fCompletedTrack = true;
 
 skipfile:
-
    // done with modules
    if (inmod)
       inmod->doneInput(fCompletedTrack);
@@ -515,6 +460,74 @@ bool EncoderImpl::CheckWarnTranscoding(InputModule& inputModule, OutputModule& o
    }
 
    return true;
+}
+
+void EncoderImpl::MainLoop(InputModule& inputModule, OutputModule& outputModule,
+   SampleContainer& sampleContainer, bool& bSkipFile)
+{
+   int ret = 0;
+
+   do
+   {
+      // call input module
+      ret = inputModule.decodeSamples(sampleContainer);
+
+      // no more samples?
+      if (ret==0) break;
+
+      // catch errors
+      if (handler!=NULL && ret<0)
+      {
+         switch(handler->handleError(infilename, inputModule.getModuleName(),
+            -ret, inputModule.getLastError()))
+         {
+         case EncoderErrorHandler::Continue:
+            break;
+         case EncoderErrorHandler::SkipFile:
+            error=3;
+            bSkipFile = true;
+            break;
+         case EncoderErrorHandler::StopEncode:
+            error=-3;
+            bSkipFile = true;
+            break;
+         }
+      }
+
+      // get percent done
+      percent = inputModule.percentDone();
+
+      // stuff all samples received into output module
+      ret = outputModule.encodeSamples(sampleContainer);
+
+      // catch errors
+      if (handler!=NULL && ret<0)
+      {
+         switch(handler->handleError(infilename, outputModule.getModuleName(),
+            -ret, outputModule.getLastError()))
+         {
+         case EncoderErrorHandler::Continue:
+            break;
+         case EncoderErrorHandler::SkipFile:
+            error=4;
+            bSkipFile = true;
+            break;
+         case EncoderErrorHandler::StopEncode:
+            error=-4;
+            bSkipFile = true;
+            break;
+         }
+      }
+
+      // check if we should stop the thread
+      if (!running)
+         break;
+
+      // sleep if we should pause
+      while(paused)
+         Sleep(50);
+   }
+   while(true); // outer encoding loop
 }
 
 void EncoderImpl::WritePlaylistEntry(const CString& cszOutputFilename)

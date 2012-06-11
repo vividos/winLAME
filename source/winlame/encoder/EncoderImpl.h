@@ -267,6 +267,10 @@ protected:
    /// checks if we should warn about transcoding
    bool CheckWarnTranscoding(InputModule& inputModule, OutputModule& outputModule);
 
+   /// main encoding loop
+   void MainLoop(InputModule& inputModule, OutputModule& outputModule,
+      SampleContainer& sampleContainer, bool& bSkipFile);
+
    /// writes playlist entry
    void WritePlaylistEntry(const CString& cszOutputFilename);
 
