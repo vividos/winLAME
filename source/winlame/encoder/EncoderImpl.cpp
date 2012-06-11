@@ -142,12 +142,11 @@ void EncoderImpl::encode()
       }
    }
 
-   if (!bSkipFile && !bSkipMoveFile)
+   if (!bSkipFile)
    {
-      MainLoop(*inmod, *outmod, sample_container, bSkipFile);
+      if (!bSkipMoveFile)
+         MainLoop(*inmod, *outmod, sample_container, bSkipFile);
    }
-
-   bSkipMoveFile = false;
 
    if (!bSkipFile)
    {
