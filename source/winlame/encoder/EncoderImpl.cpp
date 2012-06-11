@@ -49,10 +49,7 @@ void EncoderImpl::encode()
    int i,ret=0;
    percent = 0.f;
    error=0;
-   CString outfilename, temp_outfilename;
    bool init_outmod = false;
-   TrackInfo trackinfo;
-   SampleContainer sample_container;
 
    // empty description string
    desc.Empty();
@@ -65,6 +62,9 @@ void EncoderImpl::encode()
    bool fCompletedTrack = false;
 
    // init input module
+   TrackInfo trackinfo;
+   SampleContainer sample_container;
+
    int res = inmod->initInput(infilename, *settings_mgr,
       trackinfo,sample_container);
 
@@ -93,6 +93,7 @@ void EncoderImpl::encode()
    outmod->prepareOutput(*settings_mgr);
 
    // do output filename
+   CString outfilename;
    {
       outfilename = outpathname;
       int iPos = infilename.ReverseFind(_T('\\'));
@@ -237,6 +238,7 @@ void EncoderImpl::encode()
    }
 
    // generate temporary name, in case the output module doesn't support unicode filenames
+   CString temp_outfilename;
    GenerateTempOutFilename(outfilename, temp_outfilename);
 
    // init output module
