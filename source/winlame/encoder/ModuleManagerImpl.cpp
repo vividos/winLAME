@@ -38,6 +38,7 @@
 #include "BassWmaOutputModule.h"
 #include "MonkeysAudioInputModule.h"
 #include "CDReadoutModule.h"
+#include "resource.h"
 
 // global functions
 

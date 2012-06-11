@@ -42,65 +42,12 @@
 #include <string>
 #include "resource.h"
 #include "SettingsManager.h"
+#include "ModuleManager.h"
 #include "TrackInfo.h"
 
 
 // forward references
 class InputModule;
-
-
-/// module manager interface
-
-class ModuleManager
-{
-public:
-   /// returns new encoder object; destroy with delete operator
-   static ModuleManager* getNewModuleManager();
-
-   // info functions
-
-   /// returns currently available filter string for open file dialog
-   virtual void getFilterString(CString& filterstring)=0;
-
-   /// returns infos about audio file; returns false when not supported
-   virtual bool getAudioFileInfo(LPCTSTR filename,
-      int& length, int& bitrate, int& samplefreq, CString& errormsg)=0;
-
-   // module functions
-
-   /// returns the number of available input modules
-   virtual int getInputModuleCount()=0;
-
-   /// returns the name of the input module
-   virtual CString getInputModuleName(int index)=0;
-
-   /// returns the input module ID
-   virtual int getInputModuleID(int index)=0;
-
-   /// returns the input module filter string
-   virtual CString getInputModuleFilterString(int index)=0;
-
-   /// returns the input module filter string
-   virtual InputModule* getInputModuleInstance(int index)=0;
-
-   /// returns the number of available output modules
-   virtual int getOutputModuleCount()=0;
-
-   /// returns the name of the output module
-   virtual CString getOutputModuleName(int index)=0;
-
-   /// returns the output module ID
-   virtual int getOutputModuleID(int index)=0;
-
-   /// retrieves a module version string
-   virtual void getModuleVersionString(CString& version, int module_id, int special=0)=0;
-
-   /// dtor
-   virtual ~ModuleManager(){}
-protected:
-   /// ctor
-   ModuleManager(){}
-};
 
 
 /// error handler interface

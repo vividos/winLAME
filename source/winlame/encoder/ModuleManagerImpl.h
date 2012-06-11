@@ -27,7 +27,7 @@
 
 // needed includes
 #include <map>
-#include "EncoderInterface.h"
+#include "ModuleManager.h"
 #include "ModuleInterface.h"
 
 
