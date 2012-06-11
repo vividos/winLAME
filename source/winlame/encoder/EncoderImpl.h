@@ -253,6 +253,10 @@ protected:
    /// creates output filename from input filename
    CString GetOutputFilename(const CString& cszInputFilename, OutputModule& outputModule);
 
+   /// checks if the input and output filenames are the same and modifies output filename
+   bool CheckSameInputOutputFilenames(const CString& cszInputFilename,
+      CString& cszOutputFilename, OutputModule& outputModule);
+
    /// checks if a direct copy of the cd extracted wave file is possible
    bool CheckCDExtractDirectCopy(InputModule& inputModule, OutputModule& outputModule,
       SettingsManager& settingsManager);

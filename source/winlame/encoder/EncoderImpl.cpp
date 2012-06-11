@@ -46,7 +46,6 @@ void EncoderImpl::encode()
 {
    lockAccess();
 
-   int i=0;
    percent = 0.f;
    error=0;
    bool init_outmod = false;
@@ -109,47 +108,12 @@ void EncoderImpl::encode()
       outfilename.Delete(iPos1, iPos2-iPos1+1);
    }
 
-//   bool inputFilenameSameAsOutput = false;
-
    // test if input and output file name is the same file
-   for(i=0; i<2; i++)
+   if (!CheckSameInputOutputFilenames(infilename, outfilename, *outmod))
    {
-      // first, test if output filename already exists
-      if (::GetFileAttributes(outfilename) == 0xFFFFFFFF)
-         break; // no, so we don't need to test
-
-      // check if the file's short name is the same
-      TCHAR buffer1[MAX_PATH],buffer2[MAX_PATH];
-      GetShortPathName(infilename, buffer1,MAX_PATH);
-      GetShortPathName(outfilename, buffer2,MAX_PATH);
-
-      if (0==_tcsicmp(buffer1,buffer2))
-      {
-         if (i==0)
-         {
-            // when overwriting original, use same name as input filename
-            // test again with another file name
-            if (overwrite)
-            {
-               outfilename = infilename;
-               break;
-            }
-            else
-            {
-               // when not overwriting original, add extra extension
-               outfilename += _T(".");
-               outfilename += outmod->getOutputExtension();
-            }
-            continue;
-         }
-         else
-         {
-            // they're still the same file, skip this one completely
-            error=2;
-            unlockAccess();
-            goto skipfile;
-         }
-      }
+      error=2;
+      unlockAccess();
+      goto skipfile;
    }
 
    // check if outfilename already exists
@@ -309,6 +273,50 @@ CString EncoderImpl::GetOutputFilename(const CString& cszInputFilename, OutputMo
    cszOutputFilename += outputModule.getOutputExtension();
 
    return cszOutputFilename;
+}
+
+bool EncoderImpl::CheckSameInputOutputFilenames(const CString& cszInputFilename,
+   CString& cszOutputFilename, OutputModule& outputModule)
+{
+   for (int i=0; i<2; i++)
+   {
+      // first, test if output filename already exists
+      if (::GetFileAttributes(cszOutputFilename) == 0xFFFFFFFF)
+         break; // no, so we don't need to test
+
+      // check if the file's short name is the same
+      TCHAR buffer1[MAX_PATH], buffer2[MAX_PATH];
+      GetShortPathName(cszInputFilename, buffer1, MAX_PATH);
+      GetShortPathName(cszOutputFilename, buffer2, MAX_PATH);
+
+      if (0 == _tcsicmp(buffer1, buffer2))
+      {
+         if (i == 0)
+         {
+            // when overwriting original, use same name as input filename
+            // test again with another file name
+            if (overwrite)
+            {
+               cszOutputFilename = cszInputFilename;
+               break;
+            }
+            else
+            {
+               // when not overwriting original, add extra extension
+               cszOutputFilename += _T(".");
+               cszOutputFilename += outputModule.getOutputExtension();
+            }
+            continue;
+         }
+         else
+         {
+            // they're still the same file, skip this one completely
+            return false;
+         }
+      }
+   }
+
+   return true;
 }
 
 bool EncoderImpl::CheckCDExtractDirectCopy(InputModule& inputModule, OutputModule& outputModule,
