@@ -250,6 +250,11 @@ protected:
    /// the real encoder function
    void encode();
 
+   /// prepares input module for work
+   bool PrepareInputModule(InputModule& inputModule, CString& cszInputFilename,
+      SettingsManager& settingsManager, TrackInfo& trackInfo, SampleContainer& sampleContainer,
+      int& error);
+
    /// creates output filename from input filename
    CString GetOutputFilename(const CString& cszInputFilename, OutputModule& outputModule);
 

@@ -66,33 +66,8 @@ void EncoderImpl::encode()
 
    bool bSkipFile = false;
 
-   do
-   {
-      int res = inmod->initInput(infilename, *settings_mgr,
-         trackinfo,sample_container);
-
-      inmod->resolveRealFilename(infilename);
-
-      // catch errors
-      if (handler!=NULL && res<0)
-      {
-         switch(handler->handleError(infilename, inmod->getModuleName(),
-            -res, inmod->getLastError()))
-         {
-         case EncoderErrorHandler::Continue:
-            break;
-         case EncoderErrorHandler::SkipFile:
-            error=1;
-            bSkipFile = true;
-            break;
-         case EncoderErrorHandler::StopEncode:
-            error=-1;
-            bSkipFile = true;
-            break;
-         }
-      }
-   }
-   while (false);
+   if (!PrepareInputModule(*inmod, infilename, *settings_mgr, trackinfo, sample_container, error))
+      bSkipFile = true;
 
    CString outfilename;
    CString temp_outfilename;
@@ -268,6 +243,37 @@ void EncoderImpl::encode()
    // end thread
    running = false;
    paused = false;
+}
+
+bool EncoderImpl::PrepareInputModule(InputModule& inputModule, CString& cszInputFilename,
+   SettingsManager& settingsManager, TrackInfo& trackInfo, SampleContainer& sampleContainer,
+   int& error)
+{
+   int res = inputModule.initInput(cszInputFilename, *settings_mgr,
+      trackInfo, sampleContainer);
+
+   inputModule.resolveRealFilename(cszInputFilename);
+
+   // catch errors
+   if (handler!=NULL && res<0)
+   {
+      switch (handler->handleError(cszInputFilename, inputModule.getModuleName(),
+         -res, inputModule.getLastError()))
+      {
+      case EncoderErrorHandler::Continue:
+         break;
+
+      case EncoderErrorHandler::SkipFile:
+         error=1;
+         return false;
+
+      case EncoderErrorHandler::StopEncode:
+         error=-1;
+         return false;
+      }
+   }
+
+   return true;
 }
 
 CString EncoderImpl::GetOutputFilename(const CString& cszInputFilename, OutputModule& outputModule)
