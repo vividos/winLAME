@@ -64,168 +64,177 @@ void EncoderImpl::encode()
    TrackInfo trackinfo;
    SampleContainer sample_container;
 
-   int res = inmod->initInput(infilename, *settings_mgr,
-      trackinfo,sample_container);
+   bool bSkipFile = false;
 
-   inmod->resolveRealFilename(infilename);
-
-   // earliest place to not disturb "goto" scope
-   // TODO remove goto
-   CString outfilename;
-   CString temp_outfilename;
-
-   // catch errors
-   if (handler!=NULL && res<0)
+   do
    {
-      switch(handler->handleError(infilename, inmod->getModuleName(),
-         -res, inmod->getLastError()))
+      int res = inmod->initInput(infilename, *settings_mgr,
+         trackinfo,sample_container);
+
+      inmod->resolveRealFilename(infilename);
+
+      // catch errors
+      if (handler!=NULL && res<0)
       {
-      case EncoderErrorHandler::Continue:
-         break;
-      case EncoderErrorHandler::SkipFile:
-         error=1;
-         goto skipfile;
-         break;
-      case EncoderErrorHandler::StopEncode:
-         error=-1;
-         goto skipfile;
-         break;
-      }
-   }
-
-   // prepare output module
-   outmod->prepareOutput(*settings_mgr);
-
-   // do output filename
-   outfilename = GetOutputFilename(infilename, *outmod);
-
-   // ugly hack: when input module is cd extraction, remove guid from output filename
-   if (inmod->getModuleID() == ID_IM_CDRIP)
-   {
-      int iPos1 = outfilename.ReverseFind(_T('{'));
-      int iPos2 = outfilename.ReverseFind(_T('}'));
-
-      outfilename.Delete(iPos1, iPos2-iPos1+1);
-   }
-
-   // test if input and output file name is the same file
-   if (!CheckSameInputOutputFilenames(infilename, outfilename, *outmod))
-   {
-      error=2;
-      unlockAccess();
-      goto skipfile;
-   }
-
-   // check if outfilename already exists
-   if (!overwrite)
-   {
-      // test if file exists
-      if (::GetFileAttributes(outfilename) != 0xFFFFFFFF)
-      {
-         // note: could do a message box here, but we really want the encoding progress
-         // without any message boxes waiting.
-//         if (AppMessageBox(GetActiveWindow(), _T("The output file already exists. Do you want to overwrite it?"), MB_YESNO | MB_ICONEXCLAMATION) == IDNO)
-//         {
-            // skip this file
-            error=2;
-            unlockAccess();
-            goto skipfile;
-//         }
-      }
-   }
-
-   // check if we only need copying a cd ripped file to another filename
-   if (CheckCDExtractDirectCopy(*inmod, *outmod, *settings_mgr))
-   {
-      inmod->doneInput(false);
-      delete inmod;
-      inmod = NULL;
-
-      BOOL fRet = MoveFile(infilename, outfilename);
-      if (fRet == FALSE)
-      {
-         extern CString GetLastErrorString();
-         DWORD dwError = GetLastError();
-         CString cszErrorMessage = GetLastErrorString();
-
-         CString cszCaption;
-         cszCaption.LoadString(IDS_CDRIP_ERROR_CAPTION);
-         EncoderErrorHandler::ErrorAction action = handler->handleError(outfilename, cszCaption, dwError, cszErrorMessage, true);
-         switch (action)
+         switch(handler->handleError(infilename, inmod->getModuleName(),
+            -res, inmod->getLastError()))
          {
          case EncoderErrorHandler::Continue:
             break;
+         case EncoderErrorHandler::SkipFile:
+            error=1;
+            bSkipFile = true;
+            break;
+         case EncoderErrorHandler::StopEncode:
+            error=-1;
+            bSkipFile = true;
+            break;
+         }
+      }
+   }
+   while (false);
+
+   CString outfilename;
+   CString temp_outfilename;
+
+   bool bSkipMoveFile = false;
+   if (!bSkipFile)
+   do
+   {
+      // prepare output module
+      outmod->prepareOutput(*settings_mgr);
+
+      // do output filename
+      outfilename = GetOutputFilename(infilename, *outmod);
+
+      // ugly hack: when input module is cd extraction, remove guid from output filename
+      if (inmod->getModuleID() == ID_IM_CDRIP)
+      {
+         int iPos1 = outfilename.ReverseFind(_T('{'));
+         int iPos2 = outfilename.ReverseFind(_T('}'));
+
+         outfilename.Delete(iPos1, iPos2-iPos1+1);
+      }
+
+      // test if input and output file name is the same file
+      if (!CheckSameInputOutputFilenames(infilename, outfilename, *outmod))
+      {
+         error=2;
+         bSkipFile = true;
+         break;
+      }
+
+      // check if outfilename already exists
+      if (!overwrite)
+      {
+         // test if file exists
+         if (::GetFileAttributes(outfilename) != 0xFFFFFFFF)
+         {
+            // note: could do a message box here, but we really want the encoding progress
+            // without any message boxes waiting.
+
+            // skip this file
+            error=2;
+            bSkipFile = true;
+            break;
+         }
+      }
+
+      // check if we only need copying a cd ripped file to another filename
+      if (CheckCDExtractDirectCopy(*inmod, *outmod, *settings_mgr))
+      {
+         inmod->doneInput(false);
+         delete inmod;
+         inmod = NULL;
+
+         BOOL fRet = MoveFile(infilename, outfilename);
+         if (fRet == FALSE)
+         {
+            extern CString GetLastErrorString();
+            DWORD dwError = GetLastError();
+            CString cszErrorMessage = GetLastErrorString();
+
+            CString cszCaption;
+            cszCaption.LoadString(IDS_CDRIP_ERROR_CAPTION);
+            EncoderErrorHandler::ErrorAction action = handler->handleError(outfilename, cszCaption, dwError, cszErrorMessage, true);
+            if (action == EncoderErrorHandler::StopEncode)
+            {
+               error=-2;
+               bSkipFile = true;
+               break;
+            }
+         }
+         bSkipMoveFile = true;
+         break;
+      }
+
+      // generate temporary name, in case the output module doesn't support unicode filenames
+      GenerateTempOutFilename(outfilename, temp_outfilename);
+
+      // init output module
+      int res = outmod->initOutput(temp_outfilename,*settings_mgr,
+         trackinfo,sample_container);
+
+      init_outmod = true;
+
+      // catch errors
+      if (handler!=NULL && res<0)
+      {
+         switch(handler->handleError(infilename, outmod->getModuleName(),
+            -res, outmod->getLastError()))
+         {
+         case EncoderErrorHandler::Continue:
+            break;
+         case EncoderErrorHandler::SkipFile:
+            error=2;
+            bSkipFile = true;
+            break;
          case EncoderErrorHandler::StopEncode:
             error=-2;
-            goto skipfile;
+            bSkipFile = true;
             break;
          }
 
+         if (bSkipFile)
+            break;
       }
-      unlockAccess();
-      goto skip_movefile;
-   }
 
-   // generate temporary name, in case the output module doesn't support unicode filenames
-   GenerateTempOutFilename(outfilename, temp_outfilename);
+      FormatEncodingDescription(*inmod, *outmod, sample_container);
 
-   // init output module
-   res = outmod->initOutput(temp_outfilename,*settings_mgr,
-      trackinfo,sample_container);
-
-   init_outmod = true;
-
-   // catch errors
-   if (handler!=NULL && res<0)
-   {
-      switch(handler->handleError(infilename, outmod->getModuleName(),
-         -res, outmod->getLastError()))
-      {
-      case EncoderErrorHandler::Continue:
-         break;
-      case EncoderErrorHandler::SkipFile:
-         error=2;
-         unlockAccess();
-         goto skipfile;
-         break;
-      case EncoderErrorHandler::StopEncode:
-         error=-2;
-         unlockAccess();
-         goto skipfile;
-         break;
-      }
-   }
-
-   FormatEncodingDescription(*inmod, *outmod, sample_container);
+   } while(false);
 
    unlockAccess();
 
-   // check if transcoding
-   // TODO move this to the wizard pages; warning about lossy conversion shouldn't be
-   // done while actually encoding.
-   if (!CheckWarnTranscoding(*inmod, *outmod))
+   if (!bSkipFile)
    {
-      // stop encoding
-      error=-2;
-      goto skipfile;
+      // check if transcoding
+      // TODO move this to the wizard pages; warning about lossy conversion shouldn't be
+      // done while actually encoding.
+      if (!CheckWarnTranscoding(*inmod, *outmod))
+      {
+         // stop encoding
+         error=-2;
+         bSkipFile = true;
+      }
    }
 
-   bool bSkipFile = false;
-   MainLoop(*inmod, *outmod, sample_container, bSkipFile);
-   if (bSkipFile)
-      goto skipfile;
+   if (!bSkipFile && !bSkipMoveFile)
+   {
+      MainLoop(*inmod, *outmod, sample_container, bSkipFile);
+   }
 
-   // jump target when skipping main encoding loop for MoveFile() optimization
-skip_movefile:
+   bSkipMoveFile = false;
 
-   // write playlist entry, when enabled
-   if (running && !playlist_filename.IsEmpty())
-      WritePlaylistEntry(outfilename);
+   if (!bSkipFile)
+   {
+      // write playlist entry, when enabled
+      if (running && !playlist_filename.IsEmpty())
+         WritePlaylistEntry(outfilename);
 
-   if (running)
-      fCompletedTrack = true;
+      if (running)
+         fCompletedTrack = true;
+   }
 
-skipfile:
    // done with modules
    if (inmod)
       inmod->doneInput(fCompletedTrack);
