@@ -851,6 +851,10 @@
 				Filter="cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 				>
 				<File
+					RelativePath=".\winlame\App.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\winlame\LangCountryMapper.hpp"
 					>
 				</File>
@@ -903,6 +907,10 @@
 				Name="main program header files"
 				Filter="h;hpp;hxx;hm;inl"
 				>
+				<File
+					RelativePath=".\winlame\App.h"
+					>
+				</File>
 				<File
 					RelativePath=".\winlame\DynamicLibrary.h"
 					>

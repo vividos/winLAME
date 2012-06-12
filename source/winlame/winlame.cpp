@@ -22,54 +22,12 @@
 
 // needed includes
 #include "stdafx.h"
-#include "MainDlg.h"
-
-// globals and defines
-#ifdef _DEBUG
-#include <crtdbg.h>
-#define new new(_NORMAL_BLOCK,__FILE__, __LINE__)
-#endif
-
-/// application module instance
-CAppModule _Module;
-
-
+#include "App.h"
 
 /// win main function
-int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-   LPSTR lpCmdLine, int nCmdShow)
+int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/,
+   LPTSTR lpCmdLine, int nCmdShow)
 {
-   // remove current directory from search path of LoadLibrary(); see also
-   // Microsoft Security Advisory (2269637):
-   // http://www.microsoft.com/technet/security/advisory/2269637.mspx
-   ATLVERIFY(TRUE == SetDllDirectory(_T("")));
-
-#ifdef _DEBUG
-   int flag = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG); // Get current flag
-   flag |= _CRTDBG_LEAK_CHECK_DF; // Turn on leak-checking bit
-   _CrtSetDbgFlag(flag); // Set flag to the new value
-#endif
-
-   HRESULT hRes = ::CoInitialize(NULL);
-   ATLASSERT(SUCCEEDED(hRes));
-
-   // init common controls
-   AtlInitCommonControls(ICC_WIN95_CLASSES);
-
-   // init COM module
-   hRes = _Module.Init(NULL, hInstance, &LIBID_ATLLib);
-   ATLASSERT(SUCCEEDED(hRes));
-
-#ifdef _DEBUG
-   AtlAxWinInit();
-#endif
-
-   // start dialog
-   MainDlg dlg;
-   dlg.RunDialog();
-   
-   _Module.Term();
-   ::CoUninitialize();
-
-   return 0;
+   App app(hInstance);
+   return app.Run(lpCmdLine, nCmdShow);
 }
