@@ -196,6 +196,7 @@
 #define IDC_CDRIP_OPT_BEVEL2                    4307
 #define IDC_FREEDB_LIST_TRACKS                  4400
 #define IDC_ABOUT_FRAME                         4401
+#define IDC_ABOUT_BROWSER                       4402
 #define IDC_PROP_LISTBOX                        4404
 #define ID_TRAY_ABOUT                           30000
 #define ID_TRAY_PAUSE                           30001

@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
+   Copyright (c) 2000-2012 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 */
 /// \file AboutDlg.cpp
-/// \brief contains the about dialog box implementation
+/// \brief about dialog implementation
 /// \details GetHtmlString() loads an html from the resource, replaces %var%
 /// occurences and shows it in the about box.
 
@@ -88,24 +88,61 @@ void GetWinlameVersion(CString& cszVersion)
 
 // AboutDlg methods
 
-void AboutDlg::GetHtmlString(CComBSTR& str)
+LRESULT AboutDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   CenterWindow(GetParent());
+
+   // set window icon
+   wndicon = (HICON)::LoadImage(_Module.GetResourceInstance(),
+      MAKEINTRESOURCE(IDI_ICON_WINLAME), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+   SetIcon(wndicon, FALSE);
+
+   // create child control
+   CRect rc;
+   ::GetWindowRect(GetDlgItem(IDC_ABOUT_FRAME), &rc);
+   ScreenToClient(&rc);
+   m_browser.Create(m_hWnd, rc, NULL, WS_CHILD | WS_HSCROLL, 0, IDC_ABOUT_BROWSER);
+   m_browser.ShowWindow(SW_SHOW);
+
+   // host webbrowser control
+   CComBSTR htmlstring = GetAboutHtmlText();
+   m_browser.CreateControl(htmlstring);
+
+   CDialogResize<AboutDlg>::DlgResize_Init(true, true);
+
+   return 1;
+}
+
+LRESULT AboutDlg::OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   // exits dialog
+   m_browser.DestroyWindow();
+   EndDialog(0);
+
+   // delete resources
+   ::DestroyIcon(wndicon);
+
+   return 0;
+}
+
+CString AboutDlg::GetAboutHtmlText()
 {
    // load the html template string from resource
 
    // get handle to the html resource
    HRSRC hRsrc = ::FindResource(_Module.GetResourceInstance(),
-      MAKEINTRESOURCE(IDR_HTML_ABOUT), RT_HTML );
+      MAKEINTRESOURCE(IDR_HTML_ABOUT), RT_HTML);
    if (hRsrc == NULL)
-      return;
+      return _T("");
 
    HGLOBAL hResData = ::LoadResource(_Module.GetResourceInstance(), hRsrc );
    if (hResData == NULL)
-      return;
+      return _T("");
 
    // get the html string in the custom resource
    LPCSTR pszText = (LPCSTR)::LockResource( hResData );
    if (pszText == NULL)
-      return;
+      return _T("");
 
    CString cszHtml(_T("MSHTML:"));
 
@@ -193,6 +230,5 @@ void AboutDlg::GetHtmlString(CComBSTR& str)
       cszHtml.Insert(iPos, varname);
    }
 
-   // hand over the string
-   str = cszHtml;
+   return cszHtml;
 }
