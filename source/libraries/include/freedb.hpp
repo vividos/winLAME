@@ -45,7 +45,9 @@
 #ifdef HAVE_ASSERT_H
 #  include <assert.h>
 #else
-#  define assert(x)
+#  ifndef assert
+#    define assert(x)
+#  endif
 #endif
 
 #include <sys/types.h>
