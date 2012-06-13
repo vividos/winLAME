@@ -52,7 +52,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="2"
 				WholeProgramOptimization="true"
-				AdditionalIncludeDirectories="winlame;winlame\encoder;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag"
+				AdditionalIncludeDirectories="winlame;winlame\encoder;winlame\ui;winlame\res;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;_ATL_NO_COM;_STLP_USE_STATIC_LIB;_STLP_NEW_PLATFORM_SDK;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -80,8 +80,8 @@
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="libraries\lib;&quot;..\lib\$(ConfigurationName)&quot;"
-				IgnoreDefaultLibraryNames="msvcp80.lib"
-				DelayLoadDLLs="libfaad2.dll;libfaac.dll;bass.dll;basscd.dll;basswma.dll;libflac.dll;libmad.dll;libsndfile-1.dll;ws2_32.dll"
+				IgnoreDefaultLibraryNames=""
+				DelayLoadDLLs="libfaad2.dll;libfaac.dll;bass.dll;basscd.dll;basswma.dll;libflac.dll;libmad.dll;libsndfile-1.dll;ws2_32.dll;propsys.dll;dwmapi.dll"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TargetDir)pdb\$(TargetName).pdb"
 				SubSystem="2"
@@ -152,7 +152,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="/IGNORE:4049"
 				Optimization="0"
-				AdditionalIncludeDirectories="winlame;winlame\encoder;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag"
+				AdditionalIncludeDirectories="winlame;winlame\encoder;winlame\ui;winlame\res;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag"
 				PreprocessorDefinitions="_DEBUG;_STLP_DEBUG;_STLP_USE_NEWALLOC;WIN32;_WINDOWS;_ATL_NO_COM;_STLP_USE_STATIC_LIB;_STLP_NEW_PLATFORM_SDK;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -183,8 +183,8 @@
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="libraries\lib;&quot;..\lib\$(ConfigurationName)&quot;"
-				IgnoreDefaultLibraryNames="msvcp80d.lib;msvcrt"
-				DelayLoadDLLs="libfaad2.dll;libfaac.dll;bass.dll;basscd.dll;basswma.dll;libflac.dll;libmad.dll;libsndfile-1.dll;ws2_32.dll"
+				IgnoreDefaultLibraryNames=""
+				DelayLoadDLLs="libfaad2.dll;libfaac.dll;bass.dll;basscd.dll;basswma.dll;libflac.dll;libmad.dll;libsndfile-1.dll;ws2_32.dll;propsys.dll;dwmapi.dll"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(TargetDir)pdb\$(TargetName).pdb"
 				SubSystem="2"
@@ -696,34 +696,8 @@
 					>
 				</File>
 				<File
-					RelativePath="winlame\resource.h"
-					>
-				</File>
-				<File
 					RelativePath="winlame\res\winlame.ico"
 					>
-				</File>
-				<File
-					RelativePath="winlame\winlame.rc"
-					>
-					<FileConfiguration
-						Name="Release|Win32"
-						>
-						<Tool
-							Name="VCResourceCompilerTool"
-							Culture="1033"
-							AdditionalIncludeDirectories="winlame"
-						/>
-					</FileConfiguration>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCResourceCompilerTool"
-							Culture="1033"
-							AdditionalIncludeDirectories="winlame"
-						/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath="winlame\res\working.ico"
@@ -891,6 +865,10 @@
 					</FileConfiguration>
 				</File>
 				<File
+					RelativePath=".\winlame\TaskManager.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\winlame\UISettings.cpp"
 					>
 				</File>
@@ -928,6 +906,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\winlame\ModuleManager.h"
+					>
+				</File>
+				<File
 					RelativePath=".\winlame\OptionsDlg.h"
 					>
 				</File>
@@ -944,12 +926,131 @@
 					>
 				</File>
 				<File
+					RelativePath=".\winlame\Task.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\TaskInfo.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\TaskManager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\TaskManagerConfig.h"
+					>
+				</File>
+				<File
 					RelativePath=".\winlame\UIinterface.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\UISettings.h"
 					>
 				</File>
 				<File
 					RelativePath=".\winlame\VariableManager.h"
 					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="new_ui files"
+			>
+			<File
+				RelativePath=".\winlame\ui\MainFrame.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\winlame\ui\MainFrame.h"
+				>
+			</File>
+			<File
+				RelativePath=".\winlame\ui\TasksView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\winlame\ui\TasksView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\winlame\ui\WizardPage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\winlame\ui\WizardPageHost.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\winlame\ui\WizardPageHost.h"
+				>
+			</File>
+			<Filter
+				Name="resource files"
+				Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest"
+				>
+				<File
+					RelativePath=".\winlame\res\MainFrameRibbon.bml"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\res\MainFrameRibbon.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\res\MainFrameRibbon.rc"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\res\MainFrameRibbon.xml"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Compiling $(InputFileName)"
+							CommandLine="uicc $(InputPath) $(InputDir)$(InputName).bml /header:$(InputDir)$(InputName).h /res:$(InputDir)$(InputName).rc&#x0D;&#x0A;"
+							Outputs="$(InputDir)$(InputName).bml;$(InputDir)$(InputName).rc;$(InputDir)$(InputName).h"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCustomBuildTool"
+							Description="Compiling $(InputFileName)"
+							CommandLine="uicc $(InputPath) $(InputDir)$(InputName).bml /header:$(InputDir)$(InputName).h /res:$(InputDir)$(InputName).rc&#x0D;&#x0A;"
+							Outputs="$(InputDir)$(InputName).bml;$(InputDir)$(InputName).rc;$(InputDir)$(InputName).h"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="winlame\resource.h"
+					>
+				</File>
+				<File
+					RelativePath="winlame\winlame.rc"
+					>
+					<FileConfiguration
+						Name="Release|Win32"
+						>
+						<Tool
+							Name="VCResourceCompilerTool"
+							Culture="1033"
+							AdditionalIncludeDirectories="winlame"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCResourceCompilerTool"
+							Culture="1033"
+							AdditionalIncludeDirectories="winlame"
+						/>
+					</FileConfiguration>
 				</File>
 			</Filter>
 		</Filter>
