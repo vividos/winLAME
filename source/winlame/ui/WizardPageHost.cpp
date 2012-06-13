@@ -31,19 +31,22 @@ void WizardPageHost::SetWizardPage(boost::shared_ptr<WizardPage> spCurrentPage)
 
 int WizardPageHost::Run(HWND hWndParent)
 {
-   ::EnableWindow(hWndParent, FALSE);
+   // note: parent must be disabled after creating dialog, and enabled before
+   // destroying dialog.
+   // see http://blogs.msdn.com/b/oldnewthing/archive/2004/02/27/81155.aspx
 
    Create(hWndParent, CWindow::rcDefault);
+
+   ::EnableWindow(hWndParent, FALSE);
 
    ATLASSERT(m_spCurrentPage != NULL);
    InitPage();
 
    int iRet = CMessageLoop::Run();
 
-   DestroyWindow();
-
    ::EnableWindow(hWndParent, TRUE);
-   SetForegroundWindow(hWndParent);
+
+   DestroyWindow();
 
    return iRet;
 }
