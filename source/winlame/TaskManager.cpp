@@ -20,6 +20,7 @@
 /// \brief Task manager
 
 // includes
+#include "stdafx.h"
 #include "TaskManager.h"
 #include "Task.h"
 #include <boost/foreach.hpp>
