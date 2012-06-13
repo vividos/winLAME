@@ -83,7 +83,7 @@ std::vector<TaskInfo> TaskManager::CurrentTasks()
 
 TaskManagerConfig TaskManager::CurrentConfig() const
 {
-   boost::recursive_mutex::scoped_lock lock(m_mutexConfig);
+   boost::recursive_mutex::scoped_lock lock(const_cast<boost::recursive_mutex&>(m_mutexConfig));
    TaskManagerConfig config = m_config;
    return config;
 }
