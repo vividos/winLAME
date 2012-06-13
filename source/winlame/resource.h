@@ -22,10 +22,6 @@
 #define IDD_DLG_INPUT                           102
 #define IDD_DLG_OUTPUT                          103
 #define IDD_DLG_PRESETS                         104
-#define IDD_DLG_LAMEBASIC                       105
-#define IDD_DLG_LAMEFILTER                      106
-#define IDD_DLG_LAMEVBR                         107
-#define IDD_DLG_LAMEADV                         108
 #define IDD_DLG_ENCODE                          109
 #define IDD_DLG_OGGVORBIS                       110
 #define IDD_DLG_CDRIP                           111
@@ -34,7 +30,6 @@
 #define IDD_DLG_WMA                             114
 #define IDD_ERRORDLG                            115
 #define IDD_DLG_PRESET_PROPERTY                 116
-#define IDD_CDRIP                               118
 #define IDD_CDSELECT                            119
 #define IDD_DLG_LAME_SIMPLE                     120
 #define IDD_FREEDB_LIST                         121
