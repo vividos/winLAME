@@ -17,6 +17,10 @@
 #define IDB_BITMAP_FLAGS                        84
 #define IDR_TRAYICON                            85
 #define IDR_MAINFRAME                           86
+#define ID_ENCODE_FILES                         90
+#define ID_ENCODE_CD                            91
+#define ID_SETTINGS_GENERAL                     92
+#define ID_SETTINGS_FREEDB                      93
 #define IDD_MAINDLG                             100
 #define IDD_ABOUTDLG                            101
 #define IDD_DLG_INPUT                           102

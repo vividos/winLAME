@@ -8,6 +8,35 @@
 
 
 //
+// Menu resources
+//
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&Kodieren"
+    BEGIN
+        MENUITEM "&Dateien öffnen...", ID_ENCODE_FILES
+        MENUITEM "&CD auslesen...", ID_ENCODE_CD
+        MENUITEM SEPARATOR
+        MENUITEM "&Beenden", ID_APP_EXIT
+    END
+    POPUP "&Einstellungen"
+    BEGIN
+        MENUITEM "&Allgemeine Einstellungen", ID_SETTINGS_GENERAL
+        MENUITEM "&freedb-Einstellungen", ID_SETTINGS_FREEDB
+    END
+    POPUP "&Anzeige"
+    BEGIN
+        MENUITEM "&Menüband", ID_VIEW_RIBBON
+    END
+    POPUP "&Hilfe"
+    BEGIN
+        MENUITEM "&Über winLAME...", ID_APP_ABOUT
+    END
+END
+
+
+//
 // Dialog resources
 //
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
@@ -369,6 +398,8 @@ IDB_BITMAP_LOGO    BITMAP         "res\\logo.bmp"
 // Icon resources
 //
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+IDR_MAINFRAME      ICON           "res\\winlame.ico"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 IDI_ICON_WINLAME   ICON           "res\\winlame.ico"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 IDI_ICON_WORKING   ICON           "res\\working.ico"
@@ -429,6 +460,7 @@ END
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 STRINGTABLE
 BEGIN
+    IDR_MAINFRAME                 "winLAME"
     IDS_COMMON_ABOUTBOX           "Ü&ber winLAME"
     IDS_COMMON_OPTIONS            "&Optionen"
     IDS_COMMON_SELECTDIR          "Bitte wählen Sie einen Zielordner aus:"
@@ -638,6 +670,13 @@ BEGIN
     IDS_APP_CAPTION               "winLAME"
     IDS_LANG_ENGLISH              "German"
     IDS_LANG_NATIVE               "Deutsch"
+    ID_ENCODE_FILES               "Öffnet Dateien zum kodieren\nDateien öffnen"
+    ID_ENCODE_CD                  "Liest Audio-Tracks von CD\nCD einlesen"
+    ID_SETTINGS_GENERAL           "Zeit allgemeine Einstellungen an\nAllgemeine Einstellungen"
+    ID_SETTINGS_FREEDB            "Zeigt freedb-Einstellungen an\nfreedb-Einstellungen"
+    ID_VIEW_RIBBON                "Schaltet zwischen Menüband und Werkzeugleiste um\nMenüband umschalten"
+    ID_APP_ABOUT                  "Zeit Anwendungs-Informationen\nÜber"
+    ID_APP_EXIT                   "Beendet die Anwendung\nBeenden"
 END
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
