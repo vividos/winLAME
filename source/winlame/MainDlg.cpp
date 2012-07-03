@@ -43,17 +43,11 @@
 
 // MainDlg methods
 
-MainDlg::MainDlg()
+MainDlg::MainDlg(UISettings& settings_, LanguageResourceManager& langResourceManager)
 :m_bKeyDownEscape(false),
- m_langResourceManager(_T("winlame.*.dll"), IDS_LANG_ENGLISH, IDS_LANG_NATIVE)
+ settings(settings_),
+ m_langResourceManager(langResourceManager)
 {
-   // read settings from registry
-   settings.ReadSettings();
-
-   // set language to use
-   if (m_langResourceManager.IsLangResourceAvail(settings.language_id))
-      m_langResourceManager.LoadLangResource(settings.language_id);
-
    // load icons
    wndicon = ::LoadIcon(_Module.GetResourceInstance(),MAKEINTRESOURCE(IDI_ICON_WINLAME));
    wndicon_small = (HICON)::LoadImage(_Module.GetResourceInstance(),
@@ -66,7 +60,7 @@ MainDlg::MainDlg()
    currentpage = -1;
 
    // create a new preset manager
-   settings.preset_manager = PresetManagerInterface::getPresetManager();
+   settings.preset_manager = &App::Current().GetPresetManager();
 
    // load preset file
    
@@ -111,7 +105,7 @@ MainDlg::MainDlg()
       settings.preset_avail = false;
 
    // get a module manager
-   settings.module_manager = ModuleManager::getNewModuleManager();
+   settings.module_manager = &App::Current().GetModuleManager();
 
    // insert some pages
    pages.push_back(new InputPage);
@@ -133,18 +127,6 @@ MainDlg::~MainDlg()
    int max = pages.size();
    for(int i=0; i<max; i++)
       delete pages[i];
-
-   // store settings in the registry
-   settings.StoreSettings();
-
-   // save preset file
-   settings.preset_manager->savePreset();
-
-   // delete preset manager object
-   delete settings.preset_manager;
-
-   // delete module manager object
-   delete settings.module_manager;
 }
 
 LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)

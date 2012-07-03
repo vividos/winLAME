@@ -42,7 +42,7 @@ class MainDlg:
 {
 public:
    /// ctor
-   MainDlg();
+   MainDlg(UISettings& settings, LanguageResourceManager& langResourceManager);
 
    /// dtor
    ~MainDlg();
@@ -306,7 +306,7 @@ protected:
    HtmlHelper htmlhelp;
 
    /// ui settings
-   UISettings settings;
+   UISettings& settings;
 
    /// app accelerator table
    HACCEL actable;
@@ -318,7 +318,7 @@ protected:
    bool m_bKeyDownEscape;
 
    /// language resource manager
-   LanguageResourceManager m_langResourceManager;
+   LanguageResourceManager& m_langResourceManager;
 
 protected:
    /// draws the caption bar

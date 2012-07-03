@@ -99,7 +99,7 @@ App::~App()
 int App::Run(LPTSTR /*lpstrCmdLine*/, int nCmdShow)
 {
    // start dialog
-   MainDlg dlg;
+   MainDlg dlg(m_settings, m_langResourceManager);
    dlg.RunDialog();
 
    return 0;
