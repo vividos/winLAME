@@ -48,6 +48,13 @@ public:
       return *m_scpModuleManager;
    }
 
+   /// returns current preset manager
+   PresetManagerInterface& GetPresetManager()
+   {
+      ATLASSERT(m_scpPresetManager != NULL);
+      return *m_scpPresetManager;
+   }
+
    /// returns current ui settings
    UISettings& GetUISettings() throw()
    {
