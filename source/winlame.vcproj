@@ -975,6 +975,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\winlame\ui\ResourceInstanceSwitcher.h"
+				>
+			</File>
+			<File
 				RelativePath=".\winlame\ui\TasksView.cpp"
 				>
 			</File>
