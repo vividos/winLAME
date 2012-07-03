@@ -150,7 +150,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="/IGNORE:4049"
+				AdditionalOptions="/IGNORE:4049 -Zm150"
 				Optimization="0"
 				AdditionalIncludeDirectories="winlame;winlame\encoder;winlame\ui;winlame\res;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag"
 				PreprocessorDefinitions="_DEBUG;_STLP_DEBUG;_STLP_USE_NEWALLOC;WIN32;_WINDOWS;_ATL_NO_COM;_STLP_USE_STATIC_LIB;_STLP_NEW_PLATFORM_SDK;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE"
