@@ -81,6 +81,8 @@ LRESULT GeneralSettingsPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND
          m_settings.language_id = uiLangId;
          m_langResourceManager.LoadLangResource(uiLangId);
       }
+
+      m_settings.StoreSettings();
    }
 
    return 0;
