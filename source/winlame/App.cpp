@@ -117,7 +117,7 @@ CString App::AppFilename()
    CString cszFilename;
 
    GetModuleFileName(NULL, cszFilename.GetBuffer(MAX_PATH), MAX_PATH);
-   cszFilename.ReleaseBuffer(cszFilename);
+   cszFilename.ReleaseBuffer();
 
    return cszFilename;
 }
