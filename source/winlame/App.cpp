@@ -21,6 +21,7 @@
 
 #include "StdAfx.h"
 #include "App.h"
+#include "MainDlg.h"
 #include "ui\MainFrame.h"
 
 #ifdef _DEBUG
@@ -98,11 +99,31 @@ App::~App()
 
 int App::Run(LPTSTR /*lpstrCmdLine*/, int nCmdShow)
 {
+#if 0
    // start dialog
    MainDlg dlg(m_settings, m_langResourceManager);
    dlg.RunDialog();
 
    return 0;
+#else
+   CMessageLoop theLoop;
+   _Module.AddMessageLoop(&theLoop);
+
+   MainFrame wndMain(m_taskManager);
+
+   if (wndMain.CreateEx() == NULL)
+   {
+      ATLTRACE(_T("Main window creation failed!\n"));
+      return 0;
+   }
+
+   wndMain.ShowWindow(nCmdShow);
+
+   int nRet = theLoop.Run();
+
+   _Module.RemoveMessageLoop();
+   return nRet;
+#endif
 }
 
 CString App::AppDataFolder(bool bMachineWide)
