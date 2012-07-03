@@ -30,6 +30,7 @@
 #include "res/MainFrameRibbon.h"
 #include "WizardPageHost.h"
 #include "GeneralSettingsPage.h"
+#include "ResourceInstanceSwitcher.h"
 
 /// tasks list refresh cycle in ms
 const UINT c_uiTasksListRefreshCycleInMs = 500;
@@ -105,19 +106,27 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
       CMenuHandle(m_CmdBar.GetMenu()).DeleteMenu(ID_VIEW_RIBBON, MF_BYCOMMAND);
 
    // toolbar setup
-   HWND hWndToolBar = CreateSimpleToolBarCtrl(m_hWnd, IDR_MAINFRAME, FALSE,
-      ATL_SIMPLE_TOOLBAR_PANE_STYLE | BTNS_SHOWTEXT | TBSTYLE_LIST);
-
-   CreateSimpleReBar(ATL_SIMPLE_REBAR_NOBORDER_STYLE);
-   AddSimpleReBarBand(hWndCmdBar);
-   AddSimpleReBarBand(hWndToolBar, NULL, TRUE);
-
    {
+      HWND hWndToolBar;
+      {
+         // switch to module handle, since toolbar isn't in translated language dll
+         ResourceInstanceSwitcher sw(::_Module.GetModuleInstance());
+
+         hWndToolBar = CreateSimpleToolBarCtrl(m_hWnd, IDR_MAINFRAME, FALSE,
+            ATL_SIMPLE_TOOLBAR_PANE_STYLE | BTNS_SHOWTEXT | TBSTYLE_LIST);
+      }
+
+      CreateSimpleReBar(ATL_SIMPLE_REBAR_NOBORDER_STYLE);
+      AddSimpleReBarBand(hWndCmdBar);
+      AddSimpleReBarBand(hWndToolBar, NULL, TRUE);
+
       CToolBarCtrl tb(hWndToolBar);
       tb.SetExtendedStyle(TBSTYLE_EX_MIXEDBUTTONS);
 
       EnableButtonText(tb, ID_ENCODE_FILES);
       EnableButtonText(tb, ID_ENCODE_CD);
+
+      UIAddToolBar(hWndToolBar);
    }
 
    CreateSimpleStatusBar();
@@ -137,8 +146,6 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
       WS_EX_CLIENTEDGE);
    m_view.SetFont(AtlGetDefaultGuiFont());
    m_view.Init();
-
-   UIAddToolBar(hWndToolBar);
 
    // register object for message filtering and idle updates
    CMessageLoop* pLoop = _Module.GetMessageLoop();
