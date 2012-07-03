@@ -30,6 +30,7 @@
 #include <shellapi.h>
 #include <atlctrlx.h> // CWaitCursor
 #include "DynamicLibrary.h"
+#include "App.h"
 
 // CDRipFreedbListDlg methods
 
@@ -679,10 +680,7 @@ void CDRipDlg::FreedbLookup()
       std::string server(T2CA(m_uiSettings.freedb_server));
       Freedb::Remote remoteFreedb(server);
 
-      extern void GetWinlameVersion(CString& cszVersion);
-
-      CString cszWinlameVersion;
-      GetWinlameVersion(cszWinlameVersion);
+      CString cszWinlameVersion = App::Version();
       cszWinlameVersion.Replace(_T(' '), _T('-'));
 
       std::string username(T2CA(m_uiSettings.freedb_username));

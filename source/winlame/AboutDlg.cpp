@@ -26,65 +26,7 @@
 #include "stdafx.h"
 #include "AboutDlg.h"
 #include "ModuleInterface.h"
-#include <cstdio>
-
-// global functions
-
-/// retrieves winLAME version number
-void GetWinlameVersion(CString& cszVersion)
-{
-   // get exe file name
-   CString cszFilename(GetCommandLine());
-   {
-      ATLASSERT(cszFilename.GetLength() > 2);
-
-      // remove leading and ending '"'
-      TCHAR cSeparator = _T(' ');
-      if (cszFilename[0] == _T('\"'))
-      {
-         cSeparator = _T('\"');
-         cszFilename = cszFilename.Mid(1);
-      }
-
-      int nPos = cszFilename.Find(cSeparator);
-      ATLASSERT(cSeparator == _T('\"') && nPos != -1);
-      if (nPos != -1)
-         cszFilename = cszFilename.Left(nPos);
-   }
-
-   // allocate memory for the version info struct
-   DWORD nDummy=0;
-   DWORD nVerInfoSize = GetFileVersionInfoSize(const_cast<LPTSTR>(static_cast<LPCTSTR>(cszFilename)), &nDummy);
-   if (nVerInfoSize == 0) return;
-
-   std::vector<BYTE> vecVerInfo(nVerInfoSize);
-
-   if (0 == GetFileVersionInfo(const_cast<LPTSTR>(static_cast<LPCTSTR>(cszFilename)), 0, nVerInfoSize, &vecVerInfo[0]))
-      return;
-
-   // retrieve version language
-   LPVOID pVersion = NULL;
-   UINT nVersionLen;
-
-   BOOL bRet = VerQueryValue(&vecVerInfo[0], _T("\\VarFileInfo\\Translation"), &pVersion, &nVersionLen);
-   if (!bRet) return;
-
-   CString cszFileVersion;
-   if (bRet && nVersionLen==4)
-   {
-      DWORD nLang = *(DWORD*)pVersion;
-
-      cszFileVersion.Format(_T("\\StringFileInfo\\%02X%02X%02X%02X\\FileVersion"),
-         (nLang & 0xff00)>>8, nLang & 0xff, (nLang & 0xff000000)>>24, (nLang & 0xff0000)>>16);
-   }
-   else
-      cszFileVersion.Format(_T("\\StringFileInfo\\%04X04B0\\FileVersion"),GetUserDefaultLangID());
-
-   bRet = VerQueryValue(&vecVerInfo[0], const_cast<LPTSTR>(static_cast<LPCTSTR>(cszFileVersion)), &pVersion, &nVersionLen);
-   if (bRet)
-      cszVersion = (LPTSTR)pVersion;
-}
-
+#include "App.h"
 
 // AboutDlg methods
 
@@ -168,8 +110,7 @@ CString AboutDlg::GetAboutHtmlText()
       if (varname==_T("winlamever"))
       {
          // find out winlame version from version resource
-         varname = _T("N/A");
-         GetWinlameVersion(varname);
+         varname = App::Version();
       }
       else if (varname==_T("installedinputmodules"))
       {

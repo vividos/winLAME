@@ -33,17 +33,13 @@
 #include "EncodePage.h"
 #include "AboutDlg.h"
 #include "OptionsDlg.h"
+#include "App.h"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <shlobj.h>
 
 #define IDM_ABOUTBOX 16    ///< menu id for about box
 #define IDM_OPTIONS 48     ///< menu id for options
-
-// extern functions
-
-extern void GetWinlameVersion(CString& cszVersion);
-
 
 // MainDlg methods
 
@@ -157,10 +153,7 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    CenterWindow();
 
    // set caption
-   CString cszVersion, cszCaption;
-   GetWinlameVersion(cszVersion);
-   cszCaption = _T("winLAME ");
-   cszCaption += cszVersion;
+   CString cszCaption = _T("winLAME ") + App::Version();
    SetWindowText(cszCaption);
 
    // set icon
