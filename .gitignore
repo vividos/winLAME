@@ -41,3 +41,6 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+source/winlame/res/MainFrameRibbon.bml
+source/winlame/res/MainFrameRibbon.h
+source/winlame/res/MainFrameRibbon.rc
