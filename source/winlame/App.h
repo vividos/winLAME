@@ -23,6 +23,11 @@
 #pragma once
 
 // includes
+#include "resource.h"
+#include "UISettings.h"
+#include "LanguageResourceManager.hpp"
+#include "TaskManager.h"
+#include "ModuleManagerImpl.h"
 
 /// main application class
 class App
@@ -35,6 +40,25 @@ public:
 
    /// runs application
    int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT);
+
+   /// returns current module manager
+   ModuleManager& GetModuleManager()
+   {
+      ATLASSERT(m_scpModuleManager != NULL);
+      return *m_scpModuleManager;
+   }
+
+   /// returns current ui settings
+   UISettings& GetUISettings() throw()
+   {
+      return m_settings;
+   }
+
+   /// returns language resource manager
+   LanguageResourceManager& GetLangResourceManager() throw()
+   {
+      return m_langResourceManager;
+   }
 
 
    // static methods
@@ -63,4 +87,19 @@ public:
 private:
    /// current app object
    static App* s_pApp;
+
+   /// ui settings
+   UISettings m_settings;
+
+   /// language resource manager
+   LanguageResourceManager m_langResourceManager;
+
+   /// task manager
+   TaskManager m_taskManager;
+
+   /// module manager
+   boost::scoped_ptr<ModuleManager> m_scpModuleManager;
+
+   /// preset manager
+   boost::scoped_ptr<PresetManagerInterface> m_scpPresetManager;
 };

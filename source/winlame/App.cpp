@@ -21,7 +21,7 @@
 
 #include "StdAfx.h"
 #include "App.h"
-#include "MainDlg.h"
+#include "ui\MainFrame.h"
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -39,6 +39,7 @@ App* App::s_pApp = NULL;
 // App methods
 
 App::App(HINSTANCE hInstance)
+:m_langResourceManager(_T("winlame.*.dll"), IDS_LANG_ENGLISH, IDS_LANG_NATIVE)
 {
    s_pApp = this;
 
@@ -64,10 +65,31 @@ App::App(HINSTANCE hInstance)
 #ifdef _DEBUG
    AtlAxWinInit();
 #endif
+
+   // read settings from registry
+   m_settings.ReadSettings();
+
+   // set language to use
+   if (m_langResourceManager.IsLangResourceAvail(m_settings.language_id))
+      m_langResourceManager.LoadLangResource(m_settings.language_id);
+
+   // create new preset manager
+   m_scpPresetManager.reset(PresetManagerInterface::getPresetManager());
+   m_settings.preset_manager = m_scpPresetManager.get();
+
+   // get a module manager
+   m_scpModuleManager.reset(ModuleManager::getNewModuleManager());
+   m_settings.module_manager = m_scpModuleManager.get();
 }
 
 App::~App()
 {
+   // store settings in the registry
+   m_settings.StoreSettings();
+
+   // save preset file
+   m_scpPresetManager->savePreset();
+
    s_pApp = NULL;
 
    _Module.Term();
