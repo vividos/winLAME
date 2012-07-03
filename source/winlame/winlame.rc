@@ -526,6 +526,7 @@ END
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 STRINGTABLE
 BEGIN
+    IDD_SETTINGS_GENERAL          "General Settings"
     IDR_MAINFRAME                 "winLAME"
     IDS_COMMON_ABOUTBOX           "&About winLAME"
     IDS_COMMON_OPTIONS            "&Options"
