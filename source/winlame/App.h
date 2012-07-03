@@ -42,6 +42,24 @@ public:
    /// returns current app object
    static App& Current() { ATLASSERT(s_pApp != NULL); return *s_pApp; }
 
+   /// shows app message box
+   static int MessageBox(HWND hWndOwner, UINT uiMessageId, UINT uiType)
+   {
+      return AtlMessageBox(hWndOwner, uiMessageId, IDS_APP_CAPTION, uiType);
+   }
+
+   /// returns user or machine wide app data folder; ends with backslash
+   static CString AppDataFolder(bool bMachineWide);
+
+   /// returns app folder; ends with backslash
+   static CString AppFolder();
+
+   /// retrieves app filename
+   static CString AppFilename();
+
+   /// retrieves app version number
+   static CString Version();
+
 private:
    /// current app object
    static App* s_pApp;
