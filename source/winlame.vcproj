@@ -959,6 +959,14 @@
 			Name="new_ui files"
 			>
 			<File
+				RelativePath=".\winlame\ui\GeneralSettingsPage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\winlame\ui\GeneralSettingsPage.h"
+				>
+			</File>
+			<File
 				RelativePath=".\winlame\ui\MainFrame.cpp"
 				>
 			</File>

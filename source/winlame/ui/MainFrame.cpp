@@ -29,7 +29,7 @@
 #include "TaskManager.h"
 #include "res/MainFrameRibbon.h"
 #include "WizardPageHost.h"
-//#include "GeneralSettingsPage.h"
+#include "GeneralSettingsPage.h"
 
 /// tasks list refresh cycle in ms
 const UINT c_uiTasksListRefreshCycleInMs = 500;
@@ -241,10 +241,12 @@ LRESULT MainFrame::OnEncodeCD(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 
 LRESULT MainFrame::OnSettingsGeneral(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   //WizardPageHost host;
-   //host.SetWizardPage(boost::shared_ptr<WizardPage>(
-   //   new GeneralSettingsPage(host, App::Current().GetUISettings())));
-   //host.Run(m_hWnd);
+   WizardPageHost host;
+   host.SetWizardPage(boost::shared_ptr<WizardPage>(
+      new GeneralSettingsPage(host,
+         App::Current().GetUISettings(),
+         App::Current().GetLangResourceManager())));
+   host.Run(m_hWnd);
 
    return 0;
 }

@@ -38,6 +38,7 @@
 #define IDD_DLG_LAME_SIMPLE                     120
 #define IDD_FREEDB_LIST                         121
 #define IDD_CDRIP_OPTIONS                       122
+#define IDD_SETTINGS_GENERAL                    150
 #define IDC_WIZARDPAGE_STATIC_CAPTION           1000
 #define IDC_WIZARDPAGE_STATIC_BACKGROUND        1001
 #define IDC_WIZARDPAGE_BUTTON_ACTION1           1002
@@ -197,6 +198,7 @@
 #define IDC_ABOUT_FRAME                         4401
 #define IDC_ABOUT_BROWSER                       4402
 #define IDC_PROP_LISTBOX                        4404
+#define IDC_SETTINGS_COMBO_LANGUAGE             5000
 #define ID_TRAY_ABOUT                           30000
 #define ID_TRAY_PAUSE                           30001
 #define ID_TRAY_START                           30002
