@@ -272,7 +272,7 @@ LRESULT WizardPageHost::OnButtonClicked(WORD /*wNotifyCode*/, WORD wID, HWND /*h
    m_spCurrentPage.reset();
 
    // send button press to current page
-   spCurrentPage->SendMessage(WM_COMMAND, BN_CLICKED, wID);
+   spCurrentPage->SendMessage(WM_COMMAND, MAKELONG(wID, BN_CLICKED));
 
    // TODO check result code
 
