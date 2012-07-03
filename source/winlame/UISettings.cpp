@@ -24,7 +24,6 @@
 // needed includes
 #include "stdafx.h"
 #include "UIinterface.h"
-#include <atlbase.h>
 #include <stdio.h>
 #include <sys/stat.h>
 

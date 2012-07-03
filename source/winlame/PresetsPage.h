@@ -30,8 +30,6 @@
 #include "PageBase.h"
 #include "CommonStuff.h"
 #include "PresetManagerInterface.h"
-#include <atlctrls.h>
-
 
 /// presets selection page
 

@@ -28,7 +28,6 @@
 // needed includes
 #include <string>
 #include <list>
-#include <atlctrls.h>
 
 // constants
 
