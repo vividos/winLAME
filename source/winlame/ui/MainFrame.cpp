@@ -93,6 +93,12 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    // remove old menu
    SetMenu(NULL);
 
+   // set caption
+   CString cszCaption;
+   cszCaption.LoadString(IDS_APP_CAPTION);
+   cszCaption += _T(" ") + App::Version();
+   SetWindowText(cszCaption);
+
    // check if ribbon is available
    bool bRibbonUI = RunTimeHelper::IsRibbonUIAvailable();
 
