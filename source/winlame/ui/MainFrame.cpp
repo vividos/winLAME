@@ -229,12 +229,14 @@ LRESULT MainFrame::OnDropFiles(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, 
 {
    HDROP hDropInfo = (HDROP)wParam;
 
-   DropFilesManager mgr(hDropInfo);
+   ParseDroppedFiles(hDropInfo);
 
-   // redraw the windows after drop
+   // redraw window after drop
    ::InvalidateRect(GetParent(), NULL, TRUE);
 
-   // TODO open InputFilesPage with list of files
+   // show input files page
+   WizardPageHost host;
+   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputFilesPage(host)));
 
    return 0;
 }
@@ -330,6 +332,17 @@ void MainFrame::EnableRefresh(bool bEnable)
          KillTimer(IDT_REFRESH_TASKS_LIST);
       }
    }
+}
+
+void MainFrame::ParseDroppedFiles(HDROP hDropInfo)
+{
+   DropFilesManager mgr(hDropInfo);
+
+   UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
+
+   // move to encoder job list
+   BOOST_FOREACH(const CString& cszFilename, mgr.Filenames())
+      settings.encoderjoblist.push_back(EncoderJob(cszFilename));
 }
 
 CString MainFrame::GetFilterString()

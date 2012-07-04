@@ -101,6 +101,9 @@ private:
    /// enables tasks list refresh
    void EnableRefresh(bool bEnable = true);
 
+   /// parses files dropped on window
+   void ParseDroppedFiles(HDROP hDropInfo);
+
    /// returns filter string
    CString GetFilterString();
 
