@@ -32,6 +32,7 @@
 #include "GeneralSettingsPage.h"
 #include "CDReadSettingsPage.h"
 #include "ResourceInstanceSwitcher.h"
+#include "DropFilesManager.h"
 
 /// tasks list refresh cycle in ms
 const UINT c_uiTasksListRefreshCycleInMs = 500;
@@ -163,6 +164,9 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    ShowRibbonUI(bRibbonUI);
    UISetCheck(ID_VIEW_RIBBON, bRibbonUI);
 
+   // enable dropping files
+   DragAcceptFiles(TRUE);
+
    return 0;
 }
 
@@ -216,6 +220,20 @@ LRESULT MainFrame::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL
    {
       m_view.UpdateTasks();
    }
+
+   return 0;
+}
+
+LRESULT MainFrame::OnDropFiles(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   HDROP hDropInfo = (HDROP)wParam;
+
+   DropFilesManager mgr(hDropInfo);
+
+   // redraw the windows after drop
+   ::InvalidateRect(GetParent(), NULL, TRUE);
+
+   // TODO open InputFilesPage with list of files
 
    return 0;
 }

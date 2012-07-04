@@ -67,6 +67,7 @@ public:
       MESSAGE_HANDLER(WM_CLOSE, OnClose)
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       MESSAGE_HANDLER(WM_TIMER, OnTimer)
+      MESSAGE_HANDLER(WM_DROPFILES, OnDropFiles)
       COMMAND_ID_HANDLER(ID_APP_EXIT, OnAppExit)
       COMMAND_ID_HANDLER(ID_ENCODE_FILES, OnEncodeFiles)
       COMMAND_ID_HANDLER(ID_ENCODE_CD, OnEncodeCD)
@@ -87,6 +88,7 @@ private:
    LRESULT OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
    LRESULT OnTimer(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
+   LRESULT OnDropFiles(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnAppExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnEncodeFiles(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnEncodeCD(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
