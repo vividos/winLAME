@@ -507,23 +507,11 @@
 		<Filter
 			Name="ui files"
 			>
-			<File
-				RelativePath=".\winlame\CDRipTrackManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\CDRipTrackManager.h"
-				>
-			</File>
 			<Filter
 				Name="ui source files"
 				>
 				<File
 					RelativePath=".\winlame\AacSettingsPage.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\winlame\AboutDlg.cpp"
 					>
 				</File>
 				<File
@@ -567,6 +555,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\winlame\OptionsDlg.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\winlame\OutputPage.cpp"
 					>
 				</File>
@@ -588,10 +580,6 @@
 				>
 				<File
 					RelativePath=".\winlame\AacSettingsPage.h"
-					>
-				</File>
-				<File
-					RelativePath=".\winlame\AboutDlg.h"
 					>
 				</File>
 				<File
@@ -643,6 +631,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\winlame\OptionsDlg.h"
+					>
+				</File>
+				<File
 					RelativePath=".\winlame\OutputPage.h"
 					>
 				</File>
@@ -676,10 +668,6 @@
 				Filter="ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 				>
 				<File
-					RelativePath="winlame\res\about.html"
-					>
-				</File>
-				<File
 					RelativePath="winlame\res\btnicons.bmp"
 					>
 				</File>
@@ -693,10 +681,6 @@
 				</File>
 				<File
 					RelativePath="winlame\res\logo.bmp"
-					>
-				</File>
-				<File
-					RelativePath="winlame\res\winlame.ico"
 					>
 				</File>
 				<File
@@ -829,15 +813,15 @@
 					>
 				</File>
 				<File
-					RelativePath=".\winlame\LangCountryMapper.hpp"
+					RelativePath=".\winlame\CDRipTrackManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\LangCountryMapper.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\winlame\LanguageResourceManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\winlame\OptionsDlg.cpp"
 					>
 				</File>
 				<File
@@ -890,6 +874,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\winlame\CDRipTrackManager.h"
+					>
+				</File>
+				<File
 					RelativePath=".\winlame\DynamicLibrary.h"
 					>
 				</File>
@@ -898,11 +886,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\winlame\LangCountryMapper.cpp"
+					RelativePath=".\winlame\IoCContainer.hpp"
 					>
 				</File>
 				<File
-					RelativePath=".\winlame\IoCContainer.hpp"
+					RelativePath=".\winlame\LangCountryMapper.hpp"
 					>
 				</File>
 				<File
@@ -911,10 +899,6 @@
 				</File>
 				<File
 					RelativePath=".\winlame\ModuleManager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\winlame\OptionsDlg.h"
 					>
 				</File>
 				<File
@@ -962,66 +946,14 @@
 		<Filter
 			Name="new_ui files"
 			>
-			<File
-				RelativePath=".\winlame\ui\CDReadSettingsPage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\CDReadSettingsPage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\DropFilesManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\DropFilesManager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\GeneralSettingsPage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\GeneralSettingsPage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\MainFrame.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\MainFrame.h"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\ResourceInstanceSwitcher.h"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\TasksView.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\TasksView.h"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\WizardPage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\WizardPageHost.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\winlame\ui\WizardPageHost.h"
-				>
-			</File>
 			<Filter
 				Name="resource files"
 				Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest"
 				>
+				<File
+					RelativePath="winlame\res\about.html"
+					>
+				</File>
 				<File
 					RelativePath=".\winlame\res\MainFrameRibbon.bml"
 					>
@@ -1063,6 +995,10 @@
 					>
 				</File>
 				<File
+					RelativePath="winlame\res\winlame.ico"
+					>
+				</File>
+				<File
 					RelativePath="winlame\winlame.rc"
 					>
 					<FileConfiguration
@@ -1083,6 +1019,86 @@
 							AdditionalIncludeDirectories="winlame"
 						/>
 					</FileConfiguration>
+				</File>
+			</Filter>
+			<Filter
+				Name="new_ui header files"
+				>
+				<File
+					RelativePath=".\winlame\AboutDlg.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\CDReadSettingsPage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\DropFilesManager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\GeneralSettingsPage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\InputFilesPage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\MainFrame.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\ResourceInstanceSwitcher.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\TasksView.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\WizardPage.h"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\WizardPageHost.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="new_ui source files"
+				>
+				<File
+					RelativePath=".\winlame\AboutDlg.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\CDReadSettingsPage.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\DropFilesManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\GeneralSettingsPage.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\InputFilesPage.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\MainFrame.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\TasksView.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\winlame\ui\WizardPageHost.cpp"
+					>
 				</File>
 			</Filter>
 		</Filter>
