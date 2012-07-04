@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2009 Michael Fink
+   Copyright (c) 2000-2012 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -25,12 +25,17 @@
 
 #pragma once
 
-#define WINVER         0x0601 
+#define WINVER         0x0601
 #define _WIN32_WINNT   0x0601
 #define _WIN32_IE      0x0700
 
 #define WIN32_LEAN_AND_MEAN
 #define VC_EXTRALEAN
+
+// Win32 includes
+#include <shlobj.h>
+#include <shellapi.h>
+#undef ExtractIcon
 
 // ATL includes
 #include <atlbase.h>
