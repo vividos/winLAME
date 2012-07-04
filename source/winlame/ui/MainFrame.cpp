@@ -265,7 +265,7 @@ LRESULT MainFrame::OnSettingsGeneral(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*
    return 0;
 }
 
-LRESULT MainFrame::OnSettingsFreedb(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT MainFrame::OnSettingsCDRead(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    WizardPageHost host;
    host.SetWizardPage(boost::shared_ptr<WizardPage>(

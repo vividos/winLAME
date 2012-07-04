@@ -71,7 +71,7 @@ public:
       COMMAND_ID_HANDLER(ID_ENCODE_FILES, OnEncodeFiles)
       COMMAND_ID_HANDLER(ID_ENCODE_CD, OnEncodeCD)
       COMMAND_ID_HANDLER(ID_SETTINGS_GENERAL, OnSettingsGeneral)
-      COMMAND_ID_HANDLER(ID_SETTINGS_FREEDB, OnSettingsFreedb)
+      COMMAND_ID_HANDLER(ID_SETTINGS_CDREAD, OnSettingsCDRead)
       COMMAND_ID_HANDLER(ID_VIEW_RIBBON, OnToggleRibbon)
       COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
       CHAIN_MSG_MAP(BaseClass)
@@ -91,7 +91,7 @@ private:
    LRESULT OnEncodeFiles(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnEncodeCD(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnSettingsGeneral(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
-   LRESULT OnSettingsFreedb(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnSettingsCDRead(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 

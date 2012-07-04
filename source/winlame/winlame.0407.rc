@@ -502,7 +502,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 STRINGTABLE
 BEGIN
     IDD_SETTINGS_GENERAL          "Allgemeine Einstellungen"
-    IDD_SETTINGS_CDREAD           "CD einlesen Einstellungen"
+    IDD_SETTINGS_CDREAD           "CD-Auslese-Einstellungen"
     IDR_MAINFRAME                 "winLAME"
     IDS_COMMON_ABOUTBOX           "Ü&ber winLAME"
     IDS_COMMON_OPTIONS            "&Optionen"
@@ -716,7 +716,7 @@ BEGIN
     ID_ENCODE_FILES               "Öffnet Dateien zum kodieren\nDateien öffnen"
     ID_ENCODE_CD                  "Liest Audio-Tracks von CD\nCD einlesen"
     ID_SETTINGS_GENERAL           "Zeit allgemeine Einstellungen an\nAllgemeine Einstellungen"
-    ID_SETTINGS_FREEDB            "Zeigt freedb-Einstellungen an\nfreedb-Einstellungen"
+    ID_SETTINGS_CDREAD            "Zeigt CD-Auslese-Einstellungen an\CD-Auslese-Einstellungen"
     ID_VIEW_RIBBON                "Schaltet zwischen Menüband und Werkzeugleiste um\nMenüband umschalten"
     ID_APP_ABOUT                  "Zeit Anwendungs-Informationen\nÜber"
     ID_APP_EXIT                   "Beendet die Anwendung\nBeenden"
