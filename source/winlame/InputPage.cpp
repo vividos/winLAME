@@ -349,10 +349,10 @@ void InputPage::OpenFileDialog()
    int buflen = _MAX_PATH*64;
    TCHAR *buffer = new TCHAR[buflen];
 
-   std::tstring &lastinputpath = pui->getUISettings().lastinputpath;
+   CString& lastinputpath = pui->getUISettings().lastinputpath;
 
    // copy last input path to buffer, as init
-   _tcsncpy(buffer,lastinputpath.c_str(),buflen-1);
+   _tcsncpy(buffer,lastinputpath,buflen-1);
    buffer[buflen-1]=0;
 
    dlg.m_ofn.lpstrFile = buffer;
@@ -388,8 +388,8 @@ void InputPage::OpenFileDialog()
 
          // get the used directory
          lastinputpath = buffer;
-         int len = lastinputpath.length();
-         if (len!=0 && lastinputpath.at(len-1)!='\\')
+         int len = lastinputpath.GetLength();
+         if (len!=0 && lastinputpath[len-1]!='\\')
             lastinputpath += char('\\');
 
          // add last selected file

@@ -206,7 +206,7 @@ void UISettings::StoreSettings()
    regRoot.SetValue(outputdir, g_pszOutputPath);
 
    // write last input path
-   regRoot.SetValue(lastinputpath.c_str(), g_pszLastInputPath);
+   regRoot.SetValue(lastinputpath, g_pszLastInputPath);
 
    // write "use input file's folder as output location" value
    DWORD value = out_location_use_input_dir ? 1 : 0;

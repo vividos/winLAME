@@ -59,7 +59,7 @@ struct UISettings
    std::vector<CString> outputhistory;
 
    /// last input files folder
-   std::tstring lastinputpath;
+   CString lastinputpath;
 
    /// indicates if source files should be deleted after encoding
    bool delete_after_encode;
