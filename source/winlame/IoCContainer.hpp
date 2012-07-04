@@ -40,22 +40,12 @@ public:
       return current;
    }
 
-   /// registers object for class
+   /// registers ref for class
    template <typename TClass>
-   void Register(boost::reference_wrapper<TClass> ref = boost::reference_wrapper<TClass>(TClass()))
+   void Register(boost::reference_wrapper<TClass> ref)
    {
       std::string name = typeid(TClass).raw_name();
       m_mapAllInstances.insert(std::make_pair(name, ref));
-   }
-
-   /// registers object for interface
-   template <typename TInterface, typename TClass>
-   void Register(boost::reference_wrapper<TClass> ref = boost::reference_wrapper<TClass>(TClass()))
-   {
-      boost::reference_wrapper<TInterface> iref(ref);
-
-      std::string name = typeid(TInterface).raw_name();
-      m_mapAllInstances.insert(std::make_pair(name, iref));
    }
 
    /// resolves class to object
@@ -76,7 +66,7 @@ public:
    }
 
 private:
-   /// map type
+   /// instance map type
    typedef std::map<std::string, boost::any> T_mapAllInstances;
 
    /// instance map
