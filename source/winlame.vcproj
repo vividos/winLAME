@@ -971,6 +971,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\winlame\ui\DropFilesManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\winlame\ui\DropFilesManager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\winlame\ui\GeneralSettingsPage.cpp"
 				>
 			</File>
