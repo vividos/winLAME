@@ -27,7 +27,6 @@
 
 // needed includes
 #include "resource.h"
-#include "ModuleManager.h"
 
 /// about dialog
 class AboutDlg:
@@ -81,7 +80,7 @@ private:
    CString m_cszPresetsXmlFilename;
 
    /// window icon
-   HICON wndicon;
+   HICON m_hDlgIcon;
 };
 
 /// @}

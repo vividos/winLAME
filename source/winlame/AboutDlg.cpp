@@ -35,9 +35,9 @@ LRESULT AboutDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
    CenterWindow(GetParent());
 
    // set window icon
-   wndicon = (HICON)::LoadImage(_Module.GetResourceInstance(),
+   m_hDlgIcon = (HICON)::LoadImage(_Module.GetResourceInstance(),
       MAKEINTRESOURCE(IDI_ICON_WINLAME), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-   SetIcon(wndicon, FALSE);
+   SetIcon(m_hDlgIcon, FALSE);
 
    // create child control
    CRect rc;
@@ -62,7 +62,7 @@ LRESULT AboutDlg::OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandle
    EndDialog(0);
 
    // delete resources
-   ::DestroyIcon(wndicon);
+   ::DestroyIcon(m_hDlgIcon);
 
    return 0;
 }
