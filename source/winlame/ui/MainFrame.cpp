@@ -258,8 +258,8 @@ LRESULT MainFrame::OnSettingsGeneral(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*
    WizardPageHost host;
    host.SetWizardPage(boost::shared_ptr<WizardPage>(
       new GeneralSettingsPage(host,
-         App::Current().GetUISettings(),
-         App::Current().GetLangResourceManager())));
+         IoCContainer::Current().Resolve<UISettings>(),
+         IoCContainer::Current().Resolve<LanguageResourceManager>())));
    host.Run(m_hWnd);
 
    return 0;
@@ -270,7 +270,7 @@ LRESULT MainFrame::OnSettingsFreedb(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
    WizardPageHost host;
    host.SetWizardPage(boost::shared_ptr<WizardPage>(
       new CDReadSettingsPage(host,
-         App::Current().GetUISettings())));
+         IoCContainer::Current().Resolve<UISettings>())));
    host.Run(m_hWnd);
 
    return 0;
@@ -285,7 +285,7 @@ LRESULT MainFrame::OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWn
 
 LRESULT MainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   ModuleManager& moduleManager = App::Current().GetModuleManager();
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
 
    AboutDlg dlg(moduleManager);
    dlg.DoModal();

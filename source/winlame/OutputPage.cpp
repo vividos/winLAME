@@ -55,11 +55,11 @@ LRESULT OutputPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
       (LPARAM)ilIcons.ExtractIcon(0) );
 
    // query module names from encoder interface
-   ModuleManager *modmgr = pui->getUISettings().module_manager;
-   int max = modmgr->getOutputModuleCount();
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   int max = moduleManager.getOutputModuleCount();
    for(int i=0; i<max; i++)
       SendDlgItemMessage(IDC_OUT_COMBO_OUTMODULE, CB_ADDSTRING, 0,
-         (LPARAM)(LPCTSTR)modmgr->getOutputModuleName(i));
+         (LPARAM)(LPCTSTR)moduleManager.getOutputModuleName(i));
 
    // insert all possible "shutdown" actions
    UINT ActionStringIDs[] = {
@@ -188,8 +188,10 @@ void OutputPage::OnEnterPage()
 void InsertWizardPages(UIinterface *pui,int pos)
 {
    // find out output module id
-   UISettings &settings = pui->getUISettings();
-   int modid = settings.module_manager->getOutputModuleID(settings.output_module);
+   UISettings& settings = pui->getUISettings();
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+
+   int modid = moduleManager.getOutputModuleID(settings.output_module);
 
    switch(modid)
    {
@@ -299,19 +301,22 @@ bool OutputPage::OnLeavePage()
    }
 
    // find out output module id
-   int modid = settings.module_manager->getOutputModuleID(settings.output_module);
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+
+   int modid = moduleManager.getOutputModuleID(settings.output_module);
 
    // check if presets page should be inserted
    if (settings.preset_avail)
    {
       // check if current facility has only one preset
+      PresetManagerInterface& presetManager = IoCContainer::Current().Resolve<PresetManagerInterface>();
 
       // set facility name, which is looked up by module id
       VarMgrFacilities fac;
-      settings.preset_manager->setFacility(fac.lookupName(modid));
+      presetManager.setFacility(fac.lookupName(modid));
 
       // do we have more than the default preset?
-      if (settings.preset_manager->getPresetCount() > 0)
+      if (presetManager.getPresetCount() > 0)
          pui->insertWizardPage(pos++,new PresetsPage);
    }
 

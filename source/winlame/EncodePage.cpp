@@ -83,7 +83,7 @@ LRESULT EncodePage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
    newfile = true;
 
    // set module and settings manager for the encoder object
-   encoder->setModuleManager(settings.module_manager);
+   encoder->setModuleManager(&IoCContainer::Current().Resolve<ModuleManager>());
    encoder->setSettingsManager(&settings.settings_manager);
 
    // load tray icons

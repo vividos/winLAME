@@ -67,9 +67,7 @@ UISettings::UISettings()
    freedb_server(_T("freedb.freedb.org")),
    freedb_username(_T("default")),
    store_disc_infos_cdplayer_ini(true),
-   language_id(MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)),
-   preset_manager(NULL),
-   module_manager(NULL)
+   language_id(MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT))
 {
    ::GetTempPath(MAX_PATH, cdrip_temp_folder.GetBuffer(MAX_PATH));
    cdrip_temp_folder.ReleaseBuffer();

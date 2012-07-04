@@ -46,12 +46,11 @@ LRESULT PresetsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
 LRESULT PresetsPage::OnSelItemChanged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
    CListBox listbox(hWndCtl);
-   PresetManagerInterface *presetmgr = pui->getUISettings().preset_manager;
 
    // set new description
    int index = listbox.GetCurSel();
    if (index!=0)
-      SetDlgItemText(IDC_PRE_DESC,presetmgr->getPresetDescription(index-1).c_str());
+      SetDlgItemText(IDC_PRE_DESC, m_presetManager.getPresetDescription(index-1).c_str());
    else
    {
       // set default description
@@ -71,7 +70,7 @@ LRESULT PresetsPage::OnLButtonDblClk(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 
    // edit doubleclicked item
    if (index!=0)
-      pui->getUISettings().preset_manager->editSettingsDialog(index-1);
+      m_presetManager.editSettingsDialog(index-1);
 #endif
 
    return 0;
@@ -80,15 +79,14 @@ LRESULT PresetsPage::OnLButtonDblClk(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 void PresetsPage::OnEnterPage()
 {
    CListBox listbox(GetDlgItem(IDC_PRE_LIST_PRESET));
-   PresetManagerInterface *presetmgr = pui->getUISettings().preset_manager;
 
    // fill listbox
    CString cszText(MAKEINTRESOURCE(IDS_PRESETS_CUSTOM_SETTINGS));
    listbox.AddString(cszText);
 
-   int max = presetmgr->getPresetCount();
+   int max = m_presetManager.getPresetCount();
    for(int i=0; i<max; i++)
-      listbox.AddString(presetmgr->getPresetName(i).c_str());
+      listbox.AddString(m_presetManager.getPresetName(i).c_str());
 
    listbox.SetCurSel(lastindex);
 
@@ -111,11 +109,11 @@ bool PresetsPage::OnLeavePage()
 
    // set default values
    UISettings &settings = pui->getUISettings();
-   settings.preset_manager->setDefaultSettings(settings.settings_manager);
+   m_presetManager.setDefaultSettings(settings.settings_manager);
 
    // set selected preset
    if (lastindex!=0)
-      settings.preset_manager->setSettings(lastindex-1,settings.settings_manager);
+      m_presetManager.setSettings(lastindex-1,settings.settings_manager);
 
    // insert config pages depending on output selection
    InsertWizardPages(pui,pui->getCurrentWizardPage()+1);

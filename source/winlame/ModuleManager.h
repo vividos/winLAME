@@ -36,9 +36,6 @@ public:
    /// dtor
    virtual ~ModuleManager() throw() {}
 
-   /// returns new encoder object; destroy with delete operator
-   static ModuleManager* getNewModuleManager();
-
    // info functions
 
    /// returns currently available filter string for open file dialog

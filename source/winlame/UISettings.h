@@ -117,12 +117,6 @@ struct UISettings
 
    /// settings manager
    SettingsManager settings_manager;
-
-   /// preset manager
-   PresetManagerInterface *preset_manager;
-
-   /// module manager
-   ModuleManager *module_manager;
 };
 
 /// @}

@@ -32,9 +32,7 @@
 #include <string>
 #include "cppxml/cppxml.hpp"
 
-
 /// preset manager implementation
-
 class PresetManagerImpl:
    public PresetManagerInterface,
    public PropertyManagerInterface

@@ -27,11 +27,6 @@
 #include "PropertyDlg.h"
 #include <fstream>
 
-PresetManagerInterface *PresetManagerInterface::getPresetManager()
-{
-   return new PresetManagerImpl;
-}
-
 // PresetManagerInterface methods
 
 PresetManagerImpl::PresetManagerImpl()

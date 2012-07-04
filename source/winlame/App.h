@@ -41,32 +41,6 @@ public:
    /// runs application
    int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT);
 
-   /// returns current module manager
-   ModuleManager& GetModuleManager()
-   {
-      ATLASSERT(m_scpModuleManager != NULL);
-      return *m_scpModuleManager;
-   }
-
-   /// returns current preset manager
-   PresetManagerInterface& GetPresetManager()
-   {
-      ATLASSERT(m_scpPresetManager != NULL);
-      return *m_scpPresetManager;
-   }
-
-   /// returns current ui settings
-   UISettings& GetUISettings() throw()
-   {
-      return m_settings;
-   }
-
-   /// returns language resource manager
-   LanguageResourceManager& GetLangResourceManager() throw()
-   {
-      return m_langResourceManager;
-   }
-
 
    // static methods
 
@@ -95,18 +69,9 @@ private:
    /// current app object
    static App* s_pApp;
 
-   /// ui settings
-   UISettings m_settings;
-
    /// language resource manager
    LanguageResourceManager m_langResourceManager;
 
    /// task manager
    TaskManager m_taskManager;
-
-   /// module manager
-   boost::scoped_ptr<ModuleManager> m_scpModuleManager;
-
-   /// preset manager
-   boost::scoped_ptr<PresetManagerInterface> m_scpPresetManager;
 };

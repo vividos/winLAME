@@ -315,7 +315,8 @@ void InputPage::OpenFileDialog()
    CString filter;
    if (filterstring.IsEmpty())
    {
-      pui->getUISettings().module_manager->getFilterString(filterstring);
+      ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+      moduleManager.getFilterString(filterstring);
 
       CString cszText(MAKEINTRESOURCE(IDS_INPUT_FILTER_PLAYLISTS));
       filterstring += cszText;
@@ -493,7 +494,10 @@ void InputPage::InsertFilename(LPCTSTR filename)
    // find out infos of file
    CString errormsg;
    int samplerate=-1,bps=-1,length=-1;
-   bool res = pui->getUISettings().module_manager->getAudioFileInfo(filename,length,bps,samplerate,errormsg);
+
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+
+   bool res = moduleManager.getAudioFileInfo(filename,length,bps,samplerate,errormsg);
    if (!res)
    {
       CString cszFirstText(MAKEINTRESOURCE(IDS_INPUT_ERRORS_OCCURED_ADDING));

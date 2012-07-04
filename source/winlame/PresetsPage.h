@@ -40,6 +40,7 @@ class PresetsPage:
 public:
    /// ctor
    PresetsPage()
+      :m_presetManager(IoCContainer::Current().Resolve<PresetManagerInterface>())
    {
       IDD = IDD_DLG_PRESETS;
       captionID = IDS_DLG_CAP_PRESETS;
@@ -87,6 +88,10 @@ protected:
 
    /// last selected index
    static int lastindex;
+
+private:
+   /// preset manager
+   PresetManagerInterface& m_presetManager;
 };
 
 

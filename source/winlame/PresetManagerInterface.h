@@ -33,14 +33,10 @@
 #include <string>
 #include "SettingsManager.h"
 
-
 /// encoder interface
-class PresetManagerInterface
+class PresetManagerInterface: public boost::noncopyable
 {
 public:
-   /// returns a new preset manager object; use delete operator to delete it
-   static PresetManagerInterface *getPresetManager();
-
    /// loads preset from an xml file
    virtual bool loadPreset(LPCTSTR filename)=0;
 

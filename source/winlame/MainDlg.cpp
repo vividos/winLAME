@@ -59,9 +59,6 @@ MainDlg::MainDlg(UISettings& settings_, LanguageResourceManager& langResourceMan
 
    currentpage = -1;
 
-   // create a new preset manager
-   settings.preset_manager = &App::Current().GetPresetManager();
-
    // load preset file
    
    // CSIDL_APPDATA - user-dependent app data folder
@@ -99,13 +96,12 @@ MainDlg::MainDlg(UISettings& settings_, LanguageResourceManager& langResourceMan
 
    settings.presets_filename = presetFilename;
 
+   PresetManagerInterface& presetManager = IoCContainer::Current().Resolve<PresetManagerInterface>();
+
    if (::GetFileAttributes(presetFilename) != INVALID_FILE_ATTRIBUTES)
-      settings.preset_avail = settings.preset_manager->loadPreset(presetFilename);
+      settings.preset_avail = presetManager.loadPreset(presetFilename);
    else
       settings.preset_avail = false;
-
-   // get a module manager
-   settings.module_manager = &App::Current().GetModuleManager();
 
    // insert some pages
    pages.push_back(new InputPage);
@@ -211,7 +207,9 @@ LRESULT MainDlg::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    if ((wParam & 0xFFF0)==IDM_ABOUTBOX)
    {
       // show about dialog
-      AboutDlg dlg(*settings.module_manager);
+      ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+
+      AboutDlg dlg(moduleManager);
       dlg.SetPresetsXmlFilename(settings.presets_filename);
       dlg.DoModal();
    }
@@ -236,8 +234,9 @@ void MainDlg::RunDialog()
    Create(NULL,CWindow::rcDefault);
 
    // check if input or output modules are available
-   if (0==settings.module_manager->getInputModuleCount() ||
-       0==settings.module_manager->getOutputModuleCount() )
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   if (0==moduleManager.getInputModuleCount() ||
+       0==moduleManager.getOutputModuleCount() )
    {
       // show warning message box
       AppMessageBox(m_hWnd, IDS_ERR_NOMODULES, MB_OK | MB_ICONSTOP);

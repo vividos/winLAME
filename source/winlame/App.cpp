@@ -23,6 +23,8 @@
 #include "App.h"
 #include "MainDlg.h"
 #include "ui\MainFrame.h"
+#include "preset\PresetManagerImpl.h"
+#include "encoder\ModuleManagerImpl.h"
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -67,29 +69,34 @@ App::App(HINSTANCE hInstance)
    AtlAxWinInit();
 #endif
 
+   // register objects in IoC container
+   IoCContainer& ioc = IoCContainer::Current();
+
+   ioc.Register<LanguageResourceManager, LanguageResourceManager>(boost::ref(m_langResourceManager));
+   ioc.Register<TaskManager, TaskManager>(boost::ref(m_taskManager));
+   ioc.Register<UISettings>();
+   ioc.Register<PresetManagerInterface, PresetManagerImpl>();
+   ioc.Register<ModuleManager, ModuleManagerImpl>();
+
+
    // read settings from registry
-   m_settings.ReadSettings();
+   UISettings& settings = ioc.Resolve<UISettings>();
+   settings.ReadSettings();
 
    // set language to use
-   if (m_langResourceManager.IsLangResourceAvail(m_settings.language_id))
-      m_langResourceManager.LoadLangResource(m_settings.language_id);
-
-   // create new preset manager
-   m_scpPresetManager.reset(PresetManagerInterface::getPresetManager());
-   m_settings.preset_manager = m_scpPresetManager.get();
-
-   // get a module manager
-   m_scpModuleManager.reset(ModuleManager::getNewModuleManager());
-   m_settings.module_manager = m_scpModuleManager.get();
+   if (m_langResourceManager.IsLangResourceAvail(settings.language_id))
+      m_langResourceManager.LoadLangResource(settings.language_id);
 }
 
 App::~App()
 {
+   IoCContainer& ioc = IoCContainer::Current();
+
    // store settings in the registry
-   m_settings.StoreSettings();
+   ioc.Resolve<UISettings>().StoreSettings();
 
    // save preset file
-   m_scpPresetManager->savePreset();
+   ioc.Resolve<PresetManagerInterface>().savePreset();
 
    s_pApp = NULL;
 

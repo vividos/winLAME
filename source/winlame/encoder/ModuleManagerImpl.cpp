@@ -107,14 +107,6 @@ OutputModule *GetNewOutputModule(int index)
 }
 
 
-// static ModuleManager methods
-
-ModuleManager* ModuleManager::getNewModuleManager()
-{
-   return new ModuleManagerImpl;
-}
-
-
 // ModuleManagerImpl methods
 
 void ModuleManagerImpl::getFilterString(CString& filterstring)
