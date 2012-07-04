@@ -33,6 +33,7 @@
 #include "CDReadSettingsPage.h"
 #include "ResourceInstanceSwitcher.h"
 #include "DropFilesManager.h"
+#include <boost/foreach.hpp>
 
 /// tasks list refresh cycle in ms
 const UINT c_uiTasksListRefreshCycleInMs = 500;
@@ -247,6 +248,9 @@ LRESULT MainFrame::OnAppExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*
 
 LRESULT MainFrame::OnEncodeFiles(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
+   // open files
+   OpenFileDialog();
+
    //WizardPageHost host;
    //host.SetWizardPage(boost::shared_ptr<WizardPage>(new OptionsPage(host)));
    //if (IDOK == host.Run(m_hWnd))
@@ -326,4 +330,111 @@ void MainFrame::EnableRefresh(bool bEnable)
          KillTimer(IDT_REFRESH_TASKS_LIST);
       }
    }
+}
+
+CString MainFrame::GetFilterString()
+{
+   if (!m_cszFilterString.IsEmpty())
+      return m_cszFilterString;
+
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   moduleManager.getFilterString(m_cszFilterString);
+
+   CString cszText;
+   cszText.LoadString(IDS_INPUT_FILTER_PLAYLISTS);
+   m_cszFilterString += cszText;
+
+   cszText.LoadString(IDS_INPUT_FILTER_CUESHEETS);
+   m_cszFilterString += cszText;
+   m_cszFilterString.Insert(m_cszFilterString.Find('|')+1, _T("*.m3u;*.pls;*.cue;"));
+
+   cszText.LoadString(IDS_INPUT_FILTER_ALLFILES);
+   m_cszFilterString += cszText + _T("|"); // add extra pipe char for end of filter
+
+   return m_cszFilterString;
+}
+
+void MainFrame::OpenFileDialog()
+{
+   // get filter string
+   CString cszFilter = GetFilterString();
+
+   // exchange pipe char '|' with 0-char for commdlg
+   for (int pos=cszFilter.GetLength()-1; pos>=0; pos--)
+      if (cszFilter.GetAt(pos) == _T('|'))
+         cszFilter.SetAt(pos, 0);
+
+   // load title
+   CString cszTitle;
+   cszTitle.LoadString(IDS_INPUT_INFILES_SELECT);
+
+   // file dialog setup
+   CFileDialog dlg(TRUE, NULL, NULL,
+      OFN_ALLOWMULTISELECT | OFN_ENABLESIZING | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_EXPLORER,
+      cszFilter,
+      m_hWnd);
+
+   // fill file buffer
+   TCHAR szBuffer[MAX_PATH*1024] = {0};
+   const UINT uiBufferLenCch = sizeof(szBuffer)/sizeof(*szBuffer);
+
+   UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
+   CString& lastinputpath = settings.lastinputpath;
+
+   // copy last input path to buffer, as init
+   _tcsncpy_s(
+      szBuffer, uiBufferLenCch,
+      lastinputpath, lastinputpath.GetLength());
+
+   dlg.m_ofn.lpstrFile = szBuffer;
+   dlg.m_ofn.nMaxFile = uiBufferLenCch;
+
+   // do file dialog
+   if (IDOK != dlg.DoModal())
+      return;
+
+   if (dlg.m_ofn.nFileExtension == 0)
+   {
+      ParseMultiSelectionFiles(szBuffer);
+   }
+   else
+   {
+      // single file selection
+      settings.encoderjoblist.push_back(EncoderJob(szBuffer));
+
+      // get the used directory
+      lastinputpath = szBuffer;
+   }
+}
+
+void MainFrame::ParseMultiSelectionFiles(LPCTSTR pszBuffer)
+{
+   UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
+   CString& lastinputpath = settings.lastinputpath;
+
+   // multiple file selection
+   LPCTSTR pszStart = pszBuffer;
+
+   lastinputpath = pszStart;
+   if (lastinputpath.Right(1) != _T("\\"))
+      lastinputpath += _T("\\");
+
+   // go to the first file
+   while(*pszStart++ != 0);
+
+   // while not at end of the list
+   while(*pszStart != 0)
+   {
+      // construct pathname
+      CString cszFilename = lastinputpath + pszStart;
+
+      settings.encoderjoblist.push_back(EncoderJob(cszFilename));
+
+      // go to the next entry
+      while(*pszStart++ != 0);
+   }
+
+   // set last selected file
+   if (!settings.encoderjoblist.empty())
+      lastinputpath = settings.encoderjoblist.back().InputFilename();
 }
