@@ -902,6 +902,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\winlame\IoCContainer.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\winlame\LanguageResourceManager.hpp"
 					>
 				</File>
