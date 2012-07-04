@@ -23,7 +23,7 @@ BEGIN
     POPUP "&Einstellungen"
     BEGIN
         MENUITEM "&Allgemeine Einstellungen", ID_SETTINGS_GENERAL
-        MENUITEM "&freedb-Einstellungen", ID_SETTINGS_FREEDB
+        MENUITEM "&CD-Lese-Einstellungen", ID_SETTINGS_CDREAD
     END
     POPUP "&Anzeige"
     BEGIN
