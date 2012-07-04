@@ -207,9 +207,7 @@ LRESULT MainDlg::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    if ((wParam & 0xFFF0)==IDM_ABOUTBOX)
    {
       // show about dialog
-      ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-
-      AboutDlg dlg(moduleManager);
+      AboutDlg dlg;
       dlg.SetPresetsXmlFilename(settings.presets_filename);
       dlg.DoModal();
    }

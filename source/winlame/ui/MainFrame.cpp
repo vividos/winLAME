@@ -285,9 +285,7 @@ LRESULT MainFrame::OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWn
 
 LRESULT MainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-
-   AboutDlg dlg(moduleManager);
+   AboutDlg dlg;
    dlg.DoModal();
    return 0;
 }

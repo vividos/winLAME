@@ -69,6 +69,8 @@ LRESULT AboutDlg::OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandle
 
 CString AboutDlg::GetAboutHtmlText()
 {
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+
    // load the html template string from resource
 
    // get handle to the html resource
@@ -116,11 +118,11 @@ CString AboutDlg::GetAboutHtmlText()
       {
          // retrieve list of installed input module names
          varname = _T("<ul>");
-         int max = m_moduleManager.getInputModuleCount();
+         int max = moduleManager.getInputModuleCount();
          for(int i=0; i<max; i++)
          {
             varname += _T("<li>");
-            varname += m_moduleManager.getInputModuleName(i);
+            varname += moduleManager.getInputModuleName(i);
             varname += _T("</li>");
          }
          varname += _T("</ul>");
@@ -129,33 +131,33 @@ CString AboutDlg::GetAboutHtmlText()
       {
          // retrieve list of installed output module names
          varname = _T("<ul>");
-         int max = m_moduleManager.getOutputModuleCount();
+         int max = moduleManager.getOutputModuleCount();
          for(int i=0; i<max; i++)
          {
             varname += _T("<li>");
-            varname += m_moduleManager.getOutputModuleName(i);
+            varname += moduleManager.getOutputModuleName(i);
             varname += _T("</li>");
          }
          varname += _T("</ul>");
       }
       else if (varname==_T("lameversion"))
-         m_moduleManager.getModuleVersionString(varname,ID_OM_LAME,0);
+         moduleManager.getModuleVersionString(varname,ID_OM_LAME,0);
       else if (varname==_T("lamecompiler"))
-         m_moduleManager.getModuleVersionString(varname,ID_OM_LAME,1);
+         moduleManager.getModuleVersionString(varname,ID_OM_LAME,1);
       else if (varname==_T("lamecpufeat"))
-         m_moduleManager.getModuleVersionString(varname,ID_OM_LAME,2);
+         moduleManager.getModuleVersionString(varname,ID_OM_LAME,2);
       else if (varname==_T("libsndfileversion"))
-         m_moduleManager.getModuleVersionString(varname,ID_IM_SNDFILE);
+         moduleManager.getModuleVersionString(varname,ID_IM_SNDFILE);
       else if (varname==_T("madversion"))
-         m_moduleManager.getModuleVersionString(varname,ID_IM_MAD,0);
+         moduleManager.getModuleVersionString(varname,ID_IM_MAD,0);
       else if (varname==_T("madbuild"))
-         m_moduleManager.getModuleVersionString(varname,ID_IM_MAD,3);
+         moduleManager.getModuleVersionString(varname,ID_IM_MAD,3);
       else if (varname==_T("vorbisversion"))
-         m_moduleManager.getModuleVersionString(varname,ID_OM_OGGV);
+         moduleManager.getModuleVersionString(varname,ID_OM_OGGV);
       else if (varname==_T("bassver"))
-         m_moduleManager.getModuleVersionString(varname,ID_IM_BASS);
+         moduleManager.getModuleVersionString(varname,ID_IM_BASS);
       else if (varname==_T("flacver"))
-         m_moduleManager.getModuleVersionString(varname,ID_IM_FLAC);
+         moduleManager.getModuleVersionString(varname,ID_IM_FLAC);
       else if (varname==_T("wtlversion"))
       {
          varname.Format(_T("%u.%u"),

@@ -36,8 +36,7 @@ class AboutDlg:
 {
 public:
    /// ctor
-   AboutDlg(ModuleManager& moduleManager)
-      :m_moduleManager(moduleManager)
+   AboutDlg()
    {
    }
 
@@ -77,9 +76,6 @@ private:
 private:
    /// ActiveX host window
    CAxWindow m_browser;
-
-   /// ref to module manager
-   ModuleManager& m_moduleManager;
 
    /// filename of presets.xml file
    CString m_cszPresetsXmlFilename;
