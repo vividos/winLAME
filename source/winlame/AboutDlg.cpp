@@ -161,6 +161,13 @@ CString AboutDlg::GetAboutHtmlText()
          varname.Format(_T("%u.%u"),
             _WTL_VER >> 8, (_WTL_VER >> 4)&15, _WTL_VER & 15);
       }
+      else if (varname==_T("boostversion"))
+      {
+         varname.Format(_T("%u.%u.%u"),
+            BOOST_VERSION / 100000,
+            BOOST_VERSION / 100 % 1000,
+            BOOST_VERSION % 100);
+      }
       else if (varname==_T("presetsxml"))
       {
          varname = m_cszPresetsXmlFilename;
