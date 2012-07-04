@@ -27,7 +27,10 @@
 #include "UISettings.h"
 #include "LanguageResourceManager.hpp"
 #include "TaskManager.h"
-#include "ModuleManagerImpl.h"
+
+// forward references
+class PresetManagerInterface;
+class ModuleManager;
 
 /// main application class
 class App
@@ -72,6 +75,15 @@ private:
    /// language resource manager
    LanguageResourceManager m_langResourceManager;
 
+   /// user interface settings
+   UISettings m_settings;
+
    /// task manager
    TaskManager m_taskManager;
+
+   /// preset manager
+   boost::shared_ptr<PresetManagerInterface> m_spPresetManager;
+
+   /// module manager
+   boost::shared_ptr<ModuleManager> m_spModuleManager;
 };

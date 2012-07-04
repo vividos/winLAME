@@ -72,20 +72,22 @@ App::App(HINSTANCE hInstance)
    // register objects in IoC container
    IoCContainer& ioc = IoCContainer::Current();
 
-   ioc.Register<LanguageResourceManager, LanguageResourceManager>(boost::ref(m_langResourceManager));
-   ioc.Register<TaskManager, TaskManager>(boost::ref(m_taskManager));
-   ioc.Register<UISettings>();
-   ioc.Register<PresetManagerInterface, PresetManagerImpl>();
-   ioc.Register<ModuleManager, ModuleManagerImpl>();
+   ioc.Register<LanguageResourceManager>(boost::ref(m_langResourceManager));
+   ioc.Register<TaskManager>(boost::ref(m_taskManager));
+   ioc.Register<UISettings>(boost::ref(m_settings));
 
+   m_spPresetManager.reset(new PresetManagerImpl);
+   ioc.Register<PresetManagerInterface>(boost::ref(*m_spPresetManager.get()));
+
+   m_spModuleManager.reset(new ModuleManagerImpl);
+   ioc.Register<ModuleManager>(boost::ref(*m_spModuleManager.get()));
 
    // read settings from registry
-   UISettings& settings = ioc.Resolve<UISettings>();
-   settings.ReadSettings();
+   m_settings.ReadSettings();
 
    // set language to use
-   if (m_langResourceManager.IsLangResourceAvail(settings.language_id))
-      m_langResourceManager.LoadLangResource(settings.language_id);
+   if (m_langResourceManager.IsLangResourceAvail(m_settings.language_id))
+      m_langResourceManager.LoadLangResource(m_settings.language_id);
 }
 
 App::~App()
@@ -93,10 +95,10 @@ App::~App()
    IoCContainer& ioc = IoCContainer::Current();
 
    // store settings in the registry
-   ioc.Resolve<UISettings>().StoreSettings();
+   m_settings.StoreSettings();
 
    // save preset file
-   ioc.Resolve<PresetManagerInterface>().savePreset();
+   m_spPresetManager->savePreset();
 
    s_pApp = NULL;
 
