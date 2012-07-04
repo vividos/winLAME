@@ -959,6 +959,14 @@
 			Name="new_ui files"
 			>
 			<File
+				RelativePath=".\winlame\ui\CDReadSettingsPage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\winlame\ui\CDReadSettingsPage.h"
+				>
+			</File>
+			<File
 				RelativePath=".\winlame\ui\GeneralSettingsPage.cpp"
 				>
 			</File>

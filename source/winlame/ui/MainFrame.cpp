@@ -30,6 +30,7 @@
 #include "res/MainFrameRibbon.h"
 #include "WizardPageHost.h"
 #include "GeneralSettingsPage.h"
+#include "CDReadSettingsPage.h"
 #include "ResourceInstanceSwitcher.h"
 
 /// tasks list refresh cycle in ms
@@ -266,9 +267,11 @@ LRESULT MainFrame::OnSettingsGeneral(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*
 
 LRESULT MainFrame::OnSettingsFreedb(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   //WizardPageHost host;
-   //host.SetWizardPage(boost::shared_ptr<WizardPage>(new FreedbOptionsPage(host)));
-   //host.Run(m_hWnd);
+   WizardPageHost host;
+   host.SetWizardPage(boost::shared_ptr<WizardPage>(
+      new CDReadSettingsPage(host,
+         App::Current().GetUISettings())));
+   host.Run(m_hWnd);
 
    return 0;
 }

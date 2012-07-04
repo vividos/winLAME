@@ -39,6 +39,7 @@
 #define IDD_FREEDB_LIST                         121
 #define IDD_CDRIP_OPTIONS                       122
 #define IDD_SETTINGS_GENERAL                    150
+#define IDD_SETTINGS_CDREAD                     151
 #define IDC_WIZARDPAGE_STATIC_CAPTION           1000
 #define IDC_WIZARDPAGE_STATIC_BACKGROUND        1001
 #define IDC_WIZARDPAGE_BUTTON_ACTION1           1002
