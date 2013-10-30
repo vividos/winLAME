@@ -2,8 +2,6 @@
 #define IDC_STATIC (-1)
 #endif
 
-#define IDM_ABOUTBOX                            16
-#define IDM_UNINSTALL                           32
 #define IDM_INPUT_LIST_MENU                     33
 #define IDM_TRAY_CONTEXTMENU                    34
 #define IDR_ACTABLE                             65
@@ -15,7 +13,6 @@
 #define IDB_HELP                                82
 #define IDR_HTML_ABOUT                          83
 #define IDB_BITMAP_FLAGS                        84
-#define IDR_TRAYICON                            85
 #define IDR_MAINFRAME                           86
 #define ID_ENCODE_FILES                         90
 #define ID_ENCODE_CD                            91
@@ -198,7 +195,6 @@
 #define IDC_CDRIP_OPT_BEVEL2                    4307
 #define IDC_FREEDB_LIST_TRACKS                  4400
 #define IDC_ABOUT_FRAME                         4401
-#define IDC_ABOUT_BROWSER                       4402
 #define IDC_PROP_LISTBOX                        4404
 #define IDC_SETTINGS_COMBO_LANGUAGE             5000
 #define ID_TRAY_ABOUT                           30000

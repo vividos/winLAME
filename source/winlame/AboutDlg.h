@@ -28,6 +28,8 @@
 // needed includes
 #include "resource.h"
 
+const UINT IDC_ABOUT_BROWSER = 4402;
+
 /// about dialog
 class AboutDlg:
    public CAxDialogImpl<AboutDlg>,

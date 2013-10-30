@@ -27,6 +27,9 @@
 #include "ErrorDlg.h"
 #include "CDRipTrackManager.h"
 
+#define IDR_TRAYICON 64
+#define IDM_ABOUTBOX 16 // from MainDlg.cpp
+
 // global functions
 
 static HWND mainwnd = NULL;
