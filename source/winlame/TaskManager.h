@@ -26,7 +26,9 @@
 #include <vector>
 #include <deque>
 #include <boost/shared_ptr.hpp>
-#include <boost/thread.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <boost/thread/recursive_mutex.hpp>
+#include <thread>
 #include <boost/asio.hpp>
 #include "TaskInfo.h"
 #include "TaskManagerConfig.h"
@@ -105,7 +107,7 @@ private:
    boost::scoped_ptr<boost::asio::io_service::work> m_scpDefaultWork;
 
    /// thread pool
-   std::vector<boost::shared_ptr<boost::thread> > m_vecThreadPool;
+   std::vector<boost::shared_ptr<std::thread> > m_vecThreadPool;
 
 
    // busy flags

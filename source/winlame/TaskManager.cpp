@@ -24,6 +24,7 @@
 #include "TaskManager.h"
 #include "Task.h"
 #include <boost/foreach.hpp>
+#include <boost/bind.hpp>
 
 TaskManager::TaskManager()
 :m_scpDefaultWork(new boost::asio::io_service::work(m_ioService))
@@ -32,7 +33,7 @@ TaskManager::TaskManager()
    unsigned int uiNumThreads = m_config.m_uiUseNumTasks;
    if (m_config.m_bAutoTasksPerCpu)
    {
-      uiNumThreads = boost::thread::hardware_concurrency();
+      uiNumThreads = std::thread::hardware_concurrency();
       if (uiNumThreads == 0)
          uiNumThreads = m_config.m_uiUseNumTasks;
    }
@@ -40,8 +41,8 @@ TaskManager::TaskManager()
    // start up threads
    for (unsigned int i=0; i<uiNumThreads; i++)
    {
-      boost::shared_ptr<boost::thread> spThread(
-         new boost::thread(
+      boost::shared_ptr<std::thread> spThread(
+         new std::thread(
             boost::bind(&TaskManager::RunThread, boost::ref(m_ioService))
       ));
 
@@ -138,6 +139,7 @@ void TaskManager::RunThread(boost::asio::io_service& ioService)
    }
    catch(boost::system::system_error& error)
    {
+      error;
       ATLTRACE(_T("system_error: %hs\n"), error.what());
       ATLASSERT(false);
    }
