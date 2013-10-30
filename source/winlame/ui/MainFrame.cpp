@@ -31,6 +31,7 @@
 #include "WizardPageHost.h"
 #include "GeneralSettingsPage.h"
 #include "CDReadSettingsPage.h"
+#include "InputFilesPage.h"
 #include "ResourceInstanceSwitcher.h"
 #include "DropFilesManager.h"
 #include <boost/foreach.hpp>
@@ -237,6 +238,7 @@ LRESULT MainFrame::OnDropFiles(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, 
    // show input files page
    WizardPageHost host;
    host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputFilesPage(host)));
+   host.Run(m_hWnd);
 
    return 0;
 }
@@ -253,28 +255,21 @@ LRESULT MainFrame::OnEncodeFiles(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
    // open files
    OpenFileDialog();
 
-   //WizardPageHost host;
-   //host.SetWizardPage(boost::shared_ptr<WizardPage>(new OptionsPage(host)));
-   //if (IDOK == host.Run(m_hWnd))
-   //{
-   //m_taskManager.AddTask(boost::shared_ptr<Task>(new SleepTask));
-   //   EnableRefresh(true);
-   //}
+   // show input files page
+   WizardPageHost host;
+   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputFilesPage(host)));
+   host.Run(m_hWnd);
 
-	return 0;
+   return 0;
 }
 
 LRESULT MainFrame::OnEncodeCD(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   //WizardPageHost host;
-   //host.SetWizardPage(boost::shared_ptr<WizardPage>(new OptionsPage(host)));
-   //if (IDOK == host.Run(m_hWnd))
-   //{
-   //   m_taskManager.AddTask(boost::shared_ptr<Task>(new EncodeTask));
-   //   EnableRefresh(true);
-   //}
+   // show input cd page
+//   WizardPageHost host;
+//   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputCdPage(host)));
 
-	return 0;
+   return 0;
 }
 
 LRESULT MainFrame::OnSettingsGeneral(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
@@ -343,6 +338,11 @@ void MainFrame::ParseDroppedFiles(HDROP hDropInfo)
    // move to encoder job list
    BOOST_FOREACH(const CString& cszFilename, mgr.Filenames())
       settings.encoderjoblist.push_back(EncoderJob(cszFilename));
+
+   // show input files page
+   WizardPageHost host;
+   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputFilesPage(host)));
+   host.Run(m_hWnd);
 }
 
 CString MainFrame::GetFilterString()
