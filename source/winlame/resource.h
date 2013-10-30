@@ -46,6 +46,7 @@
 #define IDC_WIZARDPAGE_BUTTON_ACTION2           1003
 #define IDC_WIZARDPAGE_STATIC_FRAME             1004
 #define IDD_WIZARDPAGE_HOST                     1005
+#define IDD_PAGE_INPUTFILES                     1031
 #define IDC_MDLG_NEXT                           3000
 #define IDC_MDLG_BACK                           3001
 #define IDC_MDLG_HELP                           3002
