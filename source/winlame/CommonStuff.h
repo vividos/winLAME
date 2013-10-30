@@ -83,7 +83,7 @@ BEGIN_MSG_MAP(FixedValueSpinButtonCtrl)
 END_MSG_MAP()
 
    /// called when a notification was reflected back to the control
-   LRESULT OnReflectedNotify(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+   LRESULT OnReflectedNotify(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM lParam, BOOL& bHandled)
    {
       // we got a reflected notification
       NMHDR *lpnmh = (LPNMHDR)lParam;

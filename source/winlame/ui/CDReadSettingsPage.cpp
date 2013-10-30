@@ -80,7 +80,7 @@ LRESULT CDReadSettingsPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND 
    return 0;
 }
 
-LRESULT CDReadSettingsPage::OnButtonSelectPath(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT CDReadSettingsPage::OnButtonSelectPath(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_SAVE, IDC_CDRIP_OPT_EDIT_TEMP_FOLDER);
 

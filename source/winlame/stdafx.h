@@ -102,3 +102,5 @@ extern CAppModule _Module;
 #include <boost/asio.hpp>
 
 #include "IoCContainer.hpp"
+
+#pragma warning(disable: 4100) // unreferenced formal parameter

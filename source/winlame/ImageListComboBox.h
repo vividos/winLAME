@@ -77,7 +77,7 @@ private:
       DEFAULT_REFLECTION_HANDLER()
    END_MSG_MAP()
 
-   LRESULT OnSelEndOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+   LRESULT OnSelEndOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
    {
       Invalidate();
       return 0;

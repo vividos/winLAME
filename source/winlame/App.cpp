@@ -92,8 +92,6 @@ App::App(HINSTANCE hInstance)
 
 App::~App()
 {
-   IoCContainer& ioc = IoCContainer::Current();
-
    // store settings in the registry
    m_settings.StoreSettings();
 

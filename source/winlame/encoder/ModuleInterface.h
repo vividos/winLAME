@@ -72,10 +72,10 @@ public:
    virtual void getDescription(CString& desc){ desc.Empty(); }
 
    /// returns version string; value in special may denote special type of string
-   virtual void getVersionString(CString& version, int special=0){ version.Empty(); }
+   virtual void getVersionString(CString& version, int special = 0){ version.Empty(); special; }
 
    /// resolves possibly encoded filenames
-   virtual void resolveRealFilename(CString& filename){}
+   virtual void resolveRealFilename(CString& filename){ filename; }
 
 protected:
    /// module id
@@ -138,7 +138,7 @@ public:
    virtual LPCTSTR getOutputExtension()=0;
 
    /// lets the output module fetch some settings, right after module creation
-   virtual void prepareOutput(SettingsManager &mgr){}
+   virtual void prepareOutput(SettingsManager &mgr){ mgr; }
 
    /// initializes the output module
    virtual int initOutput(LPCTSTR outfilename, SettingsManager &mgr,
