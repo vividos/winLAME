@@ -42,7 +42,7 @@ const unsigned int FLAC_FRAME_SIZE = 576; /* default=4608 */
 // callbacks
 
 static FLAC__StreamDecoderWriteStatus FLAC_WriteCallback(
-   const FLAC__FileDecoder *decoder,
+   const FLAC__StreamDecoder *decoder,
    const FLAC__Frame *frame,
    const FLAC__int32 *const buffer[],
    void *client_data)
@@ -51,7 +51,6 @@ static FLAC__StreamDecoderWriteStatus FLAC_WriteCallback(
 
    const unsigned channels = context->streaminfo.channels;
    const unsigned wide_samples = frame->header.blocksize;
-   const unsigned bytes_per_sample = (context->streaminfo.bits_per_sample/8);
    unsigned wide_sample, sample, channel;
    
    if(context->abort_flag)
@@ -76,14 +75,13 @@ static void FLAC_vorbis_comment_split_name_value(
    const FLAC__StreamMetadata_VorbisComment_Entry entry,
    CString& name, CString& value)
 {
-   int idx = 0;
    CString cszTemp(reinterpret_cast<char*>(entry.entry), entry.length);
    int iPos = cszTemp.Find(_T('='));
    name = cszTemp.Left(iPos);
    value = cszTemp.Mid(iPos+1);
 }
 
-static void FLAC_MetadataCallback(const FLAC__FileDecoder *decoder,
+static void FLAC_MetadataCallback(const FLAC__StreamDecoder *decoder,
                           const FLAC__StreamMetadata *metadata,
                           void *client_data)
 {   
@@ -149,7 +147,7 @@ static void FLAC_MetadataCallback(const FLAC__FileDecoder *decoder,
 
 }
 
-static void FLAC_ErrorCallback(const FLAC__FileDecoder *decoder,
+static void FLAC_ErrorCallback(const FLAC__StreamDecoder *decoder,
                         FLAC__StreamDecoderErrorStatus status,
                         void *client_data)
 {
@@ -174,7 +172,7 @@ unsigned FLAC__pack_pcm_signed_little_endian(FLAC__byte *data, FLAC__int32 *inpu
       switch(source_bps) 
       {
       case 8:
-         data[0] = sample ^ 0x80;
+         data[0] = static_cast<FLAC__byte>(sample ^ 0x80);
          break;
       case 24:
          data[2] = (FLAC__byte)(sample >> 16);
@@ -210,7 +208,7 @@ bool FlacInputModule::isAvailable()
 
    if (avail)
    {
-      avail = GetProcAddress(dll, "FLAC__file_decoder_new") != NULL;
+      avail = GetProcAddress(dll, "FLAC__stream_decoder_new") != NULL;
       ::FreeLibrary(dll);
    }
 
@@ -254,52 +252,26 @@ int FlacInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
    ::_tstat(infilename,&statbuf);
    filelen = statbuf.st_size; // 32 bit max.
 
-   // initialize flac
-   pFLACDec = FLAC__file_decoder_new();
-   if(!pFLACDec)
+   context = new FLAC_context;
+   memset((void *)context, 0, sizeof(FLAC_context));
+   context->trackInfo = &trackinfo;
+
+   // open stream
+   CStringA cszaFilename = GetAnsiCompatFilename(infilename);
+   FLAC__StreamDecoderInitStatus initStatus = FLAC__stream_decoder_init_file(pFLACDec,
+      cszaFilename,
+      FLAC_WriteCallback,
+      FLAC_MetadataCallback,
+      FLAC_ErrorCallback,
+      context);
+
+   if(!pFLACDec || initStatus == FLAC__STREAM_DECODER_INIT_STATUS_OK)
    {
       lasterror.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
       return -1;
    }
 
-   context = new FLAC_context;
-   memset((void *)context, 0, sizeof(FLAC_context));
-   context->trackInfo = &trackinfo;
-
-   FLAC__file_decoder_set_client_data(pFLACDec, context);
-
-   if(!FLAC__file_decoder_set_filename(pFLACDec, T2CA(GetAnsiCompatFilename(infilename))))
-   {
-      if(pFLACDec)
-      {
-         FLAC__file_decoder_finish(pFLACDec);
-         FLAC__file_decoder_delete(pFLACDec);
-      }
-      pFLACDec = NULL;
-
-      lasterror.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
-      return -1;
-   }
-
-   FLAC__file_decoder_set_write_callback(pFLACDec, FLAC_WriteCallback);
-   FLAC__file_decoder_set_metadata_callback(pFLACDec, FLAC_MetadataCallback);
-   FLAC__file_decoder_set_metadata_respond_all(pFLACDec);
-   FLAC__file_decoder_set_error_callback(pFLACDec, FLAC_ErrorCallback);
-
-   if(FLAC__file_decoder_init(pFLACDec) != FLAC__FILE_DECODER_OK)
-   {
-      if(pFLACDec)
-      {
-         FLAC__file_decoder_finish(pFLACDec);
-         FLAC__file_decoder_delete(pFLACDec);
-      }
-      pFLACDec = NULL;
-
-      lasterror.LoadString(IDS_ENCODER_ERROR_INIT_ENCODER);
-      return -1;
-   }
-
-   if(!FLAC__file_decoder_process_until_end_of_metadata(pFLACDec))
+   if(!FLAC__stream_decoder_process_until_end_of_metadata(pFLACDec))
    {
       lasterror.LoadString(IDS_ENCODER_ERROR_GET_FILE_INFOS);
       return -1;
@@ -331,19 +303,17 @@ int FlacInputModule::decodeSamples(SampleContainer &samples)
 
    while(context->samples_in_reservoir < FLAC_FRAME_SIZE)
    {
-      if(FLAC__file_decoder_get_state(pFLACDec) == FLAC__FILE_DECODER_END_OF_FILE)
+      if(FLAC__stream_decoder_get_state(pFLACDec) == FLAC__STREAM_DECODER_END_OF_STREAM)
       {
          return 0;
       }
-      else if(!FLAC__file_decoder_process_single(pFLACDec))
+      else if(!FLAC__stream_decoder_process_single(pFLACDec))
       {
          return 0;
       }
    }
 
-   const unsigned bytes_per_sample = context->streaminfo.bits_per_sample/8;
    unsigned i, n = std::min(context->samples_in_reservoir, FLAC_FRAME_SIZE), delta;
-   const int bytes = n * context->streaminfo.channels * bytes_per_sample;
    
    FLAC__pack_pcm_signed_little_endian((unsigned char *)buff,context->reservoir,n,
       context->streaminfo.channels,context->streaminfo.bits_per_sample);
@@ -370,8 +340,8 @@ void FlacInputModule::doneInput()
 {
    if(pFLACDec)
    {
-      FLAC__file_decoder_finish(pFLACDec);
-      FLAC__file_decoder_delete(pFLACDec);
+      FLAC__stream_decoder_finish(pFLACDec);
+      FLAC__stream_decoder_delete(pFLACDec);
    }
    pFLACDec = NULL;
 

@@ -27,7 +27,7 @@
 
 // needed includes
 #include "ModuleInterface.h"
-#include "FLAC/file_decoder.h"
+#include "FLAC/stream_decoder.h"
 
 /// flac decoding context
 typedef struct {
@@ -92,7 +92,7 @@ protected:
    CString lasterror;
 
    /// local variables
-   FLAC__FileDecoder *pFLACDec;
+   FLAC__StreamDecoder *pFLACDec;
 
    /// flac context
    FLAC_context *context;
