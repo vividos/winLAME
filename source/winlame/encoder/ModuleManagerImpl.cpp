@@ -200,7 +200,7 @@ ModuleManagerImpl::ModuleManagerImpl()
          {
             out_modules.push_back(outmod);
             out_id_to_modidx.insert(
-               std::make_pair<int,int>(outmod->getModuleID(),i));
+               std::make_pair(outmod->getModuleID(),i));
          }
          else
             delete outmod;

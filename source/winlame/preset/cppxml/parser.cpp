@@ -59,7 +59,7 @@ bool cppxml::xmlnodebuilder::have_attribute(const cppxml::string &name,
    // insert attribute pair into attributes
    xmlattrmap &attrlist = curnode->get_attribute_list();
    attrlist.insert(
-      std::make_pair<cppxml::string, cppxml::string>(name,value));
+      std::make_pair(name,value));
 
    return true;
 }

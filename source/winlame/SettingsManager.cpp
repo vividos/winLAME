@@ -46,7 +46,7 @@ void SettingsManager::setValue(unsigned short name, int val)
    SettingsList::iterator iter = settings.find(name);
    if (iter == settings.end())
    {
-      settings.insert(std::make_pair<unsigned int,int>(name,val));
+      settings.insert(std::make_pair(static_cast<unsigned int>(name),val));
    }
    else
    {
