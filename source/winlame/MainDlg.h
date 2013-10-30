@@ -28,7 +28,6 @@
 // needed includes
 #include "resource.h"
 #include "PageBase.h"
-#include "HtmlHelper.h"
 #include "UIinterface.h"
 #include "LanguageResourceManager.hpp"
 
@@ -191,8 +190,8 @@ END_MSG_MAP()
          helppath.LoadString(pages[currentpage]->helpID);
 
          // display help topic
-         if (helppath.GetLength()!=0)
-            htmlhelp.DisplayTopic(helppath);
+//         if (helppath.GetLength()!=0)
+//            htmlhelp.DisplayTopic(helppath);
       }
       return 0;
    }
@@ -301,9 +300,6 @@ protected:
 
    /// indicates if help file is available
    bool helpavailable;
-
-   /// html help object
-   HtmlHelper htmlhelp;
 
    /// ui settings
    UISettings& settings;
