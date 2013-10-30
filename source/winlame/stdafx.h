@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2012 Michael Fink
+   Copyright (c) 2000-2013 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -30,7 +30,19 @@
 #define _WIN32_IE      0x0700
 
 #define WIN32_LEAN_AND_MEAN
+#define WIN32_EXTRA_LEAN
 #define VC_EXTRALEAN
+#define NOSERVICE
+#define NOMCX
+#define NOIME
+#define NOSOUND
+#define NOCOMM
+#define NOKANJI
+#define NORPC
+#define NOPROXYSTUB
+#define NOTAPE
+#define NOCRYPT
+#define NOIMAGE
 
 // Win32 includes
 #include <shlobj.h>
@@ -98,7 +110,6 @@ extern CAppModule _Module;
 
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/thread.hpp>
 #include <boost/asio.hpp>
 
 #include "IoCContainer.hpp"
