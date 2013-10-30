@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <SmallerTypeCheck>true</SmallerTypeCheck>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;DEBUG;_CRT_SECURE_NO_WARNINGS;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalOptions>/ignore:4254 /ignore:4078 %(AdditionalOptions)</AdditionalOptions>
+      <ImportLibrary>$(SolutionDir)lib\$(Configuration)\$(ProjectName).lib</ImportLibrary>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalLibraryDirectories>$(SolutionDir)lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ProgramDatabaseFile>$(OutDir)pdb\$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+    <Lib>
+      <OutputFile>$(SolutionDir)lib\$(Configuration)\$(ProjectName).lib</OutputFile>
+    </Lib>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)source\libraries\include\wtl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

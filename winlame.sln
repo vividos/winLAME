@@ -1,31 +1,26 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual C++ Express 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winlame", "source\winlame.vcproj", "{3D23B065-AB74-4C3D-BCBC-7B7492786FEE}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winlame", "source\winlame.vcxproj", "{3D23B065-AB74-4C3D-BCBC-7B7492786FEE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libfreedb", "source\libraries\src\libfreedb\libfreedb.vcxproj", "{CCD82A71-2980-4971-A7A8-C0D26D251261}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nlame", "source\nlame.vcxproj", "{0B3F6B1A-D78E-47DB-A48C-D3DAA16E17CE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libmad", "source\libraries\src\libmad\libmad.vcxproj", "{B89E54C7-562E-4444-A6B2-63FF8DB043D5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winLAME.0407", "source\winlame_res0407.vcxproj", "{E2D89BAE-7448-4AF4-9AC9-9CC070E178BD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsndfile-1", "source\libraries\src\libsndfile\libsndfile.vcxproj", "{8E37BBBA-1A67-4785-8269-C4254DC791CA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libid3tag", "source\libraries\src\libid3tag\libid3tag.vcxproj", "{B210DD52-187A-44C2-A93F-20F7A05F1BBB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "docs", "docs\docs.vcxproj", "{E8FD6382-A5B2-4AC7-B2D9-88A621504872}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "install", "source\install\install.vcxproj", "{D1388785-D0BD-4A67-BC45-573C0DEE639A}"
 	ProjectSection(ProjectDependencies) = postProject
-		{0B3F6B1A-D78E-47DB-A48C-D3DAA16E17CE} = {0B3F6B1A-D78E-47DB-A48C-D3DAA16E17CE}
-		{CCD82A71-2980-4971-A7A8-C0D26D251261} = {CCD82A71-2980-4971-A7A8-C0D26D251261}
-		{E2D89BAE-7448-4AF4-9AC9-9CC070E178BD} = {E2D89BAE-7448-4AF4-9AC9-9CC070E178BD}
-		{8E37BBBA-1A67-4785-8269-C4254DC791CA} = {8E37BBBA-1A67-4785-8269-C4254DC791CA}
-		{B89E54C7-562E-4444-A6B2-63FF8DB043D5} = {B89E54C7-562E-4444-A6B2-63FF8DB043D5}
-		{B210DD52-187A-44C2-A93F-20F7A05F1BBB} = {B210DD52-187A-44C2-A93F-20F7A05F1BBB}
+		{3D23B065-AB74-4C3D-BCBC-7B7492786FEE} = {3D23B065-AB74-4C3D-BCBC-7B7492786FEE}
 	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libfreedb", "source\libraries\src\libfreedb\libfreedb.vcproj", "{CCD82A71-2980-4971-A7A8-C0D26D251261}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nlame", "source\nlame.vcproj", "{0B3F6B1A-D78E-47DB-A48C-D3DAA16E17CE}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libmad", "source\libmad.vcproj", "{B89E54C7-562E-4444-A6B2-63FF8DB043D5}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winlame_res0407", "source\winlame_res0407.vcproj", "{E2D89BAE-7448-4AF4-9AC9-9CC070E178BD}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libsndfile", "source\libsndfile.vcproj", "{8E37BBBA-1A67-4785-8269-C4254DC791CA}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libid3tag", "source\libid3tag.vcproj", "{B210DD52-187A-44C2-A93F-20F7A05F1BBB}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "docs", "docs\docs.vcproj", "{E8FD6382-A5B2-4AC7-B2D9-88A621504872}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "install", "source\install\install.vcproj", "{D1388785-D0BD-4A67-BC45-573C0DEE639A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

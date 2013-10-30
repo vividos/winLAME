@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="resource files">
+      <UniqueIdentifier>{01c02cf6-4c33-46fd-a7dc-61187e4eafeb}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="winlame\res\about.0407.html">
+      <Filter>resource files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="winlame\resource.h">
+      <Filter>resource files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="winlame\winlame.0407.rc">
+      <Filter>resource files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

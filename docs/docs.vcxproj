@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Default|Win32">
+      <Configuration>Default</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E8FD6382-A5B2-4AC7-B2D9-88A621504872}</ProjectGuid>
+    <RootNamespace>docs</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Default|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Default|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="doxygen.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.60610.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Default|Win32'">
+    <OutDir>$(SolutionDir)html\</OutDir>
+    <IntDir>$(SolutionDir)intermediate\html\</IntDir>
+    <ExtensionsToDeleteOnClean>*.html%3b*.map%3b*.md5%3b*.png%3b*.css%3b*.dot%3b*.hhc%3b*.hhk%3b*.hhp%3b*.gif%3b$(TargetPath)</ExtensionsToDeleteOnClean>
+    <NMakeBuildCommandLine>doxygen doxygen.cfg
+"$(SolutionDir)buildtools\hhc" "$(SolutionDir)html\index.hhp"</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>del /s /q "$(SolutionDir)html"
+doxygen doxygen.cfg
+"$(SolutionDir)buildtools\hhc" "$(SolutionDir)html\index.hhp"</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>del /s /q "$(SolutionDir)html"
+rmdir /s /q "$(SolutionDir)html"</NMakeCleanCommandLine>
+    <NMakeOutput />
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="doxygen.cfg" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
