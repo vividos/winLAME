@@ -28,16 +28,16 @@
     <_ProjectFileVersion>11.0.60610.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Default|Win32'">
-    <OutDir>$(SolutionDir)html\</OutDir>
+    <OutDir>$(SolutionDir)docs\html\</OutDir>
     <IntDir>$(SolutionDir)intermediate\html\</IntDir>
     <ExtensionsToDeleteOnClean>*.html%3b*.map%3b*.md5%3b*.png%3b*.css%3b*.dot%3b*.hhc%3b*.hhk%3b*.hhp%3b*.gif%3b$(TargetPath)</ExtensionsToDeleteOnClean>
     <NMakeBuildCommandLine>doxygen doxygen.cfg
-"$(SolutionDir)buildtools\hhc" "$(SolutionDir)html\index.hhp"</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>del /s /q "$(SolutionDir)html"
+"$(SolutionDir)buildtools\hhc" "$(SolutionDir)docs\html\index.hhp"</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>del /s /q "$(SolutionDir)docs\html"
 doxygen doxygen.cfg
-"$(SolutionDir)buildtools\hhc" "$(SolutionDir)html\index.hhp"</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>del /s /q "$(SolutionDir)html"
-rmdir /s /q "$(SolutionDir)html"</NMakeCleanCommandLine>
+"$(SolutionDir)buildtools\hhc" "$(SolutionDir)docs\html\index.hhp"</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>del /s /q "$(SolutionDir)docs\html"
+rmdir /s /q "$(SolutionDir)docs\html"</NMakeCleanCommandLine>
     <NMakeOutput />
   </PropertyGroup>
   <ItemDefinitionGroup>
