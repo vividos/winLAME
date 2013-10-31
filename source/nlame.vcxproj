@@ -50,6 +50,7 @@
       <PreprocessorDefinitions>_USRDLL;HAVE_CONFIG_H;HAVE_NASM;TAKEHIRO_IEEE754_HACK;MMX_choose_table;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
     </ClCompile>
     <ResourceCompile />
     <Link>
