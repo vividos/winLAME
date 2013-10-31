@@ -51,6 +51,9 @@ public:
    {
    }
 
+private:
+   friend CDialogResize<GeneralSettingsPage>;
+
    BEGIN_DDX_MAP(GeneralSettingsPage)
       DDX_CONTROL(IDC_SETTINGS_COMBO_LANGUAGE, m_cbLanguages)
    END_DDX_MAP()

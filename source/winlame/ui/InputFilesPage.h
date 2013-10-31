@@ -48,6 +48,9 @@ public:
    {
    }
 
+private:
+   friend CDialogResize<InputFilesPage>;
+
    BEGIN_DDX_MAP(InputFilesPage)
       DDX_CONTROL(IDC_INPUT_LIST_INPUTFILES, m_inputFilesList)
    END_DDX_MAP()

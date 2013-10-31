@@ -50,6 +50,9 @@ public:
    {
    }
 
+private:
+   friend CDialogResize<CDReadSettingsPage>;
+
    // data exchange map
    BEGIN_DDX_MAP(CDReadSettingsPage)
       DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, m_cbFreedbServer);
