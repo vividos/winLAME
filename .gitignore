@@ -1,18 +1,16 @@
 # ignore built files and folders
-output/
+bin/
 lib/
 test/
+intermediate/
+ipch/
 *.suo
 build-log.txt
-intermediate/
 docs/doxygen-warnings.txt
 docs/winLAME-source-docs.chm
 docs/html/
 *.wixpdb
 source/htmlhelp/index.hhk
-# ignore CVS files
-.cvsignore
-CVS/
 # ignore thumbnails created by windows
 Thumbs.db
 # ignore files build by Visual Studio
@@ -37,6 +35,8 @@ Thumbs.db
 [Dd]ebug*/
 *.lib
 *.sbr
+*.sdf
+*.opensdf
 obj/
 [Rr]elease*/
 _ReSharper*/
