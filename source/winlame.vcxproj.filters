@@ -259,6 +259,33 @@
     <ClCompile Include="winlame\ui\WizardPageHost.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\ui\InputCDPage.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\PresetSelectionPage.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\OutputSettingsPage.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\AACSettingsPage.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\LAMESettingsPage.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\WMASettingsPage.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\OggVorbisSettingsPage.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\LibsndfileSettingsPage.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\FinishPage.cpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClCompile>
     <ClCompile Include="winlame\old_ui\OggVorbisSettingsPage_old.cpp">
       <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
@@ -520,6 +547,33 @@
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\WizardPageHost.h">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\OggVorbisSettingsPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\WMASettingsPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\LibsndfileSettingsPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\LAMESettingsPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\FinishPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\InputCDPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\OutputSettingsPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\PresetSelectionPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\AACSettingsPage.hpp">
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\AboutDlg.hpp">
