@@ -24,7 +24,7 @@
 #include "resource.h"
 #include "MainFrame.h"
 #include "App.h"
-#include "AboutDlg.h"
+#include "AboutDlg.hpp"
 #include "TasksView.h"
 #include "TaskManager.h"
 #include "res/MainFrameRibbon.h"

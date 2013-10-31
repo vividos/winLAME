@@ -19,57 +19,57 @@
     <Filter Include="encoder files\aacinfo files">
       <UniqueIdentifier>{7e4a760b-7c22-4448-8783-de2b85ca67da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ui files">
+    <Filter Include="old_ui Files">
       <UniqueIdentifier>{9cf7725f-cee1-4a9d-a721-4d1255dc7a8b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ui files\ui source files">
-      <UniqueIdentifier>{d3ce9737-a003-467c-b686-160f28e9efef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ui files\ui header files">
+    <Filter Include="old_ui Files\Header Files">
       <UniqueIdentifier>{532dbb09-4082-4229-aa52-684cfb627e67}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ui files\resource files">
+    <Filter Include="old_ui Files\Source Files">
+      <UniqueIdentifier>{d3ce9737-a003-467c-b686-160f28e9efef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="old_ui Files\Resource Files">
       <UniqueIdentifier>{b42f5ecb-3b06-435a-ab5d-98c3264535b0}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
-    <Filter Include="preset files">
+    <Filter Include="Preset Files">
       <UniqueIdentifier>{31fd3636-f0fb-4209-8161-90b9c621707f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="preset files\preset source files">
-      <UniqueIdentifier>{8e5db12d-be4d-4eb3-b3cb-2263f5d5b676}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="preset files\preset source files\cppxml source files">
-      <UniqueIdentifier>{dc1229cc-165b-45b2-8723-532e943a80ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="preset files\preset header files">
+    <Filter Include="Preset Files\Header Files">
       <UniqueIdentifier>{8f38b30e-c72f-45e5-873f-62ec3e1fe8d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="preset files\preset header files\cppxml header files">
+    <Filter Include="Preset Files\Header Files\cppxml header files">
       <UniqueIdentifier>{381ba37a-8430-4d52-950d-0a82e0c3aa2d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="main program files">
-      <UniqueIdentifier>{8a50c7d7-045b-44c0-8bf1-5e43fbc34fdf}</UniqueIdentifier>
+    <Filter Include="Preset Files\Source Files">
+      <UniqueIdentifier>{8e5db12d-be4d-4eb3-b3cb-2263f5d5b676}</UniqueIdentifier>
     </Filter>
-    <Filter Include="main program files\main program source files">
-      <UniqueIdentifier>{06f009a9-abce-4288-a701-183878ad4619}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    <Filter Include="Preset Files\Source Files\cppxml source files">
+      <UniqueIdentifier>{dc1229cc-165b-45b2-8723-532e943a80ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="main program files\main program header files">
-      <UniqueIdentifier>{aa1984d8-2d06-448b-9d82-b720bbc9e634}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl</Extensions>
-    </Filter>
-    <Filter Include="new_ui files">
+    <Filter Include="UI Files">
       <UniqueIdentifier>{91fdb3c2-3213-46ef-8319-8860047d989f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="new_ui files\resource files">
+    <Filter Include="UI Files\Header Files">
+      <UniqueIdentifier>{4e44bfeb-c69d-496a-aae7-77a6b1161aba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI Files\Source Files">
+      <UniqueIdentifier>{0d8c9410-0e0c-4222-8416-7240dde85894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI Files\Resource Files">
       <UniqueIdentifier>{740fc0d6-e2df-406c-a370-db608506fe80}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
     </Filter>
-    <Filter Include="new_ui files\new_ui header files">
-      <UniqueIdentifier>{4e44bfeb-c69d-496a-aae7-77a6b1161aba}</UniqueIdentifier>
+    <Filter Include="Main Program Files">
+      <UniqueIdentifier>{8a50c7d7-045b-44c0-8bf1-5e43fbc34fdf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="new_ui files\new_ui source files">
-      <UniqueIdentifier>{0d8c9410-0e0c-4222-8416-7240dde85894}</UniqueIdentifier>
+    <Filter Include="Main Program Files\Source Files">
+      <UniqueIdentifier>{06f009a9-abce-4288-a701-183878ad4619}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Main Program Files\Header Files">
+      <UniqueIdentifier>{aa1984d8-2d06-448b-9d82-b720bbc9e634}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -157,122 +157,122 @@
     <ClCompile Include="winlame\encoder\aacinfo\filestream.c">
       <Filter>encoder files\aacinfo files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\AacSettingsPage.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\CDRipDlg.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\CDRipDlg.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\CDRipPage.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\CDRipPage.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\CommonStuff.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\CommonStuff.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\EncodePage.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\EncodePage.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\InputPage.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\ImageListComboBox.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\LameSimpleSettingsPage.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\InputListCtrl.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\MainDlg.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\InputPage.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\OptionsDlg.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\LameSimpleSettingsPage.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\OutputPage.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\MainDlg.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\PresetsPage.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\OggVorbisSettingsPage.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\WaveOutputSettingsPage.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\OptionsDlg.cpp">
-      <Filter>ui files\ui source files</Filter>
-    </ClCompile>
-    <ClCompile Include="winlame\OutputPage.cpp">
-      <Filter>ui files\ui source files</Filter>
-    </ClCompile>
-    <ClCompile Include="winlame\PresetsPage.cpp">
-      <Filter>ui files\ui source files</Filter>
-    </ClCompile>
-    <ClCompile Include="winlame\WaveOutputSettingsPage.cpp">
-      <Filter>ui files\ui source files</Filter>
-    </ClCompile>
-    <ClCompile Include="winlame\WmaOutputSettingsPage.cpp">
-      <Filter>ui files\ui source files</Filter>
+    <ClCompile Include="winlame\old_ui\WmaOutputSettingsPage.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\preset\PresetManagerImpl.cpp">
-      <Filter>preset files\preset source files</Filter>
+      <Filter>Preset Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\preset\PropertyListBox.cpp">
-      <Filter>preset files\preset source files</Filter>
+      <Filter>Preset Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\preset\cppxml\cppxml.cpp">
-      <Filter>preset files\preset source files\cppxml source files</Filter>
+      <Filter>Preset Files\Source Files\cppxml source files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\preset\cppxml\lexer.cpp">
-      <Filter>preset files\preset source files\cppxml source files</Filter>
+      <Filter>Preset Files\Source Files\cppxml source files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\preset\cppxml\parser.cpp">
-      <Filter>preset files\preset source files\cppxml source files</Filter>
+      <Filter>Preset Files\Source Files\cppxml source files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\App.cpp">
-      <Filter>main program files\main program source files</Filter>
+      <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\CDRipTrackManager.cpp">
-      <Filter>main program files\main program source files</Filter>
+      <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\LangCountryMapper.cpp">
-      <Filter>main program files\main program source files</Filter>
+      <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\LanguageResourceManager.cpp">
-      <Filter>main program files\main program source files</Filter>
+      <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\SettingsManager.cpp">
-      <Filter>main program files\main program source files</Filter>
+      <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\stdafx.cpp">
-      <Filter>main program files\main program source files</Filter>
+      <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\TaskManager.cpp">
-      <Filter>main program files\main program source files</Filter>
+      <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\UISettings.cpp">
-      <Filter>main program files\main program source files</Filter>
+      <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\VariableManager.cpp">
-      <Filter>main program files\main program source files</Filter>
+      <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\winlame.cpp">
-      <Filter>main program files\main program source files</Filter>
-    </ClCompile>
-    <ClCompile Include="winlame\AboutDlg.cpp">
-      <Filter>new_ui files\new_ui source files</Filter>
+      <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\ui\CDReadSettingsPage.cpp">
-      <Filter>new_ui files\new_ui source files</Filter>
+      <Filter>UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\ui\DropFilesManager.cpp">
-      <Filter>new_ui files\new_ui source files</Filter>
+      <Filter>UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\ui\GeneralSettingsPage.cpp">
-      <Filter>new_ui files\new_ui source files</Filter>
+      <Filter>UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\ui\InputFilesPage.cpp">
-      <Filter>new_ui files\new_ui source files</Filter>
+      <Filter>UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\ui\MainFrame.cpp">
-      <Filter>new_ui files\new_ui source files</Filter>
+      <Filter>UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\ui\TasksView.cpp">
-      <Filter>new_ui files\new_ui source files</Filter>
+      <Filter>UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\ui\WizardPageHost.cpp">
-      <Filter>new_ui files\new_ui source files</Filter>
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\old_ui\OggVorbisSettingsPage_old.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\old_ui\AacSettingsPage_old.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\AboutDlg.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\ImageListComboBox.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\InputListCtrl.cpp">
+      <Filter>UI Files\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -363,213 +363,210 @@
     <ClInclude Include="winlame\encoder\aacinfo\filestream.h">
       <Filter>encoder files\aacinfo files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\AacSettingsPage.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\AacSettingsPage.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\CDRipDlg.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\CDRipDlg.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\CDRipPage.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\CDRipPage.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\CommonStuff.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\CommonStuff.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\EncodePage.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\EncodePage.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\ErrorDlg.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\ErrorDlg.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\HtmlHelper.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\InputPage.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\ImageListComboBox.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\LameSimpleSettingsPage.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\InputListCtrl.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\MainDlg.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\InputPage.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\OggVorbisSettingsPage.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\LameSimpleSettingsPage.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\OptionsDlg.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\MainDlg.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\OutputPage.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\OggVorbisSettingsPage.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\PageBase.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\OptionsDlg.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\PresetsPage.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\OutputPage.h">
-      <Filter>ui files\ui header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\PageBase.h">
-      <Filter>ui files\ui header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\PresetsPage.h">
-      <Filter>ui files\ui header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\SystemTrayIcon.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\SystemTrayIcon.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\TrackEditListCtrl.h">
-      <Filter>ui files\ui header files</Filter>
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\WaveOutputSettingsPage.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\WaveOutputSettingsPage.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\WmaOutputSettingsPage.h">
-      <Filter>ui files\ui header files</Filter>
+    <ClInclude Include="winlame\old_ui\WmaOutputSettingsPage.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\preset\PresetManagerImpl.h">
-      <Filter>preset files\preset header files</Filter>
+      <Filter>Preset Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\preset\PropertyDlg.h">
-      <Filter>preset files\preset header files</Filter>
+      <Filter>Preset Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\preset\PropertyListBox.h">
-      <Filter>preset files\preset header files</Filter>
+      <Filter>Preset Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\preset\cppxml\cppxml.hpp">
-      <Filter>preset files\preset header files\cppxml header files</Filter>
+      <Filter>Preset Files\Header Files\cppxml header files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\preset\cppxml\lexer.hpp">
-      <Filter>preset files\preset header files\cppxml header files</Filter>
+      <Filter>Preset Files\Header Files\cppxml header files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\preset\cppxml\parser.hpp">
-      <Filter>preset files\preset header files\cppxml header files</Filter>
+      <Filter>Preset Files\Header Files\cppxml header files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\App.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\CDRipTrackManager.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\DynamicLibrary.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\EncoderInterface.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\IoCContainer.hpp">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\LangCountryMapper.hpp">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\LanguageResourceManager.hpp">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ModuleManager.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\PresetManagerInterface.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\SettingsManager.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\stdafx.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\Task.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\TaskInfo.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\TaskManager.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\TaskManagerConfig.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\UIinterface.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\UISettings.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\VariableManager.h">
-      <Filter>main program files\main program header files</Filter>
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\res\MainFrameRibbon.h">
-      <Filter>new_ui files\resource files</Filter>
+      <Filter>UI Files\Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\resource.h">
-      <Filter>new_ui files\resource files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\AboutDlg.h">
-      <Filter>new_ui files\new_ui header files</Filter>
+      <Filter>UI Files\Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\CDReadSettingsPage.h">
-      <Filter>new_ui files\new_ui header files</Filter>
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\DropFilesManager.h">
-      <Filter>new_ui files\new_ui header files</Filter>
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\GeneralSettingsPage.h">
-      <Filter>new_ui files\new_ui header files</Filter>
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\InputFilesPage.h">
-      <Filter>new_ui files\new_ui header files</Filter>
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\MainFrame.h">
-      <Filter>new_ui files\new_ui header files</Filter>
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\ResourceInstanceSwitcher.h">
-      <Filter>new_ui files\new_ui header files</Filter>
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\TasksView.h">
-      <Filter>new_ui files\new_ui header files</Filter>
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\WizardPage.h">
-      <Filter>new_ui files\new_ui header files</Filter>
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\WizardPageHost.h">
-      <Filter>new_ui files\new_ui header files</Filter>
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\AboutDlg.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\ImageListComboBox.h">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\InputListCtrl.h">
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="winlame\res\btnicons.bmp">
-      <Filter>ui files\resource files</Filter>
+      <Filter>old_ui Files\Resource Files</Filter>
     </Image>
     <Image Include="winlame\res\help.bmp">
-      <Filter>ui files\resource files</Filter>
+      <Filter>old_ui Files\Resource Files</Filter>
     </Image>
     <Image Include="winlame\res\idle.ico">
-      <Filter>ui files\resource files</Filter>
+      <Filter>old_ui Files\Resource Files</Filter>
     </Image>
     <Image Include="winlame\res\logo.bmp">
-      <Filter>ui files\resource files</Filter>
+      <Filter>old_ui Files\Resource Files</Filter>
     </Image>
     <Image Include="winlame\res\working.ico">
-      <Filter>ui files\resource files</Filter>
+      <Filter>old_ui Files\Resource Files</Filter>
     </Image>
     <Image Include="winlame\res\winlame.ico">
-      <Filter>new_ui files\resource files</Filter>
+      <Filter>UI Files\Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="winlame\res\about.html">
-      <Filter>new_ui files\resource files</Filter>
+      <Filter>UI Files\Resource Files</Filter>
     </None>
     <None Include="winlame\res\MainFrameRibbon.bml">
-      <Filter>new_ui files\resource files</Filter>
+      <Filter>UI Files\Resource Files</Filter>
     </None>
     <None Include="..\docs\doxygen.cfg" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="winlame\res\MainFrameRibbon.rc">
-      <Filter>new_ui files\resource files</Filter>
+      <Filter>UI Files\Resource Files</Filter>
     </ResourceCompile>
     <ResourceCompile Include="winlame\winlame.rc">
-      <Filter>new_ui files\resource files</Filter>
+      <Filter>UI Files\Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
@@ -581,7 +578,7 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="winlame\res\MainFrameRibbon.xml">
-      <Filter>new_ui files\resource files</Filter>
+      <Filter>UI Files\Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

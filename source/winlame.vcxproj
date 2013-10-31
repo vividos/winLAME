@@ -52,7 +52,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl />
     <ClCompile>
-      <AdditionalIncludeDirectories>winlame;winlame\encoder;winlame\ui;winlame\res;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>winlame;winlame\encoder;winlame\ui;winlame\old_ui;winlame\res;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile />
@@ -67,7 +67,7 @@
     <Midl />
     <ClCompile>
       <AdditionalOptions>/IGNORE:4049 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>winlame;winlame\encoder;winlame\ui;winlame\res;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>winlame;winlame\encoder;winlame\ui;winlame\old_ui;winlame\res;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile />
@@ -123,22 +123,23 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="winlame\AacSettingsPage.cpp" />
-    <ClCompile Include="winlame\CDRipDlg.cpp" />
-    <ClCompile Include="winlame\CDRipPage.cpp" />
-    <ClCompile Include="winlame\CommonStuff.cpp" />
-    <ClCompile Include="winlame\EncodePage.cpp" />
-    <ClCompile Include="winlame\ImageListComboBox.cpp" />
-    <ClCompile Include="winlame\InputListCtrl.cpp" />
-    <ClCompile Include="winlame\InputPage.cpp" />
-    <ClCompile Include="winlame\LameSimpleSettingsPage.cpp" />
-    <ClCompile Include="winlame\MainDlg.cpp" />
-    <ClCompile Include="winlame\OggVorbisSettingsPage.cpp" />
-    <ClCompile Include="winlame\OptionsDlg.cpp" />
-    <ClCompile Include="winlame\OutputPage.cpp" />
-    <ClCompile Include="winlame\PresetsPage.cpp" />
-    <ClCompile Include="winlame\WaveOutputSettingsPage.cpp" />
-    <ClCompile Include="winlame\WmaOutputSettingsPage.cpp" />
+    <ClCompile Include="winlame\old_ui\AacSettingsPage_old.cpp" />
+    <ClCompile Include="winlame\old_ui\CDRipDlg.cpp" />
+    <ClCompile Include="winlame\old_ui\CDRipPage.cpp" />
+    <ClCompile Include="winlame\old_ui\CommonStuff.cpp" />
+    <ClCompile Include="winlame\old_ui\EncodePage.cpp" />
+    <ClCompile Include="winlame\old_ui\InputPage.cpp" />
+    <ClCompile Include="winlame\old_ui\LameSimpleSettingsPage.cpp" />
+    <ClCompile Include="winlame\old_ui\MainDlg.cpp" />
+    <ClCompile Include="winlame\old_ui\OggVorbisSettingsPage_old.cpp" />
+    <ClCompile Include="winlame\old_ui\OptionsDlg.cpp" />
+    <ClCompile Include="winlame\old_ui\OutputPage.cpp" />
+    <ClCompile Include="winlame\old_ui\PresetsPage.cpp" />
+    <ClCompile Include="winlame\ui\AboutDlg.cpp" />
+    <ClCompile Include="winlame\ui\ImageListComboBox.cpp" />
+    <ClCompile Include="winlame\ui\InputListCtrl.cpp" />
+    <ClCompile Include="winlame\old_ui\WaveOutputSettingsPage.cpp" />
+    <ClCompile Include="winlame\old_ui\WmaOutputSettingsPage.cpp" />
     <ClCompile Include="winlame\preset\PresetManagerImpl.cpp" />
     <ClCompile Include="winlame\preset\PropertyListBox.cpp" />
     <ClCompile Include="winlame\preset\cppxml\cppxml.cpp">
@@ -172,7 +173,6 @@
     <ClCompile Include="winlame\UISettings.cpp" />
     <ClCompile Include="winlame\VariableManager.cpp" />
     <ClCompile Include="winlame\winlame.cpp" />
-    <ClCompile Include="winlame\AboutDlg.cpp" />
     <ClCompile Include="winlame\ui\CDReadSettingsPage.cpp" />
     <ClCompile Include="winlame\ui\DropFilesManager.cpp" />
     <ClCompile Include="winlame\ui\GeneralSettingsPage.cpp" />
@@ -211,27 +211,28 @@
     <ClInclude Include="winlame\encoder\id3\Tag.h" />
     <ClInclude Include="winlame\encoder\aacinfo\aacinfo.h" />
     <ClInclude Include="winlame\encoder\aacinfo\filestream.h" />
-    <ClInclude Include="winlame\AacSettingsPage.h" />
-    <ClInclude Include="winlame\CDRipDlg.h" />
-    <ClInclude Include="winlame\CDRipPage.h" />
-    <ClInclude Include="winlame\CommonStuff.h" />
-    <ClInclude Include="winlame\EncodePage.h" />
-    <ClInclude Include="winlame\ErrorDlg.h" />
+    <ClInclude Include="winlame\old_ui\AacSettingsPage.h" />
+    <ClInclude Include="winlame\old_ui\CDRipDlg.h" />
+    <ClInclude Include="winlame\old_ui\CDRipPage.h" />
+    <ClInclude Include="winlame\old_ui\CommonStuff.h" />
+    <ClInclude Include="winlame\old_ui\EncodePage.h" />
+    <ClInclude Include="winlame\old_ui\ErrorDlg.h" />
     <ClInclude Include="winlame\HtmlHelper.h" />
-    <ClInclude Include="winlame\ImageListComboBox.h" />
-    <ClInclude Include="winlame\InputListCtrl.h" />
-    <ClInclude Include="winlame\InputPage.h" />
-    <ClInclude Include="winlame\LameSimpleSettingsPage.h" />
-    <ClInclude Include="winlame\MainDlg.h" />
-    <ClInclude Include="winlame\OggVorbisSettingsPage.h" />
-    <ClInclude Include="winlame\OptionsDlg.h" />
-    <ClInclude Include="winlame\OutputPage.h" />
-    <ClInclude Include="winlame\PageBase.h" />
-    <ClInclude Include="winlame\PresetsPage.h" />
-    <ClInclude Include="winlame\SystemTrayIcon.h" />
+    <ClInclude Include="winlame\old_ui\InputPage.h" />
+    <ClInclude Include="winlame\old_ui\LameSimpleSettingsPage.h" />
+    <ClInclude Include="winlame\old_ui\MainDlg.h" />
+    <ClInclude Include="winlame\old_ui\OggVorbisSettingsPage.h" />
+    <ClInclude Include="winlame\old_ui\OptionsDlg.h" />
+    <ClInclude Include="winlame\old_ui\OutputPage.h" />
+    <ClInclude Include="winlame\old_ui\PageBase.h" />
+    <ClInclude Include="winlame\old_ui\PresetsPage.h" />
+    <ClInclude Include="winlame\old_ui\SystemTrayIcon.h" />
     <ClInclude Include="winlame\TrackEditListCtrl.h" />
-    <ClInclude Include="winlame\WaveOutputSettingsPage.h" />
-    <ClInclude Include="winlame\WmaOutputSettingsPage.h" />
+    <ClInclude Include="winlame\ui\AboutDlg.hpp" />
+    <ClInclude Include="winlame\ui\ImageListComboBox.h" />
+    <ClInclude Include="winlame\ui\InputListCtrl.h" />
+    <ClInclude Include="winlame\old_ui\WaveOutputSettingsPage.h" />
+    <ClInclude Include="winlame\old_ui\WmaOutputSettingsPage.h" />
     <ClInclude Include="winlame\preset\PresetManagerImpl.h" />
     <ClInclude Include="winlame\preset\PropertyDlg.h" />
     <ClInclude Include="winlame\preset\PropertyListBox.h" />
@@ -258,7 +259,6 @@
     <ClInclude Include="winlame\VariableManager.h" />
     <ClInclude Include="winlame\res\MainFrameRibbon.h" />
     <ClInclude Include="winlame\resource.h" />
-    <ClInclude Include="winlame\AboutDlg.h" />
     <ClInclude Include="winlame\ui\CDReadSettingsPage.h" />
     <ClInclude Include="winlame\ui\DropFilesManager.h" />
     <ClInclude Include="winlame\ui\GeneralSettingsPage.h" />
