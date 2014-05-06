@@ -88,7 +88,6 @@
     <ClCompile Include="winlame\encoder\EncoderImpl.cpp" />
     <ClCompile Include="winlame\encoder\EncoderTask.cpp" />
     <ClCompile Include="winlame\encoder\FlacInputModule.cpp" />
-    <ClCompile Include="winlame\encoder\FlashVideoInputModule.cpp" />
     <ClCompile Include="winlame\encoder\Id3v1Tag.cpp" />
     <ClCompile Include="winlame\encoder\LameOutputModule.cpp" />
     <ClCompile Include="winlame\encoder\MadMpegInputModule.cpp" />
@@ -199,7 +198,6 @@
     <ClInclude Include="winlame\encoder\EncoderImpl.h" />
     <ClInclude Include="winlame\encoder\EncoderTask.h" />
     <ClInclude Include="winlame\encoder\FlacInputModule.h" />
-    <ClInclude Include="winlame\encoder\FlashVideoInputModule.h" />
     <ClInclude Include="winlame\encoder\Id3v1Tag.h" />
     <ClInclude Include="winlame\encoder\LameOutputModule.h" />
     <ClInclude Include="winlame\encoder\MadMpegInputModule.h" />

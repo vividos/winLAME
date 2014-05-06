@@ -97,9 +97,6 @@
     <ClCompile Include="winlame\encoder\FlacInputModule.cpp">
       <Filter>encoder files\encoder source files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\encoder\FlashVideoInputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
-    </ClCompile>
     <ClCompile Include="winlame\encoder\Id3v1Tag.cpp">
       <Filter>encoder files\encoder source files</Filter>
     </ClCompile>
@@ -325,9 +322,6 @@
       <Filter>encoder files\encoder header files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\FlacInputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\FlashVideoInputModule.h">
       <Filter>encoder files\encoder header files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\Id3v1Tag.h">
