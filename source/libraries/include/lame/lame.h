@@ -19,7 +19,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/* $Id: lame.h,v 1.189.2.1 2012/01/08 23:49:58 robert Exp $ */
+/* $Id: lame.h,v 1.190 2012/01/08 23:50:21 robert Exp $ */
 
 #ifndef LAME_LAME_H
 #define LAME_LAME_H
@@ -738,24 +738,6 @@ int CDECL lame_encode_buffer_interleaved(
         int                 mp3buf_size ); /* number of valid octets in this
                                               stream                        */
 
-/*
- * as above, but for the int data type.
- * NOTE: 
- * num_samples = number of samples in the L (or R)
- * channel, not the total number of samples in pcm[]  
- */
-int CDECL lame_encode_buffer_interleaved_int(
-        lame_global_flags*  gfp,           /* global context handle         */
-        int buffer[],                      /* PCM data for left and right
-                                              channel, interleaved          */
-        int nsamples,                      /* number of samples per channel,
-                                              _not_ number of samples in
-                                              pcm[]                         */
-        unsigned char*      mp3buf,        /* pointer to encoded MP3 stream */
-        int                 mp3buf_size ); /* number of valid octets in this
-                                              stream                        */
-
-
 
 /* as lame_encode_buffer, but for 'float's.
  * !! NOTE: !! data must still be scaled to be in the same range as
@@ -853,6 +835,27 @@ int CDECL lame_encode_buffer_int(
         const int           nsamples,      /* number of samples per channel */
         unsigned char*      mp3buf,        /* pointer to encoded MP3 stream */
         const int           mp3buf_size ); /* number of valid octets in this
+                                              stream                        */
+
+
+/*
+* as above, but for interleaved data.
+* !! NOTE: !! data must still be scaled to be in the same range as
+* type 'int32_t'.   Data should be in the range:  +/- 2^(8*size(int32_t)-1)
+* NOTE:
+* num_samples = number of samples in the L (or R)
+* channel, not the total number of samples in pcm[]
+*/
+int
+lame_encode_buffer_interleaved_int(
+        lame_t          gfp,
+        const int       pcm [],            /* PCM data for left and right
+                                              channel, interleaved          */
+        const int       nsamples,          /* number of samples per channel,
+                                              _not_ number of samples in
+                                              pcm[]                         */
+        unsigned char*  mp3buf,            /* pointer to encoded MP3 stream */
+        const int       mp3buf_size );     /* number of valid octets in this
                                               stream                        */
 
 

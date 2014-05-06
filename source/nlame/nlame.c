@@ -1,6 +1,6 @@
 /*
    nlame - an alternative API for libmp3lame
-   copyright (c) 2001-2009 Michael Fink
+   copyright (c) 2001-2014 Michael Fink
    Copyright (c) 2004 DeXT
 
    This library is free software; you can redistribute it and/or
@@ -16,8 +16,6 @@
    You should have received a copy of the GNU Lesser General Public
    License along with this library; if not, write to the Free Software
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-   $Id: nlame.c,v 1.30 2009/11/02 21:02:17 vividos Exp $
 
 */
 /*! \file nlame.c
@@ -98,103 +96,18 @@ void nlame_lame_version_get_psy_num(int* major, int* minor, int* alpha, int* bet
 }
 
 
-static char nlame_string_compiler[256] = "\0";
-
-/*! note that the first call to this function is not reentrant!
-    infos about ICL macros were take from http://predef.sourceforge.net/precomp.html
-*/
 const char* nlame_get_string_compiler()
 {
-   if (nlame_string_compiler[0] == 0)
-   {
-#if defined(__ICL) || defined(__INTEL_COMPILER)
-
-      _snprintf(nlame_string_compiler, sizeof(nlame_string_compiler)/sizeof(*nlame_string_compiler),
-         "Intel C/C++ Compiler (%d.%d.%d)"
-#ifdef __INTEL_COMPILER_BUILD_DATE
-         " %4d%02d%02d"
-#endif
-         ,
-#if defined(__INTEL_COMPILER)
-         __INTEL_COMPILER/100, (__INTEL_COMPILER%100)/10, (__INTEL_COMPILER%10)
-#elif defined(__ICL)
-         __ICL/100, (__ICL%100)/10, (__ICL%10)
-#endif
-#ifdef __INTEL_COMPILER_BUILD_DATE
-         ,
-         __INTEL_COMPILER_BUILD_DATE/10000,
-         (__INTEL_COMPILER_BUILD_DATE%10000)/100,
-         __INTEL_COMPILER_BUILD_DATE%100
-#endif
-         );
-
-#elif defined(_MSC_VER)
-
-   _snprintf(nlame_string_compiler, sizeof(nlame_string_compiler)/sizeof(*nlame_string_compiler),
-#if (_MSC_VER <= 1200)
-      "Microsoft Visual C++ 6"
-#elif (_MSC_VER <= 1300)
-      "Microsoft Visual C++ .NET 2002"
-#elif (_MSC_VER <= 1310)
-      "Microsoft Visual C++ .NET 2003"
-#elif (_MSC_VER <= 1400)
-      "Microsoft Visual C++ 2005"
-#elif (_MSC_VER <= 1500)
-      "Microsoft Visual C++ 2008"
-#elif (_MSC_VER <= 1600)
-      "Microsoft Visual C++ 2010"
-#elif (_MSC_VER <= 1700)
-      "Microsoft Visual C++ 2012"
-#else
-      "Microsoft Visual C++ > 2012"
-#endif
-      " (%d.%d.%d.%d)",
-      _MSC_VER/100, (_MSC_VER%100)/10, (_MSC_VER%10), _MSC_FULL_VER%100000);
-
-#else
-      strcpy(nlame_string_compiler, "unknown compiler");
-#endif
-#ifdef _DEBUG
-   strcat(nlame_string_compiler, "; DEBUG");
-#endif
-
-   }
-
-   return nlame_string_compiler;
+   /* not available anymore, since we're linking to libmp3lame.dll now. */
+   return "unknown";
 }
 
 
-static char nlame_cpu_features[256] = "\0";
-
-/*! note that the first call to this function is not reentrant! */
 const char* nlame_get_cpu_features()
 {
-   if (nlame_cpu_features[0]==0)
-   {
-//      extern int  has_i387  ( void );
-      extern int  has_MMX   ( void );
-      extern int  has_3DNow ( void );
-      extern int  has_SSE  ( void );
-      extern int  has_SSE2 ( void );
-//      extern int  has_SIMD  ( void );
-//      extern int  has_SIMD2 ( void );
-
-      // check for processor feature
-      if (has_3DNow()) strcat(nlame_cpu_features,"3DNow ");
-//      if (has_SIMD())  strcat(nlame_cpu_features,"SIMD ");
-//      if (has_SIMD2()) strcat(nlame_cpu_features,"SIMD2 ");
-      if (has_SSE())  strcat(nlame_cpu_features,"SSE ");
-      if (has_SSE2()) strcat(nlame_cpu_features,"SSE2 ");
-      if (has_MMX())   strcat(nlame_cpu_features,"MMX ");
-//      if (has_i387())  strcat(nlame_cpu_features,"i387-FPU ");
-
-      if (nlame_cpu_features[0]==0)
-         strcat(nlame_cpu_features,"none");
-      else
-         nlame_cpu_features[strlen(nlame_cpu_features)-1]=0;
-   }
-
-   return nlame_cpu_features;
+   /* not available anymore, since we're linking to libmp3lame.dll now. */
+   /* maybe use lame_print_config() to get CPU features? */
+   return "unknown";
 }
 
 

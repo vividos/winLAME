@@ -1,194 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="source files">
-      <UniqueIdentifier>{f7ced1c7-2c70-416a-916e-e5435f8050d2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="header files">
-      <UniqueIdentifier>{05f1a612-328d-4999-b886-9cfafeb1f1aa}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl</Extensions>
-    </Filter>
-    <Filter Include="assembler files">
-      <UniqueIdentifier>{b0f44ba7-28a7-4659-acfd-3606e3cdefbd}</UniqueIdentifier>
-      <Extensions>*.nas</Extensions>
-    </Filter>
     <Filter Include="nlame files">
       <UniqueIdentifier>{dc86f3bb-a57b-48de-a712-f24ae69313ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lame include files">
+      <UniqueIdentifier>{a8efbb52-6008-471c-9b2e-7c9e99471c65}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="nlame\libmp3lame\bitstream.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\encoder.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\fft.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\gain_analysis.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\id3tag.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\lame.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\newmdct.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\presets.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\psymodel.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\quantize.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\quantize_pvt.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\reservoir.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\set_get.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\tables.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\takehiro.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\util.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\vbrquantize.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\VbrTag.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\version.c">
-      <Filter>source files</Filter>
-    </ClCompile>
-    <ClCompile Include="nlame\libmp3lame\vector\xmm_quantize_sub.c">
-      <Filter>source files</Filter>
-    </ClCompile>
     <ClCompile Include="nlame\nlame.c">
       <Filter>nlame files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="nlame\libmp3lame\bitstream.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\config.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\encoder.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\fft.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\gain_analysis.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\id3tag.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\l3side.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\lame-analysis.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\include\lame.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\lame_global_flags.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\vector\lame_intrin.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\lameerror.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\machine.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\newmdct.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\psymodel.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\quantize.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\quantize_pvt.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\reservoir.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\set_get.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\tables.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\util.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\vbrquantize.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\VbrTag.h">
-      <Filter>header files</Filter>
-    </ClInclude>
-    <ClInclude Include="nlame\libmp3lame\version.h">
-      <Filter>header files</Filter>
-    </ClInclude>
     <ClInclude Include="nlame\nlame.h">
       <Filter>nlame files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="nlame\nlame.def">
-      <Filter>nlame files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="nlame\nlame.rc">
-      <Filter>nlame files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="nlame\libmp3lame\i386\choose_table.nas">
-      <Filter>assembler files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="nlame\libmp3lame\i386\cpu_feat.nas">
-      <Filter>assembler files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="nlame\libmp3lame\i386\fft3dn.nas">
-      <Filter>assembler files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="nlame\libmp3lame\i386\fftfpu.nas">
-      <Filter>assembler files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="nlame\libmp3lame\i386\fftsse.nas">
-      <Filter>assembler files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="nlame\libmp3lame\i386\ffttbl.nas">
-      <Filter>assembler files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="nlame\libmp3lame\i386\scalar.nas">
-      <Filter>assembler files</Filter>
-    </CustomBuild>
+    <ClInclude Include="libraries\include\lame\lame.h">
+      <Filter>lame include files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
