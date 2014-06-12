@@ -2,7 +2,7 @@
 <!--
 
  winLAME - a frontend for the LAME encoding engine
- Copyright (c) 2005-2013 Michael Fink
+ Copyright (c) 2005-2014 Michael Fink
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ For new releases, do the following:
         Description="$(var.ProductName) Setup"
         Comments="This installs $(var.ProductName)"
         Manufacturer="Michael Fink"
-        InstallerVersion="300"
+        InstallerVersion="405"
         InstallPrivileges="elevated"
         AdminImage="no"
         Compressed="yes"
@@ -52,7 +52,7 @@ For new releases, do the following:
       <Media Id="1" Cabinet="winLAME.cab" EmbedCab="yes" />
 
       <Directory Id="TARGETDIR" Name="SourceDir">
-         <Merge Id="Msvcrt110Msm" Language="0" SourceFile="$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC110_CRT_x86.msm" DiskId="1" />
+         <Merge Id="Msvcrt120Msm" Language="0" SourceFile="$(env.CommonProgramFiles)\Merge Modules\Microsoft_VC120_CRT_x86.msm" DiskId="1" />
          <Directory Id="ProgramFilesFolder">
             <Directory Id="WinLame" Name="winLAME">
                <Directory Id="INSTALLDIR" Name="." />
@@ -98,11 +98,6 @@ For new releases, do the following:
          <Component Id="WinLameRes0407" Guid="91cb7f8e-359d-4ece-9ee4-5b318cd6161e" Directory="INSTALLDIR">
             <File Id="WinLame0407Dll" Name="winLAME.0407.dll" DiskId="1" KeyPath="yes"
                Source="..\..\bin\Release\winLAME.0407.dll" />
-         </Component>
-
-         <Component Id="NLameLibrary" Guid="270adf65-5e4b-4558-a200-1e6f45a6e1c8" Directory="INSTALLDIR">
-            <File Id="NlameDll" Name="nLAME.dll" DiskId="1" KeyPath="yes"
-               Source="..\..\bin\Release\nLAME.dll" />
          </Component>
 
          <Component Id="SndFileLibrary" Guid="24be05fb-0208-4b00-9b3e-d35b1d7ed29c" Directory="INSTALLDIR">
@@ -160,8 +155,8 @@ For new releases, do the following:
          <ComponentGroupRef Id="AllFiles" />
       </Feature>
 
-      <Feature Id="VCRedist" Title="Visual C++ 2012 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
-         <MergeRef Id="Msvcrt110Msm"/>
+      <Feature Id="VCRedist" Title="Visual C++ 2013 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+         <MergeRef Id="Msvcrt120Msm"/>
       </Feature>
 
       <Icon Id="WinLameShortcutIcon" SourceFile="..\winlame\res\winlame.ico" />
@@ -173,10 +168,15 @@ For new releases, do the following:
       <Property Id="ARPPRODUCTICON" Value="WinLameShortcutIcon" />
       <Property Id="ARPHELPLINK" Value="http://winLAME.sourceforge.net/" />
 
-      <Property Id="WIXUI_INSTALLDIR" Value="MainAppFolder" />
+      <Property Id="WIXUI_INSTALLDIR" Value="WinLame" />
       <WixVariable Id="WixUILicenseRtf" Value="..\..\docs\License.winLAME.rtf" />
 
       <UIRef Id="WixUI_InstallDir" />
+
+      <UI>
+         <ProgressText Action="ExecuteAction">System is being prepared for setup...</ProgressText>
+         <ProgressText Action="InstallInitialize">Setup is being initialized...</ProgressText>
+      </UI>
 
       <Property Id="UPGRADEGUIDS" Secure="yes" />
       <Property Id="UPGRADEGUIDSOLD" Secure="yes" />
