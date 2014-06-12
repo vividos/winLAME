@@ -348,5 +348,8 @@ bool OutputPage::OnLeavePage()
       _tremove(fname);
    }
 
+   // save settings, so that output folder history gets saved
+   settings.StoreSettings();
+
    return true;
 }
