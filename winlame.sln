@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winlame", "source\winlame.vcxproj", "{3D23B065-AB74-4C3D-BCBC-7B7492786FEE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libfreedb", "source\libraries\src\libfreedb\libfreedb.vcxproj", "{CCD82A71-2980-4971-A7A8-C0D26D251261}"
@@ -18,6 +20,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "install", "source\install\install.vcxproj", "{D1388785-D0BD-4A67-BC45-573C0DEE639A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{3D23B065-AB74-4C3D-BCBC-7B7492786FEE} = {3D23B065-AB74-4C3D-BCBC-7B7492786FEE}
+		{E2D89BAE-7448-4AF4-9AC9-9CC070E178BD} = {E2D89BAE-7448-4AF4-9AC9-9CC070E178BD}
 	EndProjectSection
 EndProject
 Global
