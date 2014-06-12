@@ -107,12 +107,22 @@ App::~App()
 int App::Run(LPTSTR /*lpstrCmdLine*/, int nCmdShow)
 {
 #if 0
+   RunClassicDialog();
+   return 0;
+#else
+   return RunMainFrame(nCmdShow);
+#endif
+}
+
+void App::RunClassicDialog()
+{
    // start dialog
    MainDlg dlg(m_settings, m_langResourceManager);
    dlg.RunDialog();
+}
 
-   return 0;
-#else
+int App::RunMainFrame(int nCmdShow)
+{
    CMessageLoop theLoop;
    _Module.AddMessageLoop(&theLoop);
 
@@ -130,7 +140,6 @@ int App::Run(LPTSTR /*lpstrCmdLine*/, int nCmdShow)
 
    _Module.RemoveMessageLoop();
    return nRet;
-#endif
 }
 
 CString App::AppDataFolder(bool bMachineWide)

@@ -69,6 +69,13 @@ public:
    static CString Version();
 
 private:
+   /// runs "classic" winLAME dialog
+   void RunClassicDialog();
+
+   /// runs new main frame based winLAME window
+   int RunMainFrame(int nCmdShow);
+
+private:
    /// current app object
    static App* s_pApp;
 
