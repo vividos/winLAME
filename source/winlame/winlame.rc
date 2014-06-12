@@ -494,8 +494,8 @@ IDI_ICON_IDLE      ICON           "res\\idle.ico"
 //
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 1 VERSIONINFO
-    FILEVERSION     1,0,2012,1
-    PRODUCTVERSION  1,0,2012,1
+    FILEVERSION     1,0,2014,1
+    PRODUCTVERSION  1,0,2014,1
     FILEOS          VOS__WINDOWS32
     FILETYPE        VFT_UNKNOWN
 BEGIN
@@ -506,14 +506,14 @@ BEGIN
             VALUE "Comments", "winLAME is an encoder frontend for several audio formats, including mp3 (MPEG Layer 3), Ogg Vorbis and more."
             VALUE "CompanyName", "Michael Fink"
             VALUE "FileDescription", "winLAME"
-            VALUE "FileVersion", "2012 beta"
+            VALUE "FileVersion", "2014 beta"
             VALUE "InternalName", "winLAME"
-            VALUE "LegalCopyright", "Copyright © 2000-2012 Michael Fink"
+            VALUE "LegalCopyright", "Copyright © 2000-2014 Michael Fink"
             VALUE "LegalTrademarks", " "
             VALUE "OriginalFilename", "winLAME.exe"
             VALUE "PrivateBuild", " "
             VALUE "ProductName", "winLAME"
-            VALUE "ProductVersion", "2012 beta"
+            VALUE "ProductVersion", "2014 beta"
             VALUE "SpecialBuild", " "
         END
     END
