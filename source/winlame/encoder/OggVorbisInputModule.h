@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
+   Copyright (c) 2000-2014 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 #include "ModuleInterface.h"
 #include <cstdio>
 #include "vorbis/vorbisfile.h"
+#include "CrtFopenWrapper.hpp"
 
 
 /// ogg vorbis input module
@@ -94,9 +95,7 @@ protected:
    /// decoding file struct
    OggVorbis_File vf;
 
-   // msvcrt function pointers
-   FILE* (*msvcrt_wfopen)(const wchar_t*, const wchar_t*);
-   int (*msvcrt_fclose)(FILE*);
+   CrtFopenWrapper m_fopenWrapper;
 };
 
 

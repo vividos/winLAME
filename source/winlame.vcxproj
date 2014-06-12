@@ -195,6 +195,7 @@
     <ClInclude Include="winlame\encoder\BassInputModule.h" />
     <ClInclude Include="winlame\encoder\BassWmaOutputModule.h" />
     <ClInclude Include="winlame\encoder\CdReadoutModule.h" />
+    <ClInclude Include="winlame\encoder\CrtFopenWrapper.hpp" />
     <ClInclude Include="winlame\encoder\EncoderImpl.h" />
     <ClInclude Include="winlame\encoder\EncoderTask.h" />
     <ClInclude Include="winlame\encoder\FlacInputModule.h" />

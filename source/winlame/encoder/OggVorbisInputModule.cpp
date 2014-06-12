@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
+   Copyright (c) 2000-2014 Michael Fink
    Copyright (c) 2004 DeXT
 
    This program is free software; you can redistribute it and/or modify
@@ -51,8 +51,6 @@ const int ogg_inbufsize = 512*MAX_CHANNELS; // must be a multiple of max channel
 OggVorbisInputModule::OggVorbisInputModule()
 {
    module_id = ID_IM_OGGV;
-   msvcrt_wfopen = NULL;
-   msvcrt_fclose = NULL;
 }
 
 OggVorbisInputModule::~OggVorbisInputModule()
@@ -106,13 +104,9 @@ int OggVorbisInputModule::initInput(LPCTSTR infilename,
 
    // we're passing "FILE* infile" to ov_open; for this to work we have to use the same
    // open and close method as the library is using.
-   HMODULE hMod = ::GetModuleHandle(_T("msvcrt.dll"));
-   msvcrt_wfopen = (FILE* (*)(const wchar_t*, const wchar_t*))::GetProcAddress(hMod,"_wfopen");
-
    // open input file
-   USES_CONVERSION;
-   if (msvcrt_wfopen)
-      infile = msvcrt_wfopen(infilename, _T("rb"));
+   if (m_fopenWrapper.IsAvail())
+      infile = m_fopenWrapper._wfopen(infilename, _T("rb"));
    else
       infile = _wfopen(infilename, _T("rb"));
 
@@ -205,12 +199,9 @@ int OggVorbisInputModule::decodeSamples(SampleContainer &samples)
 
 void OggVorbisInputModule::doneInput()
 {
-   HMODULE hMod = ::GetModuleHandle(_T("msvcrt.dll"));
-   msvcrt_fclose = (int (*)(FILE*))::GetProcAddress(hMod,"fclose");
-
    // close infile
-   if (msvcrt_fclose)
-      msvcrt_fclose(infile);
+   if (m_fopenWrapper.IsAvail())
+      m_fopenWrapper.fclose(infile);
    else
       fclose(infile);
 

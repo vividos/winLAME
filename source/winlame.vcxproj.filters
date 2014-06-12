@@ -582,6 +582,9 @@
     <ClInclude Include="winlame\HtmlHelper.h">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="winlame\encoder\CrtFopenWrapper.hpp">
+      <Filter>encoder files\encoder header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="winlame\res\btnicons.bmp">
