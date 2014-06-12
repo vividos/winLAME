@@ -151,11 +151,6 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    // activate page 0
    ActivatePage(0);
 
-   // set the help button image
-   ilHelpIcon.Create(MAKEINTRESOURCE(IDB_HELP),14,0,RGB(192,192,192));
-   SendDlgItemMessage(IDC_MDLG_HELP, BM_SETIMAGE, IMAGE_ICON,
-      (LPARAM)ilHelpIcon.ExtractIcon(0) );
-
    // add menu items to system menu
 
    // IDM_ABOUTBOX and IDM_OPTIONS must be in the system command range.

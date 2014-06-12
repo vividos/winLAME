@@ -269,9 +269,6 @@ protected:
    /// tooltips ctrl
    CToolTipCtrl tooltips;
 
-   /// help icon
-   CImageList ilHelpIcon;
-
    /// ui settings
    UISettings& settings;
 

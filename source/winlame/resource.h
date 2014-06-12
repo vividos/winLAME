@@ -46,7 +46,6 @@
 #define IDD_PAGE_INPUTFILES                     1031
 #define IDC_MDLG_NEXT                           3000
 #define IDC_MDLG_BACK                           3001
-#define IDC_MDLG_HELP                           3002
 #define IDC_MDLG_EXIT                           3003
 #define IDC_MDLG_CAPTIONBAR                     3004
 #define IDC_MDLG_FRAME                          3005
