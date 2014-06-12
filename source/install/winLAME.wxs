@@ -100,6 +100,11 @@ For new releases, do the following:
            Source="..\..\bin\Release\winLAME.0407.dll" />
       </Component>
 
+      <Component Id="LibMp3LameLibrary" Guid="52bfd80b-562c-4764-bae6-d98fcf85d1be" Directory="INSTALLDIR">
+        <File Id="LibMp3LameDll" Name="libmp3lame.dll" DiskId="1" KeyPath="yes"
+           Source="..\libraries\libmp3lame.dll" />
+      </Component>
+
       <Component Id="SndFileLibrary" Guid="24be05fb-0208-4b00-9b3e-d35b1d7ed29c" Directory="INSTALLDIR">
         <File Id="LibSndFileDll" Name="libsndfile-1.dll" DiskId="1" KeyPath="yes"
            Source="..\libraries\libsndfile-1.dll" />
