@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2006-2009 Michael Fink
+   Copyright (c) 2006-2014 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -103,10 +103,11 @@ const ID3::Tag File::GetTag() const
    return ID3::Tag(spTag);
 }
 
-void File::Update()
+bool File::Update()
 {
    ATLASSERT(m_spFile != NULL);
    ATLASSERT(m_bReadOnly == false);
 
    int iRet = id3_file_update(m_spFile.get());
+   return iRet == 0;
 }

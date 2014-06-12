@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2004 Michael Fink
+   Copyright (c) 2000-2014 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -212,7 +212,7 @@ void PresetManagerImpl::setSettings(int index, SettingsManager &settings_mgr)
          cppxml::string value = valuenode->get_value();
 
          // set name ID and value
-         settings_mgr.setValue(valueID,atoi(value.c_str()));
+         settings_mgr.setValue(static_cast<unsigned short>(valueID), atoi(value.c_str()));
       }
    }
 }
@@ -222,7 +222,7 @@ void PresetManagerImpl::setDefaultSettings(SettingsManager &settings_mgr)
    for(int i=VarFirst; i<VarLast; i++)
    {
       int def = mgr_variables.lookupDefaultValue(i);
-      settings_mgr.setValue(i,def);
+      settings_mgr.setValue(static_cast<unsigned short>(i), def);
    }
 }
 

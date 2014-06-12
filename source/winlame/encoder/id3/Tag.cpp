@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2006-2009 Michael Fink
+   Copyright (c) 2006-2014 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -82,16 +82,19 @@ void Tag::SetOption(TagOption enOpt, bool bSetOpt)
    id3_tag_options(m_spTag.get(), enOpt, bSetOpt ? enOpt : 0);
 }
 
-void Tag::AttachFrame(ID3::Frame& f)
+bool Tag::AttachFrame(ID3::Frame& f)
 {
    f.m_bAttached = true;
 
    int iRet = id3_tag_attachframe(m_spTag.get(), f.GetFrame().get());
+   return iRet == 0;
 }
 
-void Tag::DetachFrame(ID3::Frame& f)
+bool Tag::DetachFrame(ID3::Frame& f)
 {
    int iRet = id3_tag_detachframe(m_spTag.get(), f.GetFrame().get());
 
    f.m_bAttached = false;
+
+   return iRet == 0;
 }

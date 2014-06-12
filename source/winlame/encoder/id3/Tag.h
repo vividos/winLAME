@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2006-2009 Michael Fink
+   Copyright (c) 2006-2014 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -66,10 +66,10 @@ public:
    void SetOption(TagOption enOpt, bool bSetOpt);
 
    /// adds a frame to tag
-   void AttachFrame(Frame& f);
+   bool AttachFrame(Frame& f);
 
    /// removes frame from tag
-   void DetachFrame(Frame& f);
+   bool DetachFrame(Frame& f);
 
 private:
    friend class File;

@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2006-2009 Michael Fink
+   Copyright (c) 2006-2014 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ public:
    const Tag GetTag() const;
 
    /// updates file with changes in tag
-   void Update();
+   bool Update();
 
 private:
    boost::shared_ptr<id3_file> m_spFile;

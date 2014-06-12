@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
+   Copyright (c) 2000-2014 Michael Fink
    Copyright (c) 2004 DeXT
 
    This program is free software; you can redistribute it and/or modify
@@ -377,7 +377,6 @@ bool MadMpegInputModule::checkVbrInfoTag(unsigned char *buffer)
 
       // vbr tag flags
       const int FRAMES_FLAG = 1;
-      const int BYTES_FLAG = 2;
 
       if (flags & FRAMES_FLAG)
       {

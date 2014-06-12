@@ -1,7 +1,7 @@
 /*
    winLAME - a frontend for the LAME encoding engine
    Copyright (c) 2004 DeXT
-   Copyright (c) 2009 Michael Fink
+   Copyright (c) 2009-2014 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -224,7 +224,6 @@ int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
       const TCHAR* WMA_GENRE_TAG = _T("WM/Genre");
       const TCHAR* WMA_DESC_TAG = _T("Description");
 
-      int wma_bitrate = 0;
       CString wma_genre;
 
       for (size_t i = 0; i < vecCommentIndices.size(); i++)

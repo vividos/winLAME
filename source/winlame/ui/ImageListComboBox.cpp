@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2009 Michael Fink
+   Copyright (c) 2009-2014 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -180,7 +180,6 @@ void CImageListComboBox::OutputBitmap(LPDRAWITEMSTRUCT lpDIS)
    std::map<int, unsigned int>::const_iterator iter = m_mapItemsToIndex.find(lpDIS->itemID);
    int iIconIndex = iter != m_mapItemsToIndex.end() ? iter->second : -1;
 
-   HICON hIcon = NULL;
    if (iIconIndex < m_ilIcons.GetImageCount() && iIconIndex != -1)
    {
       CPoint point;

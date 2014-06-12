@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2011 Michael Fink
+   Copyright (c) 2000-2014 Michael Fink
    Copyright (c) 2004 DeXT
 
    This program is free software; you can redistribute it and/or modify
@@ -329,8 +329,6 @@ bool EncoderImpl::CheckSameInputOutputFilenames(const CString& cszInputFilename,
 bool EncoderImpl::CheckCDExtractDirectCopy(InputModule& inputModule, OutputModule& outputModule,
    SettingsManager& settingsManager)
 {
-   bool bFound = false;
-
    unsigned int in_id = inputModule.getModuleID();
    unsigned int out_id = outputModule.getModuleID();
 

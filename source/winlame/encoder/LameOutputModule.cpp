@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2009 Michael Fink
+   Copyright (c) 2000-2014 Michael Fink
    Copyright (c) 2004 DeXT
 
    This program is free software; you can redistribute it and/or modify
@@ -340,7 +340,7 @@ skip_nogap:
          nlame_var_get_int(inst, nle_var_channel_mode)==nle_mode_mono ? 1 : 2,
          nlame_var_get_int(inst, nle_var_out_samplerate),
          nlame_var_get_int(inst, nle_var_bitrate),
-         nlame_var_get_int(inst, nle_var_encoder_delay));
+         static_cast<unsigned short>(nlame_var_get_int(inst, nle_var_encoder_delay)));
    }
 
    return 0;

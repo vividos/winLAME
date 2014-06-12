@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
+   Copyright (c) 2000-2014 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -206,7 +206,7 @@ LRESULT InputPage::OnDropFiles(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
    // reflected from list ctrl; handle dropped filenames
    HDROP hDropInfo = (HDROP)wParam;
 
-   int n = ::DragQueryFile(hDropInfo,-1,NULL,0);
+   UINT n = ::DragQueryFile(hDropInfo, UINT(-1), NULL, 0);
 
    TCHAR buffer[MAX_PATH];
 
@@ -214,7 +214,7 @@ LRESULT InputPage::OnDropFiles(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
    input_errors.Empty();
 
    // go through all available
-   for(int i=0;i<n;i++)
+   for (UINT i = 0; i<n; i++)
    {
       ::DragQueryFile(hDropInfo,i,buffer,MAX_PATH);
       InsertFilename(buffer);

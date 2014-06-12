@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2004 Michael Fink
+   Copyright (c) 2000-2014 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -108,7 +108,7 @@ void WriteWaveMp3Header(std::ofstream &ostr,unsigned int channels,
    // prepare and write format info with extra mp3 data
    MPEGLAYER3WAVEFORMAT fmt;
    fmt.wfx.wFormatTag = 0x0055;           // WAVE_FORMAT_MPEGLAYER3
-   fmt.wfx.nChannels = channels;
+   fmt.wfx.nChannels = static_cast<WORD>(channels);
    fmt.wfx.nSamplesPerSec = samplerate;
    fmt.wfx.nAvgBytesPerSec = bitrate*1000/8; // bitrate / 8
    fmt.wfx.nBlockAlign = 1;               // 1 block
@@ -117,7 +117,7 @@ void WriteWaveMp3Header(std::ofstream &ostr,unsigned int channels,
 
    fmt.wID = 1;                  // MPEGLAYER3_ID_MPEG
    fmt.fdwFlags = 0x00000002;    // MPEGLAYER3_FLAG_PADDING_OFF
-   fmt.nBlockSize = bitrate*1000*144/samplerate;   // bitrate * 144 / sample rate
+   fmt.nBlockSize = static_cast<WORD>(bitrate * 1000 * 144 / samplerate);   // bitrate * 144 / sample rate
    fmt.nFramesPerBlock = 1;
    fmt.nCodecDelay = codec_delay;
 

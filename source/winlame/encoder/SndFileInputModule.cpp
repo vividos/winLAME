@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
+   Copyright (c) 2000-2014 Michael Fink
    Copyright (c) 2004 DeXT
 
    This program is free software; you can redistribute it and/or modify
@@ -76,6 +76,8 @@ void SndFileInputModule::getDescription(CString& desc)
 {
    // find out type and subtype description
    SF_FORMAT_INFO types,subtypes;
+   types.name = "???";
+   subtypes.name = "???";
 
    // find out type
    {
