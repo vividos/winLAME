@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2009 Michael Fink
+   Copyright (c) 2000-2014 Michael Fink
    Copyright (c) 2004 DeXT
 
    This program is free software; you can redistribute it and/or modify
@@ -155,9 +155,6 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    ilHelpIcon.Create(MAKEINTRESOURCE(IDB_HELP),14,0,RGB(192,192,192));
    SendDlgItemMessage(IDC_MDLG_HELP, BM_SETIMAGE, IMAGE_ICON,
       (LPARAM)ilHelpIcon.ExtractIcon(0) );
-
-   // html help is not available
-   helpavailable = false;
 
    // add menu items to system menu
 
