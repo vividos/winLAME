@@ -26,10 +26,6 @@
 #include "resource.h"
 #include "WaveOutputModule.h"
 
-extern "C"
-SNDFILE*
-sf_wchar_open (LPCWSTR wpath, int mode, SF_INFO *sfinfo);
-
 
 /// output sample formats for libsndfile
 extern

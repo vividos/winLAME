@@ -336,9 +336,6 @@
     <ProjectReference Include="libraries\src\libmad\libmad.vcxproj">
       <Project>{b89e54c7-562e-4444-a6b2-63ff8db043d5}</Project>
     </ProjectReference>
-    <ProjectReference Include="libraries\src\libsndfile\libsndfile.vcxproj">
-      <Project>{8e37bbba-1a67-4785-8269-c4254dc791ca}</Project>
-    </ProjectReference>
     <ProjectReference Include="nlame.vcxproj">
       <Project>{0b3f6b1a-d78e-47db-a48c-d3daa16e17ce}</Project>
     </ProjectReference>

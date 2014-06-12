@@ -107,7 +107,7 @@ For new releases, do the following:
 
          <Component Id="SndFileLibrary" Guid="24be05fb-0208-4b00-9b3e-d35b1d7ed29c" Directory="INSTALLDIR">
             <File Id="LibSndFileDll" Name="libsndfile-1.dll" DiskId="1" KeyPath="yes"
-               Source="..\..\bin\Release\libsndfile-1.dll" />
+               Source="..\libraries\libsndfile-1.dll" />
          </Component>
 
          <Component Id="MadLibrary" Guid="ae392942-63d2-4e37-b5cc-c8c950a0112a" Directory="INSTALLDIR">

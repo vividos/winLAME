@@ -27,17 +27,6 @@
 #include "SndFileInputModule.h"
 #include "Id3v1Tag.h"
 
-// linker options
-
-#if _MSC_VER < 1400
-#pragma comment(linker, "/delayload:libsndfile-1.dll")
-#endif
-
-/// SndFile open function for wchar paths
-extern "C"
-SNDFILE*
-sf_wchar_open (LPCWSTR wpath, int mode, SF_INFO *sfinfo);
-
 
 // constants
 

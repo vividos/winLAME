@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
+   Copyright (c) 2000-2014 Michael Fink
    Copyright (c) 2004 DeXT
 
    This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,8 @@
 
 // needed includes
 #include "ModuleInterface.h"
-#include "sndfile.h"
+#define ENABLE_SNDFILE_WINDOWS_PROTOTYPES 1
+#include <sndfile.h>
 
 
 /// libsndfile input module
