@@ -136,6 +136,15 @@ void WizardPageHost::AddTooltips(HWND hWnd)
    }
 }
 
+BOOL WizardPageHost::PreTranslateMessage(MSG* pMsg)
+{
+   // handle dialog messages
+   if (IsDialogMessage(pMsg))
+      return TRUE; 
+
+   return CMessageLoop::PreTranslateMessage(pMsg);
+}
+
 LRESULT WizardPageHost::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_LOAD);

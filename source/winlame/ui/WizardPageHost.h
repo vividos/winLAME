@@ -70,7 +70,7 @@ public:
 
    // message map
    BEGIN_MSG_MAP(WizardPageHost)
-		MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+      MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       MESSAGE_HANDLER(WM_SIZE, OnSize)
       MESSAGE_HANDLER(WM_CTLCOLORSTATIC, OnStaticColor)
       MESSAGE_HANDLER(WM_DRAWITEM, OnDrawItem)
@@ -93,6 +93,8 @@ private:
    void ConfigWizardButtons(WizardPage::T_enWizardPageType enWizardPageType);
 
    void AddTooltips(HWND hWnd);
+
+   virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 
 private:
    // controls
