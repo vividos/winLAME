@@ -59,50 +59,6 @@ MainDlg::MainDlg(UISettings& settings_, LanguageResourceManager& langResourceMan
 
    currentpage = -1;
 
-   // load preset file
-   
-   // CSIDL_APPDATA - user-dependent app data folder
-   // CSIDL_COMMON_APPDATA - machine-wide app data folder
-   CString cszUserSpecificAppFolder, cszMachineWideAppFolder;
-
-   SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, cszUserSpecificAppFolder.GetBuffer(MAX_PATH));
-   cszUserSpecificAppFolder.ReleaseBuffer();
-
-   SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, cszMachineWideAppFolder.GetBuffer(MAX_PATH));
-   cszMachineWideAppFolder.ReleaseBuffer();
-
-   cszUserSpecificAppFolder += _T("\\winLAME\\");
-   cszMachineWideAppFolder += _T("\\winLAME\\");
-
-   // first, check if user has left a presets.xml around in the .exe folder
-   CString presetFilename = GetWinlameDir(); // get app directory
-   presetFilename += _T("presets.xml");
-
-   if (::GetFileAttributes(presetFilename) != INVALID_FILE_ATTRIBUTES)
-   {
-      // found file; warn user about it
-      CString cszWarning;
-      cszWarning.Format(IDS_WARNING_LOCAL_PRESETS_XML_FILE_SS, cszUserSpecificAppFolder, cszMachineWideAppFolder);
-      AppMessageBox(m_hWnd, cszWarning, MB_ICONEXCLAMATION | MB_OK);
-   }
-
-   // first try to check for user-dependend config file
-   presetFilename = cszUserSpecificAppFolder + _T("presets.xml");
-   if (::GetFileAttributes(presetFilename) == INVALID_FILE_ATTRIBUTES)
-   {
-      // not available: try to use machine-wide config file
-      presetFilename = cszMachineWideAppFolder + _T("presets.xml");
-   }
-
-   settings.presets_filename = presetFilename;
-
-   PresetManagerInterface& presetManager = IoCContainer::Current().Resolve<PresetManagerInterface>();
-
-   if (::GetFileAttributes(presetFilename) != INVALID_FILE_ATTRIBUTES)
-      settings.preset_avail = presetManager.loadPreset(presetFilename);
-   else
-      settings.preset_avail = false;
-
    // insert some pages
    pages.push_back(new InputPage);
    pages.push_back(new OutputPage);
@@ -358,32 +314,6 @@ bool MainDlg::ActivatePage(int page)
    ::InvalidateRect(GetDlgItem(IDC_MDLG_CAPTIONBAR), NULL, TRUE);
 
    return true;
-}
-
-CString MainDlg::GetWinlameDir()
-{
-   // get command line
-   LPTSTR lpszCommandLine = ::GetCommandLine();
-   char stopper=' ';
-   if (lpszCommandLine[0]=='\"')
-   {
-      lpszCommandLine++;
-      stopper='\"';
-   }
-
-   // search for stopper
-   int max = lstrlen(lpszCommandLine);
-   int i;
-   for(i=0;i<max;i++)
-      if (lpszCommandLine[i]==stopper)
-         break;
-
-   // search for last slash or backslash
-   for(;i>=0;i--)
-      if (lpszCommandLine[i]=='\\' || lpszCommandLine[i]=='/')
-         break;
-
-   return CString(lpszCommandLine).Left(i+1);
 }
 
 void MainDlg::GetCommandLineFiles()

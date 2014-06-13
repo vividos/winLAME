@@ -75,6 +75,9 @@ private:
    /// runs new main frame based winLAME window
    int RunMainFrame(int nCmdShow);
 
+   /// loads presets file
+   void LoadPresetFile();
+
 private:
    /// current app object
    static App* s_pApp;

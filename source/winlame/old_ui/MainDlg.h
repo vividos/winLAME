@@ -291,9 +291,6 @@ protected:
    /// activates a page; returns true if successful
    bool ActivatePage(int page);
 
-   /// retrieves winLAME base dir
-   CString GetWinlameDir();
-
    /// collects files specified at the command line
    void GetCommandLineFiles();
 };
