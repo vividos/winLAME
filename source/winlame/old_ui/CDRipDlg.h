@@ -190,6 +190,8 @@ END_DDX_MAP()
    void UpdateTrackManager();
    void StoreInCdplayerIni(unsigned int nDrive);
    void FreedbLookup();
+   void FillListFreedbInfo(const Freedb::CDInfo& info);
+
 
 protected:
    CComboBox m_cbDrives;

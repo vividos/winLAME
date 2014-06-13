@@ -192,7 +192,7 @@ typedef struct
 
 /*!	\brief The central structure holding all disc information.
 */
-typedef struct
+typedef struct CDInfo
 {
 	unsigned long discid;			/*!< The DiscId, an unique identifier for a compact disc. */
 	string category;

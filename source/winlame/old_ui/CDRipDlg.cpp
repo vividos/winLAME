@@ -31,6 +31,7 @@
 #include <atlctrlx.h> // CWaitCursor
 #include "DynamicLibrary.h"
 #include "App.h"
+#include "FreedbResolver.hpp"
 
 // CDRipFreedbListDlg methods
 
@@ -644,15 +645,9 @@ LRESULT CDRipDlg::OnEndLabelEdit(int idCtrl, LPNMHDR pnmh, BOOL& bHandled)
    return 1;
 }
 
-#include "freedb.hpp"
-
-#if _MSC_VER < 1400
-#pragma comment(linker, "/delayload:ws2_32.dll")
-#endif
-
 void CDRipDlg::FreedbLookup()
 {
-   if (!DynamicLibrary(_T("ws2_32.dll")).IsLoaded())
+   if (!FreedbResolver::IsAvail())
    {
       AppMessageBox(m_hWnd, IDS_CDRIP_NO_INTERNET_AVAIL, MB_OK | MB_ICONSTOP);
       return;
@@ -667,123 +662,82 @@ void CDRipDlg::FreedbLookup()
       return;
    }
 
-   WSADATA wsaData;
-   WORD wVersionRequested = MAKEWORD( 2, 2 );
-   WSAStartup(wVersionRequested, &wsaData);
+   CWaitCursor waitCursor;
 
-   Freedb::CDInfo info;
-   try
+   FreedbResolver resolver(
+      m_uiSettings.freedb_server,
+      m_uiSettings.freedb_username);
+
+   CString cszErrorMessage;
+   bool bRet = resolver.Lookup(cdtext, cszErrorMessage);
+
+   if (!cszErrorMessage.IsEmpty())
    {
-      CWaitCursor waitCursor;
+      DWORD dwMbIcon = bRet ? MB_ICONEXCLAMATION : MB_ICONSTOP;
+      AppMessageBox(m_hWnd, cszErrorMessage, MB_OK | dwMbIcon);
 
-      USES_CONVERSION;
-      std::string server(T2CA(m_uiSettings.freedb_server));
-      Freedb::Remote remoteFreedb(server);
-
-      CString cszWinlameVersion = App::Version();
-      cszWinlameVersion.Replace(_T(' '), _T('-'));
-
-      std::string username(T2CA(m_uiSettings.freedb_username));
-      std::string version(T2CA(cszWinlameVersion));
-      remoteFreedb.doHandshake(username, "winLAME", version);
-
-      vector<Freedb::SearchResult> results = remoteFreedb.query_cddb_raw(cdtext);
-
-      unsigned int nMax = results.size();
-      if (nMax == 0)
-      {
-         AppMessageBox(m_hWnd, IDS_CDRIP_NO_CDINFO_AVAIL, MB_OK | MB_ICONEXCLAMATION);
-      }
-      else
-      {
-         unsigned int nSelected = 0;
-
-         if (nMax > 1)
-         {
-            CDRipFreedbListDlg dlg;
-
-            dlg.results.assign(results.begin(), results.end());
-
-            waitCursor.Restore();
-            ATLVERIFY(IDOK == dlg.DoModal());
-            waitCursor.Set();
-
-            // select which one to take
-            nSelected = dlg.GetSelectedItem();
-         }
-
-         Freedb::SearchResult& result = results[nSelected];
-
-         info = remoteFreedb.read(result.category, result.discid);
-      }
-
-      m_bAcquiredDiscInfo = true;
-   }
-   catch(Freedb::Error& err)
-   {
-      CString cszText, cszTemp;
-      cszText.LoadString(IDS_CDRIP_ERROR_FREEDB);
-      cszTemp.Format(_T(" (code=%i text=\"%hs\")"), err.code, err.msg.c_str());
-      cszTemp.Replace(_T("\n"), _T(""));
-      cszTemp.Replace(_T("\r"), _T(""));
-      cszText += cszTemp;
-      AppMessageBox(m_hWnd, cszText, MB_OK | MB_ICONSTOP);
-   }
-   catch(const std::string& strError)
-   {
-      CString cszText;
-      cszText.LoadString(IDS_CDRIP_ERROR_FREEDB);
-      if (!strError.empty())
-      {
-         cszText += _T(" (");
-         cszText += CString(strError.c_str());
-         cszText += _T(")");
-      }
-      AppMessageBox(m_hWnd, cszText, MB_OK | MB_ICONSTOP);
-   }
-   catch(...)
-   {
-      AppMessageBox(m_hWnd, IDS_CDRIP_ERROR_FREEDB, MB_OK | MB_ICONSTOP);
+      return;
    }
 
-   WSACleanup();
+   // show dialog when it's more than one item
+   unsigned int nSelected = 0;
 
-   // set info to list
+   if (resolver.Results().size() > 1)
    {
-      CString cszText;
-      unsigned int nMax = info.tracktitles.size();
-      for(unsigned int n=0; n<nMax; n++)
+      CDRipFreedbListDlg dlg;
+
+      dlg.results = resolver.Results();
+
+      waitCursor.Restore();
+      ATLVERIFY(IDOK == dlg.DoModal());
+      waitCursor.Set();
+
+      // select which one to take
+      nSelected = dlg.GetSelectedItem();
+   }
+
+   resolver.ReadResultInfo(nSelected);
+
+   FillListFreedbInfo(resolver.CDInfo());
+
+   m_bAcquiredDiscInfo = true;
+}
+
+void CDRipDlg::FillListFreedbInfo(const Freedb::CDInfo& info)
+{
+   CString cszText;
+   unsigned int nMax = info.tracktitles.size();
+   for(unsigned int n=0; n<nMax; n++)
+   {
+      cszText = info.tracktitles[n].c_str();
+      m_lcTracks.SetItemText(n, 1, cszText);
+   }
+
+   cszText = info.dartist.c_str();
+   SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, cszText);
+
+   cszText = info.dtitle.c_str();
+   SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, cszText);
+
+   if (info.dyear.size() > 0)
+      SetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, strtoul(info.dyear.c_str(), NULL, 10), FALSE);
+   else
+   {
+      unsigned int nPos = info.dextinfo.find("YEAR: ");
+      if (-1 != nPos)
       {
-         cszText = info.tracktitles[n].c_str();
-         m_lcTracks.SetItemText(n, 1, cszText);
+         unsigned long nYear = strtoul(info.dextinfo.c_str()+nPos+6, NULL, 10);
+         SetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, nYear, FALSE);
       }
+   }
 
-      cszText = info.dartist.c_str();
-      SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, cszText);
+   CString cszGenre(info.dgenre.c_str());
+   if (cszGenre.GetLength() > 0)
+   {
+      int nItem = m_cbGenre.FindStringExact(-1, cszGenre);
+      if (nItem == CB_ERR)
+         nItem = m_cbGenre.AddString(cszGenre);
 
-      cszText = info.dtitle.c_str();
-      SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, cszText);
-
-      if (info.dyear.size() > 0)
-         SetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, strtoul(info.dyear.c_str(), NULL, 10), FALSE);
-      else
-      {
-         unsigned int nPos = info.dextinfo.find("YEAR: ");
-         if (-1 != nPos)
-         {
-            unsigned long nYear = strtoul(info.dextinfo.c_str()+nPos+6, NULL, 10);
-            SetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, nYear, FALSE);
-         }
-      }
-
-      CString cszGenre(info.dgenre.c_str());
-      if (cszGenre.GetLength() > 0)
-      {
-         int nItem = m_cbGenre.FindStringExact(-1, cszGenre);
-         if (nItem == CB_ERR)
-            nItem = m_cbGenre.AddString(cszGenre);
-
-         m_cbGenre.SetCurSel(nItem);
-      }
+      m_cbGenre.SetCurSel(nItem);
    }
 }
