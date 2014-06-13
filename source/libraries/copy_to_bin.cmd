@@ -11,6 +11,8 @@ copy libmmd.dll ..\..\bin\Debug
 copy libmp3lame.dll ..\..\bin\Debug
 copy libsndfile-1.dll ..\..\bin\Debug
 copy libvorbis.dll ..\..\bin\Debug
+copy libfaac.dll ..\..\bin\Debug
+copy libfaad2.dll ..\..\bin\Debug
 copy MrCrash.exe ..\..\bin\Debug
 
 copy bass.dll ..\..\bin\Release
@@ -21,6 +23,8 @@ copy libmmd.dll ..\..\bin\Release
 copy libmp3lame.dll ..\..\bin\Release
 copy libsndfile-1.dll ..\..\bin\Release
 copy libvorbis.dll ..\..\bin\Release
+copy libfaac.dll ..\..\bin\Release
+copy libfaad2.dll ..\..\bin\Release
 copy MrCrash.exe ..\..\bin\Release
 
 mkdir C:\ProgramData\winLAME 2> nul
