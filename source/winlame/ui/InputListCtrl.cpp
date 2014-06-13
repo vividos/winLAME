@@ -69,7 +69,7 @@ void InputListCtrl::InsertFile(LPCTSTR filename, int icon, int samplerate,
    int bitrate, int length)
 {
    // create new entry
-   AudioFileEntry *entry = new AudioFileEntry;
+   AudioFileEntry* entry = new AudioFileEntry;
    entry->filename = filename;
    entry->samplerate = samplerate;
    entry->bitrate = bitrate;
@@ -88,7 +88,8 @@ void InputListCtrl::InsertFile(LPCTSTR filename, int icon, int samplerate,
       LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM, GetItemCount(), 0,
          0, 0, const_cast<LPTSTR>(pos), 0, icon, reinterpret_cast<LPARAM>(entry)
    };
-   InsertItem(&lvItem);
+   int iItem = InsertItem(&lvItem);
+   SetItemData(iItem, reinterpret_cast<DWORD_PTR>(entry));
 
    // set the subitems
    TCHAR buffer[32];
@@ -400,13 +401,21 @@ void InputListCtrl::MoveItem(int moveTo)
    lvi.iSubItem = 0;
    GetItem(&lvi);
 
+   // create copy of entry
+   DWORD_PTR dwData = GetItemData(lvi.iItem);
+   AudioFileEntry* pNewEntry = new AudioFileEntry(
+      *reinterpret_cast<AudioFileEntry*>(dwData));
+
+   allentries.push_back(pNewEntry);
+
    // adjust indices
    if (dragFrom < moveTo) moveTo++;
    else dragFrom++;
 
    // insert the dropped item
    lvi.iItem = moveTo;
-   InsertItem(&lvi);
+   int iItem = InsertItem(&lvi);
+   SetItemData(iItem, reinterpret_cast<DWORD_PTR>(pNewEntry));
 
    // fill in all of the columns
    HWND hdWnd = GetDlgItem(0);
