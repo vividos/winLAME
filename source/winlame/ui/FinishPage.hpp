@@ -39,7 +39,7 @@ class FinishPage:
 public:
    /// ctor
    FinishPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_SETTINGS_GENERAL, WizardPage::typeCancelNext)
+      :WizardPage(pageHost, IDD_PAGE_FINISH, WizardPage::typeCancelNext)
    {
    }
    /// dtor

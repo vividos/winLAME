@@ -39,7 +39,7 @@ class AACSettingsPage:
 public:
    /// ctor
    AACSettingsPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_SETTINGS_GENERAL, WizardPage::typeCancelNext)
+      :WizardPage(pageHost, IDD_PAGE_AAC_SETTINGS, WizardPage::typeCancelNext)
    {
    }
    /// dtor

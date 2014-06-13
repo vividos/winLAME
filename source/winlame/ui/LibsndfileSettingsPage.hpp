@@ -39,7 +39,7 @@ class LibsndfileSettingsPage:
 public:
    /// ctor
    LibsndfileSettingsPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_SETTINGS_GENERAL, WizardPage::typeCancelNext)
+      :WizardPage(pageHost, IDD_PAGE_LIBSNDFILE_SETTINGS, WizardPage::typeCancelNext)
    {
    }
    /// dtor

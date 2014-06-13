@@ -39,7 +39,7 @@ class PresetSelectionPage:
 public:
    /// ctor
    PresetSelectionPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_SETTINGS_GENERAL, WizardPage::typeCancelNext)
+      :WizardPage(pageHost, IDD_PAGE_PRESET_SELECTION, WizardPage::typeCancelNext)
    {
    }
    /// dtor

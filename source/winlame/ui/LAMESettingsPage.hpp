@@ -39,7 +39,7 @@ class LAMESettingsPage:
 public:
    /// ctor
    LAMESettingsPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_SETTINGS_GENERAL, WizardPage::typeCancelNext)
+      :WizardPage(pageHost, IDD_PAGE_LAME_SETTINGS, WizardPage::typeCancelNext)
    {
    }
    /// dtor

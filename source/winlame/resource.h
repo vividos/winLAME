@@ -43,7 +43,16 @@
 #define IDC_WIZARDPAGE_BUTTON_ACTION2           1003
 #define IDC_WIZARDPAGE_STATIC_FRAME             1004
 #define IDD_WIZARDPAGE_HOST                     1005
-#define IDD_PAGE_INPUTFILES                     1031
+#define IDD_PAGE_INPUT_FILES                    1031
+#define IDD_PAGE_INPUT_CD                       1032
+#define IDD_PAGE_OUTPUT_SETTINGS                1033
+#define IDD_PAGE_PRESET_SELECTION               1034
+#define IDD_PAGE_LAME_SETTINGS                  1035
+#define IDD_PAGE_LIBSNDFILE_SETTINGS            1036
+#define IDD_PAGE_OGGVORBIS_SETTINGS             1037
+#define IDD_PAGE_AAC_SETTINGS                   1038
+#define IDD_PAGE_WMA_SETTINGS                   1039
+#define IDD_PAGE_FINISH                         1040
 #define IDC_MDLG_NEXT                           3000
 #define IDC_MDLG_BACK                           3001
 #define IDC_MDLG_EXIT                           3003

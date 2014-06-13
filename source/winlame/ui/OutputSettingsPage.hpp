@@ -39,7 +39,7 @@ class OutputSettingsPage:
 public:
    /// ctor
    OutputSettingsPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_SETTINGS_GENERAL, WizardPage::typeCancelNext)
+      :WizardPage(pageHost, IDD_PAGE_OUTPUT_SETTINGS, WizardPage::typeCancelNext)
    {
    }
    /// dtor

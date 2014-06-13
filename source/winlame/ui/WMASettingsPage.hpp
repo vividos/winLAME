@@ -39,7 +39,7 @@ class WMASettingsPage:
 public:
    /// ctor
    WMASettingsPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_SETTINGS_GENERAL, WizardPage::typeCancelNext)
+      :WizardPage(pageHost, IDD_PAGE_WMA_SETTINGS, WizardPage::typeCancelNext)
    {
    }
    /// dtor

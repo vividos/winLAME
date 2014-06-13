@@ -39,7 +39,7 @@ class OggVorbisSettingsPage:
 public:
    /// ctor
    OggVorbisSettingsPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_SETTINGS_GENERAL, WizardPage::typeCancelNext)
+      :WizardPage(pageHost, IDD_PAGE_OGGVORBIS_SETTINGS, WizardPage::typeCancelNext)
    {
    }
    /// dtor
