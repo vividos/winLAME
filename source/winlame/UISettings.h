@@ -37,6 +37,24 @@ class ModuleManager;
 /// list of filenames
 typedef std::vector<EncoderJob> EncoderJobList;
 
+/// \brief settings for encoding a file
+/// \details encoding settings may differ between two files, so this struct
+/// collects all those settings.
+struct EncodingSettings
+{
+   /// ctor
+   EncodingSettings();
+
+   /// output directory
+   CString outputdir;
+
+   /// indicates if source files should be deleted after encoding
+   bool delete_after_encode;
+
+   /// indicates if existing files will be overwritten
+   bool overwrite_existing;
+};
+
 /// general UI settings
 struct UISettings
 {
@@ -49,23 +67,17 @@ struct UISettings
    /// stores settings in the registry
    void StoreSettings();
 
-   /// list of filenames to encode
+   /// list of encoder jobs
    EncoderJobList encoderjoblist;
 
-   /// output directory
-   CString outputdir;
+   /// default encoding settings
+   EncodingSettings m_defaultSettings;
 
    /// output directory history list
    std::vector<CString> outputhistory;
 
    /// last input files folder
    CString lastinputpath;
-
-   /// indicates if source files should be deleted after encoding
-   bool delete_after_encode;
-
-   /// indicates if existing files will be overwritten
-   bool overwrite_existing;
 
    /// warn about lossy transcoding
    bool warn_lossy_transcoding;
@@ -78,9 +90,6 @@ struct UISettings
 
    /// action to perform after all files were encoded
    int after_encoding_action;
-
-   /// indicates if advanced lame settings should be hidden
-   bool hide_advanced_lame;
 
    /// last selected output module id
    int output_module;

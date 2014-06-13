@@ -49,15 +49,21 @@ LPCTSTR g_pszDiscInfosCdplayerIni = _T("StoreDiscInfosInCdplayerIni");
 LPCTSTR g_pszLanguageId = _T("LanguageId");
 
 
+// EncodingSettings methods
+
+EncodingSettings::EncodingSettings()
+:delete_after_encode(false),
+overwrite_existing(true)
+{
+}
+
+
 // UISettings methods
 
 UISettings::UISettings()
-:delete_after_encode(false),
-   output_module(0),
+:output_module(0),
    out_location_use_input_dir(false),
    preset_avail(false),
-   hide_advanced_lame(true),
-   overwrite_existing(true),
    warn_lossy_transcoding(true),
    after_encoding_action(-1),
    create_playlist(false),
@@ -118,7 +124,7 @@ void UISettings::ReadSettings()
       return;
 
    // read output path
-   ReadStringValue(regRoot, g_pszOutputPath, MAX_PATH, outputdir);
+   ReadStringValue(regRoot, g_pszOutputPath, MAX_PATH, m_defaultSettings.outputdir);
 
    // read last input path
    CString cszLastInputPath;
@@ -130,13 +136,10 @@ void UISettings::ReadSettings()
    ReadBooleanValue(regRoot, g_pszInputOutputSameFolder, out_location_use_input_dir);
 
    // read "delete after encode" value
-   ReadBooleanValue(regRoot, g_pszDeleteAfterEncode, delete_after_encode);
-
-   // read "hide advanced" value
-   ReadBooleanValue(regRoot, g_pszHideAdvancedLAME, hide_advanced_lame);
+   ReadBooleanValue(regRoot, g_pszDeleteAfterEncode, m_defaultSettings.delete_after_encode);
 
    // read "overwrite existing" value
-   ReadBooleanValue(regRoot, g_pszOverwriteExisting, overwrite_existing);
+   ReadBooleanValue(regRoot, g_pszOverwriteExisting, m_defaultSettings.overwrite_existing);
 
    // read "warn about lossy transcoding" value
    ReadBooleanValue(regRoot, g_pszWarnLossyTrans, warn_lossy_transcoding);
@@ -203,7 +206,7 @@ void UISettings::StoreSettings()
 #pragma warning(disable: 4996) // 'ATL::CRegKey::QueryValue': CRegKey::QueryValue(TCHAR *value, TCHAR *valueName) has been superseded by CRegKey::QueryStringValue and CRegKey::QueryMultiStringValue
 
    // write output path
-   regRoot.SetValue(outputdir, g_pszOutputPath);
+   regRoot.SetValue(m_defaultSettings.outputdir, g_pszOutputPath);
 
    // write last input path
    regRoot.SetValue(lastinputpath, g_pszLastInputPath);
@@ -213,15 +216,11 @@ void UISettings::StoreSettings()
    regRoot.SetValue(value, g_pszInputOutputSameFolder);
 
    // write "delete after encode" value
-   value = delete_after_encode ? 1 : 0;
+   value = m_defaultSettings.delete_after_encode ? 1 : 0;
    regRoot.SetValue(value, g_pszDeleteAfterEncode);
 
-   // write "hide advanced" value
-   value = hide_advanced_lame ? 1 : 0;
-   regRoot.SetValue(value, g_pszHideAdvancedLAME);
-
    // write "overwrite existing" value
-   value = overwrite_existing ? 1 : 0;
+   value = m_defaultSettings.overwrite_existing ? 1 : 0;
    regRoot.SetValue(value, g_pszOverwriteExisting);
 
    // write "warn about lossy transcoding" value

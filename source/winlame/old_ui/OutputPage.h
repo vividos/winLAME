@@ -85,15 +85,15 @@ END_MSG_MAP()
    LRESULT OnButtonSelectOutputPath(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
    {
       UISettings &settings = pui->getUISettings();
-      CString path = settings.outputdir;
+      CString path = settings.m_defaultSettings.outputdir;
 
       // lets user select a path
       if (BrowseForFolder(m_hWnd, path))
       {
          // move history entries
          settings.outputhistory.insert(settings.outputhistory.begin(),
-            settings.outputdir);
-         settings.outputdir = path;
+            settings.m_defaultSettings.outputdir);
+         settings.m_defaultSettings.outputdir = path;
 
          // update combobox
          RefreshHistory();
@@ -141,8 +141,8 @@ END_MSG_MAP()
       int sel = SendDlgItemMessage(wID,CB_GETCURSEL);
       if (sel>0 && unsigned(sel)<=settings.outputhistory.size())
       {
-         settings.outputhistory.insert(settings.outputhistory.begin(), settings.outputdir);
-         settings.outputdir = settings.outputhistory[sel];
+         settings.outputhistory.insert(settings.outputhistory.begin(), settings.m_defaultSettings.outputdir);
+         settings.m_defaultSettings.outputdir = settings.outputhistory[sel];
          settings.outputhistory.erase(settings.outputhistory.begin()+sel);
       }
 

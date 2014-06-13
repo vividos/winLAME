@@ -89,7 +89,7 @@ LRESULT OutputPage::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    UISettings &settings = pui->getUISettings();
 
    // get control values
-   settings.delete_after_encode = BST_CHECKED==SendDlgItemMessage(IDC_OUT_DELAFTER, BM_GETCHECK);
+   settings.m_defaultSettings.delete_after_encode = BST_CHECKED == SendDlgItemMessage(IDC_OUT_DELAFTER, BM_GETCHECK);
    settings.output_module = SendDlgItemMessage(IDC_OUT_COMBO_OUTMODULE, CB_GETCURSEL);
    settings.out_location_use_input_dir = BST_CHECKED==SendDlgItemMessage(IDC_OUT_USE_INDIR, BM_GETCHECK);
 
@@ -105,7 +105,7 @@ void OutputPage::RefreshHistory()
 
    // set output path as the first in list
    SendDlgItemMessage(IDC_OUT_OUTPATH, CB_ADDSTRING, 0,
-      (LPARAM)(LPCTSTR)settings.outputdir);
+      (LPARAM)(LPCTSTR)settings.m_defaultSettings.outputdir);
 
    // output directory history
    int max=settings.outputhistory.size();
@@ -122,13 +122,13 @@ void OutputPage::OnEnterPage()
    UISettings &settings = pui->getUISettings();
 
    // initially set output dir when not set
-   if (settings.outputdir.IsEmpty())
+   if (settings.m_defaultSettings.outputdir.IsEmpty())
    {
       LPITEMIDLIST ppidl;
       ::SHGetSpecialFolderLocation(m_hWnd, CSIDL_PERSONAL , &ppidl);
       TCHAR buffer[MAX_PATH];
       ::SHGetPathFromIDList(ppidl, buffer);
-      settings.outputdir = buffer;
+      settings.m_defaultSettings.outputdir = buffer;
    }
 
    // output directory
@@ -136,7 +136,7 @@ void OutputPage::OnEnterPage()
 
    // "delete after encoding" check
    SendDlgItemMessage(IDC_OUT_DELAFTER, BM_SETCHECK,
-      settings.delete_after_encode ? BST_CHECKED : BST_UNCHECKED);
+      settings.m_defaultSettings.delete_after_encode ? BST_CHECKED : BST_UNCHECKED);
 
    // output module combo box
    SendDlgItemMessage(IDC_OUT_COMBO_OUTMODULE, CB_SETCURSEL, settings.output_module);
@@ -151,7 +151,7 @@ void OutputPage::OnEnterPage()
 
    // "overwrite existing" check
    SendDlgItemMessage(IDC_OUT_CHECK_OVERWRITE, BM_SETCHECK,
-      settings.overwrite_existing ? BST_CHECKED : BST_UNCHECKED);
+      settings.m_defaultSettings.overwrite_existing ? BST_CHECKED : BST_UNCHECKED);
 
    // "warn about lossy transcoding" check
    SendDlgItemMessage(IDC_OUT_CHECK_WARN, BM_SETCHECK,
@@ -223,11 +223,11 @@ bool OutputPage::OnLeavePage()
    UISettings& settings = pui->getUISettings();
 
    // get control values
-   GetDlgItemText(IDC_OUT_OUTPATH, settings.outputdir.GetBuffer(MAX_PATH), MAX_PATH);
-   settings.outputdir.ReleaseBuffer();
+   GetDlgItemText(IDC_OUT_OUTPATH, settings.m_defaultSettings.outputdir.GetBuffer(MAX_PATH), MAX_PATH);
+   settings.m_defaultSettings.outputdir.ReleaseBuffer();
 
    // "delete after encoding" check
-   settings.delete_after_encode =
+   settings.m_defaultSettings.delete_after_encode =
       BST_CHECKED==SendDlgItemMessage(IDC_OUT_DELAFTER, BM_GETCHECK);
 
    // output module combo box
@@ -238,7 +238,7 @@ bool OutputPage::OnLeavePage()
       BST_CHECKED==SendDlgItemMessage(IDC_OUT_USE_INDIR, BM_GETCHECK);
 
    // "overwrite existing" check
-   settings.overwrite_existing =
+   settings.m_defaultSettings.overwrite_existing =
       BST_CHECKED==SendDlgItemMessage(IDC_OUT_CHECK_OVERWRITE, BM_GETCHECK);
 
    // "warn about lossy transcoding" check
@@ -264,18 +264,18 @@ bool OutputPage::OnLeavePage()
    if (!settings.out_location_use_input_dir)
    {
       // check for empty outputdir string
-      if (settings.outputdir.IsEmpty())
+      if (settings.m_defaultSettings.outputdir.IsEmpty())
       {
          AppMessageBox(m_hWnd, IDS_OUT_OUTDIR_EMPTY, MB_OK | MB_ICONEXCLAMATION);
          return false;
       }
 
       // check if we should add a slash
-      if (_T("\\") != settings.outputdir.Right(1))
-         settings.outputdir += _T('\\');
+      if (_T("\\") != settings.m_defaultSettings.outputdir.Right(1))
+         settings.m_defaultSettings.outputdir += _T('\\');
 
       // check if output directory should be created
-      CString path = settings.outputdir;
+      CString path = settings.m_defaultSettings.outputdir;
       path.TrimRight(_T('\\'));
 
       USES_CONVERSION;
@@ -286,7 +286,7 @@ bool OutputPage::OnLeavePage()
             return false;
 
          // create the output directory
-         ::_tmkdir(settings.outputdir);
+         ::_tmkdir(settings.m_defaultSettings.outputdir);
       }
    }
 
@@ -342,7 +342,7 @@ bool OutputPage::OnLeavePage()
 
    // delete playlist file
    {
-      CString fname = settings.outputdir;
+      CString fname = settings.m_defaultSettings.outputdir;
       fname += settings.playlist_filename;
 
       _tremove(fname);

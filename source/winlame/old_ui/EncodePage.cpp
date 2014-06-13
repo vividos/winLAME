@@ -179,12 +179,12 @@ LRESULT EncodePage::OnClickedStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
          encoder->setOutputPath(outpath);
       }
       else
-         encoder->setOutputPath(settings.outputdir);
+         encoder->setOutputPath(settings.m_defaultSettings.outputdir);
 
       encoder->setOutputModulePerIndex(settings.output_module);
       encoder->setErrorHandler(this);
-      encoder->setOverwriteFiles(settings.overwrite_existing);
-      encoder->setDeleteAfterEncode(settings.delete_after_encode);
+      encoder->setOverwriteFiles(settings.m_defaultSettings.overwrite_existing);
+      encoder->setDeleteAfterEncode(settings.m_defaultSettings.delete_after_encode);
       encoder->setWarnLossy(settings.warn_lossy_transcoding);
       if (settings.create_playlist)
          encoder->setOutputPlaylistFilename(settings.playlist_filename);
