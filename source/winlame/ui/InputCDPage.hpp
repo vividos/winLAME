@@ -24,9 +24,18 @@
 
 // includes
 #include "WizardPage.h"
+#include "TrackEditListCtrl.h"
 #include "resource.h"
 
 // forward references
+struct UISettings;
+namespace Freedb
+{
+   struct CDInfo;
+}
+
+/// timer id for timer checking for cd in drive
+#define IDT_CDRIP_CHECK 66
 
 /// \brief input files page
 /// \details shows all files opened/dropped, checks them for audio infos and errors
@@ -38,29 +47,59 @@ class InputCDPage:
 {
 public:
    /// ctor
-   InputCDPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_SETTINGS_GENERAL, WizardPage::typeCancelNext)
-   {
-   }
+   InputCDPage(WizardPageHost& pageHost) throw();
    /// dtor
    ~InputCDPage() throw()
    {
    }
 
+   static bool IsCDExtractionAvail() throw();
+
 private:
    friend CDialogResize<InputCDPage>;
 
    BEGIN_DDX_MAP(InputCDPage)
+      DDX_CONTROL_HANDLE(IDC_CDSELECT_COMBO_DRIVES, m_cbDrives)
+      DDX_CONTROL(IDC_CDSELECT_LIST_TRACKS, m_lcTracks)
+      DDX_CONTROL_HANDLE(IDC_CDSELECT_COMBO_GENRE, m_cbGenre)
    END_DDX_MAP()
 
    // resize map
    BEGIN_DLGRESIZE_MAP(InputCDPage)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_COMBO_DRIVES, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_LIST_TRACKS, DLSZ_SIZE_X | DLSZ_SIZE_Y)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_EDIT_TITLE, DLSZ_SIZE_X | DLSZ_MOVE_Y)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_EDIT_ARTIST, DLSZ_SIZE_X | DLSZ_MOVE_Y)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_EDIT_YEAR, DLSZ_MOVE_X | DLSZ_MOVE_Y)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_COMBO_GENRE, DLSZ_MOVE_X | DLSZ_MOVE_Y)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, DLSZ_MOVE_Y)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_STATIC_TITLE, DLSZ_MOVE_Y)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_STATIC_ARTIST, DLSZ_MOVE_Y)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_STATIC_YEAR, DLSZ_MOVE_X | DLSZ_MOVE_Y)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_STATIC_GENRE, DLSZ_MOVE_X | DLSZ_MOVE_Y)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_PLAY, DLSZ_MOVE_X)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_STOP, DLSZ_MOVE_X)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_FREEDB, DLSZ_MOVE_X)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_OPTIONS, DLSZ_MOVE_X)
    END_DLGRESIZE_MAP()
 
    // message map
    BEGIN_MSG_MAP(InputCDPage)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
+      MESSAGE_HANDLER(WM_TIMER, OnTimer)
+      COMMAND_HANDLER(IDC_CDSELECT_COMBO_DRIVES, CBN_SELENDOK, OnDriveSelEndOk)
+      NOTIFY_HANDLER(IDC_CDSELECT_LIST_TRACKS, NM_DBLCLK, OnListDoubleClick)
+      COMMAND_HANDLER(IDC_CDSELECT_BUTTON_PLAY, BN_CLICKED, OnClickedButtonPlay)
+      COMMAND_HANDLER(IDC_CDSELECT_BUTTON_STOP, BN_CLICKED, OnClickedButtonStop)
+      COMMAND_HANDLER(IDC_CDSELECT_BUTTON_FREEDB, BN_CLICKED, OnClickedButtonFreedb)
+      COMMAND_HANDLER(IDC_CDSELECT_BUTTON_OPTIONS, BN_CLICKED, OnClickedButtonOptions)
+      COMMAND_HANDLER(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, BN_CLICKED, OnClickedCheckVariousArtists)
+      COMMAND_HANDLER(IDC_CDSELECT_EDIT_TITLE, EN_CHANGE, OnChangedEditCtrl)
+      COMMAND_HANDLER(IDC_CDSELECT_EDIT_ARTIST, EN_CHANGE, OnChangedEditCtrl)
+      COMMAND_HANDLER(IDC_CDSELECT_EDIT_YEAR, EN_CHANGE, OnChangedEditCtrl)
+      //MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
+      NOTIFY_CODE_HANDLER(LVN_ENDLABELEDIT, OnEndLabelEdit)
       CHAIN_MSG_MAP(CDialogResize<InputCDPage>)
       REFLECT_NOTIFICATIONS()
    END_MSG_MAP()
@@ -75,7 +114,55 @@ private:
 
    /// called when page is left with Next button
    LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
+   LRESULT OnDriveSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   LRESULT OnListDoubleClick(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+   LRESULT OnClickedButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   LRESULT OnClickedButtonStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   LRESULT OnClickedButtonFreedb(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   LRESULT OnClickedButtonOptions(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   LRESULT OnClickedCheckVariousArtists(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   LRESULT OnChangedEditCtrl(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   LRESULT OnEndLabelEdit(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+
+private:
+   void SetupDriveCombobox();
+   void HideDriveCombobox();
+   void SetupTracksList();
+   DWORD GetCurrentDrive();
+   void RefreshCDList();
+   bool ReadCdplayerIni(bool& bVarious);
+   void ReadCDText(bool& bVarious);
+   void CheckCD();
+   void UpdateTrackManager();
+   void StoreInCdplayerIni(unsigned int nDrive);
+   void FreedbLookup();
+   void FillListFreedbInfo(const Freedb::CDInfo& info);
 
 private:
    // controls
+
+   /// drives combobox (hidden when only one drive is present)
+   CComboBox m_cbDrives;
+
+   /// tracks list
+   TrackEditListCtrl m_lcTracks;
+
+   /// genre combobox
+   CComboBox m_cbGenre;
+
+   // Model
+
+   /// settings
+   UISettings& m_uiSettings;
+
+   /// indicates if a track title was edited
+   bool m_bEditedTrack;
+
+   /// indicates if drive is active (has a disc)
+   bool m_bDriveActive;
+
+   /// indicates if disc info has already been acquired
+   bool m_bAcquiredDiscInfo;
 };

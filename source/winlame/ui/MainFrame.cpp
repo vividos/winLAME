@@ -32,6 +32,7 @@
 #include "GeneralSettingsPage.h"
 #include "CDReadSettingsPage.h"
 #include "InputFilesPage.h"
+#include "InputCDPage.hpp"
 #include "ResourceInstanceSwitcher.h"
 #include "DropFilesManager.h"
 #include <boost/foreach.hpp>
@@ -135,6 +136,9 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
       EnableButtonText(tb, ID_ENCODE_FILES);
       EnableButtonText(tb, ID_ENCODE_CD);
+
+      if (!InputCDPage::IsCDExtractionAvail())
+         UIEnable(ID_ENCODE_CD, FALSE);
 
       UIAddToolBar(hWndToolBar);
    }
@@ -263,8 +267,9 @@ LRESULT MainFrame::OnEncodeFiles(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
 LRESULT MainFrame::OnEncodeCD(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    // show input cd page
-//   WizardPageHost host;
-//   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputCdPage(host)));
+   WizardPageHost host;
+   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputCDPage(host)));
+   host.Run(m_hWnd);
 
    return 0;
 }
