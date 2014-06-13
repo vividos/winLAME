@@ -298,6 +298,9 @@
     <ClCompile Include="winlame\ui\InputListCtrl.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\InputFilesParser.cpp">
+      <Filter>Main Program Files\Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="winlame\FreedbResolver.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
@@ -587,6 +590,9 @@
     </ClInclude>
     <ClInclude Include="winlame\encoder\CrtFopenWrapper.hpp">
       <Filter>encoder files\encoder header files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\InputFilesParser.h">
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\FreedbResolver.hpp">
       <Filter>Main Program Files\Header Files</Filter>
