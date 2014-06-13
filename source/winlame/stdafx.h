@@ -85,6 +85,7 @@ extern CAppModule _Module;
 #include <atlctrls.h>
 #include <atldlgs.h>
 #include <atlctrlw.h>
+#include <atlctrlx.h>
 #include <atlddx.h>
 #include <atlframe.h>
 #include <atlribbon.h>
