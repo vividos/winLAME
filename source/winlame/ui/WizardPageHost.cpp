@@ -281,9 +281,14 @@ LRESULT WizardPageHost::OnButtonClicked(WORD /*wNotifyCode*/, WORD wID, HWND /*h
    m_spCurrentPage.reset();
 
    // send button press to current page
-   spCurrentPage->SendMessage(WM_COMMAND, MAKELONG(wID, BN_CLICKED));
+   LRESULT result = spCurrentPage->SendMessage(WM_COMMAND, MAKELONG(wID, BN_CLICKED));
 
-   // TODO check result code
+   if (result == 1)
+   {
+      m_spCurrentPage = spCurrentPage;
+
+      return 0; // message was rejected
+   }
 
    // clear last page
    spCurrentPage->DestroyWindow();

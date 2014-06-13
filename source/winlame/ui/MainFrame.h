@@ -101,18 +101,6 @@ private:
    /// enables tasks list refresh
    void EnableRefresh(bool bEnable = true);
 
-   /// parses files dropped on window
-   void ParseDroppedFiles(HDROP hDropInfo);
-
-   /// returns filter string
-   CString GetFilterString();
-
-   /// opens the file dialog
-   void OpenFileDialog();
-
-   /// parse buffer from multi selection from open file dialog
-   void ParseMultiSelectionFiles(LPCTSTR pszBuffer);
-
 private:
    /// ref to task manager
    TaskManager& m_taskManager;
@@ -122,7 +110,4 @@ private:
 
    /// indicates if tasks list refresh is active
    bool m_bRefreshActive;
-
-   /// filter string
-   CString m_cszFilterString;
 };

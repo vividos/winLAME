@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2014 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 #include "resource.h"
 
 // forward references
+struct UISettings;
 
 /// \brief input files page
 /// \details shows all files opened/dropped, checks them for audio infos and errors
@@ -39,14 +40,15 @@ class InputFilesPage:
 {
 public:
    /// ctor
-   InputFilesPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_SETTINGS_GENERAL, WizardPage::typeCancelNext)
-   {
-   }
+   InputFilesPage(WizardPageHost& pageHost,
+      const std::vector<CString>& vecInputFiles) throw();
    /// dtor
    ~InputFilesPage() throw()
    {
    }
+
+   /// opens file dialog and returns all files selected
+   static bool OpenFileDialog(HWND hWndParent, std::vector<CString>& vecFilenames);
 
 private:
    friend CDialogResize<InputFilesPage>;
@@ -65,6 +67,13 @@ private:
    BEGIN_MSG_MAP(InputFilesPage)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
+      MESSAGE_HANDLER(WM_DROPFILES, OnDropFiles)
+      MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
+      NOTIFY_HANDLER(IDC_INPUT_LIST_INPUTFILES, LVN_ITEMCHANGED, OnListItemChanged)
+      NOTIFY_HANDLER(IDC_INPUT_LIST_INPUTFILES, NM_DBLCLK, OnDoubleClickedList)
+      COMMAND_HANDLER(IDC_INPUT_BUTTON_PLAY, BN_CLICKED, OnButtonPlay)
+      COMMAND_HANDLER(IDC_INPUT_BUTTON_INFILESEL, BN_CLICKED, OnButtonInputFileSel)
+      COMMAND_HANDLER(IDC_INPUT_BUTTON_DELETE, BN_CLICKED, OnButtonDeleteAll)
       CHAIN_MSG_MAP(CDialogResize<InputFilesPage>)
       REFLECT_NOTIFICATIONS()
    END_MSG_MAP()
@@ -80,7 +89,60 @@ private:
    /// called when page is left
    LRESULT OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
+   /// called when user dropped files on the list ctrl
+   LRESULT OnDropFiles(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
+   /// called when the button for adding input files is pressed
+   LRESULT OnButtonInputFileSel(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   /// called when the user clicks on the button to delete all selected files
+   LRESULT OnButtonDeleteAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   /// called when button "CD Rip" was pressed
+   LRESULT OnButtonCDRip(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+   /// called for processing key presses
+   LRESULT OnKeyDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+   /// called when the selected item in the list ctrl changes
+   LRESULT OnListItemChanged(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+   /// called when user double-clicks on an item in list
+   LRESULT OnDoubleClickedList(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+   /// called when user presses the play button
+   LRESULT OnButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+private:
+   /// sets up tracks list control
+   void SetupListCtrl();
+
+   /// insert new file names into list
+   void InsertFilenames(const std::vector<CString>& vecInputFiles);
+
+   /// inserts single filename with icon into list
+   void InsertFilenameWithIcon(const CString& cszFilename);
+
+   /// plays file using assigned application
+   void PlayFile(LPCTSTR filename);
+
+   /// parse buffer from multi selection from open file dialog
+   static void ParseMultiSelectionFiles(LPCTSTR pszBuffer, std::vector<CString>& vecFilenames);
+
+   /// returns filter string
+   static CString GetFilterString();
+
 private:
    // controls
+
+   /// list of filenames
    InputListCtrl m_inputFilesList;
+
+   // model
+
+   /// settings
+   UISettings& m_uiSettings;
+
+   /// list of passed filenames; cleared after inserting into list
+   std::vector<CString> m_vecInputFiles;
+
+   /// indicates if system image list was already set on list control
+   bool m_bSetSysImageList;
+
+   /// filter string
+   static CString m_cszFilterString;
 };
