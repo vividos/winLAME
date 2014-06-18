@@ -73,6 +73,10 @@ struct UISettings
    /// default encoding settings
    EncodingSettings m_defaultSettings;
 
+   /// indicates if OutputSettingsPage was called from InputFilesPage (true)
+   /// or InputCDPage (false)
+   bool m_bFromInputFilesPage;
+
    /// output directory history list
    std::vector<CString> outputhistory;
 
@@ -102,6 +106,9 @@ struct UISettings
 
    /// current filename of presets.xml file
    CString presets_filename;
+
+   /// last selected preset index
+   int m_iLastSelectedPresetIndex;
 
    /// autostart encoding after cd ripping?
    bool cdrip_autostart_encoding;

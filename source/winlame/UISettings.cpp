@@ -40,6 +40,7 @@ LPCTSTR g_pszHideAdvancedLAME = _T("HideAdvancedLAME");
 LPCTSTR g_pszOverwriteExisting = _T("OverwriteExisting");
 LPCTSTR g_pszWarnLossyTrans = _T("WarnLossyTranscoding");
 LPCTSTR g_pszActionAfterEncoding = _T("ActionAfterEncoding");
+LPCTSTR g_pszLastSelectedPresetIndex = _T("LastSelectedPresetIndex");
 LPCTSTR g_pszCdripAutostartEncoding = _T("CDExtractAutostartEncoding");
 LPCTSTR g_pszCdripTempFolder = _T("CDExtractTempFolder");
 LPCTSTR g_pszOutputPathHistory = _T("OutputPathHistory%02u");
@@ -64,11 +65,13 @@ UISettings::UISettings()
 :output_module(0),
    out_location_use_input_dir(false),
    preset_avail(false),
+   m_bFromInputFilesPage(true),
    warn_lossy_transcoding(true),
    after_encoding_action(-1),
    create_playlist(false),
    playlist_filename(MAKEINTRESOURCE(IDS_GENERAL_PLAYLIST_FILENAME)),
    cdrip_autostart_encoding(true),
+   m_iLastSelectedPresetIndex(0),
    last_page_was_cdrip_page(false),
    freedb_server(_T("freedb.freedb.org")),
    freedb_username(_T("default")),
@@ -146,6 +149,9 @@ void UISettings::ReadSettings()
 
    // read "action after encoding" value
    ReadIntValue(regRoot, g_pszActionAfterEncoding, after_encoding_action);
+
+   // read last selected preset index
+   ReadIntValue(regRoot, g_pszLastSelectedPresetIndex, m_iLastSelectedPresetIndex);
 
    // read "autostart after encoding" value
    ReadBooleanValue(regRoot, g_pszCdripAutostartEncoding, cdrip_autostart_encoding);
@@ -234,6 +240,9 @@ void UISettings::StoreSettings()
    // write "autostart after encoding" value
    value = cdrip_autostart_encoding ? 1 : 0;
    regRoot.SetValue(value, g_pszCdripAutostartEncoding);
+
+   // write last selected preset index
+   regRoot.SetValue(m_iLastSelectedPresetIndex, g_pszLastSelectedPresetIndex);
 
    // write cd extraction temp folder
    regRoot.SetValue(cdrip_temp_folder, g_pszCdripTempFolder);
