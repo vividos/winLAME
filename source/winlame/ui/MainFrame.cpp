@@ -237,7 +237,7 @@ LRESULT MainFrame::OnDropFiles(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, 
 
    // show input files page
    WizardPageHost host;
-   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputFilesPage(host, dropMgr.Filenames())));
+   host.SetWizardPage(std::shared_ptr<WizardPage>(new InputFilesPage(host, dropMgr.Filenames())));
    host.Run(m_hWnd);
 
    return 0;
@@ -259,7 +259,7 @@ LRESULT MainFrame::OnEncodeFiles(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
 
    // show input files page
    WizardPageHost host;
-   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputFilesPage(host, vecFilenames)));
+   host.SetWizardPage(std::shared_ptr<WizardPage>(new InputFilesPage(host, vecFilenames)));
    host.Run(m_hWnd);
 
    return 0;
@@ -269,7 +269,7 @@ LRESULT MainFrame::OnEncodeCD(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 {
    // show input cd page
    WizardPageHost host;
-   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputCDPage(host)));
+   host.SetWizardPage(std::shared_ptr<WizardPage>(new InputCDPage(host)));
    host.Run(m_hWnd);
 
    return 0;
@@ -278,7 +278,7 @@ LRESULT MainFrame::OnEncodeCD(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 LRESULT MainFrame::OnSettingsGeneral(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    WizardPageHost host;
-   host.SetWizardPage(boost::shared_ptr<WizardPage>(
+   host.SetWizardPage(std::shared_ptr<WizardPage>(
       new GeneralSettingsPage(host,
          IoCContainer::Current().Resolve<UISettings>(),
          IoCContainer::Current().Resolve<LanguageResourceManager>())));
@@ -290,7 +290,7 @@ LRESULT MainFrame::OnSettingsGeneral(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*
 LRESULT MainFrame::OnSettingsCDRead(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    WizardPageHost host;
-   host.SetWizardPage(boost::shared_ptr<WizardPage>(
+   host.SetWizardPage(std::shared_ptr<WizardPage>(
       new CDReadSettingsPage(host,
          IoCContainer::Current().Resolve<UISettings>())));
    host.Run(m_hWnd);

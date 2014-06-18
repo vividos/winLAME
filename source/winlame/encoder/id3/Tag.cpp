@@ -45,7 +45,7 @@ ID3::Frame Tag::FindFrame(const CString& cszFrameId)
 {
    // note: without id3_frame_delete as deletor!
    USES_CONVERSION;
-   boost::shared_ptr<id3_frame> spFrame(
+   std::shared_ptr<id3_frame> spFrame(
       id3_tag_findframe(m_spTag.get(), T2CA(cszFrameId), 0),
       do_nothing<id3_frame>);
 
@@ -61,7 +61,7 @@ ID3::Frame Tag::GetByIndex(unsigned int uiFrameIndex)
 {
    ATLASSERT(uiFrameIndex < m_spTag->nframes);
 
-   boost::shared_ptr<id3_frame> spFrame(
+   std::shared_ptr<id3_frame> spFrame(
       id3_tag_findframe(m_spTag.get(), NULL, uiFrameIndex),
       do_nothing<id3_frame>);
    return ID3::Frame(spFrame);
@@ -71,7 +71,7 @@ const ID3::Frame Tag::GetByIndex(unsigned int uiFrameIndex) const
 {
    ATLASSERT(uiFrameIndex < m_spTag->nframes);
 
-   boost::shared_ptr<id3_frame> spFrame(
+   std::shared_ptr<id3_frame> spFrame(
       id3_tag_findframe(m_spTag.get(), NULL, uiFrameIndex),
       do_nothing<id3_frame>);
    return ID3::Frame(spFrame);

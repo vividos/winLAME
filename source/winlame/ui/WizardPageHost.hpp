@@ -42,7 +42,7 @@ public:
    ~WizardPageHost() throw() {}
 
    /// sets wizard page
-   void SetWizardPage(boost::shared_ptr<WizardPage> spCurrentPage);
+   void SetWizardPage(std::shared_ptr<WizardPage> spCurrentPage);
 
    /// \brief runs the wizard pages until the pages return
    /// \retval IDOK ok or finish button was pressed
@@ -118,7 +118,7 @@ private:
    CSize m_sizePage;
 
    /// current wizard page
-   boost::shared_ptr<WizardPage> m_spCurrentPage;
+   std::shared_ptr<WizardPage> m_spCurrentPage;
 };
 
 } // namespace UI

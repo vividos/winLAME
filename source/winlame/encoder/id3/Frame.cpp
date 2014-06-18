@@ -34,7 +34,7 @@ Frame::Frame(const CString& cszFrameId)
 {
    USES_CONVERSION;
    id3_frame* frame = id3_frame_new(T2CA(cszFrameId));
-   m_spFrame = boost::shared_ptr<id3_frame>(frame, do_nothing<id3_frame>);
+   m_spFrame = std::shared_ptr<id3_frame>(frame, do_nothing<id3_frame>);
 }
 
 Frame::~Frame()
@@ -54,7 +54,7 @@ ID3::Field Frame::GetField(unsigned int uiIndex)
    id3_field* field = id3_frame_field(m_spFrame.get(), uiIndex);
 //   id3_field_addref(field);
 
-   boost::shared_ptr<id3_field> spField(field, do_nothing<id3_field>);
+   std::shared_ptr<id3_field> spField(field, do_nothing<id3_field>);
    return ID3::Field(spField);
 }
 

@@ -27,7 +27,7 @@
 #include <boost/bind.hpp>
 
 TaskManager::TaskManager()
-:m_scpDefaultWork(new boost::asio::io_service::work(m_ioService))
+:m_upDefaultWork(new boost::asio::io_service::work(m_ioService))
 {
    // find out number of threads to start
    unsigned int uiNumThreads = m_config.m_uiUseNumTasks;
@@ -41,9 +41,9 @@ TaskManager::TaskManager()
    // start up threads
    for (unsigned int i=0; i<uiNumThreads; i++)
    {
-      boost::shared_ptr<std::thread> spThread(
+      std::shared_ptr<std::thread> spThread(
          new std::thread(
-            boost::bind(&TaskManager::RunThread, boost::ref(m_ioService))
+            std::bind(&TaskManager::RunThread, boost::ref(m_ioService))
       ));
 
       SetBusyFlag(GetThreadId(spThread->native_handle()), false);
@@ -58,7 +58,7 @@ TaskManager::~TaskManager()
    StopAll();
 
    // stop threads
-   m_scpDefaultWork.reset();
+   m_upDefaultWork.reset();
 
    for (unsigned int i=0, iMax=m_vecThreadPool.size(); i<iMax; i++)
       m_vecThreadPool[i]->join();
@@ -72,7 +72,7 @@ std::vector<TaskInfo> TaskManager::CurrentTasks()
 
    {
       boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
-      BOOST_FOREACH(boost::shared_ptr<Task> spTask, m_deqTaskQueue)
+      BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
       {
          // query task for info
          vecTaskInfos.push_back(spTask->GetTaskInfo());
@@ -98,7 +98,7 @@ void TaskManager::SetNewConfig(const TaskManagerConfig& config)
    // TODO reduce/start new threads
 }
 
-void TaskManager::AddTask(boost::shared_ptr<Task> spTask)
+void TaskManager::AddTask(std::shared_ptr<Task> spTask)
 {
    {
       boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
@@ -106,7 +106,7 @@ void TaskManager::AddTask(boost::shared_ptr<Task> spTask)
    }
 
    m_ioService.post(
-      boost::bind(&TaskManager::RunTask, this, spTask));
+      std::bind(&TaskManager::RunTask, this, spTask));
 }
 
 bool TaskManager::IsQueueEmpty() const
@@ -125,7 +125,7 @@ void TaskManager::StopAll()
 {
    boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
 
-   BOOST_FOREACH(boost::shared_ptr<Task> spTask, m_deqTaskQueue)
+   BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
    {
       spTask->Stop();
    }
@@ -145,7 +145,7 @@ void TaskManager::RunThread(boost::asio::io_service& ioService)
    }
 }
 
-void TaskManager::RunTask(boost::shared_ptr<Task> spTask)
+void TaskManager::RunTask(std::shared_ptr<Task> spTask)
 {
    SetBusyFlag(GetCurrentThreadId(), true);
 
@@ -157,7 +157,7 @@ void TaskManager::RunTask(boost::shared_ptr<Task> spTask)
    RemoveTask(spTask);
 }
 
-void TaskManager::RemoveTask(boost::shared_ptr<Task> spTask)
+void TaskManager::RemoveTask(std::shared_ptr<Task> spTask)
 {
    boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
 

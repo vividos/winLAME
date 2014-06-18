@@ -26,7 +26,7 @@
 using UI::WizardPageHost;
 using UI::WizardPage;
 
-void WizardPageHost::SetWizardPage(boost::shared_ptr<WizardPage> spCurrentPage)
+void WizardPageHost::SetWizardPage(std::shared_ptr<WizardPage> spCurrentPage)
 {
    m_spCurrentPage = spCurrentPage;
 }
@@ -282,7 +282,7 @@ LRESULT WizardPageHost::OnButtonClicked(WORD /*wNotifyCode*/, WORD wID, HWND /*h
    }
 
    // remove current page; when page doesn't set up new page, we leave
-   boost::shared_ptr<WizardPage> spCurrentPage = m_spCurrentPage;
+   std::shared_ptr<WizardPage> spCurrentPage = m_spCurrentPage;
    m_spCurrentPage.reset();
 
    // send button press to current page

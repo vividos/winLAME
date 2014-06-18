@@ -95,10 +95,10 @@ LRESULT OutputSettingsPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWN
 
       m_uiSettings.encoderjoblist.clear();
 
-      m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new InputFilesPage(m_pageHost, vecInputFiles)));
+      m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new InputFilesPage(m_pageHost, vecInputFiles)));
    }
    else
-      m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new InputCDPage(m_pageHost)));
+      m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new InputCDPage(m_pageHost)));
 
    return 0;
 }
@@ -216,7 +216,7 @@ void OutputSettingsPage::SetWizardPage()
       // do we have more than the default preset?
       if (presetManager.getPresetCount() > 0)
       {
-         m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new PresetSelectionPage(m_pageHost)));
+         m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new PresetSelectionPage(m_pageHost)));
          return;
       }
    }
@@ -229,23 +229,23 @@ void OutputSettingsPage::SetWizardPageByOutputModule(WizardPageHost& pageHost, i
    switch (modid)
    {
    case ID_OM_LAME:
-      pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new LAMESettingsPage(pageHost)));
+      pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new LAMESettingsPage(pageHost)));
       break;
 
    case ID_OM_OGGV:
-      pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new UI::OggVorbisSettingsPage(pageHost)));
+      pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new UI::OggVorbisSettingsPage(pageHost)));
       break;
 
    case ID_OM_WAVE:
-      pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new LibsndfileSettingsPage(pageHost)));
+      pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new LibsndfileSettingsPage(pageHost)));
       break;
 
    case ID_OM_AAC:
-      pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new AACSettingsPage(pageHost)));
+      pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new AACSettingsPage(pageHost)));
       break;
 
    case ID_OM_BASSWMA:
-      pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new WMASettingsPage(pageHost)));
+      pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new WMASettingsPage(pageHost)));
       break;
 
    default:

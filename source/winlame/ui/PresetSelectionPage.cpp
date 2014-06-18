@@ -52,7 +52,7 @@ LRESULT PresetSelectionPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND
       OutputSettingsPage::SetWizardPageByOutputModule(m_pageHost, modid);
    }
    else
-      m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new FinishPage(m_pageHost)));
+      m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new FinishPage(m_pageHost)));
 
    return 0;
 }
@@ -68,7 +68,7 @@ LRESULT PresetSelectionPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HW
 {
    SaveData();
 
-   m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
+   m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
 
    return 0;
 }

@@ -57,7 +57,7 @@ LRESULT FinishPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
 {
    if (m_uiSettings.preset_avail && m_uiSettings.m_iLastSelectedPresetIndex > 0)
    {
-      m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new PresetSelectionPage(m_pageHost)));
+      m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new PresetSelectionPage(m_pageHost)));
    }
    else
    {

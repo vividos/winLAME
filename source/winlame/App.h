@@ -92,8 +92,8 @@ private:
    TaskManager m_taskManager;
 
    /// preset manager
-   boost::shared_ptr<PresetManagerInterface> m_spPresetManager;
+   std::shared_ptr<PresetManagerInterface> m_spPresetManager;
 
    /// module manager
-   boost::shared_ptr<ModuleManager> m_spModuleManager;
+   std::shared_ptr<ModuleManager> m_spModuleManager;
 };

@@ -48,7 +48,7 @@
 #include <list>
 #include <map>
 #include <iostream>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 /// cppxml namespace
 namespace cppxml
@@ -58,13 +58,13 @@ namespace cppxml
 typedef std::string string;
 
 /// xml tree node smartpointer
-typedef boost::shared_ptr<class xmlnode> xmlnode_ptr;
+typedef std::shared_ptr<class xmlnode> xmlnode_ptr;
 
 /// list of node smart pointer
 typedef std::list<xmlnode_ptr> xmlnodelist;
 
 /// xml tree node list smartpointer
-typedef boost::shared_ptr<xmlnodelist> xmlnodelist_ptr;
+typedef std::shared_ptr<xmlnodelist> xmlnodelist_ptr;
 
 /// attribute map
 typedef std::map<cppxml::string, cppxml::string> xmlattrmap;

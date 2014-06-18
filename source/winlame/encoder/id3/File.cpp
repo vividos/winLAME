@@ -91,7 +91,7 @@ ID3::Tag File::GetTag()
 {
    ATLASSERT(m_spFile != NULL);
 
-   boost::shared_ptr<id3_tag> spTag(id3_file_tag(m_spFile.get()), do_nothing<id3_tag>);
+   std::shared_ptr<id3_tag> spTag(id3_file_tag(m_spFile.get()), do_nothing<id3_tag>);
    return ID3::Tag(spTag);
 }
 
@@ -99,7 +99,7 @@ const ID3::Tag File::GetTag() const
 {
    ATLASSERT(m_spFile != NULL);
 
-   boost::shared_ptr<id3_tag> spTag(id3_file_tag(m_spFile.get()));
+   std::shared_ptr<id3_tag> spTag(id3_file_tag(m_spFile.get()));
    return ID3::Tag(spTag);
 }
 

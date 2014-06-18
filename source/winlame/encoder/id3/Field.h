@@ -21,7 +21,7 @@
 /// \brief id3 field class
 #pragma once
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 union id3_field;
 
@@ -36,7 +36,7 @@ public:
 private:
    friend class Frame;
 
-   Field(boost::shared_ptr<id3_field> spField)
+   Field(std::shared_ptr<id3_field> spField)
       :m_spField(spField)
    {
    }
@@ -46,7 +46,7 @@ private:
    CString AsString();
 
 private:
-   boost::shared_ptr<id3_field> m_spField;
+   std::shared_ptr<id3_field> m_spField;
 };
 
 }

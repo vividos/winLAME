@@ -89,7 +89,7 @@ LRESULT InputCDPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
    }
 
    m_uiSettings.m_bFromInputFilesPage = false;
-   m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
+   m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
 
    return 0;
 }
@@ -147,7 +147,7 @@ LRESULT InputCDPage::OnClickedButtonFreedb(WORD wNotifyCode, WORD wID, HWND hWnd
 LRESULT InputCDPage::OnClickedButtonOptions(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
    WizardPageHost host;
-   host.SetWizardPage(boost::shared_ptr<WizardPage>(
+   host.SetWizardPage(std::shared_ptr<WizardPage>(
       new CDReadSettingsPage(host, m_uiSettings)));
    host.Run(m_hWnd);
 

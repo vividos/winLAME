@@ -25,8 +25,7 @@
 // includes
 #include <vector>
 #include <deque>
-#include <boost/shared_ptr.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <memory>
 #include <boost/thread/recursive_mutex.hpp>
 #include <thread>
 #include <boost/asio.hpp>
@@ -55,7 +54,7 @@ public:
    void SetNewConfig(const TaskManagerConfig& config);
 
    /// adds a task to the queue
-   void AddTask(boost::shared_ptr<Task> spTask);
+   void AddTask(std::shared_ptr<Task> spTask);
 
    /// returns if task queue is empty
    bool IsQueueEmpty() const throw();
@@ -68,10 +67,10 @@ private:
    static void RunThread(boost::asio::io_service& ioService);
 
    /// runs single task
-   void RunTask(boost::shared_ptr<Task> spTask);
+   void RunTask(std::shared_ptr<Task> spTask);
 
    /// removes task from queue
-   void RemoveTask(boost::shared_ptr<Task> spTask);
+   void RemoveTask(std::shared_ptr<Task> spTask);
 
    /// sets busy flag for thread
    void SetBusyFlag(DWORD dwThreadId, bool bBusy);
@@ -92,7 +91,7 @@ private:
    boost::recursive_mutex m_mutexQueue;
 
    /// task queue typedef
-   typedef std::deque<boost::shared_ptr<Task> > T_deqTaskQueue;
+   typedef std::deque<std::shared_ptr<Task>> T_deqTaskQueue;
 
    /// task queue
    T_deqTaskQueue m_deqTaskQueue;
@@ -104,10 +103,10 @@ private:
    boost::asio::io_service m_ioService;
 
    /// default work for io service
-   boost::scoped_ptr<boost::asio::io_service::work> m_scpDefaultWork;
+   std::unique_ptr<boost::asio::io_service::work> m_upDefaultWork;
 
    /// thread pool
-   std::vector<boost::shared_ptr<std::thread> > m_vecThreadPool;
+   std::vector<std::shared_ptr<std::thread>> m_vecThreadPool;
 
 
    // busy flags

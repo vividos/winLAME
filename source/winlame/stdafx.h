@@ -98,6 +98,7 @@ extern CAppModule _Module;
 // Standard C++ Library includes
 #include <string>
 #include <vector>
+#include <memory>
 
 #ifdef _UNICODE
 #define tstring wstring
@@ -111,7 +112,6 @@ extern CAppModule _Module;
 #define BOOST_REGEX_NO_LIB
 
 #include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/asio.hpp>
 
 #include "IoCContainer.hpp"

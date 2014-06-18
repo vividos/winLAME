@@ -62,7 +62,7 @@ LRESULT WMASettingsPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
 {
    SaveData();
 
-   m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new FinishPage(m_pageHost)));
+   m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new FinishPage(m_pageHost)));
 
    return 0;
 }
@@ -81,9 +81,9 @@ LRESULT WMASettingsPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /
    PresetManagerInterface& presetManager = IoCContainer::Current().Resolve<PresetManagerInterface>();
 
    if (m_uiSettings.preset_avail && presetManager.getPresetCount() > 0)
-      m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new PresetSelectionPage(m_pageHost)));
+      m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new PresetSelectionPage(m_pageHost)));
    else
-      m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
+      m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
 
    return 0;
 }

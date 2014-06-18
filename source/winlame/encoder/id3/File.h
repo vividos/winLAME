@@ -21,8 +21,7 @@
 /// \brief id3 file class
 #pragma once
 
-#include <boost/shared_ptr.hpp>
-
+#include <memory>
 #include "Tag.h"
 
 struct id3_file;
@@ -53,7 +52,7 @@ public:
    bool Update();
 
 private:
-   boost::shared_ptr<id3_file> m_spFile;
+   std::shared_ptr<id3_file> m_spFile;
    bool m_bReadOnly;
 };
 

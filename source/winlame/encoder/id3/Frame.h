@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "Field.h"
 
 struct id3_frame;
@@ -84,9 +84,9 @@ public:
 
 private:
    friend class Tag;
-   boost::shared_ptr<id3_frame> GetFrame(){ return m_spFrame; }
+   std::shared_ptr<id3_frame> GetFrame(){ return m_spFrame; }
 
-   Frame(boost::shared_ptr<id3_frame> spFrame)
+   Frame(std::shared_ptr<id3_frame> spFrame)
       :m_spFrame(spFrame),
        m_bAttached(true)
    {
@@ -94,7 +94,7 @@ private:
 
 private:
    bool m_bAttached;
-   boost::shared_ptr<id3_frame> m_spFrame;
+   std::shared_ptr<id3_frame> m_spFrame;
 };
 
 } // namespace ID3

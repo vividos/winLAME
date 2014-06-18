@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include "Frame.h"
 
 struct id3_tag;
@@ -75,14 +75,14 @@ private:
    friend class File;
 
    /// ctor
-   Tag(boost::shared_ptr<id3_tag> spTag)
+   Tag(std::shared_ptr<id3_tag> spTag)
       :m_spTag(spTag)
    {
    }
 
 private:
    /// tag data
-   boost::shared_ptr<id3_tag> m_spTag;
+   std::shared_ptr<id3_tag> m_spTag;
 };
 
 } // namespace ID3
