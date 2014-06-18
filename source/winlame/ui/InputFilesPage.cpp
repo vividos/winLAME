@@ -29,6 +29,8 @@
 #include "WizardPageHost.h"
 #include "OutputSettingsPage.hpp"
 
+using namespace UI;
+
 CString InputFilesPage::m_cszFilterString;
 
 InputFilesPage::InputFilesPage(WizardPageHost& pageHost,
@@ -50,17 +52,13 @@ LRESULT InputFilesPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
 
    SetupListCtrl();
 
-   {
-      InputFilesParser parser;
-      parser.Parse(m_vecInputFiles);
-
-      InsertFilenames(parser.FileList());
-
-      m_vecInputFiles.clear();
-   }
+   AddFiles(m_vecInputFiles);
+   m_vecInputFiles.clear();
 
    GetDlgItem(IDC_INPUT_BUTTON_PLAY).EnableWindow(false);
    GetDlgItem(IDC_INPUT_BUTTON_DELETE).EnableWindow(false);
+
+   UpdateTimeCount();
 
    return 1;
 }
@@ -72,9 +70,8 @@ LRESULT InputFilesPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hW
    // when no input files are chosen, refuse to leave the page
    if (max == 0)
    {
-      // pop up a message box
       AppMessageBox(m_hWnd, IDS_INPUT_NOINFILES, MB_OK | MB_ICONEXCLAMATION);
-      return 1;
+      return 1; // prevent leaving dialog
    }
 
    // add encoder job for every file in list
@@ -84,6 +81,7 @@ LRESULT InputFilesPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hW
       m_uiSettings.encoderjoblist.push_back(EncoderJob(pszFilename));
    }
 
+   m_uiSettings.m_bFromInputFilesPage = true;
    m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
 
    return 0;
@@ -93,10 +91,7 @@ LRESULT InputFilesPage::OnDropFiles(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lPara
 {
    DropFilesManager dropMgr((HDROP)wParam);
 
-   InputFilesParser parser;
-   parser.Parse(dropMgr.Filenames());
-
-   InsertFilenames(parser.FileList());
+   AddFiles(dropMgr.Filenames());
 
    // redraw after drop
    GetParent().Invalidate();
@@ -118,7 +113,7 @@ LRESULT InputFilesPage::OnKeyDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
       m_inputFilesList.SetItemState(pos,
          LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 
-      //UpdateTimeCount();
+      UpdateTimeCount();
 
       m_inputFilesList.Invalidate();
    }
@@ -181,11 +176,7 @@ LRESULT InputFilesPage::OnButtonInputFileSel(WORD /*wNotifyCode*/, WORD /*wID*/,
    if (!InputFilesPage::OpenFileDialog(m_hWnd, m_vecInputFiles))
       return 0;
 
-   InputFilesParser parser;
-   parser.Parse(m_vecInputFiles);
-
-   InsertFilenames(parser.FileList());
-
+   AddFiles(m_vecInputFiles);
    m_vecInputFiles.clear();
 
    return 0;
@@ -196,7 +187,7 @@ LRESULT InputFilesPage::OnButtonDeleteAll(WORD wNotifyCode, WORD wID, HWND hWndC
    // delete all list items
    m_inputFilesList.DeleteSelectedListItems();
 
-   // TODO UpdateTimeCount();
+   UpdateTimeCount();
 
    m_inputFilesList.Invalidate();
 
@@ -206,7 +197,7 @@ LRESULT InputFilesPage::OnButtonDeleteAll(WORD wNotifyCode, WORD wID, HWND hWndC
 void InputFilesPage::SetupListCtrl()
 {
    // find out width of the list ctrl
-   RECT rc;
+   CRect rc;
    m_inputFilesList.GetWindowRect(&rc);
    int width = rc.right - rc.left - 4;
 
@@ -234,14 +225,26 @@ void InputFilesPage::SetupListCtrl()
       LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_UNDERLINEHOT);
 }
 
+void InputFilesPage::AddFiles(const std::vector<CString>& vecInputFiles)
+{
+   InputFilesParser parser;
+   parser.Parse(vecInputFiles);
+
+   InsertFilenames(parser.FileList());
+
+   if (!parser.PlaylistName().IsEmpty())
+   {
+      CString cszName = Path(parser.PlaylistName()).FilenameOnly();
+      m_uiSettings.playlist_filename = cszName + _T(".m3u");
+   }
+}
+
 void InputFilesPage::InsertFilenames(const std::vector<CString>& vecInputFiles)
 {
    m_inputFilesList.SetRedraw(false);
 
    for (size_t i = 0, iMax = vecInputFiles.size(); i < iMax; i++)
-   {
       InsertFilenameWithIcon(vecInputFiles[i]);
-   }
 
    m_inputFilesList.SetRedraw(true);
 }
@@ -267,6 +270,16 @@ void InputFilesPage::InsertFilenameWithIcon(const CString& cszFilename)
 void InputFilesPage::PlayFile(LPCTSTR filename)
 {
    ::ShellExecute(NULL, _T("open"), filename, NULL, NULL, SW_SHOW);
+}
+
+void InputFilesPage::UpdateTimeCount()
+{
+   unsigned int nTime = m_inputFilesList.GetTotalLength();
+
+   CString cszText;
+   cszText.Format(IDS_INPUT_TIME_UU, nTime / 60, nTime % 60);
+
+   SetDlgItemText(IDC_STATIC_TIMECOUNT, cszText);
 }
 
 CString InputFilesPage::GetFilterString()
@@ -355,8 +368,7 @@ void InputFilesPage::ParseMultiSelectionFiles(LPCTSTR pszBuffer, std::vector<CSt
    LPCTSTR pszStart = pszBuffer;
 
    lastinputpath = pszStart;
-   if (lastinputpath.Right(1) != _T("\\"))
-      lastinputpath += _T("\\");
+   Path::AddEndingBackslash(lastinputpath);
 
    // go to the first file
    while (*pszStart++ != 0);

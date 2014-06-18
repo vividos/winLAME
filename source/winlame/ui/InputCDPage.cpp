@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2013 Michael Fink
+// Copyright (c) 2000-2014 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 /// \file InputCDPage.cpp
-/// \brief Input files page
+/// \brief Input CD page
 
 // includes
 #include "StdAfx.h"
@@ -32,6 +32,8 @@
 #include "FreedbResolver.hpp"
 #include "CommonStuff.h"
 #include "CDRipDlg.h"
+
+using namespace UI;
 
 const DWORD INVALID_DRIVE_ID = 0xffffffff;
 
@@ -63,8 +65,8 @@ LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
    for (unsigned int i = 0, iMax = TrackInfo::GetGenreListLength(); i<iMax; i++)
       m_cbGenre.AddString(apszGenre[i]);
 
-   //::EnableWindow(GetDlgItem(IDC_CDSELECT_BUTTON_PLAY), false);
-   ::EnableWindow(GetDlgItem(IDC_CDSELECT_BUTTON_STOP), false);
+   GetDlgItem(IDC_CDSELECT_BUTTON_PLAY).EnableWindow(false);
+   GetDlgItem(IDC_CDSELECT_BUTTON_STOP).EnableWindow(false);
 
    m_bEditedTrack = false;
 
@@ -79,20 +81,21 @@ LRESULT InputCDPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 {
    KillTimer(IDT_CDRIP_CHECK);
 
-   // TODO add encoder jobs for every selected track
    {
-      //if (m_bEditedTrack)
-      //   StoreInCdplayerIni(GetCurrentDrive());
+      if (m_bEditedTrack)
+         StoreInCdplayerIni(GetCurrentDrive());
 
+      // TODO put selected tracks in encoderjoblist
       //UpdateTrackManager();
    }
 
+   m_uiSettings.m_bFromInputFilesPage = false;
    m_pageHost.SetWizardPage(boost::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
 
    return 0;
 }
 
-LRESULT InputCDPage::OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+LRESULT InputCDPage::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    if (wParam == IDT_CDRIP_CHECK)
       CheckCD();
@@ -110,7 +113,7 @@ LRESULT InputCDPage::OnListDoubleClick(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& b
    return OnClickedButtonPlay(0, 0, 0, bHandled);
 }
 
-LRESULT InputCDPage::OnClickedButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+LRESULT InputCDPage::OnClickedButtonPlay(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    DWORD nDrive = GetCurrentDrive();
 
@@ -121,7 +124,7 @@ LRESULT InputCDPage::OnClickedButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCt
    DWORD nTrack = m_lcTracks.GetItemData(nItem);
 
    BASS_CD_Analog_Play(nDrive, nTrack, 0);
-   ::EnableWindow(GetDlgItem(IDC_CDSELECT_BUTTON_STOP), TRUE);
+   GetDlgItem(IDC_CDSELECT_BUTTON_STOP).EnableWindow(true);
 
    return 0;
 }
@@ -130,7 +133,7 @@ LRESULT InputCDPage::OnClickedButtonStop(WORD wNotifyCode, WORD wID, HWND hWndCt
 {
    BASS_CD_Analog_Stop(GetCurrentDrive());
 
-   ::EnableWindow(GetDlgItem(IDC_CDSELECT_BUTTON_STOP), FALSE);
+   GetDlgItem(IDC_CDSELECT_BUTTON_STOP).EnableWindow(false);
 
    return 0;
 }
@@ -154,10 +157,10 @@ LRESULT InputCDPage::OnClickedButtonOptions(WORD wNotifyCode, WORD wID, HWND hWn
 
 LRESULT InputCDPage::OnClickedCheckVariousArtists(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-   bool bCheck = BST_CHECKED == SendDlgItemMessage(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, BM_GETCHECK);
+   bool bCheck = BST_CHECKED != m_checkVariousArtists.GetCheck();
 
-   ::EnableWindow(GetDlgItem(IDC_CDSELECT_EDIT_ARTIST), bCheck ? FALSE : TRUE);
-   ::EnableWindow(GetDlgItem(IDC_CDSELECT_STATIC_ARTIST), bCheck ? FALSE : TRUE);
+   GetDlgItem(IDC_CDSELECT_EDIT_ARTIST).EnableWindow(bCheck);
+   GetDlgItem(IDC_CDSELECT_STATIC_ARTIST).EnableWindow(bCheck);
 
    return 0;
 }
@@ -328,8 +331,7 @@ void InputCDPage::RefreshCDList()
       ReadCDText(bVarious);
 
    // check or uncheck "various artists"
-   SendDlgItemMessage(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, BM_SETCHECK,
-      bVarious ? BST_CHECKED : BST_UNCHECKED, 0);
+   m_checkVariousArtists.SetCheck(bVarious ? BST_CHECKED : BST_UNCHECKED);
 
    BOOL bDummy = true;
    OnClickedCheckVariousArtists(0, 0, NULL, bDummy);
@@ -495,8 +497,8 @@ void InputCDPage::CheckCD()
       return;
 
    // check if current track still plays
-   BOOL fPlaying = BASS_ACTIVE_PLAYING == BASS_CD_Analog_IsActive(dwDrive) ? TRUE : FALSE;
-   ::EnableWindow(GetDlgItem(IDC_CDSELECT_BUTTON_STOP), fPlaying);
+   bool bPlaying = BASS_ACTIVE_PLAYING == BASS_CD_Analog_IsActive(dwDrive);
+   GetDlgItem(IDC_CDSELECT_BUTTON_STOP).EnableWindow(bPlaying);
 
    // check for new cd in drive
    DWORD nDrive = GetCurrentDrive();
@@ -506,6 +508,61 @@ void InputCDPage::CheckCD()
    {
       RefreshCDList();
    }
+}
+
+void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
+{
+#if 0
+   if (!m_uiSettings.store_disc_infos_cdplayer_ini)
+      return;
+
+   CString cszCDPlayerIniFilename;
+   ::GetWindowsDirectory(cszCDPlayerIniFilename.GetBuffer(MAX_PATH), MAX_PATH);
+   cszCDPlayerIniFilename.ReleaseBuffer();
+   cszCDPlayerIniFilename += _T("\\cdplayer.ini");
+
+   const char* cdplayer_id_raw = BASS_CD_GetID(nDrive, BASS_CDID_CDPLAYER);
+
+   USES_CONVERSION;
+   const TCHAR* cdplayer_id = A2CT(cdplayer_id_raw);
+
+   CDRipTrackManager* pManager = CDRipTrackManager::getCDRipTrackManager();
+   CDRipDiscInfo& discinfo = pManager->GetDiscInfo();
+
+   CString cszFormat;
+
+   // numtracks
+   unsigned int nNumTracks = m_lcTracks.GetItemCount();
+   cszFormat.Format(_T("%u"), nNumTracks);
+   ::WritePrivateProfileString(cdplayer_id, _T("numtracks"), cszFormat, cszCDPlayerIniFilename);
+
+   // artist
+   ::WritePrivateProfileString(cdplayer_id, _T("artist"), discinfo.m_cszDiscArtist, cszCDPlayerIniFilename);
+
+   // title
+   ::WritePrivateProfileString(cdplayer_id, _T("title"), discinfo.m_cszDiscTitle, cszCDPlayerIniFilename);
+
+   // year
+   if (discinfo.m_nYear > 0)
+   {
+      cszFormat.Format(_T("%u"), discinfo.m_nYear);
+      ::WritePrivateProfileString(cdplayer_id, _T("year"), cszFormat, cszCDPlayerIniFilename);
+   }
+
+   // genre
+   ::WritePrivateProfileString(cdplayer_id, _T("genre"), discinfo.m_cszGenre, cszCDPlayerIniFilename);
+
+   // tracks
+   CString cszTrackText;
+   for (unsigned int n = 0; n<nNumTracks; n++)
+   {
+      cszFormat.Format(_T("%u"), n);
+
+      m_lcTracks.GetItemText(n, 1, cszTrackText);
+
+      ::WritePrivateProfileString(cdplayer_id, cszFormat, cszTrackText, cszCDPlayerIniFilename);
+   }
+#endif
 }
 
 void InputCDPage::FreedbLookup()

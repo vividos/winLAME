@@ -109,6 +109,8 @@
 #define IDC_LAME_STATIC_VBR_MODE                3411
 #define IDC_LAME_CHECK_WRITE_WAVEMP3            3412
 #define IDC_LAME_BEVEL1                         3413
+#define IDC_LAME_BEVEL2                         3414
+#define IDC_LAME_BEVEL3                         3415
 #define IDC_OGGV_RADIO_BRMODE1                  3500
 #define IDC_OGGV_RADIO_BRMODE2                  3501
 #define IDC_OGGV_RADIO_BRMODE3                  3502

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2013 Michael Fink
+// Copyright (c) 2000-2014 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 /// \file FinishPage.hpp
-/// \brief Input CD page
-
-// include guard
+/// \brief Finish page
+//
 #pragma once
 
 // includes
@@ -27,10 +26,12 @@
 #include "resource.h"
 
 // forward references
+struct UISettings;
 
-/// \brief input files page
-/// \details shows all files opened/dropped, checks them for audio infos and errors
-/// and displays them; processing is done in separate thread.
+namespace UI
+{
+
+/// \brief Finish page
 class FinishPage:
    public WizardPage,
    public CWinDataExchange<FinishPage>,
@@ -38,10 +39,7 @@ class FinishPage:
 {
 public:
    /// ctor
-   FinishPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_PAGE_FINISH, WizardPage::typeCancelNext)
-   {
-   }
+   FinishPage(WizardPageHost& pageHost) throw();
    /// dtor
    ~FinishPage() throw()
    {
@@ -53,14 +51,13 @@ private:
    BEGIN_DDX_MAP(FinishPage)
    END_DDX_MAP()
 
-   // resize map
    BEGIN_DLGRESIZE_MAP(FinishPage)
    END_DLGRESIZE_MAP()
 
-   // message map
    BEGIN_MSG_MAP(FinishPage)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
+      COMMAND_HANDLER(ID_WIZBACK, BN_CLICKED, OnButtonBack)
       CHAIN_MSG_MAP(CDialogResize<FinishPage>)
       REFLECT_NOTIFICATIONS()
    END_MSG_MAP()
@@ -76,6 +73,16 @@ private:
    /// called when page is left with Next button
    LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
+   /// called when page is left with Back button
+   LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
 private:
    // controls
+
+   // model
+
+   /// settings
+   UISettings& m_uiSettings;
 };
+
+} // namespace UI

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2013 Michael Fink
+// Copyright (c) 2000-2014 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,20 +17,23 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 /// \file AACSettingsPage.hpp
-/// \brief Input CD page
-
-// include guard
+/// \brief AAC settings page
+//
 #pragma once
 
 // includes
 #include "WizardPage.h"
 #include "resource.h"
+#include "BevelLine.hpp"
+#include "FixedValueSpinButtonCtrl.hpp"
 
 // forward references
+struct UISettings;
 
-/// \brief input files page
-/// \details shows all files opened/dropped, checks them for audio infos and errors
-/// and displays them; processing is done in separate thread.
+namespace UI
+{
+
+/// \brief AAC settings page
 class AACSettingsPage:
    public WizardPage,
    public CWinDataExchange<AACSettingsPage>,
@@ -39,7 +42,8 @@ class AACSettingsPage:
 public:
    /// ctor
    AACSettingsPage(WizardPageHost& pageHost) throw()
-      :WizardPage(pageHost, IDD_PAGE_AAC_SETTINGS, WizardPage::typeCancelNext)
+      :WizardPage(pageHost, IDD_PAGE_AAC_SETTINGS, WizardPage::typeCancelBackNext),
+      m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
    {
    }
    /// dtor
@@ -51,16 +55,32 @@ private:
    friend CDialogResize<AACSettingsPage>;
 
    BEGIN_DDX_MAP(AACSettingsPage)
+      DDX_CONTROL(IDC_AAC_BEVEL1, m_bevel1)
+      DDX_CONTROL(IDC_AAC_BEVEL2, m_bevel2)
+      DDX_CONTROL(IDC_AAC_SPIN_BITRATE, m_spinBitrate)
+      DDX_CONTROL(IDC_AAC_SPIN_BANDWIDTH, m_spinBandwidth)
+      DDX_CONTROL_HANDLE(IDC_AAC_SLIDER_QUALITY, m_sliderQuality)
+      DDX_CONTROL_HANDLE(IDC_AAC_COMBO_MPEGVER, m_cbMpegVersion)
+      DDX_CONTROL_HANDLE(IDC_AAC_COMBO_OBJTYPE, m_cbObjectType)
    END_DDX_MAP()
 
-   // resize map
    BEGIN_DLGRESIZE_MAP(AACSettingsPage)
+      DLGRESIZE_CONTROL(IDC_AAC_BEVEL1, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_AAC_BEVEL2, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_AAC_SLIDER_QUALITY, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_AAC_STATIC_QUALITY, DLSZ_MOVE_X)
+      DLGRESIZE_CONTROL(IDC_AAC_STATIC_KBPS, DLSZ_MOVE_X)
+      DLGRESIZE_CONTROL(IDC_AAC_COMBO_MPEGVER, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_AAC_COMBO_OBJTYPE, DLSZ_SIZE_X)
    END_DLGRESIZE_MAP()
 
-   // message map
    BEGIN_MSG_MAP(AACSettingsPage)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
+      COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnButtonCancel)
+      COMMAND_HANDLER(ID_WIZBACK, BN_CLICKED, OnButtonBack)
+      COMMAND_HANDLER(IDC_AAC_CHECK_BANDWIDTH, BN_CLICKED, OnCheckBandwidth)
+      MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
       CHAIN_MSG_MAP(CDialogResize<AACSettingsPage>)
       REFLECT_NOTIFICATIONS()
    END_MSG_MAP()
@@ -76,6 +96,68 @@ private:
    /// called when page is left with Next button
    LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
+   /// called when page is left with Cancel button
+   LRESULT OnButtonCancel(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when page is left with Back button
+   LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when user clicks on the bandwidth check
+   LRESULT OnCheckBandwidth(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+   {
+      UpdateBandwidth();
+      return 0;
+   }
+
+   /// called when slider is moved
+   LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+   {
+      // check if the vbr quality slider was moved
+      if ((HWND)lParam == GetDlgItem(IDC_AAC_SLIDER_QUALITY))
+         UpdateQuality();
+      return 0;
+   }
+
+   /// updates quality value
+   void UpdateQuality();
+
+   /// shows bandwidth edit control
+   void UpdateBandwidth();
+
+   /// loads settings data into controls
+   void LoadData();
+
+   /// saves settings data from controls
+   bool SaveData();
+
 private:
    // controls
+
+   /// bitrate spin button control
+   FixedValueSpinButtonCtrl m_spinBitrate;
+
+   /// bandwidth spin button control
+   FixedValueSpinButtonCtrl m_spinBandwidth;
+
+   /// quality slider
+   CTrackBarCtrl m_sliderQuality;
+
+   /// MPEG version
+   CComboBox m_cbMpegVersion;
+
+   /// object type
+   CComboBox m_cbObjectType;
+
+   /// bevel line
+   BevelLine m_bevel1;
+
+   /// bevel line
+   BevelLine m_bevel2;
+
+   // model
+
+   /// settings
+   UISettings& m_uiSettings;
 };
+
+} // namespace UI

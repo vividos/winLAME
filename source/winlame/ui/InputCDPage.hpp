@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2013 Michael Fink
+// Copyright (c) 2000-2014 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,8 +18,7 @@
 //
 /// \file InputCDPage.hpp
 /// \brief Input CD page
-
-// include guard
+//
 #pragma once
 
 // includes
@@ -34,12 +33,13 @@ namespace Freedb
    struct CDInfo;
 }
 
-/// timer id for timer checking for cd in drive
-#define IDT_CDRIP_CHECK 66
+namespace UI
+{
 
-/// \brief input files page
-/// \details shows all files opened/dropped, checks them for audio infos and errors
-/// and displays them; processing is done in separate thread.
+/// timer id for timer that checks for cd in drive
+const UINT IDT_CDRIP_CHECK = 66;
+
+/// \brief Input CD page
 class InputCDPage:
    public WizardPage,
    public CWinDataExchange<InputCDPage>,
@@ -53,6 +53,7 @@ public:
    {
    }
 
+   /// returns if CD extraction is avail
    static bool IsCDExtractionAvail() throw();
 
 private:
@@ -62,9 +63,9 @@ private:
       DDX_CONTROL_HANDLE(IDC_CDSELECT_COMBO_DRIVES, m_cbDrives)
       DDX_CONTROL(IDC_CDSELECT_LIST_TRACKS, m_lcTracks)
       DDX_CONTROL_HANDLE(IDC_CDSELECT_COMBO_GENRE, m_cbGenre)
+      DDX_CONTROL_HANDLE(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, m_checkVariousArtists)
    END_DDX_MAP()
 
-   // resize map
    BEGIN_DLGRESIZE_MAP(InputCDPage)
       DLGRESIZE_CONTROL(IDC_CDSELECT_COMBO_DRIVES, DLSZ_SIZE_X)
       DLGRESIZE_CONTROL(IDC_CDSELECT_LIST_TRACKS, DLSZ_SIZE_X | DLSZ_SIZE_Y)
@@ -83,7 +84,6 @@ private:
       DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_OPTIONS, DLSZ_MOVE_X)
    END_DLGRESIZE_MAP()
 
-   // message map
    BEGIN_MSG_MAP(InputCDPage)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
@@ -98,7 +98,6 @@ private:
       COMMAND_HANDLER(IDC_CDSELECT_EDIT_TITLE, EN_CHANGE, OnChangedEditCtrl)
       COMMAND_HANDLER(IDC_CDSELECT_EDIT_ARTIST, EN_CHANGE, OnChangedEditCtrl)
       COMMAND_HANDLER(IDC_CDSELECT_EDIT_YEAR, EN_CHANGE, OnChangedEditCtrl)
-      //MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
       NOTIFY_CODE_HANDLER(LVN_ENDLABELEDIT, OnEndLabelEdit)
       CHAIN_MSG_MAP(CDialogResize<InputCDPage>)
       REFLECT_NOTIFICATIONS()
@@ -115,7 +114,6 @@ private:
    /// called when page is left with Next button
    LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-
    LRESULT OnDriveSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnListDoubleClick(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
    LRESULT OnClickedButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
@@ -152,6 +150,9 @@ private:
    /// genre combobox
    CComboBox m_cbGenre;
 
+   /// various artists checkbox
+   CButton m_checkVariousArtists;
+
    // Model
 
    /// settings
@@ -166,3 +167,5 @@ private:
    /// indicates if disc info has already been acquired
    bool m_bAcquiredDiscInfo;
 };
+
+} // namespace UI

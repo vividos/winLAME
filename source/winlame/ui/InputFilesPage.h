@@ -18,8 +18,7 @@
 //
 /// \file InputFilesPage.h
 /// \brief Input files page
-
-// include guard
+//
 #pragma once
 
 // includes
@@ -30,7 +29,10 @@
 // forward references
 struct UISettings;
 
-/// \brief input files page
+namespace UI
+{
+
+/// \brief Input files page
 /// \details shows all files opened/dropped, checks them for audio infos and errors
 /// and displays them; processing is done in separate thread.
 class InputFilesPage:
@@ -57,13 +59,11 @@ private:
       DDX_CONTROL(IDC_INPUT_LIST_INPUTFILES, m_inputFilesList)
    END_DDX_MAP()
 
-   // resize map
    BEGIN_DLGRESIZE_MAP(InputFilesPage)
       DLGRESIZE_CONTROL(IDC_INPUT_LIST_INPUTFILES, DLSZ_SIZE_X | DLSZ_SIZE_Y)
       DLGRESIZE_CONTROL(IDC_STATIC_TIMECOUNT, DLSZ_MOVE_X)
    END_DLGRESIZE_MAP()
 
-   // message map
    BEGIN_MSG_MAP(InputFilesPage)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
@@ -94,22 +94,31 @@ private:
 
    /// called when the button for adding input files is pressed
    LRESULT OnButtonInputFileSel(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
    /// called when the user clicks on the button to delete all selected files
    LRESULT OnButtonDeleteAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
    /// called when button "CD Rip" was pressed
    LRESULT OnButtonCDRip(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
    /// called for processing key presses
    LRESULT OnKeyDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
    /// called when the selected item in the list ctrl changes
    LRESULT OnListItemChanged(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+
    /// called when user double-clicks on an item in list
    LRESULT OnDoubleClickedList(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+
    /// called when user presses the play button
    LRESULT OnButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
 private:
    /// sets up tracks list control
    void SetupListCtrl();
+
+   /// adds files to list
+   void AddFiles(const std::vector<CString>& vecInputFiles);
 
    /// insert new file names into list
    void InsertFilenames(const std::vector<CString>& vecInputFiles);
@@ -119,6 +128,9 @@ private:
 
    /// plays file using assigned application
    void PlayFile(LPCTSTR filename);
+
+   /// updates time count static control
+   void UpdateTimeCount();
 
    /// parse buffer from multi selection from open file dialog
    static void ParseMultiSelectionFiles(LPCTSTR pszBuffer, std::vector<CString>& vecFilenames);
@@ -146,3 +158,5 @@ private:
    /// filter string
    static CString m_cszFilterString;
 };
+
+} // namespace UI

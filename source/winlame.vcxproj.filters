@@ -280,9 +280,6 @@
     <ClCompile Include="winlame\ui\LibsndfileSettingsPage.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\ui\FinishPage.cpp">
-      <Filter>UI Files\Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="winlame\old_ui\OggVorbisSettingsPage_old.cpp">
       <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
@@ -303,6 +300,9 @@
     </ClCompile>
     <ClCompile Include="winlame\FreedbResolver.cpp">
       <Filter>Main Program Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\FinishPage.cpp">
+      <Filter>UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\Path.cpp">
       <Filter>Main Program Files\Source Files</Filter>
