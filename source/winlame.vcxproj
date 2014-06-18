@@ -136,6 +136,7 @@
     <ClCompile Include="winlame\old_ui\OptionsDlg.cpp" />
     <ClCompile Include="winlame\old_ui\OutputPage.cpp" />
     <ClCompile Include="winlame\old_ui\PresetsPage.cpp" />
+    <ClCompile Include="winlame\Path.cpp" />
     <ClCompile Include="winlame\ui\AACSettingsPage.cpp" />
     <ClCompile Include="winlame\ui\AboutDlg.cpp" />
     <ClCompile Include="winlame\ui\FinishPage.cpp" />
@@ -239,6 +240,7 @@
     <ClInclude Include="winlame\old_ui\PageBase.h" />
     <ClInclude Include="winlame\old_ui\PresetsPage.h" />
     <ClInclude Include="winlame\old_ui\SystemTrayIcon.h" />
+    <ClInclude Include="winlame\Path.hpp" />
     <ClInclude Include="winlame\TrackEditListCtrl.h" />
     <ClInclude Include="winlame\ui\AACSettingsPage.hpp" />
     <ClInclude Include="winlame\ui\AboutDlg.hpp" />
