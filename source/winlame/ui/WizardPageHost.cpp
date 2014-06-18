@@ -78,6 +78,9 @@ void WizardPageHost::InitPage()
 
    // configure buttons according to page
    ConfigWizardButtons(m_spCurrentPage->WizardPageType());
+
+   GetDlgItem(IDC_WIZARDPAGE_STATIC_BACKGROUND).Invalidate();
+   m_staticCaption.Invalidate();
 }
 
 void WizardPageHost::ConfigWizardButtons(WizardPage::T_enWizardPageType enWizardPageType)
