@@ -29,51 +29,6 @@
 
 // functions
 
-LRESULT BevelLine::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-{
-   // begin painting
-   PAINTSTRUCT ps;
-   HDC hDC = ::BeginPaint(m_hWnd,&ps);
-
-   // find out rects of control and text
-   RECT rectWnd;
-   GetWindowRect(&rectWnd);
-   ScreenToClient(&rectWnd);
-
-   // draw bevel line
-   RECT rectLine = rectWnd;
-   rectLine.top = (rectWnd.bottom-rectWnd.top)>>1;
-   rectLine.bottom = rectLine.top+2;
-
-   ::SetBkColor(hDC, ::GetSysColor(COLOR_3DHIGHLIGHT) );
-   ::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &rectLine, NULL, 0, NULL);
-  
-   rectLine.bottom--; rectLine.right--;
-
-   ::SetBkColor(hDC, ::GetSysColor(COLOR_3DSHADOW) );
-   ::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &rectLine, NULL, 0, NULL);
-
-   // add two spaces at the end
-   TCHAR buffer[512];
-   GetWindowText(buffer,510);
-   _tcscat(buffer,_T("  "));
-
-   // draw the text
-   ::SetBkColor(hDC, ::GetSysColor(COLOR_BTNFACE) );
-
-   HFONT hFont = (HFONT)::SendMessage(m_hWnd, WM_GETFONT, 0, 0);
-   HGDIOBJ hObj = SelectObject(hDC,hFont);
-
-   ::DrawText(hDC, buffer, _tcslen(buffer), &rectWnd, DT_TOP | DT_LEFT );
-
-   ::SelectObject(hDC, hObj);
-
-   // pink panther has finished
-   ::EndPaint(m_hWnd,&ps);
-
-   return 0;
-}
-
 void AddTooltips(HWND hWnd, CToolTipCtrl &ctrl)
 {
    // get first child window

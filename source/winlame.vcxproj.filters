@@ -307,6 +307,12 @@
     <ClCompile Include="winlame\Path.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\ui\FixedValueSpinButtonCtrl.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\ui\BevelLine.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="winlame\encoder\AacInputModule.h">
@@ -602,6 +608,15 @@
     </ClInclude>
     <ClInclude Include="winlame\Path.hpp">
       <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\AlternateColorsListCtrl.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\FixedValueSpinButtonCtrl.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\BevelLine.hpp">
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

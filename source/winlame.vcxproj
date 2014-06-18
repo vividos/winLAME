@@ -139,7 +139,9 @@
     <ClCompile Include="winlame\Path.cpp" />
     <ClCompile Include="winlame\ui\AACSettingsPage.cpp" />
     <ClCompile Include="winlame\ui\AboutDlg.cpp" />
+    <ClCompile Include="winlame\ui\BevelLine.cpp" />
     <ClCompile Include="winlame\ui\FinishPage.cpp" />
+    <ClCompile Include="winlame\ui\FixedValueSpinButtonCtrl.cpp" />
     <ClCompile Include="winlame\ui\ImageListComboBox.cpp" />
     <ClCompile Include="winlame\ui\InputCDPage.cpp" />
     <ClCompile Include="winlame\ui\InputListCtrl.cpp" />
@@ -244,7 +246,10 @@
     <ClInclude Include="winlame\TrackEditListCtrl.h" />
     <ClInclude Include="winlame\ui\AACSettingsPage.hpp" />
     <ClInclude Include="winlame\ui\AboutDlg.hpp" />
+    <ClInclude Include="winlame\ui\AlternateColorsListCtrl.hpp" />
+    <ClInclude Include="winlame\ui\BevelLine.hpp" />
     <ClInclude Include="winlame\ui\FinishPage.hpp" />
+    <ClInclude Include="winlame\ui\FixedValueSpinButtonCtrl.hpp" />
     <ClInclude Include="winlame\ui\ImageListComboBox.h" />
     <ClInclude Include="winlame\ui\InputCDPage.hpp" />
     <ClInclude Include="winlame\ui\InputListCtrl.h" />
