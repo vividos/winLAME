@@ -71,16 +71,15 @@ bool BrowseForFolder(HWND hParentWnd, CString& cszPathname, UINT nCaptionID)
    cszCaption.LoadString(nCaptionID);
 
    // add last slash to dir name
-   if (!cszPathname.IsEmpty() && cszPathname.Right(1)!=_T('\\'))
-      cszPathname += _T("\\");
+   Path::AddEndingBackslash(cszPathname);
 
    CFolderDialog dlg(hParentWnd, cszCaption, BIF_RETURNONLYFSDIRS | BIF_USENEWUI);
    dlg.SetInitialFolder(cszPathname);
    if (IDOK == dlg.DoModal())
    {
       cszPathname = dlg.GetFolderPath();
-      if (!cszPathname.IsEmpty() && cszPathname.Right(1)!=_T('\\'))
-         cszPathname += _T("\\");
+
+      Path::AddEndingBackslash(cszPathname);
       return true;
    }
    else
