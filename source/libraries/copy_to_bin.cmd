@@ -22,3 +22,6 @@ copy libmp3lame.dll ..\..\bin\Release
 copy libsndfile-1.dll ..\..\bin\Release
 copy libvorbis.dll ..\..\bin\Release
 copy MrCrash.exe ..\..\bin\Release
+
+mkdir C:\ProgramData\winLAME 2> nul
+copy ..\presets.xml C:\ProgramData\winLAME\presets.xml
