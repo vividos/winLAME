@@ -22,7 +22,7 @@
 #include "StdAfx.h"
 #include "App.h"
 #include "MainDlg.h"
-#include "ui\MainFrame.h"
+#include "ui\MainFrame.hpp"
 #include "preset\PresetManagerImpl.h"
 #include "encoder\ModuleManagerImpl.h"
 #include "CommonStuff.h"
@@ -129,7 +129,7 @@ int App::RunMainFrame(int nCmdShow)
    CMessageLoop theLoop;
    _Module.AddMessageLoop(&theLoop);
 
-   MainFrame wndMain(m_taskManager);
+   UI::MainFrame wndMain(m_taskManager);
 
    if (wndMain.CreateEx() == NULL)
    {

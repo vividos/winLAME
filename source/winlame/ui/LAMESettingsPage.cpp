@@ -18,11 +18,10 @@
 //
 /// \file LAMESettingsPage.cpp
 /// \brief LAME settings page
-
-// includes
+//
 #include "StdAfx.h"
 #include "LAMESettingsPage.hpp"
-#include "WizardPageHost.h"
+#include "WizardPageHost.hpp"
 #include "IoCContainer.hpp"
 #include "UISettings.h"
 #include "OutputSettingsPage.hpp"

@@ -1,34 +1,32 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2012 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+///
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2012 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file AboutDlg.cpp
 /// \brief about dialog implementation
 /// \details GetHtmlString() loads an html from the resource, replaces %var%
 /// occurences and shows it in the about box.
-
-// needed includes
+//
 #include "stdafx.h"
 #include "AboutDlg.hpp"
 #include "ModuleInterface.h"
 #include "App.h"
 
-// AboutDlg methods
+using UI::AboutDlg;
 
 LRESULT AboutDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
@@ -79,47 +77,47 @@ CString AboutDlg::GetAboutHtmlText()
    if (hRsrc == NULL)
       return _T("");
 
-   HGLOBAL hResData = ::LoadResource(_Module.GetResourceInstance(), hRsrc );
+   HGLOBAL hResData = ::LoadResource(_Module.GetResourceInstance(), hRsrc);
    if (hResData == NULL)
       return _T("");
 
    // get the html string in the custom resource
-   LPCSTR pszText = (LPCSTR)::LockResource( hResData );
+   LPCSTR pszText = (LPCSTR)::LockResource(hResData);
    if (pszText == NULL)
       return _T("");
 
    CString cszHtml(_T("MSHTML:"));
 
-   DWORD dwHtmlSize = SizeofResource(_Module.GetResourceInstance(), hRsrc );
+   DWORD dwHtmlSize = SizeofResource(_Module.GetResourceInstance(), hRsrc);
 
    // add using loaded ansi text and size; may not be 0 terminated; fixes bug with blank about box
-   cszHtml += CString(pszText, dwHtmlSize/sizeof(CHAR));
+   cszHtml += CString(pszText, dwHtmlSize / sizeof(CHAR));
 
    // replace all appearances of %var%, where var can be some keywords
    int iPos = 0;
 
-   while(-1 != (iPos = cszHtml.Find(_T('%'))))
+   while (-1 != (iPos = cszHtml.Find(_T('%'))))
    {
       // find out next variable name
-      int iPos2 = cszHtml.Find('%', iPos+1);
+      int iPos2 = cszHtml.Find('%', iPos + 1);
 
       if (iPos2 == -1)
          break;
 
-      CString varname = cszHtml.Mid(iPos+1, iPos2-iPos-1);
+      CString varname = cszHtml.Mid(iPos + 1, iPos2 - iPos - 1);
 
       // check for keywords
-      if (varname==_T("winlamever"))
+      if (varname == _T("winlamever"))
       {
          // find out winlame version from version resource
          varname = App::Version();
       }
-      else if (varname==_T("installedinputmodules"))
+      else if (varname == _T("installedinputmodules"))
       {
          // retrieve list of installed input module names
          varname = _T("<ul>");
          int max = moduleManager.getInputModuleCount();
-         for(int i=0; i<max; i++)
+         for (int i = 0; i < max; i++)
          {
             varname += _T("<li>");
             varname += moduleManager.getInputModuleName(i);
@@ -127,12 +125,12 @@ CString AboutDlg::GetAboutHtmlText()
          }
          varname += _T("</ul>");
       }
-      else if (varname==_T("installedoutputmodules"))
+      else if (varname == _T("installedoutputmodules"))
       {
          // retrieve list of installed output module names
          varname = _T("<ul>");
          int max = moduleManager.getOutputModuleCount();
-         for(int i=0; i<max; i++)
+         for (int i = 0; i < max; i++)
          {
             varname += _T("<li>");
             varname += moduleManager.getOutputModuleName(i);
@@ -140,43 +138,43 @@ CString AboutDlg::GetAboutHtmlText()
          }
          varname += _T("</ul>");
       }
-      else if (varname==_T("lameversion"))
-         moduleManager.getModuleVersionString(varname,ID_OM_LAME,0);
-      else if (varname==_T("lamecompiler"))
-         moduleManager.getModuleVersionString(varname,ID_OM_LAME,1);
-      else if (varname==_T("lamecpufeat"))
-         moduleManager.getModuleVersionString(varname,ID_OM_LAME,2);
-      else if (varname==_T("libsndfileversion"))
-         moduleManager.getModuleVersionString(varname,ID_IM_SNDFILE);
-      else if (varname==_T("madversion"))
-         moduleManager.getModuleVersionString(varname,ID_IM_MAD,0);
-      else if (varname==_T("madbuild"))
-         moduleManager.getModuleVersionString(varname,ID_IM_MAD,3);
-      else if (varname==_T("vorbisversion"))
-         moduleManager.getModuleVersionString(varname,ID_OM_OGGV);
-      else if (varname==_T("bassver"))
-         moduleManager.getModuleVersionString(varname,ID_IM_BASS);
-      else if (varname==_T("flacver"))
-         moduleManager.getModuleVersionString(varname,ID_IM_FLAC);
-      else if (varname==_T("wtlversion"))
+      else if (varname == _T("lameversion"))
+         moduleManager.getModuleVersionString(varname, ID_OM_LAME, 0);
+      else if (varname == _T("lamecompiler"))
+         moduleManager.getModuleVersionString(varname, ID_OM_LAME, 1);
+      else if (varname == _T("lamecpufeat"))
+         moduleManager.getModuleVersionString(varname, ID_OM_LAME, 2);
+      else if (varname == _T("libsndfileversion"))
+         moduleManager.getModuleVersionString(varname, ID_IM_SNDFILE);
+      else if (varname == _T("madversion"))
+         moduleManager.getModuleVersionString(varname, ID_IM_MAD, 0);
+      else if (varname == _T("madbuild"))
+         moduleManager.getModuleVersionString(varname, ID_IM_MAD, 3);
+      else if (varname == _T("vorbisversion"))
+         moduleManager.getModuleVersionString(varname, ID_OM_OGGV);
+      else if (varname == _T("bassver"))
+         moduleManager.getModuleVersionString(varname, ID_IM_BASS);
+      else if (varname == _T("flacver"))
+         moduleManager.getModuleVersionString(varname, ID_IM_FLAC);
+      else if (varname == _T("wtlversion"))
       {
          varname.Format(_T("%u.%u"),
-            _WTL_VER >> 8, (_WTL_VER >> 4)&15, _WTL_VER & 15);
+            _WTL_VER >> 8, (_WTL_VER >> 4) & 15);
       }
-      else if (varname==_T("boostversion"))
+      else if (varname == _T("boostversion"))
       {
          varname.Format(_T("%u.%u.%u"),
             BOOST_VERSION / 100000,
             BOOST_VERSION / 100 % 1000,
             BOOST_VERSION % 100);
       }
-      else if (varname==_T("presetsxml"))
+      else if (varname == _T("presetsxml"))
       {
          varname = m_cszPresetsXmlFilename;
       }
 
       // replace text with new one
-      cszHtml.Delete(iPos, iPos2-iPos+1);
+      cszHtml.Delete(iPos, iPos2 - iPos + 1);
       cszHtml.Insert(iPos, varname);
    }
 

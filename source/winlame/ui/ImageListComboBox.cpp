@@ -1,40 +1,40 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2009-2014 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2009-2014 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file ImageListComboBox.cpp
 /// \brief image list combobox
-
-// needed includes
+//
 #include "stdafx.h"
-#include "ImageListComboBox.h"
+#include "ImageListComboBox.hpp"
+
+using UI::ImageListComboBox;
 
 /// temporarily changes brush
-class CBrushChanger
+class BrushChanger
 {
 public:
-   CBrushChanger(CDCHandle& dc, CBrush& br) throw()
+   BrushChanger(CDCHandle& dc, CBrush& br) throw()
       :m_dc(dc),
        m_hOldBrush(dc.SelectBrush(br))
    {
    }
 
-   ~CBrushChanger() throw()
+   ~BrushChanger() throw()
    {
       m_dc.SelectBrush(m_hOldBrush);
    }
@@ -45,16 +45,16 @@ private:
 };
 
 /// temporarily changes pen
-class CPenChanger
+class PenChanger
 {
 public:
-   CPenChanger(CDCHandle& dc, CPen& br) throw()
+   PenChanger(CDCHandle& dc, CPen& br) throw()
       :m_dc(dc),
        m_hOldPen(dc.SelectPen(br))
    {
    }
 
-   ~CPenChanger() throw()
+   ~PenChanger() throw()
    {
       m_dc.SelectPen(m_hOldPen);
    }
@@ -64,7 +64,7 @@ private:
    HPEN m_hOldPen;
 };
 
-LRESULT CImageListComboBox::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+LRESULT ImageListComboBox::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    CPaintDC dc(m_hWnd);
 
@@ -120,17 +120,17 @@ LRESULT CImageListComboBox::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*l
    return 0;
 }
 
-void CImageListComboBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
+void ImageListComboBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 {
    CDCHandle dc = lpDIS->hDC;
 
    if (!IsWindowEnabled())
    {
       CBrush brDisabled; brDisabled.CreateSolidBrush(RGB(192,192,192)); // light gray
-      CBrushChanger brChanger(dc, brDisabled);
+      BrushChanger brChanger(dc, brDisabled);
 
       CPen penDisabled; penDisabled.CreatePen(PS_SOLID, 1, RGB(192,192,192));
-      CPenChanger penChanger(dc, penDisabled);
+      PenChanger penChanger(dc, penDisabled);
 
       OutputBitmap(lpDIS);
       return;
@@ -141,10 +141,10 @@ void CImageListComboBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
       && (lpDIS->itemAction & (ODA_SELECT | ODA_DRAWENTIRE)))
    {
       CBrush brHighlight; brHighlight.CreateSysColorBrush(COLOR_HIGHLIGHT);
-      CBrushChanger brChanger(dc, brHighlight);
+      BrushChanger brChanger(dc, brHighlight);
 
       CPen penHighlight; penHighlight.CreatePen(PS_SOLID, 1, ::GetSysColor(COLOR_HIGHLIGHT));
-      CPenChanger penChanger(dc, penHighlight);
+      PenChanger penChanger(dc, penHighlight);
 
       dc.Rectangle(&lpDIS->rcItem);
       dc.SetBkColor(::GetSysColor(COLOR_HIGHLIGHT));
@@ -157,10 +157,10 @@ void CImageListComboBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
       && (lpDIS->itemAction & (ODA_SELECT | ODA_DRAWENTIRE)))
    {
       CBrush brWindow; brWindow.CreateSysColorBrush(COLOR_WINDOW); 
-      CBrushChanger brChanger(dc, brWindow);
+      BrushChanger brChanger(dc, brWindow);
 
       CPen penHighlight; penHighlight.CreatePen(PS_SOLID, 1, ::GetSysColor(COLOR_WINDOW));
-      CPenChanger penChanger(dc, penHighlight);
+      PenChanger penChanger(dc, penHighlight);
 
       dc.Rectangle(&lpDIS->rcItem);
       dc.SetBkColor(::GetSysColor(COLOR_WINDOW));
@@ -173,7 +173,7 @@ void CImageListComboBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
       dc.DrawFocusRect(&lpDIS->rcItem);
 }
 
-void CImageListComboBox::OutputBitmap(LPDRAWITEMSTRUCT lpDIS)
+void ImageListComboBox::OutputBitmap(LPDRAWITEMSTRUCT lpDIS)
 {
    CDCHandle dc = lpDIS->hDC;
 

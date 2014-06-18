@@ -18,11 +18,10 @@
 //
 /// \file FinishPage.cpp
 /// \brief Finish page
-
-// includes
+//
 #include "StdAfx.h"
 #include "FinishPage.hpp"
-#include "WizardPageHost.h"
+#include "WizardPageHost.hpp"
 #include "IoCContainer.hpp"
 #include "PresetSelectionPage.hpp"
 #include "OutputSettingsPage.hpp"

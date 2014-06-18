@@ -16,14 +16,14 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-/// \file InputFilesPage.h
+/// \file InputFilesPage.hpp
 /// \brief Input files page
 //
 #pragma once
 
 // includes
-#include "WizardPage.h"
-#include "InputListCtrl.h"
+#include "WizardPage.hpp"
+#include "InputListCtrl.hpp"
 #include "resource.h"
 
 // forward references
@@ -77,11 +77,6 @@ private:
       CHAIN_MSG_MAP(CDialogResize<InputFilesPage>)
       REFLECT_NOTIFICATIONS()
    END_MSG_MAP()
-
-   // Handler prototypes:
-   // LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-   // LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   // LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
    /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

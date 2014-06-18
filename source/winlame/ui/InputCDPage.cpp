@@ -18,13 +18,12 @@
 //
 /// \file InputCDPage.cpp
 /// \brief Input CD page
-
-// includes
+//
 #include "StdAfx.h"
 #include "InputCDPage.hpp"
-#include "WizardPageHost.h"
+#include "WizardPageHost.hpp"
 #include "OutputSettingsPage.hpp"
-#include "CDReadSettingsPage.h"
+#include "CDReadSettingsPage.hpp"
 #include "IoCContainer.hpp"
 #include "UISettings.h"
 #include "DynamicLibrary.h"

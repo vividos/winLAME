@@ -18,14 +18,13 @@
 //
 /// \file OutputSettingsPage.cpp
 /// \brief Output settings page
-
-// includes
+//
 #include "StdAfx.h"
 #include "OutputSettingsPage.hpp"
-#include "WizardPageHost.h"
+#include "WizardPageHost.hpp"
 #include "IoCContainer.hpp"
 #include "UISettings.h"
-#include "InputFilesPage.h"
+#include "InputFilesPage.hpp"
 #include "InputCDPage.hpp"
 #include "PresetSelectionPage.hpp"
 #include "LAMESettingsPage.hpp"

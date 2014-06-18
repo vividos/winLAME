@@ -22,7 +22,7 @@
 #pragma once
 
 // includes
-#include "WizardPage.h"
+#include "WizardPage.hpp"
 #include "resource.h"
 #include "FixedValueSpinButtonCtrl.hpp"
 #include "BevelLine.hpp"

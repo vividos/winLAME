@@ -18,11 +18,10 @@
 //
 /// \file WMASettingsPage.cpp
 /// \brief WMA settings page
-
-// includes
+//
 #include "StdAfx.h"
 #include "WMASettingsPage.hpp"
-#include "WizardPageHost.h"
+#include "WizardPageHost.hpp"
 #include "IoCContainer.hpp"
 #include "UISettings.h"
 #include "OutputSettingsPage.hpp"

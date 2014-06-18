@@ -22,7 +22,7 @@
 #pragma once
 
 // includes
-#include "WizardPage.h"
+#include "WizardPage.hpp"
 #include "TrackEditListCtrl.h"
 #include "resource.h"
 
@@ -102,11 +102,6 @@ private:
       CHAIN_MSG_MAP(CDialogResize<InputCDPage>)
       REFLECT_NOTIFICATIONS()
    END_MSG_MAP()
-
-   // Handler prototypes:
-   // LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-   // LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   // LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
    /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

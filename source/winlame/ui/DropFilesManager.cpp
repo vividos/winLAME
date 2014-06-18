@@ -18,12 +18,11 @@
 //
 /// \file DropFilesManager.cpp
 /// \brief Drag&Drop files manager
-
-// includes
+//
 #include "StdAfx.h"
-#include "DropFilesManager.h"
+#include "DropFilesManager.hpp"
 
-void DropFilesManager::Read(HDROP hDropInfo)
+void UI::DropFilesManager::Read(HDROP hDropInfo)
 {
    UINT uMax = ::DragQueryFile(hDropInfo, UINT(-1), NULL, 0);
 

@@ -18,11 +18,10 @@
 //
 /// \file LibsndfileSettingsPage.cpp
 /// \brief Libsndfile settings page
-
-// includes
+//
 #include "StdAfx.h"
 #include "LibsndfileSettingsPage.hpp"
-#include "WizardPageHost.h"
+#include "WizardPageHost.hpp"
 #include "IoCContainer.hpp"
 #include "UISettings.h"
 #include "OutputSettingsPage.hpp"

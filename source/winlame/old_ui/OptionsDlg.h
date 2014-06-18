@@ -24,7 +24,7 @@
 
 #include "CommonStuff.h"
 #include "UIinterface.h"
-#include "ImageListComboBox.h"
+#include "ImageListComboBox.hpp"
 
 class LanguageResourceManager;
 
@@ -74,7 +74,7 @@ private:
    UISettings& m_uiSettings;
    LanguageResourceManager& m_langResourceManager;
 
-   CImageListComboBox m_cbLanguages;
+   UI::ImageListComboBox m_cbLanguages;
 
    BevelLine m_bevel1, m_bevel2;
 

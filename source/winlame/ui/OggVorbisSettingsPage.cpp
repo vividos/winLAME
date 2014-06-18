@@ -18,11 +18,10 @@
 //
 /// \file OggVorbisSettingsPage.cpp
 /// \brief Ogg Vorbis settings page
-
-// includes
+//
 #include "StdAfx.h"
 #include "OggVorbisSettingsPage.hpp"
-#include "WizardPageHost.h"
+#include "WizardPageHost.hpp"
 #include "IoCContainer.hpp"
 #include "UISettings.h"
 #include "OutputSettingsPage.hpp"

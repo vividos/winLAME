@@ -18,13 +18,14 @@
 //
 /// \file GeneralSettingsPage.cpp
 /// \brief General settings page
-
-// includes
+//
 #include "StdAfx.h"
-#include "GeneralSettingsPage.h"
+#include "GeneralSettingsPage.hpp"
 #include "UISettings.h"
 #include "LanguageResourceManager.hpp"
 #include "LangCountryMapper.hpp"
+
+using UI::GeneralSettingsPage;
 
 LRESULT GeneralSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {

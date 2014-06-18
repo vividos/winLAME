@@ -88,6 +88,7 @@ extern CAppModule _Module;
 #include <atlctrlx.h>
 #include <atlddx.h>
 #include <atlframe.h>
+#include <atlcrack.h>
 #include <atlribbon.h>
 
 // undefine macros so that std::min and std::max can be used

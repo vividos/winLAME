@@ -19,8 +19,6 @@
 /// \file BevelLine.cpp
 /// \brief Bevel line control
 //
-#pragma once
-
 #include "stdafx.h"
 #include "BevelLine.hpp"
 

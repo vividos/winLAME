@@ -18,13 +18,14 @@
 //
 /// \file TasksView.cpp
 /// \brief Tasks view window
-
-// includes
+//
 #include "stdafx.h"
 #include "resource.h"
-#include "TasksView.h"
+#include "TasksView.hpp"
 #include "TaskManager.h"
 #include "TaskInfo.h"
+
+using UI::TasksView;
 
 BOOL TasksView::PreTranslateMessage(MSG* pMsg)
 {

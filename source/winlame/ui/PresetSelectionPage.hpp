@@ -22,7 +22,7 @@
 #pragma once
 
 // includes
-#include "WizardPage.h"
+#include "WizardPage.hpp"
 #include "resource.h"
 #include "CommonStuff.h"
 #include "PresetManagerInterface.h"

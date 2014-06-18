@@ -18,11 +18,10 @@
 //
 /// \file PresetSelectionPage.cpp
 /// \brief Preset selection
-
-// includes
+//
 #include "StdAfx.h"
 #include "PresetSelectionPage.hpp"
-#include "WizardPageHost.h"
+#include "WizardPageHost.hpp"
 #include "IoCContainer.hpp"
 #include "UISettings.h"
 #include "OutputSettingsPage.hpp"

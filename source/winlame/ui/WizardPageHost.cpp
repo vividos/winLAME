@@ -18,11 +18,13 @@
 //
 /// \file WizardPageHost.cpp
 /// \brief Wizard page host window
-
-// includes
+//
 #include "StdAfx.h"
-#include "WizardPageHost.h"
-#include "WizardPage.h"
+#include "WizardPageHost.hpp"
+#include "WizardPage.hpp"
+
+using UI::WizardPageHost;
+using UI::WizardPage;
 
 void WizardPageHost::SetWizardPage(boost::shared_ptr<WizardPage> spCurrentPage)
 {

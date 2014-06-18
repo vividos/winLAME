@@ -250,9 +250,9 @@
     <ClInclude Include="winlame\ui\BevelLine.hpp" />
     <ClInclude Include="winlame\ui\FinishPage.hpp" />
     <ClInclude Include="winlame\ui\FixedValueSpinButtonCtrl.hpp" />
-    <ClInclude Include="winlame\ui\ImageListComboBox.h" />
+    <ClInclude Include="winlame\ui\ImageListComboBox.hpp" />
     <ClInclude Include="winlame\ui\InputCDPage.hpp" />
-    <ClInclude Include="winlame\ui\InputListCtrl.h" />
+    <ClInclude Include="winlame\ui\InputListCtrl.hpp" />
     <ClInclude Include="winlame\ui\LAMESettingsPage.hpp" />
     <ClInclude Include="winlame\ui\LibsndfileSettingsPage.hpp" />
     <ClInclude Include="winlame\ui\OggVorbisSettingsPage.hpp" />
@@ -287,15 +287,15 @@
     <ClInclude Include="winlame\VariableManager.h" />
     <ClInclude Include="winlame\res\MainFrameRibbon.h" />
     <ClInclude Include="winlame\resource.h" />
-    <ClInclude Include="winlame\ui\CDReadSettingsPage.h" />
-    <ClInclude Include="winlame\ui\DropFilesManager.h" />
-    <ClInclude Include="winlame\ui\GeneralSettingsPage.h" />
-    <ClInclude Include="winlame\ui\InputFilesPage.h" />
-    <ClInclude Include="winlame\ui\MainFrame.h" />
-    <ClInclude Include="winlame\ui\ResourceInstanceSwitcher.h" />
-    <ClInclude Include="winlame\ui\TasksView.h" />
-    <ClInclude Include="winlame\ui\WizardPage.h" />
-    <ClInclude Include="winlame\ui\WizardPageHost.h" />
+    <ClInclude Include="winlame\ui\CDReadSettingsPage.hpp" />
+    <ClInclude Include="winlame\ui\DropFilesManager.hpp" />
+    <ClInclude Include="winlame\ui\GeneralSettingsPage.hpp" />
+    <ClInclude Include="winlame\ui\InputFilesPage.hpp" />
+    <ClInclude Include="winlame\ui\MainFrame.hpp" />
+    <ClInclude Include="winlame\ui\ResourceInstanceSwitcher.hpp" />
+    <ClInclude Include="winlame\ui\TasksView.hpp" />
+    <ClInclude Include="winlame\ui\WizardPage.hpp" />
+    <ClInclude Include="winlame\ui\WizardPageHost.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="winlame\res\btnicons.bmp" />

@@ -28,7 +28,7 @@
 // needed includes
 #include "resource.h"
 #include "PageBase.h"
-#include "InputListCtrl.h"
+#include "InputListCtrl.hpp"
 
 /// input files page
 
@@ -153,7 +153,7 @@ protected:
    bool setsysimagelist;
 
    /// list ctrl
-   InputListCtrl listctrl;
+   UI::InputListCtrl listctrl;
 
    /// string with all file filters
    CString filterstring;

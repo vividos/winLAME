@@ -531,33 +531,6 @@
     <ClInclude Include="winlame\resource.h">
       <Filter>UI Files\Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\ui\CDReadSettingsPage.h">
-      <Filter>UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\ui\DropFilesManager.h">
-      <Filter>UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\ui\GeneralSettingsPage.h">
-      <Filter>UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\ui\InputFilesPage.h">
-      <Filter>UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\ui\MainFrame.h">
-      <Filter>UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\ui\ResourceInstanceSwitcher.h">
-      <Filter>UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\ui\TasksView.h">
-      <Filter>UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\ui\WizardPage.h">
-      <Filter>UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\ui\WizardPageHost.h">
-      <Filter>UI Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="winlame\ui\OggVorbisSettingsPage.hpp">
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
@@ -588,12 +561,6 @@
     <ClInclude Include="winlame\ui\AboutDlg.hpp">
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\ui\ImageListComboBox.h">
-      <Filter>UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\ui\InputListCtrl.h">
-      <Filter>UI Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="winlame\HtmlHelper.h">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
@@ -616,6 +583,39 @@
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\BevelLine.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\CDReadSettingsPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\DropFilesManager.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\GeneralSettingsPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\ImageListComboBox.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\InputFilesPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\InputListCtrl.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\MainFrame.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\ResourceInstanceSwitcher.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\TasksView.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\WizardPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\WizardPageHost.hpp">
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -18,15 +18,16 @@
 //
 /// \file CDReadSettingsPage.cpp
 /// \brief CD read settings page
-
-// includes
+//
 #include "StdAfx.h"
-#include "CDReadSettingsPage.h"
+#include "CDReadSettingsPage.hpp"
 #include "UISettings.h"
 #include "LanguageResourceManager.hpp"
 #include "LangCountryMapper.hpp"
 #include "CommonStuff.h"
 #include "App.h"
+
+using namespace UI;
 
 LRESULT CDReadSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {

@@ -18,15 +18,14 @@
 //
 /// \file InputFilesPage.cpp
 /// \brief Input files page
-
-// includes
+//
 #include "StdAfx.h"
-#include "InputFilesPage.h"
+#include "InputFilesPage.hpp"
 #include "UISettings.h"
 #include "InputFilesParser.h"
-#include "DropFilesManager.h"
+#include "DropFilesManager.hpp"
 #include "CommonStuff.h"
-#include "WizardPageHost.h"
+#include "WizardPageHost.hpp"
 #include "OutputSettingsPage.hpp"
 
 using namespace UI;

@@ -18,24 +18,25 @@
 //
 /// \file MainFrame.cpp
 /// \brief Main frame window
-
-// includes
+//
 #include "stdafx.h"
 #include "resource.h"
-#include "MainFrame.h"
+#include "MainFrame.hpp"
 #include "App.h"
 #include "AboutDlg.hpp"
-#include "TasksView.h"
+#include "TasksView.hpp"
 #include "TaskManager.h"
 #include "res/MainFrameRibbon.h"
-#include "WizardPageHost.h"
-#include "GeneralSettingsPage.h"
-#include "CDReadSettingsPage.h"
-#include "InputFilesPage.h"
+#include "WizardPageHost.hpp"
+#include "GeneralSettingsPage.hpp"
+#include "CDReadSettingsPage.hpp"
+#include "InputFilesPage.hpp"
 #include "InputCDPage.hpp"
-#include "ResourceInstanceSwitcher.h"
-#include "DropFilesManager.h"
+#include "ResourceInstanceSwitcher.hpp"
+#include "DropFilesManager.hpp"
 #include <boost/foreach.hpp>
+
+using namespace UI;
 
 /// tasks list refresh cycle in ms
 const UINT c_uiTasksListRefreshCycleInMs = 500;
@@ -137,7 +138,7 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
       EnableButtonText(tb, ID_ENCODE_FILES);
       EnableButtonText(tb, ID_ENCODE_CD);
 
-      if (!UI::InputCDPage::IsCDExtractionAvail())
+      if (!InputCDPage::IsCDExtractionAvail())
          UIEnable(ID_ENCODE_CD, FALSE);
 
       UIAddToolBar(hWndToolBar);
@@ -236,7 +237,7 @@ LRESULT MainFrame::OnDropFiles(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, 
 
    // show input files page
    WizardPageHost host;
-   host.SetWizardPage(boost::shared_ptr<WizardPage>(new UI::InputFilesPage(host, dropMgr.Filenames())));
+   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputFilesPage(host, dropMgr.Filenames())));
    host.Run(m_hWnd);
 
    return 0;
@@ -253,12 +254,12 @@ LRESULT MainFrame::OnEncodeFiles(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
 {
    // open files
    std::vector<CString> vecFilenames;
-   if (!UI::InputFilesPage::OpenFileDialog(m_hWnd, vecFilenames))
+   if (!InputFilesPage::OpenFileDialog(m_hWnd, vecFilenames))
       return 0;
 
    // show input files page
    WizardPageHost host;
-   host.SetWizardPage(boost::shared_ptr<WizardPage>(new UI::InputFilesPage(host, vecFilenames)));
+   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputFilesPage(host, vecFilenames)));
    host.Run(m_hWnd);
 
    return 0;
@@ -268,7 +269,7 @@ LRESULT MainFrame::OnEncodeCD(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 {
    // show input cd page
    WizardPageHost host;
-   host.SetWizardPage(boost::shared_ptr<WizardPage>(new UI::InputCDPage(host)));
+   host.SetWizardPage(boost::shared_ptr<WizardPage>(new InputCDPage(host)));
    host.Run(m_hWnd);
 
    return 0;
