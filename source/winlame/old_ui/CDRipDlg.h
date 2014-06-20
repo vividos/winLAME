@@ -35,45 +35,6 @@
 /// timer id for timer checking for cd in drive
 #define IDT_CDRIP_CHECK 66
 
-/// dialog that provides a list of found freedb entries
-class CDRipFreedbListDlg:
-   public CDialogImpl<CDRipFreedbListDlg>,
-   public CWinDataExchange<CDRipFreedbListDlg>
-{
-public:
-   /// ctor
-   CDRipFreedbListDlg()
-      :m_uSelectedItem(0){}
-
-   /// dialog id
-   enum { IDD = IDD_FREEDB_LIST };
-
-   BEGIN_MSG_MAP(CDRipFreedbListDlg)
-      MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      COMMAND_ID_HANDLER(IDOK, OnOK)
-   END_MSG_MAP()
-
-   LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-   LRESULT OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
-
-   /// returns the item that was selected by the user
-   unsigned int GetSelectedItem() const { return m_uSelectedItem; }
-
-   /// updates list
-   void UpdateList();
-
-   /// search results to choose from
-   std::vector<Freedb::SearchResult> results;
-
-protected:
-   /// selected item
-   unsigned int m_uSelectedItem;
-
-   /// list of found freedb entries
-   AlternateColorsListCtrl m_list;
-};
-
-
 /// cd rip dialog
 class CDRipDlg:
    public CDialogImpl<CDRipDlg>,

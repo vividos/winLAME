@@ -313,6 +313,9 @@
     <ClCompile Include="winlame\ui\BevelLine.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\ui\FreeDbDiscListDlg.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="winlame\encoder\AacInputModule.h">
@@ -616,6 +619,9 @@
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\WizardPageHost.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\FreeDbDiscListDlg.hpp">
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

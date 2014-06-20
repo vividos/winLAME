@@ -32,65 +32,7 @@
 #include "DynamicLibrary.h"
 #include "App.h"
 #include "FreedbResolver.hpp"
-
-// CDRipFreedbListDlg methods
-
-LRESULT CDRipFreedbListDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
-{
-   // center the dialog on the screen
-   CenterWindow();
-
-   // set icons
-   HICON hIcon = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME), 
-      IMAGE_ICON, ::GetSystemMetrics(SM_CXICON), ::GetSystemMetrics(SM_CYICON), LR_DEFAULTCOLOR);
-   SetIcon(hIcon, TRUE);
-   HICON hIconSmall = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME), 
-      IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR);
-   SetIcon(hIconSmall, FALSE);
-
-   m_list.SubclassWindow(GetDlgItem(IDC_FREEDB_LIST_TRACKS));
-
-   m_list.SetExtendedListViewStyle(LVS_EX_FULLROWSELECT, LVS_EX_FULLROWSELECT);
-
-   m_list.InsertColumn(0, _T("Album Name"), LVCFMT_LEFT, 200, 0);
-   m_list.InsertColumn(1, _T("Genre"), LVCFMT_LEFT, 50, 0);
-
-   m_list.SelectItem(0);
-
-   UpdateList();
-
-   return TRUE;
-}
-
-void CDRipFreedbListDlg::UpdateList()
-{
-   CString cszText;
-   unsigned int nMax = results.size();
-   for(unsigned int n=0; n<nMax; n++)
-   {
-      cszText.Format(_T("%hs / %hs"), results[n].dartist.c_str(), results[n].dtitle.c_str());
-      cszText.Replace(_T("\n"), _T("")); // libfreedb may add a linefeed character
-
-      int nItem = m_list.InsertItem(m_list.GetItemCount(), cszText);
-      cszText = results[n].category.c_str();
-      m_list.SetItemText(nItem, 1, cszText);
-   }
-}
-
-LRESULT CDRipFreedbListDlg::OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   int iItem = m_list.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
-   if (iItem != -1)
-   {
-      EndDialog(wID);
-      m_uSelectedItem = static_cast<unsigned int>(iItem);
-   }
-
-   return 0;
-}
-
-
-// CDRipDlg methods
+#include "FreeDbDiscListDlg.hpp"
 
 CDRipDlg::CDRipDlg(UISettings& uiSettings, UIinterface& UIinterface)
 :m_uiSettings(uiSettings),
@@ -684,9 +626,7 @@ void CDRipDlg::FreedbLookup()
 
    if (resolver.Results().size() > 1)
    {
-      CDRipFreedbListDlg dlg;
-
-      dlg.results = resolver.Results();
+      UI::FreeDbDiscListDlg dlg(resolver.Results());
 
       waitCursor.Restore();
       ATLVERIFY(IDOK == dlg.DoModal());

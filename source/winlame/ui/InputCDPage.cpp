@@ -30,7 +30,7 @@
 #include "basscd.h"
 #include "FreedbResolver.hpp"
 #include "CommonStuff.h"
-#include "CDRipDlg.h"
+#include "FreeDbDiscListDlg.hpp"
 
 using namespace UI;
 
@@ -603,9 +603,7 @@ void InputCDPage::FreedbLookup()
 
    if (resolver.Results().size() > 1)
    {
-      CDRipFreedbListDlg dlg;
-
-      dlg.results = resolver.Results();
+      UI::FreeDbDiscListDlg dlg(resolver.Results());
 
       waitCursor.Restore();
       ATLVERIFY(IDOK == dlg.DoModal());

@@ -142,6 +142,7 @@
     <ClCompile Include="winlame\ui\BevelLine.cpp" />
     <ClCompile Include="winlame\ui\FinishPage.cpp" />
     <ClCompile Include="winlame\ui\FixedValueSpinButtonCtrl.cpp" />
+    <ClCompile Include="winlame\ui\FreeDbDiscListDlg.cpp" />
     <ClCompile Include="winlame\ui\ImageListComboBox.cpp" />
     <ClCompile Include="winlame\ui\InputCDPage.cpp" />
     <ClCompile Include="winlame\ui\InputListCtrl.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="winlame\ui\BevelLine.hpp" />
     <ClInclude Include="winlame\ui\FinishPage.hpp" />
     <ClInclude Include="winlame\ui\FixedValueSpinButtonCtrl.hpp" />
+    <ClInclude Include="winlame\ui\FreeDbDiscListDlg.hpp" />
     <ClInclude Include="winlame\ui\ImageListComboBox.hpp" />
     <ClInclude Include="winlame\ui\InputCDPage.hpp" />
     <ClInclude Include="winlame\ui\InputListCtrl.hpp" />
