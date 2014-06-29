@@ -10,9 +10,16 @@ winLAME 2014 beta:
 - get patch lame_encode_buffer_interleaved_int.patch from
   https://sourceforge.net/p/lame/patches/27/ into LAME and use official compiled libmp3lame.dll
 - check WriteID3v2Tag(); in LAME output module
+- Add "Finished encoding action" to ribbon
+- Warn about lossy transcoding on Finish page
+- Support input files on command line
+- Opus Input and Output module
 
 winLAME 2014 release:
 - async track length in input files page
+- resize columns in input files page when resizing
+- resize columns in input CD page when resizing
+- extend LibsndfileOutputPage to offer all possible output formats
 
 
 winLAME 2009 release:
