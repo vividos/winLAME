@@ -33,6 +33,7 @@
 LPCTSTR g_pszRegistryRoot = _T("Software\\winLAME");
 
 LPCTSTR g_pszOutputPath = _T("OutputPath");
+LPCTSTR g_pszOutputModule = _T("OutputModule");
 LPCTSTR g_pszInputOutputSameFolder = _T("InputOutputSameFolder");
 LPCTSTR g_pszLastInputPath = _T("LastInputPath");
 LPCTSTR g_pszDeleteAfterEncode = _T("DeleteAfterEncode");
@@ -135,6 +136,9 @@ void UISettings::ReadSettings()
    if (!cszLastInputPath.IsEmpty())
       lastinputpath = cszLastInputPath;
 
+   // read "output module" value
+   ReadIntValue(regRoot, g_pszOutputModule, output_module);
+
    // read "use input file's folder as output location" value
    ReadBooleanValue(regRoot, g_pszInputOutputSameFolder, out_location_use_input_dir);
 
@@ -216,6 +220,9 @@ void UISettings::StoreSettings()
 
    // write last input path
    regRoot.SetValue(lastinputpath, g_pszLastInputPath);
+
+   // write "output module" value
+   regRoot.SetValue(output_module, g_pszOutputModule);
 
    // write "use input file's folder as output location" value
    DWORD value = out_location_use_input_dir ? 1 : 0;
