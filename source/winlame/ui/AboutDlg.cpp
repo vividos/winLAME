@@ -156,6 +156,8 @@ CString AboutDlg::GetAboutHtmlText()
          moduleManager.getModuleVersionString(varname, ID_IM_BASS);
       else if (varname == _T("flacver"))
          moduleManager.getModuleVersionString(varname, ID_IM_FLAC);
+      else if (varname == _T("speexversion"))
+         moduleManager.getModuleVersionString(varname, ID_IM_SPEEX);
       else if (varname == _T("wtlversion"))
       {
          varname.Format(_T("%u.%u"),

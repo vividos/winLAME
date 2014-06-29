@@ -46,6 +46,7 @@
 #define ID_IM_BASS                      11
 #define ID_OM_BASSWMA                   12
 #define ID_IM_CDRIP                     13
+#define ID_IM_SPEEX                     14
 
 
 /// module base class

@@ -341,6 +341,7 @@
 #define IDS_FILTER_MONKEYS_AUDIO_INPUT          41705
 #define IDS_FILTER_OGG_VORBIS_INPUT             41706
 #define IDS_FILTER_ALL_SUPPORTED                41707
+#define IDS_FILTER_SPEEX_INPUT                  41708
 #define IDS_FORMAT_INFO_AAC_INFO                41800
 #define IDS_FORMAT_INFO_BASS_INPUT_MUSIC        42001
 #define IDS_FORMAT_INFO_BASS_INPUT_AUDIO        42002
@@ -364,6 +365,7 @@
 #define IDS_FORMAT_INFO_OGGV_OUTPUT_ABR         42020
 #define IDS_FORMAT_INFO_OGGV_OUTPUT_CBR         42021
 #define IDS_FORMAT_INFO_AAC_OUTPUT              42022
+#define IDS_FORMAT_INFO_SPEEX_INPUT             42023
 #define IDS_APP_CAPTION                         50000
 #define IDS_LANG_ENGLISH                        50001
 #define IDS_LANG_NATIVE                         50002

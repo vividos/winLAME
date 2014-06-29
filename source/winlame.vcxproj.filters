@@ -316,6 +316,9 @@
     <ClCompile Include="winlame\ui\FreeDbDiscListDlg.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\encoder\SpeexInputModule.cpp">
+      <Filter>encoder files\encoder source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="winlame\encoder\AacInputModule.h">
@@ -623,6 +626,12 @@
     </ClInclude>
     <ClInclude Include="winlame\ui\FreeDbDiscListDlg.hpp">
       <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\SpeexInputModule.hpp">
+      <Filter>encoder files\encoder header files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\OggInputStream.hpp">
+      <Filter>encoder files\encoder header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
