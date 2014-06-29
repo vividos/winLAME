@@ -43,6 +43,7 @@ const int BUF_SIZE = 4096;
 // BassInputModule methods
 
 BassInputModule::BassInputModule()
+:buffer(nullptr)
 {
    module_id = ID_IM_BASS;
 }
@@ -201,7 +202,8 @@ int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
    // get tags
    if (is_str && (info.ctype & BASS_CTYPE_STREAM_WMA))
    {
-      const char* comments = BASS_WMA_GetTags(T2CA(cszAnsiFilename), 0);
+      CStringA cszaAnsiFilename(cszAnsiFilename);
+      const char* comments = BASS_WMA_GetTags(cszAnsiFilename.GetString(), 0);
 
       std::vector<size_t> vecCommentIndices;
       if (comments)
