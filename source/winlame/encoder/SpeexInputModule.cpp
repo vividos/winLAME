@@ -94,7 +94,7 @@ int SpeexInputModule::initInput(LPCTSTR infilename, SettingsManager& mgr,
 
    if (err != 0 || fd == nullptr)
    {
-      m_cszLastError = _T("Couldn't open file");
+      m_cszLastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
       return -1;
    }
 
