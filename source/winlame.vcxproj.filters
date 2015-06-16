@@ -319,6 +319,9 @@
     <ClCompile Include="winlame\encoder\SpeexInputModule.cpp">
       <Filter>encoder files\encoder source files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\encoder\OpusInputModule.cpp">
+      <Filter>encoder files\encoder source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="winlame\encoder\AacInputModule.h">
@@ -631,6 +634,9 @@
       <Filter>encoder files\encoder header files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\OggInputStream.hpp">
+      <Filter>encoder files\encoder header files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\OpusInputModule.hpp">
       <Filter>encoder files\encoder header files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -39,12 +39,13 @@
 #include "MonkeysAudioInputModule.h"
 #include "CDReadoutModule.h"
 #include "SpeexInputModule.hpp"
+#include "OpusInputModule.hpp"
 #include "resource.h"
 
 // global functions
 
 /// max number of input modules GetNewInputModule can return
-const int MaxInputModule = 9;
+const int MaxInputModule = 10;
 
 /// returns a new input module by index
 InputModule* GetNewInputModule(int index)
@@ -78,6 +79,9 @@ InputModule* GetNewInputModule(int index)
       break;
    case 8:
       inmod = new SpeexInputModule;
+      break;
+   case 9:
+      inmod = new OpusInputModule;
       break;
    }
    return inmod;
