@@ -31,16 +31,24 @@
 #include "SettingsManager.h"
 #include "EncoderImpl.h"
 
+/// settings for EncoderTask
 struct EncoderTaskSettings
 {
+   EncoderTaskSettings()
+      :m_iOutputModuleId(0),
+      m_bOverwriteFiles(false),
+      m_bDeleteAfterEncode(false)
+   {
+   }
+
    /// title
    CString m_cszTitle;
 
    /// input filename
    CString m_cszInputFilename;
 
-   /// output filename
-   CString m_cszOutputFilename;
+   /// output path
+   CString m_cszOutputPath;
 
    /// track info to store in output
    TrackInfo m_trackInfo;
@@ -53,6 +61,12 @@ struct EncoderTaskSettings
 
    /// output module id
    int m_iOutputModuleId;
+
+   /// indicates if file should be overwritten
+   bool m_bOverwriteFiles;
+
+   /// indicates if input file should be deleted after encoding
+   bool m_bDeleteAfterEncode;
 };
 
 class AlwaysSkipErrorHandler: public EncoderErrorHandler

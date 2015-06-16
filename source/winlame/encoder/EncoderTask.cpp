@@ -27,17 +27,15 @@
 EncoderTask::EncoderTask(const EncoderTaskSettings& settings)
 :m_settings(settings)
 {
-   // TODO
    EncoderImpl::setInputFilename(m_settings.m_cszInputFilename);
-   //EncoderImpl::setOutputPath(settings.
+   EncoderImpl::setOutputPath(m_settings.m_cszOutputPath);
    EncoderImpl::setSettingsManager(&m_settings.m_settingsManager);
    EncoderImpl::setModuleManager(m_settings.m_pModuleManager);
    EncoderImpl::setOutputModule(m_settings.m_iOutputModuleId);
    EncoderImpl::setErrorHandler(&m_errorHandler);
-   //EncoderImpl::setOverwriteFiles(settings.
-   //EncoderImpl::setDeleteAfterEncode(settings.
+   EncoderImpl::setOverwriteFiles(m_settings.m_bOverwriteFiles);
+   EncoderImpl::setDeleteAfterEncode(m_settings.m_bDeleteAfterEncode);
    EncoderImpl::setWarnLossy(false);
-   //EncoderImpl::setOutputPlaylistFilename
 }
 
 TaskInfo EncoderTask::GetTaskInfo()
