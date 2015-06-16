@@ -41,6 +41,12 @@ EncoderTask::EncoderTask(const EncoderTaskSettings& settings)
 TaskInfo EncoderTask::GetTaskInfo()
 {
    TaskInfo info;
+
+   info.Name(Path(m_settings.m_cszInputFilename).FilenameAndExt());
+
+   // TODO completed?
+   info.Status(running ? TaskInfo::statusRunning : TaskInfo::statusWaiting);
+
    // TODO set name, desc, etc.
    float fPercent = EncoderImpl::queryPercentDone();
    info.Progress(static_cast<int>(fPercent));
@@ -52,6 +58,8 @@ TaskInfo EncoderTask::GetTaskInfo()
 
 void EncoderTask::Run()
 {
+   running = true;
+
    EncoderImpl::encode();
 }
 

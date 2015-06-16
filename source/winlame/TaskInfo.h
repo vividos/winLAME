@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2015 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,11 +26,13 @@
 class TaskInfo
 {
 public:
-   /// ctor
+   /// default ctor
    TaskInfo()
-      :m_taskStatus(statusWaiting),
+      :m_uiId(0),
+       m_taskStatus(statusWaiting),
        m_taskType(taskOther),
-       m_uiProgress(0)
+       m_uiProgress(0),
+       m_uiDependentId(0)
    {
    }
 
@@ -52,6 +54,9 @@ public:
 
    // get methods
 
+   /// returns task id
+   unsigned int Id() const throw() { return m_uiId; }
+
    /// returns name of file, track, etc. associated with the task
    CString Name() const throw() { return m_cszName; }
 
@@ -64,14 +69,25 @@ public:
    /// returns progress in percent; [0; 100]
    unsigned int Progress() const throw() { return m_uiProgress; }
 
+   /// returns task id that this task depends on (or 0)
+   unsigned int DependentId() const throw() { return m_uiDependentId; }
+
    // set methods
+
+   /// sets name of file, track, etc.
+   void Name(const CString& cszName) { m_cszName = cszName; }
+
+   /// sets status of task
+   void Status(TaskStatus taskStatus) throw() { m_taskStatus = taskStatus; }
 
    /// sets progress in percent; [0; 100]
    void Progress(unsigned int uiProgress) throw() { m_uiProgress = uiProgress; }
 
 private:
+   unsigned int m_uiId;       ///< task id
    CString m_cszName;         ///< task name
    TaskStatus m_taskStatus;   ///< status
    TaskType m_taskType;       ///< task type
    unsigned int m_uiProgress; ///< progress in percent
+   unsigned int m_uiDependentId; ///< dependency task id
 };
