@@ -162,15 +162,24 @@ int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
 
    /* try streaming the file/url */
    CString cszAnsiFilename = GetAnsiCompatFilename(infilename);
-   if ((chan=BASS_StreamCreateFile(FALSE,T2CA(cszAnsiFilename),0,0,BASS_STREAM_DECODE)) ||
-      (chan=BASS_StreamCreateURL(T2CA(cszAnsiFilename),0,BASS_STREAM_DECODE,0,0)) ||
-      (basswma && (chan=BASS_WMA_StreamCreateFile(FALSE,T2CA(cszAnsiFilename),0,0,BASS_STREAM_DECODE)))) {
+
+   chan = BASS_StreamCreateFile(FALSE, T2CA(cszAnsiFilename), 0, 0, BASS_STREAM_DECODE);
+   if (!chan)
+      chan = BASS_StreamCreateURL(T2CA(cszAnsiFilename), 0, BASS_STREAM_DECODE, 0, 0);
+   if (!chan && basswma)
+      chan = BASS_WMA_StreamCreateFile(FALSE, T2CA(cszAnsiFilename), 0, 0, BASS_STREAM_DECODE);
+
+   if (chan)
+   {
       length=BASS_ChannelGetLength(chan, BASS_POS_BYTE);
       is_str=TRUE;
-   /* try loading the MOD (with sensitive ramping, and calculate the duration) */
-   } else if ((chan=BASS_MusicLoad(FALSE,T2CA(cszAnsiFilename),0,0,
-         BASS_MUSIC_DECODE | BASS_MUSIC_RAMPS | BASS_MUSIC_SURROUND |
-         BASS_MUSIC_CALCLEN | BASS_MUSIC_STOPBACK,0))) {
+   }
+   else
+      // try loading the MOD (with sensitive ramping, and calculate the duration)
+   if ((chan = BASS_MusicLoad(FALSE, T2CA(cszAnsiFilename), 0, 0,
+      BASS_MUSIC_DECODE | BASS_MUSIC_RAMPS | BASS_MUSIC_SURROUND |
+      BASS_MUSIC_CALCLEN | BASS_MUSIC_STOPBACK,0)))
+   {
       modlen=BASS_ChannelGetLength(chan, BASS_POS_MUSIC_ORDER);
       length=BASS_ChannelGetLength(chan, BASS_POS_BYTE);
       is_str=FALSE;
