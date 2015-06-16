@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2015 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,9 +27,12 @@ class TaskInfo;
 
 namespace UI
 {
+/// win traits for tasks view
+typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS, 0, CControlWinTraits>
+   TasksViewWinTraits;
 
 /// tasks view; shows all currently running tasks
-class TasksView : public CWindowImpl<TasksView, CListViewCtrl>
+class TasksView : public CWindowImpl<TasksView, CListViewCtrl, TasksViewWinTraits>
 {
 public:
    /// ctor
@@ -48,10 +51,20 @@ public:
 
    BOOL PreTranslateMessage(MSG* pMsg);
 
+private:
    BEGIN_MSG_MAP(TasksView)
+      MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
+      MESSAGE_HANDLER(WM_TIMER, OnTimer)
    END_MSG_MAP()
 
+   LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
+   LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
 private:
+   void InsertNewItem(const TaskInfo& info);
+   void UpdateExistingItem(int iItem, const TaskInfo& info);
+
    /// determines icon from task type
    static int IconFromTaskType(const TaskInfo& info);
 

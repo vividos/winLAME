@@ -156,9 +156,7 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    m_statusBar.SetPanes(arrParts, sizeof(arrParts) / sizeof(int), false);
 */
 
-   m_hWndClient = m_view.Create(m_hWnd, rcDefault, NULL,
-      WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | LVS_REPORT | LVS_SHOWSELALWAYS,
-      WS_EX_CLIENTEDGE);
+   m_hWndClient = m_view.Create(m_hWnd, rcDefault);
    m_view.SetFont(AtlGetDefaultGuiFont());
    m_view.Init();
 
