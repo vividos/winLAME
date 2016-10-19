@@ -168,7 +168,6 @@ int BassWmaOutputModule::initOutput(LPCTSTR outfilename,
 
    // add track properties
    {
-      USES_CONVERSION;
       CString prop;
       bool bAvail;
 

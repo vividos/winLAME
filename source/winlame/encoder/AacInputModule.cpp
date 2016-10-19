@@ -202,8 +202,7 @@ int AacInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
    NeAACDecDecode(decoder, &frameinfo, inbuffer, sizeof(inbuffer));
    if (frameinfo.error > 0)
    {
-      USES_CONVERSION;
-      lasterror = A2CT(NeAACDecGetErrorMessage(frameinfo.error));
+      lasterror = CString(NeAACDecGetErrorMessage(frameinfo.error));
       return -frameinfo.error;
    }
    else

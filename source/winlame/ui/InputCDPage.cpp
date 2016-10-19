@@ -354,8 +354,7 @@ bool InputCDPage::ReadCdplayerIni(bool& bVarious)
 
    const char* cdplayer_id_raw = BASS_CD_GetID(nDrive, BASS_CDID_CDPLAYER);
 
-   USES_CONVERSION;
-   const TCHAR* cdplayer_id = A2CT(cdplayer_id_raw);
+   CString cdplayer_id(cdplayer_id_raw);
 
    unsigned int nNumTracks = 0;
    if (cdplayer_id_raw != NULL && 0 != (nNumTracks = ::GetPrivateProfileInt(cdplayer_id, _T("numtracks"), 0, cszCDPlayerIniFilename)))
@@ -522,8 +521,7 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
 
    const char* cdplayer_id_raw = BASS_CD_GetID(nDrive, BASS_CDID_CDPLAYER);
 
-   USES_CONVERSION;
-   const TCHAR* cdplayer_id = A2CT(cdplayer_id_raw);
+   CString cdplayer_id(cdplayer_id_raw);
 
    CDRipTrackManager* pManager = CDRipTrackManager::getCDRipTrackManager();
    CDRipDiscInfo& discinfo = pManager->GetDiscInfo();
