@@ -30,9 +30,9 @@ class CrtFopenWrapper
 {
 public:
    /// ctor
-   CrtFopenWrapper()
+   CrtFopenWrapper(LPCTSTR runtimeLibraryName = _T("msvcrt.dll"))
    {
-      HMODULE hMod = ::GetModuleHandle(_T("msvcrt.dll"));
+      HMODULE hMod = ::GetModuleHandle(runtimeLibraryName);
       m_msvcrt_wfopen = (T_fn_msvcrt_wfopen)::GetProcAddress(hMod, "_wfopen");
       m_msvcrt_fclose = (T_fn_msvcrt_fclose)::GetProcAddress(hMod, "fclose");
    }
