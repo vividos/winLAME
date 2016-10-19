@@ -154,7 +154,7 @@ protected:
       RECT &rcValue, UINT nItemState, UINT nItemAction, bool thin);
 
    /// draws cross, when a group item
-   void DrawCross(HDC hDC, RECT &rect, UINT nSize, bool bPlus);
+   void DrawCross(HDC hDC, RECT& rect, LONG nSize, bool bPlus);
 
    /// called when a group state changes
    void ChangeGroupState(int nIndex);

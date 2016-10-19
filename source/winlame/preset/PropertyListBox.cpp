@@ -275,12 +275,12 @@ void PropertyListBox::DrawPropText(HDC hDC, LPCTSTR name, RECT &rcName,
    ::SetTextColor(hDC, clrOldText);
 }
 
-void PropertyListBox::DrawCross(HDC hDC, RECT &rc, UINT nSize, bool bPlus)
+void PropertyListBox::DrawCross(HDC hDC, RECT& rc, LONG nSize, bool bPlus)
 {
    HBRUSH   hWhiteBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
    HBRUSH   hBlackBrush = (HBRUSH)GetStockObject(BLACK_BRUSH);
    HPEN      hPen         = ::CreatePen(PS_SOLID, 1, RGB(0x00, 0x00, 0x00));
-   UINT      nTop         = (rc.top + rc.bottom) / 2 - nSize - 1;
+   LONG      nTop         = (rc.top + rc.bottom) / 2 - nSize - 1;
    RECT      rect         = { rc.left, nTop, rc.left + 2 * nSize + 1, nTop + 2 * nSize + 1 };
    POINT      point;
    UINT      nXCenter      = rect.left + nSize;
