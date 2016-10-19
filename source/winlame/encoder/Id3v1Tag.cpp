@@ -77,15 +77,15 @@ void Id3v1Tag::fromTrackInfo(const TrackInfo& ti)
    bool bAvail;
    CString cszValue = ti.TextInfo(TrackInfoTitle, bAvail);
    if (bAvail)
-      _snprintf(this->title, sizeof(this->title)/sizeof(*this->title), "%.30ls", cszValue.Left(30));
+      _snprintf(this->title, sizeof(this->title)/sizeof(*this->title), "%.30ls", cszValue.Left(30).GetString());
 
    cszValue = ti.TextInfo(TrackInfoArtist, bAvail);
    if (bAvail)
-      _snprintf(this->artist, sizeof(this->artist)/sizeof(*this->artist), "%.30ls", cszValue.Left(30));
+      _snprintf(this->artist, sizeof(this->artist)/sizeof(*this->artist), "%.30ls", cszValue.Left(30).GetString());
 
    cszValue = ti.TextInfo(TrackInfoAlbum, bAvail);
    if (bAvail)
-      _snprintf(this->album, sizeof(this->album)/sizeof(*this->album), "%.30ls", cszValue.Left(30));
+      _snprintf(this->album, sizeof(this->album)/sizeof(*this->album), "%.30ls", cszValue.Left(30).GetString());
 
    int iValue = ti.NumberInfo(TrackInfoYear, bAvail);
    if (bAvail)
@@ -93,7 +93,7 @@ void Id3v1Tag::fromTrackInfo(const TrackInfo& ti)
 
    cszValue = ti.TextInfo(TrackInfoComment, bAvail);
    if (bAvail)
-      _snprintf(this->comment, sizeof(this->comment)/sizeof(*this->comment), "%.29ls", cszValue.Left(29));
+      _snprintf(this->comment, sizeof(this->comment)/sizeof(*this->comment), "%.29ls", cszValue.Left(29).GetString());
 
    iValue = ti.NumberInfo(TrackInfoTrack, bAvail);
    if (bAvail)

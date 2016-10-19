@@ -584,6 +584,6 @@ void EncoderImpl::WritePlaylistEntry(const CString& cszOutputFilename)
       cszFilename.Delete(0, iPos+1);
 
    // write to playlist file
-   _ftprintf(fd, _T("%s\n"), cszFilename);
+   _ftprintf(fd, _T("%s\n"), cszFilename.GetString());
    fclose(fd);
 }
