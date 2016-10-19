@@ -121,18 +121,18 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    {
       sysmenu.AppendMenu(MF_SEPARATOR);
 
-      CString cszMenuEntry;
-
       // add options menu entry
       {
          CString cszMenuEntry;
-         cszMenuEntry.LoadString(IDS_COMMON_OPTIONS);
 
+         cszMenuEntry.LoadString(IDS_COMMON_OPTIONS);
          sysmenu.AppendMenu(MF_STRING, IDM_OPTIONS, cszMenuEntry);
       }
 
       // add about box menu entry
       {
+         CString cszMenuEntry;
+
          cszMenuEntry.LoadString(IDS_COMMON_ABOUTBOX);
          sysmenu.AppendMenu(MF_STRING, IDM_ABOUTBOX, cszMenuEntry);
       }

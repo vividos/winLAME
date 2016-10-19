@@ -340,8 +340,8 @@ void PropertyListBox::ChangeGroupState(int nIndex)
       int max = GetCount();
       do
       {
-         DWORD data = GetItemData(nIndex);
-         if ((data & P_GROUP) == P_GROUP)
+         DWORD data2 = GetItemData(nIndex);
+         if ((data2 & P_GROUP) == P_GROUP)
             break;
 
          DeleteString(nIndex);

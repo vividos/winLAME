@@ -196,17 +196,17 @@ void PresetManagerImpl::setSettings(int index, SettingsManager &settings_mgr)
 
       for(;iter2!=stop; ++iter2)
       {
-         cppxml::xmlnode_ptr node(*iter2);
+         cppxml::xmlnode_ptr node2(*iter2);
 
          // get attribute value and ID
-         cppxml::string name = node->get_attribute_value("name");
+         cppxml::string name = node2->get_attribute_value("name");
 
          USES_CONVERSION;
          int valueID = mgr_variables.lookupID(A2CT(name.c_str()));
          if (valueID == -1) continue; // not found
 
          // get cdata: variable's value
-         cppxml::xmlnode_ptr valuenode = node->get_childnodes().front();
+         cppxml::xmlnode_ptr valuenode = node2->get_childnodes().front();
          if (valuenode.get()==NULL) continue; // not found
 
          cppxml::string value = valuenode->get_value();
@@ -322,8 +322,8 @@ cppxml::xmlnode_ptr PresetManagerImpl::editLookupNode(int group, int index)
       for(int i=0; i<index; i++) ++iter;
 
       // search for node
-      cppxml::xmlnode_ptr node(cppxml::get_nodelist_item(*nodelist,index));
-      return node;
+      cppxml::xmlnode_ptr node2(cppxml::get_nodelist_item(*nodelist,index));
+      return node2;
    }
 
    return node;

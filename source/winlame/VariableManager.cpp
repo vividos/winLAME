@@ -41,7 +41,7 @@ struct SettingsVarMap
 
 int VariableManager::lookupID(LPCTSTR name)
 {
-   const SettingsVarMap *varmap = this->varmap;
+   const SettingsVarMap *varmap = m_varmap;
 
    int index = -1;
    while(varmap->name!=NULL)
@@ -58,7 +58,7 @@ int VariableManager::lookupID(LPCTSTR name)
 
 LPCTSTR VariableManager::lookupName(int varID)
 {
-   const SettingsVarMap *varmap = this->varmap;
+   const SettingsVarMap *varmap = m_varmap;
 
    LPCTSTR name = _T("");
    while(varmap->name!=NULL)
@@ -75,7 +75,7 @@ LPCTSTR VariableManager::lookupName(int varID)
 
 LPCTSTR VariableManager::lookupDescription(int varID)
 {
-   const SettingsVarMap *varmap = this->varmap;
+   const SettingsVarMap *varmap = m_varmap;
 
    LPCTSTR desc = _T("");
    while(varmap->name!=NULL)
@@ -92,7 +92,7 @@ LPCTSTR VariableManager::lookupDescription(int varID)
 
 int VariableManager::lookupDefaultValue(int varID)
 {
-   const SettingsVarMap *varmap = this->varmap;
+   const SettingsVarMap *varmap = m_varmap;
 
    int defval=-1;
    while(varmap->name!=NULL)
@@ -192,12 +192,12 @@ WL_VARMAP_END()
 
 VarMgrFacilities::VarMgrFacilities()
 {
-   varmap = varMapFacility;
+   m_varmap = varMapFacility;
 }
 
 VarMgrVariables::VarMgrVariables()
 {
-   varmap = varMapVariables;
+   m_varmap = varMapVariables;
 }
 
 

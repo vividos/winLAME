@@ -206,9 +206,9 @@ void InputFilesParser::ImportPlsPlaylist(LPCTSTR filename)
       if (_tcsncmp(line.c_str(), _T("File"), 4) != 0) continue;
 
       // get file name after equal char
-      std::tstring::size_type pos = line.find_first_of('=');
-      if (pos == std::tstring::npos) continue;
-      line.erase(0, pos + 1);
+      std::tstring::size_type pos2 = line.find_first_of('=');
+      if (pos2 == std::tstring::npos) continue;
+      line.erase(0, pos2 + 1);
 
       // check if path is relative
       if (_tcschr(line.c_str(), ':') == NULL && _tcsncmp(line.c_str(), _T("\\\\"), 2) != 0)
@@ -277,13 +277,13 @@ void InputFilesParser::ImportCueSheet(LPCTSTR filename)
          if (line.at(0) == '\"') endchar = '\"';
 
          // search endchar
-         std::tstring::size_type pos = line.find_first_of(endchar, 1);
-         if (pos == std::tstring::npos) continue;
+         std::tstring::size_type pos2 = line.find_first_of(endchar, 1);
+         if (pos2 == std::tstring::npos) continue;
 
          // cut out filename
          std::tstring fname;
          fname.assign(line.c_str() + (endchar == ' ' ? 0 : 1),
-            pos - (endchar == ' ' ? 0 : 1));
+            pos2 - (endchar == ' ' ? 0 : 1));
 
          // insert filename
          InsertFilename(fname.c_str());

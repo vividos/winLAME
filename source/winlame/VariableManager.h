@@ -40,7 +40,7 @@ class VariableManager
 {
 public:
    // ctor
-   VariableManager(){ varmap=NULL; }
+   VariableManager(){ m_varmap = nullptr; }
 
    /// looks up variable ID per name
    int lookupID(LPCTSTR name);
@@ -56,7 +56,7 @@ public:
 
 protected:
    /// variable map
-   const SettingsVarMap *varmap;
+   const SettingsVarMap* m_varmap;
 };
 
 

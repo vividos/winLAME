@@ -369,8 +369,6 @@ void CDRipDlg::RefreshCDList()
       const CHAR* cdtext = BASS_CD_GetID(nDrive, BASS_CDID_TEXT);
       if (cdtext != NULL)
       {
-         USES_CONVERSION;
-
          std::vector<CString> vecTitles(uMaxCDTracks+1);
          std::vector<CString> vecPerformer(uMaxCDTracks+1);
 
