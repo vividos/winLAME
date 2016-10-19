@@ -313,6 +313,9 @@
     <ClCompile Include="winlame\ui\BevelLine.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\encoder\CDExtractTask.cpp">
+      <Filter>encoder files\encoder source files</Filter>
+    </ClCompile>
     <ClCompile Include="winlame\ui\FreeDbDiscListDlg.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
@@ -626,6 +629,9 @@
     </ClInclude>
     <ClInclude Include="winlame\ui\WizardPageHost.hpp">
       <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\CDExtractTask.hpp">
+      <Filter>encoder files\encoder header files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\FreeDbDiscListDlg.hpp">
       <Filter>UI Files\Header Files</Filter>
