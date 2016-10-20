@@ -13,6 +13,7 @@
 #define IDB_HELP                                82
 #define IDR_HTML_ABOUT                          83
 #define IDB_BITMAP_FLAGS                        84
+#define IDB_BITMAP_TASKS                        85
 #define IDR_MAINFRAME                           86
 #define ID_ENCODE_FILES                         90
 #define ID_ENCODE_CD                            91

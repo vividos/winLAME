@@ -69,8 +69,15 @@ private:
    static int IconFromTaskType(const TaskInfo& info);
 
 private:
+   // model
+
    /// ref to task manager
    TaskManager& m_taskManager;
+
+   // UI
+
+   /// task list images
+   CImageList m_taskImages;
 };
 
 } // namespace UI

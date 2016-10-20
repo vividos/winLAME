@@ -64,6 +64,15 @@ void TasksView::Init()
    DWORD dwExStyle = LVS_EX_FULLROWSELECT;
    SetExtendedListViewStyle(dwExStyle, dwExStyle);
 
+   // task images
+   m_taskImages.Create(16, 16, ILC_MASK | ILC_COLOR32, 0, 0);
+   CBitmap bmpImages;
+   // load bitmap, but always from main module (bmp not in translation dlls)
+   bmpImages.Attach(::LoadBitmap(ModuleHelper::GetModuleInstance(), MAKEINTRESOURCE(IDB_BITMAP_TASKS)));
+   m_taskImages.Add(bmpImages, RGB(255, 255, 255));
+
+   SetImageList(m_taskImages, LVSIL_SMALL);
+
    SetTimer(c_uiTimerIdUpdateList, c_uiUpdateCycleInMilliseconds);
 }
 
@@ -140,11 +149,13 @@ int TasksView::IconFromTaskType(const TaskInfo& info)
 {
    switch (info.Type())
    {
-   case TaskInfo::taskEncoding:     return 0;
-   case TaskInfo::taskCdExtraction: return 1;
-   case TaskInfo::taskOther:        return 2;
+   case TaskInfo::taskEncoding:     return 1;
+   case TaskInfo::taskCdExtraction: return 2;
+   case TaskInfo::taskWritePlaylist: return 3;
+   case TaskInfo::taskUnknown:
    default:
       ATLASSERT(false);
+      break;
    }
 
    return 0;

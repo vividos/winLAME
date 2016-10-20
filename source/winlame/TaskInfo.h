@@ -26,16 +26,6 @@
 class TaskInfo
 {
 public:
-   /// default ctor
-   TaskInfo()
-      :m_uiId(0),
-       m_taskStatus(statusWaiting),
-       m_taskType(taskOther),
-       m_uiProgress(0),
-       m_uiDependentId(0)
-   {
-   }
-
    /// task status
    enum TaskStatus
    {
@@ -49,8 +39,19 @@ public:
    {
       taskEncoding = 0,
       taskCdExtraction,
-      taskOther
+      taskWritePlaylist,
+      taskUnknown
    };
+
+   /// ctor
+   TaskInfo(enum TaskType taskType = taskUnknown)
+      :m_uiId(0),
+       m_taskStatus(statusWaiting),
+       m_taskType(taskType),
+       m_uiProgress(0),
+       m_uiDependentId(0)
+   {
+   }
 
    // get methods
 
