@@ -200,6 +200,8 @@
     <ClCompile Include="winlame\ui\WizardPageHost.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="winlame\Atl.h" />
+    <ClInclude Include="winlame\Boost.h" />
     <ClInclude Include="winlame\encoder\AacInputModule.h" />
     <ClInclude Include="winlame\encoder\AacOutputModule.h" />
     <ClInclude Include="winlame\encoder\BassInputModule.h" />
@@ -253,6 +255,7 @@
     <ClInclude Include="winlame\old_ui\PresetsPage.h" />
     <ClInclude Include="winlame\old_ui\SystemTrayIcon.h" />
     <ClInclude Include="winlame\Path.hpp" />
+    <ClInclude Include="winlame\StdCppLib.h" />
     <ClInclude Include="winlame\TrackEditListCtrl.h" />
     <ClInclude Include="winlame\ui\AACSettingsPage.hpp" />
     <ClInclude Include="winlame\ui\AboutDlg.hpp" />
@@ -307,6 +310,8 @@
     <ClInclude Include="winlame\ui\TasksView.hpp" />
     <ClInclude Include="winlame\ui\WizardPage.hpp" />
     <ClInclude Include="winlame\ui\WizardPageHost.hpp" />
+    <ClInclude Include="winlame\Win32.h" />
+    <ClInclude Include="winlame\Wtl.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="winlame\res\btnicons.bmp" />

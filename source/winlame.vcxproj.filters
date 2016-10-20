@@ -651,6 +651,21 @@
     <ClInclude Include="winlame\encoder\OpusInputModule.hpp">
       <Filter>encoder files\encoder header files</Filter>
     </ClInclude>
+    <ClInclude Include="winlame\Atl.h">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\Win32.h">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\Wtl.h">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\Boost.h">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\StdCppLib.h">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="winlame\res\btnicons.bmp">
