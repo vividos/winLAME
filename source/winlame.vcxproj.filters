@@ -71,6 +71,9 @@
       <UniqueIdentifier>{aa1984d8-2d06-448b-9d82-b720bbc9e634}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
+    <Filter Include="UI Files\Resource Files\Generated Files">
+      <UniqueIdentifier>{7e9e0b1f-aa29-45d6-87c4-ccd49fb40dc5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winlame\encoder\AacInputModule.cpp">
@@ -540,9 +543,6 @@
     <ClInclude Include="winlame\VariableManager.h">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\res\MainFrameRibbon.h">
-      <Filter>UI Files\Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="winlame\resource.h">
       <Filter>UI Files\Resource Files</Filter>
     </ClInclude>
@@ -651,6 +651,9 @@
     <ClInclude Include="winlame\encoder\OpusInputModule.hpp">
       <Filter>encoder files\encoder header files</Filter>
     </ClInclude>
+    <ClInclude Include="winlame\res\MainFrameRibbon.h">
+      <Filter>UI Files\Resource Files\Generated Files</Filter>
+    </ClInclude>
     <ClInclude Include="winlame\Atl.h">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
@@ -691,17 +694,17 @@
     <None Include="winlame\res\about.html">
       <Filter>UI Files\Resource Files</Filter>
     </None>
-    <None Include="winlame\res\MainFrameRibbon.bml">
-      <Filter>UI Files\Resource Files</Filter>
-    </None>
     <None Include="..\docs\doxygen.cfg" />
+    <None Include="winlame\res\MainFrameRibbon.bml">
+      <Filter>UI Files\Resource Files\Generated Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="winlame\res\MainFrameRibbon.rc">
-      <Filter>UI Files\Resource Files</Filter>
-    </ResourceCompile>
     <ResourceCompile Include="winlame\winlame.rc">
       <Filter>UI Files\Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="winlame\res\MainFrameRibbon.rc">
+      <Filter>UI Files\Resource Files\Generated Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
