@@ -40,7 +40,7 @@ EncoderTask::EncoderTask(const EncoderTaskSettings& settings)
 
 TaskInfo EncoderTask::GetTaskInfo()
 {
-   TaskInfo info;
+   TaskInfo info(TaskInfo::taskEncoding);
 
    info.Name(Path(m_settings.m_cszInputFilename).FilenameAndExt());
 

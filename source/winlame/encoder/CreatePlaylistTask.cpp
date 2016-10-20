@@ -29,8 +29,9 @@ CreatePlaylistTask::CreatePlaylistTask(const EncoderJobList& encoderjoblist)
 
 TaskInfo CreatePlaylistTask::GetTaskInfo()
 {
-   TaskInfo info;
+   TaskInfo info(TaskInfo::taskWritePlaylist);
    // TODO set name, desc, etc.
+   info.Name(_T("Writing Playlist"));
 
    return info;
 }
