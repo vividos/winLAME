@@ -71,6 +71,18 @@ private:
    /// called when page is left with Back button
    LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
+   /// adds tasks to task manager
+   void AddTasks();
+
+   /// adds tasks for input files to task manager
+   void AddInputFilesTasks();
+
+   /// adds tasks for CD extraction to task manager
+   void AddCDExtractTasks();
+
+   /// adds task to create a playlist to task manager
+   void AddPlaylistTask();
+
 private:
    // controls
 

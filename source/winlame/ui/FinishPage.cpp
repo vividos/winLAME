@@ -26,6 +26,11 @@
 #include "PresetSelectionPage.hpp"
 #include "OutputSettingsPage.hpp"
 #include "UISettings.h"
+#include "TaskManager.h"
+#include "EncoderTask.h"
+#include "CreatePlaylistTask.hpp"
+#include "CDExtractTask.hpp"
+#include "CDRipTrackManager.h"
 
 using namespace UI;
 
@@ -46,7 +51,7 @@ LRESULT FinishPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPar
 
 LRESULT FinishPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   // TODO add files to encoder
+   AddTasks();
 
    // TODO clear encoderjoblist
 
@@ -68,4 +73,80 @@ LRESULT FinishPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
    }
 
    return 0;
+}
+
+void FinishPage::AddTasks()
+{
+   // create playlist?
+   if (m_uiSettings.create_playlist)
+      AddPlaylistTask();
+
+   if (m_uiSettings.m_bFromInputFilesPage)
+      AddInputFilesTasks();
+   else
+      AddCDExtractTasks();
+}
+
+void FinishPage::AddInputFilesTasks()
+{
+   TaskManager& taskMgr = IoCContainer::Current().Resolve<TaskManager>();
+
+   for (int i = 0, iMax = m_uiSettings.encoderjoblist.size(); i < iMax; i++)
+   {
+      EncoderJob& job = m_uiSettings.encoderjoblist[i];
+
+      EncoderTaskSettings taskSettings;
+
+      taskSettings.m_cszInputFilename = job.InputFilename();
+      taskSettings.m_cszOutputPath = m_uiSettings.m_defaultSettings.outputdir;
+      taskSettings.m_cszTitle = Path(job.InputFilename()).FilenameAndExt();
+
+      ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+      taskSettings.m_iOutputModuleId = moduleManager.getOutputModuleID(m_uiSettings.output_module);
+
+      taskSettings.m_settingsManager = m_uiSettings.settings_manager;
+      taskSettings.m_trackInfo = job.GetTrackInfo();
+      taskSettings.m_pModuleManager = &moduleManager;
+      taskSettings.m_bOverwriteFiles = m_uiSettings.m_defaultSettings.overwrite_existing;
+      taskSettings.m_bDeleteAfterEncode = m_uiSettings.m_defaultSettings.delete_after_encode;
+
+      std::shared_ptr<EncoderTask> spTask(new EncoderTask(taskSettings));
+
+      taskMgr.AddTask(spTask);
+   }
+}
+
+void FinishPage::AddCDExtractTasks()
+{
+   TaskManager& taskMgr = IoCContainer::Current().Resolve<TaskManager>();
+
+   CDRipTrackManager& ripTrackMgr = *CDRipTrackManager::getCDRipTrackManager();
+
+   const CDRipDiscInfo& discInfo = ripTrackMgr.GetDiscInfo();
+
+   unsigned int uiMax = ripTrackMgr.GetMaxTrackInfo();
+
+   unsigned int uiLastTaskId = 0;
+
+   for (unsigned int ui = 0; ui < uiMax; ui++)
+   {
+      const CDRipTrackInfo& trackInfo = ripTrackMgr.GetTrackInfo(ui);
+
+      if (!trackInfo.m_bActive)
+         continue;
+
+      std::shared_ptr<CDExtractTask> spTask(new CDExtractTask(discInfo, trackInfo));
+
+      taskMgr.AddTask(spTask);
+
+      uiLastTaskId = spTask->GetTaskInfo().Id();
+   }
+}
+
+void FinishPage::AddPlaylistTask()
+{
+   TaskManager& taskMgr = IoCContainer::Current().Resolve<TaskManager>();
+
+   std::shared_ptr<Task> spTask(new CreatePlaylistTask(m_uiSettings.encoderjoblist));
+   taskMgr.AddTask(spTask);
 }
