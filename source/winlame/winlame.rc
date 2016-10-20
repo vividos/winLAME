@@ -20,6 +20,7 @@ BEGIN
     BUTTON      ID_SETTINGS_CDREAD
     SEPARATOR
     BUTTON      ID_VIEW_RIBBON
+    BUTTON      ID_VIEW_SWITCH_CLASSIC
     BUTTON      ID_APP_ABOUT
     SEPARATOR
     BUTTON      ID_APP_EXIT
@@ -40,7 +41,9 @@ ID_SETTINGS_GENERAL BITMAP         "res\\settings_general.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_SETTINGS_CDREAD BITMAP         "res\\settings_freedb.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
-0                  BITMAP         "res\\view_ribbon.bmp"
+ID_VIEW_RIBBON     BITMAP         "res\\view_ribbon.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_VIEW_SWITCH_CLASSIC BITMAP      "res\\switch_classic.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_APP_EXIT        BITMAP         "res\\app_exit.bmp"
 
@@ -65,7 +68,8 @@ BEGIN
     END
     POPUP "&View"
     BEGIN
-        MENUITEM "&Ribbon", ID_VIEW_RIBBON
+        MENUITEM "&Menu band", ID_VIEW_RIBBON
+        MENUITEM "Switch to &Classic mode", ID_VIEW_SWITCH_CLASSIC
     END
     POPUP "&Help"
     BEGIN
@@ -753,6 +757,7 @@ BEGIN
     IDS_COMMON_ABOUTBOX           "&About winLAME"
     IDS_COMMON_OPTIONS            "&Options"
     IDS_COMMON_SELECTDIR          "Please select an output folder:"
+    IDS_COMMON_APPMODE_MODERN     "Switch to &Modern mode"
     IDS_ERR_MODULE                "Reporting Module: %s"
     IDS_ERR_ERRCODE               "Error code: %u"
     IDS_ERR_ERRMSG                "Error Message: %s"
@@ -966,7 +971,8 @@ BEGIN
     ID_ENCODE_CD                  "Read audio tracks from CD\nRead CD"
     ID_SETTINGS_GENERAL           "Show general settings\nGeneral Settings"
     ID_SETTINGS_CDREAD            "Show CD Read Settings\nCD Read Settings"
-    ID_VIEW_RIBBON                "Toggles between ribbon and toolbar\nToggle Ribbon"
+    ID_VIEW_RIBBON                "Toggles between menu band and toolbar\nToggle Menu band"
+    ID_VIEW_SWITCH_CLASSIC        "Switches to Classic mode\nClassic Mode"
     ID_APP_ABOUT                  "Show application infos\nAbout"
     ID_APP_EXIT                   "Exit the application\nExit"
 END

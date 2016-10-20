@@ -43,7 +43,8 @@ App* App::s_pApp = NULL;
 // App methods
 
 App::App(HINSTANCE hInstance)
-:m_langResourceManager(_T("winlame.*.dll"), IDS_LANG_ENGLISH, IDS_LANG_NATIVE)
+:m_langResourceManager(_T("winlame.*.dll"), IDS_LANG_ENGLISH, IDS_LANG_NATIVE),
+m_exit(false)
 {
    s_pApp = this;
 
@@ -109,12 +110,30 @@ App::~App()
 
 int App::Run(LPTSTR /*lpstrCmdLine*/, int nCmdShow)
 {
-#if 0
-   RunClassicDialog();
-   return 0;
-#else
-   return RunMainFrame(nCmdShow);
-#endif
+   int ret = 0;
+
+   m_exit = false;
+
+   while (!m_exit)
+   {
+      switch (m_settings.m_appMode)
+      {
+      case UISettings::classicMode:
+         RunClassicDialog();
+         break;
+
+      case UISettings::modernMode:
+         ret = RunMainFrame(nCmdShow);
+         break;
+
+      default:
+         ATLASSERT(false);
+         m_exit = true;
+         break;
+      }
+   }
+
+   return ret;
 }
 
 void App::RunClassicDialog()
@@ -122,6 +141,9 @@ void App::RunClassicDialog()
    // start dialog
    MainDlg dlg(m_settings, m_langResourceManager);
    dlg.RunDialog();
+
+   if (!dlg.IsAppModeChanged())
+      m_exit = true;
 }
 
 int App::RunMainFrame(int nCmdShow)
@@ -142,6 +164,10 @@ int App::RunMainFrame(int nCmdShow)
    int nRet = theLoop.Run();
 
    _Module.RemoveMessageLoop();
+
+   if (!wndMain.IsAppModeChanged())
+      m_exit = true;
+
    return nRet;
 }
 

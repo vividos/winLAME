@@ -18,6 +18,7 @@
 #define ID_ENCODE_CD                            91
 #define ID_SETTINGS_GENERAL                     92
 #define ID_SETTINGS_CDREAD                      93
+#define ID_VIEW_SWITCH_CLASSIC                  94
 #define IDD_MAINDLG                             100
 #define IDD_ABOUTDLG                            101
 #define IDD_DLG_INPUT                           102
@@ -215,6 +216,7 @@
 #define IDS_COMMON_ABOUTBOX                     40000
 #define IDS_COMMON_OPTIONS                      40001
 #define IDS_COMMON_SELECTDIR                    40002
+#define IDS_COMMON_APPMODE_MODERN               40003
 #define IDS_ERR_MODULE                          40100
 #define IDS_ERR_ERRCODE                         40101
 #define IDS_ERR_ERRMSG                          40102

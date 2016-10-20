@@ -49,6 +49,7 @@ LPCTSTR g_pszFreedbServer = _T("FreedbServer");
 LPCTSTR g_pszFreedbUsername = _T("FreedbUsername");
 LPCTSTR g_pszDiscInfosCdplayerIni = _T("StoreDiscInfosInCdplayerIni");
 LPCTSTR g_pszLanguageId = _T("LanguageId");
+LPCTSTR g_pszAppMode = _T("AppMode");
 
 
 // EncodingSettings methods
@@ -77,7 +78,8 @@ UISettings::UISettings()
    freedb_server(_T("freedb.freedb.org")),
    freedb_username(_T("default")),
    store_disc_infos_cdplayer_ini(true),
-   language_id(MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT))
+   language_id(MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)),
+   m_appMode(modernMode)
 {
    ::GetTempPath(MAX_PATH, cdrip_temp_folder.GetBuffer(MAX_PATH));
    cdrip_temp_folder.ReleaseBuffer();
@@ -175,6 +177,17 @@ void UISettings::ReadSettings()
    // read "language id" value
    ReadUIntValue(regRoot, g_pszLanguageId, language_id);
 
+   // read "app mode" value
+   UINT appMode = 1;
+   ReadUIntValue(regRoot, g_pszAppMode, appMode);
+   m_appMode = static_cast<ApplicationMode>(appMode);
+
+   if (m_appMode != classicMode &&
+      m_appMode != modernMode)
+   {
+      m_appMode = modernMode;
+   }
+
    // read "output path history" entries
    outputhistory.clear();
 
@@ -267,6 +280,10 @@ void UISettings::StoreSettings()
    // write "language id" value
    value = language_id;
    regRoot.SetValue(value, g_pszLanguageId);
+
+   // write "app mode" value
+   value = (DWORD)m_appMode;
+   regRoot.SetValue(value, g_pszAppMode);
 
    // store "output path history" entries
    TCHAR buffer[64];

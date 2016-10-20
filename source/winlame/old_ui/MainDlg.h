@@ -52,6 +52,9 @@ public:
    /// runs the winLAME dialog
    void RunDialog();
 
+   /// returns if the dialog has been closed to change the app mode to modern mode
+   bool IsAppModeChanged() const throw() { return m_isAppModeChanged; }
+
    // resize map
 BEGIN_DLGRESIZE_MAP(MainDlg)
    DLGRESIZE_CONTROL(IDC_MDLG_CAPTIONBAR, DLSZ_SIZE_X)
@@ -283,6 +286,9 @@ protected:
 
    /// language resource manager
    LanguageResourceManager& m_langResourceManager;
+
+   /// indicates if the dialog has been closed to change the app mode to modern mode
+   bool m_isAppModeChanged;
 
 protected:
    /// draws the caption bar

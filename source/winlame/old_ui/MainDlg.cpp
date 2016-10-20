@@ -40,13 +40,15 @@
 
 #define IDM_ABOUTBOX 16    ///< menu id for about box
 #define IDM_OPTIONS 48     ///< menu id for options
+#define IDM_APPMODE 64     ///< menu id for app mode change
 
 // MainDlg methods
 
 MainDlg::MainDlg(UISettings& settings_, LanguageResourceManager& langResourceManager)
 :m_bKeyDownEscape(false),
  settings(settings_),
- m_langResourceManager(langResourceManager)
+ m_langResourceManager(langResourceManager),
+   m_isAppModeChanged(false)
 {
    // load icons
    wndicon = ::LoadIcon(_Module.GetResourceInstance(),MAKEINTRESOURCE(IDI_ICON_WINLAME));
@@ -114,12 +116,22 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    ATLASSERT(IDM_ABOUTBOX < 0xF000);
    ATLASSERT((IDM_OPTIONS & 0xFFF0) == IDM_OPTIONS);
    ATLASSERT(IDM_OPTIONS < 0xF000);
+   ATLASSERT((IDM_APPMODE & 0xFFF0) == IDM_APPMODE);
+   ATLASSERT(IDM_APPMODE < 0xF000);
 
    CMenu sysmenu;
    sysmenu.Attach(GetSystemMenu(FALSE));
    if (sysmenu!=NULL)
    {
       sysmenu.AppendMenu(MF_SEPARATOR);
+
+      // add chage app mode menu entry
+      {
+         CString cszMenuEntry;
+
+         cszMenuEntry.LoadString(IDS_COMMON_APPMODE_MODERN);
+         sysmenu.AppendMenu(MF_STRING, IDM_APPMODE, cszMenuEntry);
+      }
 
       // add options menu entry
       {
@@ -164,6 +176,13 @@ LRESULT MainDlg::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    {
       OptionsDlg dlg(settings, m_langResourceManager);
       dlg.DoModal(m_hWnd);
+   }
+   else
+   if ((wParam & 0xFFF0)==IDM_APPMODE)
+   {
+      m_isAppModeChanged = true;
+      settings.m_appMode = UISettings::modernMode;
+      PostQuitMessage(0);
    }
    else
       bHandled = false;

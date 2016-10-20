@@ -6,7 +6,6 @@ winLAME 2014 beta:
 - Translate all new dialogs to DE
 - Implement viewing task queue in mainframe UI
 - Implement task queue manager
-- Implement switching from/to classic wizard
 - get patch lame_encode_buffer_interleaved_int.patch from
   https://sourceforge.net/p/lame/patches/27/ into LAME and use official compiled libmp3lame.dll
 - check WriteID3v2Tag(); in LAME output module

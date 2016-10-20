@@ -9,6 +9,8 @@
       <Command Name="winlame_SETTINGS_GENERAL" Symbol="ID_SETTINGS_GENERAL" Id="92"/>
       <Command Name="winlame_SETTINGS_FREEDB" Symbol="ID_SETTINGS_FREEDB" Id="93"/>
 
+      <Command Name="winlame_VIEW_SWITCH_CLASSIC" Symbol="ID_VIEW_SWITCH_CLASSIC" Id="94"/>
+
       <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804"/>
 
       <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
@@ -20,10 +22,12 @@
       <!-- Groups -->
       <Command Name="GroupEncode" Symbol="ID_GROUP_ENCODE"
                LabelTitle="Encode" />
-      <Command Name="GroupExtras" Symbol="ID_GROUP_EXTRAS"
-               LabelTitle="Extras" />
+      <Command Name="GroupSettings" Symbol="ID_GROUP_SETTINGS"
+               LabelTitle="Settings" />
+     <Command Name="GroupView" Symbol="ID_GROUP_VIEW"
+              LabelTitle="View" />
 
-      <!-- App Menu, MRU list, Help button and Quick Access Toolbar -->
+     <!-- App Menu, MRU list, Help button and Quick Access Toolbar -->
       <Command Name="AppMenu" Symbol="ID_RIBBON_APP_MENU"/>
       <Command Name="QAT" Symbol="ID_RIBBON_QAT"/>
 
@@ -38,7 +42,10 @@
                   <Button CommandName="winlame_ENCODE_FILES"/>
                   <Button CommandName="winlame_ENCODE_CD"/>
                </MenuGroup>
-               <MenuGroup >
+               <MenuGroup>
+                  <Button CommandName="winlame_VIEW_SWITCH_CLASSIC"/>
+               </MenuGroup>
+               <MenuGroup>
                   <Button CommandName="wtl_APP_EXIT"/>
                </MenuGroup>
             </ApplicationMenu>
@@ -66,7 +73,8 @@
                   <ScalingPolicy>
                      <ScalingPolicy.IdealSizes>
                         <Scale Group="GroupEncode" Size="Large"/>
-                        <Scale Group="GroupExtras" Size="Large"/>
+                        <Scale Group="GroupSettings" Size="Large"/>
+                        <Scale Group="GroupView" Size="Large"/>
                      </ScalingPolicy.IdealSizes>
                   </ScalingPolicy>
                </Tab.ScalingPolicy>
@@ -76,11 +84,15 @@
                   <Button CommandName="winlame_ENCODE_CD"/>
                </Group>
 
-               <Group CommandName="GroupExtras" SizeDefinition="ThreeButtons">
+               <Group CommandName="GroupSettings" SizeDefinition="TwoButtons">
                   <Button CommandName="winlame_SETTINGS_GENERAL"/>
                   <Button CommandName="winlame_SETTINGS_FREEDB"/>
-                  <Button CommandName="wtl_VIEW_RIBBON"/>
                </Group>
+
+              <Group CommandName="GroupView" SizeDefinition="TwoButtons">
+                <Button CommandName="wtl_VIEW_RIBBON"/>
+                <Button CommandName="winlame_VIEW_SWITCH_CLASSIC"/>
+              </Group>
             </Tab>
          </Ribbon.Tabs>
       </Ribbon>

@@ -189,6 +189,7 @@ LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
       if (iRet == IDNO)
       {
          bHandled = true;
+         m_isAppModeChanged = false;
          return 0;
       }
    }
@@ -301,6 +302,18 @@ LRESULT MainFrame::OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWn
     ShowRibbonUI(!IsRibbonUI());
     UISetCheck(ID_VIEW_RIBBON, IsRibbonUI());
     return 0;
+}
+
+LRESULT MainFrame::OnViewSwitchToClassic(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   m_isAppModeChanged = true;
+
+   UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
+   settings.m_appMode = UISettings::classicMode;
+
+   PostMessage(WM_CLOSE);
+
+   return 0;
 }
 
 LRESULT MainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)

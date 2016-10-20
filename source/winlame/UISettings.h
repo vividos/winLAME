@@ -131,6 +131,16 @@ struct UISettings
    /// language id
    UINT language_id;
 
+   /// application mode
+   enum ApplicationMode
+   {
+      classicMode = 0, ///< run classic mode
+      modernMode = 1, ///< run modern mode
+   };
+
+   /// current application mode
+   ApplicationMode m_appMode;
+
    /// settings manager
    SettingsManager settings_manager;
 };

@@ -46,9 +46,13 @@ public:
    MainFrame(TaskManager& taskManager) throw()
       :m_taskManager(taskManager),
        m_view(taskManager),
-       m_bRefreshActive(false)
+       m_bRefreshActive(false),
+       m_isAppModeChanged(false)
    {
    }
+
+   /// returns if the dialog has been closed to change the app mode to classic mode
+   bool IsAppModeChanged() const throw() { return m_isAppModeChanged; }
 
    DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME)
 
@@ -74,6 +78,7 @@ public:
       COMMAND_ID_HANDLER(ID_SETTINGS_GENERAL, OnSettingsGeneral)
       COMMAND_ID_HANDLER(ID_SETTINGS_CDREAD, OnSettingsCDRead)
       COMMAND_ID_HANDLER(ID_VIEW_RIBBON, OnToggleRibbon)
+      COMMAND_ID_HANDLER(ID_VIEW_SWITCH_CLASSIC, OnViewSwitchToClassic)
       COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
       CHAIN_MSG_MAP(BaseClass)
    END_MSG_MAP()
@@ -95,6 +100,7 @@ private:
    LRESULT OnSettingsGeneral(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnSettingsCDRead(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnViewSwitchToClassic(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 private:
@@ -110,6 +116,9 @@ private:
 
    /// indicates if tasks list refresh is active
    bool m_bRefreshActive;
+
+   /// indicates if the dialog has been closed to change the app mode to classic mode
+   bool m_isAppModeChanged;
 };
 
 } // namespace UI

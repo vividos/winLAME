@@ -96,4 +96,7 @@ private:
 
    /// module manager
    std::shared_ptr<ModuleManager> m_spModuleManager;
+
+   /// indicates if app should be exited
+   bool m_exit;
 };
