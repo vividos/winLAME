@@ -17,9 +17,11 @@
 #define IDR_MAINFRAME                           86
 #define ID_ENCODE_FILES                         90
 #define ID_ENCODE_CD                            91
-#define ID_SETTINGS_GENERAL                     92
-#define ID_SETTINGS_CDREAD                      93
-#define ID_VIEW_SWITCH_CLASSIC                  94
+#define ID_TASKS_STOP_ALL                       92
+#define ID_TASKS_REMOVE_COMPLETED               93
+#define ID_SETTINGS_GENERAL                     94
+#define ID_SETTINGS_CDREAD                      95
+#define ID_VIEW_SWITCH_CLASSIC                  96
 #define IDD_MAINDLG                             100
 #define IDD_ABOUTDLG                            101
 #define IDD_DLG_INPUT                           102

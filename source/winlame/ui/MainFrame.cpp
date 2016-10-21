@@ -59,6 +59,10 @@ BOOL MainFrame::PreTranslateMessage(MSG* pMsg)
 BOOL MainFrame::OnIdle()
 {
    UIUpdateToolBar();
+
+   UIEnable(ID_TASKS_STOP_ALL, m_taskManager.AreRunningTasksAvail());
+   UIEnable(ID_TASKS_REMOVE_COMPLETED, m_taskManager.AreCompletedTasksAvail());
+
    return FALSE;
 }
 
@@ -180,7 +184,7 @@ LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
    bHandled = false;
 
    // there may still be running tasks
-   if (!m_taskManager.IsQueueEmpty())
+   if (m_taskManager.AreRunningTasksAvail())
    {
       // TODO translate
       int iRet = MessageBox(_T("There are still tasks to be processed; Really quit?"), _T(""),
@@ -270,6 +274,20 @@ LRESULT MainFrame::OnEncodeCD(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
    WizardPageHost host;
    host.SetWizardPage(std::shared_ptr<WizardPage>(new InputCDPage(host)));
    host.Run(m_hWnd);
+
+   return 0;
+}
+
+LRESULT MainFrame::OnTasksStopAll(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   m_taskManager.StopAll();
+
+   return 0;
+}
+
+LRESULT MainFrame::OnTasksRemoveCompleted(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   m_taskManager.RemoveCompletedTasks();
 
    return 0;
 }

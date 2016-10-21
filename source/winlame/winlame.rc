@@ -16,6 +16,9 @@ BEGIN
     BUTTON      ID_ENCODE_FILES
     BUTTON      ID_ENCODE_CD
     SEPARATOR
+    BUTTON      ID_TASKS_STOP_ALL
+    BUTTON      ID_TASKS_REMOVE_COMPLETED
+    SEPARATOR
     BUTTON      ID_SETTINGS_GENERAL
     BUTTON      ID_SETTINGS_CDREAD
     SEPARATOR
@@ -36,6 +39,10 @@ LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_ENCODE_FILES    BITMAP         "res\\open_files.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_ENCODE_CD       BITMAP         "res\\read_cd.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_TASKS_STOP_ALL  BITMAP         "res\\tasks_stop_all.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_TASKS_REMOVE_COMPLETED BITMAP "res\\tasks_remove_completed.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_SETTINGS_GENERAL BITMAP         "res\\settings_general.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
@@ -60,6 +67,11 @@ BEGIN
         MENUITEM "&Read CD...", ID_ENCODE_CD
         MENUITEM SEPARATOR
         MENUITEM "E&xit", ID_APP_EXIT
+    END
+    POPUP "&Tasks"
+    BEGIN
+        MENUITEM "&Stop all", ID_TASKS_STOP_ALL
+        MENUITEM "&Remove completed", ID_TASKS_REMOVE_COMPLETED
     END
     POPUP "&Settings"
     BEGIN
@@ -971,6 +983,8 @@ BEGIN
     IDS_LANG_NATIVE               "English"
     ID_ENCODE_FILES               "Open files to encode\nOpen Files"
     ID_ENCODE_CD                  "Read audio tracks from CD\nRead CD"
+    ID_TASKS_STOP_ALL             "Stop all running tasks\nStop all"
+    ID_TASKS_REMOVE_COMPLETED     "Remove all completed tasks\nRemove completed"
     ID_SETTINGS_GENERAL           "Show general settings\nGeneral Settings"
     ID_SETTINGS_CDREAD            "Show CD Read Settings\nCD Read Settings"
     ID_VIEW_RIBBON                "Toggles between menu band and toolbar\nToggle Menu band"

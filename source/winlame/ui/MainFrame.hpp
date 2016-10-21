@@ -64,6 +64,8 @@ public:
 
    BEGIN_UPDATE_UI_MAP(MainFrame)
       UPDATE_ELEMENT(ID_VIEW_RIBBON, UPDUI_MENUPOPUP)
+      UPDATE_ELEMENT(ID_TASKS_STOP_ALL, UPDUI_MENUPOPUP | UPDUI_RIBBON | UPDUI_TOOLBAR)
+      UPDATE_ELEMENT(ID_TASKS_REMOVE_COMPLETED, UPDUI_MENUPOPUP | UPDUI_RIBBON | UPDUI_TOOLBAR)
    END_UPDATE_UI_MAP()
 
    BEGIN_MSG_MAP(MainFrame)
@@ -75,6 +77,8 @@ public:
       COMMAND_ID_HANDLER(ID_APP_EXIT, OnAppExit)
       COMMAND_ID_HANDLER(ID_ENCODE_FILES, OnEncodeFiles)
       COMMAND_ID_HANDLER(ID_ENCODE_CD, OnEncodeCD)
+      COMMAND_ID_HANDLER(ID_TASKS_STOP_ALL, OnTasksStopAll)
+      COMMAND_ID_HANDLER(ID_TASKS_REMOVE_COMPLETED, OnTasksRemoveCompleted)
       COMMAND_ID_HANDLER(ID_SETTINGS_GENERAL, OnSettingsGeneral)
       COMMAND_ID_HANDLER(ID_SETTINGS_CDREAD, OnSettingsCDRead)
       COMMAND_ID_HANDLER(ID_VIEW_RIBBON, OnToggleRibbon)
@@ -97,6 +101,8 @@ private:
    LRESULT OnAppExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnEncodeFiles(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnEncodeCD(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnTasksStopAll(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+   LRESULT OnTasksRemoveCompleted(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnSettingsGeneral(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnSettingsCDRead(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);

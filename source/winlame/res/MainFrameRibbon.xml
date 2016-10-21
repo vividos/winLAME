@@ -5,11 +5,14 @@
       <!-- winlame.rc Menu Commands-->
       <Command Name="winlame_ENCODE_FILES" Symbol="ID_ENCODE_FILES" Id="90"/>
       <Command Name="winlame_ENCODE_CD" Symbol="ID_ENCODE_CD" Id="91"/>
-      
-      <Command Name="winlame_SETTINGS_GENERAL" Symbol="ID_SETTINGS_GENERAL" Id="92"/>
-      <Command Name="winlame_SETTINGS_FREEDB" Symbol="ID_SETTINGS_FREEDB" Id="93"/>
 
-      <Command Name="winlame_VIEW_SWITCH_CLASSIC" Symbol="ID_VIEW_SWITCH_CLASSIC" Id="94"/>
+      <Command Name="winlame_TASKS_STOP_ALL" Symbol="ID_TASKS_STOP_ALL" Id="92"/>
+      <Command Name="winlame_TASKS_REMOVE_COMPLETED" Symbol="ID_TASKS_REMOVE_COMPLETED" Id="93"/>
+
+      <Command Name="winlame_SETTINGS_GENERAL" Symbol="ID_SETTINGS_GENERAL" Id="94"/>
+      <Command Name="winlame_SETTINGS_FREEDB" Symbol="ID_SETTINGS_FREEDB" Id="95"/>
+
+      <Command Name="winlame_VIEW_SWITCH_CLASSIC" Symbol="ID_VIEW_SWITCH_CLASSIC" Id="96"/>
 
       <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804"/>
 
@@ -22,6 +25,8 @@
       <!-- Groups -->
       <Command Name="GroupEncode" Symbol="ID_GROUP_ENCODE"
                LabelTitle="Encode" />
+      <Command Name="GroupTasks" Symbol="ID_GROUP_TASKS"
+               LabelTitle="Tasks" />
       <Command Name="GroupSettings" Symbol="ID_GROUP_SETTINGS"
                LabelTitle="Settings" />
      <Command Name="GroupView" Symbol="ID_GROUP_VIEW"
@@ -73,6 +78,7 @@
                   <ScalingPolicy>
                      <ScalingPolicy.IdealSizes>
                         <Scale Group="GroupEncode" Size="Large"/>
+                        <Scale Group="GroupTasks" Size="Large"/>
                         <Scale Group="GroupSettings" Size="Large"/>
                         <Scale Group="GroupView" Size="Large"/>
                      </ScalingPolicy.IdealSizes>
@@ -82,6 +88,11 @@
                <Group CommandName="GroupEncode" SizeDefinition="TwoButtons">
                   <Button CommandName="winlame_ENCODE_FILES"/>
                   <Button CommandName="winlame_ENCODE_CD"/>
+               </Group>
+
+               <Group CommandName="GroupTasks" SizeDefinition="TwoButtons">
+                  <Button CommandName="winlame_TASKS_STOP_ALL"/>
+                  <Button CommandName="winlame_TASKS_REMOVE_COMPLETED"/>
                </Group>
 
                <Group CommandName="GroupSettings" SizeDefinition="TwoButtons">
