@@ -35,6 +35,15 @@ const UINT c_uiUpdateCycleInMilliseconds = 2 * 100;
 
 const UINT ITEM_ID_NODATA = 0xffffffff;
 
+/// index of name column
+const int c_nameColumn = 0;
+
+/// index of progress column
+const int c_progressColumn = 1;
+
+/// index of status column
+const int c_statusColumn = 2;
+
 BOOL TasksView::PreTranslateMessage(MSG* pMsg)
 {
    pMsg;
@@ -58,8 +67,9 @@ LRESULT TasksView::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL
 void TasksView::Init()
 {
    // TODO translate
-   InsertColumn(0, _T("Track"), LVCFMT_LEFT, 400);
-   InsertColumn(1, _T("Progress"), LVCFMT_LEFT, 200);
+   InsertColumn(c_nameColumn, _T("Track"), LVCFMT_LEFT, 500);
+   InsertColumn(c_progressColumn, _T("Progress"), LVCFMT_LEFT, 100);
+   InsertColumn(c_statusColumn, _T("Status"), LVCFMT_LEFT, 100);
 
    DWORD dwExStyle = LVS_EX_FULLROWSELECT;
    SetExtendedListViewStyle(dwExStyle, dwExStyle);
@@ -80,69 +90,89 @@ void TasksView::UpdateTasks()
 {
    SetRedraw(false);
 
-   std::vector<TaskInfo> vecTaskInfos = m_taskManager.CurrentTasks();
+   std::vector<TaskInfo> taskInfoList = m_taskManager.CurrentTasks();
 
-   if (vecTaskInfos.empty())
+   if (taskInfoList.empty())
    {
       DeleteAllItems();
 
       // TODO translate
-      int iItem = InsertItem(0, _T("<No Task>"));
-      SetItemData(iItem, ITEM_ID_NODATA);
+      int itemIndex = InsertItem(0, _T("<No Task>"));
+      SetItemData(itemIndex, ITEM_ID_NODATA);
 
       SetRedraw(true);
       return;
    }
 
    // this loop assumes that tasks don't get reordered, and new tasks get added at the end
-   int iItem = 0;
+   int itemIndex = 0;
    size_t iInfos = 0;
-   for (size_t iMaxInfos = vecTaskInfos.size(); iInfos<iMaxInfos; )
+   for (size_t iMaxInfos = taskInfoList.size(); iInfos < iMaxInfos; )
    {
-      if (iItem >= GetItemCount())
+      if (itemIndex >= GetItemCount())
          break;
 
-      const TaskInfo& info = vecTaskInfos[iInfos];
+      const TaskInfo& info = taskInfoList[iInfos];
 
-      unsigned int uiId = GetItemData(iItem);
+      unsigned int uiId = GetItemData(itemIndex);
 
       if (uiId == info.Id())
       {
-         UpdateExistingItem(iItem, info);
-         ++iItem;
+         UpdateExistingItem(itemIndex, info);
+         ++itemIndex;
          ++iInfos;
          continue;
       }
 
-      if (iItem >= GetItemCount())
+      if (itemIndex >= GetItemCount())
          break; // no more items in list
 
       // current item isn't in vector anymore; remove item
-      DeleteItem(iItem);
+      DeleteItem(itemIndex);
    }
 
    // add all new items
-   for (size_t iMaxInfos = vecTaskInfos.size(); iInfos < iMaxInfos; iInfos++)
-      InsertNewItem(vecTaskInfos[iInfos]);
+   for (size_t iMaxInfos = taskInfoList.size(); iInfos < iMaxInfos; iInfos++)
+      InsertNewItem(taskInfoList[iInfos]);
 
    SetRedraw(true);
 }
 
 void TasksView::InsertNewItem(const TaskInfo& info)
 {
-   int iItem = InsertItem(IconFromTaskType(info), info.Name());
-   SetItemData(iItem, info.Id());
+   int itemIndex = InsertItem(IconFromTaskType(info), info.Name());
+   SetItemData(itemIndex, info.Id());
 
-   UpdateExistingItem(iItem, info);
+   UpdateExistingItem(itemIndex, info);
 }
 
-void TasksView::UpdateExistingItem(int iItem, const TaskInfo& info)
+void TasksView::UpdateExistingItem(int itemIndex, const TaskInfo& info)
 {
    // TODO translate
-   CString cszProgress;
-   cszProgress.Format(_T("%u%% done"), info.Progress());
+   CString progressText;
+   progressText.Format(_T("%u%% done"), info.Progress());
 
-   SetItemText(iItem, 1, cszProgress);
+   SetItemText(itemIndex, c_progressColumn, progressText);
+
+   CString statusText = StatusTextFromStatus(info.Status());
+   SetItemText(itemIndex, c_statusColumn, statusText);
+}
+
+CString TasksView::StatusTextFromStatus(TaskInfo::TaskStatus status)
+{
+   // TODO translate
+   switch (status)
+   {
+   case TaskInfo::statusWaiting:
+      return _T("Waiting");
+   case TaskInfo::statusRunning:
+      return _T("Running");
+   case TaskInfo::statusCompleted:
+      return _T("Completed");
+   default:
+      ATLASSERT(false);
+      return _T("???");
+   }
 }
 
 int TasksView::IconFromTaskType(const TaskInfo& info)
