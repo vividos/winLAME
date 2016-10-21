@@ -29,7 +29,7 @@ CreatePlaylistTask::CreatePlaylistTask(const EncoderJobList& encoderjoblist)
 
 TaskInfo CreatePlaylistTask::GetTaskInfo()
 {
-   TaskInfo info(TaskInfo::taskWritePlaylist);
+   TaskInfo info(Id(), TaskInfo::taskWritePlaylist);
    // TODO set name, desc, etc.
    info.Name(_T("Writing Playlist"));
 

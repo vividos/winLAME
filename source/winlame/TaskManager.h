@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2014 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include <vector>
 #include <deque>
 #include <memory>
+#include <atomic>
 #include <boost/thread/recursive_mutex.hpp>
 #include <thread>
 #include <boost/asio.hpp>
@@ -59,8 +60,17 @@ public:
    /// returns if task queue is empty
    bool IsQueueEmpty() const throw();
 
+   /// returns if there are running tasks
+   bool AreRunningTasksAvail() const;
+
+   /// returns if there are completed tasks
+   bool AreCompletedTasksAvail() const;
+
    /// stops all tasks
    void StopAll();
+
+   /// removes all completed tasks from queue
+   void RemoveCompletedTasks();
 
 private:
    /// thread function
@@ -87,14 +97,20 @@ private:
 
    // task queue
 
+   /// next task id
+   std::atomic<unsigned int> m_nextTaskId;
+
    /// mutex protecting task queue
    boost::recursive_mutex m_mutexQueue;
 
    /// task queue typedef
    typedef std::deque<std::shared_ptr<Task>> T_deqTaskQueue;
 
-   /// task queue
+   /// task queue, protected by queue mutex
    T_deqTaskQueue m_deqTaskQueue;
+
+   /// task infos of all completed tasks, protected by queue mutex
+   std::map<unsigned int, TaskInfo> m_mapCompletedTaskInfos;
 
 
    // thread pool

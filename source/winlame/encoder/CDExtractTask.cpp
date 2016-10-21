@@ -38,7 +38,7 @@ m_uiProgress(0)
 
 TaskInfo CDExtractTask::GetTaskInfo()
 {
-   TaskInfo info(TaskInfo::taskCdExtraction);
+   TaskInfo info(Id(), TaskInfo::taskCdExtraction);
 
    CString cszTitle;
    cszTitle.Format(_T("%u. %s"),

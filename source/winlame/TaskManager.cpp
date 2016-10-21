@@ -25,6 +25,8 @@
 #include "Task.h"
 #include <boost/foreach.hpp>
 #include <boost/bind.hpp>
+#include <algorithm>
+#include <set>
 
 TaskManager::TaskManager()
 :m_upDefaultWork(new boost::asio::io_service::work(m_ioService))
@@ -74,8 +76,17 @@ std::vector<TaskInfo> TaskManager::CurrentTasks()
       boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
       BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
       {
-         // query task for info
-         vecTaskInfos.push_back(spTask->GetTaskInfo());
+         auto iter = m_mapCompletedTaskInfos.find(spTask->Id());
+         if (iter != m_mapCompletedTaskInfos.end())
+         {
+            // already completed
+            vecTaskInfos.push_back(iter->second);
+         }
+         else
+         {
+            // still running, query task for info
+            vecTaskInfos.push_back(spTask->GetTaskInfo());
+         }
       }
    } // lock release
 
@@ -100,6 +111,9 @@ void TaskManager::SetNewConfig(const TaskManagerConfig& config)
 
 void TaskManager::AddTask(std::shared_ptr<Task> spTask)
 {
+   unsigned int taskId = m_nextTaskId++;
+   spTask->Id(taskId);
+
    {
       boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
       m_deqTaskQueue.push_back(spTask);
@@ -121,6 +135,22 @@ bool TaskManager::IsQueueEmpty() const
    return bIsEmpty;
 }
 
+bool TaskManager::AreRunningTasksAvail() const
+{
+   boost::recursive_mutex::scoped_lock lock(
+      const_cast<boost::recursive_mutex&>(m_mutexQueue));
+
+   return m_mapCompletedTaskInfos.size() < m_deqTaskQueue.size();
+}
+
+bool TaskManager::AreCompletedTasksAvail() const
+{
+   boost::recursive_mutex::scoped_lock lock(
+      const_cast<boost::recursive_mutex&>(m_mutexQueue));
+
+   return !m_mapCompletedTaskInfos.empty();
+}
+
 void TaskManager::StopAll()
 {
    boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
@@ -128,6 +158,23 @@ void TaskManager::StopAll()
    BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
    {
       spTask->Stop();
+   }
+}
+
+void TaskManager::RemoveCompletedTasks()
+{
+   boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
+
+   std::set<std::shared_ptr<Task>> setTasksToRemove;
+   BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
+   {
+      if (m_mapCompletedTaskInfos.find(spTask->Id()) != m_mapCompletedTaskInfos.end())
+         setTasksToRemove.insert(spTask);
+   }
+
+   BOOST_FOREACH(std::shared_ptr<Task> spTask, setTasksToRemove)
+   {
+      RemoveTask(spTask);
    }
 }
 
@@ -153,8 +200,13 @@ void TaskManager::RunTask(std::shared_ptr<Task> spTask)
 
    SetBusyFlag(GetCurrentThreadId(), false);
 
-   // remove from queue
-   RemoveTask(spTask);
+   // store the last task info for the completed task
+   TaskInfo info = spTask->GetTaskInfo();
+   {
+      boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
+
+      m_mapCompletedTaskInfos.insert(std::make_pair(spTask->Id(), info));
+   }
 }
 
 void TaskManager::RemoveTask(std::shared_ptr<Task> spTask)
@@ -168,11 +220,16 @@ void TaskManager::RemoveTask(std::shared_ptr<Task> spTask)
       if (spTask == *iter)
       {
          m_deqTaskQueue.erase(iter);
+
+         auto iter = m_mapCompletedTaskInfos.find(spTask->Id());
+         if (iter != m_mapCompletedTaskInfos.end())
+            m_mapCompletedTaskInfos.erase(iter);
+
          return;
       }
-
-      ATLASSERT(false); // task not in queue anymore? should not happen
    }
+
+   ATLASSERT(false); // task not in queue anymore? should not happen
 }
 
 void TaskManager::SetBusyFlag(DWORD dwThreadId, bool bBusy)

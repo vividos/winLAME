@@ -32,6 +32,9 @@ public:
    /// dtor
    virtual ~Task() throw() {}
 
+   /// returns task id
+   unsigned int Id() const throw() { return m_id; }
+
    /// returns current task info; must return immediately
    virtual TaskInfo GetTaskInfo() = 0;
 
@@ -40,4 +43,14 @@ public:
 
    /// task should be aborted, e.g. when program is closed
    virtual void Stop() = 0;
+
+protected:
+   friend class TaskManager;
+
+   /// sets task id
+   void Id(unsigned int id) throw() { m_id = id; }
+
+private:
+   /// task id
+   unsigned int m_id;
 };

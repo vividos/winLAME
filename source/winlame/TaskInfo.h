@@ -44,8 +44,8 @@ public:
    };
 
    /// ctor
-   TaskInfo(enum TaskType taskType = taskUnknown)
-      :m_uiId(0),
+   TaskInfo(unsigned int taskId, enum TaskType taskType = taskUnknown)
+      :m_uiId(taskId),
        m_taskStatus(statusWaiting),
        m_taskType(taskType),
        m_uiProgress(0),
