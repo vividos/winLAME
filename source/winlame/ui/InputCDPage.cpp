@@ -31,6 +31,7 @@
 #include "FreedbResolver.hpp"
 #include "CommonStuff.h"
 #include "FreeDbDiscListDlg.hpp"
+#include "CDRipTrackManager.h"
 
 using namespace UI;
 
@@ -508,7 +509,6 @@ void InputCDPage::CheckCD()
 
 void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
 {
-#if 0
    if (!m_uiSettings.store_disc_infos_cdplayer_ini)
       return;
 
@@ -557,7 +557,6 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
 
       ::WritePrivateProfileString(cdplayer_id, cszFormat, cszTrackText, cszCDPlayerIniFilename);
    }
-#endif
 }
 
 void InputCDPage::FreedbLookup()
