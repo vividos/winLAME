@@ -32,8 +32,7 @@ template <typename T> void do_nothing(T*){}
 Frame::Frame(const CString& cszFrameId)
 :m_bAttached(false)
 {
-   USES_CONVERSION;
-   id3_frame* frame = id3_frame_new(T2CA(cszFrameId));
+   id3_frame* frame = id3_frame_new(CStringA(cszFrameId));
    m_spFrame = std::shared_ptr<id3_frame>(frame, do_nothing<id3_frame>);
 }
 

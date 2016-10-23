@@ -33,8 +33,7 @@ Tag::Tag()
 
 bool Tag::IsFrameAvail(const CString& cszFrameId) const
 {
-   USES_CONVERSION;
-   id3_frame* frame = id3_tag_findframe(m_spTag.get(), T2CA(cszFrameId), 0);
+   id3_frame* frame = id3_tag_findframe(m_spTag.get(), CStringA(cszFrameId), 0);
    return frame != NULL;
 }
 
@@ -44,9 +43,8 @@ template <typename T> void do_nothing(T*){}
 ID3::Frame Tag::FindFrame(const CString& cszFrameId)
 {
    // note: without id3_frame_delete as deletor!
-   USES_CONVERSION;
    std::shared_ptr<id3_frame> spFrame(
-      id3_tag_findframe(m_spTag.get(), T2CA(cszFrameId), 0),
+      id3_tag_findframe(m_spTag.get(), CStringA(cszFrameId), 0),
       do_nothing<id3_frame>);
 
    return ID3::Frame(spFrame);

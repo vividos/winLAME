@@ -144,8 +144,7 @@ int WaveOutputModule::initOutput(LPCTSTR outfilename,
 #ifdef UNICODE
    sndfile = sf_wchar_open(outfilename,SFM_WRITE,&sfinfo);
 #else
-   USES_CONVERSION;
-   sndfile = sf_open(T2CA(outfilename),SFM_WRITE,&sfinfo);
+   sndfile = sf_open(CStringA(outfilename),SFM_WRITE,&sfinfo);
 #endif
 
    if (sndfile==NULL)
@@ -153,10 +152,9 @@ int WaveOutputModule::initOutput(LPCTSTR outfilename,
       char buffer[512];
       sf_error_str(sndfile,buffer,512);
 
-      USES_CONVERSION;
       lasterror.LoadString(IDS_ENCODER_OUTPUT_FILE_CREATE_ERROR);
       lasterror += _T(" (");
-      lasterror += A2CT(buffer);
+      lasterror += CString(buffer);
       lasterror += _T(")");
       return -1;
    }
@@ -217,8 +215,7 @@ int WaveOutputModule::encodeSamples(SampleContainer &samples)
       char buffer[512];
       sf_error_str(sndfile,buffer,512);
 
-      USES_CONVERSION;
-      lasterror = A2CT(buffer);
+      lasterror = CString(buffer);
    }
 
    return int(ret);

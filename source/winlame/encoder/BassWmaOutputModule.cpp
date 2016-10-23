@@ -102,8 +102,6 @@ int BassWmaOutputModule::initOutput(LPCTSTR outfilename,
    samplerate = samplecont.getInputModuleSampleRate();
    channels = samplecont.getInputModuleChannels();
 
-   USES_CONVERSION;
-
    /* check that BASS 2.0 was loaded */
    if ((HIWORD(BASS_GetVersion()) != BASSVERSION))
    {
@@ -136,7 +134,7 @@ int BassWmaOutputModule::initOutput(LPCTSTR outfilename,
    if (!valid_rate) bitrate = nearest_rate;
 
    // opens the file for writing
-   handle=BASS_WMA_EncodeOpenFile(samplerate, channels, 0, bitrate, T2CA(outfilename));
+   handle=BASS_WMA_EncodeOpenFile(samplerate, channels, 0, bitrate, CStringA(outfilename));
    if(handle == NULL)
    {
       CString cszError;
@@ -174,45 +172,45 @@ int BassWmaOutputModule::initOutput(LPCTSTR outfilename,
       prop = trackinfo.TextInfo(TrackInfoTitle, bAvail);
       if (bAvail && !prop.IsEmpty())
       {
-         BASS_WMA_EncodeSetTag(handle, "Title", T2CA(prop), BASS_WMA_TAG_ANSI);
+         BASS_WMA_EncodeSetTag(handle, "Title", CStringA(prop), BASS_WMA_TAG_ANSI);
       }
 
       prop = trackinfo.TextInfo(TrackInfoArtist, bAvail);
       if (bAvail && !prop.IsEmpty())
       {
-         BASS_WMA_EncodeSetTag(handle, "Author", T2CA(prop), BASS_WMA_TAG_ANSI);
+         BASS_WMA_EncodeSetTag(handle, "Author", CStringA(prop), BASS_WMA_TAG_ANSI);
       }
 
       prop = trackinfo.TextInfo(TrackInfoAlbum, bAvail);
       if (bAvail && !prop.IsEmpty())
       {
-         BASS_WMA_EncodeSetTag(handle, "WM/AlbumTitle", T2CA(prop), BASS_WMA_TAG_ANSI);
+         BASS_WMA_EncodeSetTag(handle, "WM/AlbumTitle", CStringA(prop), BASS_WMA_TAG_ANSI);
       }
 
       int iProp = trackinfo.NumberInfo(TrackInfoYear, bAvail);
       if (bAvail && iProp != -1)
       {
          prop.Format(_T("%u"), iProp);
-         BASS_WMA_EncodeSetTag(handle, "WM/Year", T2CA(prop), BASS_WMA_TAG_ANSI);
+         BASS_WMA_EncodeSetTag(handle, "WM/Year", CStringA(prop), BASS_WMA_TAG_ANSI);
       }
 
       prop = trackinfo.TextInfo(TrackInfoComment, bAvail);
       if (bAvail && !prop.IsEmpty())
       {
-         BASS_WMA_EncodeSetTag(handle, "Description", T2CA(prop), BASS_WMA_TAG_ANSI);
+         BASS_WMA_EncodeSetTag(handle, "Description", CStringA(prop), BASS_WMA_TAG_ANSI);
       }
 
       iProp = trackinfo.NumberInfo(TrackInfoTrack, bAvail);
       if (bAvail && iProp != -1)
       {
          prop.Format(_T("%u"), iProp);
-         BASS_WMA_EncodeSetTag(handle, "WM/TrackNumber", T2CA(prop), BASS_WMA_TAG_ANSI);
+         BASS_WMA_EncodeSetTag(handle, "WM/TrackNumber", CStringA(prop), BASS_WMA_TAG_ANSI);
       }
 
       prop = trackinfo.TextInfo(TrackInfoGenre, bAvail);
       if (bAvail && !prop.IsEmpty())
       {
-         BASS_WMA_EncodeSetTag(handle, "WM/Genre", T2CA(prop), BASS_WMA_TAG_ANSI);
+         BASS_WMA_EncodeSetTag(handle, "WM/Genre", CStringA(prop), BASS_WMA_TAG_ANSI);
       }
 
       BASS_WMA_EncodeSetTag(handle,"WM/ToolName","winLAME", BASS_WMA_TAG_ANSI);

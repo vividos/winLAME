@@ -52,9 +52,8 @@ bool FreedbResolver::Lookup(LPCSTR pszCddbCdId, CString& cszErrorMessage)
       CString cszWinlameVersion = App::Version();
       cszWinlameVersion.Replace(_T(' '), _T('-'));
 
-      USES_CONVERSION;
-      std::string username(T2CA(m_cszUsername));
-      std::string version(T2CA(cszWinlameVersion));
+      std::string username(CStringA(m_cszUsername).GetString());
+      std::string version(CStringA(cszWinlameVersion).GetString());
       m_remoteFreedb.doHandshake(username, "winLAME", version);
 
       m_vecResults = m_remoteFreedb.query_cddb_raw(pszCddbCdId);

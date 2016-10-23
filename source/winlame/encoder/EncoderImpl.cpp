@@ -372,8 +372,7 @@ void EncoderImpl::GenerateTempOutFilename(const CString& cszOriginalFilename, CS
    cszShortPath.ReleaseBuffer();
 
    // convert filename to ansi and back, and remove '?' chars
-   USES_CONVERSION;
-   cszFilename = CString(T2CA(cszFilename));
+   cszFilename = CString(CStringA(cszFilename));
    cszFilename.Replace(_T('?'), _T('_'));
 
    // now add a ".part"

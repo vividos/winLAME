@@ -123,8 +123,7 @@ void SndFileInputModule::getVersionString(CString& version, int special)
       char buffer[32];
       sf_command(NULL, SFC_GET_LIB_VERSION, buffer, sizeof(buffer));
 
-      USES_CONVERSION;
-      version = A2CT(buffer+11);
+      version = CString(buffer+11);
    }
 }
 
@@ -180,8 +179,7 @@ int SndFileInputModule::initInput(LPCTSTR infilename,
 #ifdef UNICODE
    sndfile = sf_wchar_open(infilename,SFM_READ,&sfinfo);
 #else
-   USES_CONVERSION;
-   sndfile = sf_open(T2CA(GetAnsiCompatFilename(infilename)),SFM_READ,&sfinfo);
+   sndfile = sf_open(CStringA(GetAnsiCompatFilename(infilename)),SFM_READ,&sfinfo);
 #endif
 
    if (sndfile==NULL)
@@ -189,12 +187,10 @@ int SndFileInputModule::initInput(LPCTSTR infilename,
       char buffer[512];
       sf_error_str(sndfile,buffer,512);
 
-      USES_CONVERSION;
-
       lasterror.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
 
       lasterror += _T(" (");
-      lasterror += A2CT(buffer);
+      lasterror += CString(buffer);
       lasterror += _T(")");
       return -1;
    }
@@ -325,8 +321,7 @@ int SndFileInputModule::decodeSamples(SampleContainer &samples)
       char buffer[512];
       sf_error_str(sndfile,buffer,512);
 
-      USES_CONVERSION;
-      lasterror = A2CT(buffer);
+      lasterror = CString(buffer);
       return iret;
    }
 
@@ -350,7 +345,6 @@ void SndFileInputModule::doneInput()
 
 bool SndFileInputModule::waveGetId3(LPCTSTR wavfile, TrackInfo &trackinfo)
 {
-   USES_CONVERSION;
    FILE* wav = _tfopen(wavfile, _T("rb"));
    if (!wav) return false;
 

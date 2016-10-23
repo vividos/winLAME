@@ -278,7 +278,6 @@ bool OutputPage::OnLeavePage()
       CString path = settings.m_defaultSettings.outputdir;
       path.TrimRight(_T('\\'));
 
-      USES_CONVERSION;
       struct _stat filestat;
       if (-1==::_tstat(path, &filestat) && !(path.GetLength()==2 && path[1]==':'))
       {

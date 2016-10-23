@@ -600,8 +600,7 @@ bool InputPage::OnLeavePage()
 void InputPage::ImportM3uPlaylist(LPCTSTR filename)
 {
    // open playlist
-   USES_CONVERSION;
-   std::ifstream plist(T2CA(filename),std::ios::in);
+   std::ifstream plist(CStringA(filename),std::ios::in);
    if (!plist.is_open()) return;
 
    // find out pathname (for relative file refs)
@@ -618,7 +617,7 @@ void InputPage::ImportM3uPlaylist(LPCTSTR filename)
 #ifdef UNICODE
       std::string line2;
       std::getline(plist,line2);
-      line = A2CT(line2.c_str());
+      line = CString(line2.c_str());
 #else
       std::getline(plist,line);
 #endif
@@ -653,8 +652,7 @@ void InputPage::ImportM3uPlaylist(LPCTSTR filename)
 void InputPage::ImportPlsPlaylist(LPCTSTR filename)
 {
    // open playlist
-   USES_CONVERSION;
-   std::ifstream plist(T2CA(filename),std::ios::in);
+   std::ifstream plist(CStringA(filename),std::ios::in);
    if (!plist.is_open()) return;
 
    // find out pathname (for relative file refs)
@@ -671,7 +669,7 @@ void InputPage::ImportPlsPlaylist(LPCTSTR filename)
 #ifdef UNICODE
       std::string line2;
       std::getline(plist,line2);
-      line = A2CT(line2.c_str());
+      line = CString(line2.c_str());
 #else
       std::getline(plist,line);
 #endif
@@ -709,8 +707,7 @@ void InputPage::ImportPlsPlaylist(LPCTSTR filename)
 void InputPage::ImportCueSheet(LPCTSTR filename)
 {
    // open cue sheet
-   USES_CONVERSION;
-   std::ifstream sheet(T2CA(filename),std::ios::in);
+   std::ifstream sheet(CStringA(filename),std::ios::in);
    if (!sheet.is_open()) return;
 
    // find out pathname (for relative file refs)
@@ -727,7 +724,7 @@ void InputPage::ImportCueSheet(LPCTSTR filename)
 #ifdef UNICODE
       std::string line2;
       std::getline(sheet,line2);
-      line = A2CT(line2.c_str());
+      line = CString(line2.c_str());
 #else
       std::getline(sheet,line);
 #endif

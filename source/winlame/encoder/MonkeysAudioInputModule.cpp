@@ -273,8 +273,7 @@ int MonkeysAudioInputModule::initInput(LPCTSTR infilename,
    getId3Tag(infilename, trackinfo);
    
    // opens the file for reading
-   USES_CONVERSION;
-   macfile = dll.Create(T2CA(GetAnsiCompatFilename(infilename)), &retval);
+   macfile = dll.Create(CStringA(GetAnsiCompatFilename(infilename)), &retval);
    if(NULL == macfile)
    {
       monkey::EncodeMonkeyErrorString(retval, lasterror);
@@ -377,8 +376,7 @@ bool MonkeysAudioInputModule::getId3Tag(LPCTSTR filepath, TrackInfo& trackinfo)
    Id3v1Tag id3tag;
    monkey::ID3_TAG *info = (monkey::ID3_TAG *)id3tag.getData();
    
-   USES_CONVERSION;
-   if(ERROR_SUCCESS != dll.GetID3Tag(T2CA(GetAnsiCompatFilename(filepath)), info) )
+   if(ERROR_SUCCESS != dll.GetID3Tag(CStringA(GetAnsiCompatFilename(filepath)), info) )
       return false;
 
    id3tag.toTrackInfo(trackinfo);

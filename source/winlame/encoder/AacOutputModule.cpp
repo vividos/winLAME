@@ -82,10 +82,8 @@ int AacOutputModule::initOutput(LPCTSTR outfilename,
    SettingsManager &mgr, const TrackInfo& trackinfo,
    SampleContainer &samplecont)
 {
-   USES_CONVERSION;
-
    // open output file
-   ostr.open(T2CA(outfilename),std::ios::out|std::ios::binary);
+   ostr.open(CStringA(outfilename),std::ios::out|std::ios::binary);
    if (!ostr.is_open())
    {
       lasterror.LoadString(IDS_ENCODER_OUTPUT_FILE_CREATE_ERROR);

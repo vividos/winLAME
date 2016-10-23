@@ -31,29 +31,28 @@ void Id3v1Tag::toTrackInfo(TrackInfo& ti) const
    // insert all id3 tag infos into properties
 
    // title
-   USES_CONVERSION;
-   CString prop = CString(A2CT(this->title),30);
+   CString prop = CString(CStringA(this->title),30);
    if (this->title[0] != 0)
       ti.TextInfo(TrackInfoTitle, prop);
 
    // artist
-   prop = CString(A2CT(this->artist),30);
+   prop = CString(CStringA(this->artist),30);
    if (this->artist[0] != 0)
       ti.TextInfo(TrackInfoArtist, prop);
 
    // album
-   prop = CString(A2CT(this->album),30);
+   prop = CString(CStringA(this->album),30);
    if (this->album[0] != 0)
       ti.TextInfo(TrackInfoAlbum, prop);
 
    // year
-   prop = CString(A2CT(this->year),4);
+   prop = CString(CStringA(this->year),4);
    int iProp = (int)_tcstoul(prop, NULL, 10);
    if (iProp != 0)
       ti.NumberInfo(TrackInfoYear, iProp);
 
    // comment
-   prop = CString(A2CT(this->comment),29);
+   prop = CString(CStringA(this->comment),29);
    if (this->comment[0] != 0)
       ti.TextInfo(TrackInfoComment, prop);
 
@@ -65,7 +64,7 @@ void Id3v1Tag::toTrackInfo(TrackInfo& ti) const
    if (this->genre != 0xff)
    {
       CString cszGenre = TrackInfo::GenreIDToText(this->genre);
-      ti.TextInfo(TrackInfoGenre, cszGenre);      
+      ti.TextInfo(TrackInfoGenre, cszGenre);
    }
 }
 

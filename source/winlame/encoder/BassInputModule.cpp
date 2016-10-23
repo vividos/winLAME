@@ -141,8 +141,6 @@ CString UTF8ToCString(const char* pszUtf8Text)
 int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
    TrackInfo &trackinfo, SampleContainer &samplecont)
 {
-   USES_CONVERSION;
-
    /* check that correct BASS version was loaded */
    if ((HIWORD(BASS_GetVersion()) != BASSVERSION))
    {
@@ -161,13 +159,13 @@ int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
    }
 
    // try streaming the file/url
-   CString cszAnsiFilename = GetAnsiCompatFilename(infilename);
+   CStringA cszAnsiFilename = GetAnsiCompatFilename(infilename);
 
-   chan = BASS_StreamCreateFile(FALSE, T2CA(cszAnsiFilename), 0, 0, BASS_STREAM_DECODE);
+   chan = BASS_StreamCreateFile(FALSE, cszAnsiFilename, 0, 0, BASS_STREAM_DECODE);
    if (!chan)
-      chan = BASS_StreamCreateURL(T2CA(cszAnsiFilename), 0, BASS_STREAM_DECODE, 0, 0);
+      chan = BASS_StreamCreateURL(cszAnsiFilename, 0, BASS_STREAM_DECODE, 0, 0);
    if (!chan && basswma)
-      chan = BASS_WMA_StreamCreateFile(FALSE, T2CA(cszAnsiFilename), 0, 0, BASS_STREAM_DECODE);
+      chan = BASS_WMA_StreamCreateFile(FALSE, cszAnsiFilename, 0, 0, BASS_STREAM_DECODE);
 
    if (chan)
    {
@@ -177,7 +175,7 @@ int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
    else
    {
       // try loading the MOD (with sensitive ramping, and calculate the duration)
-      chan = BASS_MusicLoad(FALSE, T2CA(cszAnsiFilename), 0, 0,
+      chan = BASS_MusicLoad(FALSE, cszAnsiFilename, 0, 0,
          BASS_MUSIC_DECODE | BASS_MUSIC_RAMPS | BASS_MUSIC_SURROUND |
          BASS_MUSIC_CALCLEN | BASS_MUSIC_STOPBACK, 0);
 
@@ -215,7 +213,6 @@ int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
    // get tags
    if (is_str && (info.ctype & BASS_CTYPE_STREAM_WMA))
    {
-      CStringA cszaAnsiFilename(cszAnsiFilename);
       const char* comments = BASS_WMA_GetTags(cszAnsiFilename.GetString(), 0);
 
       std::vector<size_t> vecCommentIndices;

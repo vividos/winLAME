@@ -40,8 +40,7 @@ bool PresetManagerImpl::loadPreset(LPCTSTR filename)
    xmlfilename = filename;
 
    // load xml document
-   USES_CONVERSION;
-   std::ifstream istr(T2CA(filename));
+   std::ifstream istr(CStringA(filename).GetString());
    if (!istr.is_open())
       return false;
 
@@ -62,8 +61,7 @@ void PresetManagerImpl::savePreset()
    if (xmlchanged)
    {
       // save preset xml file
-      USES_CONVERSION;
-      std::ofstream ostr(T2CA(xmlfilename.c_str()));
+      std::ofstream ostr(CStringA(xmlfilename.c_str()));
       doc.save(ostr);
       ostr.close();
 
@@ -73,14 +71,13 @@ void PresetManagerImpl::savePreset()
 
 void PresetManagerImpl::setFacility(LPCTSTR facname)
 {
-   USES_CONVERSION;
    facility = facname;
 
    std::tstring nodepath(_T("presets/facility[@name = \""));
    nodepath += facname;
    nodepath += _T("\"]");
 
-   cppxml::xmlnode_ptr facnode = doc.select_single_node(T2CA(nodepath.c_str()));
+   cppxml::xmlnode_ptr facnode = doc.select_single_node(CStringA(nodepath.c_str()));
    if (facnode.get()==NULL)
    {
       // at least, create empty list
@@ -105,8 +102,7 @@ std::tstring PresetManagerImpl::getPresetName(int index)
    if (node.get()==NULL) return ret;
 
    // get name
-   USES_CONVERSION;
-   ret = A2CT(node->get_attribute_value("name").c_str());
+   ret = CString(node->get_attribute_value("name").c_str());
 
    return ret;
 }
@@ -123,8 +119,7 @@ std::tstring PresetManagerImpl::getPresetDescription(int index)
    cppxml::xmlnode_ptr comment = node->select_single_node("comment/cdata");
    if (comment.get()==NULL) return ret;
 
-   USES_CONVERSION;
-   ret = A2CT(comment->get_value().c_str());
+   ret = CString(comment->get_value().c_str());
 
    // trim description text
    bool first = true;
@@ -201,8 +196,7 @@ void PresetManagerImpl::setSettings(int index, SettingsManager &settings_mgr)
          // get attribute value and ID
          cppxml::string name = node2->get_attribute_value("name");
 
-         USES_CONVERSION;
-         int valueID = mgr_variables.lookupID(A2CT(name.c_str()));
+         int valueID = mgr_variables.lookupID(CString(name.c_str()));
          if (valueID == -1) continue; // not found
 
          // get cdata: variable's value
@@ -271,8 +265,7 @@ std::tstring PresetManagerImpl::GetItemName(int group, int index)
    if (node.get()==NULL) return ret; // not found
 
    // get name of node
-   USES_CONVERSION;
-   int id = mgr_variables.lookupID( A2CT(node->get_attribute_value("name").c_str()) );
+   int id = mgr_variables.lookupID(CString(node->get_attribute_value("name").c_str()) );
    if (id!=-1)
       ret = mgr_variables.lookupDescription(id);
 
@@ -289,8 +282,7 @@ std::tstring PresetManagerImpl::GetItemValue(int group, int index)
 
    // get cdata of fist child node
    cppxml::xmlnodelist::iterator iter = node->get_childnodes().begin();
-   USES_CONVERSION;
-   ret = A2CT((*iter)->get_value().c_str());
+   ret = CString((*iter)->get_value().c_str());
 
    return ret;
 }
@@ -304,8 +296,7 @@ void PresetManagerImpl::SetItemValue(int group, int index, std::tstring val)
    // set cdata of fist child node
    cppxml::xmlnodelist::iterator iter = node->get_childnodes().begin();
 
-   USES_CONVERSION;
-   (*iter)->set_value(T2CA(val.c_str()));
+   (*iter)->set_value(CStringA(val.c_str()).GetString());
 }
 
 cppxml::xmlnode_ptr PresetManagerImpl::editLookupNode(int group, int index)

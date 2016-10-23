@@ -245,8 +245,6 @@ CString FlacInputModule::getFilterString()
 int FlacInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
    TrackInfo &trackinfo, SampleContainer &samplecont)
 {
-   USES_CONVERSION;
-
    // find out length of file
    struct _stat statbuf;
    ::_tstat(infilename,&statbuf);

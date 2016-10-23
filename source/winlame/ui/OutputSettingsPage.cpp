@@ -181,7 +181,6 @@ bool OutputSettingsPage::SaveData(bool bSilent)
       CString path = m_uiSettings.m_defaultSettings.outputdir;
       path.TrimRight(_T('\\'));
 
-      USES_CONVERSION;
       struct _stat filestat;
       if (-1 == ::_tstat(path, &filestat) && !(path.GetLength() == 2 && path[1] == ':'))
       {

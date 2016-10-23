@@ -70,21 +70,19 @@ bool LameOutputModule::isAvailable()
 
 void LameOutputModule::getVersionString(CString& version, int special)
 {
-   USES_CONVERSION;
-
    // retrieve lame version
    if (isAvailable())
    {
       switch (special)
       {
       case 0:
-         version = A2CT(::nlame_lame_version_get(nle_lame_version_normal));
+         version = CString(::nlame_lame_version_get(nle_lame_version_normal));
          break;
       case 1:
-         version = A2CT(::nlame_lame_string_get(nle_lame_string_compiler));
+         version = CString(::nlame_lame_string_get(nle_lame_string_compiler));
          break;
       case 2:
-         version = A2CT(::nlame_lame_string_get(nle_lame_string_cpu_features));
+         version = CString(::nlame_lame_string_get(nle_lame_string_cpu_features));
          break;
       }
    }
@@ -100,8 +98,6 @@ void LameOutputModule::prepareOutput(SettingsManager &mgr)
 /// error callback
 void LameErrorCallback(const char* format, va_list ap)
 {
-   USES_CONVERSION;
-
    TCHAR buffer[256];
    _sntprintf(buffer,256,_T("%hs"), format);
 
@@ -298,9 +294,8 @@ skip_nogap:
    if (!trackinfo.IsEmpty())
       id3tag = new Id3v1Tag(trackinfo);
 
-   USES_CONVERSION;
    // open output file
-   ostr.open(T2CA(outfilename),std::ios::out|std::ios::binary);
+   ostr.open(CStringA(outfilename),std::ios::out|std::ios::binary);
    if (!ostr.is_open())
    {
       lasterror.LoadString(IDS_ENCODER_OUTPUT_FILE_CREATE_ERROR);
@@ -524,43 +519,42 @@ void LameOutputModule::AddLameID3v2Tag(const TrackInfo& trackinfo)
    nlame_id3tag_init(inst, false, true, uiPaddingLength);
 
    // add all tags
-   USES_CONVERSION;
    bool bAvail = false;
    CString cszValue = trackinfo.TextInfo(TrackInfoTitle, bAvail);
    if (bAvail)
-      nlame_id3tag_setfield_latin1(inst, nif_title, T2CA(cszValue));
+      nlame_id3tag_setfield_latin1(inst, nif_title, CStringA(cszValue));
 
    cszValue = trackinfo.TextInfo(TrackInfoArtist, bAvail);
    if (bAvail)
-      nlame_id3tag_setfield_latin1(inst, nif_artist, T2CA(cszValue));
+      nlame_id3tag_setfield_latin1(inst, nif_artist, CStringA(cszValue));
 
    cszValue = trackinfo.TextInfo(TrackInfoComment, bAvail);
    if (bAvail)
-      nlame_id3tag_setfield_latin1(inst, nif_comment, T2CA(cszValue));
+      nlame_id3tag_setfield_latin1(inst, nif_comment, CStringA(cszValue));
 
    cszValue = trackinfo.TextInfo(TrackInfoAlbum, bAvail);
    if (bAvail)
-      nlame_id3tag_setfield_latin1(inst, nif_album, T2CA(cszValue));
+      nlame_id3tag_setfield_latin1(inst, nif_album, CStringA(cszValue));
 
    // numeric
    int iValue = trackinfo.NumberInfo(TrackInfoYear, bAvail);
    if (bAvail)
    {
       cszValue.Format(_T("%i"), iValue);
-      nlame_id3tag_setfield_latin1(inst, nif_year, T2CA(cszValue));
+      nlame_id3tag_setfield_latin1(inst, nif_year, CStringA(cszValue));
    }
 
    iValue = trackinfo.NumberInfo(TrackInfoTrack, bAvail);
    if (bAvail)
    {
       cszValue.Format(_T("%i"), iValue);
-      nlame_id3tag_setfield_latin1(inst, nif_track, T2CA(cszValue));
+      nlame_id3tag_setfield_latin1(inst, nif_track, CStringA(cszValue));
    }
 
    cszValue = trackinfo.TextInfo(TrackInfoGenre, bAvail);
    if (bAvail)
    {
-      nlame_id3tag_setfield_latin1(inst, nif_genre, T2CA(cszValue));
+      nlame_id3tag_setfield_latin1(inst, nif_genre, CStringA(cszValue));
    }
 }
 

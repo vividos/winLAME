@@ -29,8 +29,7 @@ using ID3::File;
 File::File(const CString& cszFilename, bool bReadOnly)
 :m_bReadOnly(bReadOnly)
 {
-   USES_CONVERSION;
-   id3_file* file = id3_file_open(T2CA(cszFilename), bReadOnly ? ID3_FILE_MODE_READONLY : ID3_FILE_MODE_READWRITE);
+   id3_file* file = id3_file_open(CStringA(cszFilename), bReadOnly ? ID3_FILE_MODE_READONLY : ID3_FILE_MODE_READWRITE);
    if (file != NULL)
       m_spFile.reset(file, id3_file_close);
 }

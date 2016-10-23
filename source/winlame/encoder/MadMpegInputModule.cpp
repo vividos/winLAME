@@ -118,7 +118,6 @@ void MadMpegInputModule::getVersionString(CString& version, int special)
 
       // version has to be retrieved that way, because mad_version isn't
       // really the string, it points to a delayload helper routine
-      USES_CONVERSION;
       version = reinterpret_cast<const char*>(::GetProcAddress(lib,str));
       ::FreeLibrary(lib);
    }
@@ -140,8 +139,7 @@ int MadMpegInputModule::initInput(LPCTSTR infilename,
    maxsamples = 1;
 
    // open infile
-   USES_CONVERSION;
-   istr.open(T2CA(GetAnsiCompatFilename(infilename)),std::ios::in|std::ios::binary);
+   istr.open(CStringA(GetAnsiCompatFilename(infilename)),std::ios::in|std::ios::binary);
    if (!istr.is_open())
    {
       lasterror.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);

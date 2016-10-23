@@ -123,9 +123,8 @@ void OggVorbisOutputModule::getVersionString(CString& version, int special)
 
       vorbis_synthesis_headerin(&vi,&vc,&header_comm);
 
-      USES_CONVERSION;
       version = _T("(");
-      version += A2CT(vc.vendor);
+      version += CString(vc.vendor);
       version += _T(")");
 
       vorbis_block_clear(&vb);
@@ -166,8 +165,7 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
 
 
    // open output file
-   USES_CONVERSION;
-   ostr.open(T2CA(outfilename),std::ios::out|std::ios::binary);
+   ostr.open(CStringA(outfilename).GetString(),std::ios::out|std::ios::binary);
    if (!ostr.is_open())
    {
       lasterror.LoadString(IDS_ENCODER_OUTPUT_FILE_CREATE_ERROR);
@@ -247,7 +245,6 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
 
    // add track properties
    {
-      USES_CONVERSION;
       CString prop;
       std::vector<char> buffer;
 
