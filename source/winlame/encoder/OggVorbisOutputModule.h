@@ -86,25 +86,25 @@ protected:
    bool eos;
 
    /// take physical pages, weld into a logical stream of packets
-   ogg_stream_state os;
+   ogg_stream_state m_os;
 
    /// one ogg bitstream page. vorbis packets are inside
-   ogg_page         og;
-   
+   ogg_page         m_og;
+
    /// one raw packet of data for decode
-   ogg_packet       op;
+   ogg_packet       m_op;
 
    /// struct that stores all the static vorbis bitstream settings
-   vorbis_info      vi;
+   vorbis_info      m_vi;
 
    /// struct that stores all the bitstream user comments
-   vorbis_comment   vc;
+   vorbis_comment   m_vc;
 
    /// central working state for the packet->PCM decoder
-   vorbis_dsp_state vd;
+   vorbis_dsp_state m_vd;
 
    /// local working space for packet->PCM decode
-   vorbis_block     vb;
+   vorbis_block     m_vb;
 };
 
 

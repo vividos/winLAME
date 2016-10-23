@@ -41,7 +41,8 @@
 #pragma once
 
 // switch off some warnings
-#pragma warning( disable: 4786 )
+#pragma warning(push)
+#pragma warning(disable: 4786 4100)
 
 // needed includes
 #include <string>
@@ -210,5 +211,7 @@ public:
 
 // end of namespace
 };
+
+#pragma warning(pop)
 
 /// @}

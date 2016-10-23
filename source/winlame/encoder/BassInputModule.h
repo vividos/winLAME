@@ -88,7 +88,7 @@ protected:
    BASS_CHANNELINFO info;     ///< channel info
    BOOL basswma;              ///< indicates if input is wma file
    BOOL is_str;   ///< indicates if input is stream
-   QWORD length;  ///< bytes
+   QWORD m_length;  ///< bytes
    double time;   ///< seconds
    QWORD modlen;  ///< module positions
    DWORD modchn;  ///< module channel

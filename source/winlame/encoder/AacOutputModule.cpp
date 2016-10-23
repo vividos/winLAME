@@ -72,7 +72,7 @@ void AacOutputModule::getDescription(CString& desc)
       (brcmethod == 0) ? _T("Quality ") : _T(""),
       (brcmethod == 0) ? config->quantqual : config->bitRate/1000,
       (brcmethod == 0) ? _T("") : _T(" kbps/channel"),
-      channels, config->bandWidth,
+      m_channels, config->bandWidth,
       config->allowMidside == 1 ? _T(", Mid/Side") : _T(""),
       config->useTns == 1 ? _T(", Temporal Noise Shaping") : _T(""),
       config->useLfe == 1 ? _T(", LFE channel") : _T(""));
@@ -92,11 +92,11 @@ int AacOutputModule::initOutput(LPCTSTR outfilename,
       return -1;
    }
 
-   samplerate = samplecont.getInputModuleSampleRate();
-   channels = samplecont.getInputModuleChannels();
+   m_samplerate = samplecont.getInputModuleSampleRate();
+   m_channels = samplecont.getInputModuleChannels();
 
    // try to get a handle
-   handle = faacEncOpen(samplerate,channels,&aac_inbufsize,&aac_outbufsize);
+   handle = faacEncOpen(m_samplerate, m_channels,&aac_inbufsize,&aac_outbufsize);
 
    if (handle==NULL)
    {
@@ -147,12 +147,12 @@ int AacOutputModule::initOutput(LPCTSTR outfilename,
    else // Bitrate
    {
       config->quantqual = 0;
-      config->bitRate = mgr.queryValueInt(AacBitrate) * 1000 / channels;
+      config->bitRate = mgr.queryValueInt(AacBitrate) * 1000 / m_channels;
    }
 
    // channel remap
-   for (int i = 0; i < std::min(channels, MAX_CHANNELS); i++)
-      config->channel_map[i] = chmap[channels-1][i];
+   for (int i = 0; i < std::min(m_channels, MAX_CHANNELS); i++)
+      config->channel_map[i] = chmap[m_channels-1][i];
 
    // set new config
    faacEncSetConfiguration(handle,config);
@@ -173,7 +173,7 @@ int AacOutputModule::encodeSamples(SampleContainer &samples)
    // have to store samples until a whole block of samples can be passed to
    // the function; otherwise faacEncEncode() would pad the buffer with 0's.
 
-   int size = numsamples*channels;
+   int size = numsamples*m_channels;
 
    // check if input sample buffer is full
    if (unsigned(sbufhigh+size) >= aac_inbufsize)

@@ -170,13 +170,13 @@ int MadMpegInputModule::initInput(LPCTSTR infilename,
    memset(&init_header,0,sizeof(init_header));
 
    {
-      struct mad_stream stream;
+      struct mad_stream checkstream;
 
       bool retry_vbrtag_search = false;
       bool first_private_header = true;
 
       // init structs
-      mad_stream_init(&stream);
+      mad_stream_init(&checkstream);
 
       // search sync signal of first mpeg frame
       int syncstart = 0;
@@ -221,8 +221,8 @@ int MadMpegInputModule::initInput(LPCTSTR infilename,
             }
 
             // try to decode frame header
-            mad_stream_buffer(&stream,inbuffer,mad_inbufsize);
-            int ret = mad_header_decode(&init_header, &stream);
+            mad_stream_buffer(&checkstream,inbuffer,mad_inbufsize);
+            int ret = mad_header_decode(&init_header, &checkstream);
 
             bool is_first_private_header = first_private_header &&
                (init_header.private_bits & MAD_PRIVATE_HEADER) != 0;
@@ -289,8 +289,8 @@ if the sampling frequency is 12000, 11025, or 8000, it is so-called MPEG 2.5.
 */
 
       // pass the frame to the decoder
-      mad_stream_buffer(&stream,inbuffer,mad_inbufsize);
-      if (-1 != mad_header_decode(&init_header, &stream))
+      mad_stream_buffer(&checkstream,inbuffer,mad_inbufsize);
+      if (-1 != mad_header_decode(&init_header, &checkstream))
       {
          // when we searched for the second header, we are finished here
          if (retry_vbrtag_search)
@@ -330,7 +330,7 @@ if the sampling frequency is 12000, 11025, or 8000, it is so-called MPEG 2.5.
       // finished
    } while (retry_vbrtag_search);
 
-      mad_stream_finish(&stream);
+      mad_stream_finish(&checkstream);
    }
 
    samplecont.setInputModuleTraits(32,
@@ -566,10 +566,10 @@ int MadMpegInputModule::decodeSamples(SampleContainer &samples)
 
    // note: ignore frame.header.mode, since it cannot (or should not) change between frames
    ATLASSERT(frame.header.mode == init_header.mode);
-   channels = init_header.mode == MAD_MODE_SINGLE_CHANNEL ? 1 : 2;
+   m_channels = init_header.mode == MAD_MODE_SINGLE_CHANNEL ? 1 : 2;
 
    // use rounding and clipping
-   for(int ch=0; ch<channels; ch++)
+   for(int ch=0; ch<m_channels; ch++)
    for(int i=0; i<ret; i++)
    {
       mad_fixed_t sample = synth.pcm.samples[ch][i];

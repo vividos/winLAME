@@ -80,7 +80,7 @@ bool cppxml::xmlnodebuilder::have_cdata(const cppxml::string &cdata)
    return true;
 }
 
-bool cppxml::xmlnodebuilder::have_tag_end(const cppxml::string &name)
+bool cppxml::xmlnodebuilder::have_tag_end(const cppxml::string& /*name*/)
 {
    // restore last curnode
    if (!nodestack.empty())
@@ -91,7 +91,7 @@ bool cppxml::xmlnodebuilder::have_tag_end(const cppxml::string &name)
    return true;
 }
 
-bool cppxml::xmlnodebuilder::have_pi_start(const cppxml::string &name)
+bool cppxml::xmlnodebuilder::have_pi_start(const cppxml::string& /*name*/)
 {
    // remember curnode on nodestack
    nodestack.push_back(curnode);
@@ -102,7 +102,7 @@ bool cppxml::xmlnodebuilder::have_pi_start(const cppxml::string &name)
    return true;
 }
 
-bool cppxml::xmlnodebuilder::have_pi_end(const cppxml::string &name)
+bool cppxml::xmlnodebuilder::have_pi_end(const cppxml::string& /*name*/)
 {
    // restore back last node
    curnode = nodestack.back();

@@ -56,7 +56,7 @@ cppxml::string cppxml::xmllexer::get_next_token()
          cdata_mode = false;
          if (ret.size()==0)
          {
-            ret=c;
+            ret=(char)c;
             if (c=='>') cdata_mode = true;
             break;
          }
@@ -69,13 +69,13 @@ cppxml::string cppxml::xmllexer::get_next_token()
          // string delimiter?
          if (is_stringdelimiter(c))
          {
-            ret = c;
+            ret = (char)c;
             int delim = c;
             do
             {
                c = istr.get();
                if (c==EOF) break;
-               ret += c;
+               ret += (char)c;
             } while (c != delim);
 
             break;
@@ -100,7 +100,7 @@ cppxml::string cppxml::xmllexer::get_next_token()
       }
 
       // add to generic string
-      ret += c;
+      ret += (char)c;
    }
    while (!finished);
 

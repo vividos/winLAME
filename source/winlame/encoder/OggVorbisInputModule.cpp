@@ -76,16 +76,16 @@ void OggVorbisInputModule::getDescription(CString& desc)
    {
       desc.Format(IDS_FORMAT_INFO_OGGV_INPUT_VBR,
          vi->bitrate_lower/1000, vi->bitrate_upper/1000,
-         channels, samplerate);
+         m_channels, m_samplerate);
    }
    else if (vi->bitrate_nominal==-1)
    {
-      desc.Format(IDS_FORMAT_INFO_OGGV_INPUT_FREE, channels, samplerate);
+      desc.Format(IDS_FORMAT_INFO_OGGV_INPUT_FREE, m_channels, m_samplerate);
    }
    else
    {
       desc.Format(IDS_FORMAT_INFO_OGGV_INPUT_NOMINAL,
-         vi->bitrate_nominal/1000, channels, samplerate);
+         vi->bitrate_nominal/1000, m_channels, m_samplerate);
    }
 }
 
@@ -128,11 +128,11 @@ int OggVorbisInputModule::initInput(LPCTSTR infilename,
    maxsamples = ov_pcm_total(&vf,-1);
 
    vorbis_info *vi=ov_info(&vf,-1);
-   channels = vi->channels;
-   samplerate = vi->rate;
+   m_channels = vi->channels;
+   m_samplerate = vi->rate;
 
    // set up input traits
-   samplecont.setInputModuleTraits(sizeof(short)*8,SamplesInterleaved,samplerate,channels);
+   samplecont.setInputModuleTraits(sizeof(short)*8,SamplesInterleaved, m_samplerate, m_channels);
 
    return 0;
 }
@@ -166,22 +166,22 @@ int OggVorbisInputModule::decodeSamples(SampleContainer &samples)
       return ret;
    }
 
-   ret /= channels*sizeof(short);
+   ret /= m_channels*sizeof(short);
 
    // channel remap
-   if (channels > 2 && ret > 0)
+   if (m_channels > 2 && ret > 0)
    {
       outbuffer = tmpbuf;
       for (int i = 0; i < ret; i++)
-         for (int j = 0; j < std::min(channels, MAX_CHANNELS); j++)
-            outbuffer[i*channels+j] = buffer[i*channels+(chmap[channels-1][j])];
+         for (int j = 0; j < std::min(m_channels, MAX_CHANNELS); j++)
+            outbuffer[i*m_channels+j] = buffer[i*m_channels+(chmap[m_channels-1][j])];
 
       // copy the remaining channels
-      if (channels > MAX_CHANNELS)
+      if (m_channels > MAX_CHANNELS)
       {
          for (int i = 0; i < ret; i++)
-            for (int j = MAX_CHANNELS; j < channels; j++)
-               outbuffer[i*channels+j] = buffer[i*channels+j];
+            for (int j = MAX_CHANNELS; j < m_channels; j++)
+               outbuffer[i*m_channels+j] = buffer[i*m_channels+j];
       }
    }
    else

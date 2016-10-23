@@ -195,7 +195,7 @@ void EncoderImpl::encode()
 
 bool EncoderImpl::PrepareInputModule(InputModule& inputModule, CString& cszInputFilename,
    SettingsManager& settingsManager, TrackInfo& trackInfo, SampleContainer& sampleContainer,
-   int& error)
+   int& localerror)
 {
    int res = inputModule.initInput(cszInputFilename, *settings_mgr,
       trackInfo, sampleContainer);
@@ -212,11 +212,11 @@ bool EncoderImpl::PrepareInputModule(InputModule& inputModule, CString& cszInput
          break;
 
       case EncoderErrorHandler::SkipFile:
-         error=1;
+         localerror=1;
          return false;
 
       case EncoderErrorHandler::StopEncode:
-         error=-1;
+         localerror =-1;
          return false;
       }
    }
@@ -226,7 +226,7 @@ bool EncoderImpl::PrepareInputModule(InputModule& inputModule, CString& cszInput
 
 bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& outputModule,
    SettingsManager& settingsManager, const CString& cszInputFilename, CString& cszOutputFilename,
-   int& error)
+   int& localerror)
 {
    // prepare output module
    outputModule.prepareOutput(settingsManager);
@@ -246,7 +246,7 @@ bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& ou
    // test if input and output file name is the same file
    if (!CheckSameInputOutputFilenames(cszInputFilename, cszOutputFilename, outputModule))
    {
-      error=2;
+      localerror=2;
       return false;
    }
 
@@ -260,7 +260,7 @@ bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& ou
          // without any message boxes waiting.
 
          // skip this file
-         error=2;
+         localerror=2;
          return false;
       }
    }
@@ -396,7 +396,7 @@ void EncoderImpl::GenerateTempOutFilename(const CString& cszOriginalFilename, CS
 }
 
 bool EncoderImpl::InitOutputModule(OutputModule& outputModule, const CString& cszTempOutputFilename, SettingsManager& settingsManager,
-   TrackInfo& trackInfo, SampleContainer& sampleContainer, int& error)
+   TrackInfo& trackInfo, SampleContainer& sampleContainer, int& localerror)
 {
    // init output module
    int res = outputModule.initOutput(cszTempOutputFilename, settingsManager,
@@ -411,10 +411,10 @@ bool EncoderImpl::InitOutputModule(OutputModule& outputModule, const CString& cs
       case EncoderErrorHandler::Continue:
          break;
       case EncoderErrorHandler::SkipFile:
-         error=2;
+         localerror=2;
          return false;
       case EncoderErrorHandler::StopEncode:
-         error=-2;
+         localerror=-2;
          return false;
       }
    }
@@ -513,7 +513,8 @@ void EncoderImpl::MainLoop(InputModule& inputModule, OutputModule& outputModule,
       ret = inputModule.decodeSamples(sampleContainer);
 
       // no more samples?
-      if (ret==0) break;
+      if (ret==0)
+         break;
 
       // catch errors
       if (handler!=NULL && ret<0)

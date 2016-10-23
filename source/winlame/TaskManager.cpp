@@ -214,16 +214,16 @@ void TaskManager::RemoveTask(std::shared_ptr<Task> spTask)
    boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
 
    // search for task
-   for (T_deqTaskQueue::iterator iter = m_deqTaskQueue.begin(),
-      stop = m_deqTaskQueue.end(); iter != stop; iter++)
+   for (T_deqTaskQueue::iterator iterTaskQueue = m_deqTaskQueue.begin(),
+      stop = m_deqTaskQueue.end(); iterTaskQueue != stop; iterTaskQueue++)
    {
-      if (spTask == *iter)
+      if (spTask == *iterTaskQueue)
       {
-         m_deqTaskQueue.erase(iter);
+         m_deqTaskQueue.erase(iterTaskQueue);
 
-         auto iter = m_mapCompletedTaskInfos.find(spTask->Id());
-         if (iter != m_mapCompletedTaskInfos.end())
-            m_mapCompletedTaskInfos.erase(iter);
+         auto iterTaskInfos = m_mapCompletedTaskInfos.find(spTask->Id());
+         if (iterTaskInfos != m_mapCompletedTaskInfos.end())
+            m_mapCompletedTaskInfos.erase(iterTaskInfos);
 
          return;
       }

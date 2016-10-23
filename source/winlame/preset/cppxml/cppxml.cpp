@@ -111,9 +111,9 @@ void cppxml::xmlnode::get_nodes(
    if (nodedesc[0]=='@')
    {
       // construct attr node from attr name/value
-      cppxml::string value = get_attribute_value(nodedesc+1);
+      cppxml::string attrvalue = get_attribute_value(nodedesc+1);
       cppxml::xmlnode_ptr attrnode(
-         new xmlnode(nt_attr,cppxml::string(nodedesc+1),value));
+         new xmlnode(nt_attr,cppxml::string(nodedesc+1),attrvalue));
       nodelist.push_back(attrnode);
       return;
    }

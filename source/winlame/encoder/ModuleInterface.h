@@ -84,10 +84,10 @@ protected:
    int module_id;
 
    /// number of channels
-   int channels;
+   int m_channels;
 
    /// sample rate
-   int samplerate;
+   int m_samplerate;
 };
 
 

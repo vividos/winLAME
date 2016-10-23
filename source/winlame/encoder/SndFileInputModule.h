@@ -99,7 +99,7 @@ protected:
    CString lasterror;
 
    /// sample buffer
-   void *buffer;
+   void* m_buffer;
 
    /// output bits
    int outbits;

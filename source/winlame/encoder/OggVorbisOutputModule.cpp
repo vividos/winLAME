@@ -77,20 +77,20 @@ void OggVorbisOutputModule::getDescription(CString& desc)
             static_cast<unsigned int>((fabs(base_quality*10.0) - static_cast<unsigned int>(fabs(base_quality*10.0)))*100.0));
 
          desc.Format(IDS_FORMAT_INFO_OGGV_OUTPUT_QUALITY,
-            cszQuality, vi.rate, vi.channels);
+            cszQuality, m_vi.rate, m_vi.channels);
       }
       break;
    case 1: // variable bitrate
       desc.Format(IDS_FORMAT_INFO_OGGV_OUTPUT_VBR,
-         vi.bitrate_lower/1000, vi.bitrate_upper/1000, vi.rate, vi.channels);
+         m_vi.bitrate_lower/1000, m_vi.bitrate_upper/1000, m_vi.rate, m_vi.channels);
       break;
    case 2: // average bitrate
       desc.Format(IDS_FORMAT_INFO_OGGV_OUTPUT_ABR,
-         vi.bitrate_nominal/1000, vi.rate, vi.channels);
+         m_vi.bitrate_nominal/1000, m_vi.rate, m_vi.channels);
       break;
    case 3: // constant bitrate
       desc.Format(IDS_FORMAT_INFO_OGGV_OUTPUT_CBR,
-         vi.bitrate_nominal/1000, vi.rate, vi.channels);
+         m_vi.bitrate_nominal/1000, m_vi.rate, m_vi.channels);
       break;
    }
 }
@@ -161,8 +161,8 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
    base_quality = 1.0;
    eos = false;
 
-   channels = samplecont.getInputModuleChannels();
-   samplerate = samplecont.getInputModuleSampleRate();
+   m_channels = samplecont.getInputModuleChannels();
+   m_samplerate = samplecont.getInputModuleSampleRate();
 
 
    // open output file
@@ -178,7 +178,7 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
    /********** Encode setup ************/
 
    /* choose an encoding mode */
-   vorbis_info_init(&vi);
+   vorbis_info_init(&m_vi);
 
    int ret = 0;
 
@@ -186,14 +186,14 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
    {
    case 0: // base quality mode
       base_quality = mgr.queryValueInt(OggBaseQuality)/1000.f;
-      ret = vorbis_encode_init_vbr(&vi,channels,samplerate,base_quality);
+      ret = vorbis_encode_init_vbr(&m_vi, m_channels, m_samplerate,base_quality);
       break;
 
    case 1: // variable bitrate mode
       {
          int min_bitrate = mgr.queryValueInt(OggVarMinBitrate);
          int max_bitrate = mgr.queryValueInt(OggVarMaxBitrate);
-         ret = vorbis_encode_init(&vi,channels,samplerate,
+         ret = vorbis_encode_init(&m_vi, m_channels, m_samplerate,
             max_bitrate*1000, -1, min_bitrate*1000);
       }
       break;
@@ -201,7 +201,7 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
    case 2: // average bitrate mode
       {
          int average_bitrate = mgr.queryValueInt(OggVarNominalBitrate);
-         ret = vorbis_encode_init(&vi,channels,samplerate,
+         ret = vorbis_encode_init(&m_vi, m_channels, m_samplerate,
             -1, average_bitrate*1000, -1);
       }
       break;
@@ -209,7 +209,7 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
    case 3: // constant bitrate mode
       {
          int const_bitrate = mgr.queryValueInt(OggVarNominalBitrate);
-         ret = vorbis_encode_init(&vi,channels,samplerate,
+         ret = vorbis_encode_init(&m_vi, m_channels, m_samplerate,
             const_bitrate*1000, const_bitrate*1000, const_bitrate*1000);
       }
       break;
@@ -237,13 +237,13 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
 
       lasterror += _T(")");
 
-      vorbis_info_clear(&vi);
+      vorbis_info_clear(&m_vi);
 
       return ret;
    }
 
    /* add a comment */
-   vorbis_comment_init(&vc);
+   vorbis_comment_init(&m_vc);
 
    // add track properties
    {
@@ -256,21 +256,21 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
       if (avail && !prop.IsEmpty())
       {
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag(&vc, "TITLE", &buffer[0]);
+         vorbis_comment_add_tag(&m_vc, "TITLE", &buffer[0]);
       }
 
       prop = trackinfo.TextInfo(TrackInfoArtist, avail);
       if (avail && !prop.IsEmpty())
       {
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag(&vc, "ARTIST", &buffer[0]);
+         vorbis_comment_add_tag(&m_vc, "ARTIST", &buffer[0]);
       }
 
       prop = trackinfo.TextInfo(TrackInfoAlbum, avail);
       if (avail && !prop.IsEmpty())
       {
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag(&vc, "ALBUM", &buffer[0]);
+         vorbis_comment_add_tag(&m_vc, "ALBUM", &buffer[0]);
       }
 
       int iYear = trackinfo.NumberInfo(TrackInfoYear, avail);
@@ -278,14 +278,14 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
       {
          prop.Format(_T("%i"), iYear);
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag(&vc, "DATE", &buffer[0]);
+         vorbis_comment_add_tag(&m_vc, "DATE", &buffer[0]);
       }
 
       prop = trackinfo.TextInfo(TrackInfoComment, avail);
       if (avail && !prop.IsEmpty())
       {
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag(&vc, "COMMENT", &buffer[0]); // should be DESCRIPTION?
+         vorbis_comment_add_tag(&m_vc, "COMMENT", &buffer[0]); // should be DESCRIPTION?
       }
 
       int iTrack = trackinfo.NumberInfo(TrackInfoTrack, avail);
@@ -293,7 +293,7 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
       {
          prop.Format(_T("%i"), iTrack);
          UnicodeToUTF8(prop, buffer);
-         vorbis_comment_add_tag(&vc, "TRACKNUMBER", &buffer[0]);
+         vorbis_comment_add_tag(&m_vc, "TRACKNUMBER", &buffer[0]);
       }
 
       CString cszGenre = trackinfo.TextInfo(TrackInfoGenre, avail);
@@ -302,20 +302,20 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
          if (!cszGenre.IsEmpty())
          {
             UnicodeToUTF8(cszGenre, buffer);
-            vorbis_comment_add_tag(&vc, "GENRE", &buffer[0]);
+            vorbis_comment_add_tag(&m_vc, "GENRE", &buffer[0]);
          }
       }
    }
 
    /* set up the analysis state and auxiliary encoding storage */
-   vorbis_analysis_init(&vd,&vi);
-   vorbis_block_init(&vd,&vb);
+   vorbis_analysis_init(&m_vd,&m_vi);
+   vorbis_block_init(&m_vd,&m_vb);
 
    /* set up our packet->stream encoder */
    /* pick a random serial number; that way we can more likely build
       chained streams just by concatenation */
    srand(static_cast<unsigned int>(time(NULL)));
-   ogg_stream_init(&os,rand());
+   ogg_stream_init(&m_os,rand());
 
 
    /* Vorbis streams begin with three headers; the initial header (with
@@ -330,29 +330,29 @@ int OggVorbisOutputModule::initOutput(LPCTSTR outfilename,
       ogg_packet header_comm;
       ogg_packet header_code;
 
-      vorbis_analysis_headerout(&vd,&vc,&header,&header_comm,&header_code);
+      vorbis_analysis_headerout(&m_vd,&m_vc,&header,&header_comm,&header_code);
       /* automatically placed in its own page */
-      ogg_stream_packetin(&os,&header); 
+      ogg_stream_packetin(&m_os,&header);
 
-      ogg_stream_packetin(&os,&header_comm);
-      ogg_stream_packetin(&os,&header_code);
+      ogg_stream_packetin(&m_os,&header_comm);
+      ogg_stream_packetin(&m_os,&header_code);
 
       /* We don't have to write out here, but doing so makes streaming 
          much easier, so we do, flushing ALL pages. This ensures the actual
          audio data will start on a new page */
       while(!eos)
       {
-         int result=ogg_stream_flush(&os,&og);
+         int result=ogg_stream_flush(&m_os,&m_og);
          if(result==0)
             break;
 
-         ostr.write(reinterpret_cast<char*>(og.header),og.header_len);
-         ostr.write(reinterpret_cast<char*>(og.body),og.body_len);
+         ostr.write(reinterpret_cast<char*>(m_og.header), m_og.header_len);
+         ostr.write(reinterpret_cast<char*>(m_og.body), m_og.body_len);
       }
    }
 
    // set up output traits
-   samplecont.setOutputModuleTraits(16,SamplesChannelArray,samplerate,channels);
+   samplecont.setOutputModuleTraits(16,SamplesChannelArray, m_samplerate, m_channels);
 
    return 0;
 }
@@ -368,63 +368,63 @@ int OggVorbisOutputModule::encodeSamples(SampleContainer &samples)
 
    if (numsamples!=0)
    {
-      float **sbuffer=vorbis_analysis_buffer(&vd,numsamples);
+      float **sbuffer=vorbis_analysis_buffer(&m_vd,numsamples);
 
       // copy samples to analysis buffer
-     if (channels > 2)
+     if (m_channels > 2)
      {
         // channel remap
-         for(int ch=0; ch<std::min(channels,MAX_CHANNELS); ch++)
+         for(int ch=0; ch<std::min(m_channels,MAX_CHANNELS); ch++)
             for(int i=0; i<numsamples; i++)
-               sbuffer[ch][i] = float(buffer[chmap[channels-1][ch]][i]) / 32768.f;
-        if (channels > MAX_CHANNELS)
+               sbuffer[ch][i] = float(buffer[chmap[m_channels-1][ch]][i]) / 32768.f;
+        if (m_channels > MAX_CHANNELS)
         {
-            for(int ch=MAX_CHANNELS; ch<channels; ch++)
+            for(int ch=MAX_CHANNELS; ch<m_channels; ch++)
                for(int i=0; i<numsamples; i++)
                   sbuffer[ch][i] = float(buffer[ch][i]) / 32768.f;
         }
      }
      else
      {
-         for(int ch=0; ch<channels; ch++)
+         for(int ch=0; ch<m_channels; ch++)
             for(int i=0; i<numsamples; i++)
                sbuffer[ch][i] = float(buffer[ch][i]) / 32768.f;
      }
    }
 
    /* tell the library how much we actually submitted */
-   vorbis_analysis_wrote(&vd,numsamples);
+   vorbis_analysis_wrote(&m_vd,numsamples);
 
    /* vorbis does some data preanalysis, then divvies up blocks for
       more involved (potentially parallel) processing.  Get a single
       block for encoding now */
 
-   while(vorbis_analysis_blockout(&vd,&vb)==1)
+   while(vorbis_analysis_blockout(&m_vd,&m_vb)==1)
    {
       /* analysis, assume we want to use bitrate management */
-      vorbis_analysis(&vb,&op);
-      vorbis_bitrate_addblock(&vb);
+      vorbis_analysis(&m_vb,&m_op);
+      vorbis_bitrate_addblock(&m_vb);
 
-      while(vorbis_bitrate_flushpacket(&vd,&op))
+      while(vorbis_bitrate_flushpacket(&m_vd,&m_op))
       {
 
       /* weld the packet into the bitstream */
-      ogg_stream_packetin(&os,&op);
+      ogg_stream_packetin(&m_os,&m_op);
 
       /* write out pages (if any) */
       while(!eos)
       {
-         int result=ogg_stream_pageout(&os,&og);
+         int result=ogg_stream_pageout(&m_os,&m_og);
          if (result==0)
             break;
 
-         ostr.write(reinterpret_cast<char*>(og.header),og.header_len);
-         ostr.write(reinterpret_cast<char*>(og.body),og.body_len);
+         ostr.write(reinterpret_cast<char*>(m_og.header), m_og.header_len);
+         ostr.write(reinterpret_cast<char*>(m_og.body), m_og.body_len);
 
          /* this could be set above, but for illustrative purposes, I do
             it here (to show that vorbis does know where the stream ends) */
 
-         if(ogg_page_eos(&og)) eos=true;
+         if(ogg_page_eos(&m_og)) eos=true;
       }
 
       }
@@ -438,7 +438,7 @@ void OggVorbisOutputModule::doneOutput()
    if (!lasterror.IsEmpty())
       return;
 
-   vorbis_analysis_wrote(&vd,0);
+   vorbis_analysis_wrote(&m_vd,0);
 
    // put out the last ogg block
 
@@ -449,11 +449,11 @@ void OggVorbisOutputModule::doneOutput()
 
    /* clean up and exit.  vorbis_info_clear() must be called last */
 
-   ogg_stream_clear(&os);
-   vorbis_block_clear(&vb);
-   vorbis_dsp_clear(&vd);
-   vorbis_comment_clear(&vc);
-   vorbis_info_clear(&vi);
+   ogg_stream_clear(&m_os);
+   vorbis_block_clear(&m_vb);
+   vorbis_dsp_clear(&m_vd);
+   vorbis_comment_clear(&m_vc);
+   vorbis_info_clear(&m_vi);
 
    /* ogg_page and ogg_packet structs always point to storage in
       libvorbis.  They're never freed or manipulated directly */

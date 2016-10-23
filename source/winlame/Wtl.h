@@ -24,7 +24,7 @@
 
 // ignore /analyze warnings in WTL header files
 #pragma warning(push)
-#pragma warning(disable: 6001 6011 6031 6387)
+#pragma warning(disable: 4127 6001 6011 6031 6387)
 
 #include <atlapp.h>
 #include <atlmisc.h>

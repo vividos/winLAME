@@ -37,7 +37,7 @@ const int sndfile_inbufsize = 512;
 // SndFileInputModule methods
 
 SndFileInputModule::SndFileInputModule()
-:buffer(NULL)
+:m_buffer(NULL)
 {
    module_id = ID_IM_SNDFILE;
 }
@@ -227,9 +227,9 @@ int SndFileInputModule::initInput(LPCTSTR infilename,
 
    // prepare input buffer
    if (outbits == 32)
-      buffer = new int[sndfile_inbufsize*sfinfo.channels];
+      m_buffer = new int[sndfile_inbufsize*sfinfo.channels];
    else
-      buffer = new short[sndfile_inbufsize*sfinfo.channels];
+      m_buffer = new short[sndfile_inbufsize*sfinfo.channels];
 
    // set up input traits
    samplecont.setInputModuleTraits(outbits,SamplesInterleaved,
@@ -314,9 +314,9 @@ int SndFileInputModule::decodeSamples(SampleContainer &samples)
    sf_count_t ret;
 
    if (outbits == 32)
-      ret = sf_readf_int(sndfile,(int *)buffer,sndfile_inbufsize);
+      ret = sf_readf_int(sndfile,(int *)m_buffer,sndfile_inbufsize);
    else
-      ret = sf_readf_short(sndfile,(short *)buffer,sndfile_inbufsize);
+      ret = sf_readf_short(sndfile,(short *)m_buffer,sndfile_inbufsize);
 
    int iret = static_cast<int>(ret);
 
@@ -331,7 +331,7 @@ int SndFileInputModule::decodeSamples(SampleContainer &samples)
    }
 
    // put samples in container
-   samples.putSamplesInterleaved(buffer,iret);
+   samples.putSamplesInterleaved(m_buffer,iret);
 
    // count samples
    samplecount += iret;
@@ -345,7 +345,7 @@ void SndFileInputModule::doneInput()
    sf_close(sndfile);
 
    // free buffer
-   delete[] buffer;
+   delete[] m_buffer;
 }
 
 bool SndFileInputModule::waveGetId3(LPCTSTR wavfile, TrackInfo &trackinfo)

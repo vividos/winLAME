@@ -117,8 +117,8 @@ int LameOutputModule::initOutput(LPCTSTR outfilename,
    // alloc memory for output mp3 buffer
    mp3buf = new unsigned char[nlame_const_maxmp3buffer];
 
-   channels = samplecont.getInputModuleChannels();
-   samplerate = samplecont.getInputModuleSampleRate();
+   m_channels = samplecont.getInputModuleChannels();
+   m_samplerate = samplecont.getInputModuleSampleRate();
 
    // store track info for ID3v2 tag
    m_trackInfoID3v2 = trackinfo;
@@ -162,8 +162,8 @@ int LameOutputModule::initOutput(LPCTSTR outfilename,
 
    // set all nlame variables
    {
-      nlame_var_set_int(inst, nle_var_in_samplerate, samplerate);
-      nlame_var_set_int(inst, nle_var_num_channels, channels);
+      nlame_var_set_int(inst, nle_var_in_samplerate, m_samplerate);
+      nlame_var_set_int(inst, nle_var_num_channels, m_channels);
 
       // mono encoding?
       bool bMono = mgr.queryValueInt(LameSimpleMono) == 1;
@@ -327,7 +327,7 @@ skip_nogap:
       return -1;
    lame_input_buffer_size = static_cast<unsigned int>(framesize);
 
-   inbuffer = new unsigned char[lame_input_buffer_size*channels*(bps>>3)];
+   inbuffer = new unsigned char[lame_input_buffer_size*m_channels*(bps>>3)];
    inbuffer_fill = 0;
 
    samplecount=0;
@@ -357,7 +357,7 @@ int LameOutputModule::encodeFrame()
 
    // encode buffer
    int ret;
-   if (channels==1)
+   if (m_channels==1)
    {
       ret = nlame_encode_buffer_mono(inst, buftype,
          inbuffer, inbuffer_fill, mp3buf, bufsize);
@@ -401,9 +401,9 @@ int LameOutputModule::encodeSamples(SampleContainer& samples)
 
       // copy samples into inbuffer; note: inbuffer_fill is counted in "samples"
       memcpy(
-         inbuffer+inbuffer_fill*channels*samplesize,
-         samplebuf+sbuf_count*channels*samplesize,
-         fillsize*channels*samplesize);
+         inbuffer+inbuffer_fill*m_channels*samplesize,
+         samplebuf+sbuf_count*m_channels*samplesize,
+         fillsize*m_channels*samplesize);
 
       inbuffer_fill += fillsize;
       numsamples -= fillsize;

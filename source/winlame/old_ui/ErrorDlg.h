@@ -75,7 +75,7 @@ END_MSG_MAP()
       SetIcon(icon,FALSE);
 
       // set an exclamation icon on the dialog
-      icon = ::LoadIcon(NULL,MAKEINTRESOURCE(IDI_EXCLAMATION));
+      icon = ::LoadIcon(NULL,IDI_EXCLAMATION);
       SendDlgItemMessage(IDC_ERR_STATIC_ICON,STM_SETICON,(WPARAM)icon);
 
       // set all variable strings

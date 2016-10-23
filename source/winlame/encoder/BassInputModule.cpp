@@ -160,7 +160,7 @@ int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
       return -1;
    }
 
-   /* try streaming the file/url */
+   // try streaming the file/url
    CString cszAnsiFilename = GetAnsiCompatFilename(infilename);
 
    chan = BASS_StreamCreateFile(FALSE, T2CA(cszAnsiFilename), 0, 0, BASS_STREAM_DECODE);
@@ -171,26 +171,30 @@ int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
 
    if (chan)
    {
-      length=BASS_ChannelGetLength(chan, BASS_POS_BYTE);
+      m_length=BASS_ChannelGetLength(chan, BASS_POS_BYTE);
       is_str=TRUE;
    }
    else
+   {
       // try loading the MOD (with sensitive ramping, and calculate the duration)
-   if ((chan = BASS_MusicLoad(FALSE, T2CA(cszAnsiFilename), 0, 0,
-      BASS_MUSIC_DECODE | BASS_MUSIC_RAMPS | BASS_MUSIC_SURROUND |
-      BASS_MUSIC_CALCLEN | BASS_MUSIC_STOPBACK,0)))
-   {
-      modlen=BASS_ChannelGetLength(chan, BASS_POS_MUSIC_ORDER);
-      length=BASS_ChannelGetLength(chan, BASS_POS_BYTE);
-      is_str=FALSE;
-   }
-   else
-   {
-      lasterror.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
-      return -1;
+      chan = BASS_MusicLoad(FALSE, T2CA(cszAnsiFilename), 0, 0,
+         BASS_MUSIC_DECODE | BASS_MUSIC_RAMPS | BASS_MUSIC_SURROUND |
+         BASS_MUSIC_CALCLEN | BASS_MUSIC_STOPBACK, 0);
+
+      if (chan)
+      {
+         modlen=BASS_ChannelGetLength(chan, BASS_POS_MUSIC_ORDER);
+         m_length=BASS_ChannelGetLength(chan, BASS_POS_BYTE);
+         is_str=FALSE;
+      }
+      else
+      {
+         lasterror.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+         return -1;
+      }
    }
 
-   time=BASS_ChannelBytes2Seconds(chan,length);
+   time=BASS_ChannelBytes2Seconds(chan,m_length);
 
    if (is_str)
    {
@@ -322,7 +326,7 @@ float BassInputModule::percentDone()
    if (!is_str)
       done = (((LOWORD(pos) * PATLEN) + HIWORD(pos)) / 64.f) * 100.f / modlen;
    else
-      done = __int64(pos) * 100.f / __int64(length);
+      done = __int64(pos) * 100.f / __int64(m_length);
 
    return done;
 }
