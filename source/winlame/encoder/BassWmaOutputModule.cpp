@@ -26,28 +26,6 @@
 #include "resource.h"
 #include "BassWmaOutputModule.h"
 
-// linker options
-// already in BassInputModule.cpp
-//#if _MSC_VER < 1400
-//#pragma comment(linker, "/delayload:bass.dll")
-//#pragma comment(linker, "/delayload:basswma.dll")
-//#endif
-
-#ifdef _DEBUG
-static int dprintf(TCHAR* fmt, ...)
-{
-   TCHAR printString[1024];
-   va_list argp;
-   va_start(argp, fmt);
-   _vsntprintf(printString, 1024, fmt, argp);
-   va_end(argp);
-   OutputDebugString(printString);
-   return _tcslen(printString);
-}
-#else
-#define dprintf
-#endif
-
 // BassWmaOutputModule methods
 
 BassWmaOutputModule::BassWmaOutputModule()
