@@ -31,7 +31,7 @@
 
 // linker options
 #if _MSC_VER < 1400
-#pragma comment(linker, "/delayload:libFLAC.dll")
+#pragma comment(linker, "/delayload:libFLAC_dynamic.dll")
 #endif
 
 // constants
@@ -203,7 +203,7 @@ InputModule *FlacInputModule::cloneModule()
 
 bool FlacInputModule::isAvailable()
 {
-   HMODULE dll = ::LoadLibrary(_T("libFLAC.dll"));
+   HMODULE dll = ::LoadLibrary(_T("libFLAC_dynamic.dll"));
    bool avail = dll != NULL;
 
    if (avail)
@@ -227,7 +227,7 @@ void FlacInputModule::getDescription(CString& desc)
 
 void FlacInputModule::getVersionString(CString& version, int special)
 {
-   HMODULE dll = ::LoadLibrary(_T("libFLAC.dll"));
+   HMODULE dll = ::LoadLibrary(_T("libFLAC_dynamic.dll"));
    if (dll != NULL)
    {
       version = *(const char**)::GetProcAddress(dll, "FLAC__VERSION_STRING");

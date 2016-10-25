@@ -137,9 +137,9 @@ For new releases, do the following:
            Source="..\libraries\basswma.dll" />
       </Component>
 
-      <Component Id="FlacLibrary" Guid="21bb4ae6-4b6b-4375-8219-02f79204a297" Directory="INSTALLDIR">
-        <File Id="LibFlacDll" Name="libFLAC.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libFLAC.dll" />
+      <Component Id="FlacDynamicLibrary" Guid="0E29E5AF-0421-4F04-B896-E05FEEB6F514" Directory="INSTALLDIR">
+        <File Id="LibFlacDynamicDll" Name="libFLAC_dynamic.dll" DiskId="1" KeyPath="yes"
+           Source="..\libraries\libFLAC_dynamic.dll" />
       </Component>
 
       <Component Id="OggVorbisLibrary" Guid="82eed013-ec92-4934-a5f2-f1db5f7bd12b" Directory="INSTALLDIR">
