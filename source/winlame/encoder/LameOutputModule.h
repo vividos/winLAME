@@ -87,6 +87,9 @@ private:
    /// writes out ID3v2 tag
    void WriteID3v2Tag();
 
+   /// Writes VBR Info tag
+   static void WriteVBRInfoTag(nlame_instance_t* inst, LPCTSTR mp3filename);
+
 protected:
    /// nlame instance
    nlame_instance_t *inst;

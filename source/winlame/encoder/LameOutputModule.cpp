@@ -468,25 +468,7 @@ void LameOutputModule::doneOutput()
    //       file, the wave header might get overwritten, so we don't write a
    //       info tag when writing a wave header
    if (infotag && !nogap && !waveheader)
-   {
-      CrtFopenWrapper wrapper(_T("msvcr120.dll")); // runtime library that libmp3lame.dll uses
-      if (wrapper.IsAvail())
-      {
-         FILE* fp = wrapper._wfopen(mp3filename, _T("r+b"));
-
-         try
-         {
-            nlame_write_vbr_infotag(inst, fp);
-         }
-         catch (...)
-         {
-            // error: libmp3lame.dll uses different runtime library?
-            ATLTRACE(_T("error while writing VBR info tag"));
-         }
-
-         wrapper.fclose(fp);
-      }
-   }
+      WriteVBRInfoTag(inst, mp3filename);
 
    // free lame input buffer
    delete[] inbuffer;
@@ -694,4 +676,25 @@ void LameOutputModule::WriteID3v2Tag()
    }
 
    file.Update();
+}
+
+void LameOutputModule::WriteVBRInfoTag(nlame_instance_t* inst, LPCTSTR mp3filename)
+{
+   CrtFopenWrapper wrapper(_T("msvcr120.dll")); // runtime library that libmp3lame.dll uses
+   if (wrapper.IsAvail())
+   {
+      FILE* fp = wrapper._wfopen(mp3filename, _T("r+b"));
+
+      __try
+      {
+         nlame_write_vbr_infotag(inst, fp);
+      }
+      __except (EXCEPTION_EXECUTE_HANDLER)
+      {
+         // error: libmp3lame.dll uses different runtime library?
+         ATLTRACE(_T("error while writing VBR info tag"));
+      }
+
+      wrapper.fclose(fp);
+   }
 }
