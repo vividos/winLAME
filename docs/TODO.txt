@@ -4,35 +4,24 @@ winLAME 2014 beta:
 
 - Port all old_ui dialogs to new UI
 - Translate all new dialogs to DE
-- Implement viewing task queue in mainframe UI
-- Implement task queue manager
-- get patch lame_encode_buffer_interleaved_int.patch from
-  https://sourceforge.net/p/lame/patches/27/ into LAME and use official compiled libmp3lame.dll
-- check WriteID3v2Tag(); in LAME output module
 - Add "Finished encoding action" to ribbon
 - Warn about lossy transcoding on Finish page
 - Support input files on command line
-- Opus Input and Output module
+- Opus Output module
 
 winLAME 2014 release:
 - async track length in input files page
 - resize columns in input files page when resizing
 - resize columns in input CD page when resizing
-- extend LibsndfileOutputPage to offer all possible output formats
-
 
 winLAME 2009 release:
 
 - format strings for cd extraction
 - check all tooltip texts
-- finish help
-- more translations
-- more tests
 
 future versions:
 - do "processing" page to resample, normalize, etc.
 - mp3 dither
 - cd extraction: different formatting for "various artist" albums
 - id3 tag editor
-- parallel encoding on multicore processors
 - cd extraction/encoding parallel
