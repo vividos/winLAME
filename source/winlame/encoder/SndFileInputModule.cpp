@@ -143,16 +143,8 @@ CString SndFileInputModule::getFilterString()
          // get format info
          format_info.format = i;
          sf_command(NULL, SFC_GET_FORMAT_MAJOR, &format_info, sizeof (format_info));
-/*
-       // check if BASS present
-       HMODULE bassdll = ::LoadLibrary(_T("bass.dll"));
-       BOOL bass_available = bassdll != NULL;
-       ::FreeLibrary(bassdll);
 
-       if (!(bass_available == TRUE && _stricmp(format_info.extension,"wav") == 0)) // exclude wav
-       {
-*/
-            // do format string
+         // do format string
          CString temp;
          temp.Format(
             _T("%hs [*.%hs]|*.%hs|"),
