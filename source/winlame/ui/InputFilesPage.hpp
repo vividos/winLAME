@@ -69,6 +69,7 @@ private:
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
       MESSAGE_HANDLER(WM_DROPFILES, OnDropFiles)
       MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
+      MESSAGE_HANDLER(WM_SIZE, OnSize)
       NOTIFY_HANDLER(IDC_INPUT_LIST_INPUTFILES, LVN_ITEMCHANGED, OnListItemChanged)
       NOTIFY_HANDLER(IDC_INPUT_LIST_INPUTFILES, NM_DBLCLK, OnDoubleClickedList)
       COMMAND_HANDLER(IDC_INPUT_BUTTON_PLAY, BN_CLICKED, OnButtonPlay)
@@ -99,6 +100,9 @@ private:
    /// called for processing key presses
    LRESULT OnKeyDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
+   /// called when resizing the dialog
+   LRESULT OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
    /// called when the selected item in the list ctrl changes
    LRESULT OnListItemChanged(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
@@ -111,6 +115,9 @@ private:
 private:
    /// sets up tracks list control
    void SetupListCtrl();
+
+   /// resizes list view columns
+   void ResizeListCtrlColumns(int cx);
 
    /// adds files to list
    void AddFiles(const std::vector<CString>& vecInputFiles);
@@ -138,6 +145,9 @@ private:
 
    /// list of filenames
    InputListCtrl m_inputFilesList;
+
+   /// current page width
+   int m_pageWidth;
 
    // model
 

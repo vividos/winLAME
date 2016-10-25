@@ -88,6 +88,7 @@ private:
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
       MESSAGE_HANDLER(WM_TIMER, OnTimer)
+      MESSAGE_HANDLER(WM_SIZE, OnSize)
       COMMAND_HANDLER(IDC_CDSELECT_COMBO_DRIVES, CBN_SELENDOK, OnDriveSelEndOk)
       NOTIFY_HANDLER(IDC_CDSELECT_LIST_TRACKS, NM_DBLCLK, OnListDoubleClick)
       COMMAND_HANDLER(IDC_CDSELECT_BUTTON_PLAY, BN_CLICKED, OnClickedButtonPlay)
@@ -109,6 +110,10 @@ private:
    /// called when page is left with Next button
    LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
+   /// called when resizing the dialog
+   LRESULT OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
    LRESULT OnDriveSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnListDoubleClick(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
    LRESULT OnClickedButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
@@ -123,6 +128,10 @@ private:
    void SetupDriveCombobox();
    void HideDriveCombobox();
    void SetupTracksList();
+
+   /// resizes list view columns
+   void ResizeListCtrlColumns(int cx);
+
    DWORD GetCurrentDrive();
    void RefreshCDList();
    bool ReadCdplayerIni(bool& bVarious);
@@ -147,6 +156,9 @@ private:
 
    /// various artists checkbox
    CButton m_checkVariousArtists;
+
+   /// current page width
+   int m_pageWidth;
 
    // Model
 

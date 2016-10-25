@@ -44,6 +44,12 @@ m_vecInputFiles(vecInputFiles)
 LRESULT InputFilesPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_LOAD);
+
+   // enable resizing
+   CRect rectPage;
+   GetClientRect(&rectPage);
+   m_pageWidth = rectPage.Width();
+
    DlgResize_Init(false, false);
 
    // enable drag & drop
@@ -124,6 +130,23 @@ LRESULT InputFilesPage::OnKeyDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
    // return key? play file
    if (VK_RETURN == (int)wParam)
       OnButtonPlay(0, 0, 0, bHandled);
+
+   return 0;
+}
+
+LRESULT InputFilesPage::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+   bHandled = false;
+
+   // resize list view columns
+   if (wParam != SIZE_MINIMIZED)
+   {
+      int dx = GET_X_LPARAM(lParam) - m_pageWidth;
+
+      ResizeListCtrlColumns(dx);
+
+      m_pageWidth += dx;
+   }
 
    return 0;
 }
@@ -222,6 +245,14 @@ void InputFilesPage::SetupListCtrl()
    // set extended list ctrl styles
    m_inputFilesList.SetExtendedListViewStyle(
       LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_UNDERLINEHOT);
+}
+
+void InputFilesPage::ResizeListCtrlColumns(int dx)
+{
+   int column0Width = m_inputFilesList.GetColumnWidth(0);
+   column0Width += dx;
+
+   m_inputFilesList.SetColumnWidth(0, column0Width);
 }
 
 void InputFilesPage::AddFiles(const std::vector<CString>& vecInputFiles)

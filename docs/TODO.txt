@@ -11,8 +11,6 @@ winLAME 2014 beta:
 
 winLAME 2014 release:
 - async track length in input files page
-- resize columns in input files page when resizing
-- resize columns in input CD page when resizing
 
 winLAME 2009 release:
 

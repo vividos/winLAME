@@ -54,6 +54,12 @@ bool InputCDPage::IsCDExtractionAvail() throw()
 LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_LOAD);
+
+   // enable resizing
+   CRect rectPage;
+   GetClientRect(&rectPage);
+   m_pageWidth = rectPage.Width();
+
    DlgResize_Init(false, false);
 
    SetupDriveCombobox();
@@ -99,6 +105,23 @@ LRESULT InputCDPage::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BO
 {
    if (wParam == IDT_CDRIP_CHECK)
       CheckCD();
+   return 0;
+}
+
+LRESULT InputCDPage::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+   bHandled = false;
+
+   // resize list view columns
+   if (wParam != SIZE_MINIMIZED)
+   {
+      int dx = GET_X_LPARAM(lParam) - m_pageWidth;
+
+      ResizeListCtrlColumns(dx);
+
+      m_pageWidth += dx;
+   }
+
    return 0;
 }
 
@@ -249,6 +272,14 @@ void InputCDPage::SetupTracksList()
    SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, cszText);
    cszText.LoadString(IDS_CDRIP_UNKNOWN_TITLE);
    SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, cszText);
+}
+
+void InputCDPage::ResizeListCtrlColumns(int dx)
+{
+   int column1Width = m_lcTracks.GetColumnWidth(1);
+   column1Width += dx;
+
+   m_lcTracks.SetColumnWidth(1, column1Width);
 }
 
 DWORD InputCDPage::GetCurrentDrive()
