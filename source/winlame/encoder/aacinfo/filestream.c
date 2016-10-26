@@ -100,7 +100,7 @@ int read_buffer_filestream(FILE_STREAM *fs, void *data, int length)
                 return -1;
             }
         }
-        data2[i] = tmp;
+        data2[i] = (unsigned char)tmp;
     }
 
     return i;

@@ -225,12 +225,12 @@ int get_AAC_format(LPCTSTR filename, faadAACInfo *info,
     info->length = 0;
 
     /* Determine the header type of the file, check the first two bytes */
-    if(StringComp(adxx_id, "AD", 2) == 0)
+    if(StringComp((const char*)adxx_id, "AD", 2) == 0)
     {
         /* We think its an ADIF header, but check the rest just to make sure */
         tmp = read_buffer_filestream(file, adxx_id + 2, 2);
         
-        if(StringComp(adxx_id, "ADIF", 4) == 0)
+        if(StringComp((const char*)adxx_id, "ADIF", 4) == 0)
         {
             read_ADIF_header(file, info);
         }

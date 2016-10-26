@@ -27,9 +27,9 @@ typedef struct {
     HANDLE stream;
     unsigned short inetStream;
     unsigned char *data;
-    int buffer_offset;
-    int buffer_length;
-    int file_offset;
+    DWORD buffer_offset;
+    DWORD buffer_length;
+    DWORD file_offset;
 } FILE_STREAM;
 
 extern long m_local_buffer_size;
