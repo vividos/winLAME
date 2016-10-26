@@ -70,13 +70,22 @@ void SpeexInputModule::getDescription(CString& desc)
 
 void SpeexInputModule::getVersionString(CString& version, int special)
 {
+   const char* fullVersion = nullptr;
+   speex_lib_ctl(SPEEX_LIB_GET_VERSION_STRING, &fullVersion);
+
    unsigned int uiVersion[4] = { 0 };
    speex_lib_ctl(SPEEX_LIB_GET_MAJOR_VERSION, uiVersion + 0);
    speex_lib_ctl(SPEEX_LIB_GET_MINOR_VERSION, uiVersion + 1);
    speex_lib_ctl(SPEEX_LIB_GET_MICRO_VERSION, uiVersion + 2);
 
-   version.Format(_T("%u.%u.%u"),
-      uiVersion[0], uiVersion[1], uiVersion[2]);
+   const char* extraVersion = nullptr;
+   speex_lib_ctl(SPEEX_LIB_GET_EXTRA_VERSION, &extraVersion);
+
+   version.Format(_T("%hs (%u.%u.%u%s%hs)"),
+      fullVersion,
+      uiVersion[0], uiVersion[1], uiVersion[2],
+      extraVersion != nullptr && strlen(extraVersion) > 0 ? _T(" ") : _T(""),
+      extraVersion);
 }
 
 CString SpeexInputModule::getFilterString()
