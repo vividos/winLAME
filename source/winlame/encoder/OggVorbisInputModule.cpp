@@ -46,6 +46,34 @@ const int chmap[MAX_CHANNELS][MAX_CHANNELS] = {
 /// ogg vorbis input buffer size
 const int ogg_inbufsize = 512*MAX_CHANNELS; // must be a multiple of max channels
 
+static size_t my_fread(void* buffer, size_t size, size_t count, void* datasource)
+{
+   return fread(buffer, size, count, reinterpret_cast<FILE*>(datasource));
+}
+
+static int my_fseek(void* datasource, ogg_int64_t offset, int whence)
+{
+   return _fseeki64(reinterpret_cast<FILE*>(datasource), offset, whence);
+}
+
+static int my_fclose(void* datasource)
+{
+   return fclose(reinterpret_cast<FILE*>(datasource));
+}
+
+static long my_ftell(void* datasource)
+{
+   return ftell(reinterpret_cast<FILE*>(datasource));
+}
+
+ov_callbacks c_callbacks =
+{
+   &::my_fread,
+   &::my_fseek,
+   &::my_fclose,
+   &::my_ftell
+};
+
 // OggVorbisInputModule methods
 
 OggVorbisInputModule::OggVorbisInputModule()
@@ -102,13 +130,7 @@ int OggVorbisInputModule::initInput(LPCTSTR infilename,
 {
    isAvailable();
 
-   // we're passing "FILE* infile" to ov_open; for this to work we have to use the same
-   // open and close method as the library is using.
-   // open input file
-   if (m_fopenWrapper.IsAvail())
-      infile = m_fopenWrapper._wfopen(infilename, _T("rb"));
-   else
-      infile = _wfopen(infilename, _T("rb"));
+   infile = _wfopen(infilename, _T("rb"));
 
    if (infile==NULL)
    {
@@ -117,7 +139,7 @@ int OggVorbisInputModule::initInput(LPCTSTR infilename,
    }
 
    // open ogg vorbis file
-   if (ov_open(infile, &vf, NULL, 0) < 0)
+   if (ov_open_callbacks(infile, &vf, NULL, 0, c_callbacks) < 0)
    {
       lasterror.Format(IDS_ENCODER_INVALID_FILE_FORMAT);
       return -2;
@@ -199,12 +221,9 @@ int OggVorbisInputModule::decodeSamples(SampleContainer &samples)
 
 void OggVorbisInputModule::doneInput()
 {
-   // close infile
-   if (m_fopenWrapper.IsAvail())
-      m_fopenWrapper.fclose(infile);
-   else
-      fclose(infile);
-
    // cleanup
    ov_clear(&vf);
+
+   // close infile
+   fclose(infile);
 }

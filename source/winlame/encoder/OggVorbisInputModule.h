@@ -29,8 +29,6 @@
 #include "ModuleInterface.h"
 #include <cstdio>
 #include "vorbis/vorbisfile.h"
-#include "CrtFopenWrapper.hpp"
-
 
 /// ogg vorbis input module
 
@@ -94,8 +92,6 @@ protected:
 
    /// decoding file struct
    OggVorbis_File vf;
-
-   CrtFopenWrapper m_fopenWrapper;
 };
 
 
