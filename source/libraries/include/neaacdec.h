@@ -1,6 +1,6 @@
 /*
 ** FAAD2 - Freeware Advanced Audio (AAC) Decoder including SBR decoding
-** Copyright (C) 2003-2005 M. Bakker, Ahead Software AG, http://www.nero.com
+** Copyright (C) 2003-2005 M. Bakker, Nero AG, http://www.nero.com
 **  
 ** This program is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
@@ -19,15 +19,13 @@
 ** Any non-GPL usage of this software or parts of this software is strictly
 ** forbidden.
 **
-** Software using this code must display the following message visibly in the
-** software:
-** "FAAD2 AAC/HE-AAC/HE-AACv2/DRM decoder (c) Ahead Software, www.nero.com"
-** in, for example, the about-box or help/startup screen.
+** The "appropriate copyright message" mentioned in section 2c of the GPLv2
+** must read: "Code from FAAD2 is copyright (c) Nero AG, www.nero.com"
 **
 ** Commercial non-GPL licensing of this software is possible.
-** For more info contact Ahead Software through Mpeg4AAClicense@nero.com.
+** For more info contact Nero AG through Mpeg4AAClicense@nero.com.
 **
-** $Id: neaacdec.h,v 1.1 2005/03/10 22:25:34 vividos Exp $
+** $Id: neaacdec.h,v 1.13 2009/01/26 23:51:15 menno Exp $
 **/
 
 #ifndef __NEAACDEC_H__
@@ -71,7 +69,7 @@ extern "C" {
   #endif
 #endif
 
-#define FAAD2_VERSION "2.1 beta"
+#define FAAD2_VERSION "2.7"
 
 /* object types for AAC */
 #define MAIN       1
@@ -88,6 +86,7 @@ extern "C" {
 #define RAW        0
 #define ADIF       1
 #define ADTS       2
+#define LATM       3
 
 /* SBR signalling */
 #define NO_SBR           0
@@ -218,9 +217,11 @@ long NEAACDECAPI NeAACDecInit(NeAACDecHandle hDecoder,
                               unsigned char *channels);
 
 /* Init the library using a DecoderSpecificInfo */
-char NEAACDECAPI NeAACDecInit2(NeAACDecHandle hDecoder, unsigned char *pBuffer,
+char NEAACDECAPI NeAACDecInit2(NeAACDecHandle hDecoder,
+                               unsigned char *pBuffer,
                                unsigned long SizeOfDecoderSpecificInfo,
-                               unsigned long *samplerate, unsigned char *channels);
+                               unsigned long *samplerate,
+                               unsigned char *channels);
 
 /* Init the library for DRM */
 char NEAACDECAPI NeAACDecInitDRM(NeAACDecHandle *hDecoder, unsigned long samplerate,

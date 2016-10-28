@@ -114,13 +114,20 @@ void AacInputModule::getDescription(CString& desc)
    case 2:
       header = _T("ADTS");
       break;
+   case 3:
+      header = _T("LATM");
+      break;
    }
 
    // format info string
    desc.Format(IDS_FORMAT_INFO_AAC_INFO,
       info.version, object, info.bitrate/1000, info.sampling_rate,
       info.channels, header);
+}
 
+void AacInputModule::getVersionString(CString& version, int /*special = 0*/)
+{
+   version = "libfaad2 " FAAD2_VERSION;
 }
 
 CString AacInputModule::getFilterString()

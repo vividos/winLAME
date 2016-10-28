@@ -160,6 +160,8 @@ CString AboutDlg::GetAboutHtmlText()
          moduleManager.getModuleVersionString(varname, ID_IM_SPEEX);
       else if (varname == _T("opusversion"))
          moduleManager.getModuleVersionString(varname, ID_IM_OPUS);
+      else if (varname == _T("faadversion"))
+         moduleManager.getModuleVersionString(varname, ID_IM_AAC);
       else if (varname == _T("wtlversion"))
       {
          varname.Format(_T("%u.%u"),

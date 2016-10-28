@@ -66,7 +66,7 @@ public:
    virtual InputModule *cloneModule();
 
    // returns the module name
-   virtual CString getModuleName(){ return _T("libfaad2 (") _T(FAAD2_VERSION) _T(") AAC Audio File Decoder"); }
+   virtual CString getModuleName(){ return _T("AAC Audio File Decoder (libfaad2)"); }
 
    // returns the last error
    virtual CString getLastError(){ return lasterror; }
@@ -76,6 +76,9 @@ public:
 
    // returns description of current file
    virtual void getDescription(CString& desc);
+
+   /// returns version string
+   virtual void getVersionString(CString& version, int special = 0);
 
    // returns filter string
    virtual CString getFilterString();
