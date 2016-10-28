@@ -78,6 +78,16 @@ void AacOutputModule::getDescription(CString& desc)
       config->useLfe == 1 ? _T(", LFE channel") : _T(""));
 }
 
+void AacOutputModule::getVersionString(CString& version, int /*special = 0*/)
+{
+   char* id_string = nullptr;
+   char* copyright_string = nullptr;
+
+   faacEncGetVersion(&id_string, &copyright_string);
+
+   version.Format(_T("libfaac %hs"), id_string);
+}
+
 int AacOutputModule::initOutput(LPCTSTR outfilename,
    SettingsManager &mgr, const TrackInfo& trackinfo,
    SampleContainer &samplecont)

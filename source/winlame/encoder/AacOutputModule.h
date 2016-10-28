@@ -41,7 +41,7 @@ public:
    AacOutputModule();
 
    // returns the module name
-   virtual CString getModuleName(){ return _T("AAC (faac) Audio File Encoder"); }
+   virtual CString getModuleName(){ return _T("AAC Audio File Encoder (libfaac)"); }
 
    // returns the last error
    virtual CString getLastError(){ return lasterror; }
@@ -51,6 +51,9 @@ public:
 
    // returns description of current file
    virtual void getDescription(CString& desc);
+
+   /// returns version string
+   virtual void getVersionString(CString& version, int special = 0);
 
    // returns the extension the output module produces
    virtual LPCTSTR getOutputExtension(){ return _T("aac"); }
