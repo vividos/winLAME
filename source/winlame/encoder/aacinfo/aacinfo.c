@@ -76,9 +76,11 @@ static int read_ADTS_header(FILE_STREAM *file, faadAACInfo *info,
                             unsigned long **seek_table, int *seek_table_len,
                             int tagsize, int no_seek_table)
 {
+    tagsize;
+
     /* Get ADTS header data */
     unsigned char buffer[ADTS_MAX_SIZE];
-    int frames, framesinsec=0, t_framelength = 0, frame_length, sr_idx, ID;
+    int frames, framesinsec=0, t_framelength = 0, frame_length, sr_idx = 0, ID = 0;
     int second = 0, pos;
     int i;
     float frames_per_sec = 0;
