@@ -194,7 +194,11 @@ LRESULT MainDlg::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
 void MainDlg::RunDialog()
 {
    // collect file names from the command line
-   GetCommandLineFiles();
+   if (!App::Current().AlreadyReadCommandLine())
+   {
+      GetCommandLineFiles();
+      App::Current().SetAlreadyReadCommandLine();
+   }
 
    // create the dialog
    Create(NULL,CWindow::rcDefault);

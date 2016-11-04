@@ -44,6 +44,7 @@ App* App::s_pApp = NULL;
 
 App::App(HINSTANCE hInstance)
 :m_langResourceManager(_T("winlame.*.dll"), IDS_LANG_ENGLISH, IDS_LANG_NATIVE),
+m_alreadyReadCommandLine(false),
 m_exit(false)
 {
    s_pApp = this;

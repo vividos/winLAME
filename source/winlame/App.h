@@ -41,6 +41,12 @@ public:
    /// dtor
    ~App();
 
+   /// indicates if command line was already read by main dialog
+   bool AlreadyReadCommandLine() const throw() { return m_alreadyReadCommandLine; }
+
+   /// sets flag that command line was already read by MainDlg or MainFrame
+   void SetAlreadyReadCommandLine() throw() { m_alreadyReadCommandLine = true; }
+
    /// runs application
    int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT);
 
@@ -96,6 +102,9 @@ private:
 
    /// module manager
    std::shared_ptr<ModuleManager> m_spModuleManager;
+
+   /// indicates if command line was already read by main dialog
+   bool m_alreadyReadCommandLine;
 
    /// indicates if app should be exited
    bool m_exit;
