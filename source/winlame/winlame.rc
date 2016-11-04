@@ -431,7 +431,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0
 BEGIN
     LTEXT           "General Settings", IDC_CDRIP_OPT_BEVEL1, 7, 6, 246, 8
     LTEXT           "&Language", IDC_STATIC, 14, 21, 86, 8
-    COMBOBOX        IDC_CDRIP_OPT_COMBO_LANGUAGE, 101, 16, 153, 99, WS_TABSTOP | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_HASSTRINGS | CBS_OWNERDRAWVARIABLE
+    COMBOBOX        IDC_CDRIP_OPT_COMBO_LANGUAGE, 101, 16, 153, 99, WS_TABSTOP | CBS_DROPDOWNLIST | CBS_HASSTRINGS | CBS_OWNERDRAWVARIABLE
     LTEXT           "CD Extraction Settings", IDC_CDRIP_OPT_BEVEL2, 7, 35, 246, 8
     LTEXT           "&freedb Server", IDC_STATIC, 14, 51, 86, 8
     COMBOBOX        IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, 101, 47, 152, 109, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWN
@@ -848,18 +848,6 @@ BEGIN
     IDC_OUT_PLAYLISTNAME          "Filename of the m3u playlist; path is automatically added"
     IDC_OUT_USE_INDIR             "Lets you use the folder of each input file as it's output folder (allows multi-folder encodes)"
     IDC_OUT_CHECK_WARN            "When checked, warns about possible loss of quality when transcoding from one lossy format to another."
-    IDS_HTML_INPUT                "/html/pages/input.html"
-    IDS_HTML_OUTPUT               "/html/pages/output.html"
-    IDS_HTML_PRESETS              "/html/pages/presets.html"
-    IDS_HTML_LAME_SIMPLE          "/html/pages/lame.html"
-    IDS_HTML_OGGVORBIS            "/html/pages/oggvorbis.html"
-    IDS_HTML_WAVE                 "/html/pages/wave.html"
-    IDS_HTML_AAC                  "/html/pages/aac.html"
-    IDS_HTML_ENCODE               "/html/pages/encode.html"
-    IDS_HTML_PROPERTYDLG          "/html/pages/property.html"
-    IDS_HTML_FILEDLG              "/html/pages/filedlg.html"
-    IDS_HTML_WMA                  "/html/pages/wma.html"
-    IDS_HTML_CDRIP                "/html/pages/cdaudio.html"
     IDS_WARN_TRANSCODE            "Warning!\nYou are about to transcode audio file(s) from a lossy format to another. This may severely degrade sound quality!\n\nContinue?"
     IDS_PRE_DESC_DEFAULT          "Choose this to customize winLAME settings for yourself; only recommended for experienced users!"
     IDS_AAC_NO_MPEG2_LTP          "Warning!\nCurrently libfaac isn't capable of using MPEG2 together with LTP.\nPlease select another Object Type!"
