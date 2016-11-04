@@ -310,8 +310,12 @@ skip_nogap:
    // input samples
    if (nlame_get_api_version() >= 2 && samplecont.getInputModuleBitsPerSample()>16)
    {
-      bps=32;
-      buftype = nle_buffer_int;
+      // Note: This code is currently off, since LAME doesn't export the
+      // function lame_encode_buffer_interleaved_int() that would be needed
+      // for 32-bit sample encoding. See also comment in nlame project, in
+      // function nlame_encode_buffer_interleaved().
+      //bps=32;
+      //buftype = nle_buffer_int;
    }
 
    samplecont.setOutputModuleTraits(bps,SamplesInterleaved);

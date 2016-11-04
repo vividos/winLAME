@@ -486,8 +486,13 @@ int nlame_encode_buffer_interleaved( nlame_instance_t* inst,
       break;
 
    case nle_buffer_int:
+      /* Note: The function lame_encode_buffer_interleaved_int doesn't exist
+       * in LAME yet; see patch https://sourceforge.net/p/lame/patches/27/
+       * Once the patch is integrated (which may never happen) and LAME
+       * releases a new version (which may never happen), the lines can
+       * again be used to encode interleaved 32-bit samples.
       ret = lame_encode_buffer_interleaved_int(inst->lgf,
-         (int*)buffer,nsamples,mp3buf,mp3buf_size);
+        (int*)buffer,nsamples,mp3buf,mp3buf_size); */
       break;
    }
    return ret;
