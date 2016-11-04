@@ -34,6 +34,7 @@
 #include "AboutDlg.hpp"
 #include "OptionsDlg.h"
 #include "App.h"
+#include "CommandLineParser.hpp"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <shlobj.h>
@@ -337,48 +338,16 @@ bool MainDlg::ActivatePage(int page)
 
 void MainDlg::GetCommandLineFiles()
 {
-   // get command line
-   LPTSTR lpszCommandLine = ::GetCommandLine();
+   CommandLineParser parser(::GetCommandLine());
 
-   bool first=true;
+   CString param;
 
-   while(lpszCommandLine[0]!=0)
+   // skip first string; it's the program's name
+   parser.GetNext(param);
+
+   while (parser.GetNext(param))
    {
-      // find out next stopper
-      char stopper=' ';
-      if (lpszCommandLine[0]=='\"')
-      {
-         lpszCommandLine++;
-         stopper='\"';
-      }
-
-      // search for stopper
-      int max = lstrlen(lpszCommandLine);
-      int i;
-      for(i=0;i<max;i++)
-         if (lpszCommandLine[i]==stopper)
-            break;
-
-      if (first)
-      {
-         // skip first string
-         first = false;
-      }
-      else
-      {
-         // insert filename
-         CString fname(lpszCommandLine, i);
-         settings.encoderjoblist.push_back(EncoderJob(fname));
-      }
-
-      // move string pointer
-      lpszCommandLine += i;
-      if (lpszCommandLine[0]!=0)
-         lpszCommandLine += (stopper==' ' ? 1 : 2);
-
-      // eat space chars
-      while (lpszCommandLine[0] == ' ')
-         lpszCommandLine++;
+      settings.encoderjoblist.push_back(EncoderJob(param));
    }
 }
 

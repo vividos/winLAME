@@ -80,6 +80,7 @@
     <Bscmake />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="winlame\CommandLineParser.cpp" />
     <ClCompile Include="winlame\encoder\AacInputModule.cpp" />
     <ClCompile Include="winlame\encoder\AacOutputModule.cpp" />
     <ClCompile Include="winlame\encoder\BassInputModule.cpp" />
@@ -202,6 +203,7 @@
   <ItemGroup>
     <ClInclude Include="winlame\Atl.h" />
     <ClInclude Include="winlame\Boost.h" />
+    <ClInclude Include="winlame\CommandLineParser.hpp" />
     <ClInclude Include="winlame\encoder\AacInputModule.h" />
     <ClInclude Include="winlame\encoder\AacOutputModule.h" />
     <ClInclude Include="winlame\encoder\BassInputModule.h" />
