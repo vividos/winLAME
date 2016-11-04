@@ -1,0 +1,111 @@
+<Application xmlns="http://schemas.microsoft.com/windows/2009/Ribbon">
+
+   <Application.Commands>
+
+      <!-- winlame.rc Menu Commands-->
+      <Command Name="winlame_ENCODE_FILES" Symbol="ID_ENCODE_FILES" Id="90"/>
+      <Command Name="winlame_ENCODE_CD" Symbol="ID_ENCODE_CD" Id="91"/>
+
+      <Command Name="winlame_TASKS_STOP_ALL" Symbol="ID_TASKS_STOP_ALL" Id="92"/>
+      <Command Name="winlame_TASKS_REMOVE_COMPLETED" Symbol="ID_TASKS_REMOVE_COMPLETED" Id="93"/>
+
+      <Command Name="winlame_SETTINGS_GENERAL" Symbol="ID_SETTINGS_GENERAL" Id="94"/>
+      <Command Name="winlame_SETTINGS_FREEDB" Symbol="ID_SETTINGS_FREEDB" Id="95"/>
+
+      <Command Name="winlame_VIEW_SWITCH_CLASSIC" Symbol="ID_VIEW_SWITCH_CLASSIC" Id="96"/>
+
+      <Command Name="wtl_VIEW_RIBBON" Symbol="ID_VIEW_RIBBON" Id="0xE804"/>
+
+      <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
+      <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141"/>
+
+      <!-- Tabs -->
+      <Command Name="TabHome" Symbol="ID_TAB_HOME" LabelTitle="Start" />
+
+      <!-- Groups -->
+      <Command Name="GroupEncode" Symbol="ID_GROUP_ENCODE"
+               LabelTitle="Encoden" />
+      <Command Name="GroupTasks" Symbol="ID_GROUP_TASKS"
+               LabelTitle="Aufgaben" />
+      <Command Name="GroupSettings" Symbol="ID_GROUP_SETTINGS"
+               LabelTitle="Einstellungen" />
+     <Command Name="GroupView" Symbol="ID_GROUP_VIEW"
+              LabelTitle="Ansicht" />
+
+     <!-- App Menu, MRU list, Help button and Quick Access Toolbar -->
+      <Command Name="AppMenu" Symbol="ID_RIBBON_APP_MENU"/>
+      <Command Name="QAT" Symbol="ID_RIBBON_QAT"/>
+
+   </Application.Commands>
+
+   <Application.Views>
+      <Ribbon>
+         <!-- Application Menu -->
+         <Ribbon.ApplicationMenu >
+            <ApplicationMenu CommandName="AppMenu" >
+               <MenuGroup Class="StandardItems" >
+                  <Button CommandName="winlame_ENCODE_FILES"/>
+                  <Button CommandName="winlame_ENCODE_CD"/>
+               </MenuGroup>
+               <MenuGroup>
+                  <Button CommandName="winlame_VIEW_SWITCH_CLASSIC"/>
+               </MenuGroup>
+               <MenuGroup>
+                  <Button CommandName="wtl_APP_EXIT"/>
+               </MenuGroup>
+            </ApplicationMenu>
+         </Ribbon.ApplicationMenu >
+
+         <!-- Help button -->
+         <Ribbon.HelpButton>
+            <HelpButton CommandName="wtl_APP_ABOUT" />
+         </Ribbon.HelpButton>
+
+         <!-- QAT (Quick Access Toolbar) -->
+         <Ribbon.QuickAccessToolbar>
+            <QuickAccessToolbar CommandName="QAT">
+               <QuickAccessToolbar.ApplicationDefaults>
+                  <Button CommandName="winlame_ENCODE_FILES"/>
+                  <Button CommandName="winlame_ENCODE_CD"/>
+               </QuickAccessToolbar.ApplicationDefaults>
+            </QuickAccessToolbar>
+         </Ribbon.QuickAccessToolbar>
+
+         <Ribbon.Tabs>
+            <Tab CommandName="TabHome">
+
+               <Tab.ScalingPolicy>
+                  <ScalingPolicy>
+                     <ScalingPolicy.IdealSizes>
+                        <Scale Group="GroupEncode" Size="Large"/>
+                        <Scale Group="GroupTasks" Size="Large"/>
+                        <Scale Group="GroupSettings" Size="Large"/>
+                        <Scale Group="GroupView" Size="Large"/>
+                     </ScalingPolicy.IdealSizes>
+                  </ScalingPolicy>
+               </Tab.ScalingPolicy>
+
+               <Group CommandName="GroupEncode" SizeDefinition="TwoButtons">
+                  <Button CommandName="winlame_ENCODE_FILES"/>
+                  <Button CommandName="winlame_ENCODE_CD"/>
+               </Group>
+
+               <Group CommandName="GroupTasks" SizeDefinition="TwoButtons">
+                  <Button CommandName="winlame_TASKS_STOP_ALL"/>
+                  <Button CommandName="winlame_TASKS_REMOVE_COMPLETED"/>
+               </Group>
+
+               <Group CommandName="GroupSettings" SizeDefinition="TwoButtons">
+                  <Button CommandName="winlame_SETTINGS_GENERAL"/>
+                  <Button CommandName="winlame_SETTINGS_FREEDB"/>
+               </Group>
+
+              <Group CommandName="GroupView" SizeDefinition="TwoButtons">
+                <Button CommandName="wtl_VIEW_RIBBON"/>
+                <Button CommandName="winlame_VIEW_SWITCH_CLASSIC"/>
+              </Group>
+            </Tab>
+         </Ribbon.Tabs>
+      </Ribbon>
+   </Application.Views>
+</Application>

@@ -111,15 +111,33 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="winlame\res\about.0407.html" />
+    <None Include="winlame\res\MainFrameRibbon.0407.bml" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="winlame\resource.h" />
+    <ClInclude Include="winlame\res\MainFrameRibbon.0407.h" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="winlame\res\MainFrameRibbon.0407.rc" />
     <ResourceCompile Include="winlame\winlame.0407.rc">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">winlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">winlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="winlame\res\MainFrameRibbon.0407.xml">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compiling %(Filename)%(Extension)</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+        uicc %(FullPath) %(RootDir)%(Directory)%(Filename).bml /header:%(RootDir)%(Directory)%(Filename).h /res:%(RootDir)%(Directory)%(Filename).rc
+      </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)%(Filename).bml;%(RootDir)%(Directory)%(Filename).rc;%(RootDir)%(Directory)%(Filename).h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling %(Filename)%(Extension)</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+        uicc %(FullPath) %(RootDir)%(Directory)%(Filename).bml /header:%(RootDir)%(Directory)%(Filename).h /res:%(RootDir)%(Directory)%(Filename).rc
+      </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)%(Filename).bml;%(RootDir)%(Directory)%(Filename).rc;%(RootDir)%(Directory)%(Filename).h;%(Outputs)</Outputs>
+      <SubType>Designer</SubType>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
