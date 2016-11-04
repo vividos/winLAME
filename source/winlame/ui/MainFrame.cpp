@@ -34,6 +34,7 @@
 #include "InputCDPage.hpp"
 #include "ResourceInstanceSwitcher.hpp"
 #include "DropFilesManager.hpp"
+#include "CommandLineParser.hpp"
 #include <boost/foreach.hpp>
 
 using namespace UI;
@@ -176,6 +177,8 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    // enable dropping files
    DragAcceptFiles(TRUE);
 
+   PostMessage(WM_CHECK_COMMAND_LINE);
+
    return 0;
 }
 
@@ -242,6 +245,17 @@ LRESULT MainFrame::OnDropFiles(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, 
    WizardPageHost host;
    host.SetWizardPage(std::shared_ptr<WizardPage>(new InputFilesPage(host, dropMgr.Filenames())));
    host.Run(m_hWnd);
+
+   return 0;
+}
+
+LRESULT MainFrame::OnCheckCommandLine(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   if (!App::Current().AlreadyReadCommandLine())
+   {
+      GetCommandLineFiles();
+      App::Current().SetAlreadyReadCommandLine();
+   }
 
    return 0;
 }
@@ -358,5 +372,29 @@ void MainFrame::EnableRefresh(bool bEnable)
          m_bRefreshActive = false;
          KillTimer(IDT_REFRESH_TASKS_LIST);
       }
+   }
+}
+
+void MainFrame::GetCommandLineFiles()
+{
+   std::vector<CString> filenames;
+
+   CommandLineParser parser(::GetCommandLine());
+
+   // skip first string; it's the program's name
+   CString param;
+   parser.GetNext(param);
+
+   while (parser.GetNext(param))
+   {
+      filenames.push_back(param);
+   }
+
+   // show input files page
+   if (!filenames.empty())
+   {
+      WizardPageHost host;
+      host.SetWizardPage(std::shared_ptr<WizardPage>(new InputFilesPage(host, filenames)));
+      host.Run(m_hWnd);
    }
 }
