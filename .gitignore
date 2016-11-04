@@ -44,5 +44,8 @@ _ReSharper*/
 source/winlame/res/MainFrameRibbon.bml
 source/winlame/res/MainFrameRibbon.h
 source/winlame/res/MainFrameRibbon.rc
+source/winlame/res/MainFrameRibbon.0407.bml
+source/winlame/res/MainFrameRibbon.0407.h
+source/winlame/res/MainFrameRibbon.0407.rc
 *.VC.db
 *.VC.opendb
