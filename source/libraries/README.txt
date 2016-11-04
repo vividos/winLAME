@@ -2,10 +2,6 @@ this is the README file for the libraries dir of the winLAME source code reposit
 the DLL's are placed here for ease of building winLAME. as the different licenses
 of the software source packages require, there are some statements to make.
 
-There are example build environments available for almost every project (unless
-the library source code provides suitable build/make files). The build environments
-can be found in CVS at $/buildenv/
-
 * LAME
 
   LAME and the library libmp3lame (contained in nlame.dll) are licensed and
