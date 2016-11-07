@@ -1,4 +1,8 @@
 @echo off
+REM
+REM  winLAME - a frontend for the LAME encoding engine
+REM Copyright (c) 2000-2016 Michael Fink
+REM
 REM Creates a winLAME build and installer
 REM
 
@@ -8,7 +12,7 @@ set MSVC_PATH=C:\Program Files (x86)\Microsoft Visual Studio 14.0
 
 REM -{ config end }------------------------------
 
-REM set up msvc14 environment
+REM set up build environment
 call "%MSVC_PATH%\Common7\Tools\VsDevCmd.bat"
 
 REM build solution
