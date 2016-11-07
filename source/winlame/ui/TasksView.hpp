@@ -64,12 +64,6 @@ private:
    LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 private:
-   /// inserts new task item at end of list
-   void InsertNewItem(const TaskInfo& info);
-
-   /// updates existing task item
-   void UpdateExistingItem(int itemIndex, const TaskInfo& info);
-
    /// returns status text from task status
    static CString StatusTextFromStatus(TaskInfo::TaskStatus status);
 

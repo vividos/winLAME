@@ -90,13 +90,12 @@ void TasksView::Init()
 void TasksView::UpdateTasks()
 {
    RedrawLock lock(*this);
+   DeleteAllItems();
 
    std::vector<TaskInfo> taskInfoList = m_taskManager.CurrentTasks();
 
    if (taskInfoList.empty())
    {
-      DeleteAllItems();
-
       // TODO translate
       int itemIndex = InsertItem(0, _T("<No Task>"));
       SetItemData(itemIndex, ITEM_ID_NODATA);
@@ -104,56 +103,22 @@ void TasksView::UpdateTasks()
       return;
    }
 
-   // this loop assumes that tasks don't get reordered, and new tasks get added at the end
-   int itemIndex = 0;
-   size_t iInfos = 0;
-   for (size_t iMaxInfos = taskInfoList.size(); iInfos < iMaxInfos; )
+   for (size_t iInfos = 0, iMaxInfos = taskInfoList.size(); iInfos < iMaxInfos; iInfos++)
    {
-      if (itemIndex >= GetItemCount())
-         break;
-
       const TaskInfo& info = taskInfoList[iInfos];
 
-      unsigned int uiId = GetItemData(itemIndex);
+      int itemIndex = InsertItem(IconFromTaskType(info), info.Name());
+      SetItemData(itemIndex, info.Id());
 
-      if (uiId == info.Id())
-      {
-         UpdateExistingItem(itemIndex, info);
-         ++itemIndex;
-         ++iInfos;
-         continue;
-      }
+      // TODO translate
+      CString progressText;
+      progressText.Format(_T("%u%% done"), info.Progress());
 
-      if (itemIndex >= GetItemCount())
-         break; // no more items in list
+      SetItemText(itemIndex, c_progressColumn, progressText);
 
-      // current item isn't in vector anymore; remove item
-      DeleteItem(itemIndex);
+      CString statusText = StatusTextFromStatus(info.Status());
+      SetItemText(itemIndex, c_statusColumn, statusText);
    }
-
-   // add all new items
-   for (size_t iMaxInfos = taskInfoList.size(); iInfos < iMaxInfos; iInfos++)
-      InsertNewItem(taskInfoList[iInfos]);
-}
-
-void TasksView::InsertNewItem(const TaskInfo& info)
-{
-   int itemIndex = InsertItem(IconFromTaskType(info), info.Name());
-   SetItemData(itemIndex, info.Id());
-
-   UpdateExistingItem(itemIndex, info);
-}
-
-void TasksView::UpdateExistingItem(int itemIndex, const TaskInfo& info)
-{
-   // TODO translate
-   CString progressText;
-   progressText.Format(_T("%u%% done"), info.Progress());
-
-   SetItemText(itemIndex, c_progressColumn, progressText);
-
-   CString statusText = StatusTextFromStatus(info.Status());
-   SetItemText(itemIndex, c_statusColumn, statusText);
 }
 
 CString TasksView::StatusTextFromStatus(TaskInfo::TaskStatus status)
