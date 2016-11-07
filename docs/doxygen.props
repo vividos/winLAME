@@ -3,7 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <ExecutablePath>D:\devel\tools\doxygen\bin\;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>D:\devel\tools\doxygen\bin\;D:\devel\tools\dot\bin\;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />
