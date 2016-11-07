@@ -56,7 +56,7 @@ void CDReadoutModule::resolveRealFilename(CString& filename)
       _tcstoul(static_cast<LPCTSTR>(filename) + _tcslen(g_pszCDRipPrefix), NULL, 10));
    ATLASSERT(nTrackIndex < pManager->GetMaxTrackInfo());
 
-   filename = pManager->GetTrackInfo(m_nTrackIndex).m_cszRippedFilename;
+   filename = pManager->GetTrackInfo(nTrackIndex).m_cszRippedFilename;
 }
 
 int CDReadoutModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
