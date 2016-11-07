@@ -24,6 +24,7 @@
 #include "stdafx.h"
 #include "CDRipPage.h"
 #include "CDRipTrackManager.h"
+#include "ui/RedrawLock.hpp"
 #include "basscd.h"
 #include <memory>
 
@@ -106,7 +107,8 @@ void CDRipPage::OnEnterPage()
 
    // refresh tracks list
    {
-      m_lcTracks.SetRedraw(FALSE);
+      UI::RedrawLock lock(m_lcTracks);
+
       m_lcTracks.DeleteAllItems();
 
       CDRipTrackManager* pManager = CDRipTrackManager::getCDRipTrackManager();
@@ -126,8 +128,6 @@ void CDRipPage::OnEnterPage()
          cszText.LoadString(IDS_CDRIP_PAGE_STATUS_NOT_PROCESSED);
          m_lcTracks.SetItemText(nItem, 2, cszText);
       }
-
-      m_lcTracks.SetRedraw(TRUE);
    }
 }
 

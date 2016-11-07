@@ -27,7 +27,7 @@
 #pragma once
 
 // needed includes
-
+#include "ui/RedrawLock.hpp"
 
 #define WM_DELETEME (WM_APP+11)
 
@@ -253,7 +253,9 @@ END_MSG_MAP()
       GetItemText(item,column,szBuffer,256);
 
       pEdit->Create(m_hWnd, rect, _T(""));
-      pEdit->SetRedraw(FALSE);
+
+      UI::RedrawLock lock(*pEdit);
+
       pEdit->SetWindowText(szBuffer);
 
       pEdit->SetFocus();
@@ -261,8 +263,6 @@ END_MSG_MAP()
 
       HFONT hFont = GetFont();
       pEdit->SetFont(hFont);
-
-      pEdit->SetRedraw(TRUE);
    }
 
    /// called to dispose of the inplace edit control

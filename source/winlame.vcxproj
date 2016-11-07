@@ -274,6 +274,7 @@
     <ClInclude Include="winlame\ui\OggVorbisSettingsPage.hpp" />
     <ClInclude Include="winlame\ui\OutputSettingsPage.hpp" />
     <ClInclude Include="winlame\ui\PresetSelectionPage.hpp" />
+    <ClInclude Include="winlame\ui\RedrawLock.hpp" />
     <ClInclude Include="winlame\ui\WMASettingsPage.hpp" />
     <ClInclude Include="winlame\old_ui\WaveOutputSettingsPage.h" />
     <ClInclude Include="winlame\old_ui\WmaOutputSettingsPage.h" />

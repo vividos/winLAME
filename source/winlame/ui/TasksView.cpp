@@ -24,6 +24,7 @@
 #include "TasksView.hpp"
 #include "TaskManager.h"
 #include "TaskInfo.h"
+#include "RedrawLock.hpp"
 
 using UI::TasksView;
 
@@ -88,7 +89,7 @@ void TasksView::Init()
 
 void TasksView::UpdateTasks()
 {
-   SetRedraw(false);
+   RedrawLock lock(*this);
 
    std::vector<TaskInfo> taskInfoList = m_taskManager.CurrentTasks();
 
@@ -100,7 +101,6 @@ void TasksView::UpdateTasks()
       int itemIndex = InsertItem(0, _T("<No Task>"));
       SetItemData(itemIndex, ITEM_ID_NODATA);
 
-      SetRedraw(true);
       return;
    }
 
@@ -134,8 +134,6 @@ void TasksView::UpdateTasks()
    // add all new items
    for (size_t iMaxInfos = taskInfoList.size(); iInfos < iMaxInfos; iInfos++)
       InsertNewItem(taskInfoList[iInfos]);
-
-   SetRedraw(true);
 }
 
 void TasksView::InsertNewItem(const TaskInfo& info)

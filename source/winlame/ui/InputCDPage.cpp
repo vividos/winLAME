@@ -32,6 +32,7 @@
 #include "CommonStuff.h"
 #include "FreeDbDiscListDlg.hpp"
 #include "CDRipTrackManager.h"
+#include "RedrawLock.hpp"
 
 using namespace UI;
 
@@ -299,7 +300,7 @@ void InputCDPage::RefreshCDList()
    if (nDrive == INVALID_DRIVE_ID)
       return;
 
-   m_lcTracks.SetRedraw(FALSE);
+   RedrawLock lock(m_lcTracks);
    m_lcTracks.DeleteAllItems();
 
    m_bEditedTrack = false;
@@ -307,7 +308,6 @@ void InputCDPage::RefreshCDList()
    if (FALSE == BASS_CD_IsReady(nDrive))
    {
       m_bDriveActive = false;
-      m_lcTracks.SetRedraw(TRUE);
       return;
    }
 
@@ -316,7 +316,6 @@ void InputCDPage::RefreshCDList()
    DWORD uMaxCDTracks = BASS_CD_GetTracks(nDrive);
    if (uMaxCDTracks == DWORD(-1))
    {
-      m_lcTracks.SetRedraw(TRUE);
       return;
    }
 
@@ -368,8 +367,6 @@ void InputCDPage::RefreshCDList()
    OnClickedCheckVariousArtists(0, 0, NULL, bDummy);
 
    m_bEditedTrack = false;
-
-   m_lcTracks.SetRedraw(TRUE);
 }
 
 bool InputCDPage::ReadCdplayerIni(bool& bVarious)

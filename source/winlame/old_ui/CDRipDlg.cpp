@@ -228,7 +228,7 @@ void CDRipDlg::RefreshCDList()
 
    DWORD nDrive = GetCurrentDrive();
 
-   m_lcTracks.SetRedraw(FALSE);
+   UI::RedrawLock lock(m_lcTracks);
    m_lcTracks.DeleteAllItems();
 
    m_bEditedTrack = false;
@@ -236,7 +236,6 @@ void CDRipDlg::RefreshCDList()
    if (FALSE == BASS_CD_IsReady(nDrive))
    {
       m_bDriveActive = false;
-      m_lcTracks.SetRedraw(TRUE);
       return;
    }
 
@@ -245,7 +244,6 @@ void CDRipDlg::RefreshCDList()
    DWORD uMaxCDTracks = BASS_CD_GetTracks(nDrive);
    if (uMaxCDTracks == DWORD(-1))
    {
-      m_lcTracks.SetRedraw(TRUE);
       return;
    }
 
@@ -427,8 +425,6 @@ void CDRipDlg::RefreshCDList()
    OnClickedCheckVariousArtists(0, 0, NULL, bDummy);
 
    m_bEditedTrack = false;
-
-   m_lcTracks.SetRedraw(TRUE);
 }
 
 void CDRipDlg::CheckCD()

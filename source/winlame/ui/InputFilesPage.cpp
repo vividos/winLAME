@@ -27,6 +27,7 @@
 #include "CommonStuff.h"
 #include "WizardPageHost.hpp"
 #include "OutputSettingsPage.hpp"
+#include "RedrawLock.hpp"
 
 using namespace UI;
 
@@ -271,12 +272,10 @@ void InputFilesPage::AddFiles(const std::vector<CString>& vecInputFiles)
 
 void InputFilesPage::InsertFilenames(const std::vector<CString>& vecInputFiles)
 {
-   m_inputFilesList.SetRedraw(false);
+   RedrawLock lock(m_inputFilesList);
 
    for (size_t i = 0, iMax = vecInputFiles.size(); i < iMax; i++)
       InsertFilenameWithIcon(vecInputFiles[i]);
-
-   m_inputFilesList.SetRedraw(true);
 }
 
 void InputFilesPage::InsertFilenameWithIcon(const CString& cszFilename)

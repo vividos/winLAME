@@ -675,6 +675,9 @@
     <ClInclude Include="winlame\CommandLineParser.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="winlame\ui\RedrawLock.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="winlame\res\btnicons.bmp">
