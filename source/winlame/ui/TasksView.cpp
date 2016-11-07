@@ -80,7 +80,7 @@ void TasksView::Init()
    CBitmap bmpImages;
    // load bitmap, but always from main module (bmp not in translation dlls)
    bmpImages.Attach(::LoadBitmap(ModuleHelper::GetModuleInstance(), MAKEINTRESOURCE(IDB_BITMAP_TASKS)));
-   m_taskImages.Add(bmpImages, RGB(255, 255, 255));
+   m_taskImages.Add(bmpImages, RGB(0, 0, 0));
 
    SetImageList(m_taskImages, LVSIL_SMALL);
 
@@ -107,7 +107,7 @@ void TasksView::UpdateTasks()
    {
       const TaskInfo& info = taskInfoList[iInfos];
 
-      int itemIndex = InsertItem(IconFromTaskType(info), info.Name());
+      int itemIndex = InsertItem(GetItemCount(), info.Name(), IconFromTaskType(info));
       SetItemData(itemIndex, info.Id());
 
       // TODO translate
