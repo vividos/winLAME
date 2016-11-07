@@ -94,9 +94,6 @@ private:
    /// called when the user clicks on the button to delete all selected files
    LRESULT OnButtonDeleteAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when button "CD Rip" was pressed
-   LRESULT OnButtonCDRip(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-
    /// called for processing key presses
    LRESULT OnKeyDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
