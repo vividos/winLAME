@@ -202,6 +202,10 @@ void TaskManager::RunTask(std::shared_ptr<Task> spTask)
 
    // store the last task info for the completed task
    TaskInfo info = spTask->GetTaskInfo();
+
+   if (info.Status() == TaskInfo::statusCompleted)
+      info.Progress(100);
+
    {
       boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
 
