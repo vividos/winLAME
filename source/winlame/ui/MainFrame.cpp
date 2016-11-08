@@ -189,9 +189,7 @@ LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
    // there may still be running tasks
    if (m_taskManager.AreRunningTasksAvail())
    {
-      // TODO translate
-      int iRet = MessageBox(_T("There are still tasks to be processed; Really quit?"), _T(""),
-         MB_YESNO | MB_ICONQUESTION);
+      int iRet = AtlMessageBox(m_hWnd, IDS_MAIN_TASKS_STILL_RUNNING, IDS_APP_CAPTION, MB_YESNO | MB_ICONQUESTION);
 
       if (iRet == IDNO)
       {

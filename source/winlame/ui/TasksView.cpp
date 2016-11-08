@@ -67,10 +67,9 @@ LRESULT TasksView::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL
 
 void TasksView::Init()
 {
-   // TODO translate
-   InsertColumn(c_nameColumn, _T("Track"), LVCFMT_LEFT, 500);
-   InsertColumn(c_progressColumn, _T("Progress"), LVCFMT_LEFT, 100);
-   InsertColumn(c_statusColumn, _T("Status"), LVCFMT_LEFT, 100);
+   InsertColumn(c_nameColumn, CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_VIEW_COLUMN_TRACK)), LVCFMT_LEFT, 500);
+   InsertColumn(c_progressColumn, CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_VIEW_COLUMN_PROGRESS)), LVCFMT_LEFT, 100);
+   InsertColumn(c_statusColumn, CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_VIEW_COLUMN_STATUS)), LVCFMT_LEFT, 100);
 
    DWORD dwExStyle = LVS_EX_FULLROWSELECT;
    SetExtendedListViewStyle(dwExStyle, dwExStyle);
@@ -96,8 +95,7 @@ void TasksView::UpdateTasks()
 
    if (taskInfoList.empty())
    {
-      // TODO translate
-      int itemIndex = InsertItem(0, _T("<No Task>"));
+      int itemIndex = InsertItem(0, CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_VIEW_NO_TASK)));
       SetItemData(itemIndex, ITEM_ID_NODATA);
 
       return;
@@ -110,9 +108,8 @@ void TasksView::UpdateTasks()
       int itemIndex = InsertItem(GetItemCount(), info.Name(), IconFromTaskType(info));
       SetItemData(itemIndex, info.Id());
 
-      // TODO translate
       CString progressText;
-      progressText.Format(_T("%u%% done"), info.Progress());
+      progressText.Format(IDS_MAIN_TASKS_PERCENT_DONE_U, info.Progress());
 
       SetItemText(itemIndex, c_progressColumn, progressText);
 
@@ -123,18 +120,19 @@ void TasksView::UpdateTasks()
 
 CString TasksView::StatusTextFromStatus(TaskInfo::TaskStatus status)
 {
-   // TODO translate
    switch (status)
    {
    case TaskInfo::statusWaiting:
-      return _T("Waiting");
+      return CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_STATUS_WAITING));
    case TaskInfo::statusRunning:
-      return _T("Running");
+      return CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_STATUS_RUNNING));
    case TaskInfo::statusCompleted:
-      return _T("Completed");
+      return CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_STATUS_COMPLETED));
+   case TaskInfo::statusError:
+      return CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_STATUS_ERROR));
    default:
       ATLASSERT(false);
-      return _T("???");
+      return CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_STATUS_UNKNOWN));
    }
 }
 

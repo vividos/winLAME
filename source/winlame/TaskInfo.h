@@ -31,7 +31,8 @@ public:
    {
       statusWaiting = 0,
       statusRunning,
-      statusCompleted
+      statusCompleted,
+      statusError,
    };
 
    /// task type

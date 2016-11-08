@@ -85,30 +85,29 @@ void WizardPageHost::InitPage()
 
 void WizardPageHost::ConfigWizardButtons(WizardPage::T_enWizardPageType enWizardPageType)
 {
-   // TODO string resources
    bool bEnableAction1 = true;
    switch(enWizardPageType)
    {
    case WizardPage::typeCancelNext:
-      m_buttonAction2.SetWindowText(_T("Cancel"));
-      m_buttonActionOK.SetWindowText(_T("&Next >"));
+      m_buttonAction2.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_CANCEL)));
+      m_buttonActionOK.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_NEXT)));
       bEnableAction1 = false;
       break;
    case WizardPage::typeCancelBackNext:
-      m_buttonAction1.SetWindowText(_T("Cancel"));
-      m_buttonAction2.SetWindowText(_T("< &Back"));
-      m_buttonActionOK.SetWindowText(_T("&Next >"));
+      m_buttonAction1.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_CANCEL)));
+      m_buttonAction2.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_BACK)));
+      m_buttonActionOK.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_NEXT)));
       bEnableAction1 = true;
       break;
    case WizardPage::typeCancelBackFinish:
-      m_buttonAction1.SetWindowText(_T("Cancel"));
-      m_buttonAction2.SetWindowText(_T("< &Back"));
-      m_buttonActionOK.SetWindowText(_T("&Finish"));
+      m_buttonAction1.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_CANCEL)));
+      m_buttonAction2.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_BACK)));
+      m_buttonActionOK.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_FINISH)));
       bEnableAction1 = true;
       break;
    case WizardPage::typeCancelOk:
-      m_buttonAction2.SetWindowText(_T("Cancel"));
-      m_buttonActionOK.SetWindowText(_T("OK"));
+      m_buttonAction2.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_CANCEL)));
+      m_buttonActionOK.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_OK)));
       bEnableAction1 = false;
       break;
    }

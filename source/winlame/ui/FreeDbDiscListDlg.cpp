@@ -44,8 +44,8 @@ LRESULT FreeDbDiscListDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM
 
    m_list.SetExtendedListViewStyle(LVS_EX_FULLROWSELECT, LVS_EX_FULLROWSELECT);
 
-   m_list.InsertColumn(0, _T("Album Name"), LVCFMT_LEFT, 200, 0);
-   m_list.InsertColumn(1, _T("Genre"), LVCFMT_LEFT, 50, 0);
+   m_list.InsertColumn(0, CString(MAKEINTRESOURCE(IDS_FREEDB_LIST_ALBUMNAME)), LVCFMT_LEFT, 200, 0);
+   m_list.InsertColumn(1, CString(MAKEINTRESOURCE(IDS_FREEDB_LIST_GENRE)), LVCFMT_LEFT, 50, 0);
 
    m_list.SelectItem(0);
 
