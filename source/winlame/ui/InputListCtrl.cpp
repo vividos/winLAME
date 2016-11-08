@@ -76,8 +76,8 @@ void InputListCtrl::InsertFile(LPCTSTR filename, int icon, int samplerate,
 
    allentries.push_back(entry);
 
-   LPCTSTR pos = _tcsrchr(filename,_T('\\'));
-   if (pos==NULL)
+   LPCTSTR pos = _tcsrchr(filename, _T('\\'));
+   if (pos == NULL)
       pos = filename;
    else
       pos++;
@@ -90,31 +90,30 @@ void InputListCtrl::InsertFile(LPCTSTR filename, int icon, int samplerate,
    int iItem = InsertItem(&lvItem);
    SetItemData(iItem, reinterpret_cast<DWORD_PTR>(entry));
 
+   SetItemAudioInfos(iItem, length, bitrate, samplerate);
+}
+
+void InputListCtrl::SetItemAudioInfos(int iItem, int length, int bitrate, int samplerate)
+{
    // set the subitems
-   TCHAR buffer[32];
-   lvItem.mask = LVIF_TEXT;
-   lvItem.pszText = buffer;
+   CString buffer;
 
    if (samplerate!=-1)
    {
-      _sntprintf(buffer, 32, _T("%u Hz"),samplerate);
-      lvItem.iSubItem = 1;
-      SetItem(&lvItem);
+      buffer.Format(_T("%u Hz"), samplerate);
+      SetItemText(iItem, 1, buffer);
    }
 
    if (bitrate!=-1)
    {
-      _sntprintf(buffer, 32, _T("%u kbps"),bitrate/1000);
-      lvItem.iSubItem = 2;
-      SetItem(&lvItem);
+      buffer.Format(_T("%u kbps"), bitrate/1000);
+      SetItemText(iItem, 2, buffer);
    }
 
    if (length!=-1)
    {
-      _sntprintf(buffer, 32, _T("%u:%02u"),length/60,length%60);
-
-      lvItem.iSubItem = 3;
-      SetItem(&lvItem);
+      buffer.Format(_T("%u:%02u"), length/60,length%60);
+      SetItemText(iItem, 3, buffer);
    }
 }
 
@@ -133,6 +132,35 @@ unsigned int InputListCtrl::GetTotalLength()
    for(unsigned int n=0; n<nMax; n++)
       nLength += static_cast<unsigned int>(allentries[n]->length);
    return nLength;
+}
+
+void InputListCtrl::UpdateAudioFileInfo(const AudioFileEntry& updatedEntry)
+{
+   for (unsigned int index = 0, maxIndex = allentries.size(); index < maxIndex; index++)
+   {
+      AudioFileEntry* entry = allentries[index];
+      if (entry->filename.CompareNoCase(updatedEntry.filename) == 0)
+      {
+         entry->length = updatedEntry.length;
+         entry->bitrate = updatedEntry.bitrate;
+         entry->samplerate = updatedEntry.samplerate;
+
+         // now search item in list and update it also
+         for (int itemIndex = 0, maxItemIndex = GetItemCount(); itemIndex < maxItemIndex; itemIndex++)
+         {
+            AudioFileEntry* entryFromList =
+               reinterpret_cast<AudioFileEntry*>(GetItemData(itemIndex));
+
+            if (entryFromList == entry)
+            {
+               SetItemAudioInfos(itemIndex, entry->length, entry->bitrate, entry->samplerate);
+               break;
+            }
+         }
+
+         break;
+      }
+   }
 }
 
 int InputListCtrl::SortCompare(LPARAM lParam1, LPARAM lParam2,

@@ -64,6 +64,9 @@ namespace UI
       /// returns total length of files in list
       unsigned int GetTotalLength();
 
+      /// updates audio file infos about one file
+      void UpdateAudioFileInfo(const AudioFileEntry& entry);
+
    protected:
       // message map
       BEGIN_MSG_MAP(InputListCtrl)
@@ -128,6 +131,9 @@ namespace UI
       /// compare function for sorting
       static int CALLBACK SortCompare(LPARAM lParam1, LPARAM lParam2,
          LPARAM lParamSort);
+
+      /// sets audio infos for given item
+      void SetItemAudioInfos(int iItem, int length, int bitrate, int samplerate);
 
    private:
       /// all audio file entries
