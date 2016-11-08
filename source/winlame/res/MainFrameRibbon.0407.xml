@@ -24,7 +24,7 @@
 
       <!-- Groups -->
       <Command Name="GroupEncode" Symbol="ID_GROUP_ENCODE"
-               LabelTitle="Encoden" />
+               LabelTitle="Kodieren" />
       <Command Name="GroupTasks" Symbol="ID_GROUP_TASKS"
                LabelTitle="Aufgaben" />
       <Command Name="GroupSettings" Symbol="ID_GROUP_SETTINGS"

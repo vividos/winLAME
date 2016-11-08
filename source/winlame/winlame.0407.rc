@@ -64,7 +64,7 @@ BEGIN
     POPUP "&Kodieren"
     BEGIN
         MENUITEM "&Dateien öffnen...", ID_ENCODE_FILES
-        MENUITEM "&CD auslesen...", ID_ENCODE_CD
+        MENUITEM "&CD einlesen...", ID_ENCODE_CD
         MENUITEM SEPARATOR
         MENUITEM "&Beenden", ID_APP_EXIT
     END
@@ -78,7 +78,7 @@ BEGIN
         MENUITEM "&Allgemeine Einstellungen", ID_SETTINGS_GENERAL
         MENUITEM "&CD-Lese-Einstellungen", ID_SETTINGS_CDREAD
     END
-    POPUP "&Anzeige"
+    POPUP "&Ansicht"
     BEGIN
         MENUITEM "&Menüband", ID_VIEW_RIBBON
         MENUITEM "Zum &Klassischen Modus wechseln", ID_VIEW_SWITCH_CLASSIC
@@ -114,7 +114,7 @@ STYLE DS_SHELLFONT | WS_CHILDWINDOW
 EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "MS Shell Dlg", 0, 0, 1
 BEGIN
-    LTEXT           "&Language", IDC_STATIC, 14, 21, 86, 8
+    LTEXT           "&Sprache", IDC_STATIC, 14, 21, 86, 8
     COMBOBOX        IDC_SETTINGS_COMBO_LANGUAGE, 101, 16, 153, 99, WS_TABSTOP | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_HASSTRINGS | CBS_OWNERDRAWVARIABLE
 END
 
