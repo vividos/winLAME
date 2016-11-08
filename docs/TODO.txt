@@ -9,9 +9,6 @@ winLAME 2014 beta:
 - Support input files on command line
 - Opus Output module
 
-winLAME 2014 release:
-- async track length in input files page
-
 winLAME 2009 release:
 
 - format strings for cd extraction

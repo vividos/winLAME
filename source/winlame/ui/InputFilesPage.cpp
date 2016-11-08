@@ -71,6 +71,8 @@ LRESULT InputFilesPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
 
 LRESULT InputFilesPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled)
 {
+   m_audioFileInfoManager.Stop();
+
    int max = m_inputFilesList.GetItemCount();
 
    // when no input files are chosen, refuse to leave the page
@@ -148,6 +150,19 @@ LRESULT InputFilesPage::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
 
       m_pageWidth += dx;
    }
+
+   return 0;
+}
+
+LRESULT InputFilesPage::OnUpdateAudioInfo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+   AudioFileEntry* entry = reinterpret_cast<AudioFileEntry*>(lParam);
+
+   m_inputFilesList.UpdateAudioFileInfo(*entry);
+
+   delete entry;
+
+   UpdateTimeCount();
 
    return 0;
 }
@@ -294,6 +309,35 @@ void InputFilesPage::InsertFilenameWithIcon(const CString& cszFilename)
    }
 
    m_inputFilesList.InsertFile(cszFilename, sfi.iIcon, -1, -1, -1);
+
+   m_audioFileInfoManager.AsyncGetAudioFileInfo(cszFilename,
+      std::bind(&InputFilesPage::OnRetrievedAudioFileInfo, this,
+         cszFilename,
+         std::placeholders::_1,
+         std::placeholders::_2,
+         std::placeholders::_3,
+         std::placeholders::_4,
+         std::placeholders::_5));
+}
+
+void InputFilesPage::OnRetrievedAudioFileInfo(const CString& filename, bool error, const CString& errorMessage,
+   int lengthInSeconds, int bitrateInKbps, int sampleFrequencyInHz)
+{
+   if (error)
+   {
+      m_audioFileInfoManager.Stop();
+
+      // TODO output message
+      errorMessage;
+   }
+
+   AudioFileEntry* entry = new AudioFileEntry;
+   entry->filename = filename;
+   entry->length = lengthInSeconds;
+   entry->bitrate = bitrateInKbps;
+   entry->samplerate = sampleFrequencyInHz;
+
+   PostMessage(WM_UPDATE_AUDIO_INFO, 0, reinterpret_cast<LPARAM>(entry));
 }
 
 void InputFilesPage::PlayFile(LPCTSTR filename)

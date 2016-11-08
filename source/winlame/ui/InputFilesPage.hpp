@@ -24,7 +24,10 @@
 // includes
 #include "WizardPage.hpp"
 #include "InputListCtrl.hpp"
+#include "AudioFileInfoManager.hpp"
 #include "resource.h"
+
+#define WM_UPDATE_AUDIO_INFO (WM_APP + 4)
 
 // forward references
 struct UISettings;
@@ -70,6 +73,7 @@ private:
       MESSAGE_HANDLER(WM_DROPFILES, OnDropFiles)
       MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
       MESSAGE_HANDLER(WM_SIZE, OnSize)
+      MESSAGE_HANDLER(WM_UPDATE_AUDIO_INFO, OnUpdateAudioInfo)
       NOTIFY_HANDLER(IDC_INPUT_LIST_INPUTFILES, LVN_ITEMCHANGED, OnListItemChanged)
       NOTIFY_HANDLER(IDC_INPUT_LIST_INPUTFILES, NM_DBLCLK, OnDoubleClickedList)
       COMMAND_HANDLER(IDC_INPUT_BUTTON_PLAY, BN_CLICKED, OnButtonPlay)
@@ -100,6 +104,9 @@ private:
    /// called when resizing the dialog
    LRESULT OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
+   /// called when audio info for a file was updated
+   LRESULT OnUpdateAudioInfo(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
    /// called when the selected item in the list ctrl changes
    LRESULT OnListItemChanged(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
@@ -108,6 +115,10 @@ private:
 
    /// called when user presses the play button
    LRESULT OnButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when audio file info was retrieved asynchronously
+   void OnRetrievedAudioFileInfo(const CString& filename, bool error, const CString& errorMessage,
+      int lengthInSeconds, int bitrateInKbps, int sampleFrequencyInHz);
 
 private:
    /// sets up tracks list control
@@ -156,6 +167,9 @@ private:
 
    /// indicates if system image list was already set on list control
    bool m_bSetSysImageList;
+
+   /// manager for audio file infos
+   AudioFileInfoManager m_audioFileInfoManager;
 
    /// filter string
    static CString m_cszFilterString;
