@@ -1,6 +1,6 @@
 @echo off
 REM
-REM  winLAME - a frontend for the LAME encoding engine
+REM winLAME - a frontend for the LAME encoding engine
 REM Copyright (c) 2000-2016 Michael Fink
 REM
 REM Creates a winLAME build and installer
@@ -22,6 +22,9 @@ call source\libraries\CopyLibraries.cmd Release
 
 REM build winLAME Portable
 call BuildPortable.cmd
+
+REM build winLAME zip archive
+call BuildZip.cmd
 
 REM finished
 echo Finished!
