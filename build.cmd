@@ -18,6 +18,9 @@ call "%MSVC_PATH%\Common7\Tools\VsDevCmd.bat"
 REM build solution
 msbuild /m:4 winlame.sln /property:Configuration=Release /target:Rebuild
 
+set ZIP="%ProgramFiles%\7-Zip\7z.exe"
+%ZIP% a bin\winLAME-pdbs.zip bin\Release\pdb\winLAME.pdb
+
 call source\libraries\CopyLibraries.cmd Release
 
 REM build winLAME Portable
