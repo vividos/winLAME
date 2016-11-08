@@ -2,15 +2,10 @@ TODO list for winLAME
 
 winLAME 2014 beta:
 
-- Port all old_ui dialogs to new UI
-- Translate all new dialogs to DE
-- Add "Finished encoding action" to ribbon
 - Warn about lossy transcoding on Finish page
-- Support input files on command line
 - Opus Output module
 
 winLAME 2009 release:
-
 - format strings for cd extraction
 - check all tooltip texts
 
