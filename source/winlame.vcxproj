@@ -142,6 +142,7 @@
     <ClCompile Include="winlame\old_ui\OutputPage.cpp" />
     <ClCompile Include="winlame\old_ui\PresetsPage.cpp" />
     <ClCompile Include="winlame\Path.cpp" />
+    <ClCompile Include="winlame\AudioFileInfoManager.cpp" />
     <ClCompile Include="winlame\ui\AACSettingsPage.cpp" />
     <ClCompile Include="winlame\ui\AboutDlg.cpp" />
     <ClCompile Include="winlame\ui\BevelLine.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="winlame\Path.hpp" />
     <ClInclude Include="winlame\StdCppLib.h" />
     <ClInclude Include="winlame\TrackEditListCtrl.h" />
+    <ClInclude Include="winlame\AudioFileInfoManager.hpp" />
     <ClInclude Include="winlame\ui\AACSettingsPage.hpp" />
     <ClInclude Include="winlame\ui\AboutDlg.hpp" />
     <ClInclude Include="winlame\ui\AlternateColorsListCtrl.hpp" />
