@@ -337,6 +337,9 @@
     <ClCompile Include="winlame\AudioFileInfoManager.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\CDRipTitleFormatManager.cpp">
+      <Filter>Main Program Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="winlame\encoder\AacInputModule.h">
@@ -682,6 +685,9 @@
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\AudioFileInfoManager.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\CDRipTitleFormatManager.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

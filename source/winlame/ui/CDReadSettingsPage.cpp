@@ -24,6 +24,7 @@
 #include "UISettings.h"
 #include "LanguageResourceManager.hpp"
 #include "LangCountryMapper.hpp"
+#include "CDRipTitleFormatManager.hpp"
 #include "CommonStuff.h"
 #include "App.h"
 #include <vector>
@@ -128,16 +129,8 @@ LRESULT CDReadSettingsPage::OnButtonAlbumTrackTags(WORD /*wNotifyCode*/, WORD wI
 
 void CDReadSettingsPage::ShowTagsContextMenu(CButton& button, CEdit& edit)
 {
-   std::vector<CString> allTags = {
-      _T("album"),
-      _T("artist"),
-      _T("genre"),
-      _T("title"),
-      _T("track"),
-      _T("year"),
-      _T("albumartist"),
-      _T("discnumber")
-   };
+   std::vector<CString> allTags =
+      CDRipTitleFormatManager::GetAllTags();
 
    CMenu contextMenu;
    ATLVERIFY(TRUE == contextMenu.CreatePopupMenu());

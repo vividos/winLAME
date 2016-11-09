@@ -80,6 +80,7 @@
     <Bscmake />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="winlame\CDRipTitleFormatManager.cpp" />
     <ClCompile Include="winlame\CommandLineParser.cpp" />
     <ClCompile Include="winlame\encoder\AacInputModule.cpp" />
     <ClCompile Include="winlame\encoder\AacOutputModule.cpp" />
@@ -204,6 +205,7 @@
   <ItemGroup>
     <ClInclude Include="winlame\Atl.h" />
     <ClInclude Include="winlame\Boost.h" />
+    <ClInclude Include="winlame\CDRipTitleFormatManager.hpp" />
     <ClInclude Include="winlame\CommandLineParser.hpp" />
     <ClInclude Include="winlame\encoder\AacInputModule.h" />
     <ClInclude Include="winlame\encoder\AacOutputModule.h" />
