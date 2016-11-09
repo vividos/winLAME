@@ -48,12 +48,10 @@ public:
    virtual void Stop();
 
 private:
-   /// generates title from disc and track infos
-   CString GetDiscTrackTitle() const;
-
    /// generates temporary filename
    CString GetTempFilename(const CString& cszDiscTrackTitle) const;
 
+   /// extracts track from CD and stores it in temporary filename
    bool ExtractTrack(const CString& cszTempFilename);
 
 private:
@@ -65,6 +63,9 @@ private:
 
    /// settings
    UISettings& m_uiSettings;
+
+   /// title of track to extract
+   CString m_title;
 
    /// indicates if task was stopped
    std::atomic<bool> m_bStopped;

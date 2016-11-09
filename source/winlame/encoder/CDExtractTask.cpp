@@ -26,6 +26,7 @@
 #include "UISettings.h"
 #include "resource.h"
 #include <basscd.h>
+#include "CDRipTitleFormatManager.hpp"
 
 CDExtractTask::CDExtractTask(const CDRipDiscInfo& discinfo, const CDRipTrackInfo& trackinfo)
 :m_discinfo(discinfo),
@@ -34,18 +35,16 @@ m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
 m_bStopped(false),
 m_uiProgress(0)
 {
+   m_title = CDRipTitleFormatManager::FormatTitle(
+      m_discinfo.m_bVariousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
+      m_discinfo, m_trackinfo);
 }
 
 TaskInfo CDExtractTask::GetTaskInfo()
 {
    TaskInfo info(Id(), TaskInfo::taskCdExtraction);
 
-   CString cszTitle;
-   cszTitle.Format(_T("%u. %s"),
-      m_trackinfo.m_nTrackOnDisc + 1,
-      m_trackinfo.m_cszTrackTitle);
-
-   info.Name(cszTitle);
+   info.Name(m_title);
    info.Progress(m_uiProgress);
 
    return info;
@@ -53,7 +52,7 @@ TaskInfo CDExtractTask::GetTaskInfo()
 
 void CDExtractTask::Run()
 {
-   CString cszDiscTrackTitle = GetDiscTrackTitle();
+   CString cszDiscTrackTitle = CDRipTitleFormatManager::GetFilenameByTitle(m_title);
 
    CString cszTempFilename = GetTempFilename(cszDiscTrackTitle);
 
@@ -65,34 +64,6 @@ void CDExtractTask::Run()
 void CDExtractTask::Stop()
 {
    m_bStopped = true;
-}
-
-CString CDExtractTask::GetDiscTrackTitle() const
-{
-   CString cszDiscTrackTitle;
-
-   if (m_discinfo.m_bVariousArtists)
-      cszDiscTrackTitle = m_trackinfo.m_cszTrackTitle;
-   else
-   {
-      cszDiscTrackTitle.Format(_T("%s - %s"),
-         m_discinfo.m_cszDiscTitle, m_trackinfo.m_cszTrackTitle);
-   }
-
-   cszDiscTrackTitle.Replace(_T(" / "), _T(" - "));
-   cszDiscTrackTitle.Replace(_T("\\"), _T(""));
-   cszDiscTrackTitle.Replace(_T("/"), _T(""));
-   cszDiscTrackTitle.Replace(_T(":"), _T(""));
-   cszDiscTrackTitle.Replace(_T("*"), _T(""));
-   cszDiscTrackTitle.Replace(_T("?"), _T(""));
-   cszDiscTrackTitle.Replace(_T("\""), _T(""));
-   cszDiscTrackTitle.Replace(_T("<"), _T(""));
-   cszDiscTrackTitle.Replace(_T(">"), _T(""));
-   cszDiscTrackTitle.Replace(_T("|"), _T(""));
-   cszDiscTrackTitle.Replace(_T("{"), _T("("));
-   cszDiscTrackTitle.Replace(_T("}"), _T(")"));
-
-   return cszDiscTrackTitle;
 }
 
 CString CDExtractTask::GetTempFilename(const CString& cszDiscTrackTitle) const

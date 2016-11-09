@@ -6,12 +6,10 @@ winLAME 2014 beta:
 - Opus Output module
 
 winLAME 2009 release:
-- format strings for cd extraction
 - check all tooltip texts
 
 future versions:
 - do "processing" page to resample, normalize, etc.
 - mp3 dither
-- cd extraction: different formatting for "various artist" albums
 - id3 tag editor
 - cd extraction/encoding parallel
