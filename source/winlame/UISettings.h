@@ -128,6 +128,12 @@ struct UISettings
    /// indicates if disc infos retrieved by freedb should be stored in cdplayer.ini
    bool store_disc_infos_cdplayer_ini;
 
+   /// format string for various track
+   CString cdrip_format_various_track;
+
+   /// format string for album track
+   CString cdrip_format_album_track;
+
    /// language id
    UINT language_id;
 

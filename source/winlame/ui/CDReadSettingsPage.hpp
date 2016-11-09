@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -62,11 +62,19 @@ private:
       DDX_TEXT(IDC_CDRIP_OPT_EDIT_TEMP_FOLDER, m_settings.cdrip_temp_folder);
       DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, m_btnSelectPath);
       DDX_CHECK(IDC_CDRIP_OPT_CHECK_CDPLAYER_INI, m_settings.store_disc_infos_cdplayer_ini);
+      DDX_TEXT(IDC_CDRIP_OPT_EDIT_FORMAT_VARIOUS_TRACK, m_settings.cdrip_format_various_track);
+      DDX_TEXT(IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK, m_settings.cdrip_format_album_track);
+      DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, m_btnVariousTrackTags);
+      DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, m_btnAlbumTrackTags);
    END_DDX_MAP()
 
    BEGIN_DLGRESIZE_MAP(CDReadSettingsPage)
       DLGRESIZE_CONTROL(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, DLSZ_SIZE_X)
       DLGRESIZE_CONTROL(IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_CDRIP_OPT_EDIT_FORMAT_VARIOUS_TRACK, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, DLSZ_MOVE_X)
+      DLGRESIZE_CONTROL(IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, DLSZ_MOVE_X)
    END_DLGRESIZE_MAP()
 
    BEGIN_MSG_MAP(CDReadSettingsPage)
@@ -74,6 +82,8 @@ private:
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
       COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, OnButtonSelectPath)
       COMMAND_HANDLER(IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME, EN_CHANGE, OnChangeFreedbUsername)
+      COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, OnButtonVariousTrackTags)
+      COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, OnButtonAlbumTrackTags)
       CHAIN_MSG_MAP(CDialogResize<CDReadSettingsPage>)
    END_MSG_MAP()
 
@@ -89,6 +99,16 @@ private:
    /// called when text in freedb username editbox changes
    LRESULT OnChangeFreedbUsername(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
+   /// called when user clicks on various track tags button
+   LRESULT OnButtonVariousTrackTags(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when user clicks on album track tags button
+   LRESULT OnButtonAlbumTrackTags(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+private:
+   /// shows a tags context menu besides the given button, and inserts selected tag into edit control
+   void ShowTagsContextMenu(CButton& button, CEdit& edit);
+
 private:
    /// settings
    UISettings& m_settings;
@@ -98,10 +118,17 @@ private:
    /// freedb server combobox
    CComboBox m_cbFreedbServer;
 
+   /// icons image list
    CImageList m_ilIcons;
 
    /// button to select path
    CButton m_btnSelectPath;
+
+   /// various track tags select button
+   CButton m_btnVariousTrackTags;
+
+   /// albun track tags select button
+   CButton m_btnAlbumTrackTags;
 };
 
 } // namespace UI

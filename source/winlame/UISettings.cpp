@@ -48,6 +48,8 @@ LPCTSTR g_pszOutputPathHistory = _T("OutputPathHistory%02u");
 LPCTSTR g_pszFreedbServer = _T("FreedbServer");
 LPCTSTR g_pszFreedbUsername = _T("FreedbUsername");
 LPCTSTR g_pszDiscInfosCdplayerIni = _T("StoreDiscInfosInCdplayerIni");
+LPCTSTR g_pszFormatVariousTrack = _T("CDExtractFormatVariousTrack");
+LPCTSTR g_pszFormatAlbumTrack = _T("CDExtractFormatAlbumTrack");
 LPCTSTR g_pszLanguageId = _T("LanguageId");
 LPCTSTR g_pszAppMode = _T("AppMode");
 
@@ -78,6 +80,8 @@ UISettings::UISettings()
    freedb_server(_T("freedb.freedb.org")),
    freedb_username(_T("default")),
    store_disc_infos_cdplayer_ini(true),
+   cdrip_format_various_track(_T("%track% - %album% - %artist% - %title%")),
+   cdrip_format_album_track(_T("%track% - %album% - %title%")),
    language_id(MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)),
    m_appMode(modernMode)
 {
@@ -173,6 +177,10 @@ void UISettings::ReadSettings()
 
    // read "store disc infos in cdplayer.ini" value
    ReadBooleanValue(regRoot, g_pszDiscInfosCdplayerIni, store_disc_infos_cdplayer_ini);
+
+   // read "format various track" / "format album track"
+   ReadStringValue(regRoot, g_pszFormatVariousTrack, MAX_PATH, cdrip_format_various_track);
+   ReadStringValue(regRoot, g_pszFormatAlbumTrack, MAX_PATH, cdrip_format_album_track);
 
    // read "language id" value
    ReadUIntValue(regRoot, g_pszLanguageId, language_id);
@@ -276,6 +284,10 @@ void UISettings::StoreSettings()
    // write "store disc infos in cdplayer.ini" value
    value = store_disc_infos_cdplayer_ini ? 1 : 0;
    regRoot.SetValue(value, g_pszDiscInfosCdplayerIni);
+
+   // write "format various track" / "format album track"
+   regRoot.SetValue(cdrip_format_various_track, g_pszFormatVariousTrack);
+   regRoot.SetValue(cdrip_format_album_track, g_pszFormatAlbumTrack);
 
    // write "language id" value
    value = language_id;

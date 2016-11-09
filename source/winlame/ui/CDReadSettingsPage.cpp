@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include "LangCountryMapper.hpp"
 #include "CommonStuff.h"
 #include "App.h"
+#include <vector>
 
 using namespace UI;
 
@@ -104,4 +105,71 @@ LRESULT CDReadSettingsPage::OnChangeFreedbUsername(WORD /*wNotifyCode*/, WORD wI
       DoDataExchange(DDX_LOAD, IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME);
    }
    return 0;
+}
+
+LRESULT CDReadSettingsPage::OnButtonVariousTrackTags(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   CButton button(GetDlgItem(wID));
+   CEdit edit(GetDlgItem(IDC_CDRIP_OPT_EDIT_FORMAT_VARIOUS_TRACK));
+
+   ShowTagsContextMenu(button, edit);
+
+   return 0;
+}
+LRESULT CDReadSettingsPage::OnButtonAlbumTrackTags(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   CButton button(GetDlgItem(wID));
+   CEdit edit(GetDlgItem(IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK));
+
+   ShowTagsContextMenu(button, edit);
+
+   return 0;
+}
+
+void CDReadSettingsPage::ShowTagsContextMenu(CButton& button, CEdit& edit)
+{
+   std::vector<CString> allTags = {
+      _T("album"),
+      _T("artist"),
+      _T("genre"),
+      _T("title"),
+      _T("track"),
+      _T("year"),
+      _T("albumartist"),
+      _T("discnumber")
+   };
+
+   CMenu contextMenu;
+   ATLVERIFY(TRUE == contextMenu.CreatePopupMenu());
+
+   //std::for_each(allTags.begin(), allTags.end(), [&](const CString& singleTag) {
+   for (size_t tagIndex = 0; tagIndex < allTags.size(); tagIndex++)
+   {
+      contextMenu.AppendMenu(MF_STRING, tagIndex + 1, allTags[tagIndex]);
+   }
+
+   CRect rectButton;
+   button.GetWindowRect(rectButton);
+   CPoint pos(rectButton.right + 1, rectButton.top);
+
+   // track popup menu
+   int ret = contextMenu.TrackPopupMenu(
+      TPM_LEFTALIGN | TPM_RETURNCMD | TPM_RIGHTBUTTON,
+      pos.x, pos.y,
+      m_hWnd,
+      nullptr);
+
+   if (ret == 0)
+      return;
+
+   size_t selectedTagIndex = ret - 1;
+   CString tagToInsert = _T("%") + allTags[selectedTagIndex] + _T("%");
+
+   int startChar = 0, endChar = 0;
+   edit.GetSel(startChar, endChar);
+
+   if (startChar != endChar)
+      edit.ReplaceSel(tagToInsert, true);
+   else
+      edit.InsertText(startChar, tagToInsert, false, true);
 }
