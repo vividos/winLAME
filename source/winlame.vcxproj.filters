@@ -340,6 +340,9 @@
     <ClCompile Include="winlame\CDRipTitleFormatManager.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\encoder\OpusOutputModule.cpp">
+      <Filter>encoder files\encoder source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="winlame\encoder\AacInputModule.h">
@@ -689,6 +692,9 @@
     </ClInclude>
     <ClInclude Include="winlame\CDRipTitleFormatManager.hpp">
       <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\OpusOutputModule.hpp">
+      <Filter>encoder files\encoder header files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

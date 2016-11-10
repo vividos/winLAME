@@ -100,6 +100,7 @@
     <ClCompile Include="winlame\encoder\OggVorbisInputModule.cpp" />
     <ClCompile Include="winlame\encoder\OggVorbisOutputModule.cpp" />
     <ClCompile Include="winlame\encoder\OpusInputModule.cpp" />
+    <ClCompile Include="winlame\encoder\OpusOutputModule.cpp" />
     <ClCompile Include="winlame\encoder\SampleContainer.cpp" />
     <ClCompile Include="winlame\encoder\SndFileInputModule.cpp" />
     <ClCompile Include="winlame\encoder\SpeexInputModule.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="winlame\encoder\OggVorbisInputModule.h" />
     <ClInclude Include="winlame\encoder\OggVorbisOutputModule.h" />
     <ClInclude Include="winlame\encoder\OpusInputModule.hpp" />
+    <ClInclude Include="winlame\encoder\OpusOutputModule.hpp" />
     <ClInclude Include="winlame\encoder\SampleContainer.h" />
     <ClInclude Include="winlame\encoder\SndFileInputModule.h" />
     <ClInclude Include="winlame\encoder\SpeexInputModule.hpp" />

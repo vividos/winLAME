@@ -40,6 +40,7 @@
 #include "CDReadoutModule.h"
 #include "SpeexInputModule.hpp"
 #include "OpusInputModule.hpp"
+#include "OpusOutputModule.hpp"
 #include "resource.h"
 
 // global functions
@@ -88,7 +89,7 @@ InputModule* GetNewInputModule(int index)
 }
 
 /// max number of output modules GetNewOutputModule can return
-const int c_iMaxOutputModule = 5;
+const int c_iMaxOutputModule = 6;
 
 /// returns a new output module by index
 OutputModule *GetNewOutputModule(int index)
@@ -110,6 +111,9 @@ OutputModule *GetNewOutputModule(int index)
       break;
    case 4:
       outmod = new AacOutputModule;
+      break;
+   case 5:
+      outmod = new OpusOutputModule;
       break;
    }
    return outmod;
