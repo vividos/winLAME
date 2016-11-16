@@ -30,6 +30,7 @@
 #include "WaveOutputSettingsPage.h"
 #include "AacSettingsPage.h"
 #include "WmaOutputSettingsPage.h"
+#include "OpusSettingsPage.h"
 #include "EncoderInterface.h"
 #include "CDRipPage.h"
 #include "ModuleInterface.h"
@@ -214,6 +215,14 @@ void InsertWizardPages(UIinterface *pui,int pos)
 
    case ID_OM_BASSWMA:
       pui->insertWizardPage(pos,new WmaOutputSettingsPage);
+      break;
+
+   case ID_OM_OPUS:
+      pui->insertWizardPage(pos, new OpusSettingsPage);
+      break;
+      
+   default:
+      ATLASSERT(false);
       break;
    }
 }

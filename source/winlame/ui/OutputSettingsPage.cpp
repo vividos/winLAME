@@ -32,6 +32,7 @@
 #include "LibsndfileSettingsPage.hpp"
 #include "AACSettingsPage.hpp"
 #include "WMASettingsPage.hpp"
+#include "OpusSettingsPage.hpp"
 #include "ModuleInterface.h"
 #include "CommonStuff.h"
 
@@ -245,6 +246,10 @@ void OutputSettingsPage::SetWizardPageByOutputModule(WizardPageHost& pageHost, i
 
    case ID_OM_BASSWMA:
       pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new WMASettingsPage(pageHost)));
+      break;
+
+   case ID_OM_OPUS:
+      pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new OpusSettingsPage(pageHost)));
       break;
 
    default:

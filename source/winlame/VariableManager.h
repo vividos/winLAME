@@ -118,6 +118,10 @@ enum
    WmaQuality,
    WmaBitrateMode,
 
+   OpusTargetBitrate,
+   OpusComplexity,
+   OpusBitrateMode,
+
    VarLast
 };
 

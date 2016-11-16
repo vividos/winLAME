@@ -39,6 +39,7 @@
 #define IDD_DLG_LAME_SIMPLE                     120
 #define IDD_FREEDB_LIST                         121
 #define IDD_CDRIP_OPTIONS                       122
+#define IDD_DLG_OPUS                            123
 #define IDD_SETTINGS_GENERAL                    150
 #define IDD_SETTINGS_CDREAD                     151
 #define IDC_WIZARDPAGE_STATIC_CAPTION           1000
@@ -56,7 +57,8 @@
 #define IDD_PAGE_OGGVORBIS_SETTINGS             1037
 #define IDD_PAGE_AAC_SETTINGS                   1038
 #define IDD_PAGE_WMA_SETTINGS                   1039
-#define IDD_PAGE_FINISH                         1040
+#define IDD_PAGE_OPUS_SETTINGS                  1040
+#define IDD_PAGE_FINISH                         1041
 #define IDC_MDLG_NEXT                           3000
 #define IDC_MDLG_BACK                           3001
 #define IDC_MDLG_EXIT                           3003
@@ -214,6 +216,13 @@
 #define IDC_FREEDB_LIST_TRACKS                  4400
 #define IDC_ABOUT_FRAME                         4401
 #define IDC_PROP_LISTBOX                        4404
+#define IDC_OPUS_EDIT_BITRATE                   4500
+#define IDC_OPUS_SPIN_BITRATE                   4501
+#define IDC_OPUS_SLIDER_COMPLEXITY              4502
+#define IDC_OPUS_STATIC_COMPLEXITY              4503
+#define IDC_OPUS_RADIO_BRCMODE1                 4504
+#define IDC_OPUS_RADIO_BRCMODE2                 4505
+#define IDC_OPUS_RADIO_BRCMODE3                 4506
 #define IDC_SETTINGS_COMBO_LANGUAGE             5000
 #define ID_TRAY_ABOUT                           30000
 #define ID_TRAY_PAUSE                           30001
@@ -255,6 +264,7 @@
 #define IDS_DLG_CAP_ENCODE                      40210
 #define IDS_DLG_CAP_WMA                         40211
 #define IDS_DLG_CAP_CDRIP                       40212
+#define IDS_DLG_CAP_OPUS                        40213
 #define IDS_DLG_DESC_INPUT                      40300
 #define IDS_DLG_DESC_OUTPUT                     40301
 #define IDS_DLG_DESC_PRESETS                    40302
@@ -265,6 +275,7 @@
 #define IDS_DLG_DESC_ENCODE                     40307
 #define IDS_DLG_DESC_WMA                        40308
 #define IDS_DLG_DESC_CDRIP                      40309
+#define IDS_DLG_DESC_OPUS                       40310
 #define IDS_INPUT_INFILES_SELECT                40400
 #define IDS_INPUT_LIST_COLNAME1                 40401
 #define IDS_INPUT_LIST_COLNAME2                 40402
@@ -390,6 +401,7 @@
 #define IDS_FORMAT_INFO_OPUS_INPUT              42024
 #define IDS_FREEDB_LIST_ALBUMNAME               42100
 #define IDS_FREEDB_LIST_GENRE                   42101
+#define IDS_OPUS_INVALID_BITRATE                42200
 #define IDS_WIZARDPAGE_CANCEL                   43000
 #define IDS_WIZARDPAGE_NEXT                     43001
 #define IDS_WIZARDPAGE_BACK                     43002

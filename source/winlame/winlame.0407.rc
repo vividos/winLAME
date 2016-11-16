@@ -333,6 +333,27 @@ BEGIN
 END
 
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+IDD_DLG_OPUS DIALOGEX 0, 0, 291, 142
+STYLE DS_SHELLFONT | WS_CHILDWINDOW
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Shell Dlg", 0, 0, 1
+BEGIN
+    LTEXT           "&Bitrate", IDC_STATIC, 2, 5, 61, 9, SS_LEFT
+    EDITTEXT        IDC_OPUS_EDIT_BITRATE, 65, 2, 37, 12, ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "", IDC_OPUS_SPIN_BITRATE, UPDOWN_CLASS, UDS_ARROWKEYS | UDS_NOTHOUSANDS | UDS_WRAP | UDS_SETBUDDYINT, 102, 0, 11, 15
+    LTEXT           "Kbps pro Kanal", IDC_STATIC, 118, 5, 169, 8, SS_LEFT
+    LTEXT           "&Komplexität", IDC_STATIC, 2, 23, 56, 9, SS_LEFT
+    CONTROL         "", IDC_OPUS_SLIDER_COMPLEXITY, TRACKBAR_CLASS, WS_GROUP | WS_TABSTOP | TBS_AUTOTICKS, 63, 19, 166, 13
+    RTEXT           "langsam", IDC_STATIC, 183, 37, 46, 9, SS_RIGHT
+    CTEXT           "%u", IDC_OPUS_STATIC_COMPLEXITY, 111, 37, 70, 9, SS_CENTER
+    LTEXT           "schnell", IDC_STATIC, 63, 37, 46, 9, SS_LEFT
+    LTEXT           "Bitrate-&Modus", IDC_STATIC, 2, 53, 285, 9, SS_LEFT
+    AUTORADIOBUTTON "VBR (empfohlen)", IDC_OPUS_RADIO_BRCMODE1, 8, 66, 279, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Constrained VBR", IDC_OPUS_RADIO_BRCMODE2, 8, 81, 279, 10, 0
+    AUTORADIOBUTTON "Hard CBR", IDC_OPUS_RADIO_BRCMODE3, 8, 96, 279, 10, 0
+END
+
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 IDD_DLG_PRESET_PROPERTY DIALOGEX 0, 0, 180, 177
 STYLE DS_SHELLFONT | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_THICKFRAME | WS_SYSMENU
 EXSTYLE WS_EX_TOOLWINDOW
@@ -747,6 +768,27 @@ BEGIN
 END
 
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+IDD_PAGE_OPUS_SETTINGS DIALOGEX 0, 0, 292, 144
+STYLE DS_SHELLFONT | WS_CHILDWINDOW
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "Ms Shell Dlg 2", 400, 0, 1
+BEGIN
+    LTEXT           "&Bitrate", IDC_STATIC, 2, 5, 61, 9, SS_LEFT
+    EDITTEXT        IDC_OPUS_EDIT_BITRATE, 65, 2, 37, 12, ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "", IDC_OPUS_SPIN_BITRATE, UPDOWN_CLASS, UDS_ARROWKEYS | UDS_NOTHOUSANDS | UDS_WRAP | UDS_SETBUDDYINT, 102, 0, 11, 15
+    LTEXT           "Kbps pro Kanal", IDC_STATIC, 118, 5, 169, 8, SS_LEFT
+    LTEXT           "&Komplexität", IDC_STATIC, 2, 23, 56, 9, SS_LEFT
+    CONTROL         "", IDC_OPUS_SLIDER_COMPLEXITY, TRACKBAR_CLASS, WS_GROUP | WS_TABSTOP | TBS_AUTOTICKS, 63, 19, 166, 13
+    RTEXT           "langsam", IDC_STATIC, 183, 37, 46, 9, SS_RIGHT
+    CTEXT           "%u", IDC_OPUS_STATIC_COMPLEXITY, 111, 37, 70, 9, SS_CENTER
+    LTEXT           "schnell", IDC_STATIC, 63, 37, 46, 9, SS_LEFT
+    LTEXT           "Bitrate-&Modus", IDC_STATIC, 2, 53, 285, 9, SS_LEFT
+    AUTORADIOBUTTON "VBR (empfohlen)", IDC_OPUS_RADIO_BRCMODE1, 8, 66, 279, 10, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Constrained VBR", IDC_OPUS_RADIO_BRCMODE2, 8, 81, 279, 10, 0
+    AUTORADIOBUTTON "Hard CBR", IDC_OPUS_RADIO_BRCMODE3, 8, 96, 279, 10, 0
+END
+
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 IDD_PAGE_FINISH DIALOGEX 0, 0, 292, 144
 STYLE DS_SHELLFONT | WS_CHILDWINDOW
 EXSTYLE WS_EX_CONTROLPARENT
@@ -772,6 +814,7 @@ BEGIN
     IDD_PAGE_OGGVORBIS_SETTINGS   "Ogg Vorbis-Einstellungen"
     IDD_PAGE_AAC_SETTINGS         "AAC-Einstellungen"
     IDD_PAGE_WMA_SETTINGS         "WMA-Ausgabeeinstellungen"
+    IDD_PAGE_OPUS_SETTINGS        "Opus-Einstellungen"
     IDD_PAGE_FINISH               "Abschließen"
     IDR_MAINFRAME                 "winLAME"
     IDS_COMMON_ABOUTBOX           "Ü&ber winLAME"
@@ -793,6 +836,7 @@ BEGIN
     IDS_DLG_CAP_ENCODE            "Encoden"
     IDS_DLG_CAP_WMA               "WMA-Ausgabeeinstellungen"
     IDS_DLG_CAP_CDRIP             "CD-Auslesung"
+    IDS_DLG_CAP_OPUS              "Opus-Einstellungen"
     IDS_DLG_DESC_INPUT            "Wählen Sie Dateien aus, die winLAME encoden soll"
     IDS_DLG_DESC_OUTPUT           "Setzen Sie verschiedene Ausgabedatei-Einstellungen"
     IDS_DLG_DESC_PRESETS          "Wählen Sie vorbereitete Standardeinstellungen aus"
@@ -803,6 +847,7 @@ BEGIN
     IDS_DLG_DESC_ENCODE           "Starten Sie das Encoden"
     IDS_DLG_DESC_WMA              "Ändern Sie die WMA-Encoding-Einstellungen"
     IDS_DLG_DESC_CDRIP            "Liest Audiodaten von CDs"
+    IDS_DLG_DESC_OPUS             "Ändern Sie die Opus-Encoder-Einstellungen"
     IDS_INPUT_INFILES_SELECT      "Bitte wählen Sie Quelldateien aus ..."
     IDS_INPUT_LIST_COLNAME1       "Audiodatei"
     IDS_INPUT_LIST_COLNAME2       "Samplerate"
@@ -953,6 +998,7 @@ BEGIN
     IDS_FORMAT_INFO_OPUS_INPUT    "Opus-Datei, %i Kanäle, 48000 Hz (Original %u Hz)"
     IDS_FREEDB_LIST_ALBUMNAME     "Albumname"
     IDS_FREEDB_LIST_GENRE         "Genre"
+    IDS_OPUS_INVALID_BITRATE      "Ungültige Bitrate. Muss im Bereich 6...256 Kbps sein!"
     IDS_WIZARDPAGE_CANCEL         "Abbrechen"
     IDS_WIZARDPAGE_NEXT           "&Weiter >"
     IDS_WIZARDPAGE_BACK           "< &Zurück"

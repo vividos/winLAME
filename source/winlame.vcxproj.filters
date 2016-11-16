@@ -343,6 +343,12 @@
     <ClCompile Include="winlame\encoder\OpusOutputModule.cpp">
       <Filter>encoder files\encoder source files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\ui\OpusSettingsPage.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\old_ui\OpusSettingsPage_old.cpp">
+      <Filter>old_ui Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="winlame\encoder\AacInputModule.h">
@@ -695,6 +701,12 @@
     </ClInclude>
     <ClInclude Include="winlame\encoder\OpusOutputModule.hpp">
       <Filter>encoder files\encoder header files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\OpusSettingsPage.hpp">
+      <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\old_ui\OpusSettingsPage.h">
+      <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

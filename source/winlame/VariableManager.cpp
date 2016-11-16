@@ -184,6 +184,10 @@ WL_VARMAP_START(varMapVariables)
    WL_VARMAP_ENTRY(WaveFileFormat,      _T("waveFileFmt"),    _T("File Format"),0)
    WL_VARMAP_ENTRY(WaveWriteWavEx,      _T("waveWavEx"),      _T("Write WavEx Header"),0)
 
+   WL_VARMAP_ENTRY(OpusTargetBitrate,   _T("opusTargetBitrate"), _T("Opus Target Bitrate"), 256)
+   WL_VARMAP_ENTRY(OpusComplexity,      _T("opusComplexity"),    _T("Opus Complexity"), 10)
+   WL_VARMAP_ENTRY(OpusBitrateMode,     _T("opusBitrateMode"),   _T("Opus Bitrate Mode"), 0)
+
    WL_VARMAP_ENTRY(GeneralIsLastFile,   _T("isLastFile"),     _T("is last file"),      0)
 WL_VARMAP_END()
 

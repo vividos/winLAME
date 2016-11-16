@@ -141,6 +141,7 @@
     <ClCompile Include="winlame\old_ui\MainDlg.cpp" />
     <ClCompile Include="winlame\old_ui\OggVorbisSettingsPage_old.cpp" />
     <ClCompile Include="winlame\old_ui\OptionsDlg.cpp" />
+    <ClCompile Include="winlame\old_ui\OpusSettingsPage_old.cpp" />
     <ClCompile Include="winlame\old_ui\OutputPage.cpp" />
     <ClCompile Include="winlame\old_ui\PresetsPage.cpp" />
     <ClCompile Include="winlame\Path.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="winlame\ui\LAMESettingsPage.cpp" />
     <ClCompile Include="winlame\ui\LibsndfileSettingsPage.cpp" />
     <ClCompile Include="winlame\ui\OggVorbisSettingsPage.cpp" />
+    <ClCompile Include="winlame\ui\OpusSettingsPage.cpp" />
     <ClCompile Include="winlame\ui\OutputSettingsPage.cpp" />
     <ClCompile Include="winlame\ui\PresetSelectionPage.cpp" />
     <ClCompile Include="winlame\ui\WMASettingsPage.cpp" />
@@ -257,6 +259,7 @@
     <ClInclude Include="winlame\old_ui\MainDlg.h" />
     <ClInclude Include="winlame\old_ui\OggVorbisSettingsPage.h" />
     <ClInclude Include="winlame\old_ui\OptionsDlg.h" />
+    <ClInclude Include="winlame\old_ui\OpusSettingsPage.h" />
     <ClInclude Include="winlame\old_ui\OutputPage.h" />
     <ClInclude Include="winlame\old_ui\PageBase.h" />
     <ClInclude Include="winlame\old_ui\PresetsPage.h" />
@@ -278,6 +281,7 @@
     <ClInclude Include="winlame\ui\LAMESettingsPage.hpp" />
     <ClInclude Include="winlame\ui\LibsndfileSettingsPage.hpp" />
     <ClInclude Include="winlame\ui\OggVorbisSettingsPage.hpp" />
+    <ClInclude Include="winlame\ui\OpusSettingsPage.hpp" />
     <ClInclude Include="winlame\ui\OutputSettingsPage.hpp" />
     <ClInclude Include="winlame\ui\PresetSelectionPage.hpp" />
     <ClInclude Include="winlame\ui\RedrawLock.hpp" />
