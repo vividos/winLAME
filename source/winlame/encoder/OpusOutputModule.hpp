@@ -29,6 +29,12 @@
 // needed includes
 #include "ModuleInterface.h"
 #include <opus/opus.h>
+#include <opus/opus_multistream.h>
+extern "C"
+{
+#include "opusenc.h"
+#include "opus_header.h"
+}
 
 /// Opus output module
 class OpusOutputModule: public OutputModule
@@ -68,8 +74,81 @@ public:
    virtual void doneOutput();
 
 private:
+   /// initializes inopt struct
+   void InitInopt();
+
+   // set options from input stream
+   void SetInputStreamInfos(SampleContainer& samplecont);
+
+   /// stores track infos in comments
+   bool StoreTrackInfos(const TrackInfo& trackinfo);
+
+   /// initializes encoder
+   bool InitEncoder();
+
+   /// sets encoder options
+   bool SetEncoderOptions();
+
+   /// opens output file
+   bool OpenOutputFile(LPCTSTR outputFilename);
+
+   /// writes Opus header
+   bool WriteHeader();
+
+private:
    /// last error occured
    CString m_lasterror;
+
+   /// encoding options, from opusenc
+   oe_enc_opt inopt;
+
+   /// chosen bitrate, in bps (not Kbps)
+   opus_int32 m_bitrateInBps;
+
+   /// complexity value, from 0-10
+   int m_complexity;
+
+   /// bitrate mode: 0 VBR, 1 CVBR, 2 CBR
+   int m_opusBitrateMode;
+
+   /// output coding rate
+   opus_int32 m_codingRate;
+
+   /// indicates if input stream is downmixed; contains number of channels
+   // after downmixing, or 0 for no downmixing
+   int m_downmix;
+
+   /// Opus header written
+   OpusHeader header;
+
+   /// Opus Multichannel Surround encoder instance
+   std::shared_ptr<OpusMSEncoder> m_encoder;
+
+   /// Ogg stream state
+   ogg_stream_state os;
+
+   /// current Ogg page
+   ogg_page og;
+
+   /// current Ogg packet
+   ogg_packet op;
+
+   /// buffer for packets created by encoder
+   std::vector<unsigned char> m_packetBuffer;
+
+   /// number of bytes written so far
+   opus_int64 m_numBytesWritten;
+
+   /// number of pages written so far
+   opus_int64 m_numPagesWritten;
+
+   /// output file
+   std::shared_ptr<FILE> m_outputFile;
+
+   /// indicates if float mode is active; when the input module supports
+   /// 32-bit samples, we use these and send float samples to Opus, else we
+   // use 16-bit samples.
+   bool m_floatMode;
 };
 
 /// @}
