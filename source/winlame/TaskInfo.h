@@ -62,6 +62,9 @@ public:
    /// returns name of file, track, etc. associated with the task
    CString Name() const throw() { return m_cszName; }
 
+   /// returns description of encoder task
+   CString Description() const throw() { return m_description; }
+
    /// returns status of task
    TaskStatus Status() const throw() { return m_taskStatus; }
 
@@ -79,6 +82,9 @@ public:
    /// sets name of file, track, etc.
    void Name(const CString& cszName) { m_cszName = cszName; }
 
+   /// sets description
+   void Description(const CString& description) { m_description = description; }
+
    /// sets status of task
    void Status(TaskStatus taskStatus) throw() { m_taskStatus = taskStatus; }
 
@@ -88,6 +94,7 @@ public:
 private:
    unsigned int m_uiId;       ///< task id
    CString m_cszName;         ///< task name
+   CString m_description;     ///< task description
    TaskStatus m_taskStatus;   ///< status
    TaskType m_taskType;       ///< task type
    unsigned int m_uiProgress; ///< progress in percent

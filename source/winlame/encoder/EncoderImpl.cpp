@@ -191,6 +191,7 @@ void EncoderImpl::encode()
    // end thread
    running = false;
    paused = false;
+   finished = true;
 }
 
 bool EncoderImpl::PrepareInputModule(InputModule& inputModule, CString& cszInputFilename,

@@ -41,7 +41,10 @@ public:
    /// ctor
    EncoderImpl()
    {
-      running=false; paused=false; percent=0.f;
+      running=false;
+      paused=false;
+      finished = false;
+      percent=0.f;
       handler=NULL;
       settings_mgr=NULL;
       mod_manager=NULL;
@@ -329,6 +332,9 @@ protected:
 
    /// indicates if encoder is running
    bool running;
+
+   /// indicates if encoder has been finished
+   bool finished;
 
    /// error indicator
    int error;

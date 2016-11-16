@@ -44,14 +44,16 @@ TaskInfo EncoderTask::GetTaskInfo()
 
    info.Name(Path(m_settings.m_cszInputFilename).FilenameAndExt());
 
-   // TODO completed?
-   info.Status(running ? TaskInfo::statusRunning : TaskInfo::statusWaiting);
+   info.Description(EncoderImpl::getEncodingDescription());
 
-   // TODO set name, desc, etc.
-   float fPercent = EncoderImpl::queryPercentDone();
-   info.Progress(static_cast<int>(fPercent));
+   info.Status(
+      finished ? TaskInfo::statusCompleted :
+      error != 0 ? TaskInfo::statusError :
+      running ? TaskInfo::statusRunning :
+      TaskInfo::statusWaiting);
 
-   // TODO EncoderImpl::getEncodingDescription();
+   float percentDone = EncoderImpl::queryPercentDone();
+   info.Progress(static_cast<unsigned int>(percentDone));
 
    return info;
 }
