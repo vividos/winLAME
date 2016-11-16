@@ -101,19 +101,19 @@ OutputModule *GetNewOutputModule(int index)
       outmod = new LameOutputModule;
       break;
    case 1:
-      outmod = new OggVorbisOutputModule;
+      outmod = new OpusOutputModule;
       break;
    case 2:
-      outmod = new WaveOutputModule;
+      outmod = new OggVorbisOutputModule;
       break;
    case 3:
-      outmod = new BassWmaOutputModule;
+      outmod = new WaveOutputModule;
       break;
    case 4:
-      outmod = new AacOutputModule;
+      outmod = new BassWmaOutputModule;
       break;
    case 5:
-      outmod = new OpusOutputModule;
+      outmod = new AacOutputModule;
       break;
    }
    return outmod;
