@@ -51,7 +51,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl />
     <ClCompile>
-      <AdditionalIncludeDirectories>winlame;winlame\encoder;winlame\ui;winlame\old_ui;winlame\res;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag;libraries\include\speex;libraries\include\opus;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>winlame;winlame\encoder;winlame\ui;winlame\old_ui;winlame\res;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag;libraries\include\speex;libraries\include\opus;libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>-Zm140 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -67,7 +67,7 @@
     <Midl />
     <ClCompile>
       <AdditionalOptions>/IGNORE:4049 -Zm140 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>winlame;winlame\encoder;winlame\ui;winlame\old_ui;winlame\res;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag;libraries\include\speex;libraries\include\opus;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>winlame;winlame\encoder;winlame\ui;winlame\old_ui;winlame\res;libraries\include;nlame;libraries\include\wtl;libraries\src\libid3tag;libraries\include\speex;libraries\include\opus;libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile />
@@ -375,6 +375,9 @@
     </ProjectReference>
     <ProjectReference Include="libraries\src\libmad\libmad.vcxproj">
       <Project>{b89e54c7-562e-4444-a6b2-63ff8db043d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="libraries\src\opus-tools\opus-tools.vcxproj">
+      <Project>{67749bc5-f457-478a-9e92-3986654bc068}</Project>
     </ProjectReference>
     <ProjectReference Include="nlame.vcxproj">
       <Project>{0b3f6b1a-d78e-47db-a48c-d3daa16e17ce}</Project>
