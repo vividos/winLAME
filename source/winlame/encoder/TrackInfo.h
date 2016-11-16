@@ -79,6 +79,19 @@ public:
       return avail ? iter->second : _T("");
    }
 
+   /// retrieves a text info value
+   bool TextInfo(TrackInfoTextType type, CString& text) const
+   {
+      std::map<TrackInfoTextType, CString>::const_iterator iter = m_mapTextInfos.find(type);
+      bool avail = iter != m_mapTextInfos.end();
+      if (avail)
+         text = iter->second;
+      else
+         text.Empty();
+
+      return avail;
+   }
+
    /// sets a number info value
    void NumberInfo(TrackInfoNumberType type, int value)
    {
