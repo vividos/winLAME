@@ -1,15 +1,30 @@
 TODO list for winLAME
 
-winLAME 2014 beta:
-
-- Warn about lossy transcoding on Finish page
+winLAME 2017 beta 1, must-do-things:
 - Opus Output module
+- LAME: check writing ID3v2 tags
+- test every input module, encoding, tag reading/writing
+- implement set of finished task ids
+- Add showing detail infos about task
+- implement giving LAME context to tasks, for nogap encoding
+- implement writing playlist
+- cd extraction/encoding parallel
+- Add presets for Opus, Wave, Ogg Vorbis
 
-winLAME 2009 release:
+winLAME 2017 beta 1, nice-to-have:
+- add status bar panes for different threads
+- implement Finish page, warn about deleting source files, list target path, files, etc.
+- Warn about lossy transcoding on Finish page
+- LAME: implement fake FILE* for MSVC 2008
+- Add "Finished encoding action" to ribbon -> shutdown, close, etc.
+- Add adjusting number of threads in thread pool to settings
+- remove code TODOs
+- replace cppxml with rapidxml
+- Add translated preset texts
 - check all tooltip texts
 
 future versions:
 - do "processing" page to resample, normalize, etc.
-- mp3 dither
-- id3 tag editor
-- cd extraction/encoding parallel
+- mp3 libmad dither
+- ID3 tag editor
+- ReplayGain
