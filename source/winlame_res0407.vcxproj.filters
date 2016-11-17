@@ -34,6 +34,8 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="winlame\res\MainFrameRibbon.0407.xml" />
+    <CustomBuild Include="winlame\res\MainFrameRibbon.0407.xml">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>
