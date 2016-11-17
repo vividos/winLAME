@@ -25,6 +25,7 @@
 #include "TaskManager.h"
 #include "TaskInfo.h"
 #include "RedrawLock.hpp"
+#include <set>
 
 using UI::TasksView;
 
@@ -89,6 +90,17 @@ void TasksView::Init()
 void TasksView::UpdateTasks()
 {
    RedrawLock lock(*this);
+
+   std::set<int> selectedTaskIds;
+
+   int selectedItemIndex = GetNextItem(-1, LVNI_SELECTED);
+   while (selectedItemIndex != -1)
+   {
+      selectedTaskIds.insert(static_cast<int>(GetItemData(selectedItemIndex)));
+
+      selectedItemIndex = GetNextItem(selectedItemIndex, LVNI_SELECTED);
+   }
+
    DeleteAllItems();
 
    std::vector<TaskInfo> taskInfoList = m_taskManager.CurrentTasks();
@@ -115,6 +127,12 @@ void TasksView::UpdateTasks()
 
       CString statusText = StatusTextFromStatus(info.Status());
       SetItemText(itemIndex, c_statusColumn, statusText);
+
+      // select item when previously selected
+      if (selectedTaskIds.find(info.Id()) != selectedTaskIds.end())
+      {
+         SetItemState(itemIndex, LVIS_SELECTED, LVIS_SELECTED);
+      }
    }
 }
 
