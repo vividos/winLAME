@@ -68,7 +68,8 @@ enum
    FacilityOggVorbis,
    FacilityWave,
    FacilityAAC,
-   FacilityWma
+   FacilityWma,
+   FacilityOpus,
 };
 
 

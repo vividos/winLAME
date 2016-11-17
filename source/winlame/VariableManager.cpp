@@ -128,6 +128,7 @@ WL_VARMAP_START(varMapFacility)
    WL_VARMAP_ENTRY1(FacilityWave,     _T("wave"),     _T("Wave"))
    WL_VARMAP_ENTRY1(FacilityAAC,      _T("aac"),      _T("AAC"))
    WL_VARMAP_ENTRY1(FacilityWma,      _T("wma"),      _T("WMA"))
+   WL_VARMAP_ENTRY1(FacilityOpus,     _T("opus"),     _T("Opus"))
 WL_VARMAP_END()
 
 
@@ -139,7 +140,8 @@ WL_VARMAP_START(varMapFacilityToModule)
    WL_VARMAP_ENTRY1(ID_OM_WAVE,        _T("wave"),     _T("Wave"))
    WL_VARMAP_ENTRY1(ID_OM_AAC,         _T("aac"),      _T("AAC"))
    WL_VARMAP_ENTRY1(ID_OM_BASSWMA,     _T("wma"),      _T("WMA"))
-WL_VARMAP_END()
+   WL_VARMAP_ENTRY1(ID_OM_OPUS,        _T("opus"),     _T("Opus"))
+   WL_VARMAP_END()
 
 
 // variable varmap
