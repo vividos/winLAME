@@ -63,9 +63,43 @@ void EncoderTask::Run()
    running = true;
 
    EncoderImpl::encode();
+
+   if (!m_errorHandler.AllErrors().empty())
+   {
+      AddErrorText();
+   }
 }
 
 void EncoderTask::Stop()
 {
    EncoderImpl::stopEncode();
 }
+
+void EncoderTask::AddErrorText()
+{
+   CString errorText;
+
+   bool isFirst = true;
+
+   std::for_each(m_errorHandler.AllErrors().begin(), m_errorHandler.AllErrors().end(),
+      [&](const AlwaysSkipErrorHandler::ErrorInfo& info)
+   {
+      if (isFirst)
+      {
+         errorText.Format(IDS_ENCODER_ERROR_ERRORINFO_FILENAME_S,
+            info.m_cszInputFilename);
+
+         isFirst = false;
+      }
+
+      errorText.Append(_T("\r\n"));
+
+      errorText.AppendFormat(IDS_ENCODER_ERROR_ERRORINFO_SSI,
+         info.m_cszModuleName,
+         info.m_cszErrorMessage,
+         info.m_iErrorNumber);
+   });
+
+   SetTaskError(errorText);
+}
+

@@ -104,6 +104,9 @@ public:
       return bSkipDisabled ? EncoderErrorHandler::Continue : EncoderErrorHandler::SkipFile;
    }
 
+   /// returns list of all errors
+   const std::vector<ErrorInfo>& AllErrors() const throw() { return m_vecAllErrors; }
+
 private:
    std::vector<ErrorInfo> m_vecAllErrors;
 };
@@ -128,8 +131,14 @@ public:
    virtual void Stop();
 
 private:
+   /// adds error texts from error handler to task result
+   void AddErrorText();
+
+private:
+   /// encoder task settings
    EncoderTaskSettings m_settings;
 
+   /// error handler
    AlwaysSkipErrorHandler m_errorHandler;
 };
 

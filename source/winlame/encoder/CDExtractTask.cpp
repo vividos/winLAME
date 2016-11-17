@@ -90,7 +90,7 @@ bool CDExtractTask::ExtractTrack(const CString& cszTempFilename)
    CString cszCDID(BASS_CD_GetID(m_discinfo.m_nDiscDrive, BASS_CDID_CDDB));
    if (cszCDID != m_discinfo.m_cszCDID)
    {
-      // TODO AppMessageBox(m_hWnd, IDS_CDRIP_PAGE_ERROR_WRONG_CD, MB_OK | MB_ICONEXCLAMATION);
+      SetTaskError(IDS_CDRIP_PAGE_ERROR_WRONG_CD);
       return false;
    }
 
@@ -111,7 +111,7 @@ bool CDExtractTask::ExtractTrack(const CString& cszTempFilename)
 
    if (!outmod.isAvailable())
    {
-      //SetTaskError(IDS_CDRIP_PAGE_WAVE_OUTPUT_NOT_AVAIL); // TODO
+      SetTaskError(IDS_CDRIP_PAGE_WAVE_OUTPUT_NOT_AVAIL);
       return false;
    }
 
@@ -130,9 +130,9 @@ bool CDExtractTask::ExtractTrack(const CString& cszTempFilename)
       int nRet = outmod.initOutput(cszTempFilename, mgr, outtrackinfo, samplecont);
       if (nRet < 0)
       {
-         CString cszText;
-         cszText.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, cszTempFilename);
-         //SetTaskError(cszText); // TODO
+         CString text;
+         text.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, cszTempFilename);
+         SetTaskError(text);
          return false;
       }
    }

@@ -203,6 +203,16 @@ void TaskManager::RunTask(std::shared_ptr<Task> spTask)
    // store the last task info for the completed task
    TaskInfo info = spTask->GetTaskInfo();
 
+   CString errorText = spTask->ErrorText();
+
+   if (!errorText.IsEmpty())
+   {
+      info.Status(TaskInfo::statusError);
+
+      if (info.Progress() > 100)
+         info.Progress(100);
+   }
+
    if (info.Status() == TaskInfo::statusCompleted)
       info.Progress(100);
 

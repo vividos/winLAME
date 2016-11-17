@@ -50,7 +50,31 @@ protected:
    /// sets task id
    void Id(unsigned int id) throw() { m_id = id; }
 
+   /// sets task error text
+   void SetTaskError(UINT stringResourceId)
+   {
+      m_errorText.LoadString(stringResourceId);
+
+      // must be non-empty to be recognized as error
+      ATLASSERT(!m_errorText.IsEmpty());
+   }
+
+   /// sets task error text
+   void SetTaskError(const CString& errorText)
+   {
+      m_errorText = errorText;
+
+      // must be non-empty to be recognized as error
+      ATLASSERT(!m_errorText.IsEmpty());
+   }
+
+   /// returns error text, if any
+   const CString& ErrorText() const throw() { return m_errorText; }
+
 private:
    /// task id
    unsigned int m_id;
+
+   /// error text, or empty when not set yet
+   CString m_errorText;
 };
