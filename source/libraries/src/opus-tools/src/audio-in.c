@@ -168,6 +168,75 @@ void setup_scaler(oe_enc_opt *opt, float scale) {
     d->scale_factor = scale;
 }
 
+typedef struct {
+    audio_read_func real_reader;
+    void *real_readdata;
+    ogg_int64_t *original_samples;
+    int channels;
+    int lpc_ptr;
+    int *extra_samples;
+    float *lpc_out;
+} padder;
+
+/* Read audio data, appending padding to make up any gap
+ * between the available and requested number of samples
+ * with LPC-predicted data to minimize the pertubation of
+ * the valid data that falls in the same frame.
+ */
+static long read_padder(void *data, float *buffer, int samples) {
+    padder *d = data;
+    long in_samples = d->real_reader(d->real_readdata, buffer, samples);
+    int i, extra=0;
+    const int lpc_order=32;
+
+    if(d->original_samples)*d->original_samples+=in_samples;
+
+    if(in_samples<samples){
+      if(d->lpc_ptr<0){
+        d->lpc_out=calloc(d->channels * *d->extra_samples, sizeof(*d->lpc_out));
+        if(in_samples>lpc_order*2){
+          float *lpc=alloca(lpc_order*sizeof(*lpc));
+          for(i=0;i<d->channels;i++){
+            vorbis_lpc_from_data(buffer+i,lpc,in_samples,lpc_order,d->channels);
+            vorbis_lpc_predict(lpc,buffer+i+(in_samples-lpc_order)*d->channels,
+                               lpc_order,d->lpc_out+i,*d->extra_samples,d->channels);
+          }
+        }
+        d->lpc_ptr=0;
+      }
+      extra=samples-in_samples;
+      if(extra>*d->extra_samples)extra=*d->extra_samples;
+      *d->extra_samples-=extra;
+    }
+    memcpy(buffer+in_samples*d->channels,d->lpc_out+d->lpc_ptr*d->channels,extra*d->channels*sizeof(*buffer));
+    d->lpc_ptr+=extra;
+    return in_samples+extra;
+}
+
+void setup_padder(oe_enc_opt *opt,ogg_int64_t *original_samples) {
+    padder *d = calloc(1, sizeof(padder));
+
+    d->real_reader = opt->read_samples;
+    d->real_readdata = opt->readdata;
+
+    opt->read_samples = read_padder;
+    opt->readdata = d;
+    d->channels = opt->channels;
+    d->extra_samples = &opt->extraout;
+    d->original_samples=original_samples;
+    d->lpc_ptr = -1;
+    d->lpc_out = NULL;
+}
+
+void clear_padder(oe_enc_opt *opt) {
+    padder *d = opt->readdata;
+
+    opt->read_samples = d->real_reader;
+    opt->readdata = d->real_readdata;
+
+    if(d->lpc_out)free(d->lpc_out);
+    free(d);
+}
 
 typedef struct {
     SpeexResamplerState *resampler;

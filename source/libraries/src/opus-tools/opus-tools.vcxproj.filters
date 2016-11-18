@@ -23,6 +23,9 @@
     <ClCompile Include="src\opus_header.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\lpc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opusenc.h">
