@@ -95,6 +95,27 @@ private:
    /// writes Opus header
    bool WriteHeader();
 
+   /// reads float samples from 16-bit or 32-bit buffer
+   static long ReadFloatSamplesStatic(void* src, float* buffer, int samples);
+
+   /// reads float samples from 16-bit buffer
+   long ReadFloatSamples16(float* buffer, int samples);
+
+   /// reads float samples from 32-bit buffer
+   long ReadFloatSamples32(float* buffer, int samples);
+
+   /// refills input sample buffer from sample container
+   int RefillInputSampleBuffer(SampleContainer& samples);
+
+   /// feeds the input buffer to the encoder until it doesn't hold a complete frame anymore
+   bool EncodeInputBufferUntilEmpty();
+
+   /// encodes remaining input buffer, even when it isn't a full frame anymore
+   void EncodeRemainingInputBuffer();
+
+   /// encodes input buffer samples for one frame with encoder
+   bool EncodeInputBufferFrame();
+
 private:
    /// last error occured
    CString m_lasterror;
@@ -136,6 +157,21 @@ private:
    /// buffer for packets created by encoder
    std::vector<unsigned char> m_packetBuffer;
 
+   /// number of samples for one frame, per channel
+   opus_int32 m_frameSize;
+
+   /// number of samples per frame we should feed the encoder with, for all channels
+   opus_int32 m_numSamplesPerFrame;
+
+   /// input buffer for 16-bit samples
+   std::vector<opus_int16> m_inputInt16Buffer;
+
+   /// input buffer for 32-bit samples
+   std::vector<opus_int32> m_inputInt32Buffer;
+
+   /// input buffer for float samples; contains at most one frame
+   std::vector<float> m_inputFloatBuffer;
+
    /// number of bytes written so far
    opus_int64 m_numBytesWritten;
 
@@ -145,10 +181,32 @@ private:
    /// output file
    std::shared_ptr<FILE> m_outputFile;
 
-   /// indicates if float mode is active; when the input module supports
-   /// 32-bit samples, we use these and send float samples to Opus, else we
-   // use 16-bit samples.
-   bool m_floatMode;
+   /// indicates if the input module supports 32-bit samples
+   bool m_32bitMode;
+
+   /// end of stream flag
+   int eos;
+
+   /// total number of samples processed
+   opus_int64 total_samples;
+
+   /// current Ogg packet number, starting with 0
+   ogg_int32_t m_currentPacketNumber;
+
+   /// number of original samples, before padding
+   ogg_int64_t original_samples;
+
+   /// encoder granule pos
+   ogg_int64_t enc_granulepos;
+
+   /// last granule pos
+   ogg_int64_t last_granulepos;
+
+   /// last segments pos (?)
+   int last_segments;
+
+   /// maximum delay in number of samples
+   int max_ogg_delay;
 };
 
 /// @}
