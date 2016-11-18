@@ -47,7 +47,7 @@ void setup_padder(oe_enc_opt *opt, ogg_int64_t *original_samples);
 void clear_padder(oe_enc_opt *opt);
 int setup_downmix(oe_enc_opt *opt, int out_channels);
 void clear_downmix(oe_enc_opt *opt);
-void comment_add(char **comments, int* length, char *tag, char *val);
+//void comment_add(char **comments, int* length, char *tag, char *val);
 
 typedef struct
 {
