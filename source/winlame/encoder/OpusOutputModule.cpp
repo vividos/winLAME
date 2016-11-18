@@ -112,11 +112,30 @@ bool OpusOutputModule::isAvailable()
 
 void OpusOutputModule::getDescription(CString& desc)
 {
+   LPCTSTR bitrateMode = _T("???");
+
+   switch (m_opusBitrateMode)
+   {
+   case 0: bitrateMode = _T("VBR"); break;
+   case 1: bitrateMode = _T("CVBR"); break;
+   case 2: bitrateMode = _T("Hard-CBR"); break;
+   default:
+      ATLASSERT(false);
+      break;
+   }
+
+   desc.Format(IDS_FORMAT_INFO_OPUS_OUTPUT,
+      inopt.channels,
+      inopt.rate,
+      m_32bitMode ? 32 : 16,
+      bitrateMode,
+      m_bitrateInBps / 1000,
+      m_complexity);
 }
 
 void OpusOutputModule::getVersionString(CString& version, int special)
 {
-   ATLASSERT(false);
+   version = opus_get_version_string();
 }
 
 int OpusOutputModule::initOutput(LPCTSTR outfilename,

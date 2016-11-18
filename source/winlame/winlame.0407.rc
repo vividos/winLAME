@@ -998,6 +998,7 @@ BEGIN
     IDS_FORMAT_INFO_AAC_OUTPUT    "MPEG-%u AAC, %s%u%s, %u Kanäle, Tiefpass %u Hz%s%s%s"
     IDS_FORMAT_INFO_SPEEX_INPUT   "Speex-Datei, %s%s, %i Kanäle, %i Hz (%hs)"
     IDS_FORMAT_INFO_OPUS_INPUT    "Opus-Datei, %i Kanäle, 48000 Hz (Original %u Hz)"
+    IDS_FORMAT_INFO_OPUS_OUTPUT   "Opus, %i Kanäle, %i Hz, %i bit, %s, %i Kbps, Komplexität %i"
     IDS_FREEDB_LIST_ALBUMNAME     "Albumname"
     IDS_FREEDB_LIST_GENRE         "Genre"
     IDS_OPUS_INVALID_BITRATE      "Ungültige Bitrate. Muss im Bereich 6...256 Kbps sein!"

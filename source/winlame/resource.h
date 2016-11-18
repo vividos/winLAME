@@ -401,6 +401,7 @@
 #define IDS_FORMAT_INFO_AAC_OUTPUT              42022
 #define IDS_FORMAT_INFO_SPEEX_INPUT             42023
 #define IDS_FORMAT_INFO_OPUS_INPUT              42024
+#define IDS_FORMAT_INFO_OPUS_OUTPUT             42025
 #define IDS_FREEDB_LIST_ALBUMNAME               42100
 #define IDS_FREEDB_LIST_GENRE                   42101
 #define IDS_OPUS_INVALID_BITRATE                42200
