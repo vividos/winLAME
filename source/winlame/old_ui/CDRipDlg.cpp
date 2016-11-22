@@ -34,6 +34,8 @@
 #include "FreedbResolver.hpp"
 #include "FreeDbDiscListDlg.hpp"
 
+const DWORD INVALID_DRIVE_ID = 0xffffffff;
+
 CDRipDlg::CDRipDlg(UISettings& uiSettings, UIinterface& UIinterface)
 :m_uiSettings(uiSettings),
  m_bDriveActive(false),
@@ -218,7 +220,9 @@ LRESULT CDRipDlg::OnChangedEditCtrl(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 DWORD CDRipDlg::GetCurrentDrive()
 {
    int nSel = m_cbDrives.GetCurSel();
-   ATLASSERT(nSel != -1);
+   if (nSel == -1)
+      return INVALID_DRIVE_ID;
+
    return m_cbDrives.GetItemData(nSel);
 }
 
@@ -227,6 +231,8 @@ void CDRipDlg::RefreshCDList()
    CWaitCursor waitCursor;
 
    DWORD nDrive = GetCurrentDrive();
+   if (nDrive == INVALID_DRIVE_ID)
+      return;
 
    UI::RedrawLock lock(m_lcTracks);
    m_lcTracks.DeleteAllItems();
@@ -429,14 +435,16 @@ void CDRipDlg::RefreshCDList()
 
 void CDRipDlg::CheckCD()
 {
+   DWORD dwDrive = GetCurrentDrive();
+   if (dwDrive == INVALID_DRIVE_ID)
+      return;
+
    // check if current track still plays
-   BOOL fPlaying = BASS_ACTIVE_PLAYING == BASS_CD_Analog_IsActive(GetCurrentDrive()) ? TRUE : FALSE;
+   BOOL fPlaying = BASS_ACTIVE_PLAYING == BASS_CD_Analog_IsActive(dwDrive) ? TRUE : FALSE;
    ::EnableWindow(GetDlgItem(IDC_CDSELECT_BUTTON_STOP), fPlaying);
 
    // check for new cd in drive
-   DWORD nDrive = GetCurrentDrive();
-
-   bool bIsReady = BASS_CD_IsReady(nDrive) == TRUE;
+   bool bIsReady = BASS_CD_IsReady(dwDrive) == TRUE;
    if (m_bDriveActive != bIsReady)
    {
       RefreshCDList();
@@ -452,19 +460,16 @@ void CDRipDlg::UpdateTrackManager()
    CDRipDiscInfo& discinfo = pManager->GetDiscInfo();
    discinfo.m_nDiscDrive = nDrive;
 
-   GetDlgItemText(IDC_CDSELECT_EDIT_TITLE, discinfo.m_cszDiscTitle.GetBuffer(256), 256);
-   discinfo.m_cszDiscTitle.ReleaseBuffer();
+   GetDlgItemText(IDC_CDSELECT_EDIT_TITLE, discinfo.m_cszDiscTitle);
 
-   GetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, discinfo.m_cszDiscArtist.GetBuffer(256), 256);
-   discinfo.m_cszDiscArtist.ReleaseBuffer();
+   GetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, discinfo.m_cszDiscArtist);
 
    discinfo.m_nYear = GetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, NULL, FALSE);
 
    int nItem = m_cbGenre.GetCurSel();
    if (nItem == CB_ERR)
    {
-      m_cbGenre.GetWindowText(discinfo.m_cszGenre.GetBuffer(512), 512);
-      discinfo.m_cszGenre.ReleaseBuffer();
+      m_cbGenre.GetWindowText(discinfo.m_cszGenre);
    }
    else
       m_cbGenre.GetLBText(nItem, discinfo.m_cszGenre);
