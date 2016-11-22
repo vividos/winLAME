@@ -87,8 +87,6 @@ int CDReadoutModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
 
    trackinfo.TextInfo(TrackInfoAlbum, discinfo.m_cszDiscTitle);
 
-   CString cszFormat;
-
    // year
    if (discinfo.m_nYear != 0)
       trackinfo.NumberInfo(TrackInfoYear, discinfo.m_nYear);
