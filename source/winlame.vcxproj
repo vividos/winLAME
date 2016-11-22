@@ -208,7 +208,9 @@
   <ItemGroup>
     <ClInclude Include="winlame\Atl.h" />
     <ClInclude Include="winlame\Boost.h" />
+    <ClInclude Include="winlame\CDRipDiscInfo.h" />
     <ClInclude Include="winlame\CDRipTitleFormatManager.hpp" />
+    <ClInclude Include="winlame\CDRipTrackInfo.h" />
     <ClInclude Include="winlame\CommandLineParser.hpp" />
     <ClInclude Include="winlame\encoder\AacInputModule.h" />
     <ClInclude Include="winlame\encoder\AacOutputModule.h" />

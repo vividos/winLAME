@@ -27,47 +27,10 @@
 
 // needed includes
 #include <boost/noncopyable.hpp>
+#include "CDRipDiscInfo.h"
+#include "CDRipTrackInfo.h"
 
 extern LPCTSTR g_pszCDRipPrefix;
-
-struct CDRipDiscInfo
-{
-   CDRipDiscInfo()
-      :m_bVariousArtists(false),
-       m_nYear(0),
-       m_nDiscDrive(0)
-   {
-   }
-
-   CString m_cszDiscTitle;
-   CString m_cszDiscArtist;
-   bool m_bVariousArtists;
-   unsigned int m_nYear;
-   unsigned int m_nDiscDrive;
-   CString m_cszGenre;
-
-   CString m_cszCDID;
-};
-
-struct CDRipTrackInfo
-{
-   CDRipTrackInfo()
-      :m_nTrackOnDisc(0),
-       m_nTrackLength(0),
-       m_bActive(true)
-   {
-   }
-
-   unsigned int m_nTrackOnDisc;
-   CString m_cszTrackTitle;
-
-   unsigned int m_nTrackLength;
-
-   bool m_bActive;
-
-   CString m_cszRippedFilename;
-};
-
 
 class CDRipTrackManager: public boost::noncopyable
 {

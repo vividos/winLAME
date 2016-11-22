@@ -708,6 +708,12 @@
     <ClInclude Include="winlame\old_ui\OpusSettingsPage.h">
       <Filter>old_ui Files\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="winlame\CDRipTrackInfo.h">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\CDRipDiscInfo.h">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="winlame\res\btnicons.bmp">
