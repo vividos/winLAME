@@ -27,6 +27,7 @@
 #include "IoCContainer.hpp"
 #include "UISettings.h"
 #include "DynamicLibrary.h"
+#include "IniFile.h"
 #include "basscd.h"
 #include "FreedbResolver.hpp"
 #include "CommonStuff.h"
@@ -385,20 +386,21 @@ bool InputCDPage::ReadCdplayerIni(bool& bVarious)
 
    CString cdplayer_id(cdplayer_id_raw);
 
+   IniFile ini(cszCDPlayerIniFilename);
+
    unsigned int nNumTracks = 0;
-   if (cdplayer_id_raw != NULL && 0 != (nNumTracks = ::GetPrivateProfileInt(cdplayer_id, _T("numtracks"), 0, cszCDPlayerIniFilename)))
+   if (cdplayer_id_raw != NULL &&
+      0 != (nNumTracks = ini.GetInt(cdplayer_id, _T("numtracks"), 0)))
    {
       CString cszText;
       // title
-      ::GetPrivateProfileString(cdplayer_id, _T("title"), _T("[]#"), cszText.GetBuffer(512), 512, cszCDPlayerIniFilename);
-      cszText.ReleaseBuffer();
+      cszText = ini.GetString(cdplayer_id, _T("title"), _T("[]#"));
 
       if (cszText != _T("[]#"))
          SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, cszText);
 
       // artist
-      ::GetPrivateProfileString(cdplayer_id, _T("artist"), _T("[]#"), cszText.GetBuffer(512), 512, cszCDPlayerIniFilename);
-      cszText.ReleaseBuffer();
+      cszText = ini.GetString(cdplayer_id, _T("artist"), _T("[]#"));
 
       if (cszText != _T("[]#"))
          SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, cszText);
@@ -407,15 +409,13 @@ bool InputCDPage::ReadCdplayerIni(bool& bVarious)
          bVarious = true;
 
       // year
-      ::GetPrivateProfileString(cdplayer_id, _T("year"), _T("[]#"), cszText.GetBuffer(512), 512, cszCDPlayerIniFilename);
-      cszText.ReleaseBuffer();
+      cszText = ini.GetString(cdplayer_id, _T("year"), _T("[]#"));
 
       if (cszText != _T("[]#"))
          SetDlgItemText(IDC_CDSELECT_EDIT_YEAR, cszText);
 
       // genre
-      ::GetPrivateProfileString(cdplayer_id, _T("genre"), _T("[]#"), cszText.GetBuffer(512), 512, cszCDPlayerIniFilename);
-      cszText.ReleaseBuffer();
+      cszText = ini.GetString(cdplayer_id, _T("genre"), _T("[]#"));
 
       if (cszText != _T("[]#"))
       {
@@ -436,8 +436,7 @@ bool InputCDPage::ReadCdplayerIni(bool& bVarious)
       {
          cszNumTrack.Format(_T("%u"), n);
 
-         ::GetPrivateProfileString(cdplayer_id, cszNumTrack, _T("[]#"), cszText.GetBuffer(512), 512, cszCDPlayerIniFilename);
-         cszText.ReleaseBuffer();
+         cszText = ini.GetString(cdplayer_id, cszNumTrack, _T("[]#"));
 
          if (cszText != _T("[]#"))
          {
@@ -554,26 +553,28 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
 
    CString cszFormat;
 
+   IniFile ini(cszCDPlayerIniFilename);
+
    // numtracks
    unsigned int nNumTracks = m_lcTracks.GetItemCount();
    cszFormat.Format(_T("%u"), nNumTracks);
-   ::WritePrivateProfileString(cdplayer_id, _T("numtracks"), cszFormat, cszCDPlayerIniFilename);
+   ini.WriteString(cdplayer_id, _T("numtracks"), cszFormat);
 
    // artist
-   ::WritePrivateProfileString(cdplayer_id, _T("artist"), discinfo.m_cszDiscArtist, cszCDPlayerIniFilename);
+   ini.WriteString(cdplayer_id, _T("artist"), discinfo.m_cszDiscArtist);
 
    // title
-   ::WritePrivateProfileString(cdplayer_id, _T("title"), discinfo.m_cszDiscTitle, cszCDPlayerIniFilename);
+   ini.WriteString(cdplayer_id, _T("title"), discinfo.m_cszDiscTitle);
 
    // year
    if (discinfo.m_nYear > 0)
    {
       cszFormat.Format(_T("%u"), discinfo.m_nYear);
-      ::WritePrivateProfileString(cdplayer_id, _T("year"), cszFormat, cszCDPlayerIniFilename);
+      ini.WriteString(cdplayer_id, _T("year"), cszFormat);
    }
 
    // genre
-   ::WritePrivateProfileString(cdplayer_id, _T("genre"), discinfo.m_cszGenre, cszCDPlayerIniFilename);
+   ini.WriteString(cdplayer_id, _T("genre"), discinfo.m_cszGenre);
 
    // tracks
    CString cszTrackText;
@@ -583,7 +584,7 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
 
       m_lcTracks.GetItemText(n, 1, cszTrackText);
 
-      ::WritePrivateProfileString(cdplayer_id, cszFormat, cszTrackText, cszCDPlayerIniFilename);
+      ini.WriteString(cdplayer_id, cszFormat, cszTrackText);
    }
 }
 
