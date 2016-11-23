@@ -134,6 +134,9 @@ LRESULT CDRipDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
    // misc.
    m_cbDrives.SetCurSel(0);
 
+   m_buttonPlay.EnableWindow(false);
+   m_buttonStop.EnableWindow(false);
+
    m_bEditedTrack = false;
 
    CheckCD();
@@ -174,7 +177,7 @@ LRESULT CDRipDlg::OnClickedButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
    DWORD nTrack = m_lcTracks.GetItemData(nItem);
 
    BASS_CD_Analog_Play(nDrive, nTrack, 0);
-   ::EnableWindow(GetDlgItem(IDC_CDSELECT_BUTTON_STOP), TRUE);
+   m_buttonStop.EnableWindow(true);
 
    return 0;
 }
@@ -183,7 +186,7 @@ LRESULT CDRipDlg::OnClickedButtonStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 {
    BASS_CD_Analog_Stop(GetCurrentDrive());
 
-   ::EnableWindow(GetDlgItem(IDC_CDSELECT_BUTTON_STOP), FALSE);
+   m_buttonStop.EnableWindow(false);
 
    return 0;
 }
@@ -203,10 +206,10 @@ LRESULT CDRipDlg::OnClickedButtonOptions(WORD wNotifyCode, WORD wID, HWND hWndCt
 
 LRESULT CDRipDlg::OnClickedCheckVariousArtists(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-   bool bCheck = BST_CHECKED == SendDlgItemMessage(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, BM_GETCHECK);
+   bool bCheck = BST_CHECKED == m_checkVariousArtists.GetCheck();
 
-   ::EnableWindow(GetDlgItem(IDC_CDSELECT_EDIT_ARTIST), bCheck ? FALSE : TRUE);
-   ::EnableWindow(GetDlgItem(IDC_CDSELECT_STATIC_ARTIST), bCheck ? FALSE : TRUE);
+   GetDlgItem(IDC_CDSELECT_EDIT_ARTIST).EnableWindow(bCheck);
+   GetDlgItem(IDC_CDSELECT_STATIC_ARTIST).EnableWindow(bCheck);
 
    return 0;
 }
@@ -231,12 +234,14 @@ void CDRipDlg::RefreshCDList()
 {
    CWaitCursor waitCursor;
 
+   UI::RedrawLock lock(m_lcTracks);
+   m_lcTracks.DeleteAllItems();
+
+   m_buttonPlay.EnableWindow(false);
+
    DWORD nDrive = GetCurrentDrive();
    if (nDrive == INVALID_DRIVE_ID)
       return;
-
-   UI::RedrawLock lock(m_lcTracks);
-   m_lcTracks.DeleteAllItems();
 
    m_bEditedTrack = false;
 
@@ -290,13 +295,15 @@ void CDRipDlg::RefreshCDList()
       }
    }
 
+   if (uMaxCDTracks > 0)
+      m_buttonPlay.EnableWindow(true);
+
    bool bVarious = false;
    if (!ReadCdplayerIni(bVarious))
       ReadCDText(bVarious);
 
    // check or uncheck "various artists"
-   SendDlgItemMessage(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, BM_SETCHECK,
-      bVarious ? BST_CHECKED : BST_UNCHECKED, 0);
+   m_checkVariousArtists.SetCheck(bVarious ? BST_CHECKED : BST_UNCHECKED);
 
    BOOL bDummy = true;
    OnClickedCheckVariousArtists(0, 0, NULL, bDummy);
@@ -456,7 +463,7 @@ void CDRipDlg::CheckCD()
 
    // check if current track still plays
    BOOL fPlaying = BASS_ACTIVE_PLAYING == BASS_CD_Analog_IsActive(dwDrive) ? TRUE : FALSE;
-   ::EnableWindow(GetDlgItem(IDC_CDSELECT_BUTTON_STOP), fPlaying);
+   m_buttonStop.EnableWindow(fPlaying);
 
    // check for new cd in drive
    bool bIsReady = BASS_CD_IsReady(dwDrive) == TRUE;
@@ -489,7 +496,7 @@ void CDRipDlg::UpdateTrackManager()
    else
       m_cbGenre.GetLBText(nItem, discinfo.m_cszGenre);
 
-   discinfo.m_bVariousArtists = BST_CHECKED == SendDlgItemMessage(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, BM_GETCHECK);
+   discinfo.m_bVariousArtists = BST_CHECKED == m_checkVariousArtists.GetCheck();
 
    discinfo.m_cszCDID = BASS_CD_GetID(nDrive, BASS_CDID_CDDB);
 
