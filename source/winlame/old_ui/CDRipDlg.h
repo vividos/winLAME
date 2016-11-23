@@ -147,6 +147,8 @@ END_DDX_MAP()
    DWORD GetCurrentDrive();
 
    void RefreshCDList();
+   bool ReadCdplayerIni(bool& bVarious);
+   void ReadCDText(bool& bVarious);
    void CheckCD();
    void UpdateTrackManager();
    void StoreInCdplayerIni(unsigned int nDrive);

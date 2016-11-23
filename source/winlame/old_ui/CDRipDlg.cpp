@@ -290,13 +290,31 @@ void CDRipDlg::RefreshCDList()
       }
    }
 
+   bool bVarious = false;
+   if (!ReadCdplayerIni(bVarious))
+      ReadCDText(bVarious);
+
+   // check or uncheck "various artists"
+   SendDlgItemMessage(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, BM_SETCHECK,
+      bVarious ? BST_CHECKED : BST_UNCHECKED, 0);
+
+   BOOL bDummy = true;
+   OnClickedCheckVariousArtists(0, 0, NULL, bDummy);
+
+   m_bEditedTrack = false;
+}
+
+bool CDRipDlg::ReadCdplayerIni(bool& bVarious)
+{
    // retrieve info from cdplayer.ini
    CString cszCDPlayerIniFilename;
    ::GetWindowsDirectory(cszCDPlayerIniFilename.GetBuffer(MAX_PATH), MAX_PATH);
    cszCDPlayerIniFilename.ReleaseBuffer();
    cszCDPlayerIniFilename += _T("\\cdplayer.ini");
 
-   bool bVarious = false;
+   DWORD nDrive = GetCurrentDrive();
+
+   DWORD uMaxCDTracks = BASS_CD_GetTracks(nDrive);
 
    const char* cdplayer_id_raw = BASS_CD_GetID(nDrive, BASS_CDID_CDPLAYER);
 
@@ -347,7 +365,7 @@ void CDRipDlg::RefreshCDList()
 
       // tracks
       CString cszNumTrack;
-      for(unsigned int n=0; n<nNumTracks; n++)
+      for (unsigned int n = 0; n < nNumTracks; n++)
       {
          cszNumTrack.Format(_T("%u"), n);
 
@@ -363,72 +381,71 @@ void CDRipDlg::RefreshCDList()
       }
 
       m_bAcquiredDiscInfo = true;
+
+      return true;
    }
-   // retrieve CD-Text
    else
+      return false;
+}
+
+void CDRipDlg::ReadCDText(bool& bVarious)
+{
+   DWORD nDrive = GetCurrentDrive();
+
+   DWORD uMaxCDTracks = BASS_CD_GetTracks(nDrive);
+
+   const CHAR* cdtext = BASS_CD_GetID(nDrive, BASS_CDID_TEXT);
+   if (cdtext != NULL)
    {
-      const CHAR* cdtext = BASS_CD_GetID(nDrive, BASS_CDID_TEXT);
-      if (cdtext != NULL)
+      std::vector<CString> vecTitles(uMaxCDTracks+1);
+      std::vector<CString> vecPerformer(uMaxCDTracks+1);
+
+      CString cszOutput;
+      const CHAR* endpos = cdtext;
+      do
       {
-         std::vector<CString> vecTitles(uMaxCDTracks+1);
-         std::vector<CString> vecPerformer(uMaxCDTracks+1);
+         while(*endpos++ != 0);
 
-         CString cszOutput;
-         const CHAR* endpos = cdtext;
-         do
+         CString cszText(cdtext);
+         if (cdtext == strstr(cdtext, "TITLE"))
          {
-            while(*endpos++ != 0);
-
-            CString cszText(cdtext);
-            if (cdtext == strstr(cdtext, "TITLE"))
-            {
-               LPSTR pNext = NULL;
-               unsigned long uTrack = strtoul(cdtext+5, &pNext, 10);
-               if (uTrack < uMaxCDTracks+1)
-                  vecTitles[uTrack] = pNext+1;
-            }
-            if (cdtext == strstr(cdtext, "PERFORMER"))
-            {
-               LPSTR pNext = NULL;
-               unsigned long uPerf = strtoul(cdtext+9, &pNext, 10);
-               if (uPerf < uMaxCDTracks+1)
-                  vecPerformer[uPerf] = pNext+1;
-
-               if (uPerf > 0 && strlen(pNext+1) > 0)
-                  bVarious = true;
-            }
-
-            cdtext = endpos;
+            LPSTR pNext = NULL;
+            unsigned long uTrack = strtoul(cdtext+5, &pNext, 10);
+            if (uTrack < uMaxCDTracks+1)
+               vecTitles[uTrack] = pNext+1;
          }
-         while(*endpos != 0);
-
-         // set title and artist
-         SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, vecTitles[0]);
-         SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, vecPerformer[0]);
-
-         CString cszFormat;
-         for (DWORD n=1; n<uMaxCDTracks+1; n++)
+         if (cdtext == strstr(cdtext, "PERFORMER"))
          {
-            if (vecPerformer[n].GetLength()==0)
-               cszFormat = vecTitles[n];
-            else
-               cszFormat.Format(_T("%s / %s"), vecPerformer[n], vecTitles[n]);
+            LPSTR pNext = NULL;
+            unsigned long uPerf = strtoul(cdtext+9, &pNext, 10);
+            if (uPerf < uMaxCDTracks+1)
+               vecPerformer[uPerf] = pNext+1;
 
-            m_lcTracks.SetItemText(n-1, 1, cszFormat);
+            if (uPerf > 0 && strlen(pNext+1) > 0)
+               bVarious = true;
          }
 
-         m_bAcquiredDiscInfo = true;
+         cdtext = endpos;
       }
+      while(*endpos != 0);
+
+      // set title and artist
+      SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, vecTitles[0]);
+      SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, vecPerformer[0]);
+
+      CString cszFormat;
+      for (DWORD n=1; n<uMaxCDTracks+1; n++)
+      {
+         if (vecPerformer[n].GetLength()==0)
+            cszFormat = vecTitles[n];
+         else
+            cszFormat.Format(_T("%s / %s"), vecPerformer[n], vecTitles[n]);
+
+         m_lcTracks.SetItemText(n-1, 1, cszFormat);
+      }
+
+      m_bAcquiredDiscInfo = true;
    }
-
-   // check or uncheck "various artists"
-   SendDlgItemMessage(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, BM_SETCHECK,
-      bVarious ? BST_CHECKED : BST_UNCHECKED, 0);
-
-   BOOL bDummy = true;
-   OnClickedCheckVariousArtists(0, 0, NULL, bDummy);
-
-   m_bEditedTrack = false;
 }
 
 void CDRipDlg::CheckCD()
