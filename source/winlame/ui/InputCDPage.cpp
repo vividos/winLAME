@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -32,7 +32,6 @@
 #include "FreedbResolver.hpp"
 #include "CommonStuff.h"
 #include "FreeDbDiscListDlg.hpp"
-#include "CDRipTrackManager.h"
 #include "RedrawLock.hpp"
 
 using namespace UI;
@@ -64,6 +63,8 @@ LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
 
    DlgResize_Init(false, false);
 
+   m_uiSettings.cdreadjoblist.clear();
+
    SetupDriveCombobox();
 
    SetupTracksList();
@@ -93,8 +94,7 @@ LRESULT InputCDPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
       if (m_bEditedTrack)
          StoreInCdplayerIni(GetCurrentDrive());
 
-      // TODO put selected tracks in encoderjoblist
-      //UpdateTrackManager();
+      UpdateCDReadJobList();
    }
 
    m_uiSettings.m_bFromInputFilesPage = false;
@@ -543,6 +543,88 @@ void InputCDPage::CheckCD()
    }
 }
 
+void InputCDPage::UpdateCDReadJobList()
+{
+   DWORD dwDrive = GetCurrentDrive();
+   if (dwDrive == INVALID_DRIVE_ID)
+      return;
+
+   CDRipDiscInfo discInfo = ReadDiscInfo(dwDrive);
+
+   // get all track infos
+   std::vector<DWORD> vecTracks;
+   {
+      int nItem = m_lcTracks.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
+
+      if (nItem >= 0)
+      {
+         // add all selected items
+         do
+         {
+            vecTracks.push_back(m_lcTracks.GetItemData(nItem));
+
+         } while (-1 != (nItem = m_lcTracks.GetNextItem(nItem, LVNI_ALL | LVNI_SELECTED)));
+      }
+      else
+      {
+         // add all items
+         int nMax = m_lcTracks.GetItemCount();
+         for (int n = 0; n < nMax; n++)
+            vecTracks.push_back(m_lcTracks.GetItemData(n));
+      }
+   }
+
+   unsigned int nMax = vecTracks.size();
+
+   for (unsigned int n = 0; n < nMax; n++)
+   {
+      unsigned int nTrack = vecTracks[n];
+
+      CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, nTrack);
+
+      CDReadJob cdReadJob(discInfo, trackInfo);
+      m_uiSettings.cdreadjoblist.push_back(cdReadJob);
+   }
+}
+
+CDRipDiscInfo InputCDPage::ReadDiscInfo(DWORD driveIndex)
+{
+   CDRipDiscInfo discInfo;
+
+   discInfo.m_nDiscDrive = driveIndex;
+
+   GetDlgItemText(IDC_CDSELECT_EDIT_TITLE, discInfo.m_cszDiscTitle);
+
+   GetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, discInfo.m_cszDiscArtist);
+
+   discInfo.m_nYear = GetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, NULL, FALSE);
+
+   int nItem = m_cbGenre.GetCurSel();
+   if (nItem == CB_ERR)
+   {
+      m_cbGenre.GetWindowText(discInfo.m_cszGenre);
+   }
+   else
+      m_cbGenre.GetLBText(nItem, discInfo.m_cszGenre);
+
+   discInfo.m_bVariousArtists = BST_CHECKED == m_checkVariousArtists.GetCheck();
+
+   discInfo.m_cszCDID = BASS_CD_GetID(driveIndex, BASS_CDID_CDDB);
+
+   return discInfo;
+}
+
+CDRipTrackInfo InputCDPage::ReadTrackInfo(DWORD driveIndex, unsigned int trackNum)
+{
+   CDRipTrackInfo trackInfo;
+
+   trackInfo.m_nTrackOnDisc = trackNum;
+   m_lcTracks.GetItemText(trackNum, 1, trackInfo.m_cszTrackTitle);
+   trackInfo.m_nTrackLength = BASS_CD_GetTrackLength(driveIndex, trackNum) / 176400L;
+
+   return trackInfo;
+}
+
 void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
 {
    if (!m_uiSettings.store_disc_infos_cdplayer_ini)
@@ -561,8 +643,7 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
 
    CString cdplayer_id(cdplayer_id_raw);
 
-   CDRipTrackManager* pManager = CDRipTrackManager::getCDRipTrackManager();
-   CDRipDiscInfo& discinfo = pManager->GetDiscInfo();
+   CDRipDiscInfo discinfo = ReadDiscInfo(dwDrive);
 
    CString cszFormat;
 
@@ -595,9 +676,9 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
    {
       cszFormat.Format(_T("%u"), n);
 
-      m_lcTracks.GetItemText(n, 1, cszTrackText);
+      CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, n);
 
-      ini.WriteString(cdplayer_id, cszFormat, cszTrackText);
+      ini.WriteString(cdplayer_id, cszFormat, trackInfo.m_cszTrackTitle);
    }
 }
 

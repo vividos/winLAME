@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 // includes
 #include "WizardPage.hpp"
 #include "TrackEditListCtrl.h"
+#include "CDRipDiscInfo.h"
+#include "CDRipTrackInfo.h"
 #include "resource.h"
 
 // forward references
@@ -139,7 +141,9 @@ private:
    bool ReadCdplayerIni(bool& bVarious);
    void ReadCDText(bool& bVarious);
    void CheckCD();
-   void UpdateTrackManager();
+   CDRipDiscInfo ReadDiscInfo(DWORD driveIndex);
+   CDRipTrackInfo ReadTrackInfo(DWORD driveIndex, unsigned int trackNum);
+   void UpdateCDReadJobList();
    void StoreInCdplayerIni(unsigned int nDrive);
    void FreedbLookup();
    void FillListFreedbInfo(const Freedb::CDInfo& info);

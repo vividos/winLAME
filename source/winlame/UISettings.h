@@ -70,6 +70,9 @@ struct UISettings
    /// list of encoder jobs
    EncoderJobList encoderjoblist;
 
+   /// list of CD read jobs
+   std::vector<CDReadJob> cdreadjoblist;
+
    /// default encoding settings
    EncodingSettings m_defaultSettings;
 

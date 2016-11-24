@@ -44,6 +44,8 @@
 #include "SettingsManager.h"
 #include "ModuleManager.h"
 #include "TrackInfo.h"
+#include "CDRipDiscInfo.h"
+#include "CDRipTrackInfo.h"
 
 
 // forward references
@@ -88,6 +90,29 @@ public:
 private:
    CString m_cszInputFilename;   ///< input filename
    TrackInfo m_trackInfo;      ///< track info
+};
+
+
+/// infos about a CD read job
+class CDReadJob
+{
+public:
+   /// ctor
+   CDReadJob(const CString& outputFilename, const CDRipDiscInfo& discInfo, const CDRipTrackInfo& trackInfo)
+      :m_outputFilename(outputFilename),
+       m_discInfo(discInfo),
+       m_trackInfo(trackInfo)
+   {
+   }
+
+   const CString& OutputFilename() const throw() { return m_outputFilename; }
+   const CDRipDiscInfo& DiscInfo() const throw() { return m_discInfo; }
+   const CDRipTrackInfo& TrackInfo() const throw() { return m_trackInfo; }
+
+private:
+   CString m_outputFilename;
+   CDRipDiscInfo m_discInfo;
+   CDRipTrackInfo m_trackInfo;
 };
 
 
