@@ -73,8 +73,8 @@ LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
    for (unsigned int i = 0, iMax = TrackInfo::GetGenreListLength(); i<iMax; i++)
       m_cbGenre.AddString(apszGenre[i]);
 
-   GetDlgItem(IDC_CDSELECT_BUTTON_PLAY).EnableWindow(false);
-   GetDlgItem(IDC_CDSELECT_BUTTON_STOP).EnableWindow(false);
+   m_buttonPlay.EnableWindow(false);
+   m_buttonStop.EnableWindow(false);
 
    m_bEditedTrack = false;
 
@@ -149,7 +149,8 @@ LRESULT InputCDPage::OnClickedButtonPlay(WORD /*wNotifyCode*/, WORD /*wID*/, HWN
    DWORD nTrack = m_lcTracks.GetItemData(nItem);
 
    BASS_CD_Analog_Play(nDrive, nTrack, 0);
-   GetDlgItem(IDC_CDSELECT_BUTTON_STOP).EnableWindow(true);
+
+   m_buttonStop.EnableWindow(true);
 
    return 0;
 }
@@ -158,7 +159,7 @@ LRESULT InputCDPage::OnClickedButtonStop(WORD wNotifyCode, WORD wID, HWND hWndCt
 {
    BASS_CD_Analog_Stop(GetCurrentDrive());
 
-   GetDlgItem(IDC_CDSELECT_BUTTON_STOP).EnableWindow(false);
+   m_buttonStop.EnableWindow(false);
 
    return 0;
 }
@@ -297,6 +298,8 @@ void InputCDPage::RefreshCDList()
 {
    CWaitCursor waitCursor;
 
+   m_buttonPlay.EnableWindow(false);
+
    DWORD nDrive = GetCurrentDrive();
    if (nDrive == INVALID_DRIVE_ID)
       return;
@@ -356,8 +359,10 @@ void InputCDPage::RefreshCDList()
       }
    }
 
-   bool bVarious = false;
+   if (uMaxCDTracks > 0)
+      m_buttonPlay.EnableWindow(true);
 
+   bool bVarious = false;
    if (!ReadCdplayerIni(bVarious))
       ReadCDText(bVarious);
 
@@ -522,7 +527,7 @@ void InputCDPage::CheckCD()
 
    // check if current track still plays
    bool bPlaying = BASS_ACTIVE_PLAYING == BASS_CD_Analog_IsActive(dwDrive);
-   GetDlgItem(IDC_CDSELECT_BUTTON_STOP).EnableWindow(bPlaying);
+   m_buttonStop.EnableWindow(bPlaying);
 
    // check for new cd in drive
    DWORD nDrive = GetCurrentDrive();

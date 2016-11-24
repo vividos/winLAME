@@ -62,6 +62,8 @@ private:
    BEGIN_DDX_MAP(InputCDPage)
       DDX_CONTROL_HANDLE(IDC_CDSELECT_COMBO_DRIVES, m_cbDrives)
       DDX_CONTROL(IDC_CDSELECT_LIST_TRACKS, m_lcTracks)
+      DDX_CONTROL_HANDLE(IDC_CDSELECT_BUTTON_PLAY, m_buttonPlay)
+      DDX_CONTROL_HANDLE(IDC_CDSELECT_BUTTON_STOP, m_buttonStop)
       DDX_CONTROL_HANDLE(IDC_CDSELECT_COMBO_GENRE, m_cbGenre)
       DDX_CONTROL_HANDLE(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, m_checkVariousArtists)
    END_DDX_MAP()
@@ -150,6 +152,12 @@ private:
 
    /// tracks list
    TrackEditListCtrl m_lcTracks;
+
+   /// button to start playing
+   CButton m_buttonPlay;
+
+   /// button to stop playing
+   CButton m_buttonStop;
 
    /// genre combobox
    CComboBox m_cbGenre;
