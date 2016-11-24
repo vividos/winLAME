@@ -40,11 +40,11 @@ using namespace UI;
 const DWORD INVALID_DRIVE_ID = 0xffffffff;
 
 InputCDPage::InputCDPage(WizardPageHost& pageHost) throw()
-:WizardPage(pageHost, IDD_PAGE_INPUT_CD, WizardPage::typeCancelNext),
-m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
-m_bEditedTrack(false),
-m_bDriveActive(false),
-m_bAcquiredDiscInfo(false)
+   :WizardPage(pageHost, IDD_PAGE_INPUT_CD, WizardPage::typeCancelNext),
+   m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
+   m_bEditedTrack(false),
+   m_bDriveActive(false),
+   m_bAcquiredDiscInfo(false)
 {
 }
 
@@ -70,7 +70,7 @@ LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
 
    // genre combobox
    LPCTSTR* apszGenre = TrackInfo::GetGenreList();
-   for (unsigned int i = 0, iMax = TrackInfo::GetGenreListLength(); i<iMax; i++)
+   for (unsigned int i = 0, iMax = TrackInfo::GetGenreListLength(); i < iMax; i++)
       m_cbGenre.AddString(apszGenre[i]);
 
    m_buttonPlay.EnableWindow(false);
@@ -141,6 +141,8 @@ LRESULT InputCDPage::OnListDoubleClick(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& b
 LRESULT InputCDPage::OnClickedButtonPlay(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    DWORD nDrive = GetCurrentDrive();
+   if (nDrive == INVALID_DRIVE_ID)
+      return 0;
 
    int nItem = m_lcTracks.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
 
@@ -157,7 +159,11 @@ LRESULT InputCDPage::OnClickedButtonPlay(WORD /*wNotifyCode*/, WORD /*wID*/, HWN
 
 LRESULT InputCDPage::OnClickedButtonStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-   BASS_CD_Analog_Stop(GetCurrentDrive());
+   DWORD nDrive = GetCurrentDrive();
+   if (nDrive == INVALID_DRIVE_ID)
+      return 0;
+
+   BASS_CD_Analog_Stop(nDrive);
 
    m_buttonStop.EnableWindow(false);
 
@@ -212,7 +218,7 @@ void InputCDPage::SetupDriveCombobox()
 {
    unsigned int nDriveCount = 0;
 
-   for (DWORD n = 0; n<26; n++)
+   for (DWORD n = 0; n < 26; n++)
    {
       BASS_CD_INFO info = { 0 };
       BOOL bRet = BASS_CD_GetInfo(n, &info);
@@ -298,14 +304,14 @@ void InputCDPage::RefreshCDList()
 {
    CWaitCursor waitCursor;
 
+   RedrawLock lock(m_lcTracks);
+   m_lcTracks.DeleteAllItems();
+
    m_buttonPlay.EnableWindow(false);
 
    DWORD nDrive = GetCurrentDrive();
    if (nDrive == INVALID_DRIVE_ID)
       return;
-
-   RedrawLock lock(m_lcTracks);
-   m_lcTracks.DeleteAllItems();
 
    m_bEditedTrack = false;
 
@@ -323,7 +329,7 @@ void InputCDPage::RefreshCDList()
       return;
    }
 
-   for (DWORD n = 0; n<uMaxCDTracks; n++)
+   for (DWORD n = 0; n < uMaxCDTracks; n++)
    {
       CString cszText;
       cszText.Format(_T("%u"), n + 1);
@@ -437,7 +443,7 @@ bool InputCDPage::ReadCdplayerIni(bool& bVarious)
 
       // tracks
       CString cszNumTrack;
-      for (unsigned int n = 0; n<nNumTracks; n++)
+      for (unsigned int n = 0; n < nNumTracks; n++)
       {
          cszNumTrack.Format(_T("%u"), n);
 
@@ -530,9 +536,7 @@ void InputCDPage::CheckCD()
    m_buttonStop.EnableWindow(bPlaying);
 
    // check for new cd in drive
-   DWORD nDrive = GetCurrentDrive();
-
-   bool bIsReady = BASS_CD_IsReady(nDrive) == TRUE;
+   bool bIsReady = BASS_CD_IsReady(dwDrive) == TRUE;
    if (m_bDriveActive != bIsReady)
    {
       RefreshCDList();
@@ -542,6 +546,10 @@ void InputCDPage::CheckCD()
 void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
 {
    if (!m_uiSettings.store_disc_infos_cdplayer_ini)
+      return;
+
+   DWORD dwDrive = GetCurrentDrive();
+   if (dwDrive == INVALID_DRIVE_ID)
       return;
 
    CString cszCDPlayerIniFilename;
@@ -583,7 +591,7 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
 
    // tracks
    CString cszTrackText;
-   for (unsigned int n = 0; n<nNumTracks; n++)
+   for (unsigned int n = 0; n < nNumTracks; n++)
    {
       cszFormat.Format(_T("%u"), n);
 
@@ -653,7 +661,7 @@ void InputCDPage::FillListFreedbInfo(const Freedb::CDInfo& info)
 {
    CString cszText;
    unsigned int nMax = info.tracktitles.size();
-   for (unsigned int n = 0; n<nMax; n++)
+   for (unsigned int n = 0; n < nMax; n++)
    {
       cszText = info.tracktitles[n].c_str();
       m_lcTracks.SetItemText(n, 1, cszText);
