@@ -210,7 +210,7 @@ void OutputSettingsPage::SetWizardPage()
       PresetManagerInterface& presetManager = IoCContainer::Current().Resolve<PresetManagerInterface>();
 
       // set facility name, which is looked up by module id
-      VarMgrFacilities fac;
+      VarMgrFacilitiesToModules fac;
       presetManager.setFacility(fac.lookupName(modid));
 
       // do we have more than the default preset?

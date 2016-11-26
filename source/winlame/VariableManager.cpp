@@ -132,7 +132,7 @@ WL_VARMAP_START(varMapFacility)
 WL_VARMAP_END()
 
 
-// facility to dialog id map
+// facility to module id map
 
 WL_VARMAP_START(varMapFacilityToModule)
    WL_VARMAP_ENTRY1(ID_OM_LAME,        _T("lame"),     _T("LAME"))
@@ -199,6 +199,11 @@ WL_VARMAP_END()
 VarMgrFacilities::VarMgrFacilities()
 {
    m_varmap = varMapFacility;
+}
+
+VarMgrFacilitiesToModules::VarMgrFacilitiesToModules()
+{
+   m_varmap = varMapFacilityToModule;
 }
 
 VarMgrVariables::VarMgrVariables()

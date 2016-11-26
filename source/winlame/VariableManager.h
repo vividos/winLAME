@@ -135,6 +135,14 @@ public:
 };
 
 
+/// manager class for the facilities to modules mapping
+class VarMgrFacilitiesToModules : public VariableManager
+{
+public:
+   VarMgrFacilitiesToModules();
+};
+
+
 /// manager class for the variables
 class VarMgrVariables: public VariableManager
 {
