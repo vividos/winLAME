@@ -66,6 +66,8 @@ END_MSG_MAP()
       listbox.ModifyStyle(0,LBS_OWNERDRAWFIXED | LBS_NOINTEGRALHEIGHT | LBS_NOTIFY);
       listbox.InitListBox();
 
+      listbox.ExpandGroup(0);
+
       return 1;
    }
 
