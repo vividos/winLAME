@@ -78,6 +78,9 @@ public:
    /// initializes list box
    void InitListBox(bool readonly=true);
 
+   /// called when a group state changes
+   void ExpandGroup(int nIndex);
+
 protected:
    // message map
 BEGIN_MSG_MAP(PropertyListBox)

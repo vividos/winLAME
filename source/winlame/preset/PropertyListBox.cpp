@@ -54,6 +54,22 @@ void PropertyListBox::InitListBox(bool read_only)
    readonly = read_only;
 }
 
+void PropertyListBox::ExpandGroup(int nIndex)
+{
+   int data = GetItemData(nIndex);
+   bool isgroup = (data & P_GROUP) == P_GROUP;
+   bool iscollapsed = isgroup && (data & P_COLLAPSED) == P_COLLAPSED;
+   int group = data & 0x00007fffL;
+
+   if (!isgroup)
+      return;
+
+   if (iscollapsed)
+   {
+      ChangeGroupState(nIndex);
+   }
+}
+
 LRESULT PropertyListBox::OnReflectedCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    if (HIWORD(wParam) == LBN_SELCHANGE)
