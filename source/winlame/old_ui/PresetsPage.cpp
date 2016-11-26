@@ -70,7 +70,7 @@ LRESULT PresetsPage::OnLButtonDblClk(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 
    // edit doubleclicked item
    if (index!=0)
-      m_presetManager.editSettingsDialog(index-1);
+      m_presetManager.showPropertyDialog(index-1);
 #endif
 
    return 0;

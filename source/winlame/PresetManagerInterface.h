@@ -40,12 +40,6 @@ public:
    /// loads preset from an xml file
    virtual bool loadPreset(LPCTSTR filename)=0;
 
-   /// merge preset from an xml file
-   virtual bool mergePreset(LPCTSTR filename)=0;
-
-   /// save preset
-   virtual void savePreset()=0;
-
    /// sets currently used facility
    virtual void setFacility(LPCTSTR facname)=0;
 
@@ -64,8 +58,8 @@ public:
    /// sets the default settings for all variables
    virtual void setDefaultSettings(SettingsManager &settings_mgr)=0;
 
-   /// shows the edit settings dialog for a specific preset
-   virtual void editSettingsDialog(int index)=0;
+   /// shows the property dialog for a specific preset
+   virtual void showPropertyDialog(int index)=0;
 
    /// dtor
    virtual ~PresetManagerInterface(){}

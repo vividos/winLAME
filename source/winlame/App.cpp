@@ -100,9 +100,6 @@ App::~App()
    // store settings in the registry
    m_settings.StoreSettings();
 
-   // save preset file
-   m_spPresetManager->savePreset();
-
    s_pApp = NULL;
 
    _Module.Term();

@@ -31,7 +31,6 @@
 
 PresetManagerImpl::PresetManagerImpl()
 {
-   xmlchanged=false;
 }
 
 bool PresetManagerImpl::loadPreset(LPCTSTR filename)
@@ -47,26 +46,6 @@ bool PresetManagerImpl::loadPreset(LPCTSTR filename)
    bool ret = doc.load(istr);
    istr.close();
    return ret;
-}
-
-bool PresetManagerImpl::mergePreset(LPCTSTR filename)
-{
-   // not implemented
-
-   return true;
-}
-
-void PresetManagerImpl::savePreset()
-{
-   if (xmlchanged)
-   {
-      // save preset xml file
-      std::ofstream ostr(CStringA(xmlfilename.c_str()));
-      doc.save(ostr);
-      ostr.close();
-
-      xmlchanged = false;
-   }
 }
 
 void PresetManagerImpl::setFacility(LPCTSTR facname)
@@ -220,13 +199,13 @@ void PresetManagerImpl::setDefaultSettings(SettingsManager &settings_mgr)
    }
 }
 
-void PresetManagerImpl::editSettingsDialog(int index)
+void PresetManagerImpl::showPropertyDialog(int index)
 {
    // search for preset node
    cppxml::xmlnode_ptr node(cppxml::get_nodelist_item(*presets_list,index));
    if (node.get()==NULL) return;
 
-   editing_preset = node;
+   viewed_preset = node;
 
    // show edit dialog
    PropertyDlg dlg;
@@ -253,7 +232,7 @@ std::tstring PresetManagerImpl::GetGroupName(int group)
 
 int PresetManagerImpl::GetItemCount(int group)
 {
-   return editing_preset->select_nodes("value")->size();
+   return viewed_preset->select_nodes("value")->size();
 }
 
 std::tstring PresetManagerImpl::GetItemName(int group, int index)
@@ -304,7 +283,7 @@ cppxml::xmlnode_ptr PresetManagerImpl::editLookupNode(int group, int index)
    cppxml::xmlnode_ptr node;
 
    // get list of "value" nodes
-   cppxml::xmlnodelist_ptr nodelist = editing_preset->select_nodes("value");
+   cppxml::xmlnodelist_ptr nodelist = viewed_preset->select_nodes("value");
 
    if (nodelist->size()>0)
    {

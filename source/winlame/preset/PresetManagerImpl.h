@@ -44,12 +44,6 @@ public:
    /// loads preset from an xml file
    virtual bool loadPreset(LPCTSTR filename);
 
-   /// merge preset from an xml file
-   virtual bool mergePreset(LPCTSTR filename);
-
-   /// save preset
-   virtual void savePreset();
-
    /// sets currently used facility
    void setFacility(LPCTSTR facname);
 
@@ -69,7 +63,7 @@ public:
    virtual void setDefaultSettings(SettingsManager &settings_mgr);
 
    /// shows the edit settings dialog for a specific preset
-   virtual void editSettingsDialog(int index);
+   virtual void showPropertyDialog(int index);
 
 
    // interface implementation for the PropertyManagerInterface
@@ -97,11 +91,8 @@ protected:
    /// list of presets of current facility
    cppxml::xmlnodelist_ptr presets_list;
 
-   /// currently edited/viewed preset
-   cppxml::xmlnode_ptr editing_preset;
-
-   /// indicates if preset xml document was changed
-   bool xmlchanged;
+   /// currently viewed preset
+   cppxml::xmlnode_ptr viewed_preset;
 
    /// name of current facility
    std::tstring facility;
