@@ -38,14 +38,8 @@
     <Filter Include="Preset Files\Header Files">
       <UniqueIdentifier>{8f38b30e-c72f-45e5-873f-62ec3e1fe8d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Preset Files\Header Files\cppxml header files">
-      <UniqueIdentifier>{381ba37a-8430-4d52-950d-0a82e0c3aa2d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Preset Files\Source Files">
       <UniqueIdentifier>{8e5db12d-be4d-4eb3-b3cb-2263f5d5b676}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Preset Files\Source Files\cppxml source files">
-      <UniqueIdentifier>{dc1229cc-165b-45b2-8723-532e943a80ed}</UniqueIdentifier>
     </Filter>
     <Filter Include="UI Files">
       <UniqueIdentifier>{91fdb3c2-3213-46ef-8319-8860047d989f}</UniqueIdentifier>
@@ -198,15 +192,6 @@
     </ClCompile>
     <ClCompile Include="winlame\preset\PropertyListBox.cpp">
       <Filter>Preset Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="winlame\preset\cppxml\cppxml.cpp">
-      <Filter>Preset Files\Source Files\cppxml source files</Filter>
-    </ClCompile>
-    <ClCompile Include="winlame\preset\cppxml\lexer.cpp">
-      <Filter>Preset Files\Source Files\cppxml source files</Filter>
-    </ClCompile>
-    <ClCompile Include="winlame\preset\cppxml\parser.cpp">
-      <Filter>Preset Files\Source Files\cppxml source files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\App.cpp">
       <Filter>Main Program Files\Source Files</Filter>
@@ -497,15 +482,6 @@
     </ClInclude>
     <ClInclude Include="winlame\preset\PropertyListBox.h">
       <Filter>Preset Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\preset\cppxml\cppxml.hpp">
-      <Filter>Preset Files\Header Files\cppxml header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\preset\cppxml\lexer.hpp">
-      <Filter>Preset Files\Header Files\cppxml header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\preset\cppxml\parser.hpp">
-      <Filter>Preset Files\Header Files\cppxml header files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\App.h">
       <Filter>Main Program Files\Header Files</Filter>

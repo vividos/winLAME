@@ -109,8 +109,8 @@ void PresetSelectionPage::LoadData()
    CString cszText(MAKEINTRESOURCE(IDS_PRESETS_CUSTOM_SETTINGS));
    m_lbPresets.AddString(cszText);
 
-   int max = m_presetManager.getPresetCount();
-   for (int i = 0; i<max; i++)
+   size_t max = m_presetManager.getPresetCount();
+   for (size_t i = 0; i<max; i++)
       m_lbPresets.AddString(m_presetManager.getPresetName(i).c_str());
 
    m_lbPresets.SetCurSel(m_uiSettings.m_iLastSelectedPresetIndex);

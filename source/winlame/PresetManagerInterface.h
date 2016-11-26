@@ -41,25 +41,25 @@ public:
    virtual bool loadPreset(LPCTSTR filename)=0;
 
    /// sets currently used facility
-   virtual void setFacility(LPCTSTR facname)=0;
+   virtual void setFacility(LPCTSTR facilityName)=0;
 
    /// returns number of presets
-   virtual int getPresetCount()=0;
+   virtual size_t getPresetCount()=0;
 
    /// returns name of preset
-   virtual std::tstring getPresetName(int index)=0;
+   virtual std::tstring getPresetName(size_t index)=0;
 
    /// returns preset description
-   virtual std::tstring getPresetDescription(int index)=0;
+   virtual std::tstring getPresetDescription(size_t index)=0;
 
    /// loads the specified settings into the settings manager
-   virtual void setSettings(int index, SettingsManager &settings_mgr)=0;
+   virtual void setSettings(size_t index, SettingsManager& settingsManager)=0;
 
    /// sets the default settings for all variables
-   virtual void setDefaultSettings(SettingsManager &settings_mgr)=0;
+   virtual void setDefaultSettings(SettingsManager& settingsManager)=0;
 
    /// shows the property dialog for a specific preset
-   virtual void showPropertyDialog(int index)=0;
+   virtual void showPropertyDialog(size_t index)=0;
 
    /// dtor
    virtual ~PresetManagerInterface(){}

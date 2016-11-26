@@ -18,7 +18,6 @@ winLAME 2017 beta 1, nice-to-have:
 - Add "Finished encoding action" to ribbon -> shutdown, close, etc.
 - Add adjusting number of threads in thread pool to settings
 - remove code TODOs
-- replace cppxml with rapidxml
 - Add translated preset texts
 - check all tooltip texts
 

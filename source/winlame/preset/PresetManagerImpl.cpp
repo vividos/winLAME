@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2014 Michael Fink
+   Copyright (c) 2000-2016 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,185 +27,240 @@
 #include "PropertyDlg.h"
 #include <fstream>
 
+std::tstring convertFromUtf8(const std::string& text)
+{
+   // TODO UTF-8 conversion, if needed
+   return std::tstring(CString(text.c_str()).GetString());
+}
+
 // PresetManagerInterface methods
 
 PresetManagerImpl::PresetManagerImpl()
+   :m_currentFacilityNode(nullptr),
+   m_viewedPresetIndex(0)
 {
 }
 
 bool PresetManagerImpl::loadPreset(LPCTSTR filename)
 {
-   // remember filename
-   xmlfilename = filename;
-
-   // load xml document
-   std::ifstream istr(CStringA(filename).GetString());
-   if (!istr.is_open())
+   std::ifstream file(filename);
+   if (!file.is_open())
       return false;
 
-   bool ret = doc.load(istr);
-   istr.close();
-   return ret;
-}
+   std::stringstream buffer;
+   buffer << file.rdbuf();
 
-void PresetManagerImpl::setFacility(LPCTSTR facname)
-{
-   facility = facname;
+   m_presetsXmlFileContents = buffer.str();
 
-   std::tstring nodepath(_T("presets/facility[@name = \""));
-   nodepath += facname;
-   nodepath += _T("\"]");
+   file.close();
 
-   cppxml::xmlnode_ptr facnode = doc.select_single_node(CStringA(nodepath.c_str()));
-   if (facnode.get()==NULL)
+   // load xml document
+   try
    {
-      // at least, create empty list
-      presets_list = cppxml::xmlnodelist_ptr(new cppxml::xmlnodelist);
+      m_presetsDocument.parse<0>(const_cast<char*>(m_presetsXmlFileContents.data()));
    }
-   else
-      presets_list = facnode->select_nodes("preset");
+   catch (const std::exception& ex)
+   {
+      ATLTRACE(_T("xml exception: %hs\n"), ex.what());
+      return false;
+   }
+
+   return true;
 }
 
-int PresetManagerImpl::getPresetCount()
+void PresetManagerImpl::setFacility(LPCTSTR facilityName)
 {
-   // return length of presets list
-   return presets_list->size();
+   try
+   {
+      m_currentFacilityName = CStringA(facilityName).GetString();
+
+      rapidxml::xml_node<char>* presetsNode =
+         m_presetsDocument.first_node("presets");
+
+      if (presetsNode == nullptr)
+         return; // should not happen - no preset root node
+
+      rapidxml::xml_node<char>* facilityNode = presetsNode->first_node("facility");
+      while (facilityNode != nullptr)
+      {
+         rapidxml::xml_attribute<char>* attr = facilityNode->first_attribute("name");
+
+         if (attr == nullptr)
+            continue; // should not happen - facility node without name
+
+         std::string attributeName = attr->value();
+         if (attributeName == m_currentFacilityName)
+         {
+            m_currentFacilityNode = facilityNode;
+
+            m_currentPresetsList.clear();
+
+            for (rapidxml::xml_node<char>* presetNode = m_currentFacilityNode->first_node("preset");
+               presetNode != nullptr;
+               presetNode = presetNode->next_sibling("preset"))
+            {
+               m_currentPresetsList.push_back(presetNode);
+            }
+
+            break;
+         }
+
+         facilityNode = facilityNode->next_sibling("facility");
+      }
+   }
+   catch (const std::exception& ex)
+   {
+      ATLTRACE(_T("xml exception: %hs\n"), ex.what());
+   }
 }
 
-std::tstring PresetManagerImpl::getPresetName(int index)
+size_t PresetManagerImpl::getPresetCount()
 {
+   return m_currentPresetsList.size();
+}
+
+std::tstring PresetManagerImpl::getPresetName(size_t index)
+{
+   ATLASSERT(index < m_currentPresetsList.size());
+
    std::tstring ret(_T("- name not found -"));
 
-   // search for preset node
-   cppxml::xmlnode_ptr node(cppxml::get_nodelist_item(*presets_list,index));
-   if (node.get()==NULL) return ret;
+   try
+   {
+      rapidxml::xml_node<char>* presetNode = m_currentPresetsList[index];
+      std::string name = presetNode->first_attribute("name")->value();
 
-   // get name
-   ret = CString(node->get_attribute_value("name").c_str());
+      ret = convertFromUtf8(name);
+   }
+   catch (const std::exception& ex)
+   {
+      ATLTRACE(_T("xml exception: %hs\n"), ex.what());
+   }
 
    return ret;
 }
 
-std::tstring PresetManagerImpl::getPresetDescription(int index)
+std::tstring PresetManagerImpl::getPresetDescription(size_t index)
 {
+   ATLASSERT(index < m_currentPresetsList.size());
+
    std::tstring ret(_T("- no description available -"));
+   try
+   {
+      rapidxml::xml_node<char>* presetNode = m_currentPresetsList[index];
+      std::string desc = presetNode->first_node("comment")->value();
 
-   // search for preset node
-   cppxml::xmlnode_ptr node(cppxml::get_nodelist_item(*presets_list,index));
-   if (node.get()==NULL) return ret;
-
-   // get comment node
-   cppxml::xmlnode_ptr comment = node->select_single_node("comment/cdata");
-   if (comment.get()==NULL) return ret;
-
-   ret = CString(comment->get_value().c_str());
+      ret = convertFromUtf8(desc);
+   }
+   catch (const std::exception& ex)
+   {
+      ATLTRACE(_T("xml exception: %hs\n"), ex.what());
+   }
 
    // trim description text
    bool first = true;
-   std::tstring::size_type pos, len=ret.length();
-   for(pos=0;pos<len;pos++)
+   std::tstring::size_type pos, len = ret.length();
+   for (pos = 0; pos < len; pos++)
    {
       // trim leading whitespaces
-      int dist=0;
-      while(pos<len && (ret.at(pos)==' ' || ret.at(pos)=='\t' ||
-            (first && ret.at(pos)=='\n') ))
-         dist++,pos++;
+      int dist = 0;
+      while (pos < len && (ret.at(pos) == ' ' || ret.at(pos) == '\t' ||
+         (first && ret.at(pos) == '\n')))
+         dist++, pos++;
 
       first = false;
 
-      if (dist!=0)
+      if (dist != 0)
       {
-         pos-=dist;
-         ret.erase(pos,dist);
-         len-=dist;
+         pos -= dist;
+         ret.erase(pos, dist);
+         len -= dist;
       }
 
-      if (pos>=len) break;
+      if (pos >= len) break;
 
       // search for \n
-      while(pos<len && ret.at(pos)!='\n')
+      while (pos < len && ret.at(pos) != '\n')
          pos++;
 
-      if (pos>=len) break;
+      if (pos >= len) break;
 
       // search back for spaces
-      dist=0;
-      while(pos<len && (ret.at(pos-dist-1)==' ' || ret.at(pos)=='\t'))
+      dist = 0;
+      while (pos < len && (ret.at(pos - dist - 1) == ' ' || ret.at(pos) == '\t'))
          dist++;
 
-      if (pos>=len) break;
+      if (pos >= len) break;
 
-      if (dist>0)
+      if (dist > 0)
       {
-         pos-=dist;
-         ret.erase(pos,dist);
-         len-=dist;
+         pos -= dist;
+         ret.erase(pos, dist);
+         len -= dist;
       }
 
       // insert \r before \n
-      ret.insert((len++,pos++),1,'\r');
+      ret.insert((len++, pos++), 1, '\r');
    }
 
    // trim last \r\n
-   if (ret.size()>0 && 0==_tcscmp(ret.c_str()+(ret.size()-2),_T("\r\n")))
-      ret.erase(ret.size()-2);
+   if (ret.size() > 0 && 0 == _tcscmp(ret.c_str() + (ret.size() - 2), _T("\r\n")))
+      ret.erase(ret.size() - 2);
 
    return ret;
 }
 
-void PresetManagerImpl::setSettings(int index, SettingsManager &settings_mgr)
+void PresetManagerImpl::setSettings(size_t index, SettingsManager& settingsManager)
 {
-   // search for preset node
-   cppxml::xmlnode_ptr node(cppxml::get_nodelist_item(*presets_list,index));
-   if (node.get()==NULL) return;
+   ATLASSERT(index < m_currentPresetsList.size());
 
-   // get all "values" nodes
-   cppxml::xmlnodelist_ptr values = node->select_nodes("value");
-
-   // go through all nodes and set them in the settings manager
+   try
    {
-      cppxml::xmlnodelist::iterator iter2, stop;
-      iter2 = values->begin();
-      stop = values->end();
+      rapidxml::xml_node<char>* presetNode = m_currentPresetsList[index];
+      if (presetNode == nullptr)
+         return;
 
-      for(;iter2!=stop; ++iter2)
+      // for all "value" nodes
+      for (rapidxml::xml_node<char>* presetValueNode = presetNode->first_node("value");
+         presetValueNode != nullptr;
+         presetValueNode = presetValueNode->next_sibling("value"))
       {
-         cppxml::xmlnode_ptr node2(*iter2);
+         // set them in the settings manager
+         std::string valueName = presetValueNode->first_attribute("name")->value();
 
-         // get attribute value and ID
-         cppxml::string name = node2->get_attribute_value("name");
+         int valueID = mgr_variables.lookupID(CString(valueName.c_str()));
+         if (valueID == -1)
+         {
+            ATLASSERT(false);
+            continue; // not found - wrong ID
+         }
 
-         int valueID = mgr_variables.lookupID(CString(name.c_str()));
-         if (valueID == -1) continue; // not found
-
-         // get cdata: variable's value
-         cppxml::xmlnode_ptr valuenode = node2->get_childnodes().front();
-         if (valuenode.get()==NULL) continue; // not found
-
-         cppxml::string value = valuenode->get_value();
+         // get CDATA of fist child node: variable's value
+         std::string value = presetValueNode->first_node()->value();
 
          // set name ID and value
-         settings_mgr.setValue(static_cast<unsigned short>(valueID), atoi(value.c_str()));
+         settingsManager.setValue(static_cast<unsigned short>(valueID), atoi(value.c_str()));
       }
    }
-}
-
-void PresetManagerImpl::setDefaultSettings(SettingsManager &settings_mgr)
-{
-   for(int i=VarFirst; i<VarLast; i++)
+   catch (const std::exception& ex)
    {
-      int def = mgr_variables.lookupDefaultValue(i);
-      settings_mgr.setValue(static_cast<unsigned short>(i), def);
+      ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 }
 
-void PresetManagerImpl::showPropertyDialog(int index)
+void PresetManagerImpl::setDefaultSettings(SettingsManager& settingsManager)
 {
-   // search for preset node
-   cppxml::xmlnode_ptr node(cppxml::get_nodelist_item(*presets_list,index));
-   if (node.get()==NULL) return;
+   for (int i = VarFirst; i < VarLast; i++)
+   {
+      int def = mgr_variables.lookupDefaultValue(i);
+      settingsManager.setValue(static_cast<unsigned short>(i), def);
+   }
+}
 
-   viewed_preset = node;
+void PresetManagerImpl::showPropertyDialog(size_t index)
+{
+   ATLASSERT(index < m_currentPresetsList.size());
+   m_viewedPresetIndex = index;
 
    // show edit dialog
    PropertyDlg dlg;
@@ -224,29 +279,61 @@ std::tstring PresetManagerImpl::GetGroupName(int group)
 {
    // look up description for facility
    std::tstring ret;
-   int id = mgr_facility.lookupID(facility.c_str());
-   if (id!=-1)
+   int id = mgr_facility.lookupID(CString(m_currentFacilityName.c_str()));
+   if (id != -1)
       ret = mgr_facility.lookupDescription(id);
    return ret;
 }
 
 int PresetManagerImpl::GetItemCount(int group)
 {
-   return viewed_preset->select_nodes("value")->size();
+   if (m_currentPresetsList.empty())
+      return 0;
+
+   int presetValueCount = 0;
+
+   try
+   {
+      rapidxml::xml_node<char>* presetNode = m_currentPresetsList[m_viewedPresetIndex];
+
+      if (presetNode == nullptr)
+         return 0;
+
+      for (rapidxml::xml_node<char>* presetValueNode = presetNode->first_node("value");
+         presetValueNode != nullptr;
+         presetValueNode = presetValueNode->next_sibling("value"))
+      {
+         presetValueCount++;
+      }
+   }
+   catch (const std::exception& ex)
+   {
+      ATLTRACE(_T("xml exception: %hs\n"), ex.what());
+   }
+
+   return presetValueCount;
 }
 
 std::tstring PresetManagerImpl::GetItemName(int group, int index)
 {
    std::tstring ret(_T("- no item name -"));
 
-   // search node
-   cppxml::xmlnode_ptr node(editLookupNode(group,index));
-   if (node.get()==NULL) return ret; // not found
+   try
+   {
+      rapidxml::xml_node<char>* presetValueNode = getPresetValueNode(group, index);
+      if (presetValueNode == nullptr)
+         return ret; // not found
 
-   // get name of node
-   int id = mgr_variables.lookupID(CString(node->get_attribute_value("name").c_str()) );
-   if (id!=-1)
-      ret = mgr_variables.lookupDescription(id);
+      // get name of node
+      std::string valueName = presetValueNode->first_attribute("name")->value();
+      int id = mgr_variables.lookupID(CString(valueName.c_str()));
+      if (id != -1)
+         ret = mgr_variables.lookupDescription(id);
+   }
+   catch (const std::exception& ex)
+   {
+      ATLTRACE(_T("xml exception: %hs\n"), ex.what());
+   }
 
    return ret;
 }
@@ -255,46 +342,62 @@ std::tstring PresetManagerImpl::GetItemValue(int group, int index)
 {
    std::tstring ret(_T("- no item value -"));
 
-   // search node
-   cppxml::xmlnode_ptr node(editLookupNode(group,index));
-   if (node.get()==NULL) return ret; // not found
+   try
+   {
+      // search node
+      rapidxml::xml_node<char>* presetValueNode = getPresetValueNode(group, index);
+      if (presetValueNode == nullptr)
+         return ret; // not found
 
-   // get cdata of fist child node
-   cppxml::xmlnodelist::iterator iter = node->get_childnodes().begin();
-   ret = CString((*iter)->get_value().c_str());
+      // get CDATA of fist child node
+      std::string value = presetValueNode->first_node()->value();
+
+      ret = CString(value.c_str());
+   }
+   catch (const std::exception& ex)
+   {
+      ATLTRACE(_T("xml exception: %hs\n"), ex.what());
+   }
 
    return ret;
 }
 
 void PresetManagerImpl::SetItemValue(int group, int index, std::tstring val)
 {
-   // search node
-   cppxml::xmlnode_ptr node(editLookupNode(group,index));
-   if (node.get()==NULL) return; // not found
-
-   // set cdata of fist child node
-   cppxml::xmlnodelist::iterator iter = node->get_childnodes().begin();
-
-   (*iter)->set_value(CStringA(val.c_str()).GetString());
+   // editing not supported
 }
 
-cppxml::xmlnode_ptr PresetManagerImpl::editLookupNode(int group, int index)
+rapidxml::xml_node<char>* PresetManagerImpl::getPresetValueNode(int group, int index)
 {
-   cppxml::xmlnode_ptr node;
+   if (m_currentFacilityNode == nullptr)
+      return nullptr;
 
-   // get list of "value" nodes
-   cppxml::xmlnodelist_ptr nodelist = viewed_preset->select_nodes("value");
+   if (m_currentPresetsList.empty())
+      return nullptr;
 
-   if (nodelist->size()>0)
+   try
    {
-      // search for node
-      cppxml::xmlnodelist::iterator iter = nodelist->begin();
-      for(int i=0; i<index; i++) ++iter;
+      rapidxml::xml_node<char>* presetNode = m_currentPresetsList[m_viewedPresetIndex];
 
-      // search for node
-      cppxml::xmlnode_ptr node2(cppxml::get_nodelist_item(*nodelist,index));
-      return node2;
+      if (presetNode == nullptr)
+         return nullptr;
+
+      int presetValueIndex = 0;
+
+      for (rapidxml::xml_node<char>* presetValueNode = presetNode->first_node("value");
+         presetValueNode != nullptr;
+         presetValueNode = presetValueNode->next_sibling("value"))
+      {
+         if (presetValueIndex == index)
+            return presetValueNode;
+
+         presetValueIndex++;
+      }
+   }
+   catch (const std::exception& ex)
+   {
+      ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
-   return node;
+   return nullptr;
 }

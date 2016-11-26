@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2004 Michael Fink
+   Copyright (c) 2000-2016 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 #include "PropertyListBox.h"
 #include "../VariableManager.h"
 #include <string>
-#include "cppxml/cppxml.hpp"
+#include "rapidxml/rapidxml.hpp"
 
 /// preset manager implementation
 class PresetManagerImpl:
@@ -48,22 +48,22 @@ public:
    void setFacility(LPCTSTR facname);
 
    /// returns number of presets
-   virtual int getPresetCount();
+   virtual size_t getPresetCount();
 
    /// returns name of preset
-   virtual std::tstring getPresetName(int index);
+   virtual std::tstring getPresetName(size_t index);
 
    /// returns preset description
-   virtual std::tstring getPresetDescription(int index);
+   virtual std::tstring getPresetDescription(size_t index);
 
    /// loads the specified settings into the settings manager
-   virtual void setSettings(int index, SettingsManager &settings_mgr);
+   virtual void setSettings(size_t index, SettingsManager& settingsManager);
 
    /// sets the default settings for all variables
-   virtual void setDefaultSettings(SettingsManager &settings_mgr);
+   virtual void setDefaultSettings(SettingsManager& settingsManager);
 
    /// shows the edit settings dialog for a specific preset
-   virtual void showPropertyDialog(int index);
+   virtual void showPropertyDialog(size_t index);
 
 
    // interface implementation for the PropertyManagerInterface
@@ -77,25 +77,28 @@ public:
    virtual std::tstring GetItemValue(int group, int index);
    virtual void SetItemValue(int group, int index, std::tstring val);
 
-protected:
-   /// retrieves xml node pointer for editing
-   cppxml::xmlnode_ptr editLookupNode(int group, int index);
+private:
+   /// retrieves xml node pointer for preset value
+   rapidxml::xml_node<char>* getPresetValueNode(int group, int index);
 
-protected:
-   /// xml filename
-   std::tstring xmlfilename;
+private:
+   /// contents of the presets.xml file; must live as long as m_presetsDocument
+   std::string m_presetsXmlFileContents;
 
    /// preset xml document
-   cppxml::xmldocument doc;
-
-   /// list of presets of current facility
-   cppxml::xmlnodelist_ptr presets_list;
-
-   /// currently viewed preset
-   cppxml::xmlnode_ptr viewed_preset;
+   rapidxml::xml_document<char> m_presetsDocument;
 
    /// name of current facility
-   std::tstring facility;
+   std::string m_currentFacilityName;
+
+   /// node of currently set facility, or null if none was found
+   rapidxml::xml_node<char>* m_currentFacilityNode;
+
+   /// list of presets of current facility
+   std::vector<rapidxml::xml_node<char>*> m_currentPresetsList;
+
+   /// currently viewed preset index
+   size_t m_viewedPresetIndex;
 
    /// var manager for facilities
    VarMgrFacilities mgr_facility;

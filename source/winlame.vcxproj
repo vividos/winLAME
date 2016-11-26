@@ -166,24 +166,6 @@
     <ClCompile Include="winlame\old_ui\WmaOutputSettingsPage.cpp" />
     <ClCompile Include="winlame\preset\PresetManagerImpl.cpp" />
     <ClCompile Include="winlame\preset\PropertyListBox.cpp" />
-    <ClCompile Include="winlame\preset\cppxml\cppxml.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="winlame\preset\cppxml\lexer.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="winlame\preset\cppxml\parser.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="winlame\App.cpp" />
     <ClCompile Include="winlame\CDRipTrackManager.cpp" />
     <ClCompile Include="winlame\LangCountryMapper.cpp" />
@@ -294,9 +276,6 @@
     <ClInclude Include="winlame\preset\PresetManagerImpl.h" />
     <ClInclude Include="winlame\preset\PropertyDlg.h" />
     <ClInclude Include="winlame\preset\PropertyListBox.h" />
-    <ClInclude Include="winlame\preset\cppxml\cppxml.hpp" />
-    <ClInclude Include="winlame\preset\cppxml\lexer.hpp" />
-    <ClInclude Include="winlame\preset\cppxml\parser.hpp" />
     <ClInclude Include="winlame\App.h" />
     <ClInclude Include="winlame\CDRipTrackManager.h" />
     <ClInclude Include="winlame\DynamicLibrary.h" />
