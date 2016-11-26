@@ -349,6 +349,10 @@ LRESULT MainFrame::OnViewSwitchToClassic(WORD /*wNotifyCode*/, WORD /*wID*/, HWN
 LRESULT MainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    AboutDlg dlg;
+
+   UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
+   dlg.SetPresetsXmlFilename(settings.presets_filename);
+
    dlg.DoModal();
    return 0;
 }
