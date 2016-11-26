@@ -25,6 +25,7 @@
 // includes
 #include <vector>
 #include <deque>
+#include <set>
 #include <memory>
 #include <atomic>
 #include <boost/thread/recursive_mutex.hpp>
@@ -57,6 +58,9 @@ public:
    /// adds a task to the queue
    void AddTask(std::shared_ptr<Task> spTask);
 
+   /// checks if there are tasks that are now runnable and starts them
+   void CheckRunnableTasks();
+
    /// returns if task queue is empty
    bool IsQueueEmpty() const throw();
 
@@ -75,6 +79,9 @@ public:
 private:
    /// thread function
    static void RunThread(boost::asio::io_service& ioService);
+
+   /// returns if a task is runnable
+   bool IsTaskRunnable(std::shared_ptr<Task> spTask) const;
 
    /// runs single task
    void RunTask(std::shared_ptr<Task> spTask);
@@ -109,8 +116,14 @@ private:
    /// task queue, protected by queue mutex
    T_deqTaskQueue m_deqTaskQueue;
 
+
+   // task bookkeeping
+
    /// task infos of all completed tasks, protected by queue mutex
    std::map<unsigned int, TaskInfo> m_mapCompletedTaskInfos;
+
+   /// set with all finished task ids
+   std::set<unsigned int> m_setFinishedTaskIds;
 
 
    // thread pool

@@ -64,6 +64,8 @@ BOOL MainFrame::OnIdle()
    UIEnable(ID_TASKS_STOP_ALL, m_taskManager.AreRunningTasksAvail());
    UIEnable(ID_TASKS_REMOVE_COMPLETED, m_taskManager.AreCompletedTasksAvail());
 
+   m_taskManager.CheckRunnableTasks();
+
    return FALSE;
 }
 

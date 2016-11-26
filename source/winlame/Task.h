@@ -29,6 +29,11 @@
 class Task
 {
 public:
+   /// ctor
+   Task(unsigned int dependentTaskId = 0)
+      :m_dependentTaskId(dependentTaskId)
+   {
+   }
    /// dtor
    virtual ~Task() throw() {}
 
@@ -68,12 +73,18 @@ protected:
       ATLASSERT(!m_errorText.IsEmpty());
    }
 
+   /// returns dependent task id
+   unsigned int DependentTaskId() const throw() { return m_dependentTaskId; }
+
    /// returns error text, if any
    const CString& ErrorText() const throw() { return m_errorText; }
 
 private:
    /// task id
    unsigned int m_id;
+
+   /// task id this task depends on; may be 0 for no task
+   unsigned int m_dependentTaskId;
 
    /// error text, or empty when not set yet
    CString m_errorText;

@@ -29,7 +29,8 @@
 #include <set>
 
 TaskManager::TaskManager()
-:m_upDefaultWork(new boost::asio::io_service::work(m_ioService))
+:m_nextTaskId(1),
+ m_upDefaultWork(new boost::asio::io_service::work(m_ioService))
 {
    // find out number of threads to start
    unsigned int uiNumThreads = m_config.m_uiUseNumTasks;
@@ -119,8 +120,29 @@ void TaskManager::AddTask(std::shared_ptr<Task> spTask)
       m_deqTaskQueue.push_back(spTask);
    }
 
-   m_ioService.post(
-      std::bind(&TaskManager::RunTask, this, spTask));
+   if (IsTaskRunnable(spTask))
+   {
+      m_ioService.post(
+         std::bind(&TaskManager::RunTask, this, spTask));
+   }
+}
+
+void TaskManager::CheckRunnableTasks()
+{
+   boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
+
+   std::for_each(m_deqTaskQueue.begin(), m_deqTaskQueue.end(),
+      [&](std::shared_ptr<Task>& spTask)
+   {
+      TaskInfo info = spTask->GetTaskInfo();
+      if (m_mapCompletedTaskInfos.find(spTask->Id()) == m_mapCompletedTaskInfos.end() &&
+         info.Status() == TaskInfo::statusWaiting &&
+         IsTaskRunnable(spTask))
+      {
+         m_ioService.post(
+            std::bind(&TaskManager::RunTask, this, spTask));
+      }
+   });
 }
 
 bool TaskManager::IsQueueEmpty() const
@@ -159,6 +181,8 @@ void TaskManager::StopAll()
    {
       spTask->Stop();
    }
+
+   m_setFinishedTaskIds.clear();
 }
 
 void TaskManager::RemoveCompletedTasks()
@@ -192,6 +216,25 @@ void TaskManager::RunThread(boost::asio::io_service& ioService)
    }
 }
 
+bool TaskManager::IsTaskRunnable(std::shared_ptr<Task> spTask) const
+{
+   boost::recursive_mutex::scoped_lock lock(const_cast<boost::recursive_mutex&>(m_mutexQueue));
+
+   // check dependent task ID
+   unsigned int dependentTaskId = spTask->DependentTaskId();
+
+   if (dependentTaskId == 0)
+      return true;
+
+   if (m_setFinishedTaskIds.find(dependentTaskId) == m_setFinishedTaskIds.end())
+   {
+      // task id wasn't reported as finished yet
+      return false;
+   }
+
+   return true;
+}
+
 void TaskManager::RunTask(std::shared_ptr<Task> spTask)
 {
    SetBusyFlag(GetCurrentThreadId(), true);
@@ -220,6 +263,8 @@ void TaskManager::RunTask(std::shared_ptr<Task> spTask)
       boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
 
       m_mapCompletedTaskInfos.insert(std::make_pair(spTask->Id(), info));
+
+      m_setFinishedTaskIds.insert(spTask->Id());
    }
 }
 

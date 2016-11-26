@@ -49,8 +49,7 @@ public:
       :m_uiId(taskId),
        m_taskStatus(statusWaiting),
        m_taskType(taskType),
-       m_uiProgress(0),
-       m_uiDependentId(0)
+       m_uiProgress(0)
    {
    }
 
@@ -74,9 +73,6 @@ public:
    /// returns progress in percent; [0; 100]
    unsigned int Progress() const throw() { return m_uiProgress; }
 
-   /// returns task id that this task depends on (or 0)
-   unsigned int DependentId() const throw() { return m_uiDependentId; }
-
    // set methods
 
    /// sets name of file, track, etc.
@@ -98,5 +94,4 @@ private:
    TaskStatus m_taskStatus;   ///< status
    TaskType m_taskType;       ///< task type
    unsigned int m_uiProgress; ///< progress in percent
-   unsigned int m_uiDependentId; ///< dependency task id
 };
