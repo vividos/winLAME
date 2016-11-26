@@ -75,4 +75,43 @@
       <value name="lameWriteWaveHeader">1</value>
     </preset>
   </facility>
+
+  <facility name="opus">
+    <preset name="Music Storage: Normal listening">
+      <comment>
+        Music Storage: At 128 Kbps VBR, Opus is pretty much transparent.
+        Command line used: "--bitrate 128 --vbr --comp 10"
+        See also: https://wiki.xiph.org/Opus_Recommended_Settings
+      </comment>
+      <value name="opusTargetBitrate">128</value>
+      <value name="opusBitrateMode">0</value>
+      <value name="opusComplexity">10</value>
+    </preset>
+
+    <preset name="Music Storage: Maximum settings">
+      <comment>
+        Music Storage: At 128 Kbps VBR, Opus is pretty much transparent. For
+        people who want the maximum settings, this preset uses 256 Kbps, which
+        may or may not be excessive and create larger files than needed.
+        Command line used: "--bitrate 256 --vbr --comp 10"
+        See also: https://wiki.xiph.org/Opus_Recommended_Settings
+      </comment>
+      <value name="opusTargetBitrate">256</value>
+      <value name="opusBitrateMode">0</value>
+      <value name="opusComplexity">10</value>
+    </preset>
+
+    <preset name="Audiobooks / Podcasts: Smaller size">
+      <comment>
+        Audiobooks / Podcasts: Uses a 32 Kbps VBR to save on size of the file,
+        so that more audio can be stored on portable devices. Don't use this
+        for storage.
+        Command line used: "--bitrate 32 --vbr --comp 10"
+        See also: https://wiki.xiph.org/Opus_Recommended_Settings
+      </comment>
+      <value name="opusTargetBitrate">32</value>
+      <value name="opusBitrateMode">0</value>
+      <value name="opusComplexity">10</value>
+    </preset>
+  </facility>
 </presets>
