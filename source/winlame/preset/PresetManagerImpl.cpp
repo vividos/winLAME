@@ -50,14 +50,16 @@ bool PresetManagerImpl::loadPreset(LPCTSTR filename)
    std::stringstream buffer;
    buffer << file.rdbuf();
 
-   m_presetsXmlFileContents = buffer.str();
+   std::string text = buffer.str();
+   m_presetsXmlFileContents.assign(text.begin(), text.end());
+   m_presetsXmlFileContents.push_back(0);
 
    file.close();
 
    // load xml document
    try
    {
-      m_presetsDocument.parse<0>(const_cast<char*>(m_presetsXmlFileContents.data()));
+      m_presetsDocument.parse<0>(m_presetsXmlFileContents.data());
    }
    catch (const std::exception& ex)
    {

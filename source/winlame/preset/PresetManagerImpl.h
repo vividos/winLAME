@@ -83,7 +83,7 @@ private:
 
 private:
    /// contents of the presets.xml file; must live as long as m_presetsDocument
-   std::string m_presetsXmlFileContents;
+   std::vector<char> m_presetsXmlFileContents;
 
    /// preset xml document
    rapidxml::xml_document<char> m_presetsDocument;
