@@ -24,8 +24,9 @@
 #include "StdAfx.h"
 #include "EncoderTask.h"
 
-EncoderTask::EncoderTask(const EncoderTaskSettings& settings)
-:m_settings(settings)
+EncoderTask::EncoderTask(unsigned int dependentTaskId, const EncoderTaskSettings& settings)
+:Task(dependentTaskId),
+m_settings(settings)
 {
    EncoderImpl::setInputFilename(m_settings.m_cszInputFilename);
    EncoderImpl::setOutputPath(m_settings.m_cszOutputPath);

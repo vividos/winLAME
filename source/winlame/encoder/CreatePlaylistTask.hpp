@@ -31,9 +31,9 @@ class CreatePlaylistTask : public Task
 {
 public:
    /// ctor, taking list of EncoderJobs
-   CreatePlaylistTask(const CString& playlistFilename, const EncoderJobList& encoderjoblist);
+   CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const EncoderJobList& encoderjoblist);
    /// ctor, taking list of CDReadJobs
-   CreatePlaylistTask(const CString& playlistFilename, const std::vector<CDReadJob>& cdreadjoblist);
+   CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const std::vector<CDReadJob>& cdreadjoblist);
    /// dtor
    virtual ~CreatePlaylistTask() throw() {}
 

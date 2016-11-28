@@ -117,7 +117,7 @@ class EncoderTask:
 {
 public:
    /// ctor
-   EncoderTask(const EncoderTaskSettings& settings);
+   EncoderTask(unsigned int dependentTaskId, const EncoderTaskSettings& settings);
    /// dtor
    virtual ~EncoderTask() throw() {}
 
@@ -130,6 +130,9 @@ public:
    /// task should be aborted, e.g. when program is closed
    virtual void Stop();
 
+   /// output filename for this task
+   const CString& OutputFilename() { return m_outputFilename; }
+
 private:
    /// adds error texts from error handler to task result
    void AddErrorText();
@@ -140,6 +143,9 @@ private:
 
    /// error handler
    AlwaysSkipErrorHandler m_errorHandler;
+
+   /// output filename
+   CString m_outputFilename;
 };
 
 

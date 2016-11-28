@@ -23,8 +23,9 @@
 #include "StdAfx.h"
 #include "CreatePlaylistTask.hpp"
 
-CreatePlaylistTask::CreatePlaylistTask(const CString& playlistFilename, const EncoderJobList& encoderJobList)
-   :m_playlistFilename(playlistFilename),
+CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const EncoderJobList& encoderJobList)
+   :Task(dependentTaskId),
+   m_playlistFilename(playlistFilename),
    m_finished(false)
 {
    std::for_each(encoderJobList.begin(), encoderJobList.end(), [&](const EncoderJob& encoderJob)
@@ -38,8 +39,9 @@ CreatePlaylistTask::CreatePlaylistTask(const CString& playlistFilename, const En
    });
 }
 
-CreatePlaylistTask::CreatePlaylistTask(const CString& playlistFilename, const std::vector<CDReadJob>& cdReadJobList)
-   :m_playlistFilename(playlistFilename),
+CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const std::vector<CDReadJob>& cdReadJobList)
+   :Task(dependentTaskId),
+   m_playlistFilename(playlistFilename),
    m_finished(false)
 {
    std::for_each(cdReadJobList.begin(), cdReadJobList.end(), [&](const CDReadJob& cdReadJob)

@@ -34,7 +34,7 @@ class CDExtractTask : public Task
 {
 public:
    /// ctor
-   CDExtractTask(const CDRipDiscInfo& discinfo, const CDRipTrackInfo& trackinfo);
+   CDExtractTask(unsigned int dependentTaskId, const CDRipDiscInfo& discinfo, const CDRipTrackInfo& trackinfo);
    /// dtor
    virtual ~CDExtractTask() throw() {}
 
@@ -46,6 +46,9 @@ public:
 
    /// task should be aborted, e.g. when program is closed
    virtual void Stop();
+
+   /// output filename for this task
+   const CString& OutputFilename() { return m_trackinfo.m_cszRippedFilename; }
 
 private:
    /// generates temporary filename

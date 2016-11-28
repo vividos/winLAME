@@ -28,8 +28,9 @@
 #include <basscd.h>
 #include "CDRipTitleFormatManager.hpp"
 
-CDExtractTask::CDExtractTask(const CDRipDiscInfo& discinfo, const CDRipTrackInfo& trackinfo)
-:m_discinfo(discinfo),
+CDExtractTask::CDExtractTask(unsigned int dependentTaskId, const CDRipDiscInfo& discinfo, const CDRipTrackInfo& trackinfo)
+:Task(dependentTaskId),
+m_discinfo(discinfo),
 m_trackinfo(trackinfo),
 m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
 m_bStopped(false),
@@ -38,6 +39,12 @@ m_uiProgress(0)
    m_title = CDRipTitleFormatManager::FormatTitle(
       m_discinfo.m_bVariousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
       m_discinfo, m_trackinfo);
+
+   CString cszDiscTrackTitle = CDRipTitleFormatManager::GetFilenameByTitle(m_title);
+
+   CString cszTempFilename = GetTempFilename(cszDiscTrackTitle);
+
+   m_trackinfo.m_cszRippedFilename = cszTempFilename;
 }
 
 TaskInfo CDExtractTask::GetTaskInfo()
@@ -52,13 +59,7 @@ TaskInfo CDExtractTask::GetTaskInfo()
 
 void CDExtractTask::Run()
 {
-   CString cszDiscTrackTitle = CDRipTitleFormatManager::GetFilenameByTitle(m_title);
-
-   CString cszTempFilename = GetTempFilename(cszDiscTrackTitle);
-
-   m_trackinfo.m_cszRippedFilename = cszTempFilename;
-
-   ExtractTrack(cszTempFilename);
+   ExtractTrack(m_trackinfo.m_cszRippedFilename);
 }
 
 void CDExtractTask::Stop()

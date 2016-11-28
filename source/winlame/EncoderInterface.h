@@ -78,6 +78,8 @@ public:
    {
    }
 
+   // getter
+
    /// returns input filename
    CString InputFilename() const throw() { return m_cszInputFilename; }
 
@@ -89,6 +91,11 @@ public:
 
    /// returns track info
    TrackInfo& GetTrackInfo() throw() { return m_trackInfo; }
+
+   // setter
+
+   /// sets output filename
+   void OutputFilename(const CString& outputFilename) { m_cszOutputFilename = outputFilename; }
 
 private:
    CString m_cszInputFilename;   ///< input filename

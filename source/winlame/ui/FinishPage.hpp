@@ -27,6 +27,9 @@
 
 // forward references
 struct UISettings;
+class EncoderTask;
+class CDReadJob;
+class TrackInfo;
 
 namespace UI
 {
@@ -80,6 +83,12 @@ private:
    /// adds tasks for CD extraction to task manager
    void AddCDExtractTasks();
 
+   /// creates encoder task for a CD Extract task
+   std::shared_ptr<EncoderTask> CreateEncoderTaskForCDReadJob(unsigned int cdReadTaskId, const CDReadJob& cdReadJob);
+
+   /// Sets track info properties from CD Read job infos
+   static void SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, const CDReadJob& cdReadJob);
+
    /// adds task to create a playlist to task manager
    void AddPlaylistTask();
 
@@ -87,6 +96,9 @@ private:
    // controls
 
    // model
+
+   /// last task id used for an encoding task or a CD extract task
+   unsigned int m_lastTaskId;
 
    /// settings
    UISettings& m_uiSettings;
