@@ -239,14 +239,27 @@ void TaskManager::RunTask(std::shared_ptr<Task> spTask)
 {
    SetBusyFlag(GetCurrentThreadId(), true);
 
-   spTask->Run();
+   CString errorText;
+   try
+   {
+      spTask->Run();
+   }
+   catch (const std::exception& ex)
+   {
+      errorText.Format(_T("Exception: %hs"), ex.what());
+   }
+   catch (...)
+   {
+      errorText = _T("Unknown Exception");
+   }
 
    SetBusyFlag(GetCurrentThreadId(), false);
 
    // store the last task info for the completed task
    TaskInfo info = spTask->GetTaskInfo();
 
-   CString errorText = spTask->ErrorText();
+   if (errorText.IsEmpty())
+      errorText = spTask->ErrorText();
 
    if (!errorText.IsEmpty())
    {
