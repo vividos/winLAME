@@ -182,7 +182,10 @@ LRESULT MainDlg::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    if ((wParam & 0xFFF0)==IDM_APPMODE)
    {
       m_isAppModeChanged = true;
+
       settings.m_appMode = UISettings::modernMode;
+      settings.StoreSettings();
+
       PostQuitMessage(0);
    }
    else

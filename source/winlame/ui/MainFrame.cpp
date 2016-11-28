@@ -341,7 +341,9 @@ LRESULT MainFrame::OnViewSwitchToClassic(WORD /*wNotifyCode*/, WORD /*wID*/, HWN
    m_isAppModeChanged = true;
 
    UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
+
    settings.m_appMode = UISettings::classicMode;
+   settings.StoreSettings();
 
    PostMessage(WM_CLOSE);
 
