@@ -81,6 +81,9 @@ public:
    /// returns input filename
    CString InputFilename() const throw() { return m_cszInputFilename; }
 
+   /// returns output filename
+   CString OutputFilename() const throw() { return m_cszOutputFilename; }
+
    /// returns track info; const version
    const TrackInfo& GetTrackInfo() const throw() { return m_trackInfo; }
 
@@ -89,7 +92,8 @@ public:
 
 private:
    CString m_cszInputFilename;   ///< input filename
-   TrackInfo m_trackInfo;      ///< track info
+   CString m_cszOutputFilename;  ///< output filename
+   TrackInfo m_trackInfo;        ///< track info
 };
 
 
@@ -98,16 +102,20 @@ class CDReadJob
 {
 public:
    /// ctor
-   CDReadJob(const CString& outputFilename, const CDRipDiscInfo& discInfo, const CDRipTrackInfo& trackInfo)
-      :m_outputFilename(outputFilename),
-       m_discInfo(discInfo),
+   CDReadJob(const CDRipDiscInfo& discInfo, const CDRipTrackInfo& trackInfo)
+      :m_discInfo(discInfo),
        m_trackInfo(trackInfo)
    {
    }
 
+   // getter
+
    const CString& OutputFilename() const throw() { return m_outputFilename; }
    const CDRipDiscInfo& DiscInfo() const throw() { return m_discInfo; }
    const CDRipTrackInfo& TrackInfo() const throw() { return m_trackInfo; }
+
+   // setter
+   void OutputFilename(const CString& outputFilename) { m_outputFilename = outputFilename; }
 
 private:
    CString m_outputFilename;

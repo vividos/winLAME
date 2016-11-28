@@ -23,22 +23,70 @@
 #include "StdAfx.h"
 #include "CreatePlaylistTask.hpp"
 
-CreatePlaylistTask::CreatePlaylistTask(const EncoderJobList& encoderjoblist)
+CreatePlaylistTask::CreatePlaylistTask(const CString& playlistFilename, const EncoderJobList& encoderJobList)
+   :m_playlistFilename(playlistFilename),
+   m_finished(false)
 {
+   std::for_each(encoderJobList.begin(), encoderJobList.end(), [&](const EncoderJob& encoderJob)
+   {
+      PlaylistEntry entry;
+
+      entry.m_filename = encoderJob.OutputFilename();
+      // TODO title, length
+
+      m_playlistEntries.push_back(entry);
+   });
+}
+
+CreatePlaylistTask::CreatePlaylistTask(const CString& playlistFilename, const std::vector<CDReadJob>& cdReadJobList)
+   :m_playlistFilename(playlistFilename),
+   m_finished(false)
+{
+   std::for_each(cdReadJobList.begin(), cdReadJobList.end(), [&](const CDReadJob& cdReadJob)
+   {
+      PlaylistEntry entry;
+
+      entry.m_filename = cdReadJob.OutputFilename();
+      entry.m_title = cdReadJob.TrackInfo().m_cszTrackTitle;
+      entry.m_trackLengthInSeconds = cdReadJob.TrackInfo().m_nTrackLength;
+
+      m_playlistEntries.push_back(entry);
+   });
 }
 
 TaskInfo CreatePlaylistTask::GetTaskInfo()
 {
    TaskInfo info(Id(), TaskInfo::taskWritePlaylist);
-   // TODO set name, desc, etc.
+
    info.Name(_T("Writing Playlist"));
+   info.Progress(m_finished ? 100 : 0);
+   info.Status(m_finished ? TaskInfo::statusCompleted : TaskInfo::statusWaiting);
 
    return info;
 }
 
 void CreatePlaylistTask::Run()
 {
-   // TODO implement
+   m_finished = false;
+
+   FILE* fd = _tfopen(m_playlistFilename, _T("wt"));
+   if (fd == NULL)
+   {
+      SetTaskError(IDS_PLAYLIST_TASK_ERROR_CREATE_FILE);
+      return;
+   }
+
+   std::shared_ptr<FILE> spFd(fd, fclose);
+
+   for (size_t entryIndex = 0, maxEntryIndex = m_playlistEntries.size(); entryIndex < maxEntryIndex; entryIndex++)
+   {
+      const PlaylistEntry& entry = m_playlistEntries[entryIndex];
+
+      // TODO write m3u comments
+      _ftprintf(fd, _T("%s\n"), entry.m_filename.GetString());
+   }
+
+   m_finished = true;
 }
 
 void CreatePlaylistTask::Stop()

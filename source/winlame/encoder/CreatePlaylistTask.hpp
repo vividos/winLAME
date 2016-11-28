@@ -24,12 +24,16 @@
 // needed includes
 #include "Task.h"
 #include "UISettings.h"
+#include <atomic>
 
+/// Task to create .m3u playlist file
 class CreatePlaylistTask : public Task
 {
 public:
-   /// ctor
-   CreatePlaylistTask(const EncoderJobList& encoderjoblist);
+   /// ctor, taking list of EncoderJobs
+   CreatePlaylistTask(const CString& playlistFilename, const EncoderJobList& encoderjoblist);
+   /// ctor, taking list of CDReadJobs
+   CreatePlaylistTask(const CString& playlistFilename, const std::vector<CDReadJob>& cdreadjoblist);
    /// dtor
    virtual ~CreatePlaylistTask() throw() {}
 
@@ -43,4 +47,25 @@ public:
    virtual void Stop();
 
 private:
+   /// filename of playlist to write
+   CString m_playlistFilename;
+
+   /// single playlist entry
+   struct PlaylistEntry
+   {
+      /// filename of playlist entry
+      CString m_filename;
+
+      /// title of entry
+      CString m_title;
+
+      /// track length, in seconds
+      unsigned m_trackLengthInSeconds;
+   };
+
+   /// list of playlist entries
+   std::vector<PlaylistEntry> m_playlistEntries;
+
+   /// indicates if task is already finished
+   std::atomic<bool> m_finished;
 };

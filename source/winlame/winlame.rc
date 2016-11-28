@@ -963,6 +963,7 @@ BEGIN
     IDS_ENCODER_INTERNAL_DECODE_ERROR "internal decoding error"
     IDS_ENCODER_ERROR_ERRORINFO_FILENAME_S  "Filename: "
     IDS_ENCODER_ERROR_ERRORINFO_SSI         "[%s] %s (error code %i)"
+    IDS_PLAYLIST_TASK_ERROR_CREATE_FILE "Error while creating playlist file"
     IDS_FILTER_AAC_INPUT          "AAC Files [*.aac, *.m4a]|*.aac;*.m4a|"
     IDS_FILTER_BASS_INPUT         "Module Files [*.mod, *.s3m, *.xm, *.it, *.mtm, *.mo3, *.umx]|*.mod;*.s3m;*.xm;*.it;*.mtm;*.mo3;*.umx|"
     IDS_FILTER_BASS_WMA_INPUT     "Windows Media Audio Files [*.wma, *.asf]|*.wma;*.asf|"
