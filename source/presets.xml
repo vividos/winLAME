@@ -45,6 +45,21 @@
       <value name="lameHideSettings">1</value>
     </preset>
 
+    <preset name="Podcast: Mono, CBR, 64kbps">
+      <comment>
+        This preset will produce a standard podcast with mono encoding and a
+        constant bit rate of 64kbps.
+        Command line used: "-b 64 -m m -q2 --cbr"
+        See: http://www.richardfarrar.com/how-to-use-winlame-to-encode-podcasts/
+      </comment>
+      <value name="lameEncodeQuality">2</value>
+      <value name="lameMono">1</value>
+      <value name="lameQualityOrBitrate">0</value>
+      <value name="lameBitrate">64</value>
+      <value name="lameCBR">1</value>
+      <value name="lameHideSettings">1</value>
+    </preset>
+
     <preset name="Portable: background noise and low bitrate requirement, small sizes">
       <comment>
         This preset will produce files suitable listening to on a portable
