@@ -42,7 +42,7 @@ ID_ENCODE_CD       BITMAP         "res\\read_cd.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_TASKS_STOP_ALL  BITMAP         "res\\tasks_stop_all.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
-ID_TASKS_REMOVE_COMPLETED BITMAP "res\\tasks_remove_completed.bmp"
+ID_TASKS_REMOVE_COMPLETED BITMAP         "res\\tasks_remove_completed.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_SETTINGS_GENERAL BITMAP         "res\\settings_general.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
@@ -50,7 +50,7 @@ ID_SETTINGS_CDREAD BITMAP         "res\\settings_freedb.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_VIEW_RIBBON     BITMAP         "res\\view_ribbon.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
-ID_VIEW_SWITCH_CLASSIC BITMAP      "res\\switch_classic.bmp"
+ID_VIEW_SWITCH_CLASSIC BITMAP         "res\\switch_classic.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_APP_EXIT        BITMAP         "res\\app_exit.bmp"
 
@@ -132,10 +132,10 @@ BEGIN
     EDITTEXT        IDC_CDRIP_OPT_EDIT_TEMP_FOLDER, 14, 58, 218, 12, ES_AUTOHSCROLL
     PUSHBUTTON      "...", IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, 237, 58, 16, 13, BS_ICON
     AUTOCHECKBOX    "&Store edited disc and track info in cdplayer.ini", IDC_CDRIP_OPT_CHECK_CDPLAYER_INI, 14, 75, 239, 10
-    LTEXT           "F&ormat various artists track", IDC_STATIC, 14, 93, 100, 9, SS_LEFT
+    LTEXT           "F&ormat various artists track", IDC_STATIC, 14, 93, 100, 9
     EDITTEXT        IDC_CDRIP_OPT_EDIT_FORMAT_VARIOUS_TRACK, 116, 90, 116, 12, ES_AUTOHSCROLL
     PUSHBUTTON      ">", IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, 237, 89, 16, 13, BS_ICON
-    LTEXT           "Format &album track", IDC_STATIC, 14, 108, 100, 9, SS_LEFT
+    LTEXT           "Format &album track", IDC_STATIC, 14, 108, 100, 9
     EDITTEXT        IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK, 116, 105, 116, 12, ES_AUTOHSCROLL
     PUSHBUTTON      ">", IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, 237, 104, 16, 13, BS_ICON
 END
@@ -198,7 +198,7 @@ FONT 8, "MS Shell Dlg", 0, 0, 1
 BEGIN
     LTEXT           "&Output Module", IDC_OUT_BEVEL1, 0, 0, 291, 8
     COMBOBOX        IDC_OUT_COMBO_OUTMODULE, 6, 11, 162, 80, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST
-    AUTOCHECKBOX    "&Warn about lossy transcoding", IDC_OUT_CHECK_WARN, 177, 9, 109, 18, BS_MULTILINE, WS_EX_LEFT
+    AUTOCHECKBOX    "&Warn about lossy transcoding", IDC_OUT_CHECK_WARN, 177, 9, 109, 18, BS_MULTILINE
     LTEXT           "Output &Location", IDC_OUT_BEVEL2, 0, 31, 291, 8
     COMBOBOX        IDC_OUT_OUTPATH, 6, 43, 258, 86, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWN | CBS_AUTOHSCROLL
     PUSHBUTTON      "output", IDC_OUT_SELECTPATH, 270, 42, 16, 14, BS_ICON
@@ -338,19 +338,19 @@ STYLE DS_SHELLFONT | WS_CHILDWINDOW
 EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "MS Shell Dlg", 0, 0, 1
 BEGIN
-    LTEXT           "&Bitrate", IDC_STATIC, 2, 5, 61, 9, SS_LEFT
+    LTEXT           "&Bitrate", IDC_STATIC, 2, 5, 61, 9
     EDITTEXT        IDC_OPUS_EDIT_BITRATE, 65, 2, 37, 12, ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "", IDC_OPUS_SPIN_BITRATE, UPDOWN_CLASS, UDS_ARROWKEYS | UDS_NOTHOUSANDS | UDS_WRAP | UDS_SETBUDDYINT, 102, 0, 11, 15
-    LTEXT           "Kbps per channel", IDC_STATIC, 118, 5, 169, 8, SS_LEFT
-    LTEXT           "&Complexity", IDC_STATIC, 2, 23, 56, 9, SS_LEFT
+    LTEXT           "Kbps per channel", IDC_STATIC, 118, 5, 169, 8
+    LTEXT           "&Complexity", IDC_STATIC, 2, 23, 56, 9
     CONTROL         "", IDC_OPUS_SLIDER_COMPLEXITY, TRACKBAR_CLASS, WS_GROUP | WS_TABSTOP | TBS_AUTOTICKS, 63, 19, 166, 13
-    RTEXT           "slowest", IDC_STATIC, 183, 37, 46, 9, SS_RIGHT
-    CTEXT           "%u", IDC_OPUS_STATIC_COMPLEXITY, 111, 37, 70, 9, SS_CENTER
-    LTEXT           "fastest", IDC_STATIC, 63, 37, 46, 9, SS_LEFT
-    LTEXT           "Bitrate control &mode", IDC_STATIC, 2, 53, 285, 9, SS_LEFT
+    RTEXT           "slowest", IDC_STATIC, 183, 37, 46, 9
+    CTEXT           "%u", IDC_OPUS_STATIC_COMPLEXITY, 111, 37, 70, 9
+    LTEXT           "fastest", IDC_STATIC, 63, 37, 46, 9
+    LTEXT           "Bitrate control &mode", IDC_STATIC, 2, 53, 285, 9
     AUTORADIOBUTTON "VBR (recommended)", IDC_OPUS_RADIO_BRCMODE1, 8, 66, 279, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Constrained VBR", IDC_OPUS_RADIO_BRCMODE2, 8, 81, 279, 10, 0
-    AUTORADIOBUTTON "Hard CBR", IDC_OPUS_RADIO_BRCMODE3, 8, 96, 279, 10, 0
+    AUTORADIOBUTTON "Constrained VBR", IDC_OPUS_RADIO_BRCMODE2, 8, 81, 279, 10
+    AUTORADIOBUTTON "Hard CBR", IDC_OPUS_RADIO_BRCMODE3, 8, 96, 279, 10
 END
 
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
@@ -458,7 +458,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0
 BEGIN
     LTEXT           "General Settings", IDC_CDRIP_OPT_BEVEL1, 7, 6, 246, 8
     LTEXT           "&Language", IDC_STATIC, 14, 21, 86, 8
-    COMBOBOX        IDC_CDRIP_OPT_COMBO_LANGUAGE, 101, 16, 153, 99, WS_TABSTOP | CBS_DROPDOWNLIST | CBS_HASSTRINGS | CBS_OWNERDRAWVARIABLE
+    COMBOBOX        IDC_CDRIP_OPT_COMBO_LANGUAGE, 101, 16, 153, 99, WS_TABSTOP | WS_TABSTOP | CBS_DROPDOWNLIST | CBS_HASSTRINGS | CBS_OWNERDRAWVARIABLE
     LTEXT           "CD Extraction Settings", IDC_CDRIP_OPT_BEVEL2, 7, 35, 246, 8
     LTEXT           "&freedb Server", IDC_STATIC, 14, 51, 86, 8
     COMBOBOX        IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, 101, 47, 152, 109, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWN
@@ -704,7 +704,7 @@ BEGIN
     AUTORADIOBUTTON "&Constant Bitrate", IDC_OGGV_RADIO_BRMODE4, 6, 88, 71, 10
     CONTROL         "", IDC_OGGV_SLIDER_QUALITY, TRACKBAR_CLASS, WS_GROUP | WS_TABSTOP | TBS_AUTOTICKS, 80, 15, 132, 12
     LTEXT           "worst", IDC_OGGV_STATIC1, 80, 29, 46, 8
-    LTEXT           "best", IDC_OGGV_STATIC2, 166, 29, 46, 8, SS_RIGHT, WS_EX_LEFT
+    RTEXT           "best", IDC_OGGV_STATIC2, 166, 29, 46, 8
     LTEXT           "Quality: %u.%02u", IDC_OGGV_STATIC_QUALITY, 220, 16, 71, 8, NOT WS_GROUP | SS_NOPREFIX
     LTEXT           "Bitrate: %u.%u Kbps", IDC_OGGV_STATIC_BITRATE, 220, 27, 71, 8, SS_NOPREFIX
     CONTROL         "", IDC_OGGV_SPIN_QUICK_QUALITY, UPDOWN_CLASS, UDS_ARROWKEYS | UDS_HORZ, 128, 31, 36, 10
@@ -773,19 +773,19 @@ STYLE DS_SHELLFONT | WS_CHILDWINDOW
 EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "Ms Shell Dlg 2", 400, 0, 1
 BEGIN
-    LTEXT           "&Bitrate", IDC_STATIC, 2, 5, 61, 9, SS_LEFT
+    LTEXT           "&Bitrate", IDC_STATIC, 2, 5, 61, 9
     EDITTEXT        IDC_OPUS_EDIT_BITRATE, 65, 2, 37, 12, ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "", IDC_OPUS_SPIN_BITRATE, UPDOWN_CLASS, UDS_ARROWKEYS | UDS_NOTHOUSANDS | UDS_WRAP | UDS_SETBUDDYINT, 102, 0, 11, 15
-    LTEXT           "Kbps per channel", IDC_STATIC, 118, 5, 169, 8, SS_LEFT
-    LTEXT           "&Complexity", IDC_STATIC, 2, 23, 56, 9, SS_LEFT
+    LTEXT           "Kbps per channel", IDC_STATIC, 118, 5, 169, 8
+    LTEXT           "&Complexity", IDC_STATIC, 2, 23, 56, 9
     CONTROL         "", IDC_OPUS_SLIDER_COMPLEXITY, TRACKBAR_CLASS, WS_GROUP | WS_TABSTOP | TBS_AUTOTICKS, 63, 19, 166, 13
-    RTEXT           "slowest", IDC_STATIC, 183, 37, 46, 9, SS_RIGHT
-    CTEXT           "%u", IDC_OPUS_STATIC_COMPLEXITY, 111, 37, 70, 9, SS_CENTER
-    LTEXT           "fastest", IDC_STATIC, 63, 37, 46, 9, SS_LEFT
-    LTEXT           "Bitrate control &mode", IDC_STATIC, 2, 53, 285, 9, SS_LEFT
+    RTEXT           "slowest", IDC_STATIC, 183, 37, 46, 9
+    CTEXT           "%u", IDC_OPUS_STATIC_COMPLEXITY, 111, 37, 70, 9
+    LTEXT           "fastest", IDC_STATIC, 63, 37, 46, 9
+    LTEXT           "Bitrate control &mode", IDC_STATIC, 2, 53, 285, 9
     AUTORADIOBUTTON "VBR (recommended)", IDC_OPUS_RADIO_BRCMODE1, 8, 66, 279, 10, WS_GROUP | WS_TABSTOP
-    AUTORADIOBUTTON "Constrained VBR", IDC_OPUS_RADIO_BRCMODE2, 8, 81, 279, 10, 0
-    AUTORADIOBUTTON "Hard CBR", IDC_OPUS_RADIO_BRCMODE3, 8, 96, 279, 10, 0
+    AUTORADIOBUTTON "Constrained VBR", IDC_OPUS_RADIO_BRCMODE2, 8, 81, 279, 10
+    AUTORADIOBUTTON "Hard CBR", IDC_OPUS_RADIO_BRCMODE3, 8, 96, 279, 10
 END
 
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
@@ -902,9 +902,9 @@ BEGIN
     IDS_WARN_TRANSCODE            "Warning!\nYou are about to transcode audio file(s) from a lossy format to another. This may severely degrade sound quality!\n\nContinue?"
     IDS_PRE_DESC_DEFAULT          "Choose this to customize winLAME settings for yourself; only recommended for experienced users!"
     IDS_MAIN_TASKS_STILL_RUNNING  "There are still tasks to be processed; Really quit?"
-    IDS_MAIN_TASKS_VIEW_COLUMN_TRACK    "Track"
+    IDS_MAIN_TASKS_VIEW_COLUMN_TRACK "Track"
     IDS_MAIN_TASKS_VIEW_COLUMN_PROGRESS "Progress"
-    IDS_MAIN_TASKS_VIEW_COLUMN_STATUS   "Status"
+    IDS_MAIN_TASKS_VIEW_COLUMN_STATUS "Status"
     IDS_MAIN_TASKS_VIEW_NO_TASK   "<No Task>"
     IDS_MAIN_TASKS_PERCENT_DONE_U "%u%% done"
     IDS_MAIN_TASKS_STATUS_WAITING "Waiting"
@@ -961,8 +961,8 @@ BEGIN
     IDS_ENCODER_ERROR_WRITE_OUTPUT "error writing to output file"
     IDS_ENCODER_ERROR_GET_FILE_INFOS "error getting file information"
     IDS_ENCODER_INTERNAL_DECODE_ERROR "internal decoding error"
-    IDS_ENCODER_ERROR_ERRORINFO_FILENAME_S  "Filename: "
-    IDS_ENCODER_ERROR_ERRORINFO_SSI         "[%s] %s (error code %i)"
+    IDS_ENCODER_ERROR_ERRORINFO_FILENAME_S "Filename: "
+    IDS_ENCODER_ERROR_ERRORINFO_SSI "[%s] %s (error code %i)"
     IDS_PLAYLIST_TASK_ERROR_CREATE_FILE "Error while creating playlist file"
     IDS_FILTER_AAC_INPUT          "AAC Files [*.aac, *.m4a]|*.aac;*.m4a|"
     IDS_FILTER_BASS_INPUT         "Module Files [*.mod, *.s3m, *.xm, *.it, *.mtm, *.mo3, *.umx]|*.mod;*.s3m;*.xm;*.it;*.mtm;*.mo3;*.umx|"
@@ -1055,5 +1055,5 @@ BEGIN
     ID_APP_EXIT                   "Exit the application\nExit"
 END
 
-LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 IDR_HTML_ABOUT     HTML           "res\\about.html"
