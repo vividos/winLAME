@@ -62,10 +62,11 @@ std::vector<int> SndFileFormats::EnumSubTypes()
    return allSubTypes;
 }
 
-bool SndFileFormats::IsValidFormatCombo(int format, int subType)
+bool SndFileFormats::IsValidFormatCombo(int format, int subType, int numChannels)
 {
    SF_INFO info = { 0 };
-   info.channels = 2;
+   info.channels = numChannels;
+   info.samplerate = 44100;
    info.format = format | subType;
 
    return sf_format_check(&info) != 0;

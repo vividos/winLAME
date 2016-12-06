@@ -32,7 +32,7 @@ public:
    static std::vector<int> EnumSubTypes();
 
    /// checks if a format and sub type is a valid combination
-   static bool IsValidFormatCombo(int format, int subType);
+   static bool IsValidFormatCombo(int format, int subType, int numChannels);
 
    /// returns format info for given format
    static bool GetFormatInfo(int format, CString& formatName, CString& outputExtension);

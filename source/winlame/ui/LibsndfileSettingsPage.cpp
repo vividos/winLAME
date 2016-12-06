@@ -136,12 +136,25 @@ void LibsndfileSettingsPage::UpdateSubTypeCombobox()
    {
       int subType = subTypesList[subTypeIndex];
 
-      if (SndFileFormats::IsValidFormatCombo(format, subType))
+      // we don't know if it will be a stereo or mono file, so check both
+      bool stereoValid = SndFileFormats::IsValidFormatCombo(format, subType, 2);
+      bool monoValid = SndFileFormats::IsValidFormatCombo(format, subType, 1);
+
+      if (stereoValid || monoValid)
       {
          CString subTypeName = SndFileFormats::GetSubTypeName(subType);
 
-         ATLTRACE(_T("   SndFile sub type %i: Name: \"%s\"\n"),
-            subType, subTypeName.GetString());
+         ATLTRACE(_T("   SndFile sub type %i: Name: \"%s\", %s\n"),
+            subType,
+            subTypeName.GetString(),
+            stereoValid && !monoValid ? _T("Stereo only") :
+            !stereoValid && monoValid ? _T("Mono only") : _T("Mono + Stereo"));
+
+         if (stereoValid && !monoValid)
+            subTypeName += _T(" (Stereo)");
+
+         if (!stereoValid && monoValid)
+            subTypeName += _T(" (Mono)");
 
          int subTypeItem = m_cbSubType.AddString(subTypeName);
          m_cbSubType.SetItemData(subTypeItem, subType);
