@@ -26,6 +26,7 @@
 #include "resource.h"
 #include "SndFileInputModule.h"
 #include "Id3v1Tag.h"
+#include "SndFileFormats.hpp"
 
 
 // constants
@@ -63,56 +64,14 @@ bool SndFileInputModule::isAvailable()
 
 void SndFileInputModule::getDescription(CString& desc)
 {
-   // find out type and subtype description
-   SF_FORMAT_INFO types,subtypes;
-   types.name = "???";
-   subtypes.name = "???";
+   CString formatName, outputExtension;
+   SndFileFormats::GetFormatInfo(sfinfo.format & SF_FORMAT_TYPEMASK, formatName, outputExtension);
 
-   // find out type
-   {
-      // get format length
-      int count=0;
-      sf_command(NULL, SFC_GET_FORMAT_MAJOR_COUNT, &count, sizeof(count));
-
-      int i;
-      for(i=0; i<count; i++)
-      {
-         // get format info
-         types.format = i;
-         sf_command(NULL,SFC_GET_FORMAT_MAJOR,&types,sizeof(types));
-
-         if (types.format == (sfinfo.format&SF_FORMAT_TYPEMASK))
-            break;
-      }
-
-      if (i>=count)
-         types.name = "unknown format";
-   }
-
-   // find out subtype
-   {
-      // get format length
-      int count=0;
-      sf_command(NULL, SFC_GET_FORMAT_SUBTYPE_COUNT, &count, sizeof(count));
-
-      int i;
-      for(i=0; i<count; i++)
-      {
-         // get format info
-         subtypes.format = i;
-         sf_command(NULL,SFC_GET_FORMAT_SUBTYPE,&subtypes,sizeof(subtypes));
-
-         if (subtypes.format == (sfinfo.format&SF_FORMAT_SUBMASK))
-            break;
-      }
-
-      if (i>=count)
-         types.name = "unknown subformat";
-   }
+   CString subTypeName = SndFileFormats::GetSubTypeName(sfinfo.format & SF_FORMAT_SUBMASK);
 
    // format string
    desc.Format(IDS_FORMAT_INFO_SNDFILE,
-      types.name, subtypes.name, sfinfo.samplerate, sfinfo.channels);
+      formatName.GetString(), subTypeName.GetString(), sfinfo.samplerate, sfinfo.channels);
 }
 
 void SndFileInputModule::getVersionString(CString& version, int special)
@@ -132,25 +91,22 @@ CString SndFileInputModule::getFilterString()
    // build filter string when not already done
    if (filterstring.IsEmpty())
    {
-      SF_FORMAT_INFO format_info;
-      int count=0;
+      std::vector<int> formatsList = SndFileFormats::EnumFormats();
 
-      // get format length
-      sf_command(NULL, SFC_GET_FORMAT_MAJOR_COUNT, &count, sizeof(count));
-
-      for(int i=0; i<count; i++)
+      for (size_t formatIndex = 0, maxFormatIndex = formatsList.size(); formatIndex < maxFormatIndex; formatIndex++)
       {
-         // get format info
-         format_info.format = i;
-         sf_command(NULL, SFC_GET_FORMAT_MAJOR, &format_info, sizeof (format_info));
+         int format = formatsList[formatIndex];
+
+         CString formatName, outputExtension;
+         SndFileFormats::GetFormatInfo(format, formatName, outputExtension);
 
          // do format string
          CString temp;
          temp.Format(
-            _T("%hs [*.%hs]|*.%hs|"),
-            format_info.name,
-            format_info.extension,
-            format_info.extension);
+            _T("%s [*.%s]|*.%s|"),
+            formatName.GetString(),
+            outputExtension.GetString(),
+            outputExtension.GetString());
 
          filterstring += temp;
       }

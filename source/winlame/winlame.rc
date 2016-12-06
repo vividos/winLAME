@@ -969,7 +969,7 @@ BEGIN
     IDS_FORMAT_INFO_BASS_INPUT_AUDIO "%s, %u kbps, %u Hz, %u channels"
     IDS_FORMAT_INFO_BASS_WMA      "Windows Media Audio"
     IDS_FORMAT_INFO_BASS_FILESTREAM "BASS File Stream"
-    IDS_FORMAT_INFO_SNDFILE       "%hs, %hs, %u Hz, %u channels"
+    IDS_FORMAT_INFO_SNDFILE       "%s, %s, %u Hz, %u channels"
     IDS_FORMAT_INFO_WAVE_OUTPUT   "%s, %u Hz, %u channels"
     IDS_FORMAT_INFO_LAME          "LAME mp3, Encoding Quality: %s%s, "
     IDS_FORMAT_INFO_LAME_ABR      "ABR mode (%u kbps), "
