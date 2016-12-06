@@ -45,21 +45,21 @@ std::vector<int> SndFileFormats::EnumFormats()
 
 std::vector<int> SndFileFormats::EnumSubTypes()
 {
-   std::vector<int> allFormats;
+   std::vector<int> allSubTypes;
 
    int subtypeCount = 0;
    sf_command(nullptr, SFC_GET_FORMAT_SUBTYPE_COUNT, &subtypeCount, sizeof(int));
 
-   SF_FORMAT_INFO formatInfo;
+   SF_FORMAT_INFO subTypeInfo;
    for (int subtypeIndex = 0; subtypeIndex < subtypeCount; subtypeIndex++)
    {
-      formatInfo.format = subtypeIndex;
-      sf_command(nullptr, SFC_GET_FORMAT_SUBTYPE, &formatInfo, sizeof(formatInfo));
+      subTypeInfo.format = subtypeIndex;
+      sf_command(nullptr, SFC_GET_FORMAT_SUBTYPE, &subTypeInfo, sizeof(subTypeInfo));
 
-      allFormats.push_back(formatInfo.format);
+      allSubTypes.push_back(subTypeInfo.format);
    }
 
-   return allFormats;
+   return allSubTypes;
 }
 
 bool SndFileFormats::IsValidFormatCombo(int format, int subType)
