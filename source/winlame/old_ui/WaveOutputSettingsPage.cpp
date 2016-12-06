@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2005 Michael Fink
+   Copyright (c) 2000-2016 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,67 +23,155 @@
 // needed includes
 #include "stdafx.h"
 #include "WaveOutputSettingsPage.h"
+#include "encoder/SndFileFormats.hpp"
 
 // WaveOutputSettingsPage methods
 
 LRESULT WaveOutputSettingsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-   // subclass bevel lines
-   bevel1.SubclassWindow(GetDlgItem(IDC_WAVE_BEVEL1));
-
-   // fill output format list
-   SendDlgItemMessage(IDC_WAVE_COMBO_OUTFMT, CB_ADDSTRING, 0, (LPARAM)_T("16 bit PCM"));
-   SendDlgItemMessage(IDC_WAVE_COMBO_OUTFMT, CB_ADDSTRING, 0, (LPARAM)_T("24 bit PCM"));
-   SendDlgItemMessage(IDC_WAVE_COMBO_OUTFMT, CB_ADDSTRING, 0, (LPARAM)_T("32 bit PCM"));
-   SendDlgItemMessage(IDC_WAVE_COMBO_OUTFMT, CB_ADDSTRING, 0, (LPARAM)_T("32 bit Float"));
-
-   // fill file format list
-   SendDlgItemMessage(IDC_WAVE_COMBO_FILEFMT, CB_ADDSTRING, 0, (LPARAM)_T("Microsoft WAV"));
-   SendDlgItemMessage(IDC_WAVE_COMBO_FILEFMT, CB_ADDSTRING, 0, (LPARAM)_T("Apple AIFF"));
-   SendDlgItemMessage(IDC_WAVE_COMBO_FILEFMT, CB_ADDSTRING, 0, (LPARAM)_T("SoundForge W64"));
-
-   // enable resizing
+   DoDataExchange(DDX_LOAD);
    DlgResize_Init(false, true);
 
+   UpdateFileFormatList();
+
+   int itemToSelect = m_cbFormat.FindString(0, _T("WAV (Microsoft) (wav)"));
+   m_cbFormat.SetCurSel(itemToSelect != -1 ? itemToSelect : 0);
+
+   UpdateSubTypeCombobox();
+
    return 1;  // let the system set the focus
+}
+
+LRESULT WaveOutputSettingsPage::OnFormatSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   UpdateSubTypeCombobox();
+
+   return 0;
+}
+
+void WaveOutputSettingsPage::UpdateFileFormatList()
+{
+   std::vector<int> formatsList = SndFileFormats::EnumFormats();
+
+   for (size_t formatIndex = 0, maxFormatIndex = formatsList.size(); formatIndex < maxFormatIndex; formatIndex++)
+   {
+      int format = formatsList[formatIndex];
+
+      CString formatName, outputExtension;
+      SndFileFormats::GetFormatInfo(format, formatName, outputExtension);
+
+      ATLTRACE(_T("SndFile Format %i: Name: \"%s\", Extension: %s\n"),
+         format, formatName.GetString(), outputExtension.GetString());
+
+      CString text;
+      text.Format(_T("%s (%s)"), formatName.GetString(), outputExtension.GetString());
+
+      int formatItem = m_cbFormat.AddString(text);
+      m_cbFormat.SetItemData(formatItem, format);
+   }
+}
+
+void WaveOutputSettingsPage::UpdateSubTypeCombobox()
+{
+   int selectedSubType = -1;
+
+   int selectedItem = m_cbSubType.GetCurSel();
+   if (selectedItem != CB_ERR)
+      selectedSubType = static_cast<int>(m_cbSubType.GetItemData(selectedItem));
+
+   m_cbSubType.ResetContent();
+
+   int formatIndex = m_cbFormat.GetCurSel();
+   if (formatIndex == CB_ERR)
+      return;
+
+   int format = static_cast<int>(m_cbFormat.GetItemData(formatIndex));
+
+   CString formatName, outputExtension;
+   SndFileFormats::GetFormatInfo(format, formatName, outputExtension);
+
+   ATLTRACE(_T("SndFile Format %i: Name: \"%s\", Extension: %s\n"),
+      format, formatName.GetString(), outputExtension.GetString());
+
+   std::vector<int> subTypesList = SndFileFormats::EnumSubTypes();
+
+   int itemToSelect = -1;
+   for (size_t subTypeIndex = 0, maxSubTypeIndex = subTypesList.size(); subTypeIndex < maxSubTypeIndex; subTypeIndex++)
+   {
+      int subType = subTypesList[subTypeIndex];
+
+      if (SndFileFormats::IsValidFormatCombo(format, subType))
+      {
+         CString subTypeName = SndFileFormats::GetSubTypeName(subType);
+
+         ATLTRACE(_T("   SndFile sub type %i: Name: \"%s\"\n"),
+            subType, subTypeName.GetString());
+
+         int subTypeItem = m_cbSubType.AddString(subTypeName);
+         m_cbSubType.SetItemData(subTypeItem, subType);
+
+         if (selectedSubType != -1 &&
+            subType == selectedSubType)
+         {
+            itemToSelect = subTypeItem;
+         }
+      }
+   }
+
+   if (itemToSelect == -1)
+   {
+      itemToSelect = m_cbSubType.FindString(0, _T("Signed 16 bit PCM"));
+   }
+
+   m_cbSubType.SetCurSel(itemToSelect != -1 ? itemToSelect : 0);
 }
 
 void WaveOutputSettingsPage::OnEnterPage()
 {
    // get settings manager
-   SettingsManager &mgr = pui->getUISettings().settings_manager;
+   SettingsManager& mgr = pui->getUISettings().settings_manager;
 
-   // set raw audio check
-   SendDlgItemMessage(IDC_WAVE_CHECK_RAWAUDIO, BM_SETCHECK, 
-      mgr.queryValueInt(WaveRawAudioFile)==1? BST_CHECKED : BST_UNCHECKED );
+   // format
+   int format = mgr.queryValueInt(SndFileFormat);
 
-   // set writewavex check
-   SendDlgItemMessage(IDC_WAVE_CHECK_WAVEX, BM_SETCHECK, 
-      mgr.queryValueInt(WaveWriteWavEx)==1? BST_CHECKED : BST_UNCHECKED );
+   for (int itemIndex = 0, maxItemIndex = m_cbFormat.GetCount(); itemIndex < maxItemIndex; itemIndex++)
+   {
+      int itemFormat = static_cast<int>(m_cbFormat.GetItemData(itemIndex));
+      if (itemFormat == format)
+      {
+         m_cbFormat.SetCurSel(itemIndex);
+         break;
+      }
+   }
 
-   // set output format
-   SendDlgItemMessage(IDC_WAVE_COMBO_OUTFMT, CB_SETCURSEL, mgr.queryValueInt(WaveOutputFormat));
-   SendDlgItemMessage(IDC_WAVE_COMBO_FILEFMT, CB_SETCURSEL, mgr.queryValueInt(WaveFileFormat));
+   // sub type
+   int subType = mgr.queryValueInt(SndFileSubType);
+
+   for (int itemIndex = 0, maxItemIndex = m_cbSubType.GetCount(); itemIndex < maxItemIndex; itemIndex++)
+   {
+      int itemSubType = static_cast<int>(m_cbSubType.GetItemData(itemIndex));
+      if (itemSubType == subType)
+      {
+         m_cbSubType.SetCurSel(itemIndex);
+         break;
+      }
+   }
 }
 
 bool WaveOutputSettingsPage::OnLeavePage()
 {
    // get settings manager
-   SettingsManager &mgr = pui->getUISettings().settings_manager;
+   SettingsManager& mgr = pui->getUISettings().settings_manager;
 
-   // get raw audio check
-   mgr.setValue(WaveRawAudioFile,
-      BST_CHECKED==SendDlgItemMessage(IDC_WAVE_CHECK_RAWAUDIO, BM_GETCHECK) ? 1 : 0 );
+   // format
+   int itemIndex = m_cbFormat.GetCurSel();
+   int value = static_cast<int>(m_cbFormat.GetItemData(itemIndex));
+   mgr.setValue(SndFileFormat, value);
 
-   // get writewavex check
-   mgr.setValue(WaveWriteWavEx,
-      BST_CHECKED==SendDlgItemMessage(IDC_WAVE_CHECK_WAVEX, BM_GETCHECK) ? 1 : 0 );
-
-   // get output format
-   int value = SendDlgItemMessage(IDC_WAVE_COMBO_OUTFMT, CB_GETCURSEL);
-   mgr.setValue(WaveOutputFormat,value);
-   value = SendDlgItemMessage(IDC_WAVE_COMBO_FILEFMT, CB_GETCURSEL);
-   mgr.setValue(WaveFileFormat,value);
+   // sub type
+   itemIndex = m_cbSubType.GetCurSel();
+   value = static_cast<int>(m_cbSubType.GetItemData(itemIndex));
+   mgr.setValue(SndFileSubType, value);
 
    return true;
 }

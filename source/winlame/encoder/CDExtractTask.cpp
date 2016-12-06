@@ -122,10 +122,8 @@ bool CDExtractTask::ExtractTrack(const CString& cszTempFilename)
    {
       samplecont.setInputModuleTraits(16, SamplesInterleaved, 44100, 2);
       outtrackinfo.ResetInfos();
-      mgr.setValue(WaveRawAudioFile, 0);
-      mgr.setValue(WaveWriteWavEx, 0);
-      mgr.setValue(WaveOutputFormat, 0); // SF_FORMAT_PCM_16
-      mgr.setValue(WaveFileFormat, 0);   // FILE_WAV
+      mgr.setValue(SndFileFormat, SF_FORMAT_WAV);
+      mgr.setValue(SndFileSubType, SF_FORMAT_PCM_16);
 
       outmod.prepareOutput(mgr);
       int nRet = outmod.initOutput(cszTempFilename, mgr, outtrackinfo, samplecont);

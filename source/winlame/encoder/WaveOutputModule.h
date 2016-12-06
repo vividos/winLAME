@@ -41,7 +41,7 @@ public:
    WaveOutputModule();
 
    // returns the module name
-   virtual CString getModuleName(){ return _T("Wave Output"); }
+   virtual CString getModuleName(){ return _T("LibSndFile Audio Output"); }
 
    // returns the last error
    virtual CString getLastError(){ return lasterror; }
@@ -70,7 +70,7 @@ public:
 
 protected:
    /// file handle
-   SNDFILE *sndfile;
+   SNDFILE* sndfile;
 
    /// soundfile info
    SF_INFO sfinfo;
@@ -78,17 +78,9 @@ protected:
    /// last error occured
    CString lasterror;
 
-   /// indicates if a raw file is to be written
-   bool rawfile;
+   int m_format;
 
-   /// write waveformatextensible header
-   bool wavex;
-
-   /// output format
-   int outfmt;
-
-   /// file format
-   int filefmt;
+   int m_subType;
 };
 
 

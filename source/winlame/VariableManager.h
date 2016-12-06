@@ -66,7 +66,7 @@ enum
 {
    FacilityLAME = 1,
    FacilityOggVorbis,
-   FacilityWave,
+   FacilitySndFile,
    FacilityAAC,
    FacilityWma,
    FacilityOpus,
@@ -97,10 +97,8 @@ enum
    OggVarMaxBitrate,
    OggVarNominalBitrate,
 
-   WaveRawAudioFile,
-   WaveOutputFormat,
-   WaveFileFormat,
-   WaveWriteWavEx,
+   SndFileFormat,
+   SndFileSubType,
 
    AacBitrate,
    AacBandwidth,

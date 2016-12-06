@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -55,20 +55,19 @@ private:
 
    BEGIN_DDX_MAP(LibsndfileSettingsPage)
       DDX_CONTROL(IDC_WAVE_BEVEL1, m_bevel1);
-      DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_OUTFMT, m_cbOutputFormat);
-      DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_FILEFMT, m_cbFileFormat);
-      DDX_CONTROL_HANDLE(IDC_WAVE_CHECK_RAWAUDIO, m_checkRawAudio)
-      DDX_CONTROL_HANDLE(IDC_WAVE_CHECK_WAVEX, m_checkWavex)
+      DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_FORMAT, m_cbFormat);
+      DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_SUBTYPE, m_cbSubType);
    END_DDX_MAP()
 
    BEGIN_DLGRESIZE_MAP(LibsndfileSettingsPage)
       DLGRESIZE_CONTROL(IDC_WAVE_BEVEL1, DLSZ_SIZE_X)
-      DLGRESIZE_CONTROL(IDC_WAVE_COMBO_OUTFMT, DLSZ_SIZE_X)
-      DLGRESIZE_CONTROL(IDC_WAVE_COMBO_FILEFMT, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_WAVE_COMBO_FORMAT, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_WAVE_COMBO_SUBTYPE, DLSZ_SIZE_X)
    END_DLGRESIZE_MAP()
 
    BEGIN_MSG_MAP(LibsndfileSettingsPage)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+      COMMAND_HANDLER(IDC_WAVE_COMBO_FORMAT, CBN_SELENDOK, OnFormatSelEndOk)
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
       COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnButtonCancel)
       COMMAND_HANDLER(ID_WIZBACK, BN_CLICKED, OnButtonBack)
@@ -84,6 +83,9 @@ private:
    /// inits the page
    LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
+   /// called when selection on format combobox has changed
+   LRESULT OnFormatSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
    /// called when page is left with Next button
    LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
@@ -92,6 +94,12 @@ private:
 
    /// called when page is left with Back button
    LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// updates file formats combobox list
+   void UpdateFileFormatList();
+
+   /// updates sub type combobox based on selected format
+   void UpdateSubTypeCombobox();
 
    /// loads settings data into controls
    void LoadData();
@@ -102,20 +110,14 @@ private:
 private:
    // controls
 
-   /// output format combobox
-   CComboBox m_cbOutputFormat;
-
-   /// file format combobox
-   CComboBox m_cbFileFormat;
-
-   /// Raw Audio checkbox
-   CButton m_checkRawAudio;
-
-   /// WAVEX checkbox
-   CButton m_checkWavex;
-
    /// bevel line
    BevelLine m_bevel1;
+
+   /// format combobox
+   CComboBox m_cbFormat;
+
+   /// file format combobox
+   CComboBox m_cbSubType;
 
    // model
 

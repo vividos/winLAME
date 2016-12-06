@@ -302,16 +302,11 @@ STYLE DS_SHELLFONT | WS_CHILDWINDOW
 EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "MS Shell Dlg", 0, 0, 1
 BEGIN
-    LTEXT           "Wave-Ausgabeeinstellungen", IDC_WAVE_BEVEL1, 0, 0, 291, 8
-    LTEXT           "&Sample-Format", IDC_STATIC, 6, 14, 48, 8
-    COMBOBOX        IDC_WAVE_COMBO_OUTFMT, 58, 11, 55, 69, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST
-    LTEXT           "&Dateiformat", IDC_STATIC, 123, 14, 38, 8
-    COMBOBOX        IDC_WAVE_COMBO_FILEFMT, 164, 11, 73, 69, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST
-    AUTOCHECKBOX    "&Raw Audio-Datei erzeugen (kein Wave-Header)", IDC_WAVE_CHECK_RAWAUDIO, 6, 28, 279, 10
-    AUTOCHECKBOX    "Schreibe &WaveFormatExtensible-Header", IDC_WAVE_CHECK_WAVEX, 6, 42, 279, 10
-    AUTOCHECKBOX    "&Ausgabe resamplen auf", IDC_WAVE_CHECK_RESAMPLE, 6, 58, 75, 10, NOT WS_VISIBLE | WS_DISABLED
-    EDITTEXT        IDC_WAVE_RESAMPLEFREQ, 86, 56, 38, 12, NOT WS_VISIBLE | WS_DISABLED | ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Hz", IDC_STATIC, 127, 60, 10, 8, NOT WS_VISIBLE | WS_DISABLED
+    LTEXT           "Audio-Ausgabeeinstellungen", IDC_WAVE_BEVEL1, 0, 0, 291, 8
+    LTEXT           "&Dateiformat", IDC_STATIC, 6, 14, 91, 8
+    COMBOBOX        IDC_WAVE_COMBO_FORMAT, 99, 14, 187, 69, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST
+    LTEXT           "&Sample-Format", IDC_STATIC, 6, 31, 91, 8
+    COMBOBOX        IDC_WAVE_COMBO_SUBTYPE, 99, 31, 187, 69, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST
 END
 
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
@@ -679,16 +674,11 @@ STYLE DS_SHELLFONT | WS_CHILDWINDOW
 EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "Ms Shell Dlg 2", 400, 0, 1
 BEGIN
-    LTEXT           "Wave-Ausgabeeinstellungen", IDC_WAVE_BEVEL1, 0, 0, 291, 8
+    LTEXT           "Audio-Ausgabeeinstellungen", IDC_WAVE_BEVEL1, 0, 0, 291, 8
     LTEXT           "&Dateiformat", IDC_STATIC, 6, 14, 91, 8
-    COMBOBOX        IDC_WAVE_COMBO_FILEFMT, 99, 14, 187, 69, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST
+    COMBOBOX        IDC_WAVE_COMBO_FORMAT, 99, 14, 187, 69, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST
     LTEXT           "&Sample-Format", IDC_STATIC, 6, 31, 91, 8
-    COMBOBOX        IDC_WAVE_COMBO_OUTFMT, 99, 31, 187, 69, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST
-    AUTOCHECKBOX    "&Raw Audio-Datei erzeugen (kein Wave-Header)", IDC_WAVE_CHECK_RAWAUDIO, 6, 51, 280, 10
-    AUTOCHECKBOX    "Schreibe &WaveFormatExtensible-Header", IDC_WAVE_CHECK_WAVEX, 6, 67, 280, 10
-    AUTOCHECKBOX    "&Ausgabe resamplen auf", IDC_WAVE_CHECK_RESAMPLE, 6, 84, 91, 10, NOT WS_VISIBLE | WS_DISABLED
-    EDITTEXT        IDC_WAVE_RESAMPLEFREQ, 99, 82, 38, 12, NOT WS_VISIBLE | WS_DISABLED | ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Hz", IDC_STATIC, 140, 86, 52, 8, NOT WS_VISIBLE | WS_DISABLED
+    COMBOBOX        IDC_WAVE_COMBO_SUBTYPE, 99, 31, 187, 69, WS_TABSTOP | WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST
 END
 
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
@@ -810,7 +800,7 @@ BEGIN
     IDD_PAGE_OUTPUT_SETTINGS      "Ausgabe-Einstellungen"
     IDD_PAGE_PRESET_SELECTION     "Standardeinstellungen"
     IDD_PAGE_LAME_SETTINGS        "LAME-Einstellungen"
-    IDD_PAGE_LIBSNDFILE_SETTINGS  "Wave-Ausgabeeinstellungen"
+    IDD_PAGE_LIBSNDFILE_SETTINGS  "Audio-Ausgabeeinstellungen"
     IDD_PAGE_OGGVORBIS_SETTINGS   "Ogg Vorbis-Einstellungen"
     IDD_PAGE_AAC_SETTINGS         "AAC-Einstellungen"
     IDD_PAGE_WMA_SETTINGS         "WMA-Ausgabeeinstellungen"
@@ -980,7 +970,7 @@ BEGIN
     IDS_FORMAT_INFO_BASS_WMA      "Windows Media Audio"
     IDS_FORMAT_INFO_BASS_FILESTREAM "BASS File Stream"
     IDS_FORMAT_INFO_SNDFILE       "%hs, %hs, %u Hz, %u Kanäle"
-    IDS_FORMAT_INFO_WAVE_OUTPUT   "%hs, %u Hz, %u Kanäle"
+    IDS_FORMAT_INFO_WAVE_OUTPUT   "%s, %u Hz, %u Kanäle"
     IDS_FORMAT_INFO_LAME          "LAME mp3, Encode-Qualität: %s%s, "
     IDS_FORMAT_INFO_LAME_ABR      "ABR-Modus (%u kbps), "
     IDS_FORMAT_INFO_LAME_CBR      "CBR-Modus (%u kbps), "
@@ -1017,9 +1007,6 @@ BEGIN
     IDC_OGGV_SPIN_NOM_BITRATE     "Verändert die nominale Bitrate"
     IDC_OGGV_EDIT_MAX_BITRATE     "Maximale Bitrate in kbps"
     IDC_OGGV_SPIN_MAX_BITRATE     "Verändert die maximale Bitrate"
-    IDC_WAVE_CHECK_RESAMPLE       "Wenn angehakt, wird die Ausgabe zu einer bestimmten Samplefrequenz konvertiert"
-    IDC_WAVE_RESAMPLEFREQ         "Resample-Frequenz in Hz"
-    IDC_WAVE_CHECK_RAWAUDIO       "Wenn angehakt, wird der Wave-Header bei der Ausgabedatei weggelassen"
     IDC_AAC_EDIT_BITRATE          "Bitrate in kbps, pro Kanal"
     IDC_AAC_EDIT_BANDWIDTH        "Ausgabestrom-Bandbreite in Hz"
     IDC_AAC_COMBO_MPEGVER         "Die MPEG Version, die in der Ausgabe verwendet wird"

@@ -138,13 +138,9 @@
 #define IDC_OGGV_BEVEL1                         3518
 #define IDC_OGGV_BEVEL2                         3519
 #define IDC_OGGV_SPIN_QUICK_QUALITY             3520
-#define IDC_WAVE_CHECK_RESAMPLE                 3600
-#define IDC_WAVE_RESAMPLEFREQ                   3601
-#define IDC_WAVE_CHECK_RAWAUDIO                 3602
-#define IDC_WAVE_BEVEL1                         3603
-#define IDC_WAVE_CHECK_WAVEX                    3604
-#define IDC_WAVE_COMBO_OUTFMT                   3605
-#define IDC_WAVE_COMBO_FILEFMT                  3606
+#define IDC_WAVE_BEVEL1                         3600
+#define IDC_WAVE_COMBO_FORMAT                   3601
+#define IDC_WAVE_COMBO_SUBTYPE                  3602
 #define IDC_WMA_EDIT_BITRATE                    3700
 #define IDC_WMA_SPIN_BITRATE                    3701
 #define IDC_WMA_RADIO_BRMODE1                   3702

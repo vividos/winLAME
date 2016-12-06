@@ -337,12 +337,10 @@ bool EncoderImpl::CheckCDExtractDirectCopy(InputModule& inputModule, OutputModul
    {
       extern const int SndFileOutputFormat[];
 
-      // we have the right input and output modules; now check if output
+      // we have the correct input and output modules; now check if output
       // parameters are 44100 Hz, 16 bit, stereo
-      if (settingsManager.queryValueInt(WaveRawAudioFile)==0 &&
-          settingsManager.queryValueInt(WaveWriteWavEx)==0 &&
-          SndFileOutputFormat[settingsManager.queryValueInt(WaveOutputFormat)] == SF_FORMAT_PCM_16 &&
-          settingsManager.queryValueInt(WaveFileFormat) == 0/*FILE_WAV*/)
+      if (settingsManager.queryValueInt(SndFileFormat) == SF_FORMAT_WAV &&
+          settingsManager.queryValueInt(SndFileSubType) == SF_FORMAT_PCM_16)
       {
          return true;
       }

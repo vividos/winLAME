@@ -25,7 +25,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "WaveOutputModule.h"
-
+#include "SndFileFormats.hpp"
 
 /// output sample formats for libsndfile
 extern
@@ -36,12 +36,6 @@ const int SndFileOutputFormat[] = {
    SF_FORMAT_FLOAT
 };
 
-/// output file formats for libsndfile
-enum {
-   FILE_WAV = 0,
-   FILE_AIFF,
-   FILE_W64
-};
 
 // WaveOutputModule methods
 
@@ -67,46 +61,29 @@ bool WaveOutputModule::isAvailable()
 
 void WaveOutputModule::getDescription(CString& desc)
 {
-   SF_FORMAT_INFO formatInfo;
-   ZeroMemory(&formatInfo, sizeof(formatInfo));
-   formatInfo.format = sfinfo.format;
-
-   sf_command(NULL, SFC_GET_FORMAT_INFO, &formatInfo, sizeof(formatInfo));
+   CString formatName, outputExtension;
+   SndFileFormats::GetFormatInfo(m_format, formatName, outputExtension);
 
    // format string
    desc.Format(IDS_FORMAT_INFO_WAVE_OUTPUT,
-      formatInfo.name, sfinfo.samplerate, sfinfo.channels);
+      formatName.GetString(), sfinfo.samplerate, sfinfo.channels);
 }
 
 LPCTSTR WaveOutputModule::getOutputExtension()
 {
-   LPCTSTR ext = _T("wav");
+   CString formatName, outputExtension;
+   SndFileFormats::GetFormatInfo(m_format, formatName, outputExtension);
 
-   switch (filefmt)
-   {
-   case FILE_WAV:
-      ext = _T("wav");
-      break;
-   case FILE_AIFF:
-      ext = _T("aiff");
-      break;
-   case FILE_W64:
-      ext = _T("w64");
-      break;
-   }
+   static CString s_outputExtension;
+   s_outputExtension = outputExtension;
 
-   if (rawfile)
-      ext = _T("raw");
-
-   return ext;
+   return s_outputExtension;
 }
 
 void WaveOutputModule::prepareOutput(SettingsManager &mgr)
 {
-   rawfile = mgr.queryValueInt(WaveRawAudioFile)!=0;
-   wavex = mgr.queryValueInt(WaveWriteWavEx)!=0;
-   outfmt = mgr.queryValueInt(WaveOutputFormat);
-   filefmt = mgr.queryValueInt(WaveFileFormat);
+   m_format = mgr.queryValueInt(SndFileFormat);
+   m_subType = mgr.queryValueInt(SndFileSubType);
 }
 
 int WaveOutputModule::initOutput(LPCTSTR outfilename,
@@ -119,26 +96,7 @@ int WaveOutputModule::initOutput(LPCTSTR outfilename,
    sfinfo.samplerate = samplecont.getInputModuleSampleRate();
    sfinfo.channels = samplecont.getInputModuleChannels();
 
-   // set file format
-   if (rawfile)
-   {
-      sfinfo.format = SF_FORMAT_RAW | SF_ENDIAN_FILE;
-   }
-   else if (filefmt == FILE_WAV)
-   {
-      sfinfo.format = wavex ? SF_FORMAT_WAVEX : SF_FORMAT_WAV;
-   }
-   else if (filefmt == FILE_AIFF)
-   {
-      sfinfo.format = SF_FORMAT_AIFF;
-   }
-   else if (filefmt == FILE_W64)
-   {
-      sfinfo.format = SF_FORMAT_W64;
-   }
-
-   // set sample format
-   sfinfo.format |= SndFileOutputFormat[outfmt];
+   sfinfo.format = m_format | m_subType;
 
    // opens the file for writing
 #ifdef UNICODE
@@ -160,12 +118,16 @@ int WaveOutputModule::initOutput(LPCTSTR outfilename,
    }
 
    int outbits;
-   switch (SndFileOutputFormat[outfmt])
+   switch (m_format & SF_FORMAT_SUBMASK)
    {
    case SF_FORMAT_PCM_24:
    case SF_FORMAT_PCM_32:
    case SF_FORMAT_FLOAT:
    case SF_FORMAT_DOUBLE:
+   case SF_FORMAT_DWVW_24:
+   case SF_FORMAT_ALAC_20:
+   case SF_FORMAT_ALAC_24:
+   case SF_FORMAT_ALAC_32:
       outbits = 32;
       break;
    case SF_FORMAT_PCM_16:
@@ -189,16 +151,12 @@ int WaveOutputModule::encodeSamples(SampleContainer &samples)
    void *sbuf = samples.getSamplesInterleaved(numsamples);
 
    // write samples
-   if (SndFileOutputFormat[outfmt] == SF_FORMAT_PCM_16)
+   if (samples.getOutputModuleBitsPerSample() == 16)
    {
      ret = sf_write_short(sndfile,(short *)sbuf,numsamples * sfinfo.channels);
    }
-   else if (SndFileOutputFormat[outfmt] == SF_FORMAT_PCM_24 ||
-           SndFileOutputFormat[outfmt] == SF_FORMAT_PCM_32)
-   {
-     ret = sf_write_int(sndfile,(int *)sbuf,numsamples * sfinfo.channels);
-   }
-   else if (SndFileOutputFormat[outfmt] == SF_FORMAT_FLOAT)
+   else if ((m_format & SF_FORMAT_SUBMASK) == SF_FORMAT_FLOAT ||
+      (m_format & SF_FORMAT_SUBMASK) == SF_FORMAT_DOUBLE)
    {
      int *samplebuf = (int *)sbuf;
      float *floatbuf = new float[numsamples * sfinfo.channels];
@@ -206,6 +164,10 @@ int WaveOutputModule::encodeSamples(SampleContainer &samples)
         floatbuf[i] = float(samplebuf[i]) / (1<<31);
      ret = sf_write_float(sndfile,floatbuf,numsamples * sfinfo.channels);
      delete[] floatbuf;
+   }
+   else if (samples.getOutputModuleBitsPerSample() == 32)
+   {
+      ret = sf_write_int(sndfile, (int *)sbuf, numsamples * sfinfo.channels);
    }
    else
      ret = -1;

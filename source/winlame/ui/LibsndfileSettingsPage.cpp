@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include "OutputSettingsPage.hpp"
 #include "PresetSelectionPage.hpp"
 #include "FinishPage.hpp"
+#include "encoder/SndFileFormats.hpp"
 
 using namespace UI;
 
@@ -35,20 +36,23 @@ LRESULT LibsndfileSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
    DoDataExchange(DDX_LOAD);
    DlgResize_Init(false, false);
 
-   // fill output format list
-   m_cbOutputFormat.AddString(_T("16 bit PCM"));
-   m_cbOutputFormat.AddString(_T("24 bit PCM"));
-   m_cbOutputFormat.AddString(_T("32 bit PCM"));
-   m_cbOutputFormat.AddString(_T("32 bit Float"));
+   UpdateFileFormatList();
 
-   // fill file format list
-   m_cbFileFormat.AddString(_T("Microsoft WAV"));
-   m_cbFileFormat.AddString(_T("Apple AIFF"));
-   m_cbFileFormat.AddString(_T("SoundForge W64"));
+   int itemToSelect = m_cbFormat.FindString(0, _T("WAV (Microsoft) (wav)"));
+   m_cbFormat.SetCurSel(itemToSelect != -1 ? itemToSelect : 0);
+
+   UpdateSubTypeCombobox();
 
    LoadData();
 
    return 1;
+}
+
+LRESULT LibsndfileSettingsPage::OnFormatSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   UpdateSubTypeCombobox();
+
+   return 0;
 }
 
 LRESULT LibsndfileSettingsPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
@@ -81,36 +85,125 @@ LRESULT LibsndfileSettingsPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/,
    return 0;
 }
 
+void LibsndfileSettingsPage::UpdateFileFormatList()
+{
+   std::vector<int> formatsList = SndFileFormats::EnumFormats();
+
+   for (size_t formatIndex = 0, maxFormatIndex = formatsList.size(); formatIndex < maxFormatIndex; formatIndex++)
+   {
+      int format = formatsList[formatIndex];
+
+      CString formatName, outputExtension;
+      SndFileFormats::GetFormatInfo(format, formatName, outputExtension);
+
+      ATLTRACE(_T("SndFile Format %i: Name: \"%s\", Extension: %s\n"),
+         format, formatName.GetString(), outputExtension.GetString());
+
+      CString text;
+      text.Format(_T("%s (%s)"), formatName.GetString(), outputExtension.GetString());
+
+      int formatItem = m_cbFormat.AddString(text);
+      m_cbFormat.SetItemData(formatItem, format);
+   }
+}
+
+void LibsndfileSettingsPage::UpdateSubTypeCombobox()
+{
+   int selectedSubType = -1;
+
+   int selectedItem = m_cbSubType.GetCurSel();
+   if (selectedItem != CB_ERR)
+      selectedSubType = static_cast<int>(m_cbSubType.GetItemData(selectedItem));
+
+   m_cbSubType.ResetContent();
+
+   int formatIndex = m_cbFormat.GetCurSel();
+   if (formatIndex == CB_ERR)
+      return;
+
+   int format = static_cast<int>(m_cbFormat.GetItemData(formatIndex));
+
+   CString formatName, outputExtension;
+   SndFileFormats::GetFormatInfo(format, formatName, outputExtension);
+
+   ATLTRACE(_T("SndFile Format %i: Name: \"%s\", Extension: %s\n"),
+      format, formatName.GetString(), outputExtension.GetString());
+
+   std::vector<int> subTypesList = SndFileFormats::EnumSubTypes();
+
+   int itemToSelect = -1;
+   for (size_t subTypeIndex = 0, maxSubTypeIndex = subTypesList.size(); subTypeIndex < maxSubTypeIndex; subTypeIndex++)
+   {
+      int subType = subTypesList[subTypeIndex];
+
+      if (SndFileFormats::IsValidFormatCombo(format, subType))
+      {
+         CString subTypeName = SndFileFormats::GetSubTypeName(subType);
+
+         ATLTRACE(_T("   SndFile sub type %i: Name: \"%s\"\n"),
+            subType, subTypeName.GetString());
+
+         int subTypeItem = m_cbSubType.AddString(subTypeName);
+         m_cbSubType.SetItemData(subTypeItem, subType);
+
+         if (selectedSubType != -1 &&
+            subType == selectedSubType)
+         {
+            itemToSelect = subTypeItem;
+         }
+      }
+   }
+
+   if (itemToSelect == -1)
+   {
+      itemToSelect = m_cbSubType.FindString(0, _T("Signed 16 bit PCM"));
+   }
+
+   m_cbSubType.SetCurSel(itemToSelect != -1 ? itemToSelect : 0);
+}
+
 void LibsndfileSettingsPage::LoadData()
 {
    SettingsManager& mgr = m_uiSettings.settings_manager;
 
-   // set raw audio check
-   m_checkRawAudio.SetCheck(mgr.queryValueInt(WaveRawAudioFile) == 1 ? BST_CHECKED : BST_UNCHECKED);
+   // format
+   int format = mgr.queryValueInt(SndFileFormat);
 
-   // set writewavex check
-   m_checkWavex.SetCheck(mgr.queryValueInt(WaveWriteWavEx) == 1 ? BST_CHECKED : BST_UNCHECKED);
+   for (int itemIndex = 0, maxItemIndex = m_cbFormat.GetCount(); itemIndex < maxItemIndex; itemIndex++)
+   {
+      int itemFormat = static_cast<int>(m_cbFormat.GetItemData(itemIndex));
+      if (itemFormat == format)
+      {
+         m_cbFormat.SetCurSel(itemIndex);
+         break;
+      }
+   }
 
-   // set output format
-   m_cbOutputFormat.SetCurSel(mgr.queryValueInt(WaveOutputFormat));
-   m_cbFileFormat.SetCurSel(mgr.queryValueInt(WaveFileFormat));
+   // sub type
+   int subType = mgr.queryValueInt(SndFileSubType);
+
+   for (int itemIndex = 0, maxItemIndex = m_cbSubType.GetCount(); itemIndex < maxItemIndex; itemIndex++)
+   {
+      int itemSubType = static_cast<int>(m_cbSubType.GetItemData(itemIndex));
+      if (itemSubType == subType)
+      {
+         m_cbSubType.SetCurSel(itemIndex);
+         break;
+      }
+   }
 }
 
 void LibsndfileSettingsPage::SaveData()
 {
    SettingsManager& mgr = m_uiSettings.settings_manager;
 
-   // get raw audio check
-   mgr.setValue(WaveRawAudioFile, BST_CHECKED == m_checkRawAudio.GetCheck() ? 1 : 0);
+   // format
+   int itemIndex = m_cbFormat.GetCurSel();
+   int value = static_cast<int>(m_cbFormat.GetItemData(itemIndex));
+   mgr.setValue(SndFileFormat, value);
 
-   // get writewavex check
-   mgr.setValue(WaveWriteWavEx, BST_CHECKED == m_checkWavex.GetCheck() ? 1 : 0);
-
-   // get output format
-   int value = m_cbOutputFormat.GetCurSel();
-   mgr.setValue(WaveOutputFormat, value);
-
-   // get file format
-   value = m_cbFileFormat.GetCurSel();
-   mgr.setValue(WaveFileFormat, value);
+   // sub type
+   itemIndex = m_cbSubType.GetCurSel();
+   value = static_cast<int>(m_cbSubType.GetItemData(itemIndex));
+   mgr.setValue(SndFileSubType, value);
 }
