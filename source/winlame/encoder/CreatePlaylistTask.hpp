@@ -47,6 +47,9 @@ public:
    virtual void Stop();
 
 private:
+   /// indicates if an extended playlist is created
+   bool m_extendedPlaylist;
+
    /// filename of playlist to write
    CString m_playlistFilename;
 

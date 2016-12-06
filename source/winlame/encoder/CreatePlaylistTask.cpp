@@ -25,6 +25,7 @@
 
 CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const EncoderJobList& encoderJobList)
    :Task(dependentTaskId),
+   m_extendedPlaylist(false), // no length infos available
    m_playlistFilename(playlistFilename),
    m_finished(false)
 {
@@ -41,6 +42,7 @@ CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CStri
 
 CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const std::vector<CDReadJob>& cdReadJobList)
    :Task(dependentTaskId),
+   m_extendedPlaylist(true),
    m_playlistFilename(playlistFilename),
    m_finished(false)
 {
@@ -80,12 +82,21 @@ void CreatePlaylistTask::Run()
 
    std::shared_ptr<FILE> spFd(fd, fclose);
 
+   if (m_extendedPlaylist)
+      _ftprintf(fd, _T("#EXTM3U\n\n"));
+
    for (size_t entryIndex = 0, maxEntryIndex = m_playlistEntries.size(); entryIndex < maxEntryIndex; entryIndex++)
    {
       const PlaylistEntry& entry = m_playlistEntries[entryIndex];
 
-      // TODO write m3u comments
+      if (m_extendedPlaylist)
+         _ftprintf(fd, _T("#EXTINF:%u,%s\n"), entry.m_trackLengthInSeconds, entry.m_title.GetString());
+
+      // TODO write relative filename instead of absolute one
       _ftprintf(fd, _T("%s\n"), entry.m_filename.GetString());
+
+      if (m_extendedPlaylist)
+         _ftprintf(fd, _T("\n"));
    }
 
    m_finished = true;

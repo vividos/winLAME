@@ -6,7 +6,6 @@ winLAME 2017 beta 1, must-do-things:
 - implement set of finished task ids
 - Add showing detail infos about task
 - implement giving LAME context to tasks, for nogap encoding
-- implement writing playlist
 - cd extraction/encoding parallel
 - Add presets for Opus, Wave, Ogg Vorbis
 
