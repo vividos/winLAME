@@ -166,4 +166,33 @@
     </preset>
   </facility>
 
+  <facility name="aac">
+    <preset name="AAC: Default quality setting">
+      <comment>
+        The default quality setting for faac, q=100, generates files at an
+        average bitrate of approx. 128kbps. This quality level is good enough
+        for casual, non-critical listening, but note that other encoders for
+        AAC and other compressed formats may provide better quality files at
+        similar bitrates.
+        Command line used: "-q 100"
+        See also: http://wiki.hydrogenaud.io/index.php?title=FAAC
+      </comment>
+      <value name="aacBRCmethod">0</value>
+      <value name="aacQuality">100</value>
+    </preset>
+
+    <preset name="AAC: Better quality encoding">
+      <comment>
+        For better quality encoding, q=150 is suggested, resulting in average
+        bitrates around 175kbps. Based on (subjective) tests, at this quality
+        level faac provides high quality artifact free music reproduction and
+        is comparable in quality to proprietary AAC encoders at similar
+        bitrates.
+        Command line used: "-q 150"
+        See also: http://wiki.hydrogenaud.io/index.php?title=FAAC
+      </comment>
+      <value name="aacBRCmethod">0</value>
+      <value name="aacQuality">150</value>
+    </preset>
+  </facility>
 </presets>
