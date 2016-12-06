@@ -102,6 +102,7 @@
     <ClCompile Include="winlame\encoder\OpusInputModule.cpp" />
     <ClCompile Include="winlame\encoder\OpusOutputModule.cpp" />
     <ClCompile Include="winlame\encoder\SampleContainer.cpp" />
+    <ClCompile Include="winlame\encoder\SndFileFormats.cpp" />
     <ClCompile Include="winlame\encoder\SndFileInputModule.cpp" />
     <ClCompile Include="winlame\encoder\SpeexInputModule.cpp" />
     <ClCompile Include="winlame\encoder\TrackInfo.cpp" />
@@ -217,6 +218,7 @@
     <ClInclude Include="winlame\encoder\OpusInputModule.hpp" />
     <ClInclude Include="winlame\encoder\OpusOutputModule.hpp" />
     <ClInclude Include="winlame\encoder\SampleContainer.h" />
+    <ClInclude Include="winlame\encoder\SndFileFormats.hpp" />
     <ClInclude Include="winlame\encoder\SndFileInputModule.h" />
     <ClInclude Include="winlame\encoder\SpeexInputModule.hpp" />
     <ClInclude Include="winlame\encoder\TrackInfo.h" />

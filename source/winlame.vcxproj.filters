@@ -334,6 +334,9 @@
     <ClCompile Include="winlame\old_ui\OpusSettingsPage_old.cpp">
       <Filter>old_ui Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\encoder\SndFileFormats.cpp">
+      <Filter>Main Program Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="winlame\encoder\AacInputModule.h">
@@ -691,6 +694,9 @@
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\IniFile.h">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\SndFileFormats.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
