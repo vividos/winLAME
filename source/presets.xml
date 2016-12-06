@@ -129,4 +129,15 @@
       <value name="opusComplexity">10</value>
     </preset>
   </facility>
+
+  <facility name="sndFile">
+    <preset name="Standard Wave File, 16 bit">
+      <comment>
+        This creates a standard Wave file, with 16 bit sample resolution.
+      </comment>
+      <value name="sndFileFormat">65536</value>
+      <value name="sndFileSubType">2</value>
+    </preset>
+  </facility>
+
 </presets>
