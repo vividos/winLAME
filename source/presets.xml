@@ -130,6 +130,32 @@
     </preset>
   </facility>
 
+  <facility name="oggvorbis">
+    <preset name="Very-near-CD-quality">
+      <comment>
+        Most people seeking very-near-CD-quality audio encode at a quality of
+        5 or, for lossless stereo coupling, 6. This preset uses quality 6.
+        Yields ~192 kbit/s.
+        Command line used: "-q 6"
+        See also: http://wiki.hydrogenaud.io/index.php?title=Recommended_Ogg_Vorbis
+      </comment>
+      <value name="vorbisBitrateMode">0</value>
+      <value name="vorbisBaseQuality">6</value>
+    </preset>
+
+    <preset name="Ogg Vorbis Default">
+      <comment>
+        The default setting is quality 3, which at approximately 110kbps gives
+        a smaller filesize and significantly better fidelity than .mp3
+        compression at 128kbps. Yields ~112 kbit/s.
+        Command line used: "-q 3"
+        See also: http://wiki.hydrogenaud.io/index.php?title=Recommended_Ogg_Vorbis
+      </comment>
+      <value name="vorbisBitrateMode">0</value>
+      <value name="vorbisBaseQuality">3</value>
+    </preset>
+  </facility>
+
   <facility name="sndFile">
     <preset name="Standard Wave File, 16 bit">
       <comment>
