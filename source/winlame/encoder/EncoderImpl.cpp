@@ -233,7 +233,7 @@ bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& ou
    outputModule.prepareOutput(settingsManager);
 
    // do output filename
-   cszOutputFilename = GetOutputFilename(cszInputFilename, outputModule);
+   cszOutputFilename = GetOutputFilename(outpathname, cszInputFilename, outputModule);
 
    // ugly hack: when input module is cd extraction, remove guid from output filename
    if (inputModule.getModuleID() == ID_IM_CDRIP)
@@ -269,9 +269,9 @@ bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& ou
    return true;
 }
 
-CString EncoderImpl::GetOutputFilename(const CString& cszInputFilename, OutputModule& outputModule)
+CString EncoderImpl::GetOutputFilename(const CString& outputPath, const CString& cszInputFilename, OutputModule& outputModule)
 {
-   CString cszOutputFilename = outpathname;
+   CString cszOutputFilename = outputPath;
    int iPos = cszInputFilename.ReverseFind(_T('\\'));
    int iPos2 = cszInputFilename.ReverseFind(_T('.'));
 
@@ -468,21 +468,34 @@ CString GetLastErrorString()
    return cszErrorMessage;
 }
 
+bool EncoderImpl::IsLossyInputModule(int in_module_id)
+{
+   return
+      in_module_id == ID_IM_MAD ||
+      in_module_id == ID_IM_OGGV ||
+      in_module_id == ID_IM_AAC ||
+      in_module_id == ID_IM_BASS ||
+      in_module_id == ID_IM_SPEEX ||
+      in_module_id == ID_IM_OPUS;
+}
+
+bool EncoderImpl::IsLossyOutputModule(int out_module_id)
+{
+   return
+      out_module_id == ID_OM_LAME ||
+      out_module_id == ID_OM_OGGV ||
+      out_module_id == ID_OM_AAC ||
+      out_module_id == ID_OM_BASSWMA ||
+      out_module_id == ID_OM_OPUS;
+}
+
 bool EncoderImpl::CheckWarnTranscoding(InputModule& inputModule, OutputModule& outputModule)
 {
    unsigned int in_id = inputModule.getModuleID();
    unsigned int out_id = outputModule.getModuleID();
 
-   bool in_lossy = in_id == ID_IM_MAD ||
-      in_id == ID_IM_MAD ||
-      in_id == ID_IM_OGGV ||
-      in_id == ID_IM_AAC ||
-      in_id == ID_IM_BASS;
-
-   bool out_lossy = out_id == ID_OM_LAME ||
-      out_id == ID_OM_OGGV ||
-      out_id == ID_OM_AAC ||
-      out_id == ID_OM_BASSWMA;
+   bool in_lossy = IsLossyInputModule(in_id);
+   bool out_lossy = IsLossyOutputModule(out_id);
 
    if (in_lossy && out_lossy && warn_lossy && !warned_about_lossy)
    {

@@ -241,6 +241,15 @@ public:
       return str;
    }
 
+   /// creates output filename from input filename
+   static CString GetOutputFilename(const CString& outputPath, const CString& cszInputFilename, OutputModule& outputModule);
+
+   /// returns if input module with given id is lossy
+   static bool IsLossyInputModule(int in_module_id);
+
+   /// returns if output module with given id is lossy
+   static bool IsLossyOutputModule(int out_module_id);
+
 protected:
    /// static thread procedure
    static void __cdecl threadProc(void *ptr)
@@ -262,9 +271,6 @@ protected:
    bool PrepareOutputModule(InputModule& inputModule, OutputModule& outputModule,
       SettingsManager& settingsManager,
       const CString& cszInputFilename, CString& cszOutputFilename, int& error);
-
-   /// creates output filename from input filename
-   CString GetOutputFilename(const CString& cszInputFilename, OutputModule& outputModule);
 
    /// checks if the input and output filenames are the same and modifies output filename
    bool CheckSameInputOutputFilenames(const CString& cszInputFilename,
