@@ -31,8 +31,24 @@
 #include "CreatePlaylistTask.hpp"
 #include "CDExtractTask.hpp"
 #include "CDRipTitleFormatManager.hpp"
+#include "RedrawLock.hpp"
 
 using namespace UI;
+
+/// moves (or scales) up a window in Y direction
+static void MoveUpWindow(CWindow& window, int deltaY, bool scaleUp)
+{
+   CRect rect;
+   window.GetWindowRect(rect);
+
+   rect.top -= deltaY;
+   if (!scaleUp)
+      rect.bottom -= deltaY;
+
+   window.GetParent().ScreenToClient(rect);
+
+   window.MoveWindow(rect);
+}
 
 FinishPage::FinishPage(WizardPageHost& pageHost) throw()
    :WizardPage(pageHost, IDD_PAGE_FINISH, WizardPage::typeCancelBackFinish),
@@ -46,6 +62,18 @@ LRESULT FinishPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPar
    DoDataExchange(DDX_LOAD);
    DlgResize_Init(false, false);
 
+   m_iconLossy.SetIcon(LoadIcon(NULL, IDI_EXCLAMATION));
+   m_iconOverwrite.SetIcon(LoadIcon(NULL, IDI_EXCLAMATION));
+
+   bool warnLossyTranscoding = IsTranscodingLossy();
+   bool warnOverwriteOriginal = IsOverwritingOriginalFiles();
+
+   MoveAndHideWarnings(warnLossyTranscoding, warnOverwriteOriginal);
+
+   SetupInputTracksList();
+   UpdateInputTracksList();
+
+   UpdateOutputModule();
 
    return 1;
 }
@@ -75,6 +103,167 @@ LRESULT FinishPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
    }
 
    return 0;
+}
+
+bool FinishPage::IsTranscodingLossy() const
+{
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+
+   bool in_lossy = false;
+
+   // only have to check when from input page; CD reading is always lossless
+   if (m_uiSettings.m_bFromInputFilesPage)
+   {
+      ModuleManagerImpl& modImpl = reinterpret_cast<ModuleManagerImpl&>(moduleManager);
+
+      for (int i = 0, iMax = m_uiSettings.encoderjoblist.size(); i < iMax; i++)
+      {
+         EncoderJob& job = m_uiSettings.encoderjoblist[i];
+
+         CString filename = job.InputFilename();
+
+         std::unique_ptr<InputModule> inmod(modImpl.chooseInputModule(filename));
+         if (inmod == nullptr)
+            continue;
+
+         int in_id = inmod->getModuleID();
+
+         in_lossy |=
+            in_id == ID_IM_MAD ||
+            in_id == ID_IM_OGGV ||
+            in_id == ID_IM_AAC ||
+            in_id == ID_IM_BASS ||
+            in_id == ID_IM_SPEEX ||
+            in_id == ID_IM_OPUS;
+      }
+   }
+
+   int out_id = moduleManager.getOutputModuleID(m_uiSettings.output_module);
+
+   bool out_lossy =
+      out_id == ID_OM_LAME ||
+      out_id == ID_OM_OGGV ||
+      out_id == ID_OM_AAC ||
+      out_id == ID_OM_BASSWMA ||
+      out_id == ID_OM_OPUS;
+
+   return in_lossy && out_lossy;
+}
+
+bool FinishPage::IsOverwritingOriginalFiles() const
+{
+   // overwriting doesn't happen when encoding CD tracks
+   if (!m_uiSettings.m_bFromInputFilesPage)
+      return false;
+
+   // TODO
+   return false;
+}
+
+void FinishPage::MoveAndHideWarnings(bool warnLossyTranscoding, bool warnOverwriteOriginal)
+{
+   int deltaInputTracks = 0;
+
+   if (!warnLossyTranscoding)
+   {
+      m_iconLossy.ShowWindow(SW_HIDE);
+      m_staticLossy.ShowWindow(SW_HIDE);
+
+      CRect lossyRect, overwriteRect;
+      m_iconLossy.GetWindowRect(lossyRect);
+      m_iconOverwrite.GetWindowRect(overwriteRect);
+
+      deltaInputTracks += overwriteRect.top - lossyRect.top;
+   }
+
+   if (!warnOverwriteOriginal)
+   {
+      m_iconOverwrite.ShowWindow(SW_HIDE);
+      m_staticOverwrite.ShowWindow(SW_HIDE);
+
+      CRect overwriteRect, bevelRect;
+      m_iconOverwrite.GetWindowRect(overwriteRect);
+      m_bevel1.GetWindowRect(bevelRect);
+
+      deltaInputTracks += bevelRect.top - overwriteRect.top;
+   }
+   else
+   {
+      if (!warnLossyTranscoding)
+      {
+         MoveUpWindow(m_iconOverwrite, deltaInputTracks, false);
+         MoveUpWindow(m_staticOverwrite, deltaInputTracks, false);
+      }
+   }
+
+   if (deltaInputTracks > 0)
+   {
+      MoveUpWindow(m_bevel1, deltaInputTracks, false);
+      MoveUpWindow(m_listInputTracks, deltaInputTracks, true);
+   }
+}
+
+void FinishPage::SetupInputTracksList()
+{
+   m_listInputTracks.InsertColumn(0, _T("Track"));
+
+   // task images
+   m_taskImages.Create(16, 16, ILC_MASK | ILC_COLOR32, 0, 0);
+   CBitmap bmpImages;
+   // load bitmap, but always from main module (bmp not in translation dlls)
+   bmpImages.Attach(::LoadBitmap(ModuleHelper::GetModuleInstance(), MAKEINTRESOURCE(IDB_BITMAP_TASKS)));
+   m_taskImages.Add(bmpImages, RGB(0, 0, 0));
+
+   m_listInputTracks.SetImageList(m_taskImages, LVSIL_SMALL);
+}
+
+void FinishPage::UpdateInputTracksList()
+{
+   RedrawLock lock(m_listInputTracks);
+
+   if (m_uiSettings.m_bFromInputFilesPage)
+   {
+      for (int i = 0, iMax = m_uiSettings.encoderjoblist.size(); i < iMax; i++)
+      {
+         EncoderJob& job = m_uiSettings.encoderjoblist[i];
+
+         CString filename = job.InputFilename();
+
+         m_listInputTracks.InsertItem(i, filename, 1); // icon 1: encoding
+      }
+   }
+   else
+   {
+      unsigned int maxJobIndex = m_uiSettings.cdreadjoblist.size();
+      for (unsigned int jobIndex = 0; jobIndex < maxJobIndex; jobIndex++)
+      {
+         CDReadJob& cdReadJob = m_uiSettings.cdreadjoblist[jobIndex];
+
+         const CDRipDiscInfo& discInfo = cdReadJob.DiscInfo();
+         const CDRipTrackInfo& trackInfo = cdReadJob.TrackInfo();
+
+         if (!trackInfo.m_bActive)
+            continue;
+
+         CString title = CDRipTitleFormatManager::FormatTitle(
+            discInfo.m_bVariousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
+            discInfo, trackInfo);
+
+         m_listInputTracks.InsertItem(jobIndex, title, 2); // icon 2: CD extraction
+      }
+   }
+
+   m_listInputTracks.SetColumnWidth(0, LVSCW_AUTOSIZE);
+}
+
+void FinishPage::UpdateOutputModule()
+{
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+
+   ATLASSERT(m_uiSettings.output_module < moduleManager.getOutputModuleCount());
+   CString outputModuleName = moduleManager.getOutputModuleName(m_uiSettings.output_module);
+
+   m_editOutputModule.SetWindowText(outputModuleName);
 }
 
 void FinishPage::AddTasks()

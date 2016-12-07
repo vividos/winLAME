@@ -23,6 +23,7 @@
 
 // includes
 #include "WizardPage.hpp"
+#include "BevelLine.hpp"
 #include "resource.h"
 
 // forward references
@@ -52,9 +53,22 @@ private:
    friend CDialogResize<FinishPage>;
 
    BEGIN_DDX_MAP(FinishPage)
+      DDX_CONTROL_HANDLE(IDC_FINISH_ICON_WARN_LOSSY_TRANSCODING, m_iconLossy)
+      DDX_CONTROL_HANDLE(IDC_FINISH_STATIC_WARN_LOSSY_TRANSCODING, m_staticLossy)
+      DDX_CONTROL_HANDLE(IDC_FINISH_ICON_WARN_OVERWRITE_ORIGINAL, m_iconOverwrite)
+      DDX_CONTROL_HANDLE(IDC_FINISH_STATIC_WARN_OVERWRITE_ORIGINAL, m_staticOverwrite)
+      DDX_CONTROL(IDC_FINISH_BEVEL1, m_bevel1)
+      DDX_CONTROL_HANDLE(IDC_FINISH_LIST_INPUT_TRACKS, m_listInputTracks)
+      DDX_CONTROL_HANDLE(IDC_FINISH_EDIT_OUTPUT_MODULE, m_editOutputModule)
    END_DDX_MAP()
 
    BEGIN_DLGRESIZE_MAP(FinishPage)
+      DLGRESIZE_CONTROL(IDC_FINISH_STATIC_WARN_LOSSY_TRANSCODING, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_FINISH_STATIC_WARN_OVERWRITE_ORIGINAL, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_FINISH_BEVEL1, DLSZ_SIZE_X)
+      DLGRESIZE_CONTROL(IDC_FINISH_LIST_INPUT_TRACKS, DLSZ_SIZE_X | DLSZ_SIZE_Y)
+      DLGRESIZE_CONTROL(IDC_FINISH_STATIC_OUTPUT_MODULE, DLSZ_MOVE_Y)
+      DLGRESIZE_CONTROL(IDC_FINISH_EDIT_OUTPUT_MODULE, DLSZ_SIZE_X | DLSZ_MOVE_Y)
    END_DLGRESIZE_MAP()
 
    BEGIN_MSG_MAP(FinishPage)
@@ -73,6 +87,24 @@ private:
 
    /// called when page is left with Back button
    LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   ///  determines if any files would be transcoded from lossy to lossy format
+   bool IsTranscodingLossy() const;
+
+   /// determines if any output files would overwrite original input files
+   bool IsOverwritingOriginalFiles() const;
+
+   /// moves around and hides warning controls, depending on if they should appear
+   void MoveAndHideWarnings(bool warnLossyTranscoding, bool warnOverwriteOriginal);
+
+   /// sets up input tracks list
+   void SetupInputTracksList();
+
+   /// updates input tracks list
+   void UpdateInputTracksList();
+
+   /// updates output module name
+   void UpdateOutputModule();
 
    /// adds tasks to task manager
    void AddTasks();
@@ -94,6 +126,30 @@ private:
 
 private:
    // controls
+
+   // icon for "lossy transcoding" warning
+   CStatic m_iconLossy;
+
+   // static text for "lossy transcoding" warning
+   CStatic m_staticLossy;
+
+   // icon for "overwrite original" warning
+   CStatic m_iconOverwrite;
+
+   // static text for "overwrite original" warning
+   CStatic m_staticOverwrite;
+
+   /// bevel line for input files
+   BevelLine m_bevel1;
+
+   /// list of input tracks
+   CListViewCtrl m_listInputTracks;
+
+   /// task list images
+   CImageList m_taskImages;
+
+   /// list of output modules
+   CEdit m_editOutputModule;
 
    // model
 

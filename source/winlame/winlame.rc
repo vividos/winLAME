@@ -784,6 +784,14 @@ STYLE DS_SHELLFONT | WS_CHILDWINDOW
 EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "Ms Shell Dlg 2", 400, 0, 1
 BEGIN
+    ICON            "", IDC_FINISH_ICON_WARN_LOSSY_TRANSCODING, 5, 5, 20, 20, SS_ICON
+    LTEXT           "Warning! You are about to transcode audio file(s) from a lossy format to another. This may severely degrade sound quality!", IDC_FINISH_STATIC_WARN_LOSSY_TRANSCODING, 31, 5, 256, 20, 0, WS_EX_STATICEDGE
+    ICON            "", IDC_FINISH_ICON_WARN_OVERWRITE_ORIGINAL, 5, 30, 21, 20, SS_ICON
+    LTEXT           "Warning! You are about to overwrite the original input files with the encoded output files!", IDC_FINISH_STATIC_WARN_OVERWRITE_ORIGINAL, 31, 30, 256, 20, 0, WS_EX_STATICEDGE
+    LTEXT           "&Input tracks", IDC_FINISH_BEVEL1, 5, 58, 282, 8
+    CONTROL         "", IDC_FINISH_LIST_INPUT_TRACKS, WC_LISTVIEW, WS_TABSTOP | LVS_SHOWSELALWAYS | LVS_NOCOLUMNHEADER | LVS_NOSORTHEADER | LVS_REPORT, 5, 71, 282, 53
+    LTEXT           "&Output module", IDC_FINISH_STATIC_OUTPUT_MODULE, 5, 131, 64, 8
+    EDITTEXT        IDC_FINISH_EDIT_OUTPUT_MODULE, 74, 129, 113, 12, ES_READONLY
 END
 
 
