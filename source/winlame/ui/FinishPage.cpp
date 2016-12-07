@@ -128,24 +128,13 @@ bool FinishPage::IsTranscodingLossy() const
 
          int in_id = inmod->getModuleID();
 
-         in_lossy |=
-            in_id == ID_IM_MAD ||
-            in_id == ID_IM_OGGV ||
-            in_id == ID_IM_AAC ||
-            in_id == ID_IM_BASS ||
-            in_id == ID_IM_SPEEX ||
-            in_id == ID_IM_OPUS;
+         in_lossy |= EncoderImpl::IsLossyInputModule(in_id);
       }
    }
 
    int out_id = moduleManager.getOutputModuleID(m_uiSettings.output_module);
 
-   bool out_lossy =
-      out_id == ID_OM_LAME ||
-      out_id == ID_OM_OGGV ||
-      out_id == ID_OM_AAC ||
-      out_id == ID_OM_BASSWMA ||
-      out_id == ID_OM_OPUS;
+   bool out_lossy = EncoderImpl::IsLossyOutputModule(out_id);
 
    return in_lossy && out_lossy;
 }
@@ -156,7 +145,35 @@ bool FinishPage::IsOverwritingOriginalFiles() const
    if (!m_uiSettings.m_bFromInputFilesPage)
       return false;
 
-   // TODO
+   // overwriting doesn't happen when flag "overwrite existing" isn't active
+   if (!m_uiSettings.m_defaultSettings.overwrite_existing)
+      return false;
+
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   ModuleManagerImpl& modImpl = reinterpret_cast<ModuleManagerImpl&>(moduleManager);
+
+   for (int i = 0, iMax = m_uiSettings.encoderjoblist.size(); i < iMax; i++)
+   {
+      EncoderJob& job = m_uiSettings.encoderjoblist[i];
+
+      CString inputFilename = job.InputFilename();
+
+      int out_module_id = moduleManager.getOutputModuleID(m_uiSettings.output_module);
+
+      std::unique_ptr<OutputModule> outputModule(modImpl.getOutputModule(out_module_id));
+      if (outputModule == nullptr)
+         continue;
+
+      outputModule->prepareOutput(m_uiSettings.settings_manager);
+
+      CString outputFilename = EncoderImpl::GetOutputFilename(m_uiSettings.m_defaultSettings.outputdir, inputFilename, *outputModule.get());
+
+      if (outputFilename.CompareNoCase(inputFilename) == 0)
+      {
+         return true;
+      }
+   }
+
    return false;
 }
 
