@@ -77,7 +77,10 @@ LRESULT PresetSelectionPage::OnSelItemChanged(WORD wNotifyCode, WORD wID, HWND h
 {
    // set new description
    int index = m_lbPresets.GetCurSel();
-   if (index != 0)
+   if (index == LB_ERR)
+      return 0;
+
+   if (index > 0)
       SetDlgItemText(IDC_PRE_DESC, m_presetManager.getPresetDescription(index - 1).c_str());
    else
    {
@@ -112,6 +115,9 @@ void PresetSelectionPage::LoadData()
    size_t max = m_presetManager.getPresetCount();
    for (size_t i = 0; i<max; i++)
       m_lbPresets.AddString(m_presetManager.getPresetName(i).c_str());
+
+   if (m_uiSettings.m_iLastSelectedPresetIndex >= m_lbPresets.GetCount())
+      m_uiSettings.m_iLastSelectedPresetIndex = 0;
 
    m_lbPresets.SetCurSel(m_uiSettings.m_iLastSelectedPresetIndex);
 

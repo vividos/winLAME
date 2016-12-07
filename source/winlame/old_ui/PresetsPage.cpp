@@ -49,7 +49,10 @@ LRESULT PresetsPage::OnSelItemChanged(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 
    // set new description
    int index = listbox.GetCurSel();
-   if (index!=0)
+   if (index == LB_ERR)
+      return 0;
+
+   if (index > 0)
       SetDlgItemText(IDC_PRE_DESC, m_presetManager.getPresetDescription(index-1).c_str());
    else
    {
