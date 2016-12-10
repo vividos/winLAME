@@ -1,6 +1,6 @@
 /*
    nlame - an alternative API for libmp3lame
-   copyright (c) 2001-2014 Michael Fink
+   copyright (c) 2001-2016 Michael Fink
    Copyright (c) 2004 DeXT
 
    This library is free software; you can redistribute it and/or
@@ -515,9 +515,41 @@ int nlame_reinit_bitstream( nlame_instance_t* inst )
    return lame_init_bitstream(inst->lgf);
 }
 
+long skipId3v2(FILE * fpStream);
+
 void nlame_write_vbr_infotag( nlame_instance_t* inst, FILE* fd )
 {
-   lame_mp3_tags_fid(inst->lgf,fd);
+   /* instead of just calling lame_mp3_tags_fid we have to do everything
+      ourselves, since libmp3lame.dll usually is compiled with a static
+      C runtime (option /MT), and that C runtime manages its own FILE
+      instances, and we can't fopen() a file and just pass the pointer.
+   */
+#define MAXFRAMESIZE 2880 /* or 0xB40, the max freeformat 640 32kHz framesize */
+
+   long lFileSize;
+   long id3v2TagSize;
+   char buffer[MAXFRAMESIZE];
+   int length;
+
+   if (!fd)
+      return;
+
+   fseek(fd, 0, SEEK_END);
+   lFileSize = ftell(fd);
+
+   if (lFileSize == 0)
+      return;
+
+   id3v2TagSize = skipId3v2(fd);
+
+   if (id3v2TagSize < 0)
+      return;
+
+   fseek(fd, id3v2TagSize, SEEK_SET);
+
+   length = lame_get_lametag_frame(inst->lgf, buffer, sizeof(buffer));
+   if (length > 0)
+      fwrite(buffer, length, 1, fd);
 }
 
 #pragma warning( push )
@@ -596,4 +628,38 @@ void nlame_id3tag_setfield_latin1( nlame_instance_t* inst,
    case nif_track:   id3tag_set_track(inst->lgf, text); break;
    case nif_genre:   id3tag_set_genre(inst->lgf, text); break;
    }
+}
+
+// copied from VbrTag.c from LAME sourcecode
+static long
+skipId3v2(FILE * fpStream)
+{
+   size_t  nbytes;
+   long    id3v2TagSize;
+   unsigned char id3v2Header[10];
+
+   /* seek to the beginning of the stream */
+   if (fseek(fpStream, 0, SEEK_SET) != 0) {
+      return -2;      /* not seekable, abort */
+   }
+   /* read 10 bytes in case there's an ID3 version 2 header here */
+   nbytes = fread(id3v2Header, 1, sizeof(id3v2Header), fpStream);
+   if (nbytes != sizeof(id3v2Header)) {
+      return -3;      /* not readable, maybe opened Write-Only */
+   }
+   /* does the stream begin with the ID3 version 2 file identifier? */
+   if (!strncmp((char *)id3v2Header, "ID3", 3)) {
+      /* the tag size (minus the 10-byte header) is encoded into four
+      * bytes where the most significant bit is clear in each byte */
+      id3v2TagSize = (((id3v2Header[6] & 0x7f) << 21)
+         | ((id3v2Header[7] & 0x7f) << 14)
+         | ((id3v2Header[8] & 0x7f) << 7)
+         | (id3v2Header[9] & 0x7f))
+         + sizeof id3v2Header;
+   }
+   else {
+      /* no ID3 version 2 tag in this stream */
+      id3v2TagSize = 0;
+   }
+   return id3v2TagSize;
 }

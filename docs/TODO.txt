@@ -10,7 +10,6 @@ winLAME 2017 beta 1, must-do-things:
 
 winLAME 2017 beta 1, nice-to-have:
 - add status bar panes for different threads
-- LAME: implement fake FILE* for MSVC 2008
 - Add "Finished encoding action" to ribbon -> shutdown, close, etc.
 - Add adjusting number of threads in thread pool to settings
 - remove code TODOs

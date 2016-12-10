@@ -29,7 +29,6 @@
 #include "WaveMp3Header.h"
 #include "Id3v1Tag.h"
 #include "id3/file.h"
-#include "CrtFopenWrapper.hpp"
 
 // static variables
 
@@ -684,21 +683,9 @@ void LameOutputModule::WriteID3v2Tag()
 
 void LameOutputModule::WriteVBRInfoTag(nlame_instance_t* inst, LPCTSTR mp3filename)
 {
-   CrtFopenWrapper wrapper(_T("msvcr120.dll")); // runtime library that libmp3lame.dll uses
-   if (wrapper.IsAvail())
-   {
-      FILE* fp = wrapper._wfopen(mp3filename, _T("r+b"));
+   FILE* fp = _wfopen(mp3filename, _T("r+b"));
 
-      __try
-      {
-         nlame_write_vbr_infotag(inst, fp);
-      }
-      __except (EXCEPTION_EXECUTE_HANDLER)
-      {
-         // error: libmp3lame.dll uses different runtime library?
-         ATLTRACE(_T("error while writing VBR info tag"));
-      }
+   nlame_write_vbr_infotag(inst, fp);
 
-      wrapper.fclose(fp);
-   }
+   fclose(fp);
 }
