@@ -202,7 +202,6 @@
     <ClInclude Include="winlame\encoder\CDExtractTask.hpp" />
     <ClInclude Include="winlame\encoder\CdReadoutModule.h" />
     <ClInclude Include="winlame\encoder\CreatePlaylistTask.hpp" />
-    <ClInclude Include="winlame\encoder\CrtFopenWrapper.hpp" />
     <ClInclude Include="winlame\encoder\EncoderImpl.h" />
     <ClInclude Include="winlame\encoder\EncoderTask.h" />
     <ClInclude Include="winlame\encoder\FlacInputModule.h" />
