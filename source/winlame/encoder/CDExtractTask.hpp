@@ -73,6 +73,12 @@ private:
    /// indicates if task was stopped
    std::atomic<bool> m_bStopped;
 
+   /// indicates if task is running
+   std::atomic<bool> m_running;
+
+   /// indicates if task has finished
+   std::atomic<bool> m_finished;
+
    /// progress in percent
    std::atomic<unsigned int> m_uiProgress;
 };

@@ -910,6 +910,7 @@ BEGIN
     IDS_MAIN_TASKS_STATUS_COMPLETED "Fertig"
     IDS_MAIN_TASKS_STATUS_ERROR   "Fehlerhaft"
     IDS_MAIN_TASKS_STATUS_UNKNOWN "Unknown"
+    IDS_CDEXTRACT_DESC_US         "Track %u: %s"
     IDS_AAC_NO_MPEG2_LTP          "Warnung!\nDerzeit ist libfaac nicht in der Lage, MPEG2 zusammen mit LTP zu benutzen.\nBitte wählen Sie einen anderen Objekttyp!"
     IDS_OGGV_QUALITY              "Qualität: %s%u.%02u"
     IDS_OGGV_BITRATE              "Bitrate: %u.%u kbps"

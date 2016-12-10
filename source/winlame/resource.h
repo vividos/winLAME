@@ -247,6 +247,7 @@
 #define IDS_MAIN_TASKS_STATUS_COMPLETED         40122
 #define IDS_MAIN_TASKS_STATUS_ERROR             40123
 #define IDS_MAIN_TASKS_STATUS_UNKNOWN           40124
+#define IDS_CDEXTRACT_DESC_US                   40125
 #define IDS_AAC_NO_MPEG2_LTP                    40200
 #define IDS_OGGV_QUALITY                        40201
 #define IDS_OGGV_BITRATE                        40202

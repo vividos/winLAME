@@ -34,6 +34,8 @@ m_discinfo(discinfo),
 m_trackinfo(trackinfo),
 m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
 m_bStopped(false),
+m_running(false),
+m_finished(false),
 m_uiProgress(0)
 {
    m_title = CDRipTitleFormatManager::FormatTitle(
@@ -52,14 +54,29 @@ TaskInfo CDExtractTask::GetTaskInfo()
    TaskInfo info(Id(), TaskInfo::taskCdExtraction);
 
    info.Name(m_title);
-   info.Progress(m_uiProgress);
+
+   CString desc;
+   desc.Format(IDS_CDEXTRACT_DESC_US,
+      m_trackinfo.m_nTrackOnDisc,
+      m_title);
+   info.Description(desc);
+
+   info.Status(
+      m_finished ? TaskInfo::statusCompleted :
+      m_running ? TaskInfo::statusRunning :
+      TaskInfo::statusWaiting);
+
+   info.Progress(m_finished ? 100 : m_uiProgress);
 
    return info;
 }
 
 void CDExtractTask::Run()
 {
+   m_running = true;
    ExtractTrack(m_trackinfo.m_cszRippedFilename);
+   m_running = false;
+   m_finished = true;
 }
 
 void CDExtractTask::Stop()
@@ -159,7 +176,7 @@ bool CDExtractTask::ExtractTrack(const CString& cszTempFilename)
          break;
       }
 
-      m_uiProgress = nCurLength / nTrackLength;
+      m_uiProgress = nCurLength * 100 / nTrackLength;
 
       int nRet = outmod.encodeSamples(samplecont);
       if (nRet < 0)
