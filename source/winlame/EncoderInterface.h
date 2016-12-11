@@ -120,14 +120,17 @@ public:
    const CString& OutputFilename() const throw() { return m_outputFilename; }
    const CDRipDiscInfo& DiscInfo() const throw() { return m_discInfo; }
    const CDRipTrackInfo& TrackInfo() const throw() { return m_trackInfo; }
+   const CString& Title() const throw() { return m_title; }
 
    // setter
    void OutputFilename(const CString& outputFilename) { m_outputFilename = outputFilename; }
+   void Title(const CString& title) { m_title = title; }
 
 private:
    CString m_outputFilename;
    CDRipDiscInfo m_discInfo;
    CDRipTrackInfo m_trackInfo;
+   CString m_title;
 };
 
 

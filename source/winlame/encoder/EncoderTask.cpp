@@ -39,11 +39,29 @@ m_settings(settings)
    EncoderImpl::setWarnLossy(false);
 }
 
+CString EncoderTask::GenerateOutputFilename(const CString& inputFilename)
+{
+   if (m_precalculatedOutputFilename.IsEmpty())
+   {
+      ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+      ModuleManagerImpl& modImpl = reinterpret_cast<ModuleManagerImpl&>(moduleManager);
+
+      std::unique_ptr<OutputModule> outputModule(modImpl.getOutputModule(m_settings.m_iOutputModuleId));
+      ATLASSERT(outputModule != nullptr);
+
+      outputModule->prepareOutput(m_settings.m_settingsManager);
+
+      m_precalculatedOutputFilename = EncoderImpl::GetOutputFilename(m_settings.m_cszOutputPath, inputFilename, *outputModule.get());
+   }
+
+   return m_precalculatedOutputFilename;
+}
+
 TaskInfo EncoderTask::GetTaskInfo()
 {
    TaskInfo info(Id(), TaskInfo::taskEncoding);
 
-   info.Name(Path(m_settings.m_cszInputFilename).FilenameAndExt());
+   info.Name(m_settings.m_cszTitle);
 
    info.Description(EncoderImpl::getEncodingDescription());
 

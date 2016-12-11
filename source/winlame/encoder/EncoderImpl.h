@@ -309,6 +309,8 @@ protected:
    /// output pathname
    CString outpathname;
 
+   CString m_precalculatedOutputFilename;
+
    /// the settings manager to use
    SettingsManager *settings_mgr;
 

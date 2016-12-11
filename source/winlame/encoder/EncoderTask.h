@@ -131,7 +131,10 @@ public:
    virtual void Stop();
 
    /// output filename for this task
-   const CString& OutputFilename() { return m_outputFilename; }
+   const CString& OutputFilename() const throw() { return m_precalculatedOutputFilename; }
+
+   /// generates output filename for this task
+   CString GenerateOutputFilename(const CString& inputFilename);
 
 private:
    /// adds error texts from error handler to task result

@@ -233,7 +233,10 @@ bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& ou
    outputModule.prepareOutput(settingsManager);
 
    // do output filename
-   cszOutputFilename = GetOutputFilename(outpathname, cszInputFilename, outputModule);
+   if (!m_precalculatedOutputFilename.IsEmpty())
+      cszOutputFilename = m_precalculatedOutputFilename;
+   else
+      cszOutputFilename = GetOutputFilename(outpathname, cszInputFilename, outputModule);
 
    // ugly hack: when input module is cd extraction, remove guid from output filename
    if (inputModule.getModuleID() == ID_IM_CDRIP)
@@ -272,11 +275,10 @@ bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& ou
 CString EncoderImpl::GetOutputFilename(const CString& outputPath, const CString& cszInputFilename, OutputModule& outputModule)
 {
    CString cszOutputFilename = outputPath;
-   int iPos = cszInputFilename.ReverseFind(_T('\\'));
-   int iPos2 = cszInputFilename.ReverseFind(_T('.'));
 
-   if (iPos != -1 && iPos2 != -1)
-      cszOutputFilename += cszInputFilename.Mid(iPos+1, iPos2-iPos);
+   CString filenameOnly = Path(cszInputFilename).FilenameOnly();
+   cszOutputFilename += filenameOnly;
+   cszOutputFilename += _T(".");
 
    cszOutputFilename += outputModule.getOutputExtension();
 

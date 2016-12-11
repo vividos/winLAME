@@ -50,6 +50,9 @@ public:
    /// output filename for this task
    const CString& OutputFilename() { return m_trackinfo.m_cszRippedFilename; }
 
+   /// title for this task
+   const CString& Title() { return m_title; }
+
 private:
    /// generates temporary filename
    CString GetTempFilename(const CString& cszDiscTrackTitle) const;

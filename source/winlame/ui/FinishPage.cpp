@@ -152,13 +152,13 @@ bool FinishPage::IsOverwritingOriginalFiles() const
    ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
    ModuleManagerImpl& modImpl = reinterpret_cast<ModuleManagerImpl&>(moduleManager);
 
+   int out_module_id = moduleManager.getOutputModuleID(m_uiSettings.output_module);
+
    for (int i = 0, iMax = m_uiSettings.encoderjoblist.size(); i < iMax; i++)
    {
       EncoderJob& job = m_uiSettings.encoderjoblist[i];
 
       CString inputFilename = job.InputFilename();
-
-      int out_module_id = moduleManager.getOutputModuleID(m_uiSettings.output_module);
 
       std::unique_ptr<OutputModule> outputModule(modImpl.getOutputModule(out_module_id));
       if (outputModule == nullptr)
@@ -331,7 +331,7 @@ void FinishPage::AddInputFilesTasks()
 
       taskMgr.AddTask(spTask);
 
-      job.OutputFilename(spTask->OutputFilename());
+      job.OutputFilename(spTask->GenerateOutputFilename(job.InputFilename()));
 
       m_lastTaskId = spTask->Id();
    }
@@ -358,6 +358,7 @@ void FinishPage::AddCDExtractTasks()
       taskMgr.AddTask(spCDExtractTask);
 
       cdReadJob.OutputFilename(spCDExtractTask->OutputFilename());
+      cdReadJob.Title(spCDExtractTask->Title());
 
       unsigned int cdReadTaskId = spCDExtractTask->Id();
       lastCDReadTaskId = cdReadTaskId;
@@ -365,6 +366,8 @@ void FinishPage::AddCDExtractTasks()
       // also add encode task
       std::shared_ptr<EncoderTask> spEncoderTask =
          CreateEncoderTaskForCDReadJob(cdReadTaskId, cdReadJob);
+
+      cdReadJob.OutputFilename(spEncoderTask->GenerateOutputFilename(cdReadJob.Title()));
 
       taskMgr.AddTask(spEncoderTask);
 
@@ -374,17 +377,12 @@ void FinishPage::AddCDExtractTasks()
 
 std::shared_ptr<EncoderTask> FinishPage::CreateEncoderTaskForCDReadJob(unsigned int cdReadTaskId, const CDReadJob& cdReadJob)
 {
-   const CDRipDiscInfo& discInfo = cdReadJob.DiscInfo();
-   const CDRipTrackInfo& trackInfo = cdReadJob.TrackInfo();
-
    EncoderTaskSettings taskSettings;
 
    taskSettings.m_cszInputFilename = cdReadJob.OutputFilename();
    taskSettings.m_cszOutputPath = m_uiSettings.m_defaultSettings.outputdir;
 
-   taskSettings.m_cszTitle = CDRipTitleFormatManager::FormatTitle(
-      discInfo.m_bVariousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
-      discInfo, trackInfo);
+   taskSettings.m_cszTitle = cdReadJob.Title();
 
    ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
    taskSettings.m_iOutputModuleId = moduleManager.getOutputModuleID(m_uiSettings.output_module);
