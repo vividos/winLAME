@@ -22,6 +22,7 @@
 // includes
 #include "StdAfx.h"
 #include "CreatePlaylistTask.hpp"
+#include "Path.hpp"
 
 CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const EncoderJobList& encoderJobList)
    :Task(dependentTaskId),
@@ -62,7 +63,7 @@ TaskInfo CreatePlaylistTask::GetTaskInfo()
 {
    TaskInfo info(Id(), TaskInfo::taskWritePlaylist);
 
-   info.Name(_T("Writing Playlist"));
+   info.Name(_T("Playlist: ") + Path(m_playlistFilename).FilenameAndExt());
    info.Progress(m_finished ? 100 : 0);
    info.Status(m_finished ? TaskInfo::statusCompleted : TaskInfo::statusWaiting);
 
