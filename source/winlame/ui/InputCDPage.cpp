@@ -90,12 +90,7 @@ LRESULT InputCDPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 {
    KillTimer(IDT_CDRIP_CHECK);
 
-   {
-      if (m_bEditedTrack)
-         StoreInCdplayerIni(GetCurrentDrive());
-
-      UpdateCDReadJobList();
-   }
+   StoreSettings();
 
    m_uiSettings.m_bFromInputFilesPage = false;
    m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
@@ -543,12 +538,22 @@ void InputCDPage::CheckCD()
    }
 }
 
-void InputCDPage::UpdateCDReadJobList()
+void InputCDPage::StoreSettings()
 {
    DWORD dwDrive = GetCurrentDrive();
    if (dwDrive == INVALID_DRIVE_ID)
       return;
 
+   if (m_bEditedTrack)
+      StoreInCdplayerIni(dwDrive);
+
+   UpdateCDReadJobList(dwDrive);
+
+   UpdatePlaylistFilename(dwDrive);
+}
+
+void InputCDPage::UpdateCDReadJobList(unsigned int dwDrive)
+{
    CDRipDiscInfo discInfo = ReadDiscInfo(dwDrive);
 
    // get all track infos
@@ -584,6 +589,24 @@ void InputCDPage::UpdateCDReadJobList()
 
       CDReadJob cdReadJob(discInfo, trackInfo);
       m_uiSettings.cdreadjoblist.push_back(cdReadJob);
+   }
+}
+
+void InputCDPage::UpdatePlaylistFilename(DWORD driveIndex)
+{
+   CDRipDiscInfo discInfo = ReadDiscInfo(driveIndex);
+
+   if (discInfo.m_bVariousArtists)
+   {
+      m_uiSettings.playlist_filename.Format(
+         _T("%s.m3u"),
+         discInfo.m_cszDiscTitle);
+   }
+   else
+   {
+      m_uiSettings.playlist_filename.Format(
+         _T("%s - %s.m3u"),
+         discInfo.m_cszDiscArtist, discInfo.m_cszDiscTitle);
    }
 }
 

@@ -118,6 +118,8 @@ END_DDX_MAP()
             StoreInCdplayerIni(GetCurrentDrive());
 
          UpdateTrackManager();
+
+         UpdatePlaylistFilename();
       }
 
       // ends the modal dialog
@@ -155,6 +157,7 @@ END_DDX_MAP()
    void CheckCD();
    void UpdateTrackManager();
    void StoreInCdplayerIni(unsigned int nDrive);
+   void UpdatePlaylistFilename();
    void FreedbLookup();
    void FillListFreedbInfo(const Freedb::CDInfo& info);
 

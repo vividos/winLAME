@@ -597,6 +597,29 @@ void CDRipDlg::StoreInCdplayerIni(unsigned int nDrive)
    }
 }
 
+void CDRipDlg::UpdatePlaylistFilename()
+{
+   DWORD nDrive = GetCurrentDrive();
+   if (nDrive == INVALID_DRIVE_ID)
+      return;
+
+   CDRipTrackManager* pManager = CDRipTrackManager::getCDRipTrackManager();
+   CDRipDiscInfo& discInfo = pManager->GetDiscInfo();
+
+   if (discInfo.m_bVariousArtists)
+   {
+      m_uiSettings.playlist_filename.Format(
+         _T("%s.m3u"),
+         discInfo.m_cszDiscTitle);
+   }
+   else
+   {
+      m_uiSettings.playlist_filename.Format(
+         _T("%s - %s.m3u"),
+         discInfo.m_cszDiscArtist, discInfo.m_cszDiscTitle);
+   }
+}
+
 LRESULT CDRipDlg::OnEndLabelEdit(int idCtrl, LPNMHDR pnmh, BOOL& bHandled)
 {
    NMLVDISPINFO* pLvDispInfo = reinterpret_cast<NMLVDISPINFO*>(pnmh);

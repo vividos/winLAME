@@ -143,7 +143,9 @@ private:
    void CheckCD();
    CDRipDiscInfo ReadDiscInfo(DWORD driveIndex);
    CDRipTrackInfo ReadTrackInfo(DWORD driveIndex, unsigned int trackNum);
-   void UpdateCDReadJobList();
+   void StoreSettings();
+   void UpdateCDReadJobList(unsigned int dwDrive);
+   void UpdatePlaylistFilename(DWORD driveIndex);
    void StoreInCdplayerIni(unsigned int nDrive);
    void FreedbLookup();
    void FillListFreedbInfo(const Freedb::CDInfo& info);
