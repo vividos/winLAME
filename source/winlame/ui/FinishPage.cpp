@@ -434,11 +434,14 @@ void FinishPage::AddPlaylistTask()
 {
    TaskManager& taskMgr = IoCContainer::Current().Resolve<TaskManager>();
 
+   CString playlistFilename =
+      Path::Combine(m_uiSettings.m_defaultSettings.outputdir, m_uiSettings.playlist_filename);
+
    std::shared_ptr<Task> spTask;
    if (m_uiSettings.m_bFromInputFilesPage)
-      spTask.reset(new CreatePlaylistTask(m_lastTaskId, m_uiSettings.playlist_filename, m_uiSettings.encoderjoblist));
+      spTask.reset(new CreatePlaylistTask(m_lastTaskId, playlistFilename, m_uiSettings.encoderjoblist));
    else
-      spTask.reset(new CreatePlaylistTask(m_lastTaskId, m_uiSettings.playlist_filename, m_uiSettings.cdreadjoblist));
+      spTask.reset(new CreatePlaylistTask(m_lastTaskId, playlistFilename, m_uiSettings.cdreadjoblist));
 
    taskMgr.AddTask(spTask);
 }
