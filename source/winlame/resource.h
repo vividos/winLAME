@@ -325,9 +325,7 @@
 #define IDS_CDRIP_TRACK_U                       40907
 #define IDS_CDRIP_TRACKTYPE_UNKNOWN             40908
 #define IDS_CDRIP_TRACKTYPE_DATA                40909
-#define IDS_CDRIP_NO_INTERNET_AVAIL             40910
 #define IDS_CDRIP_NO_CDINFO_AVAIL               40911
-#define IDS_CDRIP_ERROR_FREEDB                  40912
 #define IDS_CDRIP_ERROR_CAPTION                 40913
 #define IDS_CDRIP_ERROR_NOCDINFO                40914
 #define IDS_CDRIP_ARTIST_VARIOUS                40915

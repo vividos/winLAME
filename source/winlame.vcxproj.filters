@@ -286,9 +286,6 @@
     <ClCompile Include="winlame\InputFilesParser.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="winlame\FreedbResolver.cpp">
-      <Filter>Main Program Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="winlame\ui\FinishPage.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
@@ -580,9 +577,6 @@
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\InputFilesParser.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\FreedbResolver.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\Path.hpp">
