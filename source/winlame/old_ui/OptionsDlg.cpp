@@ -87,16 +87,6 @@ LRESULT OptionsDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPar
    cszRandomServer.LoadString(IDS_CDRIP_RANDOM_FREEDB_SERVER);
 
    m_cbFreedbServer.AddString(_T("freedb.freedb.org (") + cszRandomServer + _T(")"));
-   m_cbFreedbServer.AddString(_T("at.freedb.org (Vienna, Austria)"));
-   m_cbFreedbServer.AddString(_T("au.freedb.org (Sydney, Australia)"));
-   m_cbFreedbServer.AddString(_T("ca.freedb.org (Winnipeg, Manitoba, Canada)"));
-   m_cbFreedbServer.AddString(_T("ca2.freedb.org (Montreal, Quebec, Canada)"));
-   m_cbFreedbServer.AddString(_T("de.freedb.org (Berlin, Germany)"));
-   m_cbFreedbServer.AddString(_T("es.freedb.org (Madrid, Spain)"));
-   m_cbFreedbServer.AddString(_T("fi.freedb.org (Tampere, Finland)"));
-   m_cbFreedbServer.AddString(_T("ru.freedb.org (Saint-Petersburg, Russia)"));
-   m_cbFreedbServer.AddString(_T("uk.freedb.org (London, UK)"));
-   m_cbFreedbServer.AddString(_T("us.freedb.org (San Jose, California, USA)"));
    m_cbFreedbServer.SelectString(-1, m_uiSettings.freedb_server);
 
    return 1;
