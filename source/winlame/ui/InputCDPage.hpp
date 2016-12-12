@@ -30,10 +30,7 @@
 
 // forward references
 struct UISettings;
-namespace Freedb
-{
-   struct CDInfo;
-}
+class FreedbInfo;
 
 namespace UI
 {
@@ -138,6 +135,7 @@ private:
 
    DWORD GetCurrentDrive();
    void RefreshCDList();
+   bool ReadCachedCDDB(bool& bVarious);
    bool ReadCdplayerIni(bool& bVarious);
    void ReadCDText(bool& bVarious);
    void CheckCD();
@@ -148,7 +146,7 @@ private:
    void UpdatePlaylistFilename(DWORD driveIndex);
    void StoreInCdplayerIni(unsigned int nDrive);
    void FreedbLookup();
-   void FillListFreedbInfo(const Freedb::CDInfo& info);
+   void FillListFreedbInfo(const FreedbInfo& info);
 
 private:
    // controls

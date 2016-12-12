@@ -23,7 +23,7 @@
 
 // includes
 #include <vector>
-#include <freedb.hpp>
+#include "FreedbInfo.hpp"
 #include "AlternateColorsListCtrl.hpp"
 
 namespace UI
@@ -35,9 +35,9 @@ namespace UI
    {
    public:
       /// ctor
-      FreeDbDiscListDlg(const std::vector<Freedb::SearchResult>& vecResults)
-         :m_vecResults(vecResults),
-         m_uSelectedItem(0)
+      FreeDbDiscListDlg(const std::vector<FreedbInfo>& entriesList)
+         :m_entriesList(entriesList),
+         m_selectedItem(0)
       {
       }
 
@@ -53,17 +53,17 @@ namespace UI
       LRESULT OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
       /// returns the item that was selected by the user
-      unsigned int GetSelectedItem() const { return m_uSelectedItem; }
+      unsigned int GetSelectedItem() const { return m_selectedItem; }
 
       /// updates list
       void UpdateList();
 
    protected:
       /// search results to choose from
-      const std::vector<Freedb::SearchResult>& m_vecResults;
+      const std::vector<FreedbInfo>& m_entriesList;
 
       /// selected item
-      unsigned int m_uSelectedItem;
+      unsigned int m_selectedItem;
 
       /// list of found freedb entries
       AlternateColorsListCtrl m_list;

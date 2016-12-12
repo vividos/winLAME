@@ -27,10 +27,12 @@
 
 // needed includes
 #include "resource.h"
-#include "freedb.hpp"
 #include "CommonStuff.h"
 #include "UIinterface.h"
 #include "TrackEditListCtrl.h"
+
+// forward references
+class FreedbInfo;
 
 /// timer id for timer checking for cd in drive
 #define IDT_CDRIP_CHECK 66
@@ -152,6 +154,7 @@ END_DDX_MAP()
    DWORD GetCurrentDrive();
 
    void RefreshCDList();
+   bool ReadCachedCDDB(bool& bVarious);
    bool ReadCdplayerIni(bool& bVarious);
    void ReadCDText(bool& bVarious);
    void CheckCD();
@@ -159,8 +162,7 @@ END_DDX_MAP()
    void StoreInCdplayerIni(unsigned int nDrive);
    void UpdatePlaylistFilename();
    void FreedbLookup();
-   void FillListFreedbInfo(const Freedb::CDInfo& info);
-
+   void FillListFreedbInfo(const FreedbInfo& info);
 
 protected:
    /// drives combobox (hidden when only one drive is present)

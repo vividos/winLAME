@@ -130,6 +130,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="winlame\FreedbInfo.cpp" />
     <ClCompile Include="winlame\FreedbResolver.cpp" />
     <ClCompile Include="winlame\InputFilesParser.cpp" />
     <ClCompile Include="winlame\old_ui\AacSettingsPage_old.cpp" />
@@ -230,6 +231,7 @@
     <ClInclude Include="winlame\encoder\id3\Tag.h" />
     <ClInclude Include="winlame\encoder\aacinfo\aacinfo.h" />
     <ClInclude Include="winlame\encoder\aacinfo\filestream.h" />
+    <ClInclude Include="winlame\FreedbInfo.hpp" />
     <ClInclude Include="winlame\FreedbResolver.hpp" />
     <ClInclude Include="winlame\IniFile.h" />
     <ClInclude Include="winlame\InputFilesParser.h" />

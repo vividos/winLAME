@@ -29,12 +29,14 @@
 #include "DynamicLibrary.h"
 #include "IniFile.h"
 #include "basscd.h"
-#include "FreedbResolver.hpp"
 #include "CommonStuff.h"
+#include "FreedbInfo.hpp"
 #include "FreeDbDiscListDlg.hpp"
 #include "RedrawLock.hpp"
 
 using namespace UI;
+
+extern CString UTF8ToCString(const char* pszUtf8Text);
 
 const DWORD INVALID_DRIVE_ID = 0xffffffff;
 
@@ -364,8 +366,9 @@ void InputCDPage::RefreshCDList()
       m_buttonPlay.EnableWindow(true);
 
    bool bVarious = false;
-   if (!ReadCdplayerIni(bVarious))
-      ReadCDText(bVarious);
+   if (!ReadCachedCDDB(bVarious))
+      if (!ReadCdplayerIni(bVarious))
+         ReadCDText(bVarious);
 
    // check or uncheck "various artists"
    m_checkVariousArtists.SetCheck(bVarious ? BST_CHECKED : BST_UNCHECKED);
@@ -374,6 +377,21 @@ void InputCDPage::RefreshCDList()
    OnClickedCheckVariousArtists(0, 0, NULL, bDummy);
 
    m_bEditedTrack = false;
+}
+
+bool InputCDPage::ReadCachedCDDB(bool& bVarious)
+{
+   DWORD driveIndex = GetCurrentDrive();
+
+   const char* entry = BASS_CD_GetID(driveIndex, BASS_CDID_CDDB_READ_CACHE);
+   if (!entry || strlen(entry) == 0)
+      return false;
+
+   FreedbInfo info(UTF8ToCString(entry));
+   FillListFreedbInfo(info);
+   m_bAcquiredDiscInfo = true;
+
+   return true;
 }
 
 bool InputCDPage::ReadCdplayerIni(bool& bVarious)
@@ -712,44 +730,41 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
 
 void InputCDPage::FreedbLookup()
 {
-   if (!FreedbResolver::IsAvail())
-   {
-      AppMessageBox(m_hWnd, IDS_CDRIP_NO_INTERNET_AVAIL, MB_OK | MB_ICONSTOP);
-      return;
-   }
+   CString serverAddress = m_uiSettings.freedb_server;
 
-   DWORD nDrive = GetCurrentDrive();
-
-   const char* cdtext = BASS_CD_GetID(nDrive, BASS_CDID_CDDB);
-   if (!cdtext || strlen(cdtext) == 0)
-   {
-      AppMessageBox(m_hWnd, IDS_CDRIP_ERROR_NOCDINFO, MB_OK | MB_ICONSTOP);
-      return;
-   }
+   ATLVERIFY(TRUE == BASS_SetConfigPtr(
+      BASS_CONFIG_CD_CDDB_SERVER,
+      CStringA(serverAddress).GetString()));
 
    CWaitCursor waitCursor;
 
-   FreedbResolver resolver(
-      m_uiSettings.freedb_server,
-      m_uiSettings.freedb_username);
+   DWORD driveIndex = GetCurrentDrive();
 
-   CString cszErrorMessage;
-   bool bRet = resolver.Lookup(cdtext, cszErrorMessage);
+   BASS_CD_GetID(driveIndex, BASS_CDID_CDDB_QUERY);
 
-   if (!cszErrorMessage.IsEmpty())
+   std::vector<FreedbInfo> entriesList;
+
+   for (int entryIndex = 0; entryIndex < 100; entryIndex++)
    {
-      DWORD dwMbIcon = bRet ? MB_ICONEXCLAMATION : MB_ICONSTOP;
-      AppMessageBox(m_hWnd, cszErrorMessage, MB_OK | dwMbIcon);
+      const char* entry = BASS_CD_GetID(driveIndex, BASS_CDID_CDDB_READ + entryIndex);
+      if (!entry || strlen(entry) == 0)
+         break;
 
+      entriesList.push_back(FreedbInfo(UTF8ToCString(entry)));
+   }
+
+   if (entriesList.empty())
+   {
+      AppMessageBox(m_hWnd, IDS_CDRIP_ERROR_NOCDINFO, MB_OK | MB_ICONSTOP);
       return;
    }
 
    // show dialog when it's more than one item
    unsigned int nSelected = 0;
 
-   if (resolver.Results().size() > 1)
+   if (entriesList.size() > 1)
    {
-      UI::FreeDbDiscListDlg dlg(resolver.Results());
+      UI::FreeDbDiscListDlg dlg(entriesList);
 
       waitCursor.Restore();
       ATLVERIFY(IDOK == dlg.DoModal());
@@ -759,43 +774,32 @@ void InputCDPage::FreedbLookup()
       nSelected = dlg.GetSelectedItem();
    }
 
-   resolver.ReadResultInfo(nSelected);
-
-   FillListFreedbInfo(resolver.CDInfo());
-
-   m_bAcquiredDiscInfo = true;
+   if (nSelected >= 0 && nSelected < entriesList.size())
+   {
+      FillListFreedbInfo(entriesList[nSelected]);
+      m_bAcquiredDiscInfo = true;
+   }
 }
 
-void InputCDPage::FillListFreedbInfo(const Freedb::CDInfo& info)
+void InputCDPage::FillListFreedbInfo(const FreedbInfo& info)
 {
    CString cszText;
-   unsigned int nMax = info.tracktitles.size();
+   unsigned int nMax = info.TrackTitles().size();
    for (unsigned int n = 0; n < nMax; n++)
    {
-      cszText = info.tracktitles[n].c_str();
+      cszText = info.TrackTitles()[n];
       m_lcTracks.SetItemText(n, 1, cszText);
    }
 
-   cszText = info.dartist.c_str();
-   SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, cszText);
+   SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, info.DiscArtist());
 
-   cszText = info.dtitle.c_str();
-   SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, cszText);
+   SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, info.DiscTitle());
 
-   if (info.dyear.size() > 0)
-      SetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, strtoul(info.dyear.c_str(), NULL, 10), FALSE);
-   else
-   {
-      unsigned int nPos = info.dextinfo.find("YEAR: ");
-      if (-1 != nPos)
-      {
-         unsigned long nYear = strtoul(info.dextinfo.c_str() + nPos + 6, NULL, 10);
-         SetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, nYear, FALSE);
-      }
-   }
+   if (!info.Year().IsEmpty())
+      SetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, _ttoi(info.Year()), FALSE);
 
-   CString cszGenre(info.dgenre.c_str());
-   if (cszGenre.GetLength() > 0)
+   CString cszGenre = info.Genre();
+   if (!cszGenre.IsEmpty())
    {
       int nItem = m_cbGenre.FindStringExact(-1, cszGenre);
       if (nItem == CB_ERR)

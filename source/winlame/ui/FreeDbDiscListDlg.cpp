@@ -57,25 +57,27 @@ LRESULT FreeDbDiscListDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM
 void FreeDbDiscListDlg::UpdateList()
 {
    CString cszText;
-   unsigned int nMax = m_vecResults.size();
+   unsigned int nMax = m_entriesList.size();
    for (unsigned int n = 0; n < nMax; n++)
    {
-      cszText.Format(_T("%hs / %hs"), m_vecResults[n].dartist.c_str(), m_vecResults[n].dtitle.c_str());
-      cszText.Replace(_T("\n"), _T("")); // libfreedb may add a linefeed character
+      cszText.Format(_T("%s / %s"),
+         m_entriesList[n].DiscArtist().GetString(),
+         m_entriesList[n].DiscTitle().GetString());
 
       int nItem = m_list.InsertItem(m_list.GetItemCount(), cszText);
-      cszText = m_vecResults[n].category.c_str();
+
+      cszText = m_entriesList[n].Genre();
       m_list.SetItemText(nItem, 1, cszText);
    }
 }
 
 LRESULT FreeDbDiscListDlg::OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   int iItem = m_list.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
-   if (iItem != -1)
+   int itemIndex = m_list.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
+   if (itemIndex != -1)
    {
       EndDialog(wID);
-      m_uSelectedItem = static_cast<unsigned int>(iItem);
+      m_selectedItem = static_cast<unsigned int>(itemIndex);
    }
 
    return 0;
