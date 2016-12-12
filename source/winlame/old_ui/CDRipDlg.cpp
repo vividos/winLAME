@@ -428,8 +428,12 @@ void CDRipDlg::ReadCDText(bool& bVarious)
             if (uPerf < uMaxCDTracks+1)
                vecPerformer[uPerf] = pNext+1;
 
-            if (uPerf > 0 && strlen(pNext+1) > 0)
+            if (uPerf > 0 &&
+               strlen(pNext + 1) > 0 &&
+               vecPerformer[0] != CString(pNext + 1))
+            {
                bVarious = true;
+            }
          }
 
          cdtext = endpos;
@@ -443,7 +447,8 @@ void CDRipDlg::ReadCDText(bool& bVarious)
       CString cszFormat;
       for (DWORD n=1; n<uMaxCDTracks+1; n++)
       {
-         if (vecPerformer[n].GetLength()==0)
+         if (vecPerformer[n].IsEmpty() ||
+            vecPerformer[n] == vecPerformer[0])
             cszFormat = vecTitles[n];
          else
             cszFormat.Format(_T("%s / %s"), vecPerformer[n], vecTitles[n]);
