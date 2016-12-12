@@ -49,7 +49,6 @@ public:
       COMMAND_ID_HANDLER(IDOK, OnExit)
       COMMAND_ID_HANDLER(IDCANCEL, OnExit)
       COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, OnButtonSelectPath)
-      COMMAND_HANDLER(IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME, EN_CHANGE, OnChangeFreedbUsername)
       REFLECT_NOTIFICATIONS()
    END_MSG_MAP()
 
@@ -62,13 +61,11 @@ public:
       DDX_CHECK(IDC_CDRIP_OPT_CHECK_CDPLAYER_INI, m_uiSettings.store_disc_infos_cdplayer_ini);
       DDX_TEXT(IDC_CDRIP_OPT_EDIT_TEMP_FOLDER, m_uiSettings.cdrip_temp_folder);
       DDX_TEXT(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, m_uiSettings.freedb_server);
-      DDX_TEXT(IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME, m_uiSettings.freedb_username);
    END_DDX_MAP()
 
    LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnExit(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnButtonSelectPath(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
-   LRESULT OnChangeFreedbUsername(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 private:
    UISettings& m_uiSettings;

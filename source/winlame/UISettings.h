@@ -125,9 +125,6 @@ struct UISettings
    /// freedb servername
    CString freedb_server;
 
-   /// freedb username
-   CString freedb_username;
-
    /// indicates if disc infos retrieved by freedb should be stored in cdplayer.ini
    bool store_disc_infos_cdplayer_ini;
 

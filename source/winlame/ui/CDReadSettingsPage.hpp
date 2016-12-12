@@ -58,7 +58,6 @@ private:
    BEGIN_DDX_MAP(CDReadSettingsPage)
       DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, m_cbFreedbServer);
       DDX_TEXT(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, m_settings.freedb_server);
-      DDX_TEXT(IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME, m_settings.freedb_username);
       DDX_TEXT(IDC_CDRIP_OPT_EDIT_TEMP_FOLDER, m_settings.cdrip_temp_folder);
       DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, m_btnSelectPath);
       DDX_CHECK(IDC_CDRIP_OPT_CHECK_CDPLAYER_INI, m_settings.store_disc_infos_cdplayer_ini);
@@ -70,7 +69,6 @@ private:
 
    BEGIN_DLGRESIZE_MAP(CDReadSettingsPage)
       DLGRESIZE_CONTROL(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, DLSZ_SIZE_X)
-      DLGRESIZE_CONTROL(IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME, DLSZ_SIZE_X)
       DLGRESIZE_CONTROL(IDC_CDRIP_OPT_EDIT_FORMAT_VARIOUS_TRACK, DLSZ_SIZE_X)
       DLGRESIZE_CONTROL(IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK, DLSZ_SIZE_X)
       DLGRESIZE_CONTROL(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, DLSZ_MOVE_X)
@@ -81,7 +79,6 @@ private:
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
       COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, OnButtonSelectPath)
-      COMMAND_HANDLER(IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME, EN_CHANGE, OnChangeFreedbUsername)
       COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, OnButtonVariousTrackTags)
       COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, OnButtonAlbumTrackTags)
       CHAIN_MSG_MAP(CDialogResize<CDReadSettingsPage>)
@@ -95,9 +92,6 @@ private:
 
    /// called when user clicks on select path button
    LRESULT OnButtonSelectPath(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
-
-   /// called when text in freedb username editbox changes
-   LRESULT OnChangeFreedbUsername(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
    /// called when user clicks on various track tags button
    LRESULT OnButtonVariousTrackTags(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);

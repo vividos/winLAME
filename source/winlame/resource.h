@@ -198,7 +198,6 @@
 #define IDC_ERR_BUTTON_STOP                     4207
 #define IDC_ERR_BEVEL1                          4208
 #define IDC_CDRIP_OPT_CHECK_CDPLAYER_INI        4300
-#define IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME      4301
 #define IDC_CDRIP_OPT_COMBO_FREEDB_SERVER       4302
 #define IDC_CDRIP_OPT_EDIT_TEMP_FOLDER          4303
 #define IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH    4304
@@ -316,7 +315,6 @@
 #define IDS_HTML_WMA                            40810
 #define IDS_HTML_CDRIP                          40811
 #define IDS_CDRIP_RANDOM_FREEDB_SERVER          40900
-#define IDS_CDRIP_FREEDB_USERNAME_NO_SPACES     40901
 #define IDS_CDRIP_COLUMN_NR                     40902
 #define IDS_CDRIP_COLUMN_TRACK                  40903
 #define IDS_CDRIP_COLUMN_LENGTH                 40904

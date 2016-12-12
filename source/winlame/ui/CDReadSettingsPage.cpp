@@ -86,18 +86,6 @@ LRESULT CDReadSettingsPage::OnButtonSelectPath(WORD /*wNotifyCode*/, WORD /*wID*
    return 0;
 }
 
-LRESULT CDReadSettingsPage::OnChangeFreedbUsername(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   DoDataExchange(DDX_SAVE, IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME);
-   if (-1 != m_settings.freedb_username.Find(_T(' ')))
-   {
-      App::MessageBox(m_hWnd, IDS_CDRIP_FREEDB_USERNAME_NO_SPACES, MB_OK | MB_ICONEXCLAMATION);
-      m_settings.freedb_username.Replace(_T(" "), _T(""));
-      DoDataExchange(DDX_LOAD, IDC_CDRIP_OPT_EDIT_FREEDB_USERNAME);
-   }
-   return 0;
-}
-
 LRESULT CDReadSettingsPage::OnButtonVariousTrackTags(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    CButton button(GetDlgItem(wID));

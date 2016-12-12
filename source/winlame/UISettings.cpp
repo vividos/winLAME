@@ -46,7 +46,6 @@ LPCTSTR g_pszCdripAutostartEncoding = _T("CDExtractAutostartEncoding");
 LPCTSTR g_pszCdripTempFolder = _T("CDExtractTempFolder");
 LPCTSTR g_pszOutputPathHistory = _T("OutputPathHistory%02u");
 LPCTSTR g_pszFreedbServer = _T("FreedbServer");
-LPCTSTR g_pszFreedbUsername = _T("FreedbUsername");
 LPCTSTR g_pszDiscInfosCdplayerIni = _T("StoreDiscInfosInCdplayerIni");
 LPCTSTR g_pszFormatVariousTrack = _T("CDExtractFormatVariousTrack");
 LPCTSTR g_pszFormatAlbumTrack = _T("CDExtractFormatAlbumTrack");
@@ -78,7 +77,6 @@ UISettings::UISettings()
    m_iLastSelectedPresetIndex(0),
    last_page_was_cdrip_page(false),
    freedb_server(_T("freedb.freedb.org")),
-   freedb_username(_T("default")),
    store_disc_infos_cdplayer_ini(true),
    cdrip_format_various_track(_T("%track% - %album% - %artist% - %title%")),
    cdrip_format_album_track(_T("%track% - %album% - %title%")),
@@ -171,9 +169,6 @@ void UISettings::ReadSettings()
 
    // read "freedb server"
    ReadStringValue(regRoot, g_pszFreedbServer, MAX_PATH, freedb_server);
-
-   // read "freedb username"
-   ReadStringValue(regRoot, g_pszFreedbUsername, MAX_PATH, freedb_username);
 
    // read "store disc infos in cdplayer.ini" value
    ReadBooleanValue(regRoot, g_pszDiscInfosCdplayerIni, store_disc_infos_cdplayer_ini);
@@ -277,9 +272,6 @@ void UISettings::StoreSettings()
 
    // write freedb server
    regRoot.SetValue(freedb_server, g_pszFreedbServer);
-
-   // write freedb username
-   regRoot.SetValue(freedb_username, g_pszFreedbUsername);
 
    // write "store disc infos in cdplayer.ini" value
    value = store_disc_infos_cdplayer_ini ? 1 : 0;
