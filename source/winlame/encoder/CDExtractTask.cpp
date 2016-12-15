@@ -42,11 +42,14 @@ m_uiProgress(0)
       m_discinfo.m_bVariousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
       m_discinfo, m_trackinfo);
 
-   CString cszDiscTrackTitle = CDRipTitleFormatManager::GetFilenameByTitle(m_title);
+   if (m_trackinfo.m_cszRippedFilename.IsEmpty())
+   {
+      CString cszDiscTrackTitle = CDRipTitleFormatManager::GetFilenameByTitle(m_title);
 
-   CString cszTempFilename = GetTempFilename(cszDiscTrackTitle);
+      CString cszTempFilename = GetTempFilename(cszDiscTrackTitle);
 
-   m_trackinfo.m_cszRippedFilename = cszTempFilename;
+      m_trackinfo.m_cszRippedFilename = cszTempFilename;
+   }
 }
 
 TaskInfo CDExtractTask::GetTaskInfo()

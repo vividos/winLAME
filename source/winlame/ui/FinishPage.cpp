@@ -32,6 +32,7 @@
 #include "CDExtractTask.hpp"
 #include "CDRipTitleFormatManager.hpp"
 #include "RedrawLock.hpp"
+#include <sndfile.h>
 
 using namespace UI;
 
@@ -339,6 +340,13 @@ void FinishPage::AddInputFilesTasks()
 
 void FinishPage::AddCDExtractTasks()
 {
+   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+
+   bool outputWaveFile16bit =
+      moduleManager.getOutputModuleID(m_uiSettings.output_module) == ID_OM_WAVE &&
+      m_uiSettings.settings_manager.queryValueInt(SndFileFormat) == SF_FORMAT_WAV &&
+      m_uiSettings.settings_manager.queryValueInt(SndFileSubType) == SF_FORMAT_PCM_16;
+
    TaskManager& taskMgr = IoCContainer::Current().Resolve<TaskManager>();
 
    unsigned int lastCDReadTaskId = 0;
@@ -349,13 +357,29 @@ void FinishPage::AddCDExtractTasks()
       CDReadJob& cdReadJob = m_uiSettings.cdreadjoblist[jobIndex];
 
       const CDRipDiscInfo& discInfo = cdReadJob.DiscInfo();
-      const CDRipTrackInfo& trackInfo = cdReadJob.TrackInfo();
+      CDRipTrackInfo& trackInfo = cdReadJob.TrackInfo();
 
       if (!trackInfo.m_bActive)
          continue;
 
+      if (outputWaveFile16bit)
+      {
+         // when outputting to CD format, we can store the wave file directly without writing
+         // to temp storage first
+         CString title = CDRipTitleFormatManager::FormatTitle(
+            discInfo.m_bVariousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
+            discInfo, trackInfo);
+
+         trackInfo.m_cszRippedFilename =
+            (const CString&)Path::Combine(
+               m_uiSettings.m_defaultSettings.outputdir,
+               title + _T(".wav"));
+      }
+
       std::shared_ptr<CDExtractTask> spCDExtractTask(new CDExtractTask(lastCDReadTaskId, discInfo, trackInfo));
       taskMgr.AddTask(spCDExtractTask);
+
+      m_lastTaskId = spCDExtractTask->Id();
 
       cdReadJob.OutputFilename(spCDExtractTask->OutputFilename());
       cdReadJob.Title(spCDExtractTask->Title());
@@ -363,15 +387,18 @@ void FinishPage::AddCDExtractTasks()
       unsigned int cdReadTaskId = spCDExtractTask->Id();
       lastCDReadTaskId = cdReadTaskId;
 
-      // also add encode task
-      std::shared_ptr<EncoderTask> spEncoderTask =
-         CreateEncoderTaskForCDReadJob(cdReadTaskId, cdReadJob);
+      if (!outputWaveFile16bit)
+      {
+         // also add encode task
+         std::shared_ptr<EncoderTask> spEncoderTask =
+            CreateEncoderTaskForCDReadJob(cdReadTaskId, cdReadJob);
 
-      cdReadJob.OutputFilename(spEncoderTask->GenerateOutputFilename(cdReadJob.Title()));
+         cdReadJob.OutputFilename(spEncoderTask->GenerateOutputFilename(cdReadJob.Title()));
 
-      taskMgr.AddTask(spEncoderTask);
+         taskMgr.AddTask(spEncoderTask);
 
-      m_lastTaskId = spEncoderTask->Id();
+         m_lastTaskId = spEncoderTask->Id();
+      }
    }
 }
 

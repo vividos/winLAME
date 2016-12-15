@@ -120,6 +120,7 @@ public:
    const CString& OutputFilename() const throw() { return m_outputFilename; }
    const CDRipDiscInfo& DiscInfo() const throw() { return m_discInfo; }
    const CDRipTrackInfo& TrackInfo() const throw() { return m_trackInfo; }
+         CDRipTrackInfo& TrackInfo()       throw() { return m_trackInfo; }
    const CString& Title() const throw() { return m_title; }
 
    // setter
