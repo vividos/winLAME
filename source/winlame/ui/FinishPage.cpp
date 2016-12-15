@@ -420,6 +420,7 @@ std::shared_ptr<EncoderTask> FinishPage::CreateEncoderTaskForCDReadJob(unsigned 
    SetTrackInfoFromCDTrackInfo(encodeTrackInfo, cdReadJob);
 
    taskSettings.m_trackInfo = encodeTrackInfo;
+   taskSettings.m_useTrackInfo = true;
    taskSettings.m_pModuleManager = &moduleManager;
    taskSettings.m_bOverwriteFiles = m_uiSettings.m_defaultSettings.overwrite_existing;
    taskSettings.m_bDeleteAfterEncode = true; // temporary file created by CDExtractTask

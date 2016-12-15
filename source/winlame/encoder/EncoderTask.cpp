@@ -37,6 +37,9 @@ m_settings(settings)
    EncoderImpl::setOverwriteFiles(m_settings.m_bOverwriteFiles);
    EncoderImpl::setDeleteAfterEncode(m_settings.m_bDeleteAfterEncode);
    EncoderImpl::setWarnLossy(false);
+
+   if (m_settings.m_useTrackInfo)
+      EncoderImpl::setTrackInfo(m_settings.m_trackInfo);
 }
 
 CString EncoderTask::GenerateOutputFilename(const CString& inputFilename)

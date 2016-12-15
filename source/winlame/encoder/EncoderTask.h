@@ -35,7 +35,8 @@
 struct EncoderTaskSettings
 {
    EncoderTaskSettings()
-      :m_iOutputModuleId(0),
+      :m_useTrackInfo(false),
+      m_iOutputModuleId(0),
       m_bOverwriteFiles(false),
       m_bDeleteAfterEncode(false)
    {
@@ -52,6 +53,10 @@ struct EncoderTaskSettings
 
    /// track info to store in output
    TrackInfo m_trackInfo;
+
+   /// indicates if the provided track info should be used instead of track info read from
+   /// the input file
+   bool m_useTrackInfo;
 
    /// the settings manager to use
    SettingsManager m_settingsManager;

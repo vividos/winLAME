@@ -183,6 +183,9 @@ public:
    /// set warn about lossy transcoding
    virtual void setWarnLossy(bool overwrite)=0;
 
+   /// sets track info to use instead of track info read from input module
+   virtual void setTrackInfo(const TrackInfo& trackInfo) = 0;
+
    /// sets output playlist filename and enables playlist creation
    virtual void setOutputPlaylistFilename(LPCTSTR plname)=0;
 

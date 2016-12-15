@@ -53,6 +53,7 @@ public:
       overwrite = true;
       delete_after_encode = false;
       warn_lossy = true;
+      m_useTrackInfo = false;
 
       mutex = ::CreateMutex(NULL, FALSE, NULL);
    }
@@ -140,6 +141,13 @@ public:
    virtual void setWarnLossy(bool warn)
    {
       warn_lossy = warn;
+   }
+
+   /// sets track info to use instead of track info read from input module
+   virtual void setTrackInfo(const TrackInfo& trackInfo)
+   {
+      m_useTrackInfo = true;
+      m_trackInfo = trackInfo;
    }
 
    /// sets output playlist filename and enables playlist creation
@@ -331,6 +339,13 @@ protected:
 
    /// warn about lossy transcoding
    bool warn_lossy;
+
+   /// track info to store in output
+   TrackInfo m_trackInfo;
+
+   /// indicates if the provided track info should be used instead of track info read from
+   /// the input file
+   bool m_useTrackInfo;
 
    /// indicates percent done
    float percent;

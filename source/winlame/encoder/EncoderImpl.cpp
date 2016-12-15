@@ -110,6 +110,10 @@ void EncoderImpl::encode()
          break;
       }
 
+      // use the provided track info
+      if (m_useTrackInfo)
+         trackinfo = m_trackInfo;
+
       // generate temporary name, in case the output module doesn't support unicode filenames
       GenerateTempOutFilename(outfilename, temp_outfilename);
 
