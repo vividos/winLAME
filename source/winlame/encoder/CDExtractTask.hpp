@@ -28,6 +28,8 @@
 
 // forward references
 struct UISettings;
+class TrackInfo;
+class CDReadJob;
 
 /// task to extract CD audio track
 class CDExtractTask : public Task
@@ -52,6 +54,9 @@ public:
 
    /// title for this task
    const CString& Title() { return m_title; }
+
+   /// Sets track info properties from CD Read job infos
+   static void SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, const CDReadJob& cdReadJob);
 
 private:
    /// generates temporary filename

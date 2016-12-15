@@ -193,3 +193,31 @@ bool CDExtractTask::ExtractTrack(const CString& cszTempFilename)
 
    return bFinished;
 }
+
+void CDExtractTask::SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, const CDReadJob& cdReadJob)
+{
+   const CDRipDiscInfo& discInfo = cdReadJob.DiscInfo();
+   const CDRipTrackInfo& cdTrackInfo = cdReadJob.TrackInfo();
+
+   // add track info
+   encodeTrackInfo.TextInfo(TrackInfoTitle, cdTrackInfo.m_cszTrackTitle);
+
+   CString value = discInfo.m_cszDiscArtist;
+   if (discInfo.m_bVariousArtists)
+      value.LoadString(IDS_CDRIP_ARTIST_VARIOUS);
+
+   encodeTrackInfo.TextInfo(TrackInfoArtist, value);
+
+   encodeTrackInfo.TextInfo(TrackInfoAlbum, discInfo.m_cszDiscTitle);
+
+   // year
+   if (discInfo.m_nYear != 0)
+      encodeTrackInfo.NumberInfo(TrackInfoYear, discInfo.m_nYear);
+
+   // track number
+   encodeTrackInfo.NumberInfo(TrackInfoTrack, cdTrackInfo.m_nTrackOnDisc + 1);
+
+   // genre
+   if (!discInfo.m_cszGenre.IsEmpty())
+      encodeTrackInfo.TextInfo(TrackInfoGenre, discInfo.m_cszGenre);
+}

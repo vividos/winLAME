@@ -118,9 +118,6 @@ private:
    /// creates encoder task for a CD Extract task
    std::shared_ptr<EncoderTask> CreateEncoderTaskForCDReadJob(unsigned int cdReadTaskId, const CDReadJob& cdReadJob);
 
-   /// Sets track info properties from CD Read job infos
-   static void SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, const CDReadJob& cdReadJob);
-
    /// adds task to create a playlist to task manager
    void AddPlaylistTask();
 

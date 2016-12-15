@@ -417,7 +417,7 @@ std::shared_ptr<EncoderTask> FinishPage::CreateEncoderTaskForCDReadJob(unsigned 
    taskSettings.m_settingsManager = m_uiSettings.settings_manager;
 
    TrackInfo encodeTrackInfo;
-   SetTrackInfoFromCDTrackInfo(encodeTrackInfo, cdReadJob);
+   CDExtractTask::SetTrackInfoFromCDTrackInfo(encodeTrackInfo, cdReadJob);
 
    taskSettings.m_trackInfo = encodeTrackInfo;
    taskSettings.m_useTrackInfo = true;
@@ -426,34 +426,6 @@ std::shared_ptr<EncoderTask> FinishPage::CreateEncoderTaskForCDReadJob(unsigned 
    taskSettings.m_bDeleteAfterEncode = true; // temporary file created by CDExtractTask
 
    return std::make_shared<EncoderTask>(cdReadTaskId, taskSettings);
-}
-
-void FinishPage::SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, const CDReadJob& cdReadJob)
-{
-   const CDRipDiscInfo& discInfo = cdReadJob.DiscInfo();
-   const CDRipTrackInfo& cdTrackInfo = cdReadJob.TrackInfo();
-
-   // add track info
-   encodeTrackInfo.TextInfo(TrackInfoTitle, cdTrackInfo.m_cszTrackTitle);
-
-   CString value = discInfo.m_cszDiscArtist;
-   if (discInfo.m_bVariousArtists)
-      value.LoadString(IDS_CDRIP_ARTIST_VARIOUS);
-
-   encodeTrackInfo.TextInfo(TrackInfoArtist, value);
-
-   encodeTrackInfo.TextInfo(TrackInfoAlbum, discInfo.m_cszDiscTitle);
-
-   // year
-   if (discInfo.m_nYear != 0)
-      encodeTrackInfo.NumberInfo(TrackInfoYear, discInfo.m_nYear);
-
-   // track number
-   encodeTrackInfo.NumberInfo(TrackInfoTrack, cdTrackInfo.m_nTrackOnDisc + 1);
-
-   // genre
-   if (!discInfo.m_cszGenre.IsEmpty())
-      encodeTrackInfo.TextInfo(TrackInfoGenre, discInfo.m_cszGenre);
 }
 
 void FinishPage::AddPlaylistTask()
