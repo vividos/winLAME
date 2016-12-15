@@ -68,6 +68,10 @@ public:
    // cleans up the output module
    virtual void doneOutput();
 
+private:
+   /// sets track info for sndfile to write
+   void SetTrackInfo(const TrackInfo& trackInfo);
+
 protected:
    /// file handle
    SNDFILE* sndfile;

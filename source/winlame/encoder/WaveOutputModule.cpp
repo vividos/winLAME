@@ -27,16 +27,6 @@
 #include "WaveOutputModule.h"
 #include "SndFileFormats.hpp"
 
-/// output sample formats for libsndfile
-extern
-const int SndFileOutputFormat[] = {
-   SF_FORMAT_PCM_16,
-   SF_FORMAT_PCM_24,
-   SF_FORMAT_PCM_32,
-   SF_FORMAT_FLOAT
-};
-
-
 // WaveOutputModule methods
 
 WaveOutputModule::WaveOutputModule()
@@ -117,6 +107,8 @@ int WaveOutputModule::initOutput(LPCTSTR outfilename,
       return -1;
    }
 
+   SetTrackInfo(trackinfo);
+
    int outbits;
    switch (m_format & SF_FORMAT_SUBMASK)
    {
@@ -187,4 +179,40 @@ void WaveOutputModule::doneOutput()
 {
    // closes the file
    sf_close(sndfile);
+}
+
+void WaveOutputModule::SetTrackInfo(const TrackInfo& trackInfo)
+{
+   bool avail = false;
+   CString prop = trackInfo.TextInfo(TrackInfoTitle, avail);
+   if (avail)
+      sf_set_string(sndfile, SF_STR_TITLE, CStringA(prop).GetString());
+
+   prop = trackInfo.TextInfo(TrackInfoArtist, avail);
+   if (avail)
+      sf_set_string(sndfile, SF_STR_ARTIST, CStringA(prop).GetString());
+
+   prop = trackInfo.TextInfo(TrackInfoAlbum, avail);
+   if (avail)
+      sf_set_string(sndfile, SF_STR_ALBUM, CStringA(prop).GetString());
+
+   int iProp = trackInfo.NumberInfo(TrackInfoYear, avail);
+   prop.Format(_T("%i"), iProp);
+   if (avail)
+      sf_set_string(sndfile, SF_STR_DATE, CStringA(prop).GetString());
+
+   prop = trackInfo.TextInfo(TrackInfoComment, avail);
+   if (avail)
+      sf_set_string(sndfile, SF_STR_COMMENT, CStringA(prop).GetString());
+
+   iProp = trackInfo.NumberInfo(TrackInfoTrack, avail);
+   prop.Format(_T("%i"), iProp);
+   if (avail)
+      sf_set_string(sndfile, SF_STR_TRACKNUMBER, CStringA(prop).GetString());
+
+   prop = trackInfo.TextInfo(TrackInfoGenre, avail);
+   if (avail)
+      sf_set_string(sndfile, SF_STR_GENRE, CStringA(prop).GetString());
+
+   sf_set_string(sndfile, SF_STR_SOFTWARE, "winLAME");
 }
