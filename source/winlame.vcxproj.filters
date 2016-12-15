@@ -337,6 +337,9 @@
     <ClCompile Include="winlame\FreedbInfo.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\ui\Win7Taskbar.cpp">
+      <Filter>UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="winlame\encoder\AacInputModule.h">
@@ -695,6 +698,9 @@
     </ClInclude>
     <ClInclude Include="winlame\FreedbInfo.hpp">
       <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ui\Win7Taskbar.hpp">
+      <Filter>UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -162,6 +162,7 @@
     <ClCompile Include="winlame\ui\OpusSettingsPage.cpp" />
     <ClCompile Include="winlame\ui\OutputSettingsPage.cpp" />
     <ClCompile Include="winlame\ui\PresetSelectionPage.cpp" />
+    <ClCompile Include="winlame\ui\Win7Taskbar.cpp" />
     <ClCompile Include="winlame\ui\WMASettingsPage.cpp" />
     <ClCompile Include="winlame\old_ui\WaveOutputSettingsPage.cpp" />
     <ClCompile Include="winlame\old_ui\WmaOutputSettingsPage.cpp" />
@@ -271,6 +272,7 @@
     <ClInclude Include="winlame\ui\OutputSettingsPage.hpp" />
     <ClInclude Include="winlame\ui\PresetSelectionPage.hpp" />
     <ClInclude Include="winlame\ui\RedrawLock.hpp" />
+    <ClInclude Include="winlame\ui\Win7Taskbar.hpp" />
     <ClInclude Include="winlame\ui\WMASettingsPage.hpp" />
     <ClInclude Include="winlame\old_ui\WaveOutputSettingsPage.h" />
     <ClInclude Include="winlame\old_ui\WmaOutputSettingsPage.h" />
