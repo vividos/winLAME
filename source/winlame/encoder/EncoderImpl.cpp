@@ -337,8 +337,6 @@ bool EncoderImpl::CheckCDExtractDirectCopy(InputModule& inputModule, OutputModul
 
    if (in_id == ID_IM_CDRIP && out_id == ID_OM_WAVE)
    {
-      extern const int SndFileOutputFormat[];
-
       // we have the correct input and output modules; now check if output
       // parameters are 44100 Hz, 16 bit, stereo
       if (settingsManager.queryValueInt(SndFileFormat) == SF_FORMAT_WAV &&
