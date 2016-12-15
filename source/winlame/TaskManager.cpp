@@ -173,6 +173,59 @@ bool TaskManager::AreCompletedTasksAvail() const
    return !m_mapCompletedTaskInfos.empty();
 }
 
+void TaskManager::GetTaskListState(bool& hasActiveTasks, bool& hasErrorTasks, unsigned int& percentComplete) const
+{
+   boost::recursive_mutex::scoped_lock lock(
+      const_cast<boost::recursive_mutex&>(m_mutexQueue));
+
+   if (m_deqTaskQueue.empty())
+   {
+      hasActiveTasks = hasErrorTasks = false;
+      percentComplete = 100;
+
+      return;
+   }
+
+   hasActiveTasks = false;
+   hasErrorTasks = false;
+
+   unsigned int numTasks = 0;
+   unsigned int taskPercentageSum = 0;
+
+   std::for_each(m_deqTaskQueue.begin(), m_deqTaskQueue.end(),
+      [&](const std::shared_ptr<Task>& spTask)
+   {
+      TaskInfo info = spTask->GetTaskInfo();
+
+      switch (info.Status())
+      {
+      case TaskInfo::statusWaiting:
+         numTasks++;
+         break;
+
+      case TaskInfo::statusRunning:
+         taskPercentageSum += info.Progress();
+         hasActiveTasks = true;
+         numTasks++;
+         break;
+
+      case TaskInfo::statusError:
+         hasErrorTasks = true;
+         // fall-through
+      case TaskInfo::statusCompleted:
+         numTasks++;
+         taskPercentageSum += 100;
+         break;
+
+      default:
+         ATLASSERT(false);
+         break;
+      }
+   });
+
+   percentComplete = numTasks == 0 ? 0 : (taskPercentageSum / numTasks);
+}
+
 void TaskManager::StopAll()
 {
    boost::recursive_mutex::scoped_lock lock(m_mutexQueue);

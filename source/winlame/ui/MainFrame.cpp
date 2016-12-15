@@ -66,6 +66,8 @@ BOOL MainFrame::OnIdle()
 
    m_taskManager.CheckRunnableTasks();
 
+   UpdateWin7TaskBar();
+
    return FALSE;
 }
 
@@ -178,6 +180,8 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
    // enable dropping files
    DragAcceptFiles(TRUE);
+
+   m_win7TaskBar = Win7::Taskbar(m_hWnd);
 
    PostMessage(WM_CHECK_COMMAND_LINE);
 
@@ -403,4 +407,31 @@ void MainFrame::GetCommandLineFiles()
       host.SetWizardPage(std::shared_ptr<WizardPage>(new InputFilesPage(host, filenames)));
       host.Run(m_hWnd);
    }
+}
+
+void MainFrame::UpdateWin7TaskBar()
+{
+   if (!m_win7TaskBar.is_initialized() ||
+      !m_win7TaskBar.get().IsAvailable())
+      return;
+
+   bool hasActiveTasks = false;
+   bool hasCompletedTasks = m_taskManager.AreCompletedTasksAvail();
+   bool hasErrorTasks = false;
+   unsigned int percentComplete = 0;
+
+   m_taskManager.GetTaskListState(hasActiveTasks, hasErrorTasks, percentComplete);
+
+   if (hasActiveTasks || hasCompletedTasks)
+   {
+      if (!m_win7TaskBarProgressBar.is_initialized())
+         m_win7TaskBarProgressBar = m_win7TaskBar.get().OpenProgressBar();
+
+      m_win7TaskBarProgressBar.get().SetState(
+         hasErrorTasks ? Win7::TaskbarProgressBar::TBPF_ERROR : Win7::TaskbarProgressBar::TBPF_NORMAL);
+
+      m_win7TaskBarProgressBar.get().SetPos(percentComplete, 100);
+   }
+   else
+      m_win7TaskBarProgressBar.reset();
 }

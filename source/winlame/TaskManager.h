@@ -70,6 +70,9 @@ public:
    /// returns if there are completed tasks
    bool AreCompletedTasksAvail() const;
 
+   /// returns task list state infos
+   void GetTaskListState(bool& hasActiveTasks, bool& hasErrorTasks, unsigned int& percentComplete) const;
+
    /// stops all tasks
    void StopAll();
 

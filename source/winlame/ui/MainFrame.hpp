@@ -23,6 +23,8 @@
 
 // includes
 #include "TasksView.hpp"
+#include "Win7Taskbar.hpp"
+#include <boost/optional.hpp>
 
 #define WM_CHECK_COMMAND_LINE WM_APP+2
 
@@ -120,12 +122,21 @@ private:
    /// collects command line files and opens input files page when necessary
    void GetCommandLineFiles();
 
+   /// checks task manager and updates Win7 task bar
+   void UpdateWin7TaskBar();
+
 private:
    /// ref to task manager
    TaskManager& m_taskManager;
 
    /// tasks view
    TasksView m_view;
+
+   // access to task bar
+   boost::optional<Win7::Taskbar> m_win7TaskBar;
+
+   // access to task bar progress bar
+   boost::optional<Win7::TaskbarProgressBar> m_win7TaskBarProgressBar;
 
    /// indicates if tasks list refresh is active
    bool m_bRefreshActive;
