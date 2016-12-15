@@ -164,6 +164,15 @@
       <value name="sndFileFormat">65536</value>
       <value name="sndFileSubType">2</value>
     </preset>
+
+    <preset name="FLAC lossless from 16 bit audio">
+      <comment>
+        This creates a FLAC losless file; input sample resolution is suitable
+        for 16 bit audio files.
+      </comment>
+      <value name="sndFileFormat">1507328</value>
+      <value name="sndFileSubType">1</value>
+    </preset>
   </facility>
 
   <facility name="aac">
