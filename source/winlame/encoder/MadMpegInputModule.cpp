@@ -408,43 +408,43 @@ bool MadMpegInputModule::GetId3v2TagInfos(const CString& cszFilename, TrackInfo&
    CString cszValue;
    if (tag.IsFrameAvail(ID3::FrameId::Title))
    {
-      cszValue = tag.FindFrame(ID3::FrameId::Title).AsString();
+      cszValue = tag.FindFrame(ID3::FrameId::Title).GetString(1);
       trackinfo.TextInfo(TrackInfoTitle, cszValue);
    }
 
    if (tag.IsFrameAvail(ID3::FrameId::Artist))
    {
-      cszValue = tag.FindFrame(ID3::FrameId::Artist).AsString();
+      cszValue = tag.FindFrame(ID3::FrameId::Artist).GetString(1);
       trackinfo.TextInfo(TrackInfoArtist, cszValue);
    }
 
    if (tag.IsFrameAvail(ID3::FrameId::Comment))
    {
-      cszValue = tag.FindFrame(ID3::FrameId::Comment).AsString();
+      cszValue = tag.FindFrame(ID3::FrameId::Comment).GetString(3);
       trackinfo.TextInfo(TrackInfoComment, cszValue);
    }
 
    if (tag.IsFrameAvail(ID3::FrameId::AlbumTitle))
    {
-      cszValue = tag.FindFrame(ID3::FrameId::AlbumTitle).AsString();
+      cszValue = tag.FindFrame(ID3::FrameId::AlbumTitle).GetString(1);
       trackinfo.TextInfo(TrackInfoAlbum, cszValue);
    }
 
    if (tag.IsFrameAvail(ID3::FrameId::RecordingTime))
    {
-      cszValue = tag.FindFrame(ID3::FrameId::RecordingTime).AsString();
+      cszValue = tag.FindFrame(ID3::FrameId::RecordingTime).GetString(1);
       trackinfo.NumberInfo(TrackInfoYear, _ttoi(cszValue));
    }
 
    if (tag.IsFrameAvail(ID3::FrameId::TrackNumber))
    {
-      cszValue = tag.FindFrame(ID3::FrameId::TrackNumber).AsString();
+      cszValue = tag.FindFrame(ID3::FrameId::TrackNumber).GetString(1);
       trackinfo.NumberInfo(TrackInfoTrack, _ttoi(cszValue));
    }
 
    if (tag.IsFrameAvail(ID3::FrameId::Genre))
    {
-      cszValue = tag.FindFrame(ID3::FrameId::Genre).AsString();
+      cszValue = tag.FindFrame(ID3::FrameId::Genre).GetString(1);
       if (!cszValue.IsEmpty())
          trackinfo.TextInfo(TrackInfoGenre, cszValue);
    }
