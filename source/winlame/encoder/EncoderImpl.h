@@ -31,6 +31,7 @@
 #include "EncoderInterface.h"
 #include "ModuleInterface.h"
 #include "ModuleManagerImpl.h"
+#include <atomic>
 
 
 /// encoder implementation class
@@ -351,13 +352,13 @@ protected:
    float percent;
 
    /// indicates if encoder is paused
-   bool paused;
+   std::atomic<bool> paused;
 
    /// indicates if encoder is running
-   bool running;
+   std::atomic<bool> running;
 
    /// indicates if encoder has been finished
-   bool finished;
+   std::atomic<bool> finished;
 
    /// error indicator
    int error;
