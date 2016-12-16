@@ -61,6 +61,7 @@ BOOL MainFrame::OnIdle()
 {
    UIUpdateToolBar();
 
+   UIEnable(ID_ENCODE_CD, !m_taskManager.AreCDExtractTasksRunning());
    UIEnable(ID_TASKS_STOP_ALL, m_taskManager.AreRunningTasksAvail());
    UIEnable(ID_TASKS_REMOVE_COMPLETED, m_taskManager.AreCompletedTasksAvail());
 

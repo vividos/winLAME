@@ -22,6 +22,7 @@
 // includes
 #include "stdafx.h"
 #include "TaskManager.h"
+#include "CDExtractTask.hpp"
 #include "Task.h"
 #include <boost/foreach.hpp>
 #include <boost/bind.hpp>
@@ -175,6 +176,33 @@ bool TaskManager::AreCompletedTasksAvail() const
       const_cast<boost::recursive_mutex&>(m_mutexQueue));
 
    return !m_mapCompletedTaskInfos.empty();
+}
+
+bool TaskManager::AreCDExtractTasksRunning() const
+{
+   boost::recursive_mutex::scoped_lock lock(
+      const_cast<boost::recursive_mutex&>(m_mutexQueue));
+
+   bool found = false;
+   std::for_each(m_deqTaskQueue.begin(), m_deqTaskQueue.end(),
+      [&](const std::shared_ptr<Task>& spTask)
+   {
+      if (std::dynamic_pointer_cast<CDExtractTask>(spTask) == nullptr)
+         return; // no CD extract task
+
+      if (m_mapCompletedTaskInfos.find(spTask->Id()) != m_mapCompletedTaskInfos.end())
+         return; // already completed
+
+      TaskInfo info = spTask->GetTaskInfo();
+
+      if (info.Status() == TaskInfo::statusRunning ||
+         info.Status() == TaskInfo::statusWaiting)
+      {
+         found = true;
+      }
+   });
+
+   return found;
 }
 
 void TaskManager::GetTaskListState(bool& hasActiveTasks, bool& hasErrorTasks, unsigned int& percentComplete) const

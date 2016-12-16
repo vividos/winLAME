@@ -70,6 +70,9 @@ public:
    /// returns if there are completed tasks
    bool AreCompletedTasksAvail() const;
 
+   /// returns if there are CD Extract tasks running
+   bool AreCDExtractTasksRunning() const;
+
    /// returns task list state infos
    void GetTaskListState(bool& hasActiveTasks, bool& hasErrorTasks, unsigned int& percentComplete) const;
 
