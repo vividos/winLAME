@@ -26,6 +26,7 @@
 #include "Field.h"
 
 struct id3_frame;
+enum id3_field_textencoding;
 
 namespace ID3
 {
@@ -71,6 +72,9 @@ public:
    /// returns frame description, based on id
    CString GetDescription() const;
 
+   /// returns string field
+   CString GetString(unsigned int fieldIndex) const;
+
    /// returns frame value as integer
    signed long AsInteger();
 
@@ -79,8 +83,11 @@ public:
 
    // write functions
 
+   /// sets text encoding for field
+   bool SetTextEncoding(unsigned int fieldIndex, id3_field_textencoding textEncoding);
+
    /// write text as string entry
-   void SetString(const CString& cszText);
+   bool SetString(unsigned int fieldIndex, const CString& cszText);
 
 private:
    friend class Tag;

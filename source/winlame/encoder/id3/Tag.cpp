@@ -50,6 +50,19 @@ ID3::Frame Tag::FindFrame(const CString& cszFrameId)
    return ID3::Frame(spFrame);
 }
 
+bool Tag::RemoveFrame(const CString& cszFrameId)
+{
+   if (IsFrameAvail(cszFrameId))
+   {
+      ID3::Frame frame = FindFrame(cszFrameId);
+      DetachFrame(frame);
+
+      return true;
+   }
+
+   return false;
+}
+
 unsigned int Tag::GetFrameCount() const
 {
    return m_spTag->nframes;

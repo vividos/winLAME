@@ -51,6 +51,9 @@ public:
    /// finds frame with given id
    Frame FindFrame(const CString& cszFrameId);
 
+   /// removes frame with given id, when existent
+   bool RemoveFrame(const CString& cszFrameId);
+
    /// returns frame count
    unsigned int GetFrameCount() const;
 

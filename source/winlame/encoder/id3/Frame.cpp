@@ -23,6 +23,10 @@
 #include "StdAfx.h"
 #include "Frame.h"
 #include <id3tag.h>
+extern "C"
+{
+#include "../src/libid3tag/utf16.h"
+}
 
 using ID3::Frame;
 
@@ -113,6 +117,80 @@ CString Latin1ToString(const id3_latin1_t* str)
    return CString(str);
 }
 
+/// converts from CString to UCS-4 format
+void StringToUcs4(CString text, std::vector<id3_ucs4_t>& str)
+{
+   // convert to utf-16, then copy to CString
+   const id3_utf16_t* str1 = reinterpret_cast<const id3_utf16_t*>(text.GetString());
+   id3_ucs4_t* str2 = id3_utf16_ucs4duplicate(str1);
+   size_t length = id3_utf16_length(str1 + 1) * sizeof(id3_ucs4_t);
+
+   str.assign(str2, str2 + length);
+
+   free(str2);
+}
+
+CString Frame::GetString(unsigned int fieldIndex) const
+{
+   ATLASSERT(m_spFrame != NULL);
+
+   id3_field* field = id3_frame_field(m_spFrame.get(), fieldIndex);
+
+   CString cszText;
+
+   switch (id3_field_type(field))
+   {
+   case ID3_FIELD_TYPE_LATIN1:
+   {
+      const id3_latin1_t* latin1 = id3_field_getlatin1(field);
+      cszText = Latin1ToString(latin1);
+   }
+   break;
+
+   case ID3_FIELD_TYPE_LATIN1FULL:
+   {
+      const id3_latin1_t* latin1 = id3_field_getfulllatin1(field);
+      cszText = Latin1ToString(latin1);
+   }
+   break;
+
+   case ID3_FIELD_TYPE_LATIN1LIST:
+      // TODO
+      ATLASSERT(false);
+      break;
+
+   case ID3_FIELD_TYPE_STRING:
+   {
+      const id3_ucs4_t* str = id3_field_getstring(field);
+      cszText = Ucs4ToString(str);
+   }
+   break;
+
+   case ID3_FIELD_TYPE_STRINGFULL:
+   {
+      const id3_ucs4_t* str = id3_field_getfullstring(field);
+      cszText = Ucs4ToString(str);
+   }
+   break;
+
+   case ID3_FIELD_TYPE_STRINGLIST:
+   {
+      for (unsigned int i = 0, iMax = id3_field_getnstrings(field); i<iMax; i++)
+      {
+         const id3_ucs4_t* str = id3_field_getstrings(field, i);
+         cszText += Ucs4ToString(str);
+      }
+   }
+   break;
+
+   default:
+      ATLASSERT(false);
+      break;
+   }
+
+   return cszText;
+}
+
 CString Frame::AsString()
 {
    ATLASSERT(m_spFrame != NULL);
@@ -121,7 +199,8 @@ CString Frame::AsString()
    enum id3_field_textencoding encoding = ID3_FIELD_TEXTENCODING_UTF_8;
 
    // read first field
-   id3_field* field = id3_frame_field(m_spFrame.get(), 0);
+   unsigned int fieldIndex = 0;
+   id3_field* field = id3_frame_field(m_spFrame.get(), fieldIndex);
 
    // check if it's a proper type
    enum id3_field_type type = id3_field_type(field);
@@ -130,7 +209,7 @@ CString Frame::AsString()
    {
       // first one is a text encoding field, so get encoding, then get second one
       encoding = id3_field_gettextencoding(field);
-      field = id3_frame_field(m_spFrame.get(), 1);
+      field = id3_frame_field(m_spFrame.get(), ++fieldIndex);
    }
 
    switch (id3_field_type(field))
@@ -141,50 +220,12 @@ CString Frame::AsString()
       break;
 
    case ID3_FIELD_TYPE_LATIN1:
-      {
-         ATLASSERT(encoding == ID3_FIELD_TEXTENCODING_ISO_8859_1 ||
-            encoding == ID3_FIELD_TEXTENCODING_UTF_8);
-         const id3_latin1_t* latin1 = id3_field_getlatin1(field);
-         cszText = Latin1ToString(latin1);
-      }
-      break;
-
    case ID3_FIELD_TYPE_LATIN1FULL:
-      {
-         ATLASSERT(encoding == ID3_FIELD_TEXTENCODING_ISO_8859_1 ||
-            encoding == ID3_FIELD_TEXTENCODING_UTF_8);
-         const id3_latin1_t* latin1 = id3_field_getfulllatin1(field);
-         cszText = Latin1ToString(latin1);
-      }
-      break;
-
    case ID3_FIELD_TYPE_LATIN1LIST:
-      // TODO
-      ATLASSERT(false);
-      break;
-
    case ID3_FIELD_TYPE_STRING:
-      {
-         const id3_ucs4_t* str = id3_field_getstring(field);
-         cszText = Ucs4ToString(str);
-      }
-      break;
-
    case ID3_FIELD_TYPE_STRINGFULL:
-      {
-         const id3_ucs4_t* str = id3_field_getfullstring(field);
-         cszText = Ucs4ToString(str);
-      }
-      break;
-
    case ID3_FIELD_TYPE_STRINGLIST:
-      {
-         for (unsigned int i=0,iMax=id3_field_getnstrings(field); i<iMax; i++)
-         {
-            const id3_ucs4_t* str = id3_field_getstrings(field, i);
-            cszText += Ucs4ToString(str);
-         }
-      }
+      cszText = GetString(fieldIndex);
       break;
 
    case ID3_FIELD_TYPE_LANGUAGE:
@@ -218,7 +259,86 @@ CString Frame::AsString()
    return cszText;
 }
 
-void Frame::SetString(const CString& cszText)
+bool Frame::SetTextEncoding(unsigned int fieldIndex, id3_field_textencoding textEncoding)
 {
-   // TODO
+   id3_field* field = id3_frame_field(m_spFrame.get(), fieldIndex);
+
+   enum id3_field_type type = id3_field_type(field);
+
+   ATLASSERT(type == ID3_FIELD_TYPE_TEXTENCODING);
+
+   int ret = id3_field_settextencoding(field, textEncoding);
+
+   return ret == 0;
+}
+
+bool Frame::SetString(unsigned int fieldIndex, const CString& cszText)
+{
+   id3_field* field = id3_frame_field(m_spFrame.get(), fieldIndex);
+
+   int ret = 1;
+
+   switch (id3_field_type(field))
+   {
+   case ID3_FIELD_TYPE_LATIN1:
+   {
+      CStringA text(cszText);
+      const id3_latin1_t* latin1 = reinterpret_cast<const id3_latin1_t*>(text.GetString());
+
+      ret = id3_field_setlatin1(field, latin1);
+   }
+   break;
+
+   case ID3_FIELD_TYPE_LATIN1FULL:
+   {
+      CStringA text(cszText);
+      const id3_latin1_t* latin1 = reinterpret_cast<const id3_latin1_t*>(text.GetString());
+
+      ret = id3_field_setfulllatin1(field, latin1);
+   }
+   break;
+
+   case ID3_FIELD_TYPE_LATIN1LIST:
+      // TODO
+      ATLASSERT(false);
+      break;
+
+   case ID3_FIELD_TYPE_STRING:
+   {
+      std::vector<id3_ucs4_t> ucs4text;
+      StringToUcs4(cszText, ucs4text);
+      ret = id3_field_setstring(field, ucs4text.data());
+   }
+   break;
+
+   case ID3_FIELD_TYPE_STRINGFULL:
+   {
+      std::vector<id3_ucs4_t> ucs4text;
+      StringToUcs4(cszText, ucs4text);
+      ret = id3_field_setfullstring(field, ucs4text.data());
+   }
+   break;
+
+   case ID3_FIELD_TYPE_STRINGLIST:
+   {
+      std::vector<id3_ucs4_t> ucs4text;
+      StringToUcs4(cszText, ucs4text);
+      ret = id3_field_addstring(field, ucs4text.data());
+   }
+   break;
+
+   case ID3_FIELD_TYPE_LANGUAGE:
+   {
+      CStringA text(cszText);
+      id3_field_setlanguage(field, text.GetString());
+   }
+   break;
+
+   default:
+      // TODO
+      ATLASSERT(false);
+      break;
+   }
+
+   return ret == 0;
 }
