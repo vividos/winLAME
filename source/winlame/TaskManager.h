@@ -89,6 +89,9 @@ private:
    /// runs single task
    void RunTask(std::shared_ptr<Task> spTask);
 
+   /// stores task info for completed (or stopped) task
+   void StoreCompletedTaskInfo(std::shared_ptr<Task> spTask, CString& errorText);
+
    /// removes task from queue
    void RemoveTask(std::shared_ptr<Task> spTask);
 

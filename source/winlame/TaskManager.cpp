@@ -134,6 +134,10 @@ void TaskManager::CheckRunnableTasks()
    std::for_each(m_deqTaskQueue.begin(), m_deqTaskQueue.end(),
       [&](std::shared_ptr<Task>& spTask)
    {
+      auto iter = m_mapCompletedTaskInfos.find(spTask->Id());
+      if (iter != m_mapCompletedTaskInfos.end())
+         return; // already completed
+
       TaskInfo info = spTask->GetTaskInfo();
       if (m_mapCompletedTaskInfos.find(spTask->Id()) == m_mapCompletedTaskInfos.end() &&
          info.Status() == TaskInfo::statusWaiting &&
@@ -233,6 +237,9 @@ void TaskManager::StopAll()
    BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
    {
       spTask->Stop();
+
+      CString errorText;
+      StoreCompletedTaskInfo(spTask, errorText);
    }
 
    m_setFinishedTaskIds.clear();
@@ -308,6 +315,11 @@ void TaskManager::RunTask(std::shared_ptr<Task> spTask)
 
    SetBusyFlag(GetCurrentThreadId(), false);
 
+   StoreCompletedTaskInfo(spTask, errorText);
+}
+
+void TaskManager::StoreCompletedTaskInfo(std::shared_ptr<Task> spTask, CString& errorText)
+{
    // store the last task info for the completed task
    TaskInfo info = spTask->GetTaskInfo();
 
