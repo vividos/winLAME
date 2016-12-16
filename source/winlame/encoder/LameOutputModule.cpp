@@ -29,6 +29,7 @@
 #include "WaveMp3Header.h"
 #include "Id3v1Tag.h"
 #include "id3/file.h"
+#include <id3tag.h>
 
 // static variables
 
@@ -463,8 +464,10 @@ void LameOutputModule::doneOutput()
    ostr.close();
 
    // write ID3v2 tag
-//   if (!waveheader)
-//      WriteID3v2Tag();
+   // note: we re-write the ID3v2 tag here, previously written by AddLameID3v2Tag().
+   // This converts the ID3v2.3 tag to ID3v2.4.
+   if (!waveheader)
+      WriteID3v2Tag();
 
    // add VBR info tag to mp3 file
    // note: since nlame_write_vbr_infotag() seeks to the front of the output
@@ -602,15 +605,6 @@ void LameOutputModule::WriteID3v2Tag()
 
    tag.SetOption(ID3::Tag::foID3v1, 0);
 
-   // if there's already a title tag, remove it; written in initOutput()
-   {
-      if (tag.IsFrameAvail(ID3::FrameId::Title))
-      {
-         ID3::Frame frame = tag.FindFrame(ID3::FrameId::Title);
-         tag.DetachFrame(frame);
-      }
-   }
-
    CString cszValue;
    bool bAvail;
    const TrackInfo& trackinfo = m_trackInfoID3v2;
@@ -619,32 +613,46 @@ void LameOutputModule::WriteID3v2Tag()
    cszValue = trackinfo.TextInfo(TrackInfoTitle, bAvail);
    if (bAvail)
    {
+      tag.RemoveFrame(ID3::FrameId::Title);
+
       ID3::Frame frame(ID3::FrameId::Title);
-      frame.SetString(cszValue);
+      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
+      frame.SetString(1, cszValue);
       tag.AttachFrame(frame);
    }
 
    cszValue = trackinfo.TextInfo(TrackInfoArtist, bAvail);
    if (bAvail)
    {
+      tag.RemoveFrame(ID3::FrameId::Artist);
+
       ID3::Frame frame(ID3::FrameId::Artist);
-      frame.SetString(cszValue);
+      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
+      frame.SetString(1, cszValue);
       tag.AttachFrame(frame);
    }
 
    cszValue = trackinfo.TextInfo(TrackInfoComment, bAvail);
    if (bAvail)
    {
+      tag.RemoveFrame(ID3::FrameId::Comment);
+
       ID3::Frame frame(ID3::FrameId::Comment);
-      frame.SetString(cszValue);
+      // COMM field is layout differently: 0: ID3_FIELD_TYPE_TEXTENCODING, 1: ID3_FIELD_TYPE_LANGUAGE, 2: ID3_FIELD_TYPE_STRING, 3: ID3_FIELD_TYPE_STRINGFULL
+      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
+      frame.SetString(1, _T("eng")); // it's what Mp3tag writes
+      frame.SetString(3, cszValue);
       tag.AttachFrame(frame);
    }
 
    cszValue = trackinfo.TextInfo(TrackInfoAlbum, bAvail);
    if (bAvail)
    {
+      tag.RemoveFrame(ID3::FrameId::AlbumTitle);
+
       ID3::Frame frame(ID3::FrameId::AlbumTitle);
-      frame.SetString(cszValue);
+      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
+      frame.SetString(1, cszValue);
       tag.AttachFrame(frame);
    }
 
@@ -655,8 +663,11 @@ void LameOutputModule::WriteID3v2Tag()
    {
       cszValue.Format(_T("%i"), iValue);
 
+      tag.RemoveFrame(ID3::FrameId::RecordingTime);
+
       ID3::Frame frame(ID3::FrameId::RecordingTime);
-      frame.SetString(cszValue);
+      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
+      frame.SetString(1, cszValue);
       tag.AttachFrame(frame);
    }
 
@@ -665,16 +676,22 @@ void LameOutputModule::WriteID3v2Tag()
    {
       cszValue.Format(_T("%i"), iValue);
 
+      tag.RemoveFrame(ID3::FrameId::TrackNumber);
+
       ID3::Frame frame(ID3::FrameId::TrackNumber);
-      frame.SetString(cszValue);
+      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
+      frame.SetString(1, cszValue);
       tag.AttachFrame(frame);
    }
 
    cszValue = trackinfo.TextInfo(TrackInfoGenre, bAvail);
    if (bAvail)
    {
-      ID3::Frame frame(ID3::FrameId::Title);
-      frame.SetString(cszValue);
+      tag.RemoveFrame(ID3::FrameId::Genre);
+
+      ID3::Frame frame(ID3::FrameId::Genre);
+      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
+      frame.SetString(1, cszValue);
       tag.AttachFrame(frame);
    }
 

@@ -1,7 +1,6 @@
 TODO list for winLAME
 
 winLAME 2017 beta 1, must-do-things:
-- LAME: check writing ID3v2 tags
 - test every input module, encoding, tag reading/writing
 - implement set of finished task ids
 - Add showing detail infos about task
