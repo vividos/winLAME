@@ -1,13 +1,17 @@
 TODO list for winLAME
 
-winLAME 2017 beta 1, must-do-things:
+winLAME 2017 beta 1, tests:
 - test every input module, encoding, tag reading/writing
-- implement set of finished task ids
+
+winLAME 2017 beta 1, must-do-things:
 - Add showing detail infos about task
 - implement giving LAME context to tasks, for nogap encoding
-- cd extraction/encoding parallel
+- write relative playlist filenames
+- disable CD Read icon when active CD Extract tasks
+- support writing album-artist on non-various cd's
 
 winLAME 2017 beta 1, nice-to-have:
+- store last settings for output page
 - add status bar panes for different threads
 - Add "Finished encoding action" to ribbon -> shutdown, close, etc.
 - Add adjusting number of threads in thread pool to settings
