@@ -154,6 +154,9 @@ private:
 
    /// output filename
    CString m_outputFilename;
+
+   /// indicates if encoder thread has stopped
+   std::atomic<bool> m_stopped;
 };
 
 

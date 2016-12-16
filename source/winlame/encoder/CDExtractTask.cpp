@@ -107,6 +107,11 @@ CString CDExtractTask::GetTempFilename(const CString& cszDiscTrackTitle) const
 
 bool CDExtractTask::ExtractTrack(const CString& cszTempFilename)
 {
+   if (m_bStopped)
+   {
+      return false;
+   }
+
    // check disc ID
    CString cszCDID(BASS_CD_GetID(m_discinfo.m_nDiscDrive, BASS_CDID_CDDB));
    if (cszCDID != m_discinfo.m_cszCDID)

@@ -28,7 +28,8 @@ CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CStri
    :Task(dependentTaskId),
    m_extendedPlaylist(false), // no length infos available
    m_playlistFilename(playlistFilename),
-   m_finished(false)
+   m_finished(false),
+   m_stopped(false)
 {
    std::for_each(encoderJobList.begin(), encoderJobList.end(), [&](const EncoderJob& encoderJob)
    {
@@ -45,7 +46,8 @@ CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CStri
    :Task(dependentTaskId),
    m_extendedPlaylist(true),
    m_playlistFilename(playlistFilename),
-   m_finished(false)
+   m_finished(false),
+   m_stopped(false)
 {
    std::for_each(cdReadJobList.begin(), cdReadJobList.end(), [&](const CDReadJob& cdReadJob)
    {
@@ -64,14 +66,17 @@ TaskInfo CreatePlaylistTask::GetTaskInfo()
    TaskInfo info(Id(), TaskInfo::taskWritePlaylist);
 
    info.Name(_T("Playlist: ") + Path(m_playlistFilename).FilenameAndExt());
-   info.Progress(m_finished ? 100 : 0);
-   info.Status(m_finished ? TaskInfo::statusCompleted : TaskInfo::statusWaiting);
+   info.Progress(m_finished || m_stopped ? 100 : 0);
+   info.Status(m_finished || m_stopped ? TaskInfo::statusCompleted : TaskInfo::statusWaiting);
 
    return info;
 }
 
 void CreatePlaylistTask::Run()
 {
+   if (m_stopped)
+      return;
+
    m_finished = false;
 
    FILE* fd = _tfopen(m_playlistFilename, _T("wt"));
@@ -105,4 +110,5 @@ void CreatePlaylistTask::Run()
 
 void CreatePlaylistTask::Stop()
 {
+   m_stopped = true;
 }

@@ -71,4 +71,7 @@ private:
 
    /// indicates if task is already finished
    std::atomic<bool> m_finished;
+
+   /// indicates if task was stopped
+   std::atomic<bool> m_stopped;
 };

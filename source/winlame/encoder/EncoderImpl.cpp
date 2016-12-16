@@ -44,6 +44,11 @@ static bool warned_about_lossy = false;
 
 void EncoderImpl::encode()
 {
+   if (!running)
+   {
+      return;
+   }
+
    lockAccess();
 
    percent = 0.f;

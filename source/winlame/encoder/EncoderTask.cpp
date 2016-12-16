@@ -26,7 +26,8 @@
 
 EncoderTask::EncoderTask(unsigned int dependentTaskId, const EncoderTaskSettings& settings)
 :Task(dependentTaskId),
-m_settings(settings)
+m_settings(settings),
+m_stopped(false)
 {
    EncoderImpl::setInputFilename(m_settings.m_cszInputFilename);
    EncoderImpl::setOutputPath(m_settings.m_cszOutputPath);
@@ -69,7 +70,7 @@ TaskInfo EncoderTask::GetTaskInfo()
    info.Description(EncoderImpl::getEncodingDescription());
 
    info.Status(
-      finished ? TaskInfo::statusCompleted :
+      finished || m_stopped ? TaskInfo::statusCompleted :
       error != 0 ? TaskInfo::statusError :
       running ? TaskInfo::statusRunning :
       TaskInfo::statusWaiting);
@@ -82,7 +83,11 @@ TaskInfo EncoderTask::GetTaskInfo()
 
 void EncoderTask::Run()
 {
+   if (m_stopped)
+      return;
+
    running = true;
+   m_stopped = false;
 
    EncoderImpl::encode();
 
@@ -94,6 +99,7 @@ void EncoderTask::Run()
 
 void EncoderTask::Stop()
 {
+   m_stopped = true;
    EncoderImpl::stopEncode();
 }
 
