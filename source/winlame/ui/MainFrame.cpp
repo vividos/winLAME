@@ -127,6 +127,9 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    else
       CMenuHandle(m_CmdBar.GetMenu()).DeleteMenu(ID_VIEW_RIBBON, MF_BYCOMMAND);
 
+   // remove, it's only in the menu to provide a caption for the ribbon dropdown gallery
+   m_CmdBar.GetMenu().RemoveMenu(ID_SETTINGS_FINISH_ACTION, MF_BYCOMMAND);
+
    // toolbar setup
    {
       HWND hWndToolBar;
@@ -178,6 +181,9 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
    ShowRibbonUI(bRibbonUI);
    UISetCheck(ID_VIEW_RIBBON, bRibbonUI);
+
+   UISetCheck(ID_SETTINGS_FINISH_ACTION_NONE + m_encodingFinishAction, true);
+   m_cbSettingsFinishAction.Select(m_encodingFinishAction);
 
    // enable dropping files
    DragAcceptFiles(TRUE);
@@ -330,6 +336,30 @@ LRESULT MainFrame::OnSettingsCDRead(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
       new CDReadSettingsPage(host,
          IoCContainer::Current().Resolve<UISettings>())));
    host.Run(m_hWnd);
+
+   return 0;
+}
+
+LRESULT MainFrame::OnSettingsFinishActionSelChanged(UI_EXECUTIONVERB verb, WORD /*wID*/, UINT uSel, BOOL& /*bHandled*/)
+{
+   if (verb == UI_EXECUTIONVERB_EXECUTE &&
+      uSel != UI_COLLECTION_INVALIDINDEX)
+   {
+      m_encodingFinishAction = static_cast<T_enEncodingFinishAction>(uSel);
+
+      UISetCheck(ID_SETTINGS_FINISH_ACTION_NONE + uSel, true);
+      m_cbSettingsFinishAction.Select(uSel);
+   }
+
+   return 0;
+}
+
+LRESULT MainFrame::OnSettingsFinishActionRange(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   m_encodingFinishAction = static_cast<T_enEncodingFinishAction>(wID - ID_SETTINGS_FINISH_ACTION_NONE);
+
+   UISetCheck(wID, true);
+   m_cbSettingsFinishAction.Select(wID - ID_SETTINGS_FINISH_ACTION_NONE);
 
    return 0;
 }

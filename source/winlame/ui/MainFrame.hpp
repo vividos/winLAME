@@ -51,7 +51,8 @@ public:
       :m_taskManager(taskManager),
        m_view(taskManager),
        m_bRefreshActive(false),
-       m_isAppModeChanged(false)
+       m_isAppModeChanged(false),
+       m_encodingFinishAction(T_enEncodingFinishAction::doNothing)
    {
    }
 
@@ -63,13 +64,21 @@ public:
    /// command bar
    CCommandBarCtrl m_CmdBar;
 
+   /// ribbon item gallery for settings "finish action" selection
+   CRibbonItemGalleryCtrl<ID_SETTINGS_FINISH_ACTION, 3> m_cbSettingsFinishAction;
+
    virtual BOOL PreTranslateMessage(MSG* pMsg);
    virtual BOOL OnIdle();
+
+   BEGIN_RIBBON_CONTROL_MAP(MainFrame)
+      RIBBON_CONTROL(m_cbSettingsFinishAction)
+   END_RIBBON_CONTROL_MAP()
 
    BEGIN_UPDATE_UI_MAP(MainFrame)
       UPDATE_ELEMENT(ID_VIEW_RIBBON, UPDUI_MENUPOPUP)
       UPDATE_ELEMENT(ID_TASKS_STOP_ALL, UPDUI_MENUPOPUP | UPDUI_RIBBON | UPDUI_TOOLBAR)
       UPDATE_ELEMENT(ID_TASKS_REMOVE_COMPLETED, UPDUI_MENUPOPUP | UPDUI_RIBBON | UPDUI_TOOLBAR)
+      UPDATE_ELEMENT(ID_SETTINGS_FINISH_ACTION, UPDUI_MENUPOPUP | UPDUI_RIBBON)
    END_UPDATE_UI_MAP()
 
    BEGIN_MSG_MAP(MainFrame)
@@ -86,6 +95,8 @@ public:
       COMMAND_ID_HANDLER(ID_TASKS_REMOVE_COMPLETED, OnTasksRemoveCompleted)
       COMMAND_ID_HANDLER(ID_SETTINGS_GENERAL, OnSettingsGeneral)
       COMMAND_ID_HANDLER(ID_SETTINGS_CDREAD, OnSettingsCDRead)
+      RIBBON_GALLERY_CONTROL_HANDLER(ID_SETTINGS_FINISH_ACTION, OnSettingsFinishActionSelChanged)
+      COMMAND_RANGE_HANDLER(ID_SETTINGS_FINISH_ACTION_NONE, ID_SETTINGS_FINISH_ACTION_STANDBY, OnSettingsFinishActionRange)
       COMMAND_ID_HANDLER(ID_VIEW_RIBBON, OnToggleRibbon)
       COMMAND_ID_HANDLER(ID_VIEW_SWITCH_CLASSIC, OnViewSwitchToClassic)
       COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
@@ -111,6 +122,12 @@ private:
    LRESULT OnTasksRemoveCompleted(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnSettingsGeneral(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnSettingsCDRead(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+   /// called when a selection in the ribbon combobox for "finish action" settings was made
+   LRESULT OnSettingsFinishActionSelChanged(UI_EXECUTIONVERB verb, WORD wID, UINT uSel, BOOL& bHandled);
+   /// called when an entry in "Settings | Finish action" submenu entry is being selected
+   LRESULT OnSettingsFinishActionRange(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
    LRESULT OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnViewSwitchToClassic(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
@@ -143,6 +160,17 @@ private:
 
    /// indicates if the dialog has been closed to change the app mode to classic mode
    bool m_isAppModeChanged;
+
+   /// possible actions when encoding has finished
+   enum T_enEncodingFinishAction
+   {
+      doNothing = 0, ///< do nothing after finished encoding
+      closeApp = 1,  ///< close app after encoding
+      standbyPC = 2, ///< switches PC to standby
+   };
+
+   /// current encoding finish action
+   T_enEncodingFinishAction m_encodingFinishAction;
 };
 
 } // namespace UI

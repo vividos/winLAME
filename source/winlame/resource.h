@@ -42,6 +42,10 @@
 #define IDD_DLG_OPUS                            123
 #define IDD_SETTINGS_GENERAL                    150
 #define IDD_SETTINGS_CDREAD                     151
+#define ID_SETTINGS_FINISH_ACTION               200
+#define ID_SETTINGS_FINISH_ACTION_NONE          201
+#define ID_SETTINGS_FINISH_ACTION_CLOSE         202
+#define ID_SETTINGS_FINISH_ACTION_STANDBY       203
 #define IDC_WIZARDPAGE_STATIC_CAPTION           1000
 #define IDC_WIZARDPAGE_STATIC_BACKGROUND        1001
 #define IDC_WIZARDPAGE_BUTTON_ACTION1           1002
