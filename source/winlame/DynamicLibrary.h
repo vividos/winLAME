@@ -1,20 +1,58 @@
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2016 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+/// \file DynamicLibrary.h
+/// \brief dynamic library loading
+//
 #pragma once
 
 class DynamicLibrary
 {
 public:
-   DynamicLibrary(LPCTSTR pszFilename) throw()
-      :m_hDll(::LoadLibrary(pszFilename))
+   /// ctor; loads module
+   DynamicLibrary(LPCTSTR moduleFilename) throw()
+      :m_module(LoadLibrary(moduleFilename))
    {
    }
 
+   /// dtor; frees module again
    ~DynamicLibrary() throw()
    {
-      FreeLibrary(m_hDll);
+      FreeLibrary(m_module);
    }
 
-   bool IsLoaded() const throw() { return m_hDll != NULL; }
+   /// checks if library is loaded
+   bool IsLoaded() const throw() { return m_module != nullptr; }
+
+   /// checks if function with given name is available
+   bool IsFunctionAvail(LPCSTR functionName)
+   {
+      return GetProcAddress(m_module, functionName) != nullptr;
+   }
+
+   /// returns function with given function name and given function signature
+   template <typename Signature>
+   Signature GetFunction(LPCSTR functionName)
+   {
+      return reinterpret_cast<Signature>(GetProcAddress(m_module, functionName))
+   }
 
 private:
-   HMODULE m_hDll;
+   /// dynamic library module handle
+   HMODULE m_module;
 };
