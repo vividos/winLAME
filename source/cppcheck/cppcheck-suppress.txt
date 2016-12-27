@@ -1,0 +1,7 @@
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (C) 2016 Michael Fink
+//
+// this file lists all cppcheck warnings that will be suppressed
+//
+

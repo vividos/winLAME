@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="1">
+    <root name="D:/Projekte/winLAME/winLAME/source"/>
+    <defines>
+        <define name="WIN32"/>
+        <define name="_WINDOWS"/>
+        <define name="STRICT"/>
+        <define name="NDEBUG"/>
+        <define name="_MSC_VER=1900"/>
+    </defines>
+    <paths>
+        <dir name="winlame"/>
+    </paths>
+    <exclude>
+        <path name="libraries"/>
+    </exclude>
+    <libraries>
+        <library>windows</library>
+    </libraries>
+</project>

@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Misc Projects", "Misc Proje
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opus-tools", "source\libraries\src\opus-tools\opus-tools.vcxproj", "{67749BC5-F457-478A-9E92-3986654BC068}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cppcheck", "source\cppcheck\cppcheck.vcxproj", "{682213C1-A3FD-4A61-936C-84A93327C39B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -66,6 +68,10 @@ Global
 		{67749BC5-F457-478A-9E92-3986654BC068}.Debug|Win32.Build.0 = Debug|Win32
 		{67749BC5-F457-478A-9E92-3986654BC068}.Release|Win32.ActiveCfg = Release|Win32
 		{67749BC5-F457-478A-9E92-3986654BC068}.Release|Win32.Build.0 = Release|Win32
+		{682213C1-A3FD-4A61-936C-84A93327C39B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{682213C1-A3FD-4A61-936C-84A93327C39B}.Debug|Win32.Build.0 = Debug|Win32
+		{682213C1-A3FD-4A61-936C-84A93327C39B}.Release|Win32.ActiveCfg = Release|Win32
+		{682213C1-A3FD-4A61-936C-84A93327C39B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,5 +85,6 @@ Global
 		{E8FD6382-A5B2-4AC7-B2D9-88A621504872} = {2D022822-3443-4459-B1E1-36C79CBB3424}
 		{D1388785-D0BD-4A67-BC45-573C0DEE639A} = {2D022822-3443-4459-B1E1-36C79CBB3424}
 		{67749BC5-F457-478A-9E92-3986654BC068} = {DB8BC13C-064C-4B6A-9370-2DC8B8E0E36B}
+		{682213C1-A3FD-4A61-936C-84A93327C39B} = {2D022822-3443-4459-B1E1-36C79CBB3424}
 	EndGlobalSection
 EndGlobal
