@@ -36,6 +36,7 @@ CString InputFilesPage::m_cszFilterString;
 InputFilesPage::InputFilesPage(WizardPageHost& pageHost,
    const std::vector<CString>& vecInputFiles) throw()
 :WizardPage(pageHost, IDD_PAGE_INPUT_FILES, WizardPage::typeCancelNext),
+m_pageWidth(0),
 m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
 m_bSetSysImageList(false),
 m_vecInputFiles(vecInputFiles)

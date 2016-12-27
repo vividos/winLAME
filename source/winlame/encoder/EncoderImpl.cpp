@@ -604,8 +604,7 @@ void EncoderImpl::MainLoop(InputModule& inputModule, OutputModule& outputModule,
 void EncoderImpl::WritePlaylistEntry(const CString& cszOutputFilename)
 {
    FILE* fd = _tfopen(playlist_filename, _T("at"));
-   fseek(fd, 0L, SEEK_END);
-   if (fd == NULL)
+   if (fd == nullptr)
       return;
 
    // get filename, without path

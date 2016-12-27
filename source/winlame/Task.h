@@ -31,7 +31,8 @@ class Task
 public:
    /// ctor
    Task(unsigned int dependentTaskId = 0)
-      :m_dependentTaskId(dependentTaskId)
+      :m_id(0),
+      m_dependentTaskId(dependentTaskId)
    {
    }
    /// dtor

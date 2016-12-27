@@ -43,6 +43,8 @@ public:
        modulename(themodulename),
        errorcode(theerrorcode),
        errormsg(theerrormsg),
+       appicon(nullptr),
+       icon(nullptr),
        m_bSkipDisabled(bSkipDisabled)
    {
    }

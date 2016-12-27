@@ -295,6 +295,8 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
    if (!wav)
       return false;
 
+   std::shared_ptr<FILE> wavFd(wav, fclose);
+
    // first check for last 0x80 bytes for id3 tag
    {
       fseek(wav, -128, SEEK_END);
@@ -368,8 +370,6 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
       if (now >= length)
          break;
    }
-
-   fclose(wav);
 
    return true;
 }

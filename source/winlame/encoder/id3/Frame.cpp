@@ -247,7 +247,7 @@ CString Frame::AsString()
    case ID3_FIELD_TYPE_INT32PLUS:
       {
          signed long value = AsInteger();
-         cszText.Format(_T("%i"), value);
+         cszText.Format(_T("%li"), value);
       }
       break;
 

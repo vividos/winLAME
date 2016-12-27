@@ -135,7 +135,7 @@ unsigned long tell_filestream(FILE_STREAM *fs)
     return fs->file_offset;
 }
 
-void close_filestream(FILE_STREAM *fs)
+void close_filestream(FILE_STREAM* fs)
 {
     if(fs)
     {
@@ -143,6 +143,5 @@ void close_filestream(FILE_STREAM *fs)
             CloseHandle(fs->stream);
 
         LocalFree(fs);
-        fs = NULL;
     }
 }

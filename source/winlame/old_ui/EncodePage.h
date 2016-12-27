@@ -53,6 +53,8 @@ public:
        curfile(0),
        starttimer(0),
        noupdate(false),
+       idle_icon(nullptr),
+       working_icon(nullptr),
        intray(false),
        startpause(0),
        pausetime(0)

@@ -135,7 +135,7 @@ int BassWmaOutputModule::InitOutput(LPCTSTR outfilename,
          errorText = _T("BASS_ERROR_UNKNOWN");
          break;
       default:
-         errorText.Format(_T("BASS_ErrorCode: %u"), errorCode);
+         errorText.Format(_T("BASS_ErrorCode: %i"), errorCode);
          break;
       }
 
@@ -200,7 +200,7 @@ void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
    int intValue = trackInfo.NumberInfo(TrackInfoYear, isAvail);
    if (isAvail && intValue != -1)
    {
-      textValue.Format(_T("%u"), intValue);
+      textValue.Format(_T("%i"), intValue);
       BASS_WMA_EncodeSetTag(m_handle, "WM/Year", CStringA(textValue), BASS_WMA_TAG_ANSI);
    }
 
@@ -213,7 +213,7 @@ void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
    intValue = trackInfo.NumberInfo(TrackInfoTrack, isAvail);
    if (isAvail && intValue != -1)
    {
-      textValue.Format(_T("%u"), intValue);
+      textValue.Format(_T("%i"), intValue);
       BASS_WMA_EncodeSetTag(m_handle, "WM/TrackNumber", CStringA(textValue), BASS_WMA_TAG_ANSI);
    }
 

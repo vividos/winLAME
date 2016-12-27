@@ -67,6 +67,8 @@ public:
    /// ctor
    PropertyListBox()
       :inplaceCtrl(NULL),
+       inplaceIndex(-1),
+       inplaceGroup(-1),
        readonly(true),
        propmanager(NULL)
    {
