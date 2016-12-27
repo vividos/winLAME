@@ -208,8 +208,10 @@
     <ClInclude Include="winlame\encoder\EncoderTask.hpp" />
     <ClInclude Include="winlame\encoder\FlacInputModule.hpp" />
     <ClInclude Include="winlame\encoder\Id3v1Tag.hpp" />
+    <ClInclude Include="winlame\encoder\InputModule.hpp" />
     <ClInclude Include="winlame\encoder\LameOutputModule.hpp" />
     <ClInclude Include="winlame\encoder\MadMpegInputModule.hpp" />
+    <ClInclude Include="winlame\encoder\ModuleBase.hpp" />
     <ClInclude Include="winlame\encoder\ModuleInterface.hpp" />
     <ClInclude Include="winlame\encoder\ModuleManagerImpl.hpp" />
     <ClInclude Include="winlame\encoder\MonkeysAudioInputModule.hpp" />
@@ -218,6 +220,7 @@
     <ClInclude Include="winlame\encoder\OggVorbisOutputModule.hpp" />
     <ClInclude Include="winlame\encoder\OpusInputModule.hpp" />
     <ClInclude Include="winlame\encoder\OpusOutputModule.hpp" />
+    <ClInclude Include="winlame\encoder\OutputModule.hpp" />
     <ClInclude Include="winlame\encoder\SampleContainer.hpp" />
     <ClInclude Include="winlame\encoder\SndFileFormats.hpp" />
     <ClInclude Include="winlame\encoder\SndFileInputModule.hpp" />
