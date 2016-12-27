@@ -27,6 +27,7 @@
 #include "vorbis/vorbisenc.h"
 #include <ctime>
 #include <cmath>
+#include "UTF8.hpp"
 
 using Encoder::OggVorbisOutputModule;
 using Encoder::TrackInfo;
@@ -131,23 +132,6 @@ void OggVorbisOutputModule::GetVersionString(CString& version, int special) cons
    vorbis_dsp_clear(&vd);
    vorbis_comment_clear(&vc);
    vorbis_info_clear(&vi);
-}
-
-/// converts string to UTF-8 encoding
-// note: ogg vorbis tag values are stored as UTF-8, so convert here
-void UnicodeToUTF8(const CString& text, std::vector<char>& utf8Buffer)
-{
-#if defined(UNICODE) || defined(_UNICODE)
-   // calculate the bytes necessary
-   unsigned int uiLen = ::WideCharToMultiByte(CP_UTF8, 0, text, -1, NULL, 0, NULL, NULL);
-
-   utf8Buffer.resize(uiLen);
-
-   // convert
-   ::WideCharToMultiByte(CP_UTF8, 0, text, -1, &utf8Buffer[0], uiLen, NULL, NULL);
-#else
-#error non-unicode variant not implemented!
-#endif
 }
 
 int OggVorbisOutputModule::InitOutput(LPCTSTR outfilename,
@@ -263,21 +247,22 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
    CString text = trackInfo.TextInfo(TrackInfoTitle, avail);
    if (avail && !text.IsEmpty())
    {
-      UnicodeToUTF8(text, buffer);
+      // note: ogg vorbis tag values are stored as UTF-8, so convert here
+      StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "TITLE", buffer.data());
    }
 
    text = trackInfo.TextInfo(TrackInfoArtist, avail);
    if (avail && !text.IsEmpty())
    {
-      UnicodeToUTF8(text, buffer);
+      StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "ARTIST", buffer.data());
    }
 
    text = trackInfo.TextInfo(TrackInfoAlbum, avail);
    if (avail && !text.IsEmpty())
    {
-      UnicodeToUTF8(text, buffer);
+      StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "ALBUM", buffer.data());
    }
 
@@ -285,14 +270,14 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
    if (avail && year > 0)
    {
       text.Format(_T("%i"), year);
-      UnicodeToUTF8(text, buffer);
+      StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "DATE", buffer.data());
    }
 
    text = trackInfo.TextInfo(TrackInfoComment, avail);
    if (avail && !text.IsEmpty())
    {
-      UnicodeToUTF8(text, buffer);
+      StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "COMMENT", buffer.data()); // TODO should be DESCRIPTION?
    }
 
@@ -300,14 +285,14 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
    if (avail && trackNumber >= 0)
    {
       text.Format(_T("%i"), trackNumber);
-      UnicodeToUTF8(text, buffer);
+      StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "TRACKNUMBER", buffer.data());
    }
 
    text = trackInfo.TextInfo(TrackInfoGenre, avail);
    if (avail && !text.IsEmpty())
    {
-      UnicodeToUTF8(text, buffer);
+      StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "GENRE", buffer.data());
    }
 }

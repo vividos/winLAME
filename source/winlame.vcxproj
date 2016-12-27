@@ -179,6 +179,7 @@
     </ClCompile>
     <ClCompile Include="winlame\TaskManager.cpp" />
     <ClCompile Include="winlame\UISettings.cpp" />
+    <ClCompile Include="winlame\UTF8.cpp" />
     <ClCompile Include="winlame\VariableManager.cpp" />
     <ClCompile Include="winlame\winlame.cpp" />
     <ClCompile Include="winlame\ui\CDReadSettingsPage.cpp" />
@@ -296,6 +297,7 @@
     <ClInclude Include="winlame\TaskManagerConfig.h" />
     <ClInclude Include="winlame\UIinterface.h" />
     <ClInclude Include="winlame\UISettings.h" />
+    <ClInclude Include="winlame\UTF8.hpp" />
     <ClInclude Include="winlame\VariableManager.h" />
     <ClInclude Include="winlame\res\MainFrameRibbon.h" />
     <ClInclude Include="winlame\resource.h" />

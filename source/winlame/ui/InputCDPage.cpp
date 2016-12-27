@@ -33,10 +33,9 @@
 #include "FreedbInfo.hpp"
 #include "FreeDbDiscListDlg.hpp"
 #include "RedrawLock.hpp"
+#include "UTF8.hpp"
 
 using namespace UI;
-
-extern CString UTF8ToCString(const char* pszUtf8Text);
 
 const DWORD INVALID_DRIVE_ID = 0xffffffff;
 
@@ -387,7 +386,7 @@ bool InputCDPage::ReadCachedCDDB(bool& bVarious)
    if (!entry || strlen(entry) == 0)
       return false;
 
-   FreedbInfo info(UTF8ToCString(entry));
+   FreedbInfo info(UTF8ToString(entry));
    FillListFreedbInfo(info);
    m_bAcquiredDiscInfo = true;
 
@@ -750,7 +749,7 @@ void InputCDPage::FreedbLookup()
       if (!entry || strlen(entry) == 0)
          break;
 
-      entriesList.push_back(FreedbInfo(UTF8ToCString(entry)));
+      entriesList.push_back(FreedbInfo(UTF8ToString(entry)));
    }
 
    if (entriesList.empty())

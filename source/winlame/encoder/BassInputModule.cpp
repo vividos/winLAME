@@ -27,6 +27,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "DynamicLibrary.h"
+#include "UTF8.hpp"
 
 using Encoder::BassInputModule;
 using Encoder::TrackInfo;
@@ -106,22 +107,6 @@ CString BassInputModule::GetFilterString() const
    }
 
    return m_filterString;
-}
-
-/// converts from UTF-8 encoded text to CString
-CString UTF8ToCString(const char* utf8Text)
-{
-   int bufferLength = MultiByteToWideChar(CP_UTF8, 0,
-      utf8Text, -1,
-      nullptr, 0);
-
-   CString text;
-   MultiByteToWideChar(CP_UTF8, 0,
-      utf8Text, -1,
-      text.GetBuffer(bufferLength), bufferLength);
-
-   text.ReleaseBuffer();
-   return text;
 }
 
 int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
@@ -227,7 +212,7 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
 
       for (size_t i = 0; i < vecCommentIndices.size(); i++)
       {
-         CString cszTag = UTF8ToCString(comments + vecCommentIndices[i]);
+         CString cszTag = UTF8ToString(comments + vecCommentIndices[i]);
 
          // search for delimiting colon
          int iPos = cszTag.Find(_T('='));

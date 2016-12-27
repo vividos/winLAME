@@ -340,6 +340,9 @@
     <ClCompile Include="winlame\encoder\CDReadoutModule.cpp">
       <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\UTF8.cpp">
+      <Filter>Main Program Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="winlame\encoder\dither\dither.h">
@@ -701,6 +704,9 @@
     </ClInclude>
     <ClInclude Include="winlame\encoder\CDReadoutModule.hpp">
       <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\UTF8.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
