@@ -59,7 +59,6 @@ void PropertyListBox::ExpandGroup(int nIndex)
    int data = GetItemData(nIndex);
    bool isgroup = (data & P_GROUP) == P_GROUP;
    bool iscollapsed = isgroup && (data & P_COLLAPSED) == P_COLLAPSED;
-   int group = data & 0x00007fffL;
 
    if (!isgroup)
       return;
