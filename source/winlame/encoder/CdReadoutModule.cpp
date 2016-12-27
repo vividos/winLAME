@@ -1,118 +1,118 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2005-2007 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
-/// \file CdReadoutModule.cpp
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2005-2016 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+/// \file CDReadoutModule.cpp
 /// \brief contains the implementation of the Bass CD Readout module
-
-// needed includes
+//
 #include "stdafx.h"
 #include "resource.h"
-#include "CDReadoutModule.h"
+#include "CDReadoutModule.hpp"
 #include "CDRipTrackManager.h"
 
-// CDReadoutModule methods
+using Encoder::CDReadoutModule;
+using Encoder::TrackInfo;
+using Encoder::SampleContainer;
 
 CDReadoutModule::CDReadoutModule()
 {
-   module_id = ID_IM_CDRIP;
+   m_moduleId = ID_IM_CDRIP;
 }
 
-InputModule *CDReadoutModule::cloneModule()
+Encoder::InputModule* CDReadoutModule::CloneModule()
 {
    return new CDReadoutModule;
 }
 
-void CDReadoutModule::getDescription(CString& desc)
+void CDReadoutModule::GetDescription(CString& desc) const
 {
-   SndFileInputModule::getDescription(desc); // TODO add track data
+   SndFileInputModule::GetDescription(desc); // TODO add track data
 }
 
-CString CDReadoutModule::getFilterString()
+CString CDReadoutModule::GetFilterString() const
 {
-   return _T(""); // no filter
+   return CString(); // no filter
 }
 
-void CDReadoutModule::resolveRealFilename(CString& filename)
+void CDReadoutModule::ResolveRealFilename(CString& filename)
 {
-   CDRipTrackManager* pManager = CDRipTrackManager::getCDRipTrackManager();
+   CDRipTrackManager* ripTrackManager = CDRipTrackManager::getCDRipTrackManager();
 
-   unsigned int nTrackIndex = static_cast<unsigned int>(
+   unsigned int trackIndex = static_cast<unsigned int>(
       _tcstoul(static_cast<LPCTSTR>(filename) + _tcslen(g_pszCDRipPrefix), NULL, 10));
-   ATLASSERT(nTrackIndex < pManager->GetMaxTrackInfo());
+   ATLASSERT(trackIndex < ripTrackManager->GetMaxTrackInfo());
 
-   filename = pManager->GetTrackInfo(nTrackIndex).m_cszRippedFilename;
+   filename = ripTrackManager->GetTrackInfo(trackIndex).m_rippedFilename;
 }
 
-int CDReadoutModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
-   TrackInfo &trackinfo, SampleContainer &samplecont)
+int CDReadoutModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
+   TrackInfo& trackInfo, SampleContainer& samples)
 {
-   CString cszCDRipFilename(infilename);
-   ATLASSERT(0 == cszCDRipFilename.Find(g_pszCDRipPrefix));
+   CString ripFilename(infilename);
+   ATLASSERT(0 == ripFilename.Find(g_pszCDRipPrefix)); // must start with prefix
 
-   CDRipTrackManager* pManager = CDRipTrackManager::getCDRipTrackManager();
+   CDRipTrackManager* ripTrackManager = CDRipTrackManager::getCDRipTrackManager();
 
-   m_nTrackIndex = static_cast<unsigned int>(_tcstoul(cszCDRipFilename.Mid(_tcslen(g_pszCDRipPrefix)), NULL, 10));
-   ATLASSERT(m_nTrackIndex < pManager->GetMaxTrackInfo());
+   m_trackIndex = static_cast<unsigned int>(_tcstoul(ripFilename.Mid(_tcslen(g_pszCDRipPrefix)), NULL, 10));
+   ATLASSERT(m_trackIndex < ripTrackManager->GetMaxTrackInfo());
 
-   CDRipTrackInfo& cdtrackinfo = pManager->GetTrackInfo(m_nTrackIndex);
+   CDRipTrackInfo& cdTrackInfo = ripTrackManager->GetTrackInfo(m_trackIndex);
 
-   int nRet = SndFileInputModule::initInput(cdtrackinfo.m_cszRippedFilename, mgr, trackinfo, samplecont);
+   int nRet = SndFileInputModule::InitInput(cdTrackInfo.m_rippedFilename, mgr, trackInfo, samples);
 
-   CDRipDiscInfo& discinfo = pManager->GetDiscInfo();
+   CDRipDiscInfo& discInfo = ripTrackManager->GetDiscInfo();
 
    // add track info
-   trackinfo.TextInfo(TrackInfoTitle, cdtrackinfo.m_cszTrackTitle);
+   trackInfo.TextInfo(TrackInfoTitle, cdTrackInfo.m_trackTitle);
 
-   CString value = discinfo.m_cszDiscArtist;
-   if (discinfo.m_bVariousArtists)
+   CString value = discInfo.m_discArtist;
+   if (discInfo.m_variousArtists)
       value.LoadString(IDS_CDRIP_ARTIST_VARIOUS);
-   
-   trackinfo.TextInfo(TrackInfoArtist, value);
 
-   trackinfo.TextInfo(TrackInfoAlbum, discinfo.m_cszDiscTitle);
+   trackInfo.TextInfo(TrackInfoArtist, value);
+
+   trackInfo.TextInfo(TrackInfoAlbum, discInfo.m_discTitle);
 
    // year
-   if (discinfo.m_nYear != 0)
-      trackinfo.NumberInfo(TrackInfoYear, discinfo.m_nYear);
+   if (discInfo.m_year != 0)
+      trackInfo.NumberInfo(TrackInfoYear, discInfo.m_year);
 
    // track number
-   trackinfo.NumberInfo(TrackInfoTrack, cdtrackinfo.m_nTrackOnDisc+1);
+   trackInfo.NumberInfo(TrackInfoTrack, cdTrackInfo.m_numTrackOnDisc + 1);
 
    // genre
-   if (!discinfo.m_cszGenre.IsEmpty())
-      trackinfo.TextInfo(TrackInfoGenre, discinfo.m_cszGenre);
+   if (!discInfo.m_genre.IsEmpty())
+      trackInfo.TextInfo(TrackInfoGenre, discInfo.m_genre);
 
    return nRet;
 }
 
-void CDReadoutModule::doneInput(bool fCompletedTrack)
+void CDReadoutModule::DoneInput(bool isTrackCompleted)
 {
-   SndFileInputModule::doneInput();
+   SndFileInputModule::DoneInput();
 
    // delete temporary file
-   if (fCompletedTrack)
+   if (isTrackCompleted)
    {
-      CDRipTrackManager* pManager = CDRipTrackManager::getCDRipTrackManager();
-      CDRipTrackInfo& cdtrackinfo = pManager->GetTrackInfo(m_nTrackIndex);
+      CDRipTrackManager* ripTrackManager = CDRipTrackManager::getCDRipTrackManager();
+      CDRipTrackInfo& cdTrackInfo = ripTrackManager->GetTrackInfo(m_trackIndex);
 
-      DeleteFile(cdtrackinfo.m_cszRippedFilename);
-      cdtrackinfo.m_cszRippedFilename.Empty();
-      cdtrackinfo.m_bActive = false; // switch inactive
+      DeleteFile(cdTrackInfo.m_rippedFilename);
+      cdTrackInfo.m_rippedFilename.Empty();
+      cdTrackInfo.m_isActive = false; // switch inactive
    }
 }

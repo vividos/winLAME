@@ -1,72 +1,72 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2004 DeXT
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2004 DeXT
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file FlacInputModule.cpp
 /// \brief contains the implementation of the Flac input module
-
-// needed includes
+//
 #include "stdafx.h"
 #include "resource.h"
 #include <fstream>
-#include "FlacInputModule.h"
+#include "FlacInputModule.hpp"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "FLAC/metadata.h"
+#include "DynamicLibrary.h"
 
-// linker options
-#if _MSC_VER < 1400
-#pragma comment(linker, "/delayload:libFLAC_dynamic.dll")
-#endif
+using Encoder::FlacInputModule;
+using Encoder::TrackInfo;
+using Encoder::SampleContainer;
+using Encoder::FLAC_context;
 
 // constants
 
-/// frame size
-const unsigned int FLAC_FRAME_SIZE = 576; /* default=4608 */
+/// frame size; default = 4608
+const unsigned int m_flacFrameSize = 576;
 
 // callbacks
 
 static FLAC__StreamDecoderWriteStatus FLAC_WriteCallback(
-   const FLAC__StreamDecoder *decoder,
-   const FLAC__Frame *frame,
-   const FLAC__int32 *const buffer[],
-   void *client_data)
+   const FLAC__StreamDecoder* decoder,
+   const FLAC__Frame* frame,
+   const FLAC__int32* const buffer[],
+   void* clientData)
 {
-   FLAC_context *context = (FLAC_context *)client_data;
+   FLAC_context* context = (FLAC_context*)clientData;
 
-   const unsigned channels = context->streaminfo.channels;
+   const unsigned numChannels = context->streamInfo.channels;
    const unsigned wide_samples = frame->header.blocksize;
    unsigned wide_sample, sample, channel;
-   
-   if(context->abort_flag)
+
+   if (context->abortFlag)
       return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
 
-   for(sample = context->samples_in_reservoir*channels, wide_sample = 0;
-       wide_sample < wide_samples;
+   for (sample = context->numSamplesInReservoir * numChannels, wide_sample = 0;
+      wide_sample < wide_samples;
       wide_sample++)
    {
-      for(channel = 0; channel < channels; channel++, sample++)
+      for (channel = 0; channel < numChannels; channel++, sample++)
       {
          context->reservoir[sample] = buffer[channel][wide_sample];
       }
    }
-   
-   context->samples_in_reservoir += wide_samples;   
+
+   context->numSamplesInReservoir += wide_samples;
 
    return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
 }
@@ -75,23 +75,22 @@ static void FLAC_vorbis_comment_split_name_value(
    const FLAC__StreamMetadata_VorbisComment_Entry entry,
    CString& name, CString& value)
 {
-   CString cszTemp(reinterpret_cast<char*>(entry.entry), entry.length);
-   int iPos = cszTemp.Find(_T('='));
-   name = cszTemp.Left(iPos);
-   value = cszTemp.Mid(iPos+1);
+   CString temp(reinterpret_cast<char*>(entry.entry), entry.length);
+   int pos = temp.Find(_T('='));
+   name = temp.Left(pos);
+   value = temp.Mid(pos + 1);
 }
 
-static void FLAC_MetadataCallback(const FLAC__StreamDecoder *decoder,
-                          const FLAC__StreamMetadata *metadata,
-                          void *client_data)
-{   
-   FLAC_context *context = (FLAC_context *)client_data;
-   
-//   context->streaminfo = metadata->data.stream_info;
+static void FLAC_MetadataCallback(const FLAC__StreamDecoder* decoder,
+   const FLAC__StreamMetadata* metadata,
+   void* clientData)
+{
+   FLAC_context* context = (FLAC_context*)clientData;
+
    switch (metadata->type)
    {
    case FLAC__METADATA_TYPE_STREAMINFO:
-   	context->streaminfo = metadata->data.stream_info;
+      context->streamInfo = metadata->data.stream_info;
       break;
    case FLAC__METADATA_TYPE_VORBIS_COMMENT:
       for (unsigned i = 0; i < metadata->data.vorbis_comment.num_comments; i++)
@@ -104,72 +103,72 @@ static void FLAC_MetadataCallback(const FLAC__StreamDecoder *decoder,
 
          if (name.CompareNoCase(_T("title")) == 0)
          {
-            context->trackInfo->TextInfo(TrackInfoTitle, value);
+            context->trackInfo->TextInfo(Encoder::TrackInfoTitle, value);
          }
          else if (name.CompareNoCase(_T("artist")) == 0)
          {
-            context->trackInfo->TextInfo(TrackInfoArtist, value);
+            context->trackInfo->TextInfo(Encoder::TrackInfoArtist, value);
          }
          else if (name.CompareNoCase(_T("album")) == 0)
          {
-            context->trackInfo->TextInfo(TrackInfoAlbum, value);
+            context->trackInfo->TextInfo(Encoder::TrackInfoAlbum, value);
          }
          else if (name.CompareNoCase(_T("comment")) == 0)
          {
-            context->trackInfo->TextInfo(TrackInfoComment, value);
+            context->trackInfo->TextInfo(Encoder::TrackInfoComment, value);
          }
          else if (name.CompareNoCase(_T("genre")) == 0)
          {
             if (!value.IsEmpty())
-               context->trackInfo->TextInfo(TrackInfoGenre, value);
+               context->trackInfo->TextInfo(Encoder::TrackInfoGenre, value);
          }
          else if (name.CompareNoCase(_T("tracknumber")) == 0)
          {
-            context->trackInfo->NumberInfo(TrackInfoTrack, _ttoi(value));
+            context->trackInfo->NumberInfo(Encoder::TrackInfoTrack, _ttoi(value));
          }
          else if (name.CompareNoCase(_T("year")) == 0)
          {
-            context->trackInfo->NumberInfo(TrackInfoYear, _ttoi(value));
+            context->trackInfo->NumberInfo(Encoder::TrackInfoYear, _ttoi(value));
          }
          else if (name.CompareNoCase(_T("date")) == 0)
          {
             // Sanity check: Many FLACs seem to have 'date' actually containing
             // only 4-digit year. If this is the case, use 'date' for 'year'.
             if (value.GetLength() == 4 &&
-                value.SpanIncluding(_T("0123456789")).GetLength() == 4)
+               value.SpanIncluding(_T("0123456789")).GetLength() == 4)
             {
-               context->trackInfo->NumberInfo(TrackInfoYear, _ttoi(value));
+               context->trackInfo->NumberInfo(Encoder::TrackInfoYear, _ttoi(value));
             }
          }
       }
       break;
    }
-
 }
 
-static void FLAC_ErrorCallback(const FLAC__StreamDecoder *decoder,
-                        FLAC__StreamDecoderErrorStatus status,
-                        void *client_data)
+static void FLAC_ErrorCallback(const FLAC__StreamDecoder* decoder,
+   FLAC__StreamDecoderErrorStatus status,
+   void* clientData)
 {
-   FLAC_context *context = (FLAC_context *)client_data;
+   FLAC_context* context = (FLAC_context*)clientData;
 
-   if(status != FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC)
-      context->abort_flag = true;
+   if (status != FLAC__STREAM_DECODER_ERROR_STATUS_LOST_SYNC)
+      context->abortFlag = true;
 }
 
 /// pack function to store sample data in byte array
-unsigned FLAC__pack_pcm_signed_little_endian(FLAC__byte *data, FLAC__int32 *input, unsigned wide_samples, unsigned channels, unsigned source_bps)
+unsigned FLAC__pack_pcm_signed_little_endian(FLAC__byte* data, FLAC__int32* input,
+   unsigned wide_samples, unsigned numChannels, unsigned sourceBitsPerSample)
 {
-   FLAC__byte * const start = data;
+   FLAC__byte* const start = data;
    FLAC__int32 sample;
-   unsigned samples = wide_samples * channels;
-   const unsigned bytes_per_sample = source_bps / 8;
-   
-   while(samples--)
+   unsigned samples = wide_samples * numChannels;
+   const unsigned bytesPerSample = sourceBitsPerSample / 8;
+
+   while (samples--)
    {
       sample = *input++;
-      
-      switch(source_bps) 
+
+      switch (sourceBitsPerSample)
       {
       case 8:
          data[0] = static_cast<FLAC__byte>(sample ^ 0x80);
@@ -181,176 +180,180 @@ unsigned FLAC__pack_pcm_signed_little_endian(FLAC__byte *data, FLAC__int32 *inpu
          data[1] = (FLAC__byte)(sample >> 8);
          data[0] = (FLAC__byte)sample;
       }
-      
-      data += bytes_per_sample;
+
+      data += bytesPerSample;
    }
 
    return data - start;
 }
 
 
-// FlacInputModule methods
-
 FlacInputModule::FlacInputModule()
 {
-   module_id = ID_IM_FLAC;
+   m_moduleId = ID_IM_FLAC;
 }
 
-InputModule *FlacInputModule::cloneModule()
+Encoder::InputModule* FlacInputModule::CloneModule()
 {
    return new FlacInputModule;
 }
 
-bool FlacInputModule::isAvailable()
+bool FlacInputModule::IsAvailable() const
 {
-   HMODULE dll = ::LoadLibrary(_T("libFLAC_dynamic.dll"));
-   bool avail = dll != NULL;
+   DynamicLibrary lib(_T("libFLAC_dynamic.dll"));
 
-   if (avail)
+   if (lib.IsLoaded())
    {
-      avail = GetProcAddress(dll, "FLAC__stream_decoder_new") != NULL;
-      ::FreeLibrary(dll);
+      return lib.IsFunctionAvail("FLAC__stream_decoder_new");
    }
 
-   return avail;
+   return false;
 }
 
-void FlacInputModule::getDescription(CString& desc)
+void FlacInputModule::GetDescription(CString& desc) const
 {
    // format string
    desc.Format(IDS_FORMAT_INFO_FLAC_INPUT,
-      (filelen << 3 / context->totalLenMs) / 1000,
-      context->streaminfo.sample_rate,
-      context->streaminfo.channels,
-      context->streaminfo.bits_per_sample);
+      (m_fileLength << 3 / m_flacContext->totalLengthInMs) / 1000,
+      m_flacContext->streamInfo.sample_rate,
+      m_flacContext->streamInfo.channels,
+      m_flacContext->streamInfo.bits_per_sample);
 }
 
-void FlacInputModule::getVersionString(CString& version, int special)
+void FlacInputModule::GetVersionString(CString& version, int special) const
 {
-   HMODULE dll = ::LoadLibrary(_T("libFLAC_dynamic.dll"));
-   if (dll != NULL)
+   DynamicLibrary lib(_T("libFLAC_dynamic.dll"));
+
+   if (lib.IsLoaded())
    {
-      version = *(const char**)::GetProcAddress(dll, "FLAC__VERSION_STRING");
-      ::FreeLibrary(dll);
+      version = *(lib.GetFunction<const char**>("FLAC__VERSION_STRING"));
    }
 }
 
-CString FlacInputModule::getFilterString()
+CString FlacInputModule::GetFilterString() const
 {
-   CString cszFilter;
-   cszFilter.LoadString(IDS_FILTER_FLAC_INPUT);
-   return cszFilter;
+   CString filterString;
+   filterString.LoadString(IDS_FILTER_FLAC_INPUT);
+   return filterString;
 }
 
-int FlacInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
-   TrackInfo &trackinfo, SampleContainer &samplecont)
+int FlacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
+   TrackInfo& trackinfo, SampleContainer& samplecont)
 {
    // find out length of file
    struct _stat statbuf;
-   ::_tstat(infilename,&statbuf);
-   filelen = statbuf.st_size; // 32 bit max.
+   ::_tstat(infilename, &statbuf);
+   m_fileLength = statbuf.st_size; // 32 bit max.
 
-   context = new FLAC_context;
-   memset((void *)context, 0, sizeof(FLAC_context));
-   context->trackInfo = &trackinfo;
+   m_flacContext = new FLAC_context;
+   memset((void*)m_flacContext, 0, sizeof(FLAC_context));
+   m_flacContext->trackInfo = &trackinfo;
 
    // open stream
-   CStringA cszaFilename = GetAnsiCompatFilename(infilename);
-   FLAC__StreamDecoderInitStatus initStatus = FLAC__stream_decoder_init_file(pFLACDec,
-      cszaFilename,
+   CStringA ansiFilename = GetAnsiCompatFilename(infilename);
+   FLAC__StreamDecoderInitStatus initStatus = FLAC__stream_decoder_init_file(m_flacDecoder,
+      ansiFilename,
       FLAC_WriteCallback,
       FLAC_MetadataCallback,
       FLAC_ErrorCallback,
-      context);
+      m_flacContext);
 
-   if(!pFLACDec || initStatus == FLAC__STREAM_DECODER_INIT_STATUS_OK)
+   if (!m_flacDecoder || initStatus == FLAC__STREAM_DECODER_INIT_STATUS_OK)
    {
-      lasterror.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
+      m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
       return -1;
    }
 
-   if(!FLAC__stream_decoder_process_until_end_of_metadata(pFLACDec))
+   if (!FLAC__stream_decoder_process_until_end_of_metadata(m_flacDecoder))
    {
-      lasterror.LoadString(IDS_ENCODER_ERROR_GET_FILE_INFOS);
+      m_lastError.LoadString(IDS_ENCODER_ERROR_GET_FILE_INFOS);
       return -1;
    }
 
-   pos_sample = 0;
-   context->totalLenMs = static_cast<unsigned int>(context->streaminfo.total_samples * 1000 / context->streaminfo.sample_rate);
-   PCMBuffLen = (FLAC_FRAME_SIZE * context->streaminfo.channels * context->streaminfo.bits_per_sample);   
-   context->reservoir = new FLAC__int32[context->streaminfo.max_blocksize * context->streaminfo.channels * 2];
+   m_samplePosition = 0;
+   m_flacContext->totalLengthInMs =
+      static_cast<unsigned int>(m_flacContext->streamInfo.total_samples * 1000 / m_flacContext->streamInfo.sample_rate);
+   m_pcmBufferLength = (m_flacFrameSize * m_flacContext->streamInfo.channels * m_flacContext->streamInfo.bits_per_sample);
+   m_flacContext->reservoir = new FLAC__int32[m_flacContext->streamInfo.max_blocksize * m_flacContext->streamInfo.channels * 2];
 
    // set up input traits
-   samplecont.setInputModuleTraits(context->streaminfo.bits_per_sample,SamplesChannelArray,
-      context->streaminfo.sample_rate,context->streaminfo.channels);
+   samplecont.SetInputModuleTraits(m_flacContext->streamInfo.bits_per_sample, SamplesChannelArray,
+      m_flacContext->streamInfo.sample_rate, m_flacContext->streamInfo.channels);
 
    return 0;
 }
 
-void FlacInputModule::getInfo(int &channels, int &bitrate, int &length, int &samplerate)
+void FlacInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const
 {
-   channels = context->streaminfo.channels;
-   bitrate = filelen << 3 / context->totalLenMs;
-   length = context->totalLenMs / 1000;
-   samplerate = context->streaminfo.sample_rate;
+   numChannels = m_flacContext->streamInfo.channels;
+   bitrateInBps = m_fileLength << 3 / m_flacContext->totalLengthInMs;
+   lengthInSeconds = m_flacContext->totalLengthInMs / 1000;
+   samplerateInHz = m_flacContext->streamInfo.sample_rate;
 }
 
-int FlacInputModule::decodeSamples(SampleContainer &samples)
+int FlacInputModule::DecodeSamples(SampleContainer& samples)
 {
-   FLAC__int32 *buff = new FLAC__int32[PCMBuffLen];
+   FLAC__int32* inputBuffer = new FLAC__int32[m_pcmBufferLength];
 
-   while(context->samples_in_reservoir < FLAC_FRAME_SIZE)
+   while (m_flacContext->numSamplesInReservoir < m_flacFrameSize)
    {
-      if(FLAC__stream_decoder_get_state(pFLACDec) == FLAC__STREAM_DECODER_END_OF_STREAM)
+      if (FLAC__stream_decoder_get_state(m_flacDecoder) == FLAC__STREAM_DECODER_END_OF_STREAM)
       {
          return 0;
       }
-      else if(!FLAC__stream_decoder_process_single(pFLACDec))
+      else if (!FLAC__stream_decoder_process_single(m_flacDecoder))
       {
          return 0;
       }
    }
 
-   unsigned i, n = std::min(context->samples_in_reservoir, FLAC_FRAME_SIZE), delta;
-   
-   FLAC__pack_pcm_signed_little_endian((unsigned char *)buff,context->reservoir,n,
-      context->streaminfo.channels,context->streaminfo.bits_per_sample);
-   delta = i = n * context->streaminfo.channels;
-   for( ; i < context->samples_in_reservoir * context->streaminfo.channels; i++)
-      context->reservoir[i-delta] = context->reservoir[i];
-   context->samples_in_reservoir -= n;
-   pos_sample += n;
-   
+   unsigned int numSamples = std::min(m_flacContext->numSamplesInReservoir, m_flacFrameSize);
+
+   FLAC__pack_pcm_signed_little_endian(
+      (unsigned char*)inputBuffer,
+      m_flacContext->reservoir,
+      numSamples,
+      m_flacContext->streamInfo.channels,
+      m_flacContext->streamInfo.bits_per_sample);
+
+   unsigned int delta = numSamples * m_flacContext->streamInfo.channels;
+   for (unsigned int i = delta; i < m_flacContext->numSamplesInReservoir * m_flacContext->streamInfo.channels; i++)
+      m_flacContext->reservoir[i - delta] = m_flacContext->reservoir[i];
+
+   m_flacContext->numSamplesInReservoir -= numSamples;
+   m_samplePosition += numSamples;
+
    // copy the samples to the sample container
-   samples.putSamplesInterleaved(buff, n);
+   samples.PutSamplesInterleaved(inputBuffer, numSamples);
 
-   delete[] buff;
-   
-   return n;
+   delete[] inputBuffer;
+
+   return numSamples;
 }
 
-float FlacInputModule::percentDone()
+float FlacInputModule::PercentDone() const
 {
-   return float(__int64(pos_sample))*100.f / __int64(context->streaminfo.total_samples);
+   return float(__int64(m_samplePosition))*100.f / __int64(m_flacContext->streamInfo.total_samples);
 }
 
-void FlacInputModule::doneInput()
+void FlacInputModule::DoneInput()
 {
-   if(pFLACDec)
+   if (m_flacDecoder)
    {
-      FLAC__stream_decoder_finish(pFLACDec);
-      FLAC__stream_decoder_delete(pFLACDec);
+      FLAC__stream_decoder_finish(m_flacDecoder);
+      FLAC__stream_decoder_delete(m_flacDecoder);
    }
-   pFLACDec = NULL;
 
-   if (context)
+   m_flacDecoder = nullptr;
+
+   if (m_flacContext)
    {
-      if(context->reservoir)
-         delete[] context->reservoir;
-      context->reservoir = NULL;
+      if (m_flacContext->reservoir)
+         delete[] m_flacContext->reservoir;
 
-      delete context;
-      context = NULL;
+      m_flacContext->reservoir = nullptr;
+
+      delete m_flacContext;
+      m_flacContext = nullptr;
    }
 }
-

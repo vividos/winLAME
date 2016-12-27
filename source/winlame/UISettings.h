@@ -30,12 +30,14 @@
 #include "SettingsManager.h"
 #include "PresetManagerInterface.h"
 #include "EncoderInterface.h"
-//#include "ModuleManager.h"
 
-class ModuleManager;
+namespace Encoder
+{
+   class ModuleManager;
+}
 
 /// list of filenames
-typedef std::vector<EncoderJob> EncoderJobList;
+typedef std::vector<Encoder::EncoderJob> EncoderJobList;
 
 /// \brief settings for encoding a file
 /// \details encoding settings may differ between two files, so this struct
@@ -71,7 +73,7 @@ struct UISettings
    EncoderJobList encoderjoblist;
 
    /// list of CD read jobs
-   std::vector<CDReadJob> cdreadjoblist;
+   std::vector<Encoder::CDReadJob> cdreadjoblist;
 
    /// default encoding settings
    EncodingSettings m_defaultSettings;

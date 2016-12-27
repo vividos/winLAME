@@ -33,7 +33,7 @@
 #include "OpusSettingsPage.h"
 #include "EncoderInterface.h"
 #include "CDRipPage.h"
-#include "ModuleInterface.h"
+#include "ModuleInterface.hpp"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -56,11 +56,11 @@ LRESULT OutputPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
       (LPARAM)ilIcons.ExtractIcon(0) );
 
    // query module names from encoder interface
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-   int max = moduleManager.getOutputModuleCount();
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+   int max = moduleManager.GetOutputModuleCount();
    for(int i=0; i<max; i++)
       SendDlgItemMessage(IDC_OUT_COMBO_OUTMODULE, CB_ADDSTRING, 0,
-         (LPARAM)(LPCTSTR)moduleManager.getOutputModuleName(i));
+         (LPARAM)(LPCTSTR)moduleManager.GetOutputModuleName(i));
 
    // insert all possible "shutdown" actions
    UINT ActionStringIDs[] = {
@@ -190,9 +190,9 @@ void InsertWizardPages(UIinterface *pui,int pos)
 {
    // find out output module id
    UISettings& settings = pui->getUISettings();
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
 
-   int modid = moduleManager.getOutputModuleID(settings.output_module);
+   int modid = moduleManager.GetOutputModuleID(settings.output_module);
 
    switch(modid)
    {
@@ -309,9 +309,9 @@ bool OutputPage::OnLeavePage()
    }
 
    // find out output module id
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
 
-   int modid = moduleManager.getOutputModuleID(settings.output_module);
+   int modid = moduleManager.GetOutputModuleID(settings.output_module);
 
    // check if presets page should be inserted
    if (settings.preset_avail)

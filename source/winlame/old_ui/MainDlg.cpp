@@ -207,9 +207,9 @@ void MainDlg::RunDialog()
    Create(NULL,CWindow::rcDefault);
 
    // check if input or output modules are available
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-   if (0==moduleManager.getInputModuleCount() ||
-       0==moduleManager.getOutputModuleCount() )
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+   if (0==moduleManager.GetInputModuleCount() ||
+       0==moduleManager.GetOutputModuleCount() )
    {
       // show warning message box
       AppMessageBox(m_hWnd, IDS_ERR_NOMODULES, MB_OK | MB_ICONSTOP);
@@ -354,7 +354,7 @@ void MainDlg::GetCommandLineFiles()
 
    while (parser.GetNext(param))
    {
-      settings.encoderjoblist.push_back(EncoderJob(param));
+      settings.encoderjoblist.push_back(Encoder::EncoderJob(param));
    }
 }
 

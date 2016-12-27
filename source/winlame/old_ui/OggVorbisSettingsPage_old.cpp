@@ -125,7 +125,7 @@ LRESULT OggVorbisSettingsPage::OnChangeEditNominalBitrate(WORD wNotifyCode, WORD
 void OggVorbisSettingsPage::UpdateBitrateMode(int pos,bool init)
 {
    // get settings manager
-   SettingsManager &mgr = pui->getUISettings().settings_manager;
+   SettingsManager& mgr = pui->getUISettings().settings_manager;
 
    int minbr,nombr,maxbr;
    minbr = GetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE,NULL,FALSE);
@@ -258,7 +258,7 @@ void OggVorbisSettingsPage::OnQuickQualitySpin(WORD wCount, WORD wType)
 void OggVorbisSettingsPage::OnEnterPage()
 {
    // get settings manager
-   SettingsManager &mgr = pui->getUISettings().settings_manager;
+   SettingsManager& mgr = pui->getUISettings().settings_manager;
 
    // bitrate mode radio buttons
    int value = mgr.queryValueInt(OggBitrateMode);
@@ -274,7 +274,7 @@ void OggVorbisSettingsPage::OnEnterPage()
 bool OggVorbisSettingsPage::OnLeavePage()
 {
    // get settings manager
-   SettingsManager &mgr = pui->getUISettings().settings_manager;
+   SettingsManager& mgr = pui->getUISettings().settings_manager;
 
    int value=0;
    DDX_Radio(IDC_OGGV_RADIO_BRMODE1,value,DDX_SAVE);

@@ -46,8 +46,8 @@ LRESULT PresetSelectionPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND
 
    if (m_uiSettings.m_iLastSelectedPresetIndex == 0)
    {
-      ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-      int modid = moduleManager.getOutputModuleID(m_uiSettings.output_module);
+      Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+      int modid = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
       OutputSettingsPage::SetWizardPageByOutputModule(m_pageHost, modid);
    }

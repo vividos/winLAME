@@ -30,7 +30,7 @@ class AudioFileInfoManager
 {
 public:
    /// callback function type
-   typedef std::function<void(bool error, const CString& errorMessage, int lengthInSeconds, int bitrateInKbps, int sampleFrequencyInHz)> T_fnCallback;
+   typedef std::function<void(bool error, const CString& errorMessage, int lengthInSeconds, int bitrateInBps, int sampleFrequencyInHz)> T_fnCallback;
 
    /// ctor
    AudioFileInfoManager();
@@ -40,7 +40,7 @@ public:
 
    /// returns infos about audio file; returns false when not supported; synchronous version
    static bool GetAudioFileInfo(LPCTSTR filename,
-      int& lengthInSeconds, int& bitrateInKbps, int& sampleFrequencyInHz, CString& errorMessage);
+      int& lengthInSeconds, int& bitrateInBps, int& sampleFrequencyInHz, CString& errorMessage);
 
    /// retrieves info about audio file; asynchronous vesrion
    void AsyncGetAudioFileInfo(LPCTSTR filename, T_fnCallback fnCallback);

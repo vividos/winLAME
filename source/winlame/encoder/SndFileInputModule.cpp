@@ -1,95 +1,93 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2014 Michael Fink
-   Copyright (c) 2004 DeXT
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2004 DeXT
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file SndFileInputModule.cpp
 /// \brief contains the implementation of the libsndfile input module
-
-// needed includes
+//
 #include "stdafx.h"
+#include "SndFileInputModule.hpp"
 #include "resource.h"
-#include "SndFileInputModule.h"
-#include "Id3v1Tag.h"
+#include "Id3v1Tag.hpp"
 #include "SndFileFormats.hpp"
+#include "DynamicLibrary.h"
 
-
-// constants
+using Encoder::SndFileInputModule;
+using Encoder::TrackInfo;
+using Encoder::SampleContainer;
 
 /// sndfile input buffer size
-const int sndfile_inbufsize = 512;
-
-
-// SndFileInputModule methods
+const int c_sndfileInputBufferSize = 512;
 
 SndFileInputModule::SndFileInputModule()
-:m_buffer(NULL)
+   :m_buffer(nullptr)
 {
-   module_id = ID_IM_SNDFILE;
+   m_moduleId = ID_IM_SNDFILE;
 }
 
-InputModule *SndFileInputModule::cloneModule()
+Encoder::InputModule* SndFileInputModule::CloneModule()
 {
    return new SndFileInputModule;
 }
 
-bool SndFileInputModule::isAvailable()
+bool SndFileInputModule::IsAvailable() const
 {
-   HMODULE dll = ::LoadLibrary(_T("libsndfile-1.dll"));
-   bool avail = dll != NULL;
+   DynamicLibrary dll(_T("libsndfile-1.dll"));
 
-   // check for old libsndfile.dll (pre-1.x)
-   if (::GetProcAddress(dll,"sf_get_lib_version")!=NULL)
-      avail=false;
+   bool avail = dll.IsLoaded();
 
-   ::FreeLibrary(dll);
+   // check for old libsndfile.dll (pre-1.x); not supported
+   if (dll.IsFunctionAvail("sf_get_lib_version"))
+      avail = false;
 
    return avail;
 }
 
-void SndFileInputModule::getDescription(CString& desc)
+void SndFileInputModule::GetDescription(CString& desc) const
 {
    CString formatName, outputExtension;
-   SndFileFormats::GetFormatInfo(sfinfo.format & SF_FORMAT_TYPEMASK, formatName, outputExtension);
+   SndFileFormats::GetFormatInfo(m_sfinfo.format & SF_FORMAT_TYPEMASK, formatName, outputExtension);
 
-   CString subTypeName = SndFileFormats::GetSubTypeName(sfinfo.format & SF_FORMAT_SUBMASK);
+   CString subTypeName = SndFileFormats::GetSubTypeName(m_sfinfo.format & SF_FORMAT_SUBMASK);
 
    // format string
    desc.Format(IDS_FORMAT_INFO_SNDFILE,
-      formatName.GetString(), subTypeName.GetString(), sfinfo.samplerate, sfinfo.channels);
+      formatName.GetString(),
+      subTypeName.GetString(),
+      m_sfinfo.samplerate,
+      m_sfinfo.channels);
 }
 
-void SndFileInputModule::getVersionString(CString& version, int special)
+void SndFileInputModule::GetVersionString(CString& version, int special) const
 {
-   // retrieve libsndfile version
-   if (isAvailable())
+   if (IsAvailable())
    {
       char buffer[32];
-      sf_command(NULL, SFC_GET_LIB_VERSION, buffer, sizeof(buffer));
+      sf_command(nullptr, SFC_GET_LIB_VERSION, buffer, sizeof(buffer));
 
-      version = CString(buffer+11);
+      version = CString(buffer + 11);
    }
 }
 
-CString SndFileInputModule::getFilterString()
+CString SndFileInputModule::GetFilterString() const
 {
    // build filter string when not already done
-   if (filterstring.IsEmpty())
+   if (m_filterString.IsEmpty())
    {
       std::vector<int> formatsList = SndFileFormats::EnumFormats();
 
@@ -108,268 +106,269 @@ CString SndFileInputModule::getFilterString()
             outputExtension.GetString(),
             outputExtension.GetString());
 
-         filterstring += temp;
+         m_filterString += temp;
       }
    }
 
-   return filterstring;
+   return m_filterString;
 }
 
-int SndFileInputModule::initInput(LPCTSTR infilename,
-   SettingsManager &mgr, TrackInfo &trackinfo,
-   SampleContainer &samplecont)
+int SndFileInputModule::InitInput(LPCTSTR infilename,
+   SettingsManager& mgr,
+   TrackInfo& trackInfo,
+   SampleContainer& samples)
 {
    // resets the sample count
-   samplecount = 0;
+   m_sampleCount = 0;
 
    // opens the file for reading
-   memset(&sfinfo, 0, sizeof (sfinfo));
+   memset(&m_sfinfo, 0, sizeof(m_sfinfo));
 #ifdef UNICODE
-   sndfile = sf_wchar_open(infilename,SFM_READ,&sfinfo);
+   m_sndfile = sf_wchar_open(infilename, SFM_READ, &m_sfinfo);
 #else
-   sndfile = sf_open(CStringA(GetAnsiCompatFilename(infilename)),SFM_READ,&sfinfo);
+   m_sndfile = sf_open(CStringA(GetAnsiCompatFilename(infilename)), SFM_READ, &m_sfinfo);
 #endif
 
-   if (sndfile==NULL)
+   if (m_sndfile == nullptr)
    {
       char buffer[512];
-      sf_error_str(sndfile,buffer,512);
+      sf_error_str(m_sndfile, buffer, 512);
 
-      lasterror.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      m_lastError.AppendFormat(_T(" (%hs)"), buffer);
 
-      lasterror += _T(" (");
-      lasterror += CString(buffer);
-      lasterror += _T(")");
       return -1;
    }
 
    // when RIFF wave format, check for id3 tag info chunk
-   if ((sfinfo.format&SF_FORMAT_TYPEMASK) == SF_FORMAT_WAV)
+   if ((m_sfinfo.format & SF_FORMAT_TYPEMASK) == SF_FORMAT_WAV)
    {
-      waveGetId3(infilename, trackinfo);
+      WaveGetID3Tag(infilename, trackInfo);
    }
 
-   switch(sfinfo.format&SF_FORMAT_SUBMASK)
+   switch (m_sfinfo.format & SF_FORMAT_SUBMASK)
    {
-      case SF_FORMAT_PCM_S8:
-      case SF_FORMAT_PCM_U8:
-      case SF_FORMAT_PCM_16:
-      case SF_FORMAT_DWVW_16:
-         outbits = 16;
-         break;
-      case SF_FORMAT_PCM_24:
-      case SF_FORMAT_DWVW_24:
-      case SF_FORMAT_PCM_32:
-      case SF_FORMAT_FLOAT:
-      case SF_FORMAT_DOUBLE:
-         outbits = 32;
-         break;
-     default:
-         outbits = 16;
-         break;
+   case SF_FORMAT_PCM_S8:
+   case SF_FORMAT_PCM_U8:
+   case SF_FORMAT_PCM_16:
+   case SF_FORMAT_DWVW_16:
+      m_numOutputBits = 16;
+      break;
+   case SF_FORMAT_PCM_24:
+   case SF_FORMAT_DWVW_24:
+   case SF_FORMAT_PCM_32:
+   case SF_FORMAT_FLOAT:
+   case SF_FORMAT_DOUBLE:
+      m_numOutputBits = 32;
+      break;
+   default:
+      m_numOutputBits = 16;
+      break;
    }
 
    // prepare input buffer
-   if (outbits == 32)
-      m_buffer = new int[sndfile_inbufsize*sfinfo.channels];
+   if (m_numOutputBits == 32)
+      m_buffer = new int[c_sndfileInputBufferSize * m_sfinfo.channels];
    else
-      m_buffer = new short[sndfile_inbufsize*sfinfo.channels];
+      m_buffer = new short[c_sndfileInputBufferSize * m_sfinfo.channels];
 
    // set up input traits
-   samplecont.setInputModuleTraits(outbits,SamplesInterleaved,
-      sfinfo.samplerate, sfinfo.channels);
+   samples.SetInputModuleTraits(m_numOutputBits, SamplesInterleaved,
+      m_sfinfo.samplerate, m_sfinfo.channels);
 
    return 0;
 }
 
-void SndFileInputModule::getInfo(int &channels, int &bitrate, int &length, int &samplerate)
+void SndFileInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const
 {
-   if (sndfile!=NULL)
+   if (m_sndfile == nullptr)
+      return;
+
+   numChannels = m_sfinfo.channels;
+
+   // determine bitrate
+   bitrateInBps = -1;
+
+   switch (m_sfinfo.format & SF_FORMAT_SUBMASK)
    {
-      // number of channels
-      channels = sfinfo.channels;
+   case SF_FORMAT_PCM_S8:
+   case SF_FORMAT_PCM_U8:
+      bitrateInBps = m_sfinfo.samplerate * 8;
+      break;
 
-      // determine bitrate
-      bitrate = -1;
+   case SF_FORMAT_PCM_16:
+   case SF_FORMAT_DWVW_16:
+      bitrateInBps = m_sfinfo.samplerate * 16;
+      break;
 
-      switch(sfinfo.format&SF_FORMAT_SUBMASK)
-      {
-      case SF_FORMAT_PCM_S8:
-      case SF_FORMAT_PCM_U8:
-         bitrate = sfinfo.samplerate*8;
-         break;
+   case SF_FORMAT_PCM_24:
+   case SF_FORMAT_DWVW_24:
+      bitrateInBps = m_sfinfo.samplerate * 24;
+      break;
 
-      case SF_FORMAT_PCM_16:
-      case SF_FORMAT_DWVW_16:
-         bitrate = sfinfo.samplerate*16;
-         break;
+   case SF_FORMAT_PCM_32:
+   case SF_FORMAT_FLOAT:
+      bitrateInBps = m_sfinfo.samplerate * 32;
+      break;
 
-      case SF_FORMAT_PCM_24:
-      case SF_FORMAT_DWVW_24:
-         bitrate = sfinfo.samplerate*24;
-         break;
+   case SF_FORMAT_DOUBLE:
+      bitrateInBps = m_sfinfo.samplerate * 64;
+      break;
 
-      case SF_FORMAT_PCM_32:
-      case SF_FORMAT_FLOAT:
-         bitrate = sfinfo.samplerate*32;
-         break;
+   case SF_FORMAT_G721_32:
+      bitrateInBps = 32000;
+      break;
 
-      case SF_FORMAT_DOUBLE:
-         bitrate = sfinfo.samplerate*64;
-         break;
+   case SF_FORMAT_G723_24:
+      bitrateInBps = 24000;
+      break;
 
-      case SF_FORMAT_G721_32:
-         bitrate = 32000;
-         break;
+   case SF_FORMAT_G723_40:
+      bitrateInBps = 40000;
+      break;
 
-      case SF_FORMAT_G723_24:
-         bitrate = 24000;
-         break;
+   case SF_FORMAT_DWVW_12:
+      bitrateInBps = m_sfinfo.samplerate * 12;
+      break;
 
-      case SF_FORMAT_G723_40:
-         bitrate = 40000;
-         break;
-
-      case SF_FORMAT_DWVW_12:
-         bitrate = sfinfo.samplerate*12;
-         break;
-
-      case SF_FORMAT_ULAW:
-      case SF_FORMAT_ALAW:
-      case SF_FORMAT_IMA_ADPCM:
-      case SF_FORMAT_MS_ADPCM:
-      case SF_FORMAT_GSM610:
-      case SF_FORMAT_DWVW_N:
-         break;
-      }
-
-      // calculate length of audio file
-      if (sfinfo.samplerate != 0)
-         length = int(sfinfo.frames / sfinfo.samplerate);
-
-      // sample rate
-      samplerate = sfinfo.samplerate;
+   case SF_FORMAT_ULAW:
+   case SF_FORMAT_ALAW:
+   case SF_FORMAT_IMA_ADPCM:
+   case SF_FORMAT_MS_ADPCM:
+   case SF_FORMAT_GSM610:
+   case SF_FORMAT_DWVW_N:
+      break;
    }
+
+   // calculate length of audio file
+   if (m_sfinfo.samplerate != 0)
+      lengthInSeconds = int(m_sfinfo.frames / m_sfinfo.samplerate);
+
+   samplerateInHz = m_sfinfo.samplerate;
 }
 
-int SndFileInputModule::decodeSamples(SampleContainer &samples)
+int SndFileInputModule::DecodeSamples(SampleContainer& samples)
 {
    // read samples
    sf_count_t ret;
 
-   if (outbits == 32)
-      ret = sf_readf_int(sndfile,(int *)m_buffer,sndfile_inbufsize);
+   if (m_numOutputBits == 32)
+      ret = sf_readf_int(m_sndfile, (int *)m_buffer, c_sndfileInputBufferSize);
    else
-      ret = sf_readf_short(sndfile,(short *)m_buffer,sndfile_inbufsize);
+      ret = sf_readf_short(m_sndfile, (short *)m_buffer, c_sndfileInputBufferSize);
 
    int iret = static_cast<int>(ret);
 
-   if (ret<0)
+   if (ret < 0)
    {
       char buffer[512];
-      sf_error_str(sndfile,buffer,512);
+      sf_error_str(m_sndfile, buffer, 512);
 
-      lasterror = CString(buffer);
+      m_lastError = CString(buffer);
       return iret;
    }
 
    // put samples in container
-   samples.putSamplesInterleaved(m_buffer,iret);
+   samples.PutSamplesInterleaved(m_buffer, iret);
 
    // count samples
-   samplecount += iret;
+   m_sampleCount += iret;
 
    return iret;
 }
 
-void SndFileInputModule::doneInput()
+float SndFileInputModule::PercentDone() const
 {
-   // closes the file
-   sf_close(sndfile);
+   return m_sfinfo.frames != 0 ? float(m_sampleCount)*100.f / float(m_sfinfo.frames) : 0.f;
+}
 
-   // free buffer
+void SndFileInputModule::DoneInput()
+{
+   sf_close(m_sndfile);
+
    delete[] m_buffer;
 }
 
-bool SndFileInputModule::waveGetId3(LPCTSTR wavfile, TrackInfo &trackinfo)
+bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
 {
    FILE* wav = _tfopen(wavfile, _T("rb"));
-   if (!wav) return false;
+   if (!wav)
+      return false;
 
    // first check for last 0x80 bytes for id3 tag
    {
-      fseek(wav,-128,SEEK_END);
+      fseek(wav, -128, SEEK_END);
 
       // read in id3 tag
       Id3v1Tag id3tag;
-      fread(id3tag.getData(), 128, 1, wav);
+      fread(id3tag.GetData(), 128, 1, wav);
 
-      if (id3tag.isValidTag())
-         id3tag.toTrackInfo(trackinfo);
+      if (id3tag.IsValidTag())
+         id3tag.ToTrackInfo(trackInfo);
 
-      fseek(wav,0,SEEK_SET);
+      fseek(wav, 0, SEEK_SET);
    }
 
-   char buffer[5]; buffer[4]=0;
+   char buffer[5];
+   buffer[4] = 0;
 
    // RIFF header
-   fread(buffer,4,1,wav);
-   if (strcmp(buffer,"RIFF")!=0)
+   fread(buffer, 4, 1, wav);
+   if (strcmp(buffer, "RIFF") != 0)
       return false;
 
    // file length
-   fread(buffer,4,1,wav);
-   int length = *((int*)buffer)+8;
+   fread(buffer, 4, 1, wav);
+   int length = *((int*)buffer) + 8;
 
    // RIFF format type
-   fread(buffer,4,1,wav);
-//   printf("RIFF type: %s, length 0x%08x\n",buffer,length);
-   if (stricmp(buffer,"wave")!=0)
+   fread(buffer, 4, 1, wav);
+   ATLTRACE(_T("RIFF type: %s, length 0x%08x\n"), buffer, length);
+   if (stricmp(buffer, "wave") != 0)
       return false;
 
    // now all chunks follow
    while (!feof(wav))
    {
       // chunk type
-      fread(buffer,4,1,wav);
-//      printf("chunk %s, ",buffer);
+      fread(buffer, 4, 1, wav);
+      ATLTRACE(_T("chunk %s, "), buffer);
 
-      if (strncmp(buffer,"TAG",3)==0)
+      if (strncmp(buffer, "TAG", 3) == 0)
          break;
 
-      bool isid3 = strcmp(buffer,"id3 ")==0;
+      bool isid3 = strcmp(buffer, "id3 ") == 0;
 
       // chunk length
-      fread(buffer,4,1,wav);
+      fread(buffer, 4, 1, wav);
       int clength = *((int*)buffer);
-//      printf("length 0x%08x\n",clength);
+      ATLTRACE(_T("length 0x%08x\n"), clength);
 
       if (isid3)
       {
          // check tag length
-         if (clength!=128) return false;
+         if (clength != 128) return false;
 
          // read in id3 tag
          Id3v1Tag id3tag;
-         fread(id3tag.getData(), 128, 1, wav);
+         fread(id3tag.GetData(), 128, 1, wav);
 
-         if (id3tag.isValidTag())
-            id3tag.toTrackInfo(trackinfo);
+         if (id3tag.IsValidTag())
+            id3tag.ToTrackInfo(trackInfo);
       }
       else
       {
          // jump over chunk
-         if (0!=fseek(wav,clength,SEEK_CUR))
+         if (0 != fseek(wav, clength, SEEK_CUR))
             break;
       }
 
       // check if we are on the end
       int now = ftell(wav);
-      if (now>=length)
+      if (now >= length)
          break;
    }
 
-   // close file
    fclose(wav);
 
    return true;

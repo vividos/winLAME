@@ -1,36 +1,37 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2004 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2016 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file SampleContainer.cpp
 /// \brief functions to convert samples from and to interleaved and channel array format
-
-// needed includes
+//
 #include "stdafx.h"
-#include "SampleContainer.h"
+#include "SampleContainer.hpp"
 #include <cstring>
 
+using Encoder::SampleContainer;
+using Encoder::SampleFormatType;
+
 SampleContainer::SampleContainer()
+   :m_channelArray(nullptr),
+   m_interleaved(nullptr),
+   m_numBytesAvail(0),
+   m_numSamplesAvail(0)
 {
-   channel_array = NULL;
-   interleaved = NULL;
-   samples_avail = 0;
-   mem_avail = 0;
    source.format = (SampleFormatType)-1;
    target.format = (SampleFormatType)-1;
 }
@@ -38,175 +39,180 @@ SampleContainer::SampleContainer()
 SampleContainer::~SampleContainer()
 {
    // clean up memory areas
-   if (channel_array!=NULL)
+   if (m_channelArray != nullptr)
    {
-      for(int i=0; i<target.channels; i++)
-         delete channel_array[i];
+      for (int i = 0; i < target.numChannels; i++)
+         delete m_channelArray[i];
 
-      delete channel_array;
+      delete m_channelArray;
    }
 
-   if (interleaved!=NULL)
-      delete[] interleaved;
+   if (m_interleaved != nullptr)
+      delete[] m_interleaved;
 }
 
-void SampleContainer::setInputModuleTraits(int bits_per_sample,
-   SampleFormatType format, int samplerate, int channels)
+void SampleContainer::SetInputModuleTraits(int bitsPerSample,
+   SampleFormatType format, int samplerateInHz, int numChannels)
 {
    // set up traits struct
-   source.bits_per_sample = bits_per_sample;
+   source.bitsPerSample = bitsPerSample;
    source.format = format;
-   source.samplerate = samplerate;
-   source.channels = channels;
+   source.samplerateInHz = samplerateInHz;
+   source.numChannels = numChannels;
 }
 
-void SampleContainer::setOutputModuleTraits(int bits_per_sample,
-   SampleFormatType format, int samplerate, int channels)
+void SampleContainer::SetOutputModuleTraits(int bitsPerSample,
+   SampleFormatType format, int samplerateInHz, int numChannels)
 {
-   if (samplerate==-1) samplerate = source.samplerate;
-   if (channels==-1) channels = source.channels;
+   if (samplerateInHz == -1)
+      samplerateInHz = source.samplerateInHz;
+   if (numChannels == -1)
+      numChannels = source.numChannels;
 
    // set up traits struct
-   target.bits_per_sample = bits_per_sample;
+   target.bitsPerSample = bitsPerSample;
    target.format = format;
-   target.samplerate = samplerate;
-   target.channels = channels;
+   target.samplerateInHz = samplerateInHz;
+   target.numChannels = numChannels;
 
    // initial value
-   mem_avail = 512;
+   m_numBytesAvail = 512;
 
    // set up channel array or interleaved memory
-   switch(format)
+   switch (format)
    {
    case SamplesChannelArray: // channel array
+   {
+      m_channelArray = new void*[numChannels];
+      for (int i = 0; i < numChannels; i++)
       {
-         channel_array = new void*[channels];
-         for(int i=0; i<channels; i++)
-         {
-            channel_array[i] = new unsigned char[mem_avail * (bits_per_sample>>3)];
-         }
+         m_channelArray[i] = new unsigned char[m_numBytesAvail * (bitsPerSample >> 3)];
       }
-      break;
+   }
+   break;
 
    case SamplesInterleaved: // interleaved
-      interleaved = new unsigned char[mem_avail * (bits_per_sample>>3) * channels];
+      m_interleaved = new unsigned char[m_numBytesAvail * (bitsPerSample >> 3) * numChannels];
       break;
    }
 }
 
-void SampleContainer::putSamplesInterleaved(void *samples, int numsamples)
+void SampleContainer::PutSamplesInterleaved(void* samples, int numSamples)
 {
    // check if there is enough space in the buffer
-   if (numsamples>mem_avail)
-      reallocMemory(numsamples);
+   if (numSamples > m_numBytesAvail)
+      ReallocMemory(numSamples);
 
    // conversion from interleaved to ...
 
-   switch(target.format)
+   switch (target.format)
    {
    case SamplesChannelArray: // channel array
+   {
+      for (int i = 0; i < source.numChannels; i++)
       {
-         for(int i=0; i<source.channels; i++)
-         {
-            deinterleaveChannel((unsigned char*)(samples)+i*(source.bits_per_sample>>3),
-               numsamples, i, source.channels*source.bits_per_sample>>3);
-         }
+         DeinterleaveChannel((unsigned char*)(samples)+i*(source.bitsPerSample >> 3),
+            numSamples, i, source.numChannels*source.bitsPerSample >> 3);
       }
-      break;
-   case SamplesInterleaved: // interleaved
-      {
-         for(int i=0; i<source.channels; i++)
-         {
-            interleaveChannel((unsigned char*)(samples)+i*(source.bits_per_sample>>3),
-               numsamples, i, source.channels*(source.bits_per_sample>>3));
-         }
-      }
-      break;
    }
-   samples_avail = numsamples;
+   break;
+   case SamplesInterleaved: // interleaved
+   {
+      for (int i = 0; i < source.numChannels; i++)
+      {
+         InterleaveChannel((unsigned char*)(samples)+i*(source.bitsPerSample >> 3),
+            numSamples, i, source.numChannels*(source.bitsPerSample >> 3));
+      }
+   }
+   break;
+   }
+
+   m_numSamplesAvail = numSamples;
 }
 
-void SampleContainer::putSamplesArray(void **samples, int numsamples)
+void SampleContainer::PutSamplesArray(void** samples, int numSamples)
 {
    // check if there is enough space in the buffer
-   if (numsamples>mem_avail)
-      reallocMemory(numsamples);
+   if (numSamples > m_numBytesAvail)
+      ReallocMemory(numSamples);
 
    // conversion from channel array to ...
 
-   switch(target.format)
+   switch (target.format)
    {
    case SamplesChannelArray: // channel array
-      {
-         for(int i=0; i<source.channels; i++)
-         {
-            deinterleaveChannel( (unsigned char*)(samples[i]), numsamples,
-               i, source.bits_per_sample>>3);
-         }
-      }
-      break;
-   case SamplesInterleaved: // interleaved
-      {
-         for(int i=0; i<source.channels; i++)
-         {
-            interleaveChannel((unsigned char*)(samples[i]),numsamples,
-               i, source.bits_per_sample>>3);
-         }
-      }
-      break;
-   }
-   samples_avail = numsamples;
-}
-
-void *SampleContainer::getSamplesInterleaved(int &numsamples)
-{
-   numsamples = samples_avail;
-   return interleaved;
-}
-
-void **SampleContainer::getSamplesArray(int &numsamples)
-{
-   numsamples = samples_avail;
-   return channel_array;
-}
-
-void SampleContainer::reallocMemory(int new_samples)
-{
-   mem_avail = new_samples;
-   int new_size = mem_avail * (target.bits_per_sample>>3);
-
-   switch(target.format)
    {
-   case 0: // channel array
+      for (int i = 0; i < source.numChannels; i++)
       {
-         for(int i=0; i<target.channels; i++)
-         {
-            delete channel_array[i];
-            channel_array[i] = new unsigned char[new_size];
-         }
+         DeinterleaveChannel((unsigned char*)(samples[i]), numSamples,
+            i, source.bitsPerSample >> 3);
       }
-      break;
-   case 1: // interleaved
-      delete[] interleaved;
-      interleaved = new unsigned char[new_size * target.channels];
+   }
+   break;
+
+   case SamplesInterleaved: // interleaved
+   {
+      for (int i = 0; i < source.numChannels; i++)
+      {
+         InterleaveChannel((unsigned char*)(samples[i]), numSamples,
+            i, source.bitsPerSample >> 3);
+      }
+   }
+   break;
+   }
+   m_numSamplesAvail = numSamples;
+}
+
+void *SampleContainer::GetSamplesInterleaved(int& numSamples)
+{
+   numSamples = m_numSamplesAvail;
+   return m_interleaved;
+}
+
+void **SampleContainer::GetSamplesArray(int& numSamples)
+{
+   numSamples = m_numSamplesAvail;
+   return m_channelArray;
+}
+
+void SampleContainer::ReallocMemory(int newSamples)
+{
+   m_numBytesAvail = newSamples;
+   int new_size = m_numBytesAvail * (target.bitsPerSample >> 3);
+
+   switch (target.format)
+   {
+   case SamplesChannelArray:
+   {
+      for (int i = 0; i < target.numChannels; i++)
+      {
+         delete m_channelArray[i];
+         m_channelArray[i] = new unsigned char[new_size];
+      }
+   }
+   break;
+
+   case SamplesInterleaved:
+      delete[] m_interleaved;
+      m_interleaved = new unsigned char[new_size * target.numChannels];
       break;
    }
 }
 
-void SampleContainer::interleaveChannel(unsigned char*samples, int numsamples, int channel, int source_step)
+void SampleContainer::InterleaveChannel(unsigned char*samples, int numSamples, int channel, int source_step)
 {
-   int sshift = 32-source.bits_per_sample;
-   int dbps = target.bits_per_sample>>3;
-   int dshift = 32-target.bits_per_sample;
-   int dest_step = target.channels * (target.bits_per_sample>>3);
+   int sshift = 32 - source.bitsPerSample;
+   int dbps = target.bitsPerSample >> 3;
+   int dshift = 32 - target.bitsPerSample;
+   int dest_step = target.numChannels * (target.bitsPerSample >> 3);
 
-   int roundbit = dshift>0 ? (1<<(dshift-1)) : 0;
-   int dest_high = (1<<31)-roundbit;
+   int roundbit = dshift > 0 ? (1 << (dshift - 1)) : 0;
+   int dest_high = (1 << 31) - roundbit;
 
    unsigned char *destbuf =
-      ((unsigned char*)interleaved)+dbps*channel;
+      ((unsigned char*)m_interleaved) + dbps*channel;
 
-   for(int i=0; i<numsamples; i++)
+   for (int i = 0; i < numSamples; i++)
    {
       register signed int sample;
 
@@ -220,21 +226,22 @@ void SampleContainer::interleaveChannel(unsigned char*samples, int numsamples, i
       // do sth with the sample
 
       // add rounding value
-      if (sample<dest_high)
+      if (sample < dest_high)
          sample += roundbit;
 
       // shift to target bps
       sample >>= dshift;
 
       // store sample in destbuf
-      _asm {
+      _asm
+      {
          mov   edi, destbuf
          mov   eax, sample
          mov   ecx, dbps
-      label1:
+         label1 :
          stosb
-         shr   eax, 8
-         loop  label1
+            shr   eax, 8
+            loop  label1
       }
 
       destbuf += dest_step;
@@ -242,19 +249,19 @@ void SampleContainer::interleaveChannel(unsigned char*samples, int numsamples, i
    }
 }
 
-void SampleContainer::deinterleaveChannel(unsigned char*samples, int numsamples, int channel, int source_step)
+void SampleContainer::DeinterleaveChannel(unsigned char*samples, int numSamples, int channel, int source_step)
 {
-   int sshift = 32-source.bits_per_sample;
-   int dbps = target.bits_per_sample>>3;
-   int dshift = 32-target.bits_per_sample;
+   int sshift = 32 - source.bitsPerSample;
+   int dbps = target.bitsPerSample >> 3;
+   int dshift = 32 - target.bitsPerSample;
    int dest_step = dbps;
 
-   int roundbit = dshift>0 ? (1<<(dshift-1)) : 0;
-   int dest_high = (1<<31)-roundbit;
+   int roundbit = dshift > 0 ? (1 << (dshift - 1)) : 0;
+   int dest_high = (1 << 31) - roundbit;
 
-   unsigned char *destbuf = (unsigned char*)channel_array[channel];
+   unsigned char *destbuf = (unsigned char*)m_channelArray[channel];
 
-   for(int i=0; i<numsamples; i++)
+   for (int i = 0; i < numSamples; i++)
    {
       register signed int sample;
 
@@ -268,21 +275,22 @@ void SampleContainer::deinterleaveChannel(unsigned char*samples, int numsamples,
       // do sth with the sample
 
       // add rounding value
-      if (sample<dest_high)
+      if (sample < dest_high)
          sample += roundbit;
 
       // shift to target bps
       sample >>= dshift;
 
       // store sample in destbuf
-      _asm {
+      _asm
+      {
          mov   edi, destbuf
          mov   eax, sample
          mov   ecx, dbps
-      label1:
+         label1 :
          stosb
-         shr   eax, 8
-         loop  label1
+            shr   eax, 8
+            loop  label1
       }
 
       destbuf += dest_step;
@@ -292,14 +300,14 @@ void SampleContainer::deinterleaveChannel(unsigned char*samples, int numsamples,
 }
 
 /*
-void SampleContainer::interleaveSamples(int channels,int bitpersample, int numsamples, void**samples)
+void SampleContainer::interleaveSamples(int channels,int bitpersample, int numSamples, void**samples)
 //void InterleaveSamples(int channels, int len, short **buffer, short *destbuffer)
 {
-   void *destbuf = interleaved;
+   void *destbuf = m_interleaved;
    if (channels==1)
    {
       // mono
-      int len = numsamples * (bitpersample>>3);
+      int len = numSamples * (bitpersample>>3);
       _asm
       {
          mov   ecx, len
@@ -326,7 +334,7 @@ void SampleContainer::interleaveSamples(int channels,int bitpersample, int numsa
       int step = (bitpersample>>3);
       _asm
       {
-         mov   ebx, numsamples
+         mov   ebx, numSamples
          mov   esi, sbuf0
          mov   edx, sbuf1
          mov   edi, destbuf
@@ -358,7 +366,7 @@ void SampleContainer::interleaveSamples(int channels,int bitpersample, int numsa
 
          _asm
          {
-            mov   ebx, numsamples
+            mov   ebx, numSamples
             mov   esi, curbuf
             mov   edi, curdest
 

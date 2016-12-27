@@ -49,10 +49,10 @@ public:
    template <typename Signature>
    Signature GetFunction(LPCSTR functionName)
    {
-      return reinterpret_cast<Signature>(GetProcAddress(m_module, functionName))
+      return reinterpret_cast<Signature>(GetProcAddress(m_module, functionName));
    }
 
-private:
+protected:
    /// dynamic library module handle
    HMODULE m_module;
 };

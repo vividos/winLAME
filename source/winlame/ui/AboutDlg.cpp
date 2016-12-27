@@ -23,7 +23,7 @@
 //
 #include "stdafx.h"
 #include "AboutDlg.hpp"
-#include "ModuleInterface.h"
+#include "ModuleInterface.hpp"
 #include "App.h"
 
 using UI::AboutDlg;
@@ -67,7 +67,7 @@ LRESULT AboutDlg::OnExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, B
 
 CString AboutDlg::GetAboutHtmlText()
 {
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
 
    // load the html template string from resource
 
@@ -116,11 +116,11 @@ CString AboutDlg::GetAboutHtmlText()
       {
          // retrieve list of installed input module names
          varname = _T("<ul>");
-         int max = moduleManager.getInputModuleCount();
+         int max = moduleManager.GetInputModuleCount();
          for (int i = 0; i < max; i++)
          {
             varname += _T("<li>");
-            varname += moduleManager.getInputModuleName(i);
+            varname += moduleManager.GetInputModuleName(i);
             varname += _T("</li>");
          }
          varname += _T("</ul>");
@@ -129,41 +129,41 @@ CString AboutDlg::GetAboutHtmlText()
       {
          // retrieve list of installed output module names
          varname = _T("<ul>");
-         int max = moduleManager.getOutputModuleCount();
+         int max = moduleManager.GetOutputModuleCount();
          for (int i = 0; i < max; i++)
          {
             varname += _T("<li>");
-            varname += moduleManager.getOutputModuleName(i);
+            varname += moduleManager.GetOutputModuleName(i);
             varname += _T("</li>");
          }
          varname += _T("</ul>");
       }
       else if (varname == _T("lameversion"))
-         moduleManager.getModuleVersionString(varname, ID_OM_LAME, 0);
+         moduleManager.GetModuleVersionString(varname, ID_OM_LAME, 0);
       else if (varname == _T("lamecompiler"))
-         moduleManager.getModuleVersionString(varname, ID_OM_LAME, 1);
+         moduleManager.GetModuleVersionString(varname, ID_OM_LAME, 1);
       else if (varname == _T("lamecpufeat"))
-         moduleManager.getModuleVersionString(varname, ID_OM_LAME, 2);
+         moduleManager.GetModuleVersionString(varname, ID_OM_LAME, 2);
       else if (varname == _T("libsndfileversion"))
-         moduleManager.getModuleVersionString(varname, ID_IM_SNDFILE);
+         moduleManager.GetModuleVersionString(varname, ID_IM_SNDFILE);
       else if (varname == _T("madversion"))
-         moduleManager.getModuleVersionString(varname, ID_IM_MAD, 0);
+         moduleManager.GetModuleVersionString(varname, ID_IM_MAD, 0);
       else if (varname == _T("madbuild"))
-         moduleManager.getModuleVersionString(varname, ID_IM_MAD, 3);
+         moduleManager.GetModuleVersionString(varname, ID_IM_MAD, 3);
       else if (varname == _T("vorbisversion"))
-         moduleManager.getModuleVersionString(varname, ID_OM_OGGV);
+         moduleManager.GetModuleVersionString(varname, ID_OM_OGGV);
       else if (varname == _T("bassver"))
-         moduleManager.getModuleVersionString(varname, ID_IM_BASS);
+         moduleManager.GetModuleVersionString(varname, ID_IM_BASS);
       else if (varname == _T("flacver"))
-         moduleManager.getModuleVersionString(varname, ID_IM_FLAC);
+         moduleManager.GetModuleVersionString(varname, ID_IM_FLAC);
       else if (varname == _T("speexversion"))
-         moduleManager.getModuleVersionString(varname, ID_IM_SPEEX);
+         moduleManager.GetModuleVersionString(varname, ID_IM_SPEEX);
       else if (varname == _T("opusversion"))
-         moduleManager.getModuleVersionString(varname, ID_IM_OPUS);
+         moduleManager.GetModuleVersionString(varname, ID_IM_OPUS);
       else if (varname == _T("faadversion"))
-         moduleManager.getModuleVersionString(varname, ID_IM_AAC);
+         moduleManager.GetModuleVersionString(varname, ID_IM_AAC);
       else if (varname == _T("faacversion"))
-         moduleManager.getModuleVersionString(varname, ID_OM_AAC);
+         moduleManager.GetModuleVersionString(varname, ID_OM_AAC);
       else if (varname == _T("wtlversion"))
       {
          varname.Format(_T("%u.%u"),

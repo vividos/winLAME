@@ -21,57 +21,60 @@
 //
 #pragma once
 
-// needed includes
 #include "Task.h"
 #include "UISettings.h"
 #include <atomic>
 
-/// Task to create .m3u playlist file
-class CreatePlaylistTask : public Task
+namespace Encoder
 {
-public:
-   /// ctor, taking list of EncoderJobs
-   CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const EncoderJobList& encoderjoblist);
-   /// ctor, taking list of CDReadJobs
-   CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const std::vector<CDReadJob>& cdreadjoblist);
-   /// dtor
-   virtual ~CreatePlaylistTask() throw() {}
-
-   /// returns current task info; must return immediately
-   virtual TaskInfo GetTaskInfo();
-
-   /// runs task; may take longer
-   virtual void Run();
-
-   /// task should be aborted, e.g. when program is closed
-   virtual void Stop();
-
-private:
-   /// indicates if an extended playlist is created
-   bool m_extendedPlaylist;
-
-   /// filename of playlist to write
-   CString m_playlistFilename;
-
-   /// single playlist entry
-   struct PlaylistEntry
+   /// Task to create .m3u playlist file
+   class CreatePlaylistTask : public Task
    {
-      /// filename of playlist entry
-      CString m_filename;
+   public:
+      /// ctor, taking list of EncoderJobs
+      CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const EncoderJobList& encoderjoblist);
+      /// ctor, taking list of CDReadJobs
+      CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const std::vector<CDReadJob>& cdreadjoblist);
+      /// dtor
+      virtual ~CreatePlaylistTask() throw() {}
 
-      /// title of entry
-      CString m_title;
+      /// returns current task info; must return immediately
+      virtual TaskInfo GetTaskInfo();
 
-      /// track length, in seconds
-      unsigned m_trackLengthInSeconds;
+      /// runs task; may take longer
+      virtual void Run();
+
+      /// task should be aborted, e.g. when program is closed
+      virtual void Stop();
+
+   private:
+      /// indicates if an extended playlist is created
+      bool m_extendedPlaylist;
+
+      /// filename of playlist to write
+      CString m_playlistFilename;
+
+      /// single playlist entry
+      struct PlaylistEntry
+      {
+         /// filename of playlist entry
+         CString m_filename;
+
+         /// title of entry
+         CString m_title;
+
+         /// track length, in seconds
+         unsigned m_trackLengthInSeconds;
+      };
+
+      /// list of playlist entries
+      std::vector<PlaylistEntry> m_playlistEntries;
+
+      /// indicates if task is already finished
+      std::atomic<bool> m_finished;
+
+      /// indicates if task was stopped
+      std::atomic<bool> m_stopped;
    };
 
-   /// list of playlist entries
-   std::vector<PlaylistEntry> m_playlistEntries;
-
-   /// indicates if task is already finished
-   std::atomic<bool> m_finished;
-
-   /// indicates if task was stopped
-   std::atomic<bool> m_stopped;
-};
+} // namespace Encoder

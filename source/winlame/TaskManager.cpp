@@ -187,7 +187,7 @@ bool TaskManager::AreCDExtractTasksRunning() const
    std::for_each(m_deqTaskQueue.begin(), m_deqTaskQueue.end(),
       [&](const std::shared_ptr<Task>& spTask)
    {
-      if (std::dynamic_pointer_cast<CDExtractTask>(spTask) == nullptr)
+      if (std::dynamic_pointer_cast<Encoder::CDExtractTask>(spTask) == nullptr)
          return; // no CD extract task
 
       if (m_mapCompletedTaskInfos.find(spTask->Id()) != m_mapCompletedTaskInfos.end())

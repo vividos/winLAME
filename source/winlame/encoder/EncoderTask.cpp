@@ -1,28 +1,29 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2012 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2016 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file EncoderTask.cpp
 /// \brief encoder task class
-
-// includes
+//
 #include "StdAfx.h"
-#include "EncoderTask.h"
+#include "EncoderTask.hpp"
+
+using Encoder::EncoderTask;
+using Encoder::EncoderTaskSettings;
 
 EncoderTask::EncoderTask(unsigned int dependentTaskId, const EncoderTaskSettings& settings)
 :Task(dependentTaskId),
@@ -47,13 +48,13 @@ CString EncoderTask::GenerateOutputFilename(const CString& inputFilename)
 {
    if (m_precalculatedOutputFilename.IsEmpty())
    {
-      ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-      ModuleManagerImpl& modImpl = reinterpret_cast<ModuleManagerImpl&>(moduleManager);
+      Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+      Encoder::ModuleManagerImpl& modImpl = reinterpret_cast<Encoder::ModuleManagerImpl&>(moduleManager);
 
-      std::unique_ptr<OutputModule> outputModule(modImpl.getOutputModule(m_settings.m_iOutputModuleId));
+      std::unique_ptr<Encoder::OutputModule> outputModule(modImpl.GetOutputModule(m_settings.m_iOutputModuleId));
       ATLASSERT(outputModule != nullptr);
 
-      outputModule->prepareOutput(m_settings.m_settingsManager);
+      outputModule->PrepareOutput(m_settings.m_settingsManager);
 
       m_precalculatedOutputFilename = EncoderImpl::GetOutputFilename(m_settings.m_cszOutputPath, inputFilename, *outputModule.get());
    }
@@ -75,8 +76,8 @@ TaskInfo EncoderTask::GetTaskInfo()
       running ? TaskInfo::statusRunning :
       TaskInfo::statusWaiting);
 
-   float percentDone = EncoderImpl::queryPercentDone();
-   info.Progress(static_cast<unsigned int>(percentDone));
+   float PercentDone = EncoderImpl::queryPercentDone();
+   info.Progress(static_cast<unsigned int>(PercentDone));
 
    return info;
 }

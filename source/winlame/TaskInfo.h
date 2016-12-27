@@ -49,7 +49,7 @@ public:
       :m_uiId(taskId),
        m_taskStatus(statusWaiting),
        m_taskType(taskType),
-       m_uiProgress(0)
+       m_progressInPercent(0)
    {
    }
 
@@ -71,7 +71,7 @@ public:
    TaskType Type() const throw() { return m_taskType; }
 
    /// returns progress in percent; [0; 100]
-   unsigned int Progress() const throw() { return m_uiProgress; }
+   unsigned int Progress() const throw() { return m_progressInPercent; }
 
    // set methods
 
@@ -85,7 +85,7 @@ public:
    void Status(TaskStatus taskStatus) throw() { m_taskStatus = taskStatus; }
 
    /// sets progress in percent; [0; 100]
-   void Progress(unsigned int uiProgress) throw() { m_uiProgress = uiProgress; }
+   void Progress(unsigned int uiProgress) throw() { m_progressInPercent = uiProgress; }
 
 private:
    unsigned int m_uiId;       ///< task id
@@ -93,5 +93,5 @@ private:
    CString m_description;     ///< task description
    TaskStatus m_taskStatus;   ///< status
    TaskType m_taskType;       ///< task type
-   unsigned int m_uiProgress; ///< progress in percent
+   unsigned int m_progressInPercent; ///< progress in percent
 };

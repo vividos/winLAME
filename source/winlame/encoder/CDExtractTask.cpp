@@ -18,37 +18,39 @@
 //
 /// \file CDExtractTask.cpp
 /// \brief CD extract task class
-
-// includes
+//
 #include "StdAfx.h"
 #include "CDExtractTask.hpp"
-#include "WaveOutputModule.h"
+#include "SndFileOutputModule.hpp"
 #include "UISettings.h"
 #include "resource.h"
 #include <basscd.h>
 #include "CDRipTitleFormatManager.hpp"
 
+using Encoder::CDExtractTask;
+using Encoder::TrackInfo;
+
 CDExtractTask::CDExtractTask(unsigned int dependentTaskId, const CDRipDiscInfo& discinfo, const CDRipTrackInfo& trackinfo)
-:Task(dependentTaskId),
-m_discinfo(discinfo),
-m_trackinfo(trackinfo),
-m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
-m_bStopped(false),
-m_running(false),
-m_finished(false),
-m_uiProgress(0)
+   :Task(dependentTaskId),
+   m_discinfo(discinfo),
+   m_trackinfo(trackinfo),
+   m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
+   m_stopped(false),
+   m_running(false),
+   m_finished(false),
+   m_progressInPercent(0)
 {
    m_title = CDRipTitleFormatManager::FormatTitle(
-      m_discinfo.m_bVariousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
+      m_discinfo.m_variousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
       m_discinfo, m_trackinfo);
 
-   if (m_trackinfo.m_cszRippedFilename.IsEmpty())
+   if (m_trackinfo.m_rippedFilename.IsEmpty())
    {
-      CString cszDiscTrackTitle = CDRipTitleFormatManager::GetFilenameByTitle(m_title);
+      CString discTrackTitle = CDRipTitleFormatManager::GetFilenameByTitle(m_title);
 
-      CString cszTempFilename = GetTempFilename(cszDiscTrackTitle);
+      CString tempFilename = GetTempFilename(discTrackTitle);
 
-      m_trackinfo.m_cszRippedFilename = cszTempFilename;
+      m_trackinfo.m_rippedFilename = tempFilename;
    }
 }
 
@@ -60,7 +62,7 @@ TaskInfo CDExtractTask::GetTaskInfo()
 
    CString desc;
    desc.Format(IDS_CDEXTRACT_DESC_US,
-      m_trackinfo.m_nTrackOnDisc,
+      m_trackinfo.m_numTrackOnDisc,
       m_title);
    info.Description(desc);
 
@@ -69,7 +71,7 @@ TaskInfo CDExtractTask::GetTaskInfo()
       m_running ? TaskInfo::statusRunning :
       TaskInfo::statusWaiting);
 
-   info.Progress(m_finished ? 100 : m_uiProgress);
+   info.Progress(m_finished ? 100 : m_progressInPercent);
 
    return info;
 }
@@ -77,155 +79,156 @@ TaskInfo CDExtractTask::GetTaskInfo()
 void CDExtractTask::Run()
 {
    m_running = true;
-   ExtractTrack(m_trackinfo.m_cszRippedFilename);
+   ExtractTrack(m_trackinfo.m_rippedFilename);
    m_running = false;
    m_finished = true;
 }
 
 void CDExtractTask::Stop()
 {
-   m_bStopped = true;
+   m_stopped = true;
 }
 
-CString CDExtractTask::GetTempFilename(const CString& cszDiscTrackTitle) const
+CString CDExtractTask::GetTempFilename(const CString& discTrackTitle) const
 {
-   CString cszGuid;
-   cszGuid.Format(_T("{%08x-%08x}"), ::GetCurrentProcessId(), ::GetCurrentThreadId());
+   CString guid;
+   guid.Format(_T("{%08x-%08x}"), ::GetCurrentProcessId(), ::GetCurrentThreadId());
 
    // add slash to temp folder if necessary
-   CString cszTempFolder(m_uiSettings.cdrip_temp_folder);
-   Path::AddEndingBackslash(cszTempFolder);
+   CString tempFolder(m_uiSettings.cdrip_temp_folder);
+   Path::AddEndingBackslash(tempFolder);
 
-   CString cszTempFilename;
-   cszTempFilename.Format(_T("%s\\(%02u) %s%s.wav"),
-      cszTempFolder,
-      m_trackinfo.m_nTrackOnDisc + 1,
-      cszDiscTrackTitle, cszGuid);
+   CString tempFilename;
+   tempFilename.Format(_T("%s\\(%02u) %s%s.wav"),
+      tempFolder.GetString(),
+      m_trackinfo.m_numTrackOnDisc + 1,
+      discTrackTitle.GetString(),
+      guid.GetString());
 
-   return cszTempFilename;
+   return tempFilename;
 }
 
-bool CDExtractTask::ExtractTrack(const CString& cszTempFilename)
+bool CDExtractTask::ExtractTrack(const CString& tempFilename)
 {
-   if (m_bStopped)
+   if (m_stopped)
    {
       return false;
    }
 
    // check disc ID
-   CString cszCDID(BASS_CD_GetID(m_discinfo.m_nDiscDrive, BASS_CDID_CDDB));
-   if (cszCDID != m_discinfo.m_cszCDID)
+   CString CDID(BASS_CD_GetID(m_discinfo.m_discDrive, BASS_CDID_CDDB));
+   if (CDID != m_discinfo.m_CDID)
    {
       SetTaskError(IDS_CDRIP_PAGE_ERROR_WRONG_CD);
       return false;
    }
 
-   DWORD nTrackLength = BASS_CD_GetTrackLength(m_discinfo.m_nDiscDrive, m_trackinfo.m_nTrackOnDisc);
-   DWORD nCurLength = 0;
+   DWORD trackLength = BASS_CD_GetTrackLength(m_discinfo.m_discDrive, m_trackinfo.m_numTrackOnDisc);
+   DWORD currentLength = 0;
 
-   BASS_Init(0, 44100, 0, NULL, NULL);
+   BASS_Init(0, 44100, 0, nullptr, nullptr);
 
-   HSTREAM hStream = BASS_CD_StreamCreate(m_discinfo.m_nDiscDrive, m_trackinfo.m_nTrackOnDisc,
+   HSTREAM hStream = BASS_CD_StreamCreate(m_discinfo.m_discDrive, m_trackinfo.m_numTrackOnDisc,
       BASS_STREAM_DECODE);
 
-   DWORD nError = BASS_ErrorGetCode();
+   DWORD error = BASS_ErrorGetCode();
 
-   if (hStream == 0 || nError != BASS_OK)
+   if (hStream == 0 || error != BASS_OK)
       return false;
 
-   WaveOutputModule outmod;
+   Encoder::SndFileOutputModule outputModule;
 
-   if (!outmod.isAvailable())
+   if (!outputModule.IsAvailable())
    {
       SetTaskError(IDS_CDRIP_PAGE_WAVE_OUTPUT_NOT_AVAIL);
       return false;
    }
 
    SettingsManager mgr;
-   TrackInfo outtrackinfo;
-   SampleContainer samplecont;
+   TrackInfo outputTrackInfo;
+   SampleContainer samples;
    {
-      samplecont.setInputModuleTraits(16, SamplesInterleaved, 44100, 2);
+      samples.SetInputModuleTraits(16, SamplesInterleaved, 44100, 2);
       mgr.setValue(SndFileFormat, SF_FORMAT_WAV);
       mgr.setValue(SndFileSubType, SF_FORMAT_PCM_16);
 
-      outtrackinfo.ResetInfos();
+      outputTrackInfo.ResetInfos();
       CDReadJob cdReadJob(m_discinfo, m_trackinfo);
-      SetTrackInfoFromCDTrackInfo(outtrackinfo, cdReadJob);
+      SetTrackInfoFromCDTrackInfo(outputTrackInfo, cdReadJob);
 
-      outmod.prepareOutput(mgr);
-      int nRet = outmod.initOutput(cszTempFilename, mgr, outtrackinfo, samplecont);
-      if (nRet < 0)
+      outputModule.PrepareOutput(mgr);
+      int ret = outputModule.InitOutput(tempFilename, mgr, outputTrackInfo, samples);
+      if (ret < 0)
       {
          CString text;
-         text.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, cszTempFilename);
+         text.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, tempFilename);
          SetTaskError(text);
          return false;
       }
    }
 
-   const unsigned int nBufferSize = 65536;
+   const unsigned int bufferSize = 65536;
 
-   std::vector<signed short> vecBuffer(nBufferSize);
+   std::vector<signed short> vecBuffer(bufferSize);
 
-   bool bFinished = true;
+   bool isFinished = true;
 
    while (BASS_ACTIVE_STOPPED != BASS_ChannelIsActive(hStream))
    {
-      DWORD nAvail = BASS_ChannelGetData(hStream, &vecBuffer[0], nBufferSize*sizeof(vecBuffer[0]));
+      DWORD availBytes = BASS_ChannelGetData(hStream, &vecBuffer[0], bufferSize * sizeof(vecBuffer[0]));
 
-      if (nAvail == 0)
+      if (availBytes == 0)
          break; // couldn't read more samples
 
-      samplecont.putSamplesInterleaved(&vecBuffer[0], nAvail / sizeof(vecBuffer[0]) / 2);
+      samples.PutSamplesInterleaved(&vecBuffer[0], availBytes / sizeof(vecBuffer[0]) / 2);
 
-      nCurLength += nAvail;
+      currentLength += availBytes;
 
-      if (m_bStopped)
+      if (m_stopped)
       {
-         bFinished = false;
+         isFinished = false;
          break;
       }
 
-      m_uiProgress = nCurLength * 100 / nTrackLength;
+      m_progressInPercent = currentLength * 100 / trackLength;
 
-      int nRet = outmod.encodeSamples(samplecont);
-      if (nRet < 0)
+      int ret = outputModule.EncodeSamples(samples);
+      if (ret < 0)
          break;
    }
 
    BASS_StreamFree(hStream);
    BASS_Free();
 
-   outmod.doneOutput();
+   outputModule.DoneOutput();
 
-   return bFinished;
+   return isFinished;
 }
 
-void CDExtractTask::SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, const CDReadJob& cdReadJob)
+void CDExtractTask::SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, const Encoder::CDReadJob& cdReadJob)
 {
    const CDRipDiscInfo& discInfo = cdReadJob.DiscInfo();
    const CDRipTrackInfo& cdTrackInfo = cdReadJob.TrackInfo();
 
    // add track info
-   encodeTrackInfo.TextInfo(TrackInfoTitle, cdTrackInfo.m_cszTrackTitle);
+   encodeTrackInfo.TextInfo(TrackInfoTitle, cdTrackInfo.m_trackTitle);
 
-   CString value = discInfo.m_cszDiscArtist;
-   if (discInfo.m_bVariousArtists)
+   CString value = discInfo.m_discArtist;
+   if (discInfo.m_variousArtists)
       value.LoadString(IDS_CDRIP_ARTIST_VARIOUS);
 
    encodeTrackInfo.TextInfo(TrackInfoArtist, value);
 
-   encodeTrackInfo.TextInfo(TrackInfoAlbum, discInfo.m_cszDiscTitle);
+   encodeTrackInfo.TextInfo(TrackInfoAlbum, discInfo.m_discTitle);
 
    // year
-   if (discInfo.m_nYear != 0)
-      encodeTrackInfo.NumberInfo(TrackInfoYear, discInfo.m_nYear);
+   if (discInfo.m_year != 0)
+      encodeTrackInfo.NumberInfo(TrackInfoYear, discInfo.m_year);
 
    // track number
-   encodeTrackInfo.NumberInfo(TrackInfoTrack, cdTrackInfo.m_nTrackOnDisc + 1);
+   encodeTrackInfo.NumberInfo(TrackInfoTrack, cdTrackInfo.m_numTrackOnDisc + 1);
 
    // genre
-   if (!discInfo.m_cszGenre.IsEmpty())
-      encodeTrackInfo.TextInfo(TrackInfoGenre, discInfo.m_cszGenre);
+   if (!discInfo.m_genre.IsEmpty())
+      encodeTrackInfo.TextInfo(TrackInfoGenre, discInfo.m_genre);
 }

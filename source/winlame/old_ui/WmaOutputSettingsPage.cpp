@@ -59,7 +59,7 @@ LRESULT WmaOutputSettingsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lPa
 void WmaOutputSettingsPage::OnEnterPage()
 {
    // get settings manager
-   SettingsManager &mgr = pui->getUISettings().settings_manager;
+   SettingsManager& mgr = pui->getUISettings().settings_manager;
    
    // set output bitrate
    SetDlgItemInt(IDC_WMA_EDIT_BITRATE,mgr.queryValueInt(WmaBitrate),FALSE);
@@ -73,7 +73,7 @@ void WmaOutputSettingsPage::OnEnterPage()
 bool WmaOutputSettingsPage::OnLeavePage()
 {
    // get settings manager
-   SettingsManager &mgr = pui->getUISettings().settings_manager;
+   SettingsManager& mgr = pui->getUISettings().settings_manager;
 
    mgr.setValue(WmaBitrate,(int)GetDlgItemInt(IDC_WMA_EDIT_BITRATE,NULL,FALSE));
    mgr.setValue(WmaQuality,(int)GetDlgItemInt(IDC_WMA_EDIT_QUALITY,NULL,FALSE));

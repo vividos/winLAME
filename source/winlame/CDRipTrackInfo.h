@@ -21,22 +21,30 @@
 //
 #pragma once
 
+/// contains infos about a CD track to rip
 struct CDRipTrackInfo
 {
+   /// ctor
    CDRipTrackInfo()
-      :m_nTrackOnDisc(0),
-      m_nTrackLength(0),
-      m_bActive(true)
+      :m_numTrackOnDisc(0),
+      m_trackLengthInSeconds(0),
+      m_isActive(true)
    {
    }
 
-   unsigned int m_nTrackOnDisc;
-   CString m_cszTrackTitle;
-   //CString m_cszTrackArtist; // TODO fill
+   /// number of track on disc
+   unsigned int m_numTrackOnDisc;
 
-   unsigned int m_nTrackLength;
+   /// track title
+   CString m_trackTitle;
+   //CString m_trackArtist; // TODO fill
 
-   bool m_bActive;
+   /// track length, in seconds
+   unsigned int m_trackLengthInSeconds;
 
-   CString m_cszRippedFilename;
+   /// indicates if track is active (should be ripped)
+   bool m_isActive;
+
+   /// ripped filename in temp folder
+   CString m_rippedFilename;
 };

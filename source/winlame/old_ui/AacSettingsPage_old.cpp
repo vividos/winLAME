@@ -111,7 +111,7 @@ void AacSettingsPage::UpdateBandwidth()
 void AacSettingsPage::OnEnterPage()
 {
    // get settings manager
-   SettingsManager &mgr = pui->getUISettings().settings_manager;
+   SettingsManager& mgr = pui->getUISettings().settings_manager;
 
    // set bitrate and bandwidth
    SetDlgItemInt(IDC_AAC_EDIT_BITRATE,mgr.queryValueInt(AacBitrate),FALSE);
@@ -150,7 +150,7 @@ void AacSettingsPage::OnEnterPage()
 bool AacSettingsPage::OnLeavePage()
 {
    // get settings manager
-   SettingsManager &mgr = pui->getUISettings().settings_manager;
+   SettingsManager& mgr = pui->getUISettings().settings_manager;
 
    // get bitrate and bandwidth
    mgr.setValue(AacBitrate,(int)GetDlgItemInt(IDC_AAC_EDIT_BITRATE,NULL,FALSE));

@@ -105,7 +105,7 @@ protected:
    void ExtractAudio();
 
    /// extracts single track
-   bool ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo, const CString& cszTempFilename);
+   bool ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo, const CString& tempFilename);
 
 protected:
    /// bevel line

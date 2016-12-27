@@ -43,7 +43,7 @@
 
 class EncodePage:
    public PageBase,
-   public EncoderErrorHandler,
+   public Encoder::EncoderErrorHandler,
    public CDialogResize<EncodePage>
 {
 public:
@@ -63,7 +63,7 @@ public:
       helpID = IDS_HTML_ENCODE;
 
       // create new encoder object
-      encoder = EncoderInterface::getNewEncoder();
+      encoder = Encoder::EncoderInterface::getNewEncoder();
    }
 
    /// dtor
@@ -140,7 +140,7 @@ END_MSG_MAP()
    // virtual function from EncoderErrorHandler
 
    /// error handler function
-   virtual EncoderErrorHandler::ErrorAction handleError(LPCTSTR infilename,
+   virtual Encoder::EncoderErrorHandler::ErrorAction handleError(LPCTSTR infilename,
       LPCTSTR modulename, int errnum, LPCTSTR errormsg, bool bSkipDisabled=false);
 
    // virtual function from PageBase
@@ -167,7 +167,7 @@ protected:
    CImageList ilIcons;
 
    /// encoder instance
-   EncoderInterface *encoder;
+   Encoder::EncoderInterface *encoder;
 
    /// indicates if infos about a new file to encode are available
    bool newfile;

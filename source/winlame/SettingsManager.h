@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2008 Michael Fink
+   Copyright (c) 2000-2016 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -43,7 +43,10 @@ class SettingsManager
 {
 public:
    /// ctor
-   SettingsManager(){}
+   SettingsManager() {}
+
+   /// returns variable
+   int QueryValueInt(unsigned short name) { return queryValueInt(name); }
 
    /// returns variable
    int queryValueInt(unsigned short name);

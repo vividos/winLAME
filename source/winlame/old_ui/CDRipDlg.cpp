@@ -26,7 +26,7 @@
 #include "CDRipTrackManager.h"
 #include "OptionsDlg.h"
 #include "basscd.h"
-#include "encoder/TrackInfo.h"
+#include "encoder/TrackInfo.hpp"
 #include <shellapi.h>
 #include <atlctrlx.h> // CWaitCursor
 #include "DynamicLibrary.h"
@@ -129,8 +129,8 @@ LRESULT CDRipDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
    SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, cszText);
 
    // genre combobox
-   LPCTSTR* apszGenre = TrackInfo::GetGenreList();
-   for (unsigned int i=0, iMax=TrackInfo::GetGenreListLength(); i<iMax; i++)
+   LPCTSTR* apszGenre = Encoder::TrackInfo::GetGenreList();
+   for (unsigned int i=0, iMax = Encoder::TrackInfo::GetGenreListLength(); i<iMax; i++)
       m_cbGenre.AddString(apszGenre[i]);
 
    // misc.
@@ -503,25 +503,25 @@ void CDRipDlg::UpdateTrackManager()
    DWORD nDrive = GetCurrentDrive();
 
    CDRipDiscInfo& discinfo = pManager->GetDiscInfo();
-   discinfo.m_nDiscDrive = nDrive;
+   discinfo.m_discDrive = nDrive;
 
-   GetDlgItemText(IDC_CDSELECT_EDIT_TITLE, discinfo.m_cszDiscTitle);
+   GetDlgItemText(IDC_CDSELECT_EDIT_TITLE, discinfo.m_discTitle);
 
-   GetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, discinfo.m_cszDiscArtist);
+   GetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, discinfo.m_discArtist);
 
-   discinfo.m_nYear = GetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, NULL, FALSE);
+   discinfo.m_year = GetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, NULL, FALSE);
 
    int nItem = m_cbGenre.GetCurSel();
    if (nItem == CB_ERR)
    {
-      m_cbGenre.GetWindowText(discinfo.m_cszGenre);
+      m_cbGenre.GetWindowText(discinfo.m_genre);
    }
    else
-      m_cbGenre.GetLBText(nItem, discinfo.m_cszGenre);
+      m_cbGenre.GetLBText(nItem, discinfo.m_genre);
 
-   discinfo.m_bVariousArtists = BST_CHECKED == m_checkVariousArtists.GetCheck();
+   discinfo.m_variousArtists = BST_CHECKED == m_checkVariousArtists.GetCheck();
 
-   discinfo.m_cszCDID = BASS_CD_GetID(nDrive, BASS_CDID_CDDB);
+   discinfo.m_CDID = BASS_CD_GetID(nDrive, BASS_CDID_CDDB);
 
    pManager->ResetTrackInfo();
 
@@ -554,9 +554,9 @@ void CDRipDlg::UpdateTrackManager()
       CDRipTrackInfo trackinfo;
 
       unsigned int nTrack = vecTracks[n];
-      trackinfo.m_nTrackOnDisc = nTrack;
-      m_lcTracks.GetItemText(nTrack, 1, trackinfo.m_cszTrackTitle);
-      trackinfo.m_nTrackLength = BASS_CD_GetTrackLength(nDrive, nTrack) / 176400L;
+      trackinfo.m_numTrackOnDisc = nTrack;
+      m_lcTracks.GetItemText(nTrack, 1, trackinfo.m_trackTitle);
+      trackinfo.m_trackLengthInSeconds = BASS_CD_GetTrackLength(nDrive, nTrack) / 176400L;
 
       pManager->AddTrackInfo(trackinfo);
    }
@@ -593,20 +593,20 @@ void CDRipDlg::StoreInCdplayerIni(unsigned int nDrive)
    ini.WriteString(cdplayer_id, _T("numtracks"), cszFormat);
 
    // artist
-   ini.WriteString(cdplayer_id, _T("artist"), discinfo.m_cszDiscArtist);
+   ini.WriteString(cdplayer_id, _T("artist"), discinfo.m_discArtist);
 
    // title
-   ini.WriteString(cdplayer_id, _T("title"), discinfo.m_cszDiscTitle);
+   ini.WriteString(cdplayer_id, _T("title"), discinfo.m_discTitle);
 
    // year
-   if (discinfo.m_nYear > 0)
+   if (discinfo.m_year > 0)
    {
-      cszFormat.Format(_T("%u"), discinfo.m_nYear);
+      cszFormat.Format(_T("%u"), discinfo.m_year);
       ini.WriteString(cdplayer_id, _T("year"), cszFormat);
    }
 
    // genre
-   ini.WriteString(cdplayer_id, _T("genre"), discinfo.m_cszGenre);
+   ini.WriteString(cdplayer_id, _T("genre"), discinfo.m_genre);
 
    // tracks
    CString cszTrackText;
@@ -629,17 +629,17 @@ void CDRipDlg::UpdatePlaylistFilename()
    CDRipTrackManager* pManager = CDRipTrackManager::getCDRipTrackManager();
    CDRipDiscInfo& discInfo = pManager->GetDiscInfo();
 
-   if (discInfo.m_bVariousArtists)
+   if (discInfo.m_variousArtists)
    {
       m_uiSettings.playlist_filename.Format(
          _T("%s.m3u"),
-         discInfo.m_cszDiscTitle);
+         discInfo.m_discTitle);
    }
    else
    {
       m_uiSettings.playlist_filename.Format(
          _T("%s - %s.m3u"),
-         discInfo.m_cszDiscArtist, discInfo.m_cszDiscTitle);
+         discInfo.m_discArtist, discInfo.m_discTitle);
    }
 }
 

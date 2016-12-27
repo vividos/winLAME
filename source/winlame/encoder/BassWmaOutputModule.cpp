@@ -1,226 +1,228 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2004 DeXT
-   Copyright (c) 2009 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2004 DeXT
+// Copyright (c) 2009-2016 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file BassWmaOutputModule.cpp
 /// \brief contains the implementation of the basswma output module
-
-// needed includes
+//
 #include "stdafx.h"
 #include "resource.h"
-#include "BassWmaOutputModule.h"
+#include "BassWmaOutputModule.hpp"
+#include "DynamicLibrary.h"
 
-// BassWmaOutputModule methods
+using Encoder::BassWmaOutputModule;
+using Encoder::TrackInfo;
+using Encoder::SampleContainer;
 
 BassWmaOutputModule::BassWmaOutputModule()
 {
-   module_id = ID_OM_BASSWMA;
+   m_moduleId = ID_OM_BASSWMA;
 }
 
-bool BassWmaOutputModule::isAvailable()
+bool BassWmaOutputModule::IsAvailable() const
 {
-   HMODULE dll = ::LoadLibrary(_T("bass.dll"));
-   bool avail = dll != NULL;
-   if (avail) ::FreeLibrary(dll);
+   DynamicLibrary bassLib(_T("bass.dll"));
+   DynamicLibrary bassWmaLib(_T("basswma.dll"));
 
-   HMODULE wmadll = ::LoadLibrary(_T("basswma.dll"));
-   bool basswma = wmadll != NULL;
-   if (basswma) ::FreeLibrary(wmadll);
-
-   return (avail && basswma);
+   return bassLib.IsLoaded() && bassWmaLib.IsLoaded();
 }
 
-void BassWmaOutputModule::getDescription(CString& desc)
+void BassWmaOutputModule::GetDescription(CString& desc) const
 {
    // format string
    desc.Format(IDS_FORMAT_INFO_BASS_WMA_OUTPUT,
-      brmode ? _T("Quality ") : _T(""),
-      brmode ? bitrate : bitrate/1000,
-      brmode ? _T("%") : _T(" kbps"),
-      brmode ? _T("VBR") : _T("CBR"),
-      samplerate,
-      channels);
+      m_bitrateMode == 1 ? _T("Quality ") : _T(""),
+      m_bitrateMode == 1 ? m_quality : m_bitrateInBps / 1000,
+      m_bitrateMode == 1 ? _T("%") : _T(" kbps"),
+      m_bitrateMode == 1 ? _T("VBR") : _T("CBR"),
+      m_samplerateInHz,
+      m_numChannels);
 }
 
-void BassWmaOutputModule::prepareOutput(SettingsManager &mgr)
+void BassWmaOutputModule::PrepareOutput(SettingsManager& mgr)
 {
-   brmode = mgr.queryValueInt(WmaBitrateMode);
-   switch (brmode)
+   m_bitrateMode = mgr.QueryValueInt(WmaBitrateMode);
+   switch (m_bitrateMode)
    {
    case 1: // VBR
-      bitrate = mgr.queryValueInt(WmaQuality);
+      m_quality = mgr.QueryValueInt(WmaQuality);
       break;
+
    case 0: // CBR
    default:
-      bitrate = mgr.queryValueInt(WmaBitrate) * 1000;
+      m_bitrateInBps = mgr.QueryValueInt(WmaBitrate) * 1000;
       break;
    }
 }
 
-int BassWmaOutputModule::initOutput(LPCTSTR outfilename,
-   SettingsManager &mgr, const TrackInfo& trackinfo,
-   SampleContainer &samplecont)
+int BassWmaOutputModule::InitOutput(LPCTSTR outfilename,
+   SettingsManager& mgr, const TrackInfo& trackInfo,
+   SampleContainer& samples)
 {
-   samplerate = samplecont.getInputModuleSampleRate();
-   channels = samplecont.getInputModuleChannels();
+   m_samplerateInHz = samples.GetInputModuleSampleRate();
+   m_numChannels = samples.GetInputModuleChannels();
 
-   /* check that BASS 2.0 was loaded */
+   // check that BASS 2.4 was loaded
    if ((HIWORD(BASS_GetVersion()) != BASSVERSION))
    {
-      lasterror.LoadString(IDS_BASS_DLL_ERROR_VERSION_MISMATCH);
+      m_lastError.LoadString(IDS_BASS_DLL_ERROR_VERSION_MISMATCH);
       return -1;
    }
 
-   /* not playing anything, so don't need an update thread */
-   BASS_SetConfig(BASS_CONFIG_UPDATEPERIOD,0);
+   // not playing anything, so don't need an update thread
+   BASS_SetConfig(BASS_CONFIG_UPDATEPERIOD, 0);
 
-   /* setup output - "no sound" device, 44100hz, stereo, 16 bits */
-   if (!BASS_Init(0,samplerate,0,0,NULL))
+   // setup output - "no sound" device, 44100hz, stereo, 16 bits
+   if (!BASS_Init(0, m_samplerateInHz, 0, 0, NULL))
    {
-      lasterror.LoadString(IDS_ENCODER_ERROR_INIT_ENCODER);
+      m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_ENCODER);
       return -1;
    }
 
    // find nearest valid bitrate
-   BOOL valid_rate = FALSE;
-   DWORD nearest_rate = 0;
-   const DWORD* avail_rates=BASS_WMA_EncodeGetRates(samplerate,channels,brmode == 1 ? BASS_WMA_ENCODE_RATES_VBR : 0);
-   while (avail_rates && *avail_rates) {
-      if (static_cast<DWORD>(bitrate) == *avail_rates) {
-         valid_rate = TRUE;
+   DWORD bitrateOrQuality = m_bitrateMode == 1 ? m_bitrateInBps : m_quality;
+   bool validRate = false;
+   DWORD nearestRate = 0;
+   const DWORD* availableRates = BASS_WMA_EncodeGetRates(m_samplerateInHz, m_numChannels, m_bitrateMode == 1 ? BASS_WMA_ENCODE_RATES_VBR : 0);
+   while (availableRates && *availableRates) {
+      if (bitrateOrQuality == *availableRates)
+      {
+         validRate = true;
          break;
       }
-      if (static_cast<DWORD>(bitrate) < *avail_rates || nearest_rate == 0) nearest_rate = *avail_rates;
-      avail_rates++;
+
+      if (bitrateOrQuality < *availableRates || nearestRate == 0)
+         nearestRate = *availableRates;
+      availableRates++;
    }
-   if (!valid_rate) bitrate = nearest_rate;
+
+   if (!validRate)
+      bitrateOrQuality = nearestRate;
 
    // opens the file for writing
-   handle=BASS_WMA_EncodeOpenFile(samplerate, channels, 0, bitrate, CStringA(outfilename));
-   if(handle == NULL)
+   m_handle = BASS_WMA_EncodeOpenFile(m_samplerateInHz, m_numChannels, 0, bitrateOrQuality, CStringA(outfilename));
+   if (m_handle == NULL)
    {
-      CString cszError;
-      int bass_error = BASS_ErrorGetCode();
-      switch(bass_error)
+      CString errorText;
+      int errorCode = BASS_ErrorGetCode();
+      switch (errorCode)
       {
       case BASS_ERROR_ILLPARAM:
-         cszError = _T("BASS_ERROR_ILLPARAM");
+         errorText = _T("BASS_ERROR_ILLPARAM");
          break;
       case BASS_ERROR_NOTAVAIL:
-         cszError = _T("BASS_ERROR_NOTAVAIL");
+         errorText = _T("BASS_ERROR_NOTAVAIL");
          break;
       case BASS_ERROR_CREATE:
-         cszError = _T("BASS_ERROR_CREATE");
+         errorText = _T("BASS_ERROR_CREATE");
          break;
       case BASS_ERROR_UNKNOWN:
-         cszError = _T("BASS_ERROR_UNKNOWN");
+         errorText = _T("BASS_ERROR_UNKNOWN");
          break;
       default:
-         cszError.Format(_T("BASS_ErrorCode: %u"), bass_error);
+         errorText.Format(_T("BASS_ErrorCode: %u"), errorCode);
+         break;
       }
 
-      lasterror.LoadString(IDS_ENCODER_ERROR_INIT_ENCODER);
-      lasterror += _T(" (");
-      lasterror += cszError;
-      lasterror += _T(")");
+      m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_ENCODER);
+      m_lastError.AppendFormat(_T(" (%s)"), errorText.GetString());
       return -1;
    }
 
    // add track properties
-   {
-      CString prop;
-      bool bAvail;
-
-      prop = trackinfo.TextInfo(TrackInfoTitle, bAvail);
-      if (bAvail && !prop.IsEmpty())
-      {
-         BASS_WMA_EncodeSetTag(handle, "Title", CStringA(prop), BASS_WMA_TAG_ANSI);
-      }
-
-      prop = trackinfo.TextInfo(TrackInfoArtist, bAvail);
-      if (bAvail && !prop.IsEmpty())
-      {
-         BASS_WMA_EncodeSetTag(handle, "Author", CStringA(prop), BASS_WMA_TAG_ANSI);
-      }
-
-      prop = trackinfo.TextInfo(TrackInfoAlbum, bAvail);
-      if (bAvail && !prop.IsEmpty())
-      {
-         BASS_WMA_EncodeSetTag(handle, "WM/AlbumTitle", CStringA(prop), BASS_WMA_TAG_ANSI);
-      }
-
-      int iProp = trackinfo.NumberInfo(TrackInfoYear, bAvail);
-      if (bAvail && iProp != -1)
-      {
-         prop.Format(_T("%u"), iProp);
-         BASS_WMA_EncodeSetTag(handle, "WM/Year", CStringA(prop), BASS_WMA_TAG_ANSI);
-      }
-
-      prop = trackinfo.TextInfo(TrackInfoComment, bAvail);
-      if (bAvail && !prop.IsEmpty())
-      {
-         BASS_WMA_EncodeSetTag(handle, "Description", CStringA(prop), BASS_WMA_TAG_ANSI);
-      }
-
-      iProp = trackinfo.NumberInfo(TrackInfoTrack, bAvail);
-      if (bAvail && iProp != -1)
-      {
-         prop.Format(_T("%u"), iProp);
-         BASS_WMA_EncodeSetTag(handle, "WM/TrackNumber", CStringA(prop), BASS_WMA_TAG_ANSI);
-      }
-
-      prop = trackinfo.TextInfo(TrackInfoGenre, bAvail);
-      if (bAvail && !prop.IsEmpty())
-      {
-         BASS_WMA_EncodeSetTag(handle, "WM/Genre", CStringA(prop), BASS_WMA_TAG_ANSI);
-      }
-
-      BASS_WMA_EncodeSetTag(handle,"WM/ToolName","winLAME", BASS_WMA_TAG_ANSI);
-      BASS_WMA_EncodeSetTag(handle,0,0, BASS_WMA_TAG_ANSI);
-   }
+   AddTrackInfo(trackInfo);
 
    // set up output traits
-   samplecont.setOutputModuleTraits(16, SamplesInterleaved);
+   samples.SetOutputModuleTraits(16, SamplesInterleaved);
 
    return 0;
 }
 
-int BassWmaOutputModule::encodeSamples(SampleContainer &samples)
+int BassWmaOutputModule::EncodeSamples(SampleContainer& samples)
 {
    // get samples
-   int numsamples=0;
-   void *sbuf = samples.getSamplesInterleaved(numsamples);
+   int numSamples = 0;
+   void* sampleBuffer = samples.GetSamplesInterleaved(numSamples);
 
    // write samples
-   int ret=numsamples*sizeof(short)*channels; // bytes
-   if (!BASS_WMA_EncodeWrite(handle,sbuf,ret))
+   int ret = numSamples * sizeof(short) * m_numChannels; // bytes
+   if (!BASS_WMA_EncodeWrite(m_handle, sampleBuffer, ret))
    {
-      lasterror.Format(IDS_ENCODER_ERROR_WRITE_OUTPUT);
+      m_lastError.Format(IDS_ENCODER_ERROR_WRITE_OUTPUT);
       return -1;
    }
 
    return ret;
 }
 
-void BassWmaOutputModule::doneOutput()
+void BassWmaOutputModule::DoneOutput()
 {
-   // closes the file
-   BASS_WMA_EncodeClose(handle);
+   BASS_WMA_EncodeClose(m_handle);
    BASS_Free();
+}
+
+void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
+{
+   bool isAvail = false;
+   CString textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
+   if (isAvail && !textValue.IsEmpty())
+   {
+      BASS_WMA_EncodeSetTag(m_handle, "Title", CStringA(textValue), BASS_WMA_TAG_ANSI);
+   }
+
+   textValue = trackInfo.TextInfo(TrackInfoArtist, isAvail);
+   if (isAvail && !textValue.IsEmpty())
+   {
+      BASS_WMA_EncodeSetTag(m_handle, "Author", CStringA(textValue), BASS_WMA_TAG_ANSI);
+   }
+
+   textValue = trackInfo.TextInfo(TrackInfoAlbum, isAvail);
+   if (isAvail && !textValue.IsEmpty())
+   {
+      BASS_WMA_EncodeSetTag(m_handle, "WM/AlbumTitle", CStringA(textValue), BASS_WMA_TAG_ANSI);
+   }
+
+   int intValue = trackInfo.NumberInfo(TrackInfoYear, isAvail);
+   if (isAvail && intValue != -1)
+   {
+      textValue.Format(_T("%u"), intValue);
+      BASS_WMA_EncodeSetTag(m_handle, "WM/Year", CStringA(textValue), BASS_WMA_TAG_ANSI);
+   }
+
+   textValue = trackInfo.TextInfo(TrackInfoComment, isAvail);
+   if (isAvail && !textValue.IsEmpty())
+   {
+      BASS_WMA_EncodeSetTag(m_handle, "Description", CStringA(textValue), BASS_WMA_TAG_ANSI);
+   }
+
+   intValue = trackInfo.NumberInfo(TrackInfoTrack, isAvail);
+   if (isAvail && intValue != -1)
+   {
+      textValue.Format(_T("%u"), intValue);
+      BASS_WMA_EncodeSetTag(m_handle, "WM/TrackNumber", CStringA(textValue), BASS_WMA_TAG_ANSI);
+   }
+
+   textValue = trackInfo.TextInfo(TrackInfoGenre, isAvail);
+   if (isAvail && !textValue.IsEmpty())
+   {
+      BASS_WMA_EncodeSetTag(m_handle, "WM/Genre", CStringA(textValue), BASS_WMA_TAG_ANSI);
+   }
+
+   BASS_WMA_EncodeSetTag(m_handle, "WM/ToolName", "winLAME", BASS_WMA_TAG_ANSI);
+   BASS_WMA_EncodeSetTag(m_handle, 0, 0, BASS_WMA_TAG_ANSI);
 }

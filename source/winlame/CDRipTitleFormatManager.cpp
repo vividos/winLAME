@@ -28,23 +28,23 @@ CString CDRipTitleFormatManager::FormatTitle(const CString& format,
 {
    CString title = format;
 
-   title.Replace(_T("%album%"), discInfo.m_cszDiscTitle);
-   title.Replace(_T("%artist%"), /*discInfo.m_bVariousArtists ? trackInfo.m_cszTrackArtist :*/ discInfo.m_cszDiscArtist);
-   title.Replace(_T("%genre%"), discInfo.m_cszGenre);
-   title.Replace(_T("%title%"), trackInfo.m_cszTrackTitle);
+   title.Replace(_T("%album%"), discInfo.m_discTitle);
+   title.Replace(_T("%artist%"), /*discInfo.m_variousArtists ? trackInfo.m_cszTrackArtist :*/ discInfo.m_discArtist);
+   title.Replace(_T("%genre%"), discInfo.m_genre);
+   title.Replace(_T("%title%"), trackInfo.m_trackTitle);
 
    CString trackNumber;
-   trackNumber.Format(_T("%u"), trackInfo.m_nTrackOnDisc + 1);
+   trackNumber.Format(_T("%u"), trackInfo.m_numTrackOnDisc + 1);
    title.Replace(_T("%track%"), trackNumber);
 
    CString year;
-   year.Format(_T("%u"), discInfo.m_nYear);
+   year.Format(_T("%u"), discInfo.m_year);
    title.Replace(_T("%year%"), year);
 
-   title.Replace(_T("%albumartist%"), discInfo.m_cszDiscArtist);
+   title.Replace(_T("%albumartist%"), discInfo.m_discArtist);
 
    CString lengthInSeconds;
-   lengthInSeconds.Format(_T("%u"), trackInfo.m_nTrackLength);
+   lengthInSeconds.Format(_T("%u"), trackInfo.m_trackLengthInSeconds);
    title.Replace(_T("%length%"), lengthInSeconds);
 
    //title.Replace(_T("%discnumber%"), discInfo.);

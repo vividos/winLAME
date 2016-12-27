@@ -28,9 +28,12 @@
 
 // forward references
 struct UISettings;
-class EncoderTask;
-class CDReadJob;
-class TrackInfo;
+namespace Encoder
+{
+   class EncoderTask;
+   class CDReadJob;
+   class TrackInfo;
+}
 
 namespace UI
 {
@@ -116,7 +119,7 @@ private:
    void AddCDExtractTasks();
 
    /// creates encoder task for a CD Extract task
-   std::shared_ptr<EncoderTask> CreateEncoderTaskForCDReadJob(unsigned int cdReadTaskId, const CDReadJob& cdReadJob);
+   std::shared_ptr<Encoder::EncoderTask> CreateEncoderTaskForCDReadJob(unsigned int cdReadTaskId, const Encoder::CDReadJob& cdReadJob);
 
    /// adds task to create a playlist to task manager
    void AddPlaylistTask();

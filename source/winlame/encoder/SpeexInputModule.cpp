@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014 Michael Fink
+// Copyright (c) 2014-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,13 +19,15 @@
 /// \file SpeexInputModule.cpp
 /// \brief Speex input module
 //
-
-// includes
 #include "stdafx.h"
 #include "SpeexInputModule.hpp"
 #include "resource.h"
 #include <speex/speex_callbacks.h>
 #include <initializer_list>
+
+using Encoder::SpeexInputModule;
+using Encoder::TrackInfo;
+using Encoder::SampleContainer;
 
 #pragma comment(lib, "libspeex.lib")
 
@@ -36,39 +38,38 @@ extern "C" void speex_header_free(void* ptr)
    //free(ptr);
 }
 
-
 SpeexInputModule::SpeexInputModule()
-:m_stereo(SPEEX_STEREO_STATE_INIT),
-m_packetCount(0),
-m_lFileSize(0)
+   :m_stereo(SPEEX_STEREO_STATE_INIT),
+   m_packetCount(0),
+   m_fileSize(0)
 {
-   module_id = ID_IM_SPEEX;
+   m_moduleId = ID_IM_SPEEX;
 }
 
-InputModule* SpeexInputModule::cloneModule()
+Encoder::InputModule* SpeexInputModule::CloneModule()
 {
    return new SpeexInputModule;
 }
 
-bool SpeexInputModule::isAvailable()
+bool SpeexInputModule::IsAvailable() const
 {
    // we don't do delay-loading anymore, so it's always available
    return true;
 }
 
-void SpeexInputModule::getDescription(CString& desc)
+void SpeexInputModule::GetDescription(CString& desc) const
 {
-   ATLASSERT(m_spHeader != nullptr);
+   ATLASSERT(m_header != nullptr);
 
    desc.Format(IDS_FORMAT_INFO_SPEEX_INPUT,
-      m_spHeader->mode == 0 ? _T("narrow-band") : m_spHeader->mode == 1 ? _T("wide-band") : _T("???"),
-      m_spHeader->vbr == 1 ? _T(" VBR") : _T(""),
-      m_spHeader->nb_channels,
-      m_spHeader->rate,
-      m_spHeader->speex_version);
+      m_header->mode == 0 ? _T("narrow-band") : m_header->mode == 1 ? _T("wide-band") : _T("???"),
+      m_header->vbr == 1 ? _T(" VBR") : _T(""),
+      m_header->nb_channels,
+      m_header->rate,
+      m_header->speex_version);
 }
 
-void SpeexInputModule::getVersionString(CString& version, int special)
+void SpeexInputModule::GetVersionString(CString& version, int special) const
 {
    const char* fullVersion = nullptr;
    speex_lib_ctl(SPEEX_LIB_GET_VERSION_STRING, &fullVersion);
@@ -88,64 +89,64 @@ void SpeexInputModule::getVersionString(CString& version, int special)
       extraVersion);
 }
 
-CString SpeexInputModule::getFilterString()
+CString SpeexInputModule::GetFilterString() const
 {
-   CString cszFilter;
-   cszFilter.LoadString(IDS_FILTER_SPEEX_INPUT);
-   return cszFilter;
+   CString filterString;
+   filterString.LoadString(IDS_FILTER_SPEEX_INPUT);
+   return filterString;
 }
 
-int SpeexInputModule::initInput(LPCTSTR infilename, SettingsManager& mgr,
-   TrackInfo& trackinfo, SampleContainer& samples)
+int SpeexInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
+   TrackInfo& trackInfo, SampleContainer& samples)
 {
    FILE* fd = nullptr;
    errno_t err = _tfopen_s(&fd, infilename, _T("rb"));
 
    if (err != 0 || fd == nullptr)
    {
-      m_cszLastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
       return -1;
    }
 
    fseek(fd, 0, SEEK_END);
-   m_lFileSize = ftell(fd);
+   m_fileSize = ftell(fd);
    fseek(fd, 0, SEEK_SET);
 
-   m_spInputStream.reset(new OggInputStream(fd, false));
+   m_inputStream.reset(new OggInputStream(fd, false));
 
-   size_t uiTryReads = 3;
-   while (!m_spInputStream->IsEndOfStream() && uiTryReads > 0)
+   size_t numTryReads = 3;
+   while (!m_inputStream->IsEndOfStream() && numTryReads > 0)
    {
-      m_spInputStream->ReadInput(200); // read some more
+      m_inputStream->ReadInput(200); // read some more
 
       ogg_packet header;
 
-      if (m_spInputStream->ReadNextPacket(header))
+      if (m_inputStream->ReadNextPacket(header))
       {
-         SpeexHeader* pHeader = speex_packet_to_header(reinterpret_cast<char*>(header.packet), header.bytes);
-         m_spHeader.reset(pHeader, speex_header_free);
+         SpeexHeader* speexHeader = speex_packet_to_header(reinterpret_cast<char*>(header.packet), header.bytes);
+         m_header.reset(speexHeader, speex_header_free);
 
          break;
       }
       else
-         --uiTryReads;
+         --numTryReads;
    }
 
-   if (m_spHeader == nullptr)
+   if (m_header == nullptr)
    {
-      m_cszLastError = _T("Couldn't read Speex header");
+      m_lastError = _T("Couldn't read Speex header");
       return -1;
    }
 
    InitDecoder();
 
    // set up input traits
-   samples.setInputModuleTraits(16, SamplesInterleaved,
-      m_spHeader->rate, m_spHeader->nb_channels);
+   samples.SetInputModuleTraits(16, SamplesInterleaved,
+      m_header->rate, m_header->nb_channels);
 
    // re-init file
    fseek(fd, 0, SEEK_SET);
-   m_spInputStream.reset(new OggInputStream(fd, true));
+   m_inputStream.reset(new OggInputStream(fd, true));
 
    m_packetCount = 0;
 
@@ -154,15 +155,15 @@ int SpeexInputModule::initInput(LPCTSTR infilename, SettingsManager& mgr,
    return 0;
 }
 
-void SpeexInputModule::getInfo(int& channels, int& bitrate, int& length, int& samplerate)
+void SpeexInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const
 {
-   channels = m_spHeader->nb_channels;
-   bitrate = m_spHeader->bitrate;
-   samplerate = m_spHeader->rate;
-   length = -1; // TODO
+   numChannels = m_header->nb_channels;
+   bitrateInBps = m_header->bitrate;
+   samplerateInHz = m_header->rate;
+   lengthInSeconds = -1; // TODO
 }
 
-int SpeexInputModule::decodeSamples(SampleContainer& samples)
+int SpeexInputModule::DecodeSamples(SampleContainer& samples)
 {
    do
    {
@@ -173,31 +174,31 @@ int SpeexInputModule::decodeSamples(SampleContainer& samples)
 
       if (m_packetCount == 0 || m_packetCount == 1)
       {
-         // header or comment packet; header already read in initInput()
+         // header or comment packet; header already read in InitInput()
       }
       else
-      if (m_packetCount <= static_cast<unsigned int>(1 + m_spHeader->extra_headers))
-      {
-         // ignore extra headers
-      }
-      else
-      {
-         //if (packet.e_o_s)
-         //   return 0;// TODO end of stream
+         if (m_packetCount <= static_cast<unsigned int>(1 + m_header->extra_headers))
+         {
+            // ignore extra headers
+         }
+         else
+         {
+            //if (packet.e_o_s)
+            //   return 0;// TODO end of stream
 
-         std::vector<short> vecSamples;
+            std::vector<short> sampleBuffer;
 
-         int iRet = DecodePacket(packet, vecSamples);
+            int iRet = DecodePacket(packet, sampleBuffer);
 
-         if (iRet == 0)
-            return 0;
+            if (iRet == 0)
+               return 0;
 
-         ATLASSERT(!vecSamples.empty());
+            ATLASSERT(!sampleBuffer.empty());
 
-         samples.putSamplesInterleaved(&vecSamples[0], vecSamples.size() / m_spHeader->nb_channels);
+            samples.PutSamplesInterleaved(sampleBuffer.data(), sampleBuffer.size() / m_header->nb_channels);
 
-         return vecSamples.size();
-      }
+            return sampleBuffer.size();
+         }
 
       m_packetCount++;
 
@@ -206,84 +207,84 @@ int SpeexInputModule::decodeSamples(SampleContainer& samples)
    return 0;
 }
 
-float SpeexInputModule::percentDone()
+float SpeexInputModule::PercentDone() const
 {
-   if (m_spInputStream == nullptr ||
-       m_lFileSize == 0)
+   if (m_inputStream == nullptr ||
+      m_fileSize == 0)
       return 0.0f;
 
-   if (m_spInputStream->IsEndOfStream())
+   if (m_inputStream->IsEndOfStream())
       return 100.0f;
 
-   long lPos = ftell(m_spInputStream->GetFd());
+   long lPos = ftell(m_inputStream->GetFd());
 
-   return float(lPos) * 100.0f / m_lFileSize;
+   return float(lPos) * 100.0f / m_fileSize;
 }
 
-void SpeexInputModule::doneInput()
+void SpeexInputModule::DoneInput()
 {
    speex_bits_destroy(&m_bits);
-   m_spHeader.reset();
-   m_spDecoderState.reset();
+   m_header.reset();
+   m_decoderState.reset();
 }
 
 void SpeexInputModule::InitDecoder()
 {
-   bool bWideband = m_spHeader->mode == 1;
+   bool bWideband = m_header->mode == 1;
    bool bPerceptualEnhancer = true;
 
    const SpeexMode* mode = speex_lib_get_mode(bWideband ? SPEEX_MODEID_WB : SPEEX_MODEID_NB);
 
    void* p = speex_decoder_init(mode);
-   m_spDecoderState.reset(p, speex_decoder_destroy);
+   m_decoderState.reset(p, speex_decoder_destroy);
 
    int enh = bPerceptualEnhancer ? 1 : 0;
-   speex_decoder_ctl(m_spDecoderState.get(), SPEEX_SET_ENH, &enh);
+   speex_decoder_ctl(m_decoderState.get(), SPEEX_SET_ENH, &enh);
 
    // init stereo
-   if (m_spHeader->nb_channels != 1)
+   if (m_header->nb_channels != 1)
    {
       SpeexCallback callback;
 
       callback.callback_id = SPEEX_INBAND_STEREO;
       callback.func = speex_std_stereo_request_handler;
       callback.data = &m_stereo;
-      speex_decoder_ctl(m_spDecoderState.get(), SPEEX_SET_HANDLER, &callback);
+      speex_decoder_ctl(m_decoderState.get(), SPEEX_SET_HANDLER, &callback);
    }
 }
 
 bool SpeexInputModule::ReadNextPacket(ogg_packet& packet)
 {
    unsigned int uiReads = 0;
-   while (!m_spInputStream->ReadNextPacket(packet))
+   while (!m_inputStream->ReadNextPacket(packet))
    {
-      if (m_spInputStream->IsEndOfStream())
+      if (m_inputStream->IsEndOfStream())
          return false;
 
-      m_spInputStream->ReadInput(4000); // read some more
+      m_inputStream->ReadInput(4000); // read some more
       uiReads++;
    }
 
    return true;
 }
 
-int SpeexInputModule::DecodePacket(ogg_packet& packet, std::vector<short>& vecSamples)
+int SpeexInputModule::DecodePacket(ogg_packet& packet, std::vector<short>& samples)
 {
-   spx_int32_t iFrameSize = 0;
-   speex_decoder_ctl(m_spDecoderState.get(), SPEEX_GET_FRAME_SIZE, &iFrameSize);
+   spx_int32_t frameSize = 0;
+   speex_decoder_ctl(m_decoderState.get(), SPEEX_GET_FRAME_SIZE, &frameSize);
 
    // copy Ogg packet to Speex bitstream
    speex_bits_read_from(&m_bits, reinterpret_cast<char*>(packet.packet), packet.bytes);
 
-   int iMaxFrames = m_spHeader->frames_per_packet;
-   int iChannels = m_spHeader->nb_channels;
+   int iMaxFrames = m_header->frames_per_packet;
+   int numChannels = m_header->nb_channels;
 
    for (int i = 0; i < iMaxFrames; i++)
    {
 #define MAX_FRAME_SIZE 2000
       short outputBuffer[MAX_FRAME_SIZE];
 
-      int iRet = speex_decode_int(m_spDecoderState.get(), &m_bits, outputBuffer);
+      int iRet = speex_decode_int(m_decoderState.get(), &m_bits, outputBuffer);
 
       if (iRet == -1)
          break;
@@ -291,16 +292,16 @@ int SpeexInputModule::DecodePacket(ogg_packet& packet, std::vector<short>& vecSa
       if (iRet == -2 ||
          speex_bits_remaining(&m_bits) < 0)
       {
-         m_cszLastError = _T("Decoding error; corrupted stream");
+         m_lastError = _T("Decoding error; corrupted stream");
          return 0;
       }
 
-      if (iChannels == 2)
-         speex_decode_stereo_int(outputBuffer, iFrameSize, &m_stereo);
+      if (numChannels == 2)
+         speex_decode_stereo_int(outputBuffer, frameSize, &m_stereo);
 
-      vecSamples.insert(vecSamples.end(),
-         std::initializer_list<short>(outputBuffer, outputBuffer + iFrameSize * iChannels));
+      samples.insert(samples.end(),
+         std::initializer_list<short>(outputBuffer, outputBuffer + frameSize * numChannels));
    }
 
-   return vecSamples.size();
+   return samples.size();
 }

@@ -86,7 +86,7 @@ LRESULT InputFilesPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hW
    for (int i = 0; i < max; i++)
    {
       LPCTSTR pszFilename = m_inputFilesList.GetFileName(i);
-      m_uiSettings.encoderjoblist.push_back(EncoderJob(pszFilename));
+      m_uiSettings.encoderjoblist.push_back(Encoder::EncoderJob(pszFilename));
    }
 
    m_uiSettings.m_bFromInputFilesPage = true;
@@ -321,7 +321,7 @@ void InputFilesPage::InsertFilenameWithIcon(const CString& cszFilename)
 }
 
 void InputFilesPage::OnRetrievedAudioFileInfo(const CString& filename, bool error, const CString& errorMessage,
-   int lengthInSeconds, int bitrateInKbps, int sampleFrequencyInHz)
+   int lengthInSeconds, int bitrateInBps, int sampleFrequencyInHz)
 {
    if (error)
    {
@@ -334,7 +334,7 @@ void InputFilesPage::OnRetrievedAudioFileInfo(const CString& filename, bool erro
    AudioFileEntry* entry = new AudioFileEntry;
    entry->filename = filename;
    entry->length = lengthInSeconds;
-   entry->bitrate = bitrateInKbps;
+   entry->bitrate = bitrateInBps;
    entry->samplerate = sampleFrequencyInHz;
 
    PostMessage(WM_UPDATE_AUDIO_INFO, 0, reinterpret_cast<LPARAM>(entry));
@@ -360,8 +360,8 @@ CString InputFilesPage::GetFilterString()
    if (!m_cszFilterString.IsEmpty())
       return m_cszFilterString;
 
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-   moduleManager.getFilterString(m_cszFilterString);
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+   moduleManager.GetFilterString(m_cszFilterString);
 
    CString cszText;
    cszText.LoadString(IDS_INPUT_FILTER_PLAYLISTS);
@@ -380,12 +380,12 @@ CString InputFilesPage::GetFilterString()
 bool InputFilesPage::OpenFileDialog(HWND hWndParent, std::vector<CString>& vecFilenames)
 {
    // get filter string
-   CString cszFilter = GetFilterString();
+   CString filterString = GetFilterString();
 
    // exchange pipe char '|' with 0-char for commdlg
-   for (int pos = cszFilter.GetLength() - 1; pos >= 0; pos--)
-      if (cszFilter.GetAt(pos) == _T('|'))
-         cszFilter.SetAt(pos, 0);
+   for (int pos = filterString.GetLength() - 1; pos >= 0; pos--)
+      if (filterString.GetAt(pos) == _T('|'))
+         filterString.SetAt(pos, 0);
 
    // load title
    CString cszTitle;
@@ -394,7 +394,7 @@ bool InputFilesPage::OpenFileDialog(HWND hWndParent, std::vector<CString>& vecFi
    // file dialog setup
    CFileDialog dlg(TRUE, NULL, NULL,
       OFN_ALLOWMULTISELECT | OFN_ENABLESIZING | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_EXPLORER,
-      cszFilter,
+      filterString,
       hWndParent);
 
    // fill file buffer

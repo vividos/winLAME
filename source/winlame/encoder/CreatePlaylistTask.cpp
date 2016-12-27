@@ -18,11 +18,12 @@
 //
 /// \file CreatePlaylistTask.cpp
 /// \brief encoder task class
-
-// includes
+//
 #include "StdAfx.h"
 #include "CreatePlaylistTask.hpp"
 #include "Path.hpp"
+
+using Encoder::CreatePlaylistTask;
 
 CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const EncoderJobList& encoderJobList)
    :Task(dependentTaskId),
@@ -42,7 +43,7 @@ CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CStri
    });
 }
 
-CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const std::vector<CDReadJob>& cdReadJobList)
+CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const std::vector<Encoder::CDReadJob>& cdReadJobList)
    :Task(dependentTaskId),
    m_extendedPlaylist(true),
    m_playlistFilename(playlistFilename),
@@ -54,8 +55,8 @@ CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CStri
       PlaylistEntry entry;
 
       entry.m_filename = cdReadJob.OutputFilename();
-      entry.m_title = cdReadJob.TrackInfo().m_cszTrackTitle;
-      entry.m_trackLengthInSeconds = cdReadJob.TrackInfo().m_nTrackLength;
+      entry.m_title = cdReadJob.TrackInfo().m_trackTitle;
+      entry.m_trackLengthInSeconds = cdReadJob.TrackInfo().m_trackLengthInSeconds;
 
       m_playlistEntries.push_back(entry);
    });

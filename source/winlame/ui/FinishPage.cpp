@@ -27,7 +27,7 @@
 #include "OutputSettingsPage.hpp"
 #include "UISettings.h"
 #include "TaskManager.h"
-#include "EncoderTask.h"
+#include "EncoderTask.hpp"
 #include "CreatePlaylistTask.hpp"
 #include "CDExtractTask.hpp"
 #include "CDRipTitleFormatManager.hpp"
@@ -97,8 +97,8 @@ LRESULT FinishPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
    }
    else
    {
-      ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-      int modid = moduleManager.getOutputModuleID(m_uiSettings.output_module);
+      Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+      int modid = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
       OutputSettingsPage::SetWizardPageByOutputModule(m_pageHost, modid);
    }
@@ -108,34 +108,34 @@ LRESULT FinishPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWnd
 
 bool FinishPage::IsTranscodingLossy() const
 {
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
 
    bool in_lossy = false;
 
    // only have to check when from input page; CD reading is always lossless
    if (m_uiSettings.m_bFromInputFilesPage)
    {
-      ModuleManagerImpl& modImpl = reinterpret_cast<ModuleManagerImpl&>(moduleManager);
+      Encoder::ModuleManagerImpl& modImpl = reinterpret_cast<Encoder::ModuleManagerImpl&>(moduleManager);
 
       for (int i = 0, iMax = m_uiSettings.encoderjoblist.size(); i < iMax; i++)
       {
-         EncoderJob& job = m_uiSettings.encoderjoblist[i];
+         Encoder::EncoderJob& job = m_uiSettings.encoderjoblist[i];
 
          CString filename = job.InputFilename();
 
-         std::unique_ptr<InputModule> inmod(modImpl.chooseInputModule(filename));
+         std::unique_ptr<Encoder::InputModule> inmod(modImpl.ChooseInputModule(filename));
          if (inmod == nullptr)
             continue;
 
-         int in_id = inmod->getModuleID();
+         int in_id = inmod->GetModuleID();
 
-         in_lossy |= EncoderImpl::IsLossyInputModule(in_id);
+         in_lossy |= Encoder::EncoderImpl::IsLossyInputModule(in_id);
       }
    }
 
-   int out_id = moduleManager.getOutputModuleID(m_uiSettings.output_module);
+   int out_id = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
-   bool out_lossy = EncoderImpl::IsLossyOutputModule(out_id);
+   bool out_lossy = Encoder::EncoderImpl::IsLossyOutputModule(out_id);
 
    return in_lossy && out_lossy;
 }
@@ -150,24 +150,24 @@ bool FinishPage::IsOverwritingOriginalFiles() const
    if (!m_uiSettings.m_defaultSettings.overwrite_existing)
       return false;
 
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-   ModuleManagerImpl& modImpl = reinterpret_cast<ModuleManagerImpl&>(moduleManager);
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+   Encoder::ModuleManagerImpl& modImpl = reinterpret_cast<Encoder::ModuleManagerImpl&>(moduleManager);
 
-   int out_module_id = moduleManager.getOutputModuleID(m_uiSettings.output_module);
+   int out_module_id = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
    for (int i = 0, iMax = m_uiSettings.encoderjoblist.size(); i < iMax; i++)
    {
-      EncoderJob& job = m_uiSettings.encoderjoblist[i];
+      Encoder::EncoderJob& job = m_uiSettings.encoderjoblist[i];
 
       CString inputFilename = job.InputFilename();
 
-      std::unique_ptr<OutputModule> outputModule(modImpl.getOutputModule(out_module_id));
+      std::unique_ptr<Encoder::OutputModule> outputModule(modImpl.GetOutputModule(out_module_id));
       if (outputModule == nullptr)
          continue;
 
-      outputModule->prepareOutput(m_uiSettings.settings_manager);
+      outputModule->PrepareOutput(m_uiSettings.settings_manager);
 
-      CString outputFilename = EncoderImpl::GetOutputFilename(m_uiSettings.m_defaultSettings.outputdir, inputFilename, *outputModule.get());
+      CString outputFilename = Encoder::EncoderImpl::GetOutputFilename(m_uiSettings.m_defaultSettings.outputdir, inputFilename, *outputModule.get());
 
       if (outputFilename.CompareNoCase(inputFilename) == 0)
       {
@@ -243,7 +243,7 @@ void FinishPage::UpdateInputTracksList()
    {
       for (int i = 0, iMax = m_uiSettings.encoderjoblist.size(); i < iMax; i++)
       {
-         EncoderJob& job = m_uiSettings.encoderjoblist[i];
+         Encoder::EncoderJob& job = m_uiSettings.encoderjoblist[i];
 
          CString filename = job.InputFilename();
 
@@ -255,16 +255,16 @@ void FinishPage::UpdateInputTracksList()
       unsigned int maxJobIndex = m_uiSettings.cdreadjoblist.size();
       for (unsigned int jobIndex = 0; jobIndex < maxJobIndex; jobIndex++)
       {
-         CDReadJob& cdReadJob = m_uiSettings.cdreadjoblist[jobIndex];
+         Encoder::CDReadJob& cdReadJob = m_uiSettings.cdreadjoblist[jobIndex];
 
          const CDRipDiscInfo& discInfo = cdReadJob.DiscInfo();
          const CDRipTrackInfo& trackInfo = cdReadJob.TrackInfo();
 
-         if (!trackInfo.m_bActive)
+         if (!trackInfo.m_isActive)
             continue;
 
          CString title = CDRipTitleFormatManager::FormatTitle(
-            discInfo.m_bVariousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
+            discInfo.m_variousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
             discInfo, trackInfo);
 
          m_listInputTracks.InsertItem(jobIndex, title, 2); // icon 2: CD extraction
@@ -276,10 +276,10 @@ void FinishPage::UpdateInputTracksList()
 
 void FinishPage::UpdateOutputModule()
 {
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
 
-   ATLASSERT(m_uiSettings.output_module < moduleManager.getOutputModuleCount());
-   CString outputModuleName = moduleManager.getOutputModuleName(m_uiSettings.output_module);
+   ATLASSERT(m_uiSettings.output_module < moduleManager.GetOutputModuleCount());
+   CString outputModuleName = moduleManager.GetOutputModuleName(m_uiSettings.output_module);
 
    m_editOutputModule.SetWindowText(outputModuleName);
 }
@@ -303,16 +303,16 @@ void FinishPage::AddInputFilesTasks()
 
    for (int i = 0, iMax = m_uiSettings.encoderjoblist.size(); i < iMax; i++)
    {
-      EncoderJob& job = m_uiSettings.encoderjoblist[i];
+      Encoder::EncoderJob& job = m_uiSettings.encoderjoblist[i];
 
-      EncoderTaskSettings taskSettings;
+      Encoder::EncoderTaskSettings taskSettings;
 
       taskSettings.m_cszInputFilename = job.InputFilename();
       taskSettings.m_cszOutputPath = m_uiSettings.m_defaultSettings.outputdir;
       taskSettings.m_cszTitle = Path(job.InputFilename()).FilenameAndExt();
 
-      ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-      taskSettings.m_iOutputModuleId = moduleManager.getOutputModuleID(m_uiSettings.output_module);
+      Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+      taskSettings.m_iOutputModuleId = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
       taskSettings.m_settingsManager = m_uiSettings.settings_manager;
       taskSettings.m_trackInfo = job.GetTrackInfo();
@@ -328,7 +328,7 @@ void FinishPage::AddInputFilesTasks()
          dependentTaskId = m_lastTaskId;
       }
 
-      std::shared_ptr<EncoderTask> spTask(new EncoderTask(dependentTaskId, taskSettings));
+      std::shared_ptr<Encoder::EncoderTask> spTask(new Encoder::EncoderTask(dependentTaskId, taskSettings));
 
       taskMgr.AddTask(spTask);
 
@@ -340,10 +340,10 @@ void FinishPage::AddInputFilesTasks()
 
 void FinishPage::AddCDExtractTasks()
 {
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
 
    bool outputWaveFile16bit =
-      moduleManager.getOutputModuleID(m_uiSettings.output_module) == ID_OM_WAVE &&
+      moduleManager.GetOutputModuleID(m_uiSettings.output_module) == ID_OM_WAVE &&
       m_uiSettings.settings_manager.queryValueInt(SndFileFormat) == SF_FORMAT_WAV &&
       m_uiSettings.settings_manager.queryValueInt(SndFileSubType) == SF_FORMAT_PCM_16;
 
@@ -354,12 +354,12 @@ void FinishPage::AddCDExtractTasks()
    unsigned int maxJobIndex = m_uiSettings.cdreadjoblist.size();
    for (unsigned int jobIndex = 0; jobIndex < maxJobIndex; jobIndex++)
    {
-      CDReadJob& cdReadJob = m_uiSettings.cdreadjoblist[jobIndex];
+      Encoder::CDReadJob& cdReadJob = m_uiSettings.cdreadjoblist[jobIndex];
 
       const CDRipDiscInfo& discInfo = cdReadJob.DiscInfo();
       CDRipTrackInfo& trackInfo = cdReadJob.TrackInfo();
 
-      if (!trackInfo.m_bActive)
+      if (!trackInfo.m_isActive)
          continue;
 
       if (outputWaveFile16bit)
@@ -367,16 +367,16 @@ void FinishPage::AddCDExtractTasks()
          // when outputting to CD format, we can store the wave file directly without writing
          // to temp storage first
          CString title = CDRipTitleFormatManager::FormatTitle(
-            discInfo.m_bVariousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
+            discInfo.m_variousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
             discInfo, trackInfo);
 
-         trackInfo.m_cszRippedFilename =
+         trackInfo.m_rippedFilename =
             (const CString&)Path::Combine(
                m_uiSettings.m_defaultSettings.outputdir,
                title + _T(".wav"));
       }
 
-      std::shared_ptr<CDExtractTask> spCDExtractTask(new CDExtractTask(lastCDReadTaskId, discInfo, trackInfo));
+      std::shared_ptr<Encoder::CDExtractTask> spCDExtractTask(new Encoder::CDExtractTask(lastCDReadTaskId, discInfo, trackInfo));
       taskMgr.AddTask(spCDExtractTask);
 
       m_lastTaskId = spCDExtractTask->Id();
@@ -390,7 +390,7 @@ void FinishPage::AddCDExtractTasks()
       if (!outputWaveFile16bit)
       {
          // also add encode task
-         std::shared_ptr<EncoderTask> spEncoderTask =
+         std::shared_ptr<Encoder::EncoderTask> spEncoderTask =
             CreateEncoderTaskForCDReadJob(cdReadTaskId, cdReadJob);
 
          cdReadJob.OutputFilename(spEncoderTask->GenerateOutputFilename(cdReadJob.Title()));
@@ -402,22 +402,22 @@ void FinishPage::AddCDExtractTasks()
    }
 }
 
-std::shared_ptr<EncoderTask> FinishPage::CreateEncoderTaskForCDReadJob(unsigned int cdReadTaskId, const CDReadJob& cdReadJob)
+std::shared_ptr<Encoder::EncoderTask> FinishPage::CreateEncoderTaskForCDReadJob(unsigned int cdReadTaskId, const Encoder::CDReadJob& cdReadJob)
 {
-   EncoderTaskSettings taskSettings;
+   Encoder::EncoderTaskSettings taskSettings;
 
    taskSettings.m_cszInputFilename = cdReadJob.OutputFilename();
    taskSettings.m_cszOutputPath = m_uiSettings.m_defaultSettings.outputdir;
 
    taskSettings.m_cszTitle = cdReadJob.Title();
 
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-   taskSettings.m_iOutputModuleId = moduleManager.getOutputModuleID(m_uiSettings.output_module);
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+   taskSettings.m_iOutputModuleId = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
    taskSettings.m_settingsManager = m_uiSettings.settings_manager;
 
-   TrackInfo encodeTrackInfo;
-   CDExtractTask::SetTrackInfoFromCDTrackInfo(encodeTrackInfo, cdReadJob);
+   Encoder::TrackInfo encodeTrackInfo;
+   Encoder::CDExtractTask::SetTrackInfoFromCDTrackInfo(encodeTrackInfo, cdReadJob);
 
    taskSettings.m_trackInfo = encodeTrackInfo;
    taskSettings.m_useTrackInfo = true;
@@ -425,7 +425,7 @@ std::shared_ptr<EncoderTask> FinishPage::CreateEncoderTaskForCDReadJob(unsigned 
    taskSettings.m_bOverwriteFiles = m_uiSettings.m_defaultSettings.overwrite_existing;
    taskSettings.m_bDeleteAfterEncode = true; // temporary file created by CDExtractTask
 
-   return std::make_shared<EncoderTask>(cdReadTaskId, taskSettings);
+   return std::make_shared<Encoder::EncoderTask>(cdReadTaskId, taskSettings);
 }
 
 void FinishPage::AddPlaylistTask()
@@ -437,9 +437,9 @@ void FinishPage::AddPlaylistTask()
 
    std::shared_ptr<Task> spTask;
    if (m_uiSettings.m_bFromInputFilesPage)
-      spTask.reset(new CreatePlaylistTask(m_lastTaskId, playlistFilename, m_uiSettings.encoderjoblist));
+      spTask.reset(new Encoder::CreatePlaylistTask(m_lastTaskId, playlistFilename, m_uiSettings.encoderjoblist));
    else
-      spTask.reset(new CreatePlaylistTask(m_lastTaskId, playlistFilename, m_uiSettings.cdreadjoblist));
+      spTask.reset(new Encoder::CreatePlaylistTask(m_lastTaskId, playlistFilename, m_uiSettings.cdreadjoblist));
 
    taskMgr.AddTask(spTask);
 }

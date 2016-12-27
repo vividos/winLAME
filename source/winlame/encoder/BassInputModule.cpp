@@ -1,219 +1,206 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2004 DeXT
-   Copyright (c) 2009-2014 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2004 DeXT
+// Copyright (c) 2009-2016 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file BassInputModule.cpp
 /// \brief contains the implementation of the Bass input module
-
-// needed includes
+//
 #include "stdafx.h"
 #include "resource.h"
 #include <fstream>
-#include "BassInputModule.h"
+#include "BassInputModule.hpp"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include "DynamicLibrary.h"
 
-// linker options
-#if _MSC_VER < 1400
-#pragma comment(linker, "/delayload:bass.dll")
-#pragma comment(linker, "/delayload:basswma.dll")
-#endif
+using Encoder::BassInputModule;
+using Encoder::TrackInfo;
+using Encoder::SampleContainer;
 
 // constants
 
 /// buffer size
-const int BUF_SIZE = 4096;
+const int c_bassInputBufferSize = 4096;
 
 // BassInputModule methods
 
 BassInputModule::BassInputModule()
-:buffer(nullptr)
+   :m_buffer(nullptr)
 {
-   module_id = ID_IM_BASS;
+   m_moduleId = ID_IM_BASS;
 }
 
-InputModule *BassInputModule::cloneModule()
+Encoder::InputModule* BassInputModule::CloneModule()
 {
    return new BassInputModule;
 }
 
-bool BassInputModule::isAvailable()
+bool BassInputModule::IsAvailable() const
 {
-   HMODULE dll = ::LoadLibrary(_T("bass.dll"));
-   bool avail = dll != NULL;
-   if (avail) ::FreeLibrary(dll);
+   DynamicLibrary bassLib(_T("bass.dll"));
+   DynamicLibrary bassWmaLib(_T("basswma.dll"));
 
-   HMODULE wmadll = ::LoadLibrary(_T("basswma.dll"));
-   basswma = wmadll != NULL;
-   if (basswma) ::FreeLibrary(wmadll);
-
-   return avail;
+   return bassLib.IsLoaded() && bassWmaLib.IsLoaded();
 }
 
-void BassInputModule::getDescription(CString& desc)
+void BassInputModule::GetDescription(CString& desc) const
 {
-   // format string
-   if (!is_str) // MOD file
+   if (!m_isStream) // MOD file
    {
       desc.Format(IDS_FORMAT_INFO_BASS_INPUT_MUSIC,
-         BASS_ChannelGetTags(chan, BASS_TAG_MUSIC_NAME),
-         info.freq, info.chans);
+         BASS_ChannelGetTags(m_channel, BASS_TAG_MUSIC_NAME),
+         m_channelInfo.freq,
+         m_channelInfo.chans);
    }
    else // stream
    {
-      CString cszTypeWMA, cszTypeBassFileStream;
-      cszTypeWMA.LoadString(IDS_FORMAT_INFO_BASS_WMA);
-      cszTypeBassFileStream.LoadString(IDS_FORMAT_INFO_BASS_FILESTREAM);
+      CString typeBassFileStream;
+      typeBassFileStream.LoadString(IDS_FORMAT_INFO_BASS_FILESTREAM);
 
       desc.Format(IDS_FORMAT_INFO_BASS_INPUT_AUDIO,
-         basswma ? cszTypeWMA : cszTypeBassFileStream, brate, info.freq, info.chans);
+         typeBassFileStream,
+         m_bitrateInBps,
+         m_channelInfo.freq,
+         m_channelInfo.chans);
    }
 }
 
-void BassInputModule::getVersionString(CString& version, int special)
+void BassInputModule::GetVersionString(CString& version, int special) const
 {
    version.Empty();
 
-   HMODULE dll = ::LoadLibrary(_T("bass.dll"));
-   if (dll != NULL)
-   {
-      DWORD dwVersion = BASS_GetVersion();
-      ::FreeLibrary(dll);
+   DWORD bassVersion = BASS_GetVersion();
 
-      version.Format(_T("%u.%u.%u.%u"),
-         HIBYTE(HIWORD(dwVersion)),
-         LOBYTE(HIWORD(dwVersion)),
-         HIBYTE(LOWORD(dwVersion)),
-         LOBYTE(LOWORD(dwVersion)));
-   }
+   version.Format(_T("%u.%u.%u.%u"),
+      HIBYTE(HIWORD(bassVersion)),
+      LOBYTE(HIWORD(bassVersion)),
+      HIBYTE(LOWORD(bassVersion)),
+      LOBYTE(LOWORD(bassVersion)));
 }
 
-CString BassInputModule::getFilterString()
+CString BassInputModule::GetFilterString() const
 {
    // build filter string when not already done
-   if (filterstring.IsEmpty())
+   if (m_filterString.IsEmpty())
    {
-      filterstring.LoadString(IDS_FILTER_BASS_INPUT);
+      m_filterString.LoadString(IDS_FILTER_BASS_INPUT);
 
-      if (basswma)
-      {
-         CString cszTemp;
-         cszTemp.LoadString(IDS_FILTER_BASS_WMA_INPUT);
-         filterstring += cszTemp;
-      }
+      CString temp;
+      temp.LoadString(IDS_FILTER_BASS_WMA_INPUT);
+      m_filterString += temp;
    }
 
-   return filterstring;
+   return m_filterString;
 }
 
 /// converts from UTF-8 encoded text to CString
-CString UTF8ToCString(const char* pszUtf8Text)
+CString UTF8ToCString(const char* utf8Text)
 {
-   int iBufferLength = MultiByteToWideChar(CP_UTF8, 0,
-      pszUtf8Text, -1,
-      NULL, 0);
+   int bufferLength = MultiByteToWideChar(CP_UTF8, 0,
+      utf8Text, -1,
+      nullptr, 0);
 
-   CString cszText;
+   CString text;
    MultiByteToWideChar(CP_UTF8, 0,
-      pszUtf8Text, -1,
-      cszText.GetBuffer(iBufferLength), iBufferLength);
+      utf8Text, -1,
+      text.GetBuffer(bufferLength), bufferLength);
 
-   cszText.ReleaseBuffer();
-   return cszText;
+   text.ReleaseBuffer();
+   return text;
 }
 
-int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
-   TrackInfo &trackinfo, SampleContainer &samplecont)
+int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
+   TrackInfo& trackinfo, SampleContainer& samplecont)
 {
-   /* check that correct BASS version was loaded */
+   // check that correct BASS version was loaded
    if ((HIWORD(BASS_GetVersion()) != BASSVERSION))
    {
-      lasterror.LoadString(IDS_BASS_DLL_ERROR_VERSION_MISMATCH);
+      m_lastError.LoadString(IDS_BASS_DLL_ERROR_VERSION_MISMATCH);
       return -1;
    }
 
-   /* not playing anything, so don't need an update thread */
-   BASS_SetConfig(BASS_CONFIG_UPDATEPERIOD,0);
+   // not playing anything, so don't need an update thread
+   BASS_SetConfig(BASS_CONFIG_UPDATEPERIOD, 0);
 
-   /* setup output - "no sound" device, 44100hz, stereo, 16 bits */
-   if (!BASS_Init(0,44100,0,0,NULL))
+   // setup output - "no sound" device, 44100hz, stereo, 16 bits
+   if (!BASS_Init(0, 44100, 0, 0, nullptr))
    {
-      lasterror.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
+      m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
       return -1;
    }
 
    // try streaming the file/url
-   CStringA cszAnsiFilename = GetAnsiCompatFilename(infilename);
+   CStringA ansiFilename = GetAnsiCompatFilename(infilename);
 
-   chan = BASS_StreamCreateFile(FALSE, cszAnsiFilename, 0, 0, BASS_STREAM_DECODE);
-   if (!chan)
-      chan = BASS_StreamCreateURL(cszAnsiFilename, 0, BASS_STREAM_DECODE, 0, 0);
-   if (!chan && basswma)
-      chan = BASS_WMA_StreamCreateFile(FALSE, cszAnsiFilename, 0, 0, BASS_STREAM_DECODE);
+   m_channel = BASS_StreamCreateFile(FALSE, ansiFilename, 0, 0, BASS_STREAM_DECODE);
 
-   if (chan)
+   if (!m_channel)
+      m_channel = BASS_StreamCreateURL(ansiFilename, 0, BASS_STREAM_DECODE, 0, 0);
+
+   if (!m_channel)
+      m_channel = BASS_WMA_StreamCreateFile(FALSE, ansiFilename, 0, 0, BASS_STREAM_DECODE);
+
+   if (m_channel)
    {
-      m_length=BASS_ChannelGetLength(chan, BASS_POS_BYTE);
-      is_str=TRUE;
+      m_fileLength = BASS_ChannelGetLength(m_channel, BASS_POS_BYTE);
+      m_isStream = true;
    }
    else
    {
       // try loading the MOD (with sensitive ramping, and calculate the duration)
-      chan = BASS_MusicLoad(FALSE, cszAnsiFilename, 0, 0,
+      m_channel = BASS_MusicLoad(FALSE, ansiFilename, 0, 0,
          BASS_MUSIC_DECODE | BASS_MUSIC_RAMPS | BASS_MUSIC_SURROUND |
          BASS_MUSIC_CALCLEN | BASS_MUSIC_STOPBACK, 0);
 
-      if (chan)
+      if (m_channel)
       {
-         modlen=BASS_ChannelGetLength(chan, BASS_POS_MUSIC_ORDER);
-         m_length=BASS_ChannelGetLength(chan, BASS_POS_BYTE);
-         is_str=FALSE;
+         m_modLength = BASS_ChannelGetLength(m_channel, BASS_POS_MUSIC_ORDER);
+         m_fileLength = BASS_ChannelGetLength(m_channel, BASS_POS_BYTE);
+         m_isStream = false;
       }
       else
       {
-         lasterror.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+         m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
          return -1;
       }
    }
 
-   time=BASS_ChannelBytes2Seconds(chan,m_length);
+   m_lengthInSeconds = BASS_ChannelBytes2Seconds(m_channel, m_fileLength);
 
-   if (is_str)
+   if (m_isStream)
    {
-      filelen=BASS_StreamGetFilePosition(chan,BASS_FILEPOS_END); // file length
-      if (time)
-         brate=(DWORD)(filelen*8/time+0.5); // bitrate (bps)
+      QWORD filelen = BASS_StreamGetFilePosition(m_channel, BASS_FILEPOS_END); // file length
+      if (m_lengthInSeconds > 0)
+         m_bitrateInBps = (DWORD)(filelen * 8 / m_lengthInSeconds + 0.5); // bitrate (bps)
       else
-         brate=0;
+         m_bitrateInBps = 0;
    }
    else // not applicable for modules
    {
-      filelen=0;
-      brate=0;
+      m_bitrateInBps = 0;
    }
 
-   BASS_ChannelGetInfo(chan,&info);
+   BASS_ChannelGetInfo(m_channel, &m_channelInfo);
 
    // get tags
-   if (is_str && (info.ctype & BASS_CTYPE_STREAM_WMA))
+   if (m_isStream && (m_channelInfo.ctype & BASS_CTYPE_STREAM_WMA))
    {
-      const char* comments = BASS_WMA_GetTags(cszAnsiFilename.GetString(), 0);
+      const char* comments = BASS_WMA_GetTags(ansiFilename.GetString(), 0);
 
       std::vector<size_t> vecCommentIndices;
       if (comments)
@@ -222,8 +209,8 @@ int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
          const char* index = comments;
          while (index && *index) {
             vecCommentIndices.push_back(cur_index);
-            cur_index += strlen(index)+1;
-            index += strlen(index)+1;
+            cur_index += strlen(index) + 1;
+            index += strlen(index) + 1;
          }
       }
 
@@ -248,89 +235,92 @@ int BassInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
          CString cszName = cszTag.Left(iPos);
          cszName.TrimRight();
 
-         CString cszValue = cszTag.Mid(iPos+1);
+         CString cszValue = cszTag.Mid(iPos + 1);
          cszValue.TrimLeft();
 
          if (cszName == WMA_TITLE_TAG)    trackinfo.TextInfo(TrackInfoTitle, cszValue);    else
-         if (cszName == WMA_AUTHOR_TAG)   trackinfo.TextInfo(TrackInfoArtist, cszValue);   else
-         if (cszName == WMA_ALBUM_TAG)    trackinfo.TextInfo(TrackInfoAlbum, cszValue);    else
-         if (cszName == WMA_DESC_TAG)     trackinfo.TextInfo(TrackInfoComment, cszValue);  else
-         if (cszName == WMA_GENRE_TAG)    trackinfo.TextInfo(TrackInfoGenre, cszValue);    else
-         if (cszName == WMA_YEAR_TAG)
-         {
-            int iYear = _ttoi(cszValue);
-            trackinfo.NumberInfo(TrackInfoYear, iYear);
-         }
-         else
-         if (cszName == WMA_TRACKNO_TAG)
-         {
-            int iTrackNo = _ttoi(cszValue);
-            trackinfo.NumberInfo(TrackInfoTrack, iTrackNo);
-         }
-         else
-         if (cszName == WMA_BITRATE_TAG)
-         {
-            int iBitrate = _ttoi(cszValue);
-            brate = iBitrate;
-         }
+            if (cszName == WMA_AUTHOR_TAG)   trackinfo.TextInfo(TrackInfoArtist, cszValue);   else
+               if (cszName == WMA_ALBUM_TAG)    trackinfo.TextInfo(TrackInfoAlbum, cszValue);    else
+                  if (cszName == WMA_DESC_TAG)     trackinfo.TextInfo(TrackInfoComment, cszValue);  else
+                     if (cszName == WMA_GENRE_TAG)    trackinfo.TextInfo(TrackInfoGenre, cszValue);    else
+                        if (cszName == WMA_YEAR_TAG)
+                        {
+                           int iYear = _ttoi(cszValue);
+                           trackinfo.NumberInfo(TrackInfoYear, iYear);
+                        }
+                        else
+                           if (cszName == WMA_TRACKNO_TAG)
+                           {
+                              int iTrackNo = _ttoi(cszValue);
+                              trackinfo.NumberInfo(TrackInfoTrack, iTrackNo);
+                           }
+                           else
+                              if (cszName == WMA_BITRATE_TAG)
+                              {
+                                 int bitrate = _ttoi(cszValue);
+                                 m_bitrateInBps = bitrate;
+                              }
       }
    }
 
    // create buffer
-   buffer = new char[BUF_SIZE];
+   m_buffer = new char[c_bassInputBufferSize];
 
    // set up input traits
-   samplecont.setInputModuleTraits(16,SamplesInterleaved,
-      info.freq,info.chans);
+   samplecont.SetInputModuleTraits(
+      16,
+      SamplesInterleaved,
+      m_channelInfo.freq,
+      m_channelInfo.chans);
 
    return 0;
 }
 
-void BassInputModule::getInfo(int &channels, int &bitrate, int &length, int &samplerate)
+void BassInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const
 {
-   channels = info.chans;
-   bitrate = (brate > 0 ? brate : -1 );
-   length = static_cast<int>(time);
-   samplerate = info.freq;
+   numChannels = m_channelInfo.chans;
+   bitrateInBps = (m_bitrateInBps > 0 ? m_bitrateInBps : -1);
+   lengthInSeconds = static_cast<int>(m_lengthInSeconds);
+   samplerateInHz = m_channelInfo.freq;
 }
 
-int BassInputModule::decodeSamples(SampleContainer &samples)
+int BassInputModule::DecodeSamples(SampleContainer& samples)
 {
+   if (!BASS_ChannelIsActive(m_channel))
+      return 0;
+
    int ret;
 
-   if (!BASS_ChannelIsActive(chan)) return 0;
-
    // loop to wait for input data, if available
-   do {
-      ret = BASS_ChannelGetData(chan,buffer,BUF_SIZE);
-   } while (!ret && BASS_ChannelIsActive(chan));
+   do
+   {
+      ret = BASS_ChannelGetData(m_channel, m_buffer, c_bassInputBufferSize);
+   } while (!ret && BASS_ChannelIsActive(m_channel));
 
-   ret /= info.chans * (16 >> 3); // samples
+   ret /= m_channelInfo.chans * (16 >> 3); // samples
 
-   // copy the samples to the sample container
-   samples.putSamplesInterleaved(buffer, ret);
+   samples.PutSamplesInterleaved(m_buffer, ret);
 
    return ret;
 }
 
-float BassInputModule::percentDone()
+float BassInputModule::PercentDone() const
 {
+   QWORD currentPosition = BASS_ChannelGetPosition(m_channel, BASS_POS_BYTE);
+
    const int PATLEN = 64;
-   float done;
+   float percentDone;
 
-   pos = BASS_ChannelGetPosition(chan, BASS_POS_BYTE);
-
-   if (!is_str)
-      done = (((LOWORD(pos) * PATLEN) + HIWORD(pos)) / 64.f) * 100.f / modlen;
+   if (!m_isStream)
+      percentDone = (((LOWORD(currentPosition) * PATLEN) + HIWORD(currentPosition)) / 64.f) * 100.f / m_modLength;
    else
-      done = __int64(pos) * 100.f / __int64(m_length);
+      percentDone = __int64(currentPosition) * 100.f / __int64(m_fileLength);
 
-   return done;
+   return percentDone;
 }
 
-void BassInputModule::doneInput()
+void BassInputModule::DoneInput()
 {
    BASS_Free();
-   delete[] buffer;
+   delete[] m_buffer;
 }
-

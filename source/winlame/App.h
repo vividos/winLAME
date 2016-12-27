@@ -30,7 +30,10 @@
 
 // forward references
 class PresetManagerInterface;
-class ModuleManager;
+namespace Encoder
+{
+   class ModuleManager;
+}
 
 /// main application class
 class App
@@ -101,7 +104,7 @@ private:
    std::shared_ptr<PresetManagerInterface> m_spPresetManager;
 
    /// module manager
-   std::shared_ptr<ModuleManager> m_spModuleManager;
+   std::shared_ptr<Encoder::ModuleManager> m_spModuleManager;
 
    /// indicates if command line was already read by main dialog
    bool m_alreadyReadCommandLine;

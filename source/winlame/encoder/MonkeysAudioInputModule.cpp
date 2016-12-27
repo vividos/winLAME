@@ -1,54 +1,139 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2004 Kjetil Haga
-   Copyright (c) 2004 DeXT
-   Copyright (c) 2007 Michael Fink
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright(c) 2004 Kjetil Haga
+// Copyright(c) 2004 DeXT
+// Copyright(c) 2007-2016 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file MonkeysAudioInputModule.cpp
 /// \author   Kjetil Haga (programmer.khaga@start.no)
-///
-
+/// \brief contains the Monkey's Audio input module
+//
 #include "stdafx.h"
+#include "MonkeysAudioInputModule.hpp"
 #include "resource.h"
-#include <stdio.h>
-#include "MonkeysAudioInputModule.h"
+#include <cstdio>
 #include <cassert>
-#include "Id3v1Tag.h"
+#include "Id3v1Tag.hpp"
 
-// static references
-monkey::MAC_DLL MonkeysAudioInputModule::dll;
+using Encoder::MonkeysAudioInputModule;
+using Encoder::TrackInfo;
+using Encoder::SampleContainer;
 
-
-namespace monkey
+/// monkey namespace contains internal stuff used in MonkeysAudioInputModule
+namespace MonkeysAudio
 {
+#include "mac/MACDll.h"
+#include "mac/APETag.h"
 
-   // buffer size for monkey's audio module
-   const int MAC_BUFFER_SIZE = 8192;
+   /// typedefs
+   typedef int(__stdcall * proc_APEGetID3Tag)(const char*, ID3_TAG*);
 
-
-   // checks the interface version
-   int VersionCheckInterface(HMODULE hMACDll)
+   /// internal struct with pointers to mac dll functions
+   struct MonkeysAudioDll
    {
-      assert(hMACDll);
-      
-      int nRetVal = -1;
-      proc_GetInterfaceCompatibility GetInterfaceCompatibility = 
-         (proc_GetInterfaceCompatibility) GetProcAddress(hMACDll, "GetInterfaceCompatibility");
-      if (GetInterfaceCompatibility)
+      /// ctor
+      MonkeysAudioDll()
+         :m_module(nullptr),
+         Create(nullptr),
+         Destroy(nullptr),
+         GetData(nullptr),
+         Seek(nullptr),
+         GetInfo(nullptr),
+         GetID3Tag(nullptr)
       {
-         nRetVal = GetInterfaceCompatibility(MAC_VERSION_NUMBER, TRUE, NULL);
       }
 
-      return nRetVal;
-   }
+      /// dtor
+      ~MonkeysAudioDll()
+      {
+         if (m_module)
+         {
+            ::FreeLibrary(m_module);
+         }
+      }
 
+      /// loads library
+      void Load()
+      {
+         m_module = ::LoadLibraryA("MACDll.dll");
 
-   // encodes an error string based on macdll error code
-   void EncodeMonkeyErrorString(int errorCode, CString& desc)
+         if (m_module == nullptr)
+            return;
+
+         // load the functions
+         Create = (proc_APEDecompress_Create)GetProcAddress(m_module, "c_APEDecompress_Create");
+         Destroy = (proc_APEDecompress_Destroy)GetProcAddress(m_module, "c_APEDecompress_Destroy");
+         GetData = (proc_APEDecompress_GetData)GetProcAddress(m_module, "c_APEDecompress_GetData");
+         Seek = (proc_APEDecompress_Seek)GetProcAddress(m_module, "c_APEDecompress_Seek");
+         GetInfo = (proc_APEDecompress_GetInfo)GetProcAddress(m_module, "c_APEDecompress_GetInfo");
+         GetID3Tag = (proc_APEGetID3Tag)GetProcAddress(m_module, "GetID3Tag");
+
+         // error check (unload dll on failure)
+         if (Create == nullptr ||
+            Destroy == nullptr ||
+            GetData == nullptr ||
+            Seek == nullptr ||
+            GetInfo == nullptr)
+         {
+            ::FreeLibrary(m_module);
+            m_module = nullptr;
+         }
+      }
+
+      /// returns if library is available
+      bool IsAvail() const { return m_module != nullptr; }
+
+      /// checks interface version
+      bool CheckInterfaceVersion()
+      {
+         ATLASSERT(IsAvail());
+
+         int ret = -1;
+         proc_GetInterfaceCompatibility GetInterfaceCompatibility =
+            (proc_GetInterfaceCompatibility)GetProcAddress(m_module, "GetInterfaceCompatibility");
+         if (GetInterfaceCompatibility)
+         {
+            ret = GetInterfaceCompatibility(MAC_VERSION_NUMBER, TRUE, NULL);
+         }
+
+         return ret == 0;
+      }
+
+      /// module handle
+      HMODULE m_module;
+
+      // APEDecompress functions
+      proc_APEDecompress_Create        Create;
+      proc_APEDecompress_Destroy       Destroy;
+      proc_APEDecompress_GetData       GetData;
+      proc_APEDecompress_Seek          Seek;
+      proc_APEDecompress_GetInfo       GetInfo;
+      proc_APEGetID3Tag                GetID3Tag;
+   };
+
+   /// buffer size for MonkeysAudio's audio module
+   const int c_macBufferSize = 8192;
+
+   /// encodes an error string based on macdll error code
+   CString EncodeMonkeyErrorString(int errorCode)
    {
-      desc = _T("APE error (");
+      CString desc = _T("APE error (");
 
-      switch(errorCode)
+      switch (errorCode)
       {
       case ERROR_IO_READ:
          desc += _T("I/O read error");
@@ -121,265 +206,221 @@ namespace monkey
          break;
       }
 
-      CString tmp;
-      tmp.Format(_T("; code: %d)"), errorCode);
+      desc.AppendFormat(_T("; code: %d)"), errorCode);
 
-      desc += tmp;
+      return desc;
    }
 }
 
+// static references
 
+MonkeysAudio::MonkeysAudioDll MonkeysAudioInputModule::s_dll;
 
-
-MonkeysAudioInputModule::MonkeysAudioInputModule() : macfile(0), samplecount(0), totalsamples(0)
+MonkeysAudioInputModule::MonkeysAudioInputModule()
+   :m_handle(0),
+   m_numCurrentSamples(0),
+   m_numTotalSamples(0)
 {
-
 }
 
-MonkeysAudioInputModule::~MonkeysAudioInputModule()
+MonkeysAudioInputModule::~MonkeysAudioInputModule() throw()
 {
-
 }
 
-
-InputModule *MonkeysAudioInputModule::cloneModule()
+Encoder::InputModule* MonkeysAudioInputModule::CloneModule()
 {
    return new MonkeysAudioInputModule;
 }
 
-
-bool MonkeysAudioInputModule::isAvailable()
+bool MonkeysAudioInputModule::IsAvailable() const
 {
-   using namespace monkey;
-   
-   while(!dll.module)
-   {
-      // load dll
-      dll.module = ::LoadLibraryA("MACDll.dll");
+   using namespace MonkeysAudio;
 
-      if(!dll.module) break;
+   s_dll.Load();
 
-      // check interface version
-      if (VersionCheckInterface(dll.module) != 0)
-      {
-         ::FreeLibrary(dll.module);
-         break;
-      }
+   if (!s_dll.IsAvail() ||
+      !s_dll.CheckInterfaceVersion())
+      return false;
 
-      // load the functions
-      dll.Create      = (proc_APEDecompress_Create) GetProcAddress   (dll.module, "c_APEDecompress_Create");
-      dll.Destroy      = (proc_APEDecompress_Destroy) GetProcAddress   (dll.module, "c_APEDecompress_Destroy");
-      dll.GetData      = (proc_APEDecompress_GetData) GetProcAddress   (dll.module, "c_APEDecompress_GetData");
-      dll.Seek      = (proc_APEDecompress_Seek) GetProcAddress      (dll.module, "c_APEDecompress_Seek");
-      dll.GetInfo      = (proc_APEDecompress_GetInfo) GetProcAddress   (dll.module, "c_APEDecompress_GetInfo");
-      dll.GetID3Tag   = (proc_APEGetID3Tag) GetProcAddress         (dll.module, "GetID3Tag");
-
-      // error check (unload dll on failure)
-      if ((dll.Create      == 0) ||
-         (dll.Destroy   == 0) ||
-         (dll.GetData   == 0) ||
-         (dll.Seek      == 0) ||
-         (dll.GetInfo   == 0  ))
-      {
-         ::FreeLibrary(dll.module);
-         dll.module = 0;
-      }
-
-      break;
-   }
-
-   return dll.module ? true : false;
+   return true;
 }
 
-
-void MonkeysAudioInputModule::getDescription(CString& desc)
+void MonkeysAudioInputModule::GetDescription(CString& desc) const
 {
-   ATLASSERT(dll.module);
+   ATLASSERT(s_dll.IsAvail());
 
    // sanity check .. ;)
-   if(!macfile)
-   {
+   if (!m_handle)
       return;
-   }
-   
-   // get fileinfo
-   int samplerate = dll.GetInfo(macfile, monkey::APE_INFO_SAMPLE_RATE, 0, 0);
-   int channels = dll.GetInfo(macfile, monkey::APE_INFO_CHANNELS, 0, 0);
-   int level = dll.GetInfo(macfile, monkey::APE_INFO_COMPRESSION_LEVEL, 0, 0);
 
-   // create compression level string
-   LPCTSTR level_str;
-   switch(level)
+   // get fileinfo
+   int samplerateInHz = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_SAMPLE_RATE, 0, 0);
+   int numChannels = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_CHANNELS, 0, 0);
+   int level = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_COMPRESSION_LEVEL, 0, 0);
+
+   LPCTSTR compressionLevel;
+   switch (level)
    {
    case COMPRESSION_LEVEL_FAST:
-      level_str = _T("Fast compression");
+      compressionLevel = _T("Fast compression");
       break;
    case COMPRESSION_LEVEL_NORMAL:
-      level_str = _T("Normal compression");
+      compressionLevel = _T("Normal compression");
       break;
    case COMPRESSION_LEVEL_HIGH:
-      level_str = _T("High compression");
+      compressionLevel = _T("High compression");
       break;
    case COMPRESSION_LEVEL_EXTRA_HIGH:
-      level_str = _T("Extra high compression");
+      compressionLevel = _T("Extra high compression");
       break;
    case COMPRESSION_LEVEL_INSANE:
-      level_str = _T("Insane compression");
+      compressionLevel = _T("Insane compression");
       break;
    default:
-      level_str = _T("Unknown compression level.");
+      compressionLevel = _T("Unknown compression level.");
       break;
    }
 
    // encode desc string
    desc.Format(IDS_FORMAT_INFO_MONKEYS_AUDIO,
-      level_str, samplerate, channels);
+      compressionLevel,
+      samplerateInHz,
+      numChannels);
 }
 
-void MonkeysAudioInputModule::getVersionString(CString& version, int special)
+void MonkeysAudioInputModule::GetVersionString(CString& version, int special) const
 {
    version = MAC_VERSION_STRING;
 }
 
-
-CString MonkeysAudioInputModule::getFilterString()
+CString MonkeysAudioInputModule::GetFilterString() const
 {
-   CString cszFilter;
-   cszFilter.LoadString(IDS_FILTER_MONKEYS_AUDIO_INPUT);
-   return cszFilter;
+   CString filterString;
+   filterString.LoadString(IDS_FILTER_MONKEYS_AUDIO_INPUT);
+   return filterString;
 }
 
-
-int MonkeysAudioInputModule::initInput(LPCTSTR infilename,
-                               SettingsManager &mgr, TrackInfo &trackinfo,
-                               SampleContainer &samplecont)
+int MonkeysAudioInputModule::InitInput(LPCTSTR infilename,
+   SettingsManager& mgr, TrackInfo& trackInfo,
+   SampleContainer& samples)
 {
-   assert(dll.module);
+   ATLASSERT(s_dll.IsAvail());
 
    // close old file if still open
-   if(macfile)
+   if (m_handle)
    {
-      dll.Destroy(macfile);
-      macfile = 0;
+      s_dll.Destroy(m_handle);
+      m_handle = nullptr;
    }
-   
-   //internal retval used by macdll
+
+   // internal retval used by macdll
    int retval = 0;
-   
+
    // resets the sample count
-   samplecount = 0;
+   m_numCurrentSamples = 0;
 
    // get id3 tag
-   getId3Tag(infilename, trackinfo);
-   
+   GetID3Tag(infilename, trackInfo);
+
    // opens the file for reading
-   macfile = dll.Create(CStringA(GetAnsiCompatFilename(infilename)), &retval);
-   if(NULL == macfile)
+   m_handle = s_dll.Create(CStringA(GetAnsiCompatFilename(infilename)), &retval);
+   if (m_handle == nullptr)
    {
-      monkey::EncodeMonkeyErrorString(retval, lasterror);
+      m_lastError = MonkeysAudio::EncodeMonkeyErrorString(retval);
       return -1;
    }
-   
+
    // get some fileinfo
-   int samplerate = dll.GetInfo(macfile, monkey::APE_INFO_SAMPLE_RATE, 0, 0);
-   int channels = dll.GetInfo(macfile, monkey::APE_INFO_CHANNELS, 0, 0);
-   int bps = dll.GetInfo(macfile, monkey::APE_INFO_BITS_PER_SAMPLE, 0, 0);
+   int samplerateInHz = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_SAMPLE_RATE, 0, 0);
+   int numChannels = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_CHANNELS, 0, 0);
+   int bitrateInBps = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_BITS_PER_SAMPLE, 0, 0);
 
    // set total samples in file (for stats update)
-   totalsamples = dll.GetInfo(macfile, monkey::APE_DECOMPRESS_TOTAL_BLOCKS, 0, 0);
-   
+   m_numTotalSamples = s_dll.GetInfo(m_handle, MonkeysAudio::APE_DECOMPRESS_TOTAL_BLOCKS, 0, 0);
+
    // set up input traits
-   samplecont.setInputModuleTraits(bps, SamplesInterleaved, samplerate, channels);
-   
+   samples.SetInputModuleTraits(bitrateInBps, SamplesInterleaved, samplerateInHz, numChannels);
+
    return 0;
 }
 
-
-void MonkeysAudioInputModule::getInfo(int &channels, int &bitrate, int &length, int &samplerate)
+void MonkeysAudioInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const
 {
-   assert(dll.module);
-   
-   if (macfile!=0)
-   {
-      // bits per sample
-      int bits_per_sample = dll.GetInfo(macfile, monkey::APE_INFO_BITS_PER_SAMPLE, 0, 0);
-      
-      // number of channels
-      channels = dll.GetInfo(macfile, monkey::APE_INFO_CHANNELS, 0, 0);
-      
-      // samplerate
-      samplerate = dll.GetInfo(macfile, monkey::APE_INFO_SAMPLE_RATE, 0, 0);
+   ATLASSERT(s_dll.IsAvail());
 
-      // length (seconds)
-      length = dll.GetInfo(macfile, monkey::APE_DECOMPRESS_LENGTH_MS, 0, 0) / 1000;
-            
-      // bitrate
-      bitrate = samplerate * bits_per_sample;
-   }
+   if (m_handle == nullptr)
+      return;
+
+   int bitsPerSample = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_BITS_PER_SAMPLE, 0, 0);
+
+   numChannels = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_CHANNELS, 0, 0);
+
+   samplerateInHz = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_SAMPLE_RATE, 0, 0);
+
+   lengthInSeconds = s_dll.GetInfo(m_handle, MonkeysAudio::APE_DECOMPRESS_LENGTH_MS, 0, 0) / 1000;
+
+   bitrateInBps = samplerateInHz * bitsPerSample;
 }
 
-
-int MonkeysAudioInputModule::decodeSamples(SampleContainer &samples)
+int MonkeysAudioInputModule::DecodeSamples(SampleContainer& samples)
 {
-   assert(dll.module && macfile);
+   ATLASSERT(s_dll.IsAvail() && m_handle != nullptr);
 
-   unsigned char buffer[monkey::MAC_BUFFER_SIZE];
-   int blocks_retrieved = 0;
-   
+   unsigned char buffer[MonkeysAudio::c_macBufferSize];
+   int numBlocksRetrieved = 0;
+
    // get data from file
-   int blockalign = dll.GetInfo(macfile, monkey::APE_INFO_BLOCK_ALIGN, 0, 0);
-   int retval = dll.GetData(macfile, reinterpret_cast<char*>(buffer), monkey::MAC_BUFFER_SIZE / blockalign, &blocks_retrieved);
+   int blockalign = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_BLOCK_ALIGN, 0, 0);
+   int retval = s_dll.GetData(m_handle, reinterpret_cast<char*>(buffer), MonkeysAudio::c_macBufferSize / blockalign, &numBlocksRetrieved);
 
    // success?
-   if(0 != retval)
+   if (retval != 0)
    {
-      monkey::EncodeMonkeyErrorString(retval, lasterror);
-      return (retval * -1);
+      m_lastError = MonkeysAudio::EncodeMonkeyErrorString(retval);
+      return -retval;
    }
 
-   // if we are dealing with 8-bit samples we have to convert them to signed samples
-   // (8-bit samples from monkey's audio are unsigned)
-   int bits_per_sample = dll.GetInfo(macfile, monkey::APE_INFO_BITS_PER_SAMPLE, 0, 0);
-   if(8 == bits_per_sample)
+   // if we are dealing with 8-bit samples, we have to convert them to signed samples
+   // (8-bit samples from MonkeysAudio's audio are unsigned)
+   int bitsPerSample = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_BITS_PER_SAMPLE, 0, 0);
+   if (8 == bitsPerSample)
    {
-      for(int i=0; i<monkey::MAC_BUFFER_SIZE; ++i)
+      for (int i = 0; i < MonkeysAudio::c_macBufferSize; ++i)
       {
-         buffer[i] = ((buffer[i] & 0x80) ^ 0x80) | (buffer[i] & 0x7f);   //invert most significant bit
+         buffer[i] = ((buffer[i] & 0x80) ^ 0x80) | (buffer[i] & 0x7f);   // invert most significant bit
       }
    }
 
    // update stats
-   samplecount += blocks_retrieved;
+   m_numCurrentSamples += numBlocksRetrieved;
 
    // put samples in container
-   samples.putSamplesInterleaved(buffer, blocks_retrieved);
-   
+   samples.PutSamplesInterleaved(buffer, numBlocksRetrieved);
+
    // return samples retrieved
-   return blocks_retrieved;
+   return numBlocksRetrieved;
 }
 
-
-void MonkeysAudioInputModule::doneInput()
+void MonkeysAudioInputModule::DoneInput()
 {
-   // close file if open
-   if(macfile)
+   if (m_handle)
    {
-      dll.Destroy(macfile);
-      macfile = 0;
+      s_dll.Destroy(m_handle);
+      m_handle = nullptr;
    }
 }
 
-bool MonkeysAudioInputModule::getId3Tag(LPCTSTR filepath, TrackInfo& trackinfo)
+bool MonkeysAudioInputModule::GetID3Tag(LPCTSTR filename, TrackInfo& trackInfo)
 {
-   assert(dll.module);
+   ATLASSERT(s_dll.IsAvail());
 
    Id3v1Tag id3tag;
-   monkey::ID3_TAG *info = (monkey::ID3_TAG *)id3tag.getData();
-   
-   if(ERROR_SUCCESS != dll.GetID3Tag(CStringA(GetAnsiCompatFilename(filepath)), info) )
+   MonkeysAudio::ID3_TAG* info = (MonkeysAudio::ID3_TAG *)id3tag.GetData();
+
+   if (ERROR_SUCCESS != s_dll.GetID3Tag(CStringA(GetAnsiCompatFilename(filename)), info))
       return false;
 
-   id3tag.toTrackInfo(trackinfo);
+   id3tag.ToTrackInfo(trackInfo);
 
    return true;
 }

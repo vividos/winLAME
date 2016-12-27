@@ -86,7 +86,7 @@ LRESULT EncodePage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
    newfile = true;
 
    // set module and settings manager for the encoder object
-   encoder->setModuleManager(&IoCContainer::Current().Resolve<ModuleManager>());
+   encoder->setModuleManager(&IoCContainer::Current().Resolve<Encoder::ModuleManager>());
    encoder->setSettingsManager(&settings.settings_manager);
 
    // load tray icons
@@ -367,7 +367,7 @@ LRESULT EncodePage::OnSystrayActive(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
    return 0;
 }
 
-EncoderErrorHandler::ErrorAction EncodePage::handleError(LPCTSTR infilename,
+Encoder::EncoderErrorHandler::ErrorAction EncodePage::handleError(LPCTSTR infilename,
    LPCTSTR modulename, int errnum, LPCTSTR errormsg, bool bSkipDisabled)
 {
    // show error dialog

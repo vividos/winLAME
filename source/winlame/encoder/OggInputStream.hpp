@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014 Michael Fink
+// Copyright (c) 2014-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,105 +21,108 @@
 //
 #pragma once
 
-// includes
 #include <ogg/ogg.h>
 
-/// \brief wrapper for ogg input streams
-/// \details reads in bytes from passed FILE, and outputs ogg_packet's
-class OggInputStream
+namespace Encoder
 {
-public:
-   /// ctor
-   OggInputStream(FILE* fd, bool bFreeFd)
-      :m_fd(fd),
-      m_bFreeFd(bFreeFd),
-      m_bEndOfStream(false),
-      m_bStreamInit(false)
+   /// \brief wrapper for ogg input streams
+   /// \details reads in bytes from passed FILE, and outputs ogg_packet's
+   class OggInputStream
    {
-      ogg_sync_init(&m_sync);
-   }
-
-   /// dtor; auto-closes stream and file
-   ~OggInputStream()
-   {
-      ogg_sync_destroy(&m_sync);
-      ogg_stream_destroy(&m_stream);
-
-      if (m_bFreeFd)
-         fclose(m_fd);
-   }
-
-   /// returns file ptr
-   FILE* GetFd() const { return m_fd; }
-
-   /// reads more data from file into stream
-   void ReadInput(size_t uiSize)
-   {
-      char* data = ogg_sync_buffer(&m_sync, uiSize);
-      size_t uiRead = fread(data, sizeof(char), uiSize, m_fd);
-
-      if (uiRead == 0)
-         m_bEndOfStream = true;
-      else
-         ogg_sync_wrote(&m_sync, uiRead);
-   }
-
-   /// returns if stream is at its end
-   bool IsEndOfStream() const
-   {
-      return m_bEndOfStream || feof(m_fd);
-   }
-
-   /// reads next packet
-   /// \param[out] packet packet to read
-   /// \retval false no packet available; read more bytes (or check IsEndOfStream())
-   /// \retval true packet was read correctly
-   bool ReadNextPacket(ogg_packet& packet)
-   {
-      // packet available?
-      if (m_bStreamInit)
+   public:
+      /// ctor
+      OggInputStream(FILE* fd, bool bFreeFd)
+         :m_fd(fd),
+         m_bFreeFd(bFreeFd),
+         m_bEndOfStream(false),
+         m_bStreamInit(false)
       {
-         int iRet = ogg_stream_packetout(&m_stream, &packet);
-         if (iRet == 1)
-            return true;
+         ogg_sync_init(&m_sync);
       }
 
-      if (1 != ogg_sync_pageout(&m_sync, &m_currentPage))
-         return false;
-
-      if (!m_bStreamInit)
+      /// dtor; auto-closes stream and file
+      ~OggInputStream()
       {
-         ogg_stream_init(&m_stream, ogg_page_serialno(&m_currentPage));
-         m_bStreamInit = true;
+         ogg_sync_destroy(&m_sync);
+         ogg_stream_destroy(&m_stream);
+
+         if (m_bFreeFd)
+            fclose(m_fd);
       }
 
-      if (ogg_page_serialno(&m_currentPage) != m_stream.serialno)
-         ogg_stream_reset_serialno(&m_stream, ogg_page_serialno(&m_currentPage));
+      /// returns file ptr
+      FILE* GetFd() const { return m_fd; }
 
-      ogg_stream_pagein(&m_stream, &m_currentPage);
+      /// reads more data from file into stream
+      void ReadInput(size_t uiSize)
+      {
+         char* data = ogg_sync_buffer(&m_sync, uiSize);
+         size_t uiRead = fread(data, sizeof(char), uiSize, m_fd);
 
-      return 1 == ogg_stream_packetout(&m_stream, &packet);
-   }
+         if (uiRead == 0)
+            m_bEndOfStream = true;
+         else
+            ogg_sync_wrote(&m_sync, uiRead);
+      }
 
-private:
-   /// file to read from
-   FILE* m_fd;
+      /// returns if stream is at its end
+      bool IsEndOfStream() const
+      {
+         return m_bEndOfStream || feof(m_fd);
+      }
 
-   /// indicates if m_fd is freed in dtor
-   bool m_bFreeFd;
+      /// reads next packet
+      /// \param[out] packet packet to read
+      /// \retval false no packet available; read more bytes (or check IsEndOfStream())
+      /// \retval true packet was read correctly
+      bool ReadNextPacket(ogg_packet& packet)
+      {
+         // packet available?
+         if (m_bStreamInit)
+         {
+            int iRet = ogg_stream_packetout(&m_stream, &packet);
+            if (iRet == 1)
+               return true;
+         }
 
-   /// indicates if stream is at end
-   bool m_bEndOfStream;
+         if (1 != ogg_sync_pageout(&m_sync, &m_currentPage))
+            return false;
 
-   /// indicates if m_stream has been init'ed
-   bool m_bStreamInit;
+         if (!m_bStreamInit)
+         {
+            ogg_stream_init(&m_stream, ogg_page_serialno(&m_currentPage));
+            m_bStreamInit = true;
+         }
 
-   /// sync state
-   ogg_sync_state m_sync;
+         if (ogg_page_serialno(&m_currentPage) != m_stream.serialno)
+            ogg_stream_reset_serialno(&m_stream, ogg_page_serialno(&m_currentPage));
 
-   /// stream state
-   ogg_stream_state m_stream;
+         ogg_stream_pagein(&m_stream, &m_currentPage);
 
-   /// current page
-   ogg_page m_currentPage;
-};
+         return 1 == ogg_stream_packetout(&m_stream, &packet);
+      }
+
+   private:
+      /// file to read from
+      FILE* m_fd;
+
+      /// indicates if m_fd is freed in dtor
+      bool m_bFreeFd;
+
+      /// indicates if stream is at end
+      bool m_bEndOfStream;
+
+      /// indicates if m_stream has been init'ed
+      bool m_bStreamInit;
+
+      /// sync state
+      ogg_sync_state m_sync;
+
+      /// stream state
+      ogg_stream_state m_stream;
+
+      /// current page
+      ogg_page m_currentPage;
+   };
+
+} // namespace Encoder

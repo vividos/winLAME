@@ -26,7 +26,7 @@
 #include "stdafx.h"
 #include "InputPage.h"
 #include "EncoderInterface.h"
-#include "encoder/ModuleInterface.h"
+#include "encoder/ModuleInterface.hpp"
 #include "CDRipDlg.h"
 #include "CDRipTrackManager.h"
 #include <fstream>
@@ -135,7 +135,7 @@ void InputPage::DeleteSelectedFromCDRipTrackManager()
       {
          unsigned long nIndex = _tcstoul(cszFilename.Mid(_tcslen(g_pszCDRipPrefix)), NULL, 10);
          ATLASSERT(nIndex < pManager->GetMaxTrackInfo());
-         pManager->GetTrackInfo(nIndex).m_bActive = false; // switch inactive
+         pManager->GetTrackInfo(nIndex).m_isActive = false; // switch inactive
       }
 
       pos = listctrl.GetNextItem(pos,LVIS_SELECTED);
@@ -191,9 +191,9 @@ LRESULT InputPage::OnButtonCDRip(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
          CDRipTrackInfo& trackinfo = pManager->GetTrackInfo(n);
 
          cszCDRipUri.Format(_T("%s%u\\%u. %s"), g_pszCDRipPrefix, n,
-            trackinfo.m_nTrackOnDisc+1, trackinfo.m_cszTrackTitle);
+            trackinfo.m_numTrackOnDisc+1, trackinfo.m_trackTitle);
 
-         InsertFileWithIcon(cszCDRipUri, cszTestCdaFilename, 44100, 44100*16*2, trackinfo.m_nTrackLength);
+         InsertFileWithIcon(cszCDRipUri, cszTestCdaFilename, 44100, 44100*16*2, trackinfo.m_trackLengthInSeconds);
       }
 
       _tremove(cszTestCdaFilename);
@@ -315,8 +315,8 @@ void InputPage::OpenFileDialog()
    CString filter;
    if (filterstring.IsEmpty())
    {
-      ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-      moduleManager.getFilterString(filterstring);
+      Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+      moduleManager.GetFilterString(filterstring);
 
       CString cszText(MAKEINTRESOURCE(IDS_INPUT_FILTER_PLAYLISTS));
       filterstring += cszText;
@@ -495,9 +495,9 @@ void InputPage::InsertFilename(LPCTSTR filename)
    CString errormsg;
    int samplerate=-1,bps=-1,length=-1;
 
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
 
-   bool res = moduleManager.getAudioFileInfo(filename,length,bps,samplerate,errormsg);
+   bool res = moduleManager.GetAudioFileInfo(filename,length,bps,samplerate,errormsg);
    if (!res)
    {
       CString cszFirstText(MAKEINTRESOURCE(IDS_INPUT_ERRORS_OCCURED_ADDING));
@@ -539,7 +539,7 @@ void InputPage::OnEnterPage()
          unsigned long nIndex = _tcstoul(filename.Mid(_tcslen(g_pszCDRipPrefix)), NULL, 10);
          CDRipTrackInfo& trackinfo = pManager->GetTrackInfo(nIndex);
 
-         InsertFileWithIcon(filename, cszTestCdaFilename, 44100, 44100*16*2, trackinfo.m_nTrackLength);
+         InsertFileWithIcon(filename, cszTestCdaFilename, 44100, 44100*16*2, trackinfo.m_trackLengthInSeconds);
       }
       else
          InsertFilename(filename);
@@ -575,7 +575,7 @@ bool InputPage::OnLeavePage()
    for(int i=0;i<max;i++)
    {
       fname = listctrl.GetFileName(i);
-      fnlist.push_back(EncoderJob(fname));
+      fnlist.push_back(Encoder::EncoderJob(fname));
    }
 
    // check if any inactive track entries are in the cdrip manager
@@ -585,7 +585,7 @@ bool InputPage::OnLeavePage()
       unsigned int nMax = pManager->GetMaxTrackInfo();
       for(unsigned int n=0; n<nMax; n++)
       {
-         if (!pManager->GetTrackInfo(n).m_bActive)
+         if (!pManager->GetTrackInfo(n).m_isActive)
          {
             pManager->RemoveTrackInfo(n);
             --nMax;

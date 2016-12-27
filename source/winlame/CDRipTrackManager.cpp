@@ -40,10 +40,10 @@ CDRipTrackManager::~CDRipTrackManager()
    for(unsigned int n=0; n<nMax; n++)
    {
       CDRipTrackInfo& cdtrackinfo = m_vecTrackInfo[n];
-      if (!cdtrackinfo.m_cszRippedFilename.IsEmpty())
+      if (!cdtrackinfo.m_rippedFilename.IsEmpty())
       {
-         DeleteFile(cdtrackinfo.m_cszRippedFilename);
-         cdtrackinfo.m_cszRippedFilename.Empty();
+         DeleteFile(cdtrackinfo.m_rippedFilename);
+         cdtrackinfo.m_rippedFilename.Empty();
       }
    }
 }

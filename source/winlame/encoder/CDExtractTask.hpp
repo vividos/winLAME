@@ -21,72 +21,76 @@
 //
 #pragma once
 
-// includes
 #include "Task.h"
 #include "CDRipTrackManager.h"
 #include <atomic>
 
 // forward references
 struct UISettings;
-class TrackInfo;
-class CDReadJob;
 
-/// task to extract CD audio track
-class CDExtractTask : public Task
+namespace Encoder
 {
-public:
-   /// ctor
-   CDExtractTask(unsigned int dependentTaskId, const CDRipDiscInfo& discinfo, const CDRipTrackInfo& trackinfo);
-   /// dtor
-   virtual ~CDExtractTask() throw() {}
+   class TrackInfo;
+   class CDReadJob;
 
-   /// returns current task info; must return immediately
-   virtual TaskInfo GetTaskInfo();
+   /// task to extract CD audio track
+   class CDExtractTask : public Task
+   {
+   public:
+      /// ctor
+      CDExtractTask(unsigned int dependentTaskId, const CDRipDiscInfo& discinfo, const CDRipTrackInfo& trackinfo);
+      /// dtor
+      virtual ~CDExtractTask() throw() {}
 
-   /// runs task; may take longer
-   virtual void Run();
+      /// returns current task info; must return immediately
+      virtual TaskInfo GetTaskInfo();
 
-   /// task should be aborted, e.g. when program is closed
-   virtual void Stop();
+      /// runs task; may take longer
+      virtual void Run();
 
-   /// output filename for this task
-   const CString& OutputFilename() { return m_trackinfo.m_cszRippedFilename; }
+      /// task should be aborted, e.g. when program is closed
+      virtual void Stop();
 
-   /// title for this task
-   const CString& Title() { return m_title; }
+      /// output filename for this task
+      const CString& OutputFilename() { return m_trackinfo.m_rippedFilename; }
 
-   /// Sets track info properties from CD Read job infos
-   static void SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, const CDReadJob& cdReadJob);
+      /// title for this task
+      const CString& Title() { return m_title; }
 
-private:
-   /// generates temporary filename
-   CString GetTempFilename(const CString& cszDiscTrackTitle) const;
+      /// Sets track info properties from CD Read job infos
+      static void SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, const CDReadJob& cdReadJob);
 
-   /// extracts track from CD and stores it in temporary filename
-   bool ExtractTrack(const CString& cszTempFilename);
+   private:
+      /// generates temporary filename
+      CString GetTempFilename(const CString& discTrackTitle) const;
 
-private:
-   /// CD disc info
-   CDRipDiscInfo m_discinfo;
+      /// extracts track from CD and stores it in temporary filename
+      bool ExtractTrack(const CString& tempFilename);
 
-   /// CD track info
-   CDRipTrackInfo m_trackinfo;
+   private:
+      /// CD disc info
+      CDRipDiscInfo m_discinfo;
 
-   /// settings
-   UISettings& m_uiSettings;
+      /// CD track info
+      CDRipTrackInfo m_trackinfo;
 
-   /// title of track to extract
-   CString m_title;
+      /// settings
+      UISettings& m_uiSettings;
 
-   /// indicates if task was stopped
-   std::atomic<bool> m_bStopped;
+      /// title of track to extract
+      CString m_title;
 
-   /// indicates if task is running
-   std::atomic<bool> m_running;
+      /// indicates if task was stopped
+      std::atomic<bool> m_stopped;
 
-   /// indicates if task has finished
-   std::atomic<bool> m_finished;
+      /// indicates if task is running
+      std::atomic<bool> m_running;
 
-   /// progress in percent
-   std::atomic<unsigned int> m_uiProgress;
-};
+      /// indicates if task has finished
+      std::atomic<bool> m_finished;
+
+      /// progress in percent
+      std::atomic<unsigned int> m_progressInPercent;
+   };
+
+} // namespace Encoder

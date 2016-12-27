@@ -52,7 +52,6 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-// needed includes
 #include "stdafx.h"
 #include "resource.h"
 #include "OpusOutputModule.hpp"
@@ -63,7 +62,7 @@
 
 #pragma warning (disable: 4706) // assignment within conditional expression
 
-// we still have the old Ogg libraries
+/// we still have the old Ogg libraries
 #define OLD_LIBOGG
 
 static inline int oe_write_page(ogg_page *page, FILE *fp);
@@ -84,8 +83,9 @@ static inline int oe_write_page(ogg_page *page, FILE *fp)
 #define IMIN(a,b) ((a) < (b) ? (a) : (b))   /**< Minimum int value.   */
 #define IMAX(a,b) ((a) > (b) ? (a) : (b))   /**< Maximum int value.   */
 
-
-// OpusOutputModule methods
+using Encoder::OpusOutputModule;
+using Encoder::TrackInfo;
+using Encoder::SampleContainer;
 
 OpusOutputModule::OpusOutputModule()
    :m_bitrateInBps(-1),
@@ -97,20 +97,20 @@ OpusOutputModule::OpusOutputModule()
    m_numPagesWritten(0),
    m_32bitMode(false)
 {
-   module_id = ID_OM_OPUS;
+   m_moduleId = ID_OM_OPUS;
 }
 
 OpusOutputModule::~OpusOutputModule()
 {
 }
 
-bool OpusOutputModule::isAvailable()
+bool OpusOutputModule::IsAvailable() const
 {
    // always available
    return true;
 }
 
-void OpusOutputModule::getDescription(CString& desc)
+void OpusOutputModule::GetDescription(CString& desc) const
 {
    LPCTSTR bitrateMode = _T("???");
 
@@ -133,24 +133,24 @@ void OpusOutputModule::getDescription(CString& desc)
       m_complexity);
 }
 
-void OpusOutputModule::getVersionString(CString& version, int special)
+void OpusOutputModule::GetVersionString(CString& version, int special) const
 {
    version = opus_get_version_string();
 }
 
-int OpusOutputModule::initOutput(LPCTSTR outfilename,
-   SettingsManager& mgr, const TrackInfo& trackinfo,
-   SampleContainer& samplecont)
+int OpusOutputModule::InitOutput(LPCTSTR outfilename,
+   SettingsManager& mgr, const TrackInfo& trackInfo,
+   SampleContainer& samples)
 {
    InitInopt();
-   SetInputStreamInfos(samplecont);
+   SetInputStreamInfos(samples);
 
    // set options from UI
-   m_bitrateInBps = mgr.queryValueInt(OpusTargetBitrate) * 1000;
-   m_complexity = mgr.queryValueInt(OpusComplexity);
-   m_opusBitrateMode = mgr.queryValueInt(OpusBitrateMode);
+   m_bitrateInBps = mgr.QueryValueInt(OpusTargetBitrate) * 1000;
+   m_complexity = mgr.QueryValueInt(OpusComplexity);
+   m_opusBitrateMode = mgr.QueryValueInt(OpusBitrateMode);
 
-   if (!StoreTrackInfos(trackinfo))
+   if (!StoreTrackInfos(trackInfo))
       return -1;
 
    if (!OpenOutputFile(outfilename))
@@ -168,12 +168,12 @@ int OpusOutputModule::initOutput(LPCTSTR outfilename,
    m_samplerate = m_codingRate;
 
    // set up output traits
-   samplecont.setOutputModuleTraits(m_32bitMode ? 32 : 16, SamplesInterleaved, m_samplerate, m_channels);
+   samples.SetOutputModuleTraits(m_32bitMode ? 32 : 16, SamplesInterleaved, m_samplerate, m_channels);
 
    return 0;
 }
 
-int OpusOutputModule::encodeSamples(SampleContainer& samples)
+int OpusOutputModule::EncodeSamples(SampleContainer& samples)
 {
    // end of stream?
    if (op.e_o_s)
@@ -187,7 +187,7 @@ int OpusOutputModule::encodeSamples(SampleContainer& samples)
    return numSamples;
 }
 
-void OpusOutputModule::doneOutput()
+void OpusOutputModule::DoneOutput()
 {
    EncodeRemainingInputBuffer();
 
@@ -240,12 +240,12 @@ void OpusOutputModule::InitInopt()
 
 void OpusOutputModule::SetInputStreamInfos(SampleContainer& samplecont)
 {
-   inopt.rate = samplecont.getInputModuleSampleRate();
-   inopt.channels = m_channels = samplecont.getInputModuleChannels();
-   inopt.samplesize = samplecont.getInputModuleBitsPerSample();
+   inopt.rate = samplecont.GetInputModuleSampleRate();
+   inopt.channels = m_channels = samplecont.GetInputModuleChannels();
+   inopt.samplesize = samplecont.GetInputModuleBitsPerSample();
    inopt.total_samples_per_channel = 0;
 
-   m_32bitMode = samplecont.getInputModuleBitsPerSample() == 32;
+   m_32bitMode = samplecont.GetInputModuleBitsPerSample() == 32;
 }
 
 bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
@@ -356,7 +356,7 @@ bool OpusOutputModule::InitEncoder()
 
    if (ret != OPUS_OK)
    {
-      m_lasterror.Format(_T("Error cannot create encoder: %hs"), opus_strerror(ret));
+      m_lastError.Format(_T("Error cannot create encoder: %hs"), opus_strerror(ret));
       return false;
    }
 
@@ -412,8 +412,8 @@ bool OpusOutputModule::SetEncoderOptions()
    }
 
    if (bitrate > (1024000 * inopt.channels) || bitrate < 500) {
-      m_lasterror.Format(_T("Error: Bitrate %d bits/sec is insane.\nDid you mistake bits for kilobits?\n"), bitrate);
-      m_lasterror.Append(_T("--bitrate values from 6-256 kbit/sec per channel are meaningful.\n"));
+      m_lastError.Format(_T("Error: Bitrate %d bits/sec is insane.\nDid you mistake bits for kilobits?\n"), bitrate);
+      m_lastError.Append(_T("--bitrate values from 6-256 kbit/sec per channel are meaningful.\n"));
       return false;
    }
 
@@ -422,14 +422,14 @@ bool OpusOutputModule::SetEncoderOptions()
    int ret = opus_multistream_encoder_ctl(st, OPUS_SET_BITRATE(bitrate));
    if (ret != OPUS_OK)
    {
-      m_lasterror.Format(_T("Error OPUS_SET_BITRATE returned: %hs\n"), opus_strerror(ret));
+      m_lastError.Format(_T("Error OPUS_SET_BITRATE returned: %hs\n"), opus_strerror(ret));
       return false;
    }
 
    ret = opus_multistream_encoder_ctl(st, OPUS_SET_VBR(!with_hard_cbr));
    if (ret != OPUS_OK)
    {
-      m_lasterror.Format(_T("Error OPUS_SET_VBR returned: %hs\n"), opus_strerror(ret));
+      m_lastError.Format(_T("Error OPUS_SET_VBR returned: %hs\n"), opus_strerror(ret));
       exit(1);
    }
 
@@ -446,7 +446,7 @@ bool OpusOutputModule::SetEncoderOptions()
    ret = opus_multistream_encoder_ctl(st, OPUS_SET_COMPLEXITY(complexity));
    if (ret != OPUS_OK)
    {
-      m_lasterror.Format(_T("Error OPUS_SET_COMPLEXITY returned: %hs\n"), opus_strerror(ret));
+      m_lastError.Format(_T("Error OPUS_SET_COMPLEXITY returned: %hs\n"), opus_strerror(ret));
       return false;
    }
 
@@ -454,7 +454,7 @@ bool OpusOutputModule::SetEncoderOptions()
    ret = opus_multistream_encoder_ctl(st, OPUS_SET_PACKET_LOSS_PERC(expect_loss));
    if (ret != OPUS_OK)
    {
-      m_lasterror.Format(_T("Error OPUS_SET_PACKET_LOSS_PERC returned: %hs\n"), opus_strerror(ret));
+      m_lastError.Format(_T("Error OPUS_SET_PACKET_LOSS_PERC returned: %hs\n"), opus_strerror(ret));
       return false;
    }
 
@@ -462,7 +462,7 @@ bool OpusOutputModule::SetEncoderOptions()
    ret = opus_multistream_encoder_ctl(st, OPUS_SET_LSB_DEPTH(IMAX(8, IMIN(24, inopt.samplesize))));
    if (ret != OPUS_OK)
    {
-      m_lasterror.Format(_T("Warning OPUS_SET_LSB_DEPTH returned: %hs\n"), opus_strerror(ret));
+      m_lastError.Format(_T("Warning OPUS_SET_LSB_DEPTH returned: %hs\n"), opus_strerror(ret));
       return false; // note: original opusenc doesn't have this exit point
    }
 #endif
@@ -471,7 +471,7 @@ bool OpusOutputModule::SetEncoderOptions()
    ret = opus_multistream_encoder_ctl(st, OPUS_GET_LOOKAHEAD(&lookahead));
    if (ret != OPUS_OK)
    {
-      m_lasterror.Format(_T("Error OPUS_GET_LOOKAHEAD returned: %hs\n"), opus_strerror(ret));
+      m_lastError.Format(_T("Error OPUS_GET_LOOKAHEAD returned: %hs\n"), opus_strerror(ret));
       return false;
    }
    inopt.skip += lookahead;
@@ -505,12 +505,12 @@ bool OpusOutputModule::WriteHeader()
 
    // Initialize Ogg stream struct
    time_t start_time = time(NULL);
-   srand((unsigned int)(((getpid() & 65535) << 15) ^ start_time));
+   srand((unsigned int)(((getpid() & 65535) << 15) ^ (unsigned int)start_time));
    int serialno = rand();
 
    if (ogg_stream_init(&os, serialno) == -1)
    {
-      m_lasterror = _T("Error: stream init failed\n");
+      m_lastError = _T("Error: stream init failed\n");
       return false;
    }
 
@@ -535,7 +535,7 @@ bool OpusOutputModule::WriteHeader()
          ret = oe_write_page(&og, fout);
          if (ret != og.header_len + og.body_len)
          {
-            m_lasterror = "Error: failed writing header to output stream\n";
+            m_lastError = "Error: failed writing header to output stream\n";
             return false;
          }
 
@@ -561,7 +561,7 @@ bool OpusOutputModule::WriteHeader()
       ret = oe_write_page(&og, fout);
       if (ret != og.header_len + og.body_len)
       {
-         m_lasterror = "Error: failed writing header to output stream\n";
+         m_lastError = "Error: failed writing header to output stream\n";
          return false;
       }
       bytes_written += ret;
@@ -631,7 +631,7 @@ int OpusOutputModule::RefillInputSampleBuffer(SampleContainer& samples)
       static_assert(sizeof(int) == sizeof(opus_int32), "short and opus_int16 must have the same size");
 
       // numSamples is in "samples per channel", so input buffer contains numSamples*m_channels samples
-      opus_int32* inputBuffer = (opus_int32*)samples.getSamplesInterleaved(numSamples);
+      opus_int32* inputBuffer = (opus_int32*)samples.GetSamplesInterleaved(numSamples);
 
       size_t startIndex = m_inputInt32Buffer.size();
 
@@ -643,7 +643,7 @@ int OpusOutputModule::RefillInputSampleBuffer(SampleContainer& samples)
    {
       static_assert(sizeof(short) == sizeof(opus_int16), "short and opus_int16 must have the same size");
 
-      opus_int16* inputBuffer = (opus_int16*)samples.getSamplesInterleaved(numSamples);
+      opus_int16* inputBuffer = (opus_int16*)samples.GetSamplesInterleaved(numSamples);
 
       size_t startIndex = m_inputInt16Buffer.size();
 
@@ -706,13 +706,13 @@ bool OpusOutputModule::EncodeInputBufferFrame()
 
    // read samples
    opus_int32 nb_samples = -1; // number of samples, per channel
-   if (nb_samples<0)
+   if (nb_samples < 0)
    {
       nb_samples = inopt.read_samples(inopt.readdata, m_inputFloatBuffer.data(), frame_size);
 
       total_samples += nb_samples;
 
-      if (nb_samples<frame_size)
+      if (nb_samples < frame_size)
          op.e_o_s = 1;
       else
          op.e_o_s = 0;
@@ -732,9 +732,9 @@ bool OpusOutputModule::EncodeInputBufferFrame()
    OpusMSEncoder* st = m_encoder.get();
    opus_int32 nbBytes = opus_multistream_encode_float(st, m_inputFloatBuffer.data(), cur_frame_size, m_packetBuffer.data(), m_packetBuffer.size());
 
-   if (nbBytes<0)
+   if (nbBytes < 0)
    {
-      m_lasterror.Format(_T("Encoding failed: %hs. Aborting."), opus_strerror(nbBytes));
+      m_lastError.Format(_T("Encoding failed: %hs. Aborting."), opus_strerror(nbBytes));
       return false;
    }
 
@@ -743,8 +743,8 @@ bool OpusOutputModule::EncodeInputBufferFrame()
 
    // Flush early if adding this packet would make us end up with a
    // continued page which we wouldn't have otherwise.
-   while ((((size_segments <= 255) && (last_segments + size_segments>255)) ||
-      (enc_granulepos - last_granulepos>max_ogg_delay)) &&
+   while ((((size_segments <= 255) && (last_segments + size_segments > 255)) ||
+      (enc_granulepos - last_granulepos > max_ogg_delay)) &&
 #ifdef OLD_LIBOGG
       ogg_stream_flush(&os, &og))
 #else
@@ -756,7 +756,7 @@ bool OpusOutputModule::EncodeInputBufferFrame()
       int ret = oe_write_page(&og, fout);
       if (ret != og.header_len + og.body_len)
       {
-         m_lasterror = _T("Error: failed writing data to output stream");
+         m_lastError = _T("Error: failed writing data to output stream");
          return false;
       }
       bytes_written += ret;
@@ -769,11 +769,11 @@ bool OpusOutputModule::EncodeInputBufferFrame()
    // If your ogg_delay is 120ms or less we'll assume you want the
    // low delay behavior.
 #if 0
-   if ((!op.e_o_s) && max_ogg_delay>5760)
+   if ((!op.e_o_s) && max_ogg_delay > 5760)
    {
       nb_samples = PrepareNextInputFrame(frame_size);
       total_samples += nb_samples;
-      if (nb_samples<frame_size)eos = 1;
+      if (nb_samples < frame_size)eos = 1;
       if (nb_samples == 0)op.e_o_s = 1;
    }
    else
@@ -797,7 +797,7 @@ bool OpusOutputModule::EncodeInputBufferFrame()
 
    // If the stream is over or we're sure that the delayed flush will fire,
    // go ahead and flush now to avoid adding delay.
-   while ((op.e_o_s || (enc_granulepos + (frame_size * 48000 / coding_rate) - last_granulepos>max_ogg_delay) ||
+   while ((op.e_o_s || (enc_granulepos + (frame_size * 48000 / coding_rate) - last_granulepos > max_ogg_delay) ||
       (last_segments >= 255)) ?
 #ifdef OLD_LIBOGG
       /*Libogg > 1.2.2 allows us to achieve lower overhead by
@@ -816,7 +816,7 @@ bool OpusOutputModule::EncodeInputBufferFrame()
       int ret = oe_write_page(&og, fout);
       if (ret != og.header_len + og.body_len)
       {
-         m_lasterror = _T("Error: failed writing data to output stream");
+         m_lastError = _T("Error: failed writing data to output stream");
          return false;
       }
       bytes_written += ret;

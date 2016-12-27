@@ -1,39 +1,36 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
-   Copyright (c) 2004 DeXT
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2004 DeXT
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file AacInputModule.cpp
 /// \brief contains the implementation of the AAC input module
-
-// needed includes
+//
 #include "stdafx.h"
 #include "resource.h"
 #include <fstream>
-#include "AacInputModule.h"
+#include "AacInputModule.hpp"
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "DynamicLibrary.h"
 
-// linker options
-#if _MSC_VER < 1400
-#pragma comment(linker, "/delayload:libfaad2.dll")
-#endif
+using Encoder::AacInputModule;
+using Encoder::TrackInfo;
+using Encoder::SampleContainer;
 
 // channel remap stuff
 
@@ -49,28 +46,26 @@ const int chmap[MAX_CHANNELS][MAX_CHANNELS] = {
    { 1, 2, 0, 5, 3, 4 }  // c, l, r, bl, br, lfe -> l, r, c, lfe, bl, br
 };
 
-// AacInputModule methods
-
 AacInputModule::AacInputModule()
 {
-   module_id = ID_IM_AAC;
+   m_moduleId = ID_IM_AAC;
 }
 
-InputModule *AacInputModule::cloneModule()
+Encoder::InputModule* AacInputModule::CloneModule()
 {
    return new AacInputModule;
 }
 
-bool AacInputModule::isAvailable()
+bool AacInputModule::IsAvailable() const
 {
    return DynamicLibrary(_T("libfaad2.dll")).IsLoaded();
 }
 
-void AacInputModule::getDescription(CString& desc)
+void AacInputModule::GetDescription(CString& desc) const
 {
    // determine object type
    LPCTSTR object = _T("???");
-   switch (info.object_type)
+   switch (m_info.object_type)
    {
    case 0:
       object = _T("MAIN");
@@ -103,7 +98,7 @@ void AacInputModule::getDescription(CString& desc)
 
    // determine header type
    LPCTSTR header = _T("???");
-   switch (info.headertype)
+   switch (m_info.headertype)
    {
    case 0:
       header = _T("RAW");
@@ -121,183 +116,189 @@ void AacInputModule::getDescription(CString& desc)
 
    // format info string
    desc.Format(IDS_FORMAT_INFO_AAC_INFO,
-      info.version, object, info.bitrate/1000, info.sampling_rate,
-      info.channels, header);
+      m_info.version,
+      object,
+      m_info.bitrate / 1000,
+      m_info.sampling_rate,
+      m_info.channels,
+      header);
 }
 
-void AacInputModule::getVersionString(CString& version, int /*special = 0*/)
+void AacInputModule::GetVersionString(CString& version, int special) const
 {
    version = "libfaad2 " FAAD2_VERSION;
 }
 
-CString AacInputModule::getFilterString()
+CString AacInputModule::GetFilterString() const
 {
-   CString cszFilter;
-   cszFilter.LoadString(IDS_FILTER_AAC_INPUT);
-   return cszFilter;
+   CString filterString;
+   filterString.LoadString(IDS_FILTER_AAC_INPUT);
+   return filterString;
 }
 
-int AacInputModule::initInput(LPCTSTR infilename, SettingsManager &mgr,
-   TrackInfo &trackinfo, SampleContainer &samplecont)
+int AacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
+   TrackInfo& trackInfo, SampleContainer& samples)
 {
    // open infile
-   istr.open(CStringA(GetAnsiCompatFilename(infilename)),std::ios::in|std::ios::binary);
-   if (!istr.is_open())
+   m_inputFile.open(infilename, std::ios::in | std::ios::binary);
+   if (!m_inputFile.is_open())
    {
-      lasterror.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
       return -1;
    }
 
    // find out AAC file infos
    {
-      unsigned long *seek_table = NULL;
-      int seek_table_len = 0;
+      unsigned long* seekTable = nullptr;
+      int seekTableLength = 0;
 
-      get_AAC_format(infilename, &info, &seek_table, &seek_table_len, 1);
-      free(seek_table);
+      get_AAC_format(infilename, &m_info, &seekTable, &seekTableLength, 1);
+      free(seekTable);
    }
 
    // find out length of aac file
    struct _stat statbuf;
    ::_tstat(infilename, &statbuf);
-   filelen = statbuf.st_size; // 32 bit max.
-   filepos = 0;
+   m_inputFileLength = statbuf.st_size; // 32 bit max.
+   m_currentFilePos = 0;
 
-   // search for begin of aac stream, skipping id3v2 tags; modifies filepos
+   // search for begin of aac stream, skipping id3v2 tags; modifies m_currentFilePos
    // ...
 
    // retrieve id3 tag
    // ...
 
    // seek to begin
-   istr.seekg(filepos,std::ios::beg);
+   m_inputFile.seekg(m_currentFilePos, std::ios::beg);
 
    // grab decoder instance
-   decoder = NeAACDecOpen();
+   m_decoder = NeAACDecOpen();
 
-   // set 32 bit output format
+   // set output format
    {
       NeAACDecConfigurationPtr config;
-      config = NeAACDecGetCurrentConfiguration(decoder);
+      config = NeAACDecGetCurrentConfiguration(m_decoder);
       config->outputFormat = FAAD_FMT_16BIT;  // 32 bit sounds bad for some reason
-      NeAACDecSetConfiguration(decoder,config);
+      NeAACDecSetConfiguration(m_decoder, config);
    }
 
    // read first frame(s) and get infos about the aac file
-   istr.read(reinterpret_cast<char*>(inbuffer),aac_inbufsize);
+   m_inputFile.read(reinterpret_cast<char*>(m_inputBuffer), c_aacInputBufferSize);
 
    unsigned long dummy;
    unsigned char dummy2;
-   int result = NeAACDecInit(decoder, inbuffer, sizeof(inbuffer), &dummy, &dummy2);
+   int result = NeAACDecInit(m_decoder, m_inputBuffer, sizeof(m_inputBuffer), &dummy, &dummy2);
 
-   if (result<0)
+   if (result < 0)
    {
-      lasterror.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
+      m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
       return -2;
    }
 
-   highmark = 0;
+   m_inputBufferHigh = 0;
 
    // seek to the next start
-   filepos += result;
-   istr.seekg(filepos,std::ios::beg);
+   m_currentFilePos += result;
+   m_inputFile.seekg(m_currentFilePos, std::ios::beg);
 
    // get right file info (for HE AAC files)
-   NeAACDecFrameInfo frameinfo;
-   NeAACDecDecode(decoder, &frameinfo, inbuffer, sizeof(inbuffer));
-   if (frameinfo.error > 0)
+   NeAACDecFrameInfo frameInfo;
+   NeAACDecDecode(m_decoder, &frameInfo, m_inputBuffer, sizeof(m_inputBuffer));
+   if (frameInfo.error > 0)
    {
-      lasterror = CString(NeAACDecGetErrorMessage(frameinfo.error));
-      return -frameinfo.error;
+      m_lastError = CString(NeAACDecGetErrorMessage(frameInfo.error));
+      return -frameInfo.error;
    }
    else
    {
-      info.sampling_rate = frameinfo.samplerate;
-      info.channels = frameinfo.channels;
-      info.object_type = frameinfo.object_type - 1;
+      m_info.sampling_rate = frameInfo.samplerate;
+      m_info.channels = frameInfo.channels;
+      m_info.object_type = frameInfo.object_type - 1;
    }
 
    // set up input traits
-   samplecont.setInputModuleTraits(16,SamplesInterleaved,
-      info.sampling_rate,info.channels);
+   samples.SetInputModuleTraits(
+      16,
+      SamplesInterleaved,
+      m_info.sampling_rate,
+      m_info.channels);
 
    return 0;
 }
 
-void AacInputModule::getInfo(int &channels, int &bitrate, int &length, int &samplerate)
+void AacInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const
 {
-   channels = info.channels;
-   bitrate = info.bitrate;
-   length = (filelen << 3) / info.bitrate;
-   samplerate = info.sampling_rate;
+   numChannels = m_info.channels;
+   bitrateInBps = m_info.bitrate;
+   lengthInSeconds = (m_inputFileLength << 3) / m_info.bitrate;
+   samplerateInHz = m_info.sampling_rate;
 }
 
-int AacInputModule::decodeSamples(SampleContainer &samples)
+int AacInputModule::DecodeSamples(SampleContainer& samples)
 {
    // frame decoding info
-   NeAACDecFrameInfo frameinfo;
+   NeAACDecFrameInfo frameInfo;
 
    // temporary sample buffer
-   short *outbuffer;
-   short tmpbuf[2048*aac_maxchannels];
+   short* outputBuffer;
+   short tempBuffer[2048 * c_aacNumMaxChannels];
 
    // fill input buffer
-   if (highmark<aac_inbufsize)
+   if (m_inputBufferHigh < c_aacInputBufferSize)
    {
-      istr.read(reinterpret_cast<char*>(inbuffer+highmark),aac_inbufsize-highmark);
-      int read = static_cast<int>(istr.gcount());
+      m_inputFile.read(reinterpret_cast<char*>(m_inputBuffer + m_inputBufferHigh), c_aacInputBufferSize - m_inputBufferHigh);
+      int read = static_cast<int>(m_inputFile.gcount());
 
-      if (read==0 && highmark==0)
+      if (read == 0 && m_inputBufferHigh == 0)
          return 0;
 
-      highmark += read;
-      filepos += read;
+      m_inputBufferHigh += read;
+      m_currentFilePos += read;
    }
 
    // decode buffer
-   short *sample_buffer = (short *)NeAACDecDecode(decoder, &frameinfo, inbuffer, highmark); //sizeof(inbuffer));
+   short* sampleBuffer = (short *)NeAACDecDecode(m_decoder, &frameInfo, m_inputBuffer, m_inputBufferHigh); //sizeof(m_inputBuffer));
 
-   highmark -= frameinfo.bytesconsumed;
-   memmove(inbuffer, inbuffer+frameinfo.bytesconsumed,
-      aac_inbufsize-frameinfo.bytesconsumed);
+   m_inputBufferHigh -= frameInfo.bytesconsumed;
+   memmove(m_inputBuffer, m_inputBuffer + frameInfo.bytesconsumed,
+      c_aacInputBufferSize - frameInfo.bytesconsumed);
 
    // check for return codes
-   if (frameinfo.error>0)
+   if (frameInfo.error > 0)
    {
-      lasterror = NeAACDecGetErrorMessage(frameinfo.error);
-      return -frameinfo.error;
+      m_lastError = NeAACDecGetErrorMessage(frameInfo.error);
+      return -frameInfo.error;
    }
 
-   int num_samples = frameinfo.samples / frameinfo.channels;
+   int numSamples = frameInfo.samples / frameInfo.channels;
 
    // remap channels
-   if (frameinfo.channels > 2)
+   if (frameInfo.channels > 2)
    {
-      outbuffer = tmpbuf;
-      for (int i = 0; i < num_samples; i++)
-         for (int j = 0; j < std::min(static_cast<int>(frameinfo.channels), MAX_CHANNELS); j++)
-            outbuffer[i*frameinfo.channels+j] = sample_buffer[i*frameinfo.channels+(chmap[frameinfo.channels-1][j])];
+      outputBuffer = tempBuffer;
+      for (int i = 0; i < numSamples; i++)
+         for (int j = 0; j < std::min(static_cast<int>(frameInfo.channels), MAX_CHANNELS); j++)
+            outputBuffer[i * frameInfo.channels + j] = sampleBuffer[i * frameInfo.channels + (chmap[frameInfo.channels - 1][j])];
 
       // copy the remaining channels
-      if (frameinfo.channels > MAX_CHANNELS)
+      if (frameInfo.channels > MAX_CHANNELS)
       {
-         for (int i = 0; i < num_samples; i++)
-            for (int j = MAX_CHANNELS; j < frameinfo.channels; j++)
-               outbuffer[i*frameinfo.channels+j] = sample_buffer[i*frameinfo.channels+j];
+         for (int i = 0; i < numSamples; i++)
+            for (int j = MAX_CHANNELS; j < frameInfo.channels; j++)
+               outputBuffer[i * frameInfo.channels + j] = sampleBuffer[i * frameInfo.channels + j];
       }
    }
    else
-      outbuffer = sample_buffer;
+      outputBuffer = sampleBuffer;
 
    // copy the samples to the sample container
-   samples.putSamplesInterleaved(outbuffer, num_samples);
+   samples.PutSamplesInterleaved(outputBuffer, numSamples);
 
-   return num_samples;
+   return numSamples;
 }
 
-void AacInputModule::doneInput()
+void AacInputModule::DoneInput()
 {
-   // close decoder and file
-   NeAACDecClose(decoder);
-   istr.close();
+   NeAACDecClose(m_decoder);
+   m_inputFile.close();
 }

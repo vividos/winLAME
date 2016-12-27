@@ -21,7 +21,7 @@
 //
 #include "stdafx.h"
 #include "AudioFileInfoManager.hpp"
-#include "ModuleManager.h"
+#include "ModuleManager.hpp"
 
 AudioFileInfoManager::AudioFileInfoManager()
    :m_ioService(1), // one thread max.
@@ -38,11 +38,11 @@ AudioFileInfoManager::~AudioFileInfoManager()
 }
 
 bool AudioFileInfoManager::GetAudioFileInfo(LPCTSTR filename,
-   int& lengthInSeconds, int& bitrateInKbps, int& sampleFrequencyInHz, CString& errorMessage)
+   int& lengthInSeconds, int& bitrateInBps, int& sampleFrequencyInHz, CString& errorMessage)
 {
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
 
-   return moduleManager.getAudioFileInfo(filename, lengthInSeconds, bitrateInKbps, sampleFrequencyInHz, errorMessage);
+   return moduleManager.GetAudioFileInfo(filename, lengthInSeconds, bitrateInBps, sampleFrequencyInHz, errorMessage);
 }
 
 void AudioFileInfoManager::AsyncGetAudioFileInfo(LPCTSTR filename, AudioFileInfoManager::T_fnCallback fnCallback)
@@ -89,14 +89,14 @@ void AudioFileInfoManager::WorkerGetAudioFileInfo(const std::atomic<bool>& stopp
       return;
 
    int lengthInSeconds = 0;
-   int bitrateInKbps = 0;
+   int bitrateInBps = 0;
    int sampleFrequencyInHz = 0;
    CString errorMessage;
 
-   bool ret = GetAudioFileInfo(filename, lengthInSeconds, bitrateInKbps, sampleFrequencyInHz, errorMessage);
+   bool ret = GetAudioFileInfo(filename, lengthInSeconds, bitrateInBps, sampleFrequencyInHz, errorMessage);
 
    if (stopping)
       return;
 
-   fnCallback(!ret, errorMessage, lengthInSeconds, bitrateInKbps, sampleFrequencyInHz);
+   fnCallback(!ret, errorMessage, lengthInSeconds, bitrateInBps, sampleFrequencyInHz);
 }

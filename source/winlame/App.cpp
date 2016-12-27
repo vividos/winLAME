@@ -24,7 +24,7 @@
 #include "MainDlg.h"
 #include "ui\MainFrame.hpp"
 #include "preset\PresetManagerImpl.h"
-#include "encoder\ModuleManagerImpl.h"
+#include "encoder\ModuleManagerImpl.hpp"
 #include "CommonStuff.h"
 
 #ifdef _DEBUG
@@ -82,8 +82,8 @@ m_exit(false)
    m_spPresetManager.reset(new PresetManagerImpl);
    ioc.Register<PresetManagerInterface>(boost::ref(*m_spPresetManager.get()));
 
-   m_spModuleManager.reset(new ModuleManagerImpl);
-   ioc.Register<ModuleManager>(boost::ref(*m_spModuleManager.get()));
+   m_spModuleManager.reset(new Encoder::ModuleManagerImpl);
+   ioc.Register<Encoder::ModuleManager>(boost::ref(*m_spModuleManager.get()));
 
    LoadPresetFile();
 

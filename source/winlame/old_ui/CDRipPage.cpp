@@ -117,13 +117,13 @@ void CDRipPage::OnEnterPage()
       for(unsigned int n=0; n<nMax; n++)
       {
          CDRipTrackInfo& trackinfo = pManager->GetTrackInfo(n);
-         if (!trackinfo.m_bActive)
+         if (!trackinfo.m_isActive)
             continue;
 
          CString cszText;
-         cszText.Format(_T("%u."), trackinfo.m_nTrackOnDisc+1);
+         cszText.Format(_T("%u."), trackinfo.m_numTrackOnDisc+1);
          int nItem = m_lcTracks.InsertItem(m_lcTracks.GetItemCount(), cszText);
-         m_lcTracks.SetItemText(nItem, 1, trackinfo.m_cszTrackTitle);
+         m_lcTracks.SetItemText(nItem, 1, trackinfo.m_trackTitle);
 
          cszText.LoadString(IDS_CDRIP_PAGE_STATUS_NOT_PROCESSED);
          m_lcTracks.SetItemText(nItem, 2, cszText);
@@ -153,15 +153,15 @@ LRESULT CDRipPage::OnButtonStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
    CDRipDiscInfo& discinfo = pManager->GetDiscInfo();
 
    // check if disc is inserted
-   if (FALSE == BASS_CD_IsReady(discinfo.m_nDiscDrive))
+   if (FALSE == BASS_CD_IsReady(discinfo.m_discDrive))
    {
       AppMessageBox(m_hWnd, IDS_CDRIP_PAGE_ERROR_NO_CD_IN_DRIVE, MB_OK | MB_ICONEXCLAMATION);
       return 0;
    }
 
    // check disc ID
-   CString cszCDID(BASS_CD_GetID(discinfo.m_nDiscDrive, BASS_CDID_CDDB));
-   if (cszCDID != discinfo.m_cszCDID)
+   CString cszCDID(BASS_CD_GetID(discinfo.m_discDrive, BASS_CDID_CDDB));
+   if (cszCDID != discinfo.m_CDID)
    {
       AppMessageBox(m_hWnd, IDS_CDRIP_PAGE_ERROR_WRONG_CD, MB_OK | MB_ICONEXCLAMATION);
       return 0;
@@ -210,27 +210,27 @@ void CDRipPage::ExtractAudio()
       CString cszText(MAKEINTRESOURCE(IDS_CDRIP_PAGE_STATUS_PROCESSING));
       m_lcTracks.SetItemText(n, 2, cszText);
 
-      CString cszDiscTrackTitle;
-      if (discinfo.m_bVariousArtists)
-         cszDiscTrackTitle = trackinfo.m_cszTrackTitle;
+      CString discTrackTitle;
+      if (discinfo.m_variousArtists)
+         discTrackTitle = trackinfo.m_trackTitle;
       else
       {
-         cszDiscTrackTitle.Format(_T("%s - %s"),
-            discinfo.m_cszDiscTitle, trackinfo.m_cszTrackTitle);
+         discTrackTitle.Format(_T("%s - %s"),
+            discinfo.m_discTitle, trackinfo.m_trackTitle);
       }
 
-      cszDiscTrackTitle.Replace(_T(" / "), _T(" - "));
-      cszDiscTrackTitle.Replace(_T("\\"), _T(""));
-      cszDiscTrackTitle.Replace(_T("/"), _T(""));
-      cszDiscTrackTitle.Replace(_T(":"), _T(""));
-      cszDiscTrackTitle.Replace(_T("*"), _T(""));
-      cszDiscTrackTitle.Replace(_T("?"), _T(""));
-      cszDiscTrackTitle.Replace(_T("\""), _T(""));
-      cszDiscTrackTitle.Replace(_T("<"), _T(""));
-      cszDiscTrackTitle.Replace(_T(">"), _T(""));
-      cszDiscTrackTitle.Replace(_T("|"), _T(""));
-      cszDiscTrackTitle.Replace(_T("{"), _T("("));
-      cszDiscTrackTitle.Replace(_T("}"), _T(")"));
+      discTrackTitle.Replace(_T(" / "), _T(" - "));
+      discTrackTitle.Replace(_T("\\"), _T(""));
+      discTrackTitle.Replace(_T("/"), _T(""));
+      discTrackTitle.Replace(_T(":"), _T(""));
+      discTrackTitle.Replace(_T("*"), _T(""));
+      discTrackTitle.Replace(_T("?"), _T(""));
+      discTrackTitle.Replace(_T("\""), _T(""));
+      discTrackTitle.Replace(_T("<"), _T(""));
+      discTrackTitle.Replace(_T(">"), _T(""));
+      discTrackTitle.Replace(_T("|"), _T(""));
+      discTrackTitle.Replace(_T("{"), _T("("));
+      discTrackTitle.Replace(_T("}"), _T(")"));
 
       CString cszGuid;
       cszGuid.Format(_T("{%08x-%08x}"), ::GetCurrentProcessId(), ::GetCurrentThreadId());
@@ -240,15 +240,15 @@ void CDRipPage::ExtractAudio()
       if (cszTempFolder.Right(1) != _T("\\"))
          cszTempFolder += _T("\\");
 
-      CString cszTempFilename;
-      cszTempFilename.Format(_T("%s\\(%02u) %s%s.wav"),
+      CString tempFilename;
+      tempFilename.Format(_T("%s\\(%02u) %s%s.wav"),
          cszTempFolder,
-         trackinfo.m_nTrackOnDisc+1,
-         cszDiscTrackTitle, cszGuid);
+         trackinfo.m_numTrackOnDisc+1,
+         discTrackTitle, cszGuid);
 
-      trackinfo.m_cszRippedFilename = cszTempFilename;
+      trackinfo.m_rippedFilename = tempFilename;
 
-      bool bRet = ExtractTrack(discinfo, trackinfo, cszTempFilename);
+      bool bRet = ExtractTrack(discinfo, trackinfo, tempFilename);
       if (!bRet)
       {
 //         m_lcTracks.SetItemText(n, 2, _T("cancelled"));
@@ -267,7 +267,7 @@ void CDRipPage::ExtractAudio()
          if (0 == fnlist[i].find(cszTrackUriStart))
          {
             // found one
-            fnlist[i] = cszTempFilename;
+            fnlist[i] = tempFilename;
          }
       }
 */
@@ -278,17 +278,17 @@ void CDRipPage::ExtractAudio()
    m_bFinishedAllTracks = true;
 }
 
-#include "encoder/WaveOutputModule.h"
+#include "encoder/SndFileOutputModule.hpp"
 
-bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo, const CString& cszTempFilename)
+bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo, const CString& tempFilename)
 {
-   DWORD nTrackLength = BASS_CD_GetTrackLength(discinfo.m_nDiscDrive, trackinfo.m_nTrackOnDisc);
+   DWORD nTrackLength = BASS_CD_GetTrackLength(discinfo.m_discDrive, trackinfo.m_numTrackOnDisc);
    nTrackLength /= 100L;
    DWORD nCurLength = 0;
 
    BASS_Init(0, 44100, 0, m_hWnd, NULL);
 
-   HSTREAM hStream = BASS_CD_StreamCreate(discinfo.m_nDiscDrive, trackinfo.m_nTrackOnDisc,
+   HSTREAM hStream = BASS_CD_StreamCreate(discinfo.m_discDrive, trackinfo.m_numTrackOnDisc,
       BASS_STREAM_DECODE);
 
    DWORD nError = BASS_ErrorGetCode();
@@ -296,29 +296,29 @@ bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo,
    if (hStream == 0 || nError != BASS_OK)
       return false;
 
-   WaveOutputModule outmod;
+   Encoder::SndFileOutputModule outmod;
 
-   if (!outmod.isAvailable())
+   if (!outmod.IsAvailable())
    {
       AppMessageBox(m_hWnd, IDS_CDRIP_PAGE_WAVE_OUTPUT_NOT_AVAIL, MB_OK | MB_ICONSTOP);
       return false;
    }
 
    SettingsManager mgr;
-   TrackInfo outtrackinfo;
-   SampleContainer samplecont;
+   Encoder::TrackInfo outputTrackInfo;
+   Encoder::SampleContainer samples;
    {
-      samplecont.setInputModuleTraits(16, SamplesInterleaved, 44100, 2);
-      outtrackinfo.ResetInfos();
+      samples.SetInputModuleTraits(16, Encoder::SamplesInterleaved, 44100, 2);
+      outputTrackInfo.ResetInfos();
       mgr.setValue(SndFileFormat, SF_FORMAT_WAV);
       mgr.setValue(SndFileSubType, SF_FORMAT_PCM_16);
 
-      outmod.prepareOutput(mgr);
-      int nRet = outmod.initOutput(cszTempFilename, mgr, outtrackinfo, samplecont);
+      outmod.PrepareOutput(mgr);
+      int nRet = outmod.InitOutput(tempFilename, mgr, outputTrackInfo, samples);
       if (nRet < 0)
       {
          CString cszText;
-         cszText.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, cszTempFilename);
+         cszText.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, tempFilename);
          AppMessageBox(m_hWnd, cszText, MB_OK | MB_ICONSTOP);
          return false;
       }
@@ -339,7 +339,7 @@ bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo,
       if (nAvail == 0)
          break; // couldn't read more samples
 
-      samplecont.putSamplesInterleaved(&vecBuffer[0], nAvail / sizeof(vecBuffer[0]) / 2);
+      samples.PutSamplesInterleaved(&vecBuffer[0], nAvail / sizeof(vecBuffer[0]) / 2);
 
       nCurLength += nAvail;
 
@@ -358,7 +358,7 @@ bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo,
          nCurPos = nNewPos;
       }
 
-      int nRet = outmod.encodeSamples(samplecont);
+      int nRet = outmod.EncodeSamples(samples);
       if (nRet < 0)
          break;
    }
@@ -366,7 +366,7 @@ bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo,
    BASS_StreamFree(hStream);
    BASS_Free();
 
-   outmod.doneOutput();
+   outmod.DoneOutput();
 
    return bFinished;
 }

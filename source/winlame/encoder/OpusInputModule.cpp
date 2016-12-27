@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014-2015 Michael Fink
+// Copyright (c) 2014-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,20 +19,21 @@
 /// \file OpusInputModule.cpp
 /// \brief Opus input module
 //
-
-// includes
 #include "stdafx.h"
 #include "OpusInputModule.hpp"
 #include "resource.h"
 
+using Encoder::OpusInputModule;
+using Encoder::TrackInfo;
+using Encoder::SampleContainer;
+
 #pragma comment(lib, "libopusfile-0.lib")
 #pragma comment(lib, "libopus-0.lib")
 
-
 OpusInputModule::OpusInputModule()
-:m_lTotalSamples(0)
+   :m_numTotalSamples(0)
 {
-   module_id = ID_IM_OPUS;
+   m_moduleId = ID_IM_OPUS;
 
    m_callbacks.read = &OpusInputModule::ReadStream;
    m_callbacks.seek = &OpusInputModule::SeekStream;
@@ -40,130 +41,130 @@ OpusInputModule::OpusInputModule()
    m_callbacks.close = &OpusInputModule::CloseStream;
 }
 
-InputModule* OpusInputModule::cloneModule()
+Encoder::InputModule* OpusInputModule::CloneModule()
 {
    return new OpusInputModule;
 }
 
-bool OpusInputModule::isAvailable()
+bool OpusInputModule::IsAvailable() const
 {
    // we don't do delay-loading anymore, so it's always available
    return true;
 }
 
-void OpusInputModule::getDescription(CString& desc)
+void OpusInputModule::GetDescription(CString& desc) const
 {
-   ATLASSERT(m_spInputFile != nullptr);
+   ATLASSERT(m_inputFile != nullptr);
 
-   const OpusHead* pHeader = op_head(m_spInputFile.get(), 0);
+   const OpusHead* header = op_head(m_inputFile.get(), 0);
 
    desc.Format(IDS_FORMAT_INFO_OPUS_INPUT,
-      pHeader->channel_count,
-      pHeader->input_sample_rate);
+      header->channel_count,
+      header->input_sample_rate);
 }
 
-void OpusInputModule::getVersionString(CString& version, int /*special*/)
+void OpusInputModule::GetVersionString(CString& version, int special) const
 {
    version = opus_get_version_string();
 }
 
-CString OpusInputModule::getFilterString()
+CString OpusInputModule::GetFilterString() const
 {
-   CString cszFilter;
-   cszFilter.LoadString(IDS_FILTER_OPUS_INPUT);
-   return cszFilter;
+   CString filterString;
+   filterString.LoadString(IDS_FILTER_OPUS_INPUT);
+   return filterString;
 }
 
-int OpusInputModule::initInput(LPCTSTR infilename, SettingsManager& mgr,
-   TrackInfo& trackinfo, SampleContainer& samples)
+int OpusInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
+   TrackInfo& trackInfo, SampleContainer& samples)
 {
    FILE* fd = nullptr;
    errno_t err = _tfopen_s(&fd, infilename, _T("rb"));
 
    if (err != 0 || fd == nullptr)
    {
-      m_cszLastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
       return -1;
    }
 
-   int iErrorCode = 0;
-   OggOpusFile* pFile = op_open_callbacks(fd, &m_callbacks, nullptr, 0, &iErrorCode);
+   int errorCode = 0;
+   OggOpusFile* file = op_open_callbacks(fd, &m_callbacks, nullptr, 0, &errorCode);
 
-   if (pFile != nullptr)
-      m_spInputFile.reset(pFile, op_free);
+   if (file != nullptr)
+      m_inputFile.reset(file, op_free);
 
-   if (pFile == nullptr || iErrorCode < 0)
+   if (file == nullptr || errorCode < 0)
    {
-      m_cszLastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
-      m_cszLastError.AppendFormat(_T(" (%s)"), ErrorTextFromCode(iErrorCode));
+      m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      m_lastError.AppendFormat(_T(" (%s)"), ErrorTextFromCode(errorCode));
       return -1;
    }
 
-   const OpusHead* pHeader = op_head(m_spInputFile.get(), 0);
+   const OpusHead* header = op_head(m_inputFile.get(), 0);
 
    // set up input traits
-   samples.setInputModuleTraits(16, SamplesInterleaved,
-      48000, pHeader->channel_count);
+   samples.SetInputModuleTraits(16, SamplesInterleaved,
+      48000, header->channel_count);
 
-   m_lTotalSamples = op_pcm_total(m_spInputFile.get(), -1);
+   m_numTotalSamples = op_pcm_total(m_inputFile.get(), -1);
 
    return 0;
 }
 
-void OpusInputModule::getInfo(int& channels, int& bitrate, int& length, int& samplerate)
+void OpusInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const
 {
-   bitrate = op_bitrate(m_spInputFile.get(), 0);
-   samplerate = 48000;
+   bitrateInBps = op_bitrate(m_inputFile.get(), 0);
+   samplerateInHz = 48000;
 
-   ogg_int64_t total = op_pcm_total(m_spInputFile.get(), -1);
+   ogg_int64_t numTotalSamples = op_pcm_total(m_inputFile.get(), -1);
 
-   length = static_cast<int>(total / 48000);
+   lengthInSeconds = static_cast<int>(numTotalSamples / 48000);
 
-   const OpusHead* pHeader = op_head(m_spInputFile.get(), 0);
-   if (pHeader == nullptr)
+   const OpusHead* header = op_head(m_inputFile.get(), 0);
+   if (header == nullptr)
       return;
 
-   channels = pHeader->channel_count;
+   numChannels = header->channel_count;
 }
 
-int OpusInputModule::decodeSamples(SampleContainer& samples)
+int OpusInputModule::DecodeSamples(SampleContainer& samples)
 {
-   const OpusHead* pHeader = op_head(m_spInputFile.get(), 0);
-   if (pHeader == nullptr)
+   const OpusHead* header = op_head(m_inputFile.get(), 0);
+   if (header == nullptr)
       return -1;
 
-   short aSamples[48000];
+   short sampleBuffer[48000];
 
-   int iCurrentLink = 0;
-   int iSamplesPerChannel = op_read(m_spInputFile.get(), aSamples, sizeof(aSamples) / sizeof(*aSamples), &iCurrentLink);
+   int currentLink = 0;
+   int numSamplesPerChannel = op_read(m_inputFile.get(), sampleBuffer, sizeof(sampleBuffer) / sizeof(*sampleBuffer), &currentLink);
 
-   if (iSamplesPerChannel == 0)
+   if (numSamplesPerChannel == 0)
       return 0;
 
-   samples.putSamplesInterleaved(aSamples, iSamplesPerChannel);
+   samples.PutSamplesInterleaved(sampleBuffer, numSamplesPerChannel);
 
-   return iSamplesPerChannel * pHeader->channel_count;
+   return numSamplesPerChannel * header->channel_count;
 }
 
-float OpusInputModule::percentDone()
+float OpusInputModule::PercentDone() const
 {
-   if (m_lTotalSamples == 0 || m_spInputFile == nullptr)
+   if (m_numTotalSamples == 0 || m_inputFile == nullptr)
       return 0.0f;
 
-   ogg_int64_t lCurrent = op_pcm_tell(m_spInputFile.get());
-   float fValue = lCurrent / float(m_lTotalSamples);
+   ogg_int64_t currentSamplePos = op_pcm_tell(m_inputFile.get());
+   float percentValue = currentSamplePos / float(m_numTotalSamples);
 
-   return fValue * 100.f;
+   return percentValue * 100.f;
 }
 
-void OpusInputModule::doneInput()
+void OpusInputModule::DoneInput()
 {
-   m_spInputFile.reset();
+   m_inputFile.reset();
 }
 
-LPCTSTR OpusInputModule::ErrorTextFromCode(int iErrorCode)
+LPCTSTR OpusInputModule::ErrorTextFromCode(int errorCode)
 {
-   switch (iErrorCode)
+   switch (errorCode)
    {
    case OP_FALSE: return _T("A request did not succeed");
    case OP_EOF: return _T("End of file"); // unused
@@ -188,26 +189,26 @@ LPCTSTR OpusInputModule::ErrorTextFromCode(int iErrorCode)
    return _T("???");
 }
 
-int OpusInputModule::ReadStream(void *_stream, unsigned char *_ptr, int _nbytes)
+int OpusInputModule::ReadStream(void* stream, unsigned char* buffer, int numBytes)
 {
-   FILE* fd = reinterpret_cast<FILE*>(_stream);
-   return fread(_ptr, 1, _nbytes, fd);
+   FILE* fd = reinterpret_cast<FILE*>(stream);
+   return fread(buffer, 1, numBytes, fd);
 }
 
-int OpusInputModule::SeekStream(void *_stream, opus_int64 _offset, int _whence)
+int OpusInputModule::SeekStream(void* stream, opus_int64 offset, int whence)
 {
-   FILE* fd = reinterpret_cast<FILE*>(_stream);
-   return _fseeki64(fd, _offset, _whence);
+   FILE* fd = reinterpret_cast<FILE*>(stream);
+   return _fseeki64(fd, offset, whence);
 }
 
-opus_int64 OpusInputModule::PosStream(void *_stream)
+opus_int64 OpusInputModule::PosStream(void* stream)
 {
-   FILE* fd = reinterpret_cast<FILE*>(_stream);
+   FILE* fd = reinterpret_cast<FILE*>(stream);
    return _ftelli64(fd);
 }
 
-int OpusInputModule::CloseStream(void *_stream)
+int OpusInputModule::CloseStream(void* stream)
 {
-   FILE* fd = reinterpret_cast<FILE*>(_stream);
+   FILE* fd = reinterpret_cast<FILE*>(stream);
    return fclose(fd);
 }

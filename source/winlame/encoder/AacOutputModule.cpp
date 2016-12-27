@@ -1,38 +1,35 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
-   Copyright (c) 2004 DeXT
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2004 DeXT
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file AacOutputModule.cpp
 /// \brief contains the implementation of the AAC output module
-
-// needed includes
+//
 #include "stdafx.h"
 #include <fstream>
 #include "resource.h"
-#include "AacOutputModule.h"
+#include "AacOutputModule.hpp"
 #include "neaacdec.h"
 #include "DynamicLibrary.h"
 
-// linker options
-#if _MSC_VER < 1400
-#pragma comment(linker, "/delayload:libfaac.dll")
-#endif
+using Encoder::AacOutputModule;
+using Encoder::TrackInfo;
+using Encoder::SampleContainer;
 
 // channel remap stuff
 
@@ -52,33 +49,33 @@ const int chmap[MAX_CHANNELS][MAX_CHANNELS] = {
 
 AacOutputModule::AacOutputModule()
 {
-   module_id = ID_OM_AAC;
+   m_moduleId = ID_OM_AAC;
 }
 
-bool AacOutputModule::isAvailable()
+bool AacOutputModule::IsAvailable() const
 {
    return DynamicLibrary(_T("libfaac.dll")).IsLoaded();
 }
 
-void AacOutputModule::getDescription(CString& desc)
+void AacOutputModule::GetDescription(CString& desc) const
 {
    // get config
-   faacEncConfigurationPtr config;
-   config = faacEncGetCurrentConfiguration(handle);
+   faacEncConfigurationPtr config = faacEncGetCurrentConfiguration(m_handle);
 
    // format string
    desc.Format(IDS_FORMAT_INFO_AAC_OUTPUT,
       config->mpegVersion == MPEG4 ? 4 : 2,
-      (brcmethod == 0) ? _T("Quality ") : _T(""),
-      (brcmethod == 0) ? config->quantqual : config->bitRate/1000,
-      (brcmethod == 0) ? _T("") : _T(" kbps/channel"),
-      m_channels, config->bandWidth,
+      (m_bitrateControlMethod == 0) ? _T("Quality ") : _T(""),
+      (m_bitrateControlMethod == 0) ? config->quantqual : config->bitRate / 1000,
+      (m_bitrateControlMethod == 0) ? _T("") : _T(" kbps/channel"),
+      m_channels,
+      config->bandWidth,
       config->allowMidside == 1 ? _T(", Mid/Side") : _T(""),
       config->useTns == 1 ? _T(", Temporal Noise Shaping") : _T(""),
       config->useLfe == 1 ? _T(", LFE channel") : _T(""));
 }
 
-void AacOutputModule::getVersionString(CString& version, int /*special = 0*/)
+void AacOutputModule::GetVersionString(CString& version, int special) const
 {
    char* id_string = nullptr;
    char* copyright_string = nullptr;
@@ -88,168 +85,174 @@ void AacOutputModule::getVersionString(CString& version, int /*special = 0*/)
    version.Format(_T("libfaac %hs"), id_string);
 }
 
-int AacOutputModule::initOutput(LPCTSTR outfilename,
-   SettingsManager &mgr, const TrackInfo& trackinfo,
-   SampleContainer &samplecont)
+int AacOutputModule::InitOutput(LPCTSTR outfilename,
+   SettingsManager& mgr, const TrackInfo& trackInfo,
+   SampleContainer& samples)
 {
-   // open output file
-   ostr.open(CStringA(outfilename),std::ios::out|std::ios::binary);
-   if (!ostr.is_open())
+   m_outputFile.open(outfilename, std::ios::out | std::ios::binary);
+   if (!m_outputFile.is_open())
    {
-      lasterror.LoadString(IDS_ENCODER_OUTPUT_FILE_CREATE_ERROR);
+      m_lastError.LoadString(IDS_ENCODER_OUTPUT_FILE_CREATE_ERROR);
       return -1;
    }
 
-   m_samplerate = samplecont.getInputModuleSampleRate();
-   m_channels = samplecont.getInputModuleChannels();
+   m_samplerate = samples.GetInputModuleSampleRate();
+   m_channels = samples.GetInputModuleChannels();
 
    // try to get a handle
-   handle = faacEncOpen(m_samplerate, m_channels,&aac_inbufsize,&aac_outbufsize);
+   m_handle = faacEncOpen(m_samplerate, m_channels, &m_inputBufferSize, &m_outputBufferSize);
 
-   if (handle==NULL)
+   if (m_handle == nullptr)
    {
-      lasterror.LoadString(IDS_ENCODER_ERROR_INIT_ENCODER);
+      m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_ENCODER);
       return -1;
    }
 
    // alloc memory for input buffer
-   sbuffer = new short[aac_inbufsize];
-   sbufhigh = 0;
+   m_sampleBuffer.resize(m_inputBufferSize);
+   m_sampleBufferHigh = 0;
 
    // alloc memory for output buffer
-   aac_outbuf = new unsigned char[aac_outbufsize];
+   m_outputBuffer.resize(m_outputBufferSize);
 
    // get current config
    faacEncConfigurationPtr config;
-   config = faacEncGetCurrentConfiguration(handle);
+   config = faacEncGetCurrentConfiguration(m_handle);
 
    // set settings
-   config->mpegVersion = mgr.queryValueInt(AacMpegVersion)==4 ? MPEG4 : MPEG2;
+   config->mpegVersion = mgr.QueryValueInt(AacMpegVersion) == 4 ? MPEG4 : MPEG2;
 
-   int value = mgr.queryValueInt(AacObjectType);
-   config->aacObjectType = value==1 ? LOW : value==2 ? LTP : MAIN;
+   int value = mgr.QueryValueInt(AacObjectType);
+   config->aacObjectType = value == 1 ? LOW : value == 2 ? LTP : MAIN;
 
-   config->allowMidside = mgr.queryValueInt(AacAllowMS);
-   config->useLfe = mgr.queryValueInt(AacUseLFEChan);
-   config->useTns = mgr.queryValueInt(AacUseTNS);
+   config->allowMidside = mgr.QueryValueInt(AacAllowMS);
+   config->useLfe = mgr.QueryValueInt(AacUseLFEChan);
+   config->useTns = mgr.QueryValueInt(AacUseTNS);
    config->shortctl = SHORTCTL_NORMAL;
    config->inputFormat = FAAC_INPUT_16BIT;
 
    // set bandwidth
-   if (mgr.queryValueInt(AacAutoBandwidth))
+   if (mgr.QueryValueInt(AacAutoBandwidth))
    {
       config->bandWidth = 0;
    }
    else
    {
-      config->bandWidth = mgr.queryValueInt(AacBandwidth);
+      config->bandWidth = mgr.QueryValueInt(AacBandwidth);
    }
 
    // set bitrate/quality
-   brcmethod = mgr.queryValueInt(AacBRCMethod);
-   if (brcmethod == 0) // Quality
+   m_bitrateControlMethod = mgr.QueryValueInt(AacBRCMethod);
+   if (m_bitrateControlMethod == 0) // Quality
    {
-      config->quantqual = mgr.queryValueInt(AacQuality);
+      config->quantqual = mgr.QueryValueInt(AacQuality);
       config->bitRate = 0;
    }
    else // Bitrate
    {
       config->quantqual = 0;
-      config->bitRate = mgr.queryValueInt(AacBitrate) * 1000 / m_channels;
+      config->bitRate = mgr.QueryValueInt(AacBitrate) * 1000 / m_channels;
    }
 
    // channel remap
    for (int i = 0; i < std::min(m_channels, MAX_CHANNELS); i++)
-      config->channel_map[i] = chmap[m_channels-1][i];
+      config->channel_map[i] = chmap[m_channels - 1][i];
 
    // set new config
-   faacEncSetConfiguration(handle,config);
+   faacEncSetConfiguration(m_handle, config);
 
    // set up output traits
-   samplecont.setOutputModuleTraits(16,SamplesInterleaved);
+   samples.SetOutputModuleTraits(16, SamplesInterleaved);
 
    return 0;
 }
 
-int AacOutputModule::encodeSamples(SampleContainer &samples)
+int AacOutputModule::EncodeSamples(SampleContainer& samples)
 {
    // get samples
-   int numsamples=0;
-   short *sbuf = (short*)samples.getSamplesInterleaved(numsamples);
+   int numSamples = 0;
+   short* sampleBuffer = (short*)samples.GetSamplesInterleaved(numSamples);
 
-   // as faacEncEncode() always wants 'aac_inbufsize' number of samples, we
+   // as faacEncEncode() always wants 'm_inputBufferSize' number of samples, we
    // have to store samples until a whole block of samples can be passed to
    // the function; otherwise faacEncEncode() would pad the buffer with 0's.
 
-   int size = numsamples*m_channels;
+   int size = numSamples * m_channels;
 
    // check if input sample buffer is full
-   if (unsigned(sbufhigh+size) >= aac_inbufsize)
+   if (unsigned(m_sampleBufferHigh + size) >= m_inputBufferSize)
    {
-      int pos=0;
-      while(unsigned(sbufhigh+size)>=aac_inbufsize)
+      int pos = 0;
+      while (unsigned(m_sampleBufferHigh + size) >= m_inputBufferSize)
       {
-         memcpy(sbuffer+sbufhigh,sbuf+pos,(aac_inbufsize-sbufhigh)*sizeof(short));
+         memcpy(m_sampleBuffer.data() + m_sampleBufferHigh, sampleBuffer + pos, (m_inputBufferSize - m_sampleBufferHigh) * sizeof(short));
 
          // encode the samples
-         int ret = faacEncEncode(handle, reinterpret_cast<int*>(sbuffer), aac_inbufsize, aac_outbuf, aac_outbufsize);
+         int ret = faacEncEncode(m_handle,
+            reinterpret_cast<int*>(m_sampleBuffer.data()),
+            m_inputBufferSize,
+            m_outputBuffer.data(),
+            m_outputBuffer.size());
 
-         if (ret<0) return ret;
+         if (ret < 0)
+            return ret;
 
          // write the output buffer
-         if (ret>0)
-            ostr.write(reinterpret_cast<char*>(aac_outbuf),ret);
+         if (ret > 0)
+            m_outputFile.write(reinterpret_cast<char*>(m_outputBuffer.data()), ret);
 
          // copy / adjust buffer values
-         int rest = size - (aac_inbufsize - sbufhigh);
+         int rest = size - (m_inputBufferSize - m_sampleBufferHigh);
 
-         if (rest>0)
-            memcpy(sbuffer,sbuf+(aac_inbufsize - sbufhigh),rest*sizeof(short));
+         if (rest > 0)
+            memcpy(m_sampleBuffer.data(), sampleBuffer + (m_inputBufferSize - m_sampleBufferHigh), rest * sizeof(short));
 
          // adjust values
-         sbufhigh=rest;
-         size-=size;
-         pos+=size;
+         m_sampleBufferHigh = rest;
+         size -= size;
+         pos += size;
       }
 
-      return numsamples;
+      return numSamples;
    }
    else
    {
       // not enough samples yet, store them in the buffer, too
-      memcpy(sbuffer+sbufhigh,sbuf,size*sizeof(short));
-      sbufhigh += size;
+      memcpy(m_sampleBuffer.data() + m_sampleBufferHigh, sampleBuffer, size * sizeof(short));
+      m_sampleBufferHigh += size;
 
       return 0;
    }
 }
 
-void AacOutputModule::doneOutput()
+void AacOutputModule::DoneOutput()
 {
-   int ret=0;
+   int ret = 0;
 
    // encode the last samples in sample buffer
-   if (sbufhigh>0)
+   if (m_sampleBufferHigh > 0)
    {
-      ret = faacEncEncode(handle, reinterpret_cast<int*>(sbuffer), sbufhigh, aac_outbuf, aac_outbufsize);
+      ret = faacEncEncode(m_handle,
+         reinterpret_cast<int*>(m_sampleBuffer.data()),
+         m_sampleBufferHigh,
+         m_outputBuffer.data(),
+         m_outputBuffer.size());
 
-      if (ret>0)
-         ostr.write(reinterpret_cast<char*>(aac_outbuf),ret);
+      if (ret > 0)
+         m_outputFile.write(reinterpret_cast<char*>(m_outputBuffer.data()), ret);
    }
 
    // finish encoding and write the last aac frames
-   while((ret = faacEncEncode(handle, NULL, 0, aac_outbuf, aac_outbufsize)) > 0)
-      ostr.write(reinterpret_cast<char*>(aac_outbuf),ret);
+   while ((ret = faacEncEncode(m_handle,
+      nullptr,
+      0,
+      m_outputBuffer.data(),
+      m_outputBuffer.size())) > 0)
+   {
+      m_outputFile.write(reinterpret_cast<char*>(m_outputBuffer.data()), ret);
+   }
 
-   // close file
-   ostr.close();
+   m_outputFile.close();
 
-   // dealloc buffers
-   delete[] aac_outbuf;
-   aac_outbuf = NULL;
-
-   delete[] sbuffer;
-
-   // close handle
-   faacEncClose(handle);
+   faacEncClose(m_handle);
 }

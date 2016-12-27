@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014-2015 Michael Fink
+// Copyright (c) 2014-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,82 +21,85 @@
 //
 #pragma once
 
-// includes
-#include "ModuleInterface.h"
+#include "ModuleInterface.hpp"
 #include <opus/opusfile.h>
 
-/// input module for Opus encoded files
-class OpusInputModule : public InputModule
+namespace Encoder
 {
-public:
-   /// ctor
-   OpusInputModule();
-   // dtor
-   virtual ~OpusInputModule() throw() {}
+   /// input module for Opus encoded files
+   class OpusInputModule : public InputModule
+   {
+   public:
+      /// ctor
+      OpusInputModule();
+      /// dtor
+      virtual ~OpusInputModule() throw() {}
 
-   /// clones input module
-   virtual InputModule* cloneModule() override;
+      /// clones input module
+      virtual InputModule* CloneModule() override;
 
-   /// returns the module name
-   virtual CString getModuleName() override { return _T("Opus Audio File Decoder"); }
+      /// returns the module name
+      virtual CString GetModuleName() const override { return _T("Opus Audio File Decoder"); }
 
-   /// returns the last error
-   virtual CString getLastError() override { return m_cszLastError; }
+      /// returns the last error
+      virtual CString GetLastError() const override { return m_lastError; }
 
-   /// returns if the module is available
-   virtual bool isAvailable() override;
+      /// returns if the module is available
+      virtual bool IsAvailable() const override;
 
-   /// returns description of current file
-   virtual void getDescription(CString& desc) override;
+      /// returns description of current file
+      virtual void GetDescription(CString& desc) const override;
 
-   /// returns version string
-   virtual void getVersionString(CString& version, int special = 0) override;
+      /// returns version string
+      virtual void GetVersionString(CString& version, int special = 0) const override;
 
-   /// returns filter string
-   virtual CString getFilterString() override;
+      /// returns filter string
+      virtual CString GetFilterString() const override;
 
-   /// initializes the input module
-   virtual int initInput(LPCTSTR infilename, SettingsManager& mgr,
-      TrackInfo& trackinfo, SampleContainer& samples) override;
+      /// initializes the input module
+      virtual int InitInput(LPCTSTR infilename, SettingsManager& mgr,
+         TrackInfo& trackinfo, SampleContainer& samples) override;
 
-   /// returns info about the input file
-   virtual void getInfo(int& channels, int& bitrate, int& length, int& samplerate) override;
+      /// returns info about the input file
+      virtual void GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const override;
 
-   /// decodes samples and stores them in the sample container
-   virtual int decodeSamples(SampleContainer& samples) override;
+      /// decodes samples and stores them in the sample container
+      virtual int DecodeSamples(SampleContainer& samples) override;
 
-   /// returns the number of percent done
-   virtual float percentDone() override;
+      /// returns the number of percent done
+      virtual float PercentDone() const override;
 
-   /// called when done with decoding
-   virtual void doneInput() override;
+      /// called when done with decoding
+      virtual void DoneInput() override;
 
-private:
-   /// formats error text from error code
-   static LPCTSTR ErrorTextFromCode(int iErrorCode);
+   private:
+      /// formats error text from error code
+      static LPCTSTR ErrorTextFromCode(int errorCode);
 
-   /// reads from stream; used for OpusFileCallbacks
-   static int ReadStream(void *_stream, unsigned char *_ptr, int _nbytes);
+      /// reads from stream; used for OpusFileCallbacks
+      static int ReadStream(void* stream, unsigned char* ptr, int nbytes);
 
-   /// seeks in stream
-   static int SeekStream(void *_stream, opus_int64 _offset, int _whence);
+      /// seeks in stream
+      static int SeekStream(void* stream, opus_int64 offset, int whence);
 
-   /// returns current pos in stream; used for OpusFileCallbacks
-   static opus_int64 PosStream(void *_stream);
+      /// returns current pos in stream; used for OpusFileCallbacks
+      static opus_int64 PosStream(void* stream);
 
-   /// closes stream; used for OpusFileCallbacks
-   static int CloseStream(void *_stream);
+      /// closes stream; used for OpusFileCallbacks
+      static int CloseStream(void* stream);
 
-private:
-   /// last error text
-   CString m_cszLastError;
+   private:
+      /// last error text
+      CString m_lastError;
 
-   /// file callbacks
-   OpusFileCallbacks m_callbacks;
+      /// file callbacks
+      OpusFileCallbacks m_callbacks;
 
-   /// input file
-   std::shared_ptr<OggOpusFile> m_spInputFile;
+      /// input file
+      std::shared_ptr<OggOpusFile> m_inputFile;
 
-   /// total number of samples in the file
-   ogg_int64_t m_lTotalSamples;
-};
+      /// total number of samples in the file
+      ogg_int64_t m_numTotalSamples;
+   };
+
+} // namespace Encoder

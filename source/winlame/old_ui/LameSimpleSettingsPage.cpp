@@ -99,7 +99,7 @@ LRESULT LameSimpleSettingsPage::OnRadioEncodeType(WORD wNotifyCode, WORD wID, HW
 void LameSimpleSettingsPage::OnEnterPage()
 {
    // get settings manager
-   SettingsManager &mgr = pui->getUISettings().settings_manager;
+   SettingsManager& mgr = pui->getUISettings().settings_manager;
 
    // encode quality
    int value = mgr.queryValueInt(LameSimpleEncodeQuality);
@@ -143,7 +143,7 @@ void LameSimpleSettingsPage::OnEnterPage()
 bool LameSimpleSettingsPage::OnLeavePage()
 {
    // get settings manager
-   SettingsManager &mgr = pui->getUISettings().settings_manager;
+   SettingsManager& mgr = pui->getUISettings().settings_manager;
 
    // encode quality
    mgr.setValue(LameSimpleEncodeQuality, m_cbEncodingQuality.GetCurSel());

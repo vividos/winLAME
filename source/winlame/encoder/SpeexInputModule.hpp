@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014 Michael Fink
+// Copyright (c) 2014-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,92 +21,95 @@
 //
 #pragma once
 
-// includes
-#include "ModuleInterface.h"
+#include "ModuleInterface.hpp"
 #include <speex/speex.h>
 #include <speex/speex_header.h>
 #include <speex/speex_stereo.h>
 #include <ogg/ogg.h>
 #include "OggInputStream.hpp"
 
-/// input module for Speex encoded files
-class SpeexInputModule : public InputModule
+namespace Encoder
 {
-public:
-   /// ctor
-   SpeexInputModule();
-   // dtor
-   virtual ~SpeexInputModule() throw() {}
+   /// input module for Speex encoded files
+   class SpeexInputModule : public InputModule
+   {
+   public:
+      /// ctor
+      SpeexInputModule();
+      /// dtor
+      virtual ~SpeexInputModule() throw() {}
 
-   /// clones input module
-   virtual InputModule* cloneModule() override;
+      /// clones input module
+      virtual InputModule* CloneModule() override;
 
-   /// returns the module name
-   virtual CString getModuleName() override { return _T("Speex Audio File Decoder"); }
+      /// returns the module name
+      virtual CString GetModuleName() const override { return _T("Speex Audio File Decoder"); }
 
-   /// returns the last error
-   virtual CString getLastError() override { return m_cszLastError; }
+      /// returns the last error
+      virtual CString GetLastError() const override { return m_lastError; }
 
-   /// returns if the module is available
-   virtual bool isAvailable() override;
+      /// returns if the module is available
+      virtual bool IsAvailable() const override;
 
-   /// returns description of current file
-   virtual void getDescription(CString& desc) override;
+      /// returns description of current file
+      virtual void GetDescription(CString& desc) const override;
 
-   /// returns version string
-   virtual void getVersionString(CString& version, int special = 0) override;
+      /// returns version string
+      virtual void GetVersionString(CString& version, int special = 0) const override;
 
-   /// returns filter string
-   virtual CString getFilterString() override;
+      /// returns filter string
+      virtual CString GetFilterString() const override;
 
-   /// initializes the input module
-   virtual int initInput(LPCTSTR infilename, SettingsManager& mgr,
-      TrackInfo& trackinfo, SampleContainer& samples) override;
+      /// initializes the input module
+      virtual int InitInput(LPCTSTR infilename, SettingsManager& mgr,
+         TrackInfo& trackInfo, SampleContainer& samples) override;
 
-   /// returns info about the input file
-   virtual void getInfo(int& channels, int& bitrate, int& length, int& samplerate) override;
+      /// returns info about the input file
+      virtual void GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const override;
 
-   /// decodes samples and stores them in the sample container
-   virtual int decodeSamples(SampleContainer& samples) override;
+      /// decodes samples and stores them in the sample container
+      virtual int DecodeSamples(SampleContainer& samples) override;
 
-   /// returns the number of percent done
-   virtual float percentDone() override;
+      /// returns the number of percent done
+      virtual float PercentDone() const override;
 
-   /// called when done with decoding
-   virtual void doneInput() override;
+      /// called when done with decoding
+      virtual void DoneInput() override;
 
-private:
-   /// inits decoder
-   void InitDecoder();
+   private:
+      /// inits decoder
+      void InitDecoder();
 
-   /// reads next packet from stream
-   bool ReadNextPacket(ogg_packet& packet);
+      /// reads next packet from stream
+      bool ReadNextPacket(ogg_packet& packet);
 
-   /// decodes packet to 16-bit samples
-   int DecodePacket(ogg_packet& packet, std::vector<short>& vecSamples);
+      /// decodes packet to 16-bit samples
+      int DecodePacket(ogg_packet& packet, std::vector<short>& samples);
 
-private:
-   /// last error text
-   CString m_cszLastError;
+   private:
+      /// last error text
+      CString m_lastError;
 
-   /// input stream
-   std::shared_ptr<OggInputStream> m_spInputStream;
+      /// input stream
+      std::shared_ptr<OggInputStream> m_inputStream;
 
-   /// file size
-   long m_lFileSize;
+      /// file size
+      long m_fileSize;
 
-   /// packet count
-   unsigned int m_packetCount;
+      /// packet count
+      unsigned int m_packetCount;
 
-   /// speex header
-   std::shared_ptr<SpeexHeader> m_spHeader;
+      /// speex header
+      std::shared_ptr<SpeexHeader> m_header;
 
-   /// speex bit-packing struct
-   SpeexBits m_bits;
+      /// speex bit-packing struct
+      SpeexBits m_bits;
 
-   /// stereo state
-   SpeexStereoState m_stereo;
+      /// stereo state
+      SpeexStereoState m_stereo;
 
-   /// encoder state
-   std::shared_ptr<void> m_spDecoderState;
-};
+      /// encoder state
+      std::shared_ptr<void> m_decoderState;
+   };
+
+} // namespace Encoder

@@ -72,8 +72,8 @@ LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
    SetupTracksList();
 
    // genre combobox
-   LPCTSTR* apszGenre = TrackInfo::GetGenreList();
-   for (unsigned int i = 0, iMax = TrackInfo::GetGenreListLength(); i < iMax; i++)
+   LPCTSTR* apszGenre = Encoder::TrackInfo::GetGenreList();
+   for (unsigned int i = 0, iMax = Encoder::TrackInfo::GetGenreListLength(); i < iMax; i++)
       m_cbGenre.AddString(apszGenre[i]);
 
    m_buttonPlay.EnableWindow(false);
@@ -610,7 +610,7 @@ void InputCDPage::UpdateCDReadJobList(unsigned int dwDrive)
 
       CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, nTrack);
 
-      CDReadJob cdReadJob(discInfo, trackInfo);
+      Encoder::CDReadJob cdReadJob(discInfo, trackInfo);
       m_uiSettings.cdreadjoblist.push_back(cdReadJob);
    }
 }
@@ -619,17 +619,17 @@ void InputCDPage::UpdatePlaylistFilename(DWORD driveIndex)
 {
    CDRipDiscInfo discInfo = ReadDiscInfo(driveIndex);
 
-   if (discInfo.m_bVariousArtists)
+   if (discInfo.m_variousArtists)
    {
       m_uiSettings.playlist_filename.Format(
          _T("%s.m3u"),
-         discInfo.m_cszDiscTitle);
+         discInfo.m_discTitle);
    }
    else
    {
       m_uiSettings.playlist_filename.Format(
          _T("%s - %s.m3u"),
-         discInfo.m_cszDiscArtist, discInfo.m_cszDiscTitle);
+         discInfo.m_discArtist, discInfo.m_discTitle);
    }
 }
 
@@ -637,25 +637,25 @@ CDRipDiscInfo InputCDPage::ReadDiscInfo(DWORD driveIndex)
 {
    CDRipDiscInfo discInfo;
 
-   discInfo.m_nDiscDrive = driveIndex;
+   discInfo.m_discDrive = driveIndex;
 
-   GetDlgItemText(IDC_CDSELECT_EDIT_TITLE, discInfo.m_cszDiscTitle);
+   GetDlgItemText(IDC_CDSELECT_EDIT_TITLE, discInfo.m_discTitle);
 
-   GetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, discInfo.m_cszDiscArtist);
+   GetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, discInfo.m_discArtist);
 
-   discInfo.m_nYear = GetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, NULL, FALSE);
+   discInfo.m_year = GetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, NULL, FALSE);
 
    int nItem = m_cbGenre.GetCurSel();
    if (nItem == CB_ERR)
    {
-      m_cbGenre.GetWindowText(discInfo.m_cszGenre);
+      m_cbGenre.GetWindowText(discInfo.m_genre);
    }
    else
-      m_cbGenre.GetLBText(nItem, discInfo.m_cszGenre);
+      m_cbGenre.GetLBText(nItem, discInfo.m_genre);
 
-   discInfo.m_bVariousArtists = BST_CHECKED == m_checkVariousArtists.GetCheck();
+   discInfo.m_variousArtists = BST_CHECKED == m_checkVariousArtists.GetCheck();
 
-   discInfo.m_cszCDID = BASS_CD_GetID(driveIndex, BASS_CDID_CDDB);
+   discInfo.m_CDID = BASS_CD_GetID(driveIndex, BASS_CDID_CDDB);
 
    return discInfo;
 }
@@ -664,9 +664,9 @@ CDRipTrackInfo InputCDPage::ReadTrackInfo(DWORD driveIndex, unsigned int trackNu
 {
    CDRipTrackInfo trackInfo;
 
-   trackInfo.m_nTrackOnDisc = trackNum;
-   m_lcTracks.GetItemText(trackNum, 1, trackInfo.m_cszTrackTitle);
-   trackInfo.m_nTrackLength = BASS_CD_GetTrackLength(driveIndex, trackNum) / 176400L;
+   trackInfo.m_numTrackOnDisc = trackNum;
+   m_lcTracks.GetItemText(trackNum, 1, trackInfo.m_trackTitle);
+   trackInfo.m_trackLengthInSeconds = BASS_CD_GetTrackLength(driveIndex, trackNum) / 176400L;
 
    return trackInfo;
 }
@@ -701,20 +701,20 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
    ini.WriteString(cdplayer_id, _T("numtracks"), cszFormat);
 
    // artist
-   ini.WriteString(cdplayer_id, _T("artist"), discinfo.m_cszDiscArtist);
+   ini.WriteString(cdplayer_id, _T("artist"), discinfo.m_discArtist);
 
    // title
-   ini.WriteString(cdplayer_id, _T("title"), discinfo.m_cszDiscTitle);
+   ini.WriteString(cdplayer_id, _T("title"), discinfo.m_discTitle);
 
    // year
-   if (discinfo.m_nYear > 0)
+   if (discinfo.m_year > 0)
    {
-      cszFormat.Format(_T("%u"), discinfo.m_nYear);
+      cszFormat.Format(_T("%u"), discinfo.m_year);
       ini.WriteString(cdplayer_id, _T("year"), cszFormat);
    }
 
    // genre
-   ini.WriteString(cdplayer_id, _T("genre"), discinfo.m_cszGenre);
+   ini.WriteString(cdplayer_id, _T("genre"), discinfo.m_genre);
 
    // tracks
    CString cszTrackText;
@@ -724,7 +724,7 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
 
       CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, n);
 
-      ini.WriteString(cdplayer_id, cszFormat, trackInfo.m_cszTrackTitle);
+      ini.WriteString(cdplayer_id, cszFormat, trackInfo.m_trackTitle);
    }
 }
 

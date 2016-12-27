@@ -1,137 +1,136 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2016 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file ModuleManagerImpl.cpp
 /// \brief contains the module manager implementation
-
-// needed includes
+//
 #include "stdafx.h"
 #include <fstream>
 #include <algorithm>
-#include "ModuleManagerImpl.h"
-#include "LameOutputModule.h"
-#include "OggVorbisOutputModule.h"
-#include "WaveOutputModule.h"
-#include "SndFileInputModule.h"
-#include "MadMpegInputModule.h"
-#include "OggVorbisInputModule.h"
-#include "AacInputModule.h"
-#include "AacOutputModule.h"
-#include "FlacInputModule.h"
-#include "BassInputModule.h"
-#include "BassWmaOutputModule.h"
-#include "MonkeysAudioInputModule.h"
-#include "CDReadoutModule.h"
+#include "ModuleManagerImpl.hpp"
+#include "LameOutputModule.hpp"
+#include "OggVorbisOutputModule.hpp"
+#include "SndFileOutputModule.hpp"
+#include "SndFileInputModule.hpp"
+#include "MadMpegInputModule.hpp"
+#include "OggVorbisInputModule.hpp"
+#include "AacInputModule.hpp"
+#include "AacOutputModule.hpp"
+#include "FlacInputModule.hpp"
+#include "BassInputModule.hpp"
+#include "BassWmaOutputModule.hpp"
+#include "MonkeysAudioInputModule.hpp"
+#include "CDReadoutModule.hpp"
 #include "SpeexInputModule.hpp"
 #include "OpusInputModule.hpp"
 #include "OpusOutputModule.hpp"
 #include "resource.h"
 
+using namespace Encoder;
+
 // global functions
 
 /// max number of input modules GetNewInputModule can return
-const int MaxInputModule = 10;
+const int c_maxInputModule = 10;
 
 /// returns a new input module by index
 InputModule* GetNewInputModule(int index)
 {
-   InputModule *inmod = NULL;
-   switch(index)
+   InputModule* inputModule = nullptr;
+   switch (index)
    {
    case 0:
-      inmod = new SndFileInputModule;
+      inputModule = new SndFileInputModule;
       break;
    case 1:
-      inmod = new MadMpegInputModule;
+      inputModule = new MadMpegInputModule;
       break;
    case 2:
-      inmod = new OggVorbisInputModule;
+      inputModule = new OggVorbisInputModule;
       break;
    case 3:
-      inmod = new AacInputModule;
+      inputModule = new AacInputModule;
       break;
    case 4:
-      inmod = new MonkeysAudioInputModule;
+      inputModule = new MonkeysAudioInputModule;
       break;
    case 5:
-      inmod = new FlacInputModule;
+      inputModule = new FlacInputModule;
       break;
    case 6:
-      inmod = new BassInputModule;
+      inputModule = new BassInputModule;
       break;
    case 7:
-      inmod = new CDReadoutModule;
+      inputModule = new CDReadoutModule;
       break;
    case 8:
-      inmod = new SpeexInputModule;
+      inputModule = new SpeexInputModule;
       break;
    case 9:
-      inmod = new OpusInputModule;
+      inputModule = new OpusInputModule;
       break;
    }
-   return inmod;
+
+   return inputModule;
 }
 
 /// max number of output modules GetNewOutputModule can return
-const int c_iMaxOutputModule = 6;
+const int c_maxOutputModule = 6;
 
 /// returns a new output module by index
-OutputModule *GetNewOutputModule(int index)
+OutputModule* GetNewOutputModule(int index)
 {
-   OutputModule *outmod = NULL;
-   switch(index)
+   OutputModule* outputModule = NULL;
+   switch (index)
    {
    case 0:
-      outmod = new LameOutputModule;
+      outputModule = new LameOutputModule;
       break;
    case 1:
-      outmod = new OpusOutputModule;
+      outputModule = new OpusOutputModule;
       break;
    case 2:
-      outmod = new OggVorbisOutputModule;
+      outputModule = new OggVorbisOutputModule;
       break;
    case 3:
-      outmod = new WaveOutputModule;
+      outputModule = new SndFileOutputModule;
       break;
    case 4:
-      outmod = new BassWmaOutputModule;
+      outputModule = new BassWmaOutputModule;
       break;
    case 5:
-      outmod = new AacOutputModule;
+      outputModule = new AacOutputModule;
       break;
    }
-   return outmod;
+
+   return outputModule;
 }
 
-
-// ModuleManagerImpl methods
-
-void ModuleManagerImpl::getFilterString(CString& filterstring)
+void ModuleManagerImpl::GetFilterString(CString& filterstring) const
 {
    // get all filter strings
    CString filter;
-   int max = getInputModuleCount();
-   for(int i=0; i<max; i++)
-      filter += getInputModuleFilterString(i);
+   int max = GetInputModuleCount();
+   for (int i = 0; i < max; i++)
+      filter += GetInputModuleFilterString(i);
 
    // add an "all supported audio files" option
-   CString allfilter;
+   CString allFilter;
    {
       CString temp(filter);
       int pos;
@@ -142,96 +141,90 @@ void ModuleManagerImpl::getFilterString(CString& filterstring)
          pos = temp.Find(_T('|'));
          if (pos != -1)
          {
-            temp.Delete(0, pos+1);
+            temp.Delete(0, pos + 1);
             pos = temp.Find(_T('|'));
             if (pos == -1)
                break;
 
             // append the filter value
-            allfilter += temp.Left(pos);
-            allfilter += _T(';');
-            temp.Delete(0, pos+1);
+            allFilter += temp.Left(pos);
+            allFilter += _T(';');
+            temp.Delete(0, pos + 1);
          }
-      }
-      while(pos != -1);
+      } while (pos != -1);
 
       // remove last semicolon
-      allfilter.TrimRight(_T(';'));
+      allFilter.TrimRight(_T(';'));
    }
 
    // combine filter lists
    filterstring.LoadString(IDS_FILTER_ALL_SUPPORTED);
-   filterstring += _T('|');
-   filterstring += allfilter;
-   filterstring += _T('|');
-   filterstring += filter;
+   filterstring.AppendFormat(_T("|%s|%s"), allFilter.GetString(), filter.GetString());
 }
 
-bool ModuleManagerImpl::getAudioFileInfo(LPCTSTR filename,
-   int& length, int& bitrate, int& samplefreq, CString& errormsg)
+bool ModuleManagerImpl::GetAudioFileInfo(LPCTSTR filename,
+   int& lengthInSeconds, int& bitrateInBps, int& samplerateInHz, CString& errorMessage)
 {
    // get appropriate input module
-   InputModule *inmod = chooseInputModule(filename);
-   if (inmod==NULL)
+   InputModule* inputModule = ChooseInputModule(filename);
+   if (inputModule == nullptr)
    {
-      errormsg.LoadString(IDS_ENCODER_MISSING_INPUT_MOD);
+      errorMessage.LoadString(IDS_ENCODER_MISSING_INPUT_MOD);
       return false;
    }
 
    // get infos
+   Encoder::TrackInfo trackInfo;
+   SampleContainer samples;
    SettingsManager dummy;
-   int dummy2;
+   int ret = inputModule->InitInput(filename, dummy, trackInfo, samples);
 
-   TrackInfo trackinfo;
-   SampleContainer sampcont;
-   int ret = inmod->initInput(filename,dummy,trackinfo,sampcont);
-   if (ret>=0)
-      inmod->getInfo(dummy2,bitrate,length,samplefreq);
+   if (ret >= 0)
+   {
+      int dummy2;
+      inputModule->GetInfo(dummy2, bitrateInBps, lengthInSeconds, samplerateInHz);
+   }
    else
-      errormsg = inmod->getLastError();
+      errorMessage = inputModule->GetLastError();
 
-   inmod->doneInput();
+   inputModule->DoneInput();
 
-   // delete module
-   delete inmod;
+   delete inputModule;
 
-   return ret>=0;
+   return ret >= 0;
 }
 
 ModuleManagerImpl::ModuleManagerImpl()
 {
    // check which output modules are available
-   int i;
-   OutputModule *outmod;
-   for(i=0; i<c_iMaxOutputModule; i++)
+   for (int i = 0; i < c_maxOutputModule; i++)
    {
-      outmod = GetNewOutputModule(i);
+      OutputModule* outputModule = GetNewOutputModule(i);
 
-      if (outmod!=NULL)
+      if (outputModule != nullptr)
       {
-         if (outmod->isAvailable())
+         if (outputModule->IsAvailable())
          {
-            out_modules.push_back(outmod);
-            out_id_to_modidx.insert(
-               std::make_pair(outmod->getModuleID(),i));
+            m_outputModules.push_back(outputModule);
+            m_mapOutputModuleIdToModuleIndex.insert(
+               std::make_pair(outputModule->GetModuleID(), i));
          }
          else
-            delete outmod;
+            delete outputModule;
       }
    }
 
    // check which input modules are available
-   InputModule *inmod;
-   for(i=0; i<MaxInputModule; i++)
+   for (int i = 0; i < c_maxInputModule; i++)
    {
-      inmod = GetNewInputModule(i);
+      InputModule* inputModule = GetNewInputModule(i);
 
-      if (inmod!=NULL)
+      if (inputModule != nullptr)
       {
-         if (inmod->isAvailable())
-            in_modules.push_back(inmod);
+         if (inputModule->IsAvailable())
+            m_inputModules.push_back(inputModule);
          else
-            delete inmod;
+            delete inputModule;
       }
    }
 }
@@ -239,23 +232,23 @@ ModuleManagerImpl::ModuleManagerImpl()
 ModuleManagerImpl::~ModuleManagerImpl()
 {
    // delete all output modules
-   int i,max = out_modules.size();
-   for(i=0; i<max; i++)
-      delete out_modules[i];
+   int max = m_outputModules.size();
+   for (int i = 0; i < max; i++)
+      delete m_outputModules[i];
 
    // delete all input modules
-   max = in_modules.size();
-   for(i=0; i<max; i++)
-      delete in_modules[i];
+   max = m_inputModules.size();
+   for (int i = 0; i < max; i++)
+      delete m_inputModules[i];
 }
 
-InputModule *ModuleManagerImpl::chooseInputModule(LPCTSTR filename)
+InputModule* ModuleManagerImpl::ChooseInputModule(LPCTSTR filename)
 {
-   InputModule *inmod = NULL;
+   InputModule* inputModule = nullptr;
 
    // shortcut: when starting with cdrip://, return CDReadoutModule
    extern LPCTSTR g_pszCDRipPrefix;
-   if (filename==_tcsstr(filename, g_pszCDRipPrefix))
+   if (filename == _tcsstr(filename, g_pszCDRipPrefix))
    {
       return new CDReadoutModule;
    }
@@ -263,96 +256,95 @@ InputModule *ModuleManagerImpl::chooseInputModule(LPCTSTR filename)
    // get file extension
    std::tstring extension(filename);
    std::tstring::size_type pos = extension.find_last_of('.');
-   if (pos==std::tstring::npos)
-      return NULL; // no extension
-   extension.erase(0,pos);
-   std::transform(extension.begin(),extension.end(),extension.begin(),::tolower);
+   if (pos == std::tstring::npos)
+      return nullptr; // no extension
+   extension.erase(0, pos);
+   std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
 
    // search all filter strings for file extension
-   int max = getInputModuleCount();
-   for(int i=0; i<max && inmod==NULL; i++)
+   int max = GetInputModuleCount();
+   for (int i = 0; i < max && inputModule == nullptr; i++)
    {
-      std::tstring filter(getInputModuleFilterString(i));
-      std::transform(filter.begin(),filter.end(),filter.begin(),::tolower);
+      std::tstring filter(GetInputModuleFilterString(i));
+      std::transform(filter.begin(), filter.end(), filter.begin(), ::tolower);
 
       do
       {
          // search for second string delimited by a | char
          pos = filter.find_first_of('|');
-         if (pos!=std::tstring::npos)
+         if (pos != std::tstring::npos)
          {
-            filter.erase(0,pos+1);
+            filter.erase(0, pos + 1);
             pos = filter.find_first_of('|');
-            if (pos==std::tstring::npos)
+            if (pos == std::tstring::npos)
                break;
 
             // check if the extension is in the filter wildcard pattern
-            std::tstring temp(filter.c_str(),pos);
+            std::tstring temp(filter.c_str(), pos);
             std::tstring::size_type pos2 = temp.find(extension.c_str());
 
-            if (pos2!=std::tstring::npos)
+            if (pos2 != std::tstring::npos)
             {
                // clone input module
-               inmod = in_modules[i]->cloneModule();
+               inputModule = m_inputModules[i]->CloneModule();
                break;
             }
          }
-      }
-      while(pos!=std::tstring::npos);
+      } while (pos != std::tstring::npos);
    }
 
-   return inmod;
+   return inputModule;
 }
 
-OutputModule *ModuleManagerImpl::getOutputModule(int module_id)
+OutputModule *ModuleManagerImpl::GetOutputModule(int m_moduleId)
 {
    // search output module per id
-   OutputModule *outmod = NULL;
+   OutputModule *outputModule = nullptr;
 
-   int max = getOutputModuleCount();
-   for(int i=0; i<max; i++)
-   if (getOutputModuleID(i)==module_id)
-   {
-      std::map<int,int>::iterator pos =
-         out_id_to_modidx.find(module_id);
+   int max = GetOutputModuleCount();
+   for (int i = 0; i < max; i++)
+      if (GetOutputModuleID(i) == m_moduleId)
+      {
+         std::map<int, int>::iterator pos =
+            m_mapOutputModuleIdToModuleIndex.find(m_moduleId);
 
-      if (pos == out_id_to_modidx.end())
-         continue; // should not happen, normally
+         if (pos == m_mapOutputModuleIdToModuleIndex.end())
+            continue; // should not happen, normally
 
-      outmod = GetNewOutputModule(pos->second);
-      break;
-   }
+         outputModule = GetNewOutputModule(pos->second);
+         break;
+      }
 
-   return outmod;
+   return outputModule;
 }
 
-void ModuleManagerImpl::getModuleVersionString(CString& version,
-   int module_id, int special)
+void ModuleManagerImpl::GetModuleVersionString(CString& version,
+   int m_moduleId, int special)
 {
-   int max,i;
+   int max, i;
 
    // search all input modules for module ID
-   max = getInputModuleCount();
-   for(i=0; i<max; i++)
-   if (getInputModuleID(i)==module_id)
-   {
-      in_modules[i]->getVersionString(version,special);
-      return;
-   }
+   max = GetInputModuleCount();
+   for (i = 0; i < max; i++)
+      if (GetInputModuleID(i) == m_moduleId)
+      {
+         m_inputModules[i]->GetVersionString(version, special);
+         return;
+      }
 
    // and now all output modules
-   max = getOutputModuleCount();
-   for(i=0; i<max; i++)
-   if (getOutputModuleID(i)==module_id)
-   {
-      out_modules[i]->getVersionString(version,special);
-      return;
-   }
+   max = GetOutputModuleCount();
+   for (i = 0; i < max; i++)
+      if (GetOutputModuleID(i) == m_moduleId)
+      {
+         m_outputModules[i]->GetVersionString(version, special);
+         return;
+      }
 
    version.Empty();
 }
 
-CString GetAnsiCompatFilename(LPCTSTR pszFilename)
+CString Encoder::GetAnsiCompatFilename(LPCTSTR pszFilename)
 {
    CString cszFilename;
    DWORD dwRet = GetShortPathName(pszFilename, cszFilename.GetBuffer(MAX_PATH), MAX_PATH);

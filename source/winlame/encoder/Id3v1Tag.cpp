@@ -1,104 +1,105 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2016 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file Id3v1Tag.cpp
 /// \brief id3v1 tag parsing and creating
-
-// needed includes
+//
 #include "stdafx.h"
-#include "Id3v1Tag.h"
-#include "TrackInfo.h"
+#include "Id3v1Tag.hpp"
+#include "TrackInfo.hpp"
 #include <cstdio>
 
-void Id3v1Tag::toTrackInfo(TrackInfo& ti) const
+using Encoder::Id3v1Tag;
+using Encoder::TrackInfo;
+
+void Id3v1Tag::ToTrackInfo(TrackInfo& trackInfo) const
 {
    // insert all id3 tag infos into properties
 
    // title
-   CString prop = CString(CStringA(this->title),30);
+   CString textValue = CString(CStringA(this->title), 30);
    if (this->title[0] != 0)
-      ti.TextInfo(TrackInfoTitle, prop);
+      trackInfo.TextInfo(TrackInfoTitle, textValue);
 
    // artist
-   prop = CString(CStringA(this->artist),30);
+   textValue = CString(CStringA(this->artist), 30);
    if (this->artist[0] != 0)
-      ti.TextInfo(TrackInfoArtist, prop);
+      trackInfo.TextInfo(TrackInfoArtist, textValue);
 
    // album
-   prop = CString(CStringA(this->album),30);
+   textValue = CString(CStringA(this->album), 30);
    if (this->album[0] != 0)
-      ti.TextInfo(TrackInfoAlbum, prop);
+      trackInfo.TextInfo(TrackInfoAlbum, textValue);
 
    // year
-   prop = CString(CStringA(this->year),4);
-   int iProp = (int)_tcstoul(prop, NULL, 10);
-   if (iProp != 0)
-      ti.NumberInfo(TrackInfoYear, iProp);
+   textValue = CString(CStringA(this->year), 4);
+   int intValue = (int)_tcstoul(textValue, NULL, 10);
+   if (intValue != 0)
+      trackInfo.NumberInfo(TrackInfoYear, intValue);
 
    // comment
-   prop = CString(CStringA(this->comment),29);
+   textValue = CString(CStringA(this->comment), 29);
    if (this->comment[0] != 0)
-      ti.TextInfo(TrackInfoComment, prop);
+      trackInfo.TextInfo(TrackInfoComment, textValue);
 
    // track number
-   if (this->track!=0 && this->track != this->comment[28])
-      ti.NumberInfo(TrackInfoTrack, (int)this->track);
+   if (this->track != 0 && this->track != this->comment[28])
+      trackInfo.NumberInfo(TrackInfoTrack, (int)this->track);
 
    // genre
    if (this->genre != 0xff)
    {
       CString cszGenre = TrackInfo::GenreIDToText(this->genre);
-      ti.TextInfo(TrackInfoGenre, cszGenre);
+      trackInfo.TextInfo(TrackInfoGenre, cszGenre);
    }
 }
 
-void Id3v1Tag::fromTrackInfo(const TrackInfo& ti)
+void Id3v1Tag::FromTrackInfo(const TrackInfo& trackInfo)
 {
    // update id3 tag entries
    memcpy(this->tag, "TAG", 3);
 
-   bool bAvail;
-   CString cszValue = ti.TextInfo(TrackInfoTitle, bAvail);
-   if (bAvail)
-      _snprintf(this->title, sizeof(this->title)/sizeof(*this->title), "%.30ls", cszValue.Left(30).GetString());
+   bool isAvail;
+   CString textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
+   if (isAvail)
+      _snprintf(this->title, sizeof(this->title) / sizeof(*this->title), "%.30ls", textValue.Left(30).GetString());
 
-   cszValue = ti.TextInfo(TrackInfoArtist, bAvail);
-   if (bAvail)
-      _snprintf(this->artist, sizeof(this->artist)/sizeof(*this->artist), "%.30ls", cszValue.Left(30).GetString());
+   textValue = trackInfo.TextInfo(TrackInfoArtist, isAvail);
+   if (isAvail)
+      _snprintf(this->artist, sizeof(this->artist) / sizeof(*this->artist), "%.30ls", textValue.Left(30).GetString());
 
-   cszValue = ti.TextInfo(TrackInfoAlbum, bAvail);
-   if (bAvail)
-      _snprintf(this->album, sizeof(this->album)/sizeof(*this->album), "%.30ls", cszValue.Left(30).GetString());
+   textValue = trackInfo.TextInfo(TrackInfoAlbum, isAvail);
+   if (isAvail)
+      _snprintf(this->album, sizeof(this->album) / sizeof(*this->album), "%.30ls", textValue.Left(30).GetString());
 
-   int iValue = ti.NumberInfo(TrackInfoYear, bAvail);
-   if (bAvail)
-      _snprintf(this->year, sizeof(this->year)/sizeof(*this->year), "%.4u", (unsigned)iValue);
+   int intValue = trackInfo.NumberInfo(TrackInfoYear, isAvail);
+   if (isAvail)
+      _snprintf(this->year, sizeof(this->year) / sizeof(*this->year), "%.4u", static_cast<unsigned int>(intValue));
 
-   cszValue = ti.TextInfo(TrackInfoComment, bAvail);
-   if (bAvail)
-      _snprintf(this->comment, sizeof(this->comment)/sizeof(*this->comment), "%.29ls", cszValue.Left(29).GetString());
+   textValue = trackInfo.TextInfo(TrackInfoComment, isAvail);
+   if (isAvail)
+      _snprintf(this->comment, sizeof(this->comment) / sizeof(*this->comment), "%.29ls", textValue.Left(29).GetString());
 
-   iValue = ti.NumberInfo(TrackInfoTrack, bAvail);
-   if (bAvail)
-      this->track = (unsigned char)iValue;
+   intValue = trackInfo.NumberInfo(TrackInfoTrack, isAvail);
+   if (isAvail)
+      this->track = (unsigned char)intValue;
 
-   cszValue = ti.TextInfo(TrackInfoGenre, bAvail);
-   if (bAvail)
-      this->genre = static_cast<unsigned char>(TrackInfo::TextToGenreID(cszValue));
+   textValue = trackInfo.TextInfo(TrackInfoGenre, isAvail);
+   if (isAvail)
+      this->genre = static_cast<unsigned char>(TrackInfo::TextToGenreID(textValue));
 }

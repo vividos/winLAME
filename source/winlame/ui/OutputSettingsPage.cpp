@@ -33,7 +33,7 @@
 #include "AACSettingsPage.hpp"
 #include "WMASettingsPage.hpp"
 #include "OpusSettingsPage.hpp"
-#include "ModuleInterface.h"
+#include "ModuleInterface.hpp"
 #include "CommonStuff.h"
 
 using namespace UI;
@@ -89,7 +89,7 @@ LRESULT OutputSettingsPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWN
    {
       std::vector<CString> vecInputFiles;
 
-      std::for_each(m_uiSettings.encoderjoblist.begin(), m_uiSettings.encoderjoblist.end(), [&](const EncoderJob& job)
+      std::for_each(m_uiSettings.encoderjoblist.begin(), m_uiSettings.encoderjoblist.end(), [&](const Encoder::EncoderJob& job)
       {
          vecInputFiles.push_back(job.InputFilename());
       });
@@ -199,9 +199,9 @@ bool OutputSettingsPage::SaveData(bool bSilent)
 void OutputSettingsPage::SetWizardPage()
 {
    // find out output module id
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
 
-   int modid = moduleManager.getOutputModuleID(m_uiSettings.output_module);
+   int modid = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
    // check if presets page should be inserted
    if (m_uiSettings.preset_avail)
@@ -312,10 +312,10 @@ LRESULT OutputSettingsPage::OnOutPathSelEndOk(WORD /*wNotifyCode*/, WORD wID, HW
 void OutputSettingsPage::SetupOutputModulesList()
 {
    // query module names from encoder interface
-   ModuleManager& moduleManager = IoCContainer::Current().Resolve<ModuleManager>();
-   int max = moduleManager.getOutputModuleCount();
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+   int max = moduleManager.GetOutputModuleCount();
    for (int i = 0; i < max; i++)
-      m_cbOutputModule.AddString(moduleManager.getOutputModuleName(i));
+      m_cbOutputModule.AddString(moduleManager.GetOutputModuleName(i));
 }
 
 void OutputSettingsPage::RefreshHistory()

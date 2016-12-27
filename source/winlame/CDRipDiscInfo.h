@@ -21,21 +21,35 @@
 //
 #pragma once
 
+/// contains infos about a CD disc to rip
 struct CDRipDiscInfo
 {
+   /// ctor
    CDRipDiscInfo()
-      :m_bVariousArtists(false),
-      m_nYear(0),
-      m_nDiscDrive(0)
+      :m_variousArtists(false),
+      m_year(0),
+      m_discDrive(0)
    {
    }
 
-   CString m_cszDiscTitle;
-   CString m_cszDiscArtist;
-   bool m_bVariousArtists;
-   unsigned int m_nYear;
-   unsigned int m_nDiscDrive;
-   CString m_cszGenre;
+   /// disc title
+   CString m_discTitle;
 
-   CString m_cszCDID;
+   /// disc artist
+   CString m_discArtist;
+
+   /// indicates if disc has various artists
+   bool m_variousArtists;
+
+   /// disc year
+   unsigned int m_year;
+
+   /// disc drive index
+   unsigned int m_discDrive;
+
+   /// genre of CD
+   CString m_genre;
+
+   /// FreeDB's CDID
+   CString m_CDID;
 };

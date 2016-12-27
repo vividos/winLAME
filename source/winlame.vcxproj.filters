@@ -1,24 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="encoder files">
-      <UniqueIdentifier>{79b9d66c-80dc-46bd-967a-0b15f7f93710}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="encoder files\encoder source files">
-      <UniqueIdentifier>{c3a339cf-6711-4d36-9690-8734c78be610}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="encoder files\encoder header files">
-      <UniqueIdentifier>{a72caebc-f93a-4698-8523-bec6ccb01045}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="encoder files\mad dither files">
-      <UniqueIdentifier>{9cd6b69b-c81a-45f1-a771-0edebeaba09c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="encoder files\id3 files">
-      <UniqueIdentifier>{58c28a69-abc0-457d-af7b-12fc63ab60f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="encoder files\aacinfo files">
-      <UniqueIdentifier>{7e4a760b-7c22-4448-8783-de2b85ca67da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="old_ui Files">
       <UniqueIdentifier>{9cf7725f-cee1-4a9d-a721-4d1255dc7a8b}</UniqueIdentifier>
     </Filter>
@@ -68,88 +50,100 @@
     <Filter Include="UI Files\Resource Files\Generated Files">
       <UniqueIdentifier>{7e9e0b1f-aa29-45d6-87c4-ccd49fb40dc5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Encoder Files">
+      <UniqueIdentifier>{79b9d66c-80dc-46bd-967a-0b15f7f93710}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Encoder Files\mad dither files">
+      <UniqueIdentifier>{9cd6b69b-c81a-45f1-a771-0edebeaba09c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Encoder Files\id3 files">
+      <UniqueIdentifier>{58c28a69-abc0-457d-af7b-12fc63ab60f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Encoder Files\aacinfo files">
+      <UniqueIdentifier>{7e4a760b-7c22-4448-8783-de2b85ca67da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Encoder Files\Header Files">
+      <UniqueIdentifier>{a72caebc-f93a-4698-8523-bec6ccb01045}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Encoder Files\Source Files">
+      <UniqueIdentifier>{c3a339cf-6711-4d36-9690-8734c78be610}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="winlame\encoder\AacInputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\AacOutputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\BassInputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\BassWmaOutputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
-    </ClCompile>
-    <ClCompile Include="winlame\encoder\CdReadoutModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\EncoderImpl.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\EncoderTask.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\FlacInputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\Id3v1Tag.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\LameOutputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\MadMpegInputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\ModuleManagerImpl.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\MonkeysAudioInputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\OggVorbisInputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\OggVorbisOutputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\SampleContainer.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\SndFileInputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\TrackInfo.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\WaveMp3Header.cpp">
-      <Filter>encoder files\encoder source files</Filter>
-    </ClCompile>
-    <ClCompile Include="winlame\encoder\WaveOutputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\dither\dither.c">
-      <Filter>encoder files\mad dither files</Filter>
+      <Filter>Encoder Files\mad dither files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\id3\Field.cpp">
-      <Filter>encoder files\id3 files</Filter>
+      <Filter>Encoder Files\id3 files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\id3\File.cpp">
-      <Filter>encoder files\id3 files</Filter>
+      <Filter>Encoder Files\id3 files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\id3\Frame.cpp">
-      <Filter>encoder files\id3 files</Filter>
+      <Filter>Encoder Files\id3 files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\id3\Tag.cpp">
-      <Filter>encoder files\id3 files</Filter>
+      <Filter>Encoder Files\id3 files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\aacinfo\aacinfo.c">
-      <Filter>encoder files\aacinfo files</Filter>
+      <Filter>Encoder Files\aacinfo files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\aacinfo\filestream.c">
-      <Filter>encoder files\aacinfo files</Filter>
+      <Filter>Encoder Files\aacinfo files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\old_ui\CDRipDlg.cpp">
       <Filter>old_ui Files\Source Files</Filter>
@@ -299,19 +293,19 @@
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\CreatePlaylistTask.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\CDExtractTask.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\ui\FreeDbDiscListDlg.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\SpeexInputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\OpusInputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\CommandLineParser.cpp">
       <Filter>Main Program Files\Source Files</Filter>
@@ -323,7 +317,7 @@
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\encoder\OpusOutputModule.cpp">
-      <Filter>encoder files\encoder source files</Filter>
+      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame\ui\OpusSettingsPage.cpp">
       <Filter>UI Files\Source Files</Filter>
@@ -340,91 +334,34 @@
     <ClCompile Include="winlame\ui\Win7Taskbar.cpp">
       <Filter>UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="winlame\encoder\SndFileOutputModule.cpp">
+      <Filter>Encoder Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="winlame\encoder\CDReadoutModule.cpp">
+      <Filter>Encoder Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="winlame\encoder\AacInputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\AacOutputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\BassInputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\BassWmaOutputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\CdReadoutModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\EncoderImpl.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\EncoderTask.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\FlacInputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\Id3v1Tag.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\LameOutputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\MadMpegInputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\ModuleInterface.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\ModuleManagerImpl.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\MonkeysAudioInputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\OggVorbisInputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\OggVorbisOutputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\SampleContainer.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\SndFileInputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\TrackInfo.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\WaveMp3Header.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\encoder\WaveOutputModule.h">
-      <Filter>encoder files\encoder header files</Filter>
-    </ClInclude>
     <ClInclude Include="winlame\encoder\dither\dither.h">
-      <Filter>encoder files\mad dither files</Filter>
+      <Filter>Encoder Files\mad dither files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\id3\Field.h">
-      <Filter>encoder files\id3 files</Filter>
+      <Filter>Encoder Files\id3 files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\id3\File.h">
-      <Filter>encoder files\id3 files</Filter>
+      <Filter>Encoder Files\id3 files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\id3\Frame.h">
-      <Filter>encoder files\id3 files</Filter>
+      <Filter>Encoder Files\id3 files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\id3\Tag.h">
-      <Filter>encoder files\id3 files</Filter>
+      <Filter>Encoder Files\id3 files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\aacinfo\aacinfo.h">
-      <Filter>encoder files\aacinfo files</Filter>
+      <Filter>Encoder Files\aacinfo files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\aacinfo\filestream.h">
-      <Filter>encoder files\aacinfo files</Filter>
+      <Filter>Encoder Files\aacinfo files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\old_ui\AacSettingsPage.h">
       <Filter>old_ui Files\Header Files</Filter>
@@ -508,9 +445,6 @@
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\LanguageResourceManager.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="winlame\ModuleManager.h">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\PresetManagerInterface.h">
@@ -628,22 +562,22 @@
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\CreatePlaylistTask.hpp">
-      <Filter>encoder files\encoder header files</Filter>
+      <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\CDExtractTask.hpp">
-      <Filter>encoder files\encoder header files</Filter>
+      <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\FreeDbDiscListDlg.hpp">
       <Filter>UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\SpeexInputModule.hpp">
-      <Filter>encoder files\encoder header files</Filter>
+      <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\OggInputStream.hpp">
-      <Filter>encoder files\encoder header files</Filter>
+      <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\OpusInputModule.hpp">
-      <Filter>encoder files\encoder header files</Filter>
+      <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\res\MainFrameRibbon.h">
       <Filter>UI Files\Resource Files\Generated Files</Filter>
@@ -676,7 +610,7 @@
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\encoder\OpusOutputModule.hpp">
-      <Filter>encoder files\encoder header files</Filter>
+      <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="winlame\ui\OpusSettingsPage.hpp">
       <Filter>UI Files\Header Files</Filter>
@@ -701,6 +635,72 @@
     </ClInclude>
     <ClInclude Include="winlame\ui\Win7Taskbar.hpp">
       <Filter>UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\SndFileOutputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\SndFileInputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\OggVorbisOutputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\OggVorbisInputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\AacInputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\AacOutputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\BassInputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\BassWmaOutputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\FlacInputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\MadMpegInputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\MonkeysAudioInputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\WaveMp3Header.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\LameOutputModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\Id3v1Tag.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\TrackInfo.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\ModuleInterface.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\ModuleManagerImpl.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\EncoderTask.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\EncoderImpl.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\SampleContainer.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\ModuleManager.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\CDReadoutModule.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

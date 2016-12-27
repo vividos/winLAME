@@ -1,32 +1,32 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2016 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file TrackInfo.cpp
-/// \brief routines to manage track infos, as well as id3v1 tag parsing and creating routines
-
-// needed includes
+/// \brief routines to manage track infos, as well as ID3v1 tag parsing and creating routines
+//
 #include "stdafx.h"
-#include "TrackInfo.h"
-#include <stdio.h>
+#include "TrackInfo.hpp"
+#include <cstdio>
+
+using Encoder::TrackInfo;
 
 /// genre ID to string mapping
-const TCHAR* g_aId3GenreIDtoString[] =
+const TCHAR* g_ID3GenreIDtoText[] =
 {
    // 0..19
    _T("Blues"), _T("Classic Rock"), _T("Country"), _T("Dance"), _T("Disco"), _T("Funk"), _T("Grunge"), _T("Hip-Hop"),
@@ -59,19 +59,19 @@ const TCHAR* g_aId3GenreIDtoString[] =
    _T("Duet"), _T("Punk Rock"), _T("Drum Solo"), _T("A Capella"), _T("Euro-House"), _T("Dance Hall"),
 };
 
-CString TrackInfo::GenreIDToText(unsigned int uGenreID)
+CString TrackInfo::GenreIDToText(unsigned int genreID)
 {
-   if (uGenreID == (unsigned int)-1)
-      return _T("");
+   if (genreID == (unsigned int)-1)
+      return CString();
 
-   ATLASSERT(uGenreID < sizeof(g_aId3GenreIDtoString)/sizeof(*g_aId3GenreIDtoString));
-   return g_aId3GenreIDtoString[uGenreID];
+   ATLASSERT(genreID < sizeof(g_ID3GenreIDtoText) / sizeof(*g_ID3GenreIDtoText));
+   return g_ID3GenreIDtoText[genreID];
 }
 
-unsigned int TrackInfo::TextToGenreID(const CString& cszText)
+unsigned int TrackInfo::TextToGenreID(const CString& text)
 {
-   for (unsigned int i=0; i<sizeof(g_aId3GenreIDtoString)/sizeof(*g_aId3GenreIDtoString); i++)
-      if (g_aId3GenreIDtoString[i] == cszText)
+   for (unsigned int i = 0; i < sizeof(g_ID3GenreIDtoText) / sizeof(*g_ID3GenreIDtoText); i++)
+      if (g_ID3GenreIDtoText[i] == text)
          return i;
 
    return (unsigned int)-1;
@@ -79,10 +79,10 @@ unsigned int TrackInfo::TextToGenreID(const CString& cszText)
 
 LPCTSTR* TrackInfo::GetGenreList()
 {
-   return g_aId3GenreIDtoString;
+   return g_ID3GenreIDtoText;
 }
 
 unsigned int TrackInfo::GetGenreListLength()
 {
-   return sizeof(g_aId3GenreIDtoString) / sizeof(*g_aId3GenreIDtoString);
+   return sizeof(g_ID3GenreIDtoText) / sizeof(*g_ID3GenreIDtoText);
 }

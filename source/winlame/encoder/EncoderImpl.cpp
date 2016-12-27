@@ -1,32 +1,32 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2014 Michael Fink
-   Copyright (c) 2004 DeXT
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2004 DeXT
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file EncoderImpl.cpp
 /// \brief contains the actual encoder implementation
-
-// needed includes
+//
 #include "stdafx.h"
-#include "EncoderImpl.h"
+#include "EncoderImpl.hpp"
 #include <fstream>
-#include "LameOutputModule.h"
+#include "LameOutputModule.hpp"
 #include <sndfile.h>
+
+using namespace Encoder;
 
 // static EncoderInterface methods
 
@@ -60,8 +60,18 @@ void EncoderImpl::encode()
 
    // get input and output modules
    ModuleManagerImpl* modimpl = reinterpret_cast<ModuleManagerImpl*>(mod_manager);
-   InputModule* inmod = modimpl->chooseInputModule(infilename);
-   OutputModule* outmod = modimpl->getOutputModule(out_module_id);
+   InputModule* inmod = modimpl->ChooseInputModule(infilename);
+   OutputModule* outmod = modimpl->GetOutputModule(out_module_id);
+
+   if (inmod == nullptr ||
+      outmod == nullptr)
+   {
+      // end thread
+      running = false;
+      paused = false;
+      finished = true;
+      return;
+   }
 
    bool fCompletedTrack = false;
 
@@ -90,7 +100,7 @@ void EncoderImpl::encode()
       // check if we only need copying a cd ripped file to another filename
       if (CheckCDExtractDirectCopy(*inmod, *outmod, *settings_mgr))
       {
-         inmod->doneInput(false);
+         inmod->DoneInput(false);
          delete inmod;
          inmod = NULL;
 
@@ -169,9 +179,9 @@ void EncoderImpl::encode()
 
    // done with modules
    if (inmod)
-      inmod->doneInput(fCompletedTrack);
+      inmod->DoneInput(fCompletedTrack);
    if (init_outmod)
-      outmod->doneOutput();
+      outmod->DoneOutput();
 
    // delete modules
    delete inmod;
@@ -207,16 +217,16 @@ bool EncoderImpl::PrepareInputModule(InputModule& inputModule, CString& cszInput
    SettingsManager& settingsManager, TrackInfo& trackInfo, SampleContainer& sampleContainer,
    int& localerror)
 {
-   int res = inputModule.initInput(cszInputFilename, *settings_mgr,
+   int res = inputModule.InitInput(cszInputFilename, *settings_mgr,
       trackInfo, sampleContainer);
 
-   inputModule.resolveRealFilename(cszInputFilename);
+   inputModule.ResolveRealFilename(cszInputFilename);
 
    // catch errors
    if (handler!=NULL && res<0)
    {
-      switch (handler->handleError(cszInputFilename, inputModule.getModuleName(),
-         -res, inputModule.getLastError()))
+      switch (handler->handleError(cszInputFilename, inputModule.GetModuleName(),
+         -res, inputModule.GetLastError()))
       {
       case EncoderErrorHandler::Continue:
          break;
@@ -239,7 +249,7 @@ bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& ou
    int& localerror)
 {
    // prepare output module
-   outputModule.prepareOutput(settingsManager);
+   outputModule.PrepareOutput(settingsManager);
 
    // do output filename
    if (!m_precalculatedOutputFilename.IsEmpty())
@@ -248,7 +258,7 @@ bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& ou
       cszOutputFilename = GetOutputFilename(outpathname, cszInputFilename, outputModule);
 
    // ugly hack: when input module is cd extraction, remove guid from output filename
-   if (inputModule.getModuleID() == ID_IM_CDRIP)
+   if (inputModule.GetModuleID() == ID_IM_CDRIP)
    {
       int iPos1 = cszOutputFilename.ReverseFind(_T('{'));
       int iPos2 = cszOutputFilename.ReverseFind(_T('}'));
@@ -289,7 +299,7 @@ CString EncoderImpl::GetOutputFilename(const CString& outputPath, const CString&
    cszOutputFilename += filenameOnly;
    cszOutputFilename += _T(".");
 
-   cszOutputFilename += outputModule.getOutputExtension();
+   cszOutputFilename += outputModule.GetOutputExtension();
 
    return cszOutputFilename;
 }
@@ -323,7 +333,7 @@ bool EncoderImpl::CheckSameInputOutputFilenames(const CString& cszInputFilename,
             {
                // when not overwriting original, add extra extension
                cszOutputFilename += _T(".");
-               cszOutputFilename += outputModule.getOutputExtension();
+               cszOutputFilename += outputModule.GetOutputExtension();
             }
             continue;
          }
@@ -341,8 +351,8 @@ bool EncoderImpl::CheckSameInputOutputFilenames(const CString& cszInputFilename,
 bool EncoderImpl::CheckCDExtractDirectCopy(InputModule& inputModule, OutputModule& outputModule,
    SettingsManager& settingsManager)
 {
-   unsigned int in_id = inputModule.getModuleID();
-   unsigned int out_id = outputModule.getModuleID();
+   unsigned int in_id = inputModule.GetModuleID();
+   unsigned int out_id = outputModule.GetModuleID();
 
    if (in_id == ID_IM_CDRIP && out_id == ID_OM_WAVE)
    {
@@ -358,9 +368,9 @@ bool EncoderImpl::CheckCDExtractDirectCopy(InputModule& inputModule, OutputModul
    return false;
 }
 
-void EncoderImpl::GenerateTempOutFilename(const CString& cszOriginalFilename, CString& cszTempFilename)
+void EncoderImpl::GenerateTempOutFilename(const CString& cszOriginalFilename, CString& tempFilename)
 {
-   cszTempFilename = cszOriginalFilename;
+   tempFilename = cszOriginalFilename;
 
    CString cszPath, cszFilename;
 
@@ -387,33 +397,33 @@ void EncoderImpl::GenerateTempOutFilename(const CString& cszOriginalFilename, CS
    unsigned int uiIndex = 0;
    do
    {
-      cszTempFilename = cszShortPath + cszFilename;
+      tempFilename = cszShortPath + cszFilename;
       if (uiIndex == 0)
-         cszTempFilename += _T(".temp");
+         tempFilename += _T(".temp");
       else
       {
          CString cszCount;
          cszCount.Format(_T(".%u.temp"), uiIndex);
-         cszTempFilename += cszCount;
+         tempFilename += cszCount;
       }
 
       uiIndex++;
    }
-   while (::GetFileAttributes(cszTempFilename) != INVALID_FILE_ATTRIBUTES);
+   while (::GetFileAttributes(tempFilename) != INVALID_FILE_ATTRIBUTES);
 }
 
 bool EncoderImpl::InitOutputModule(OutputModule& outputModule, const CString& cszTempOutputFilename, SettingsManager& settingsManager,
    TrackInfo& trackInfo, SampleContainer& sampleContainer, int& localerror)
 {
    // init output module
-   int res = outputModule.initOutput(cszTempOutputFilename, settingsManager,
+   int res = outputModule.InitOutput(cszTempOutputFilename, settingsManager,
       trackInfo, sampleContainer);
 
    // catch errors
    if (handler!=NULL && res<0)
    {
-      switch(handler->handleError(infilename, outputModule.getModuleName(),
-         -res, outputModule.getLastError()))
+      switch(handler->handleError(infilename, outputModule.GetModuleName(),
+         -res, outputModule.GetLastError()))
       {
       case EncoderErrorHandler::Continue:
          break;
@@ -433,8 +443,8 @@ void EncoderImpl::FormatEncodingDescription(InputModule& inputModule, OutputModu
                                             SampleContainer& sampleContainer)
 {
    CString cszInputDesc, cszContainerInfo, cszOutputDesc;
-   inputModule.getDescription(cszInputDesc);
-   outputModule.getDescription(cszOutputDesc);
+   inputModule.GetDescription(cszInputDesc);
+   outputModule.GetDescription(cszOutputDesc);
 
 #ifdef _DEBUG
    // get sample container description
@@ -443,10 +453,10 @@ void EncoderImpl::FormatEncodingDescription(InputModule& inputModule, OutputModu
       _T("Input: %u bit, %u channels, sample rate %u Hz, ")
       _T("Output: %u bit\r\n")
       ,
-      sampleContainer.getInputModuleBitsPerSample(),
-      sampleContainer.getInputModuleChannels(),
-      sampleContainer.getInputModuleSampleRate(),
-      sampleContainer.getOutputModuleBitsPerSample());
+      sampleContainer.GetInputModuleBitsPerSample(),
+      sampleContainer.GetInputModuleChannels(),
+      sampleContainer.GetInputModuleSampleRate(),
+      sampleContainer.GetOutputModuleBitsPerSample());
 #endif
 
    CString cszText;
@@ -500,8 +510,8 @@ bool EncoderImpl::IsLossyOutputModule(int out_module_id)
 
 bool EncoderImpl::CheckWarnTranscoding(InputModule& inputModule, OutputModule& outputModule)
 {
-   unsigned int in_id = inputModule.getModuleID();
-   unsigned int out_id = outputModule.getModuleID();
+   unsigned int in_id = inputModule.GetModuleID();
+   unsigned int out_id = outputModule.GetModuleID();
 
    bool in_lossy = IsLossyInputModule(in_id);
    bool out_lossy = IsLossyOutputModule(out_id);
@@ -530,7 +540,7 @@ void EncoderImpl::MainLoop(InputModule& inputModule, OutputModule& outputModule,
    do
    {
       // call input module
-      ret = inputModule.decodeSamples(sampleContainer);
+      ret = inputModule.DecodeSamples(sampleContainer);
 
       // no more samples?
       if (ret==0)
@@ -539,8 +549,8 @@ void EncoderImpl::MainLoop(InputModule& inputModule, OutputModule& outputModule,
       // catch errors
       if (handler!=NULL && ret<0)
       {
-         switch(handler->handleError(infilename, inputModule.getModuleName(),
-            -ret, inputModule.getLastError()))
+         switch(handler->handleError(infilename, inputModule.GetModuleName(),
+            -ret, inputModule.GetLastError()))
          {
          case EncoderErrorHandler::Continue:
             break;
@@ -556,16 +566,16 @@ void EncoderImpl::MainLoop(InputModule& inputModule, OutputModule& outputModule,
       }
 
       // get percent done
-      percent = inputModule.percentDone();
+      percent = inputModule.PercentDone();
 
       // stuff all samples received into output module
-      ret = outputModule.encodeSamples(sampleContainer);
+      ret = outputModule.EncodeSamples(sampleContainer);
 
       // catch errors
       if (handler!=NULL && ret<0)
       {
-         switch(handler->handleError(infilename, outputModule.getModuleName(),
-            -ret, outputModule.getLastError()))
+         switch(handler->handleError(infilename, outputModule.GetModuleName(),
+            -ret, outputModule.GetLastError()))
          {
          case EncoderErrorHandler::Continue:
             break;

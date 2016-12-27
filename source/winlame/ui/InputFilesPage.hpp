@@ -118,7 +118,7 @@ private:
 
    /// called when audio file info was retrieved asynchronously
    void OnRetrievedAudioFileInfo(const CString& filename, bool error, const CString& errorMessage,
-      int lengthInSeconds, int bitrateInKbps, int sampleFrequencyInHz);
+      int lengthInSeconds, int bitrateInBps, int sampleFrequencyInHz);
 
 private:
    /// sets up tracks list control
