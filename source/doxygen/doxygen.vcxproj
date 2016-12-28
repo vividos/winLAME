@@ -8,7 +8,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E8FD6382-A5B2-4AC7-B2D9-88A621504872}</ProjectGuid>
-    <RootNamespace>docs</RootNamespace>
+    <RootNamespace>doxygen</RootNamespace>
+    <ProjectName>doxygen</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Default|Win32'" Label="Configuration">
@@ -21,27 +22,27 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Default|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="doxygen.props" />
+    <Import Project="..\doxygen.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>11.0.60610.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Default|Win32'">
-    <OutDir>$(SolutionDir)docs\html\</OutDir>
-    <IntDir>$(SolutionDir)intermediate\html\</IntDir>
+    <OutDir>$(SolutionDir)bin\doxygen\html\</OutDir>
+    <IntDir>$(SolutionDir)intermediate\doxygen\</IntDir>
     <ExtensionsToDeleteOnClean>*.html%3b*.map%3b*.md5%3b*.png%3b*.css%3b*.dot%3b*.hhc%3b*.hhk%3b*.hhp%3b*.gif%3b$(TargetPath)</ExtensionsToDeleteOnClean>
-    <NMakeBuildCommandLine>call BuildDocs.cmd</NMakeBuildCommandLine>
-    <NMakeReBuildCommandLine>del /s /q "$(SolutionDir)docs\html"
-BuildDocs.cmd</NMakeReBuildCommandLine>
-    <NMakeCleanCommandLine>del /s /q "$(SolutionDir)docs\html"
-rmdir /s /q "$(SolutionDir)docs\html"</NMakeCleanCommandLine>
+    <NMakeBuildCommandLine>call BuildDoxygen.cmd</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>del /s /q "$(SolutionDir)bin\doxygen\html" 2&gt; nul
+BuildDoxygen.cmd</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>del /s /q "$(SolutionDir)bin\doxygen\html" 2&gt; nul
+rmdir /s /q "$(SolutionDir)bin\doxygen\html" 2&gt; nul</NMakeCleanCommandLine>
     <NMakeOutput />
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="BuildDocs.cmd" />
+    <None Include="BuildDoxygen.cmd" />
     <None Include="doxygen.cfg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

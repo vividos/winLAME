@@ -7,4 +7,5 @@ REM Runs doxygen to document sourcecode
 REM
 
 doxygen doxygen.cfg
-..\buildtools\hhc docs\html\index.hhp
+..\..\buildtools\hhc ..\..\bin\doxygen\html\index.hhp
+exit 0
