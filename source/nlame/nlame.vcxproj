@@ -29,11 +29,11 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="winlame-Release.props" />
+    <Import Project="..\winlame-Release.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="winlame-Debug.props" />
+    <Import Project="..\winlame-Debug.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -49,53 +49,39 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl />
     <ClCompile>
-      <AdditionalIncludeDirectories>nlame;libraries\include\lame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_USRDLL;HAVE_CONFIG_H;HAVE_NASM;TAKEHIRO_IEEE754_HACK;MMX_choose_table;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>..\libraries\include\lame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <SmallerTypeCheck>false</SmallerTypeCheck>
     </ClCompile>
     <ResourceCompile />
-    <Link>
-      <DataExecutionPrevention />
-      <ModuleDefinitionFile>.\nlame\nlame.def</ModuleDefinitionFile>
-    </Link>
+    <Link />
     <Bscmake />
     <Lib>
       <AdditionalDependencies>libmp3lame.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>libraries\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\libraries\lib</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl />
     <ClCompile>
-      <AdditionalIncludeDirectories>nlame;libraries\include\lame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_USRDLL;HAVE_CONFIG_H;HAVE_NASM;TAKEHIRO_IEEE754_HACK;MMX_choose_table;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>..\libraries\include\lame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <ResourceCompile />
-    <Link>
-      <AdditionalLibraryDirectories>..\lib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <ModuleDefinitionFile>.\nlame\nlame.def</ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(TargetDir)pdb\$(TargetName).pdb</ProgramDatabaseFile>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <DataExecutionPrevention />
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-    </Link>
+    <Link />
     <Bscmake />
     <Lib>
       <AdditionalDependencies>libmp3lame.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>libraries\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\libraries\lib</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="nlame\nlame.c" />
+    <ClCompile Include="nlame.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="libraries\include\lame\lame.h" />
-    <ClInclude Include="nlame\nlame.h" />
+    <ClInclude Include="..\libraries\include\lame\lame.h" />
+    <ClInclude Include="nlame.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

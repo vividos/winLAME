@@ -9,15 +9,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="nlame\nlame.c">
+    <ClCompile Include="nlame.c">
       <Filter>nlame files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="nlame\nlame.h">
+    <ClInclude Include="nlame.h">
       <Filter>nlame files</Filter>
     </ClInclude>
-    <ClInclude Include="libraries\include\lame\lame.h">
+    <ClInclude Include="..\libraries\include\lame\lame.h">
       <Filter>lame include files</Filter>
     </ClInclude>
   </ItemGroup>

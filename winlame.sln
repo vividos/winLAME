@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winLAME", "source\winlame.vcxproj", "{3D23B065-AB74-4C3D-BCBC-7B7492786FEE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nlame", "source\nlame.vcxproj", "{0B3F6B1A-D78E-47DB-A48C-D3DAA16E17CE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nlame", "source\nlame\nlame.vcxproj", "{0B3F6B1A-D78E-47DB-A48C-D3DAA16E17CE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libmad", "source\libraries\src\libmad\libmad.vcxproj", "{B89E54C7-562E-4444-A6B2-63FF8DB043D5}"
 EndProject

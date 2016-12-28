@@ -402,6 +402,8 @@ int nlame_init_params(nlame_instance_t* inst)
 /*! mute callback function; does nothing */
 void nlame_mute_callback_func(const char* msg, va_list list)
 {
+   msg;
+   list;
 }
 
 void nlame_callback_set(nlame_instance_t* inst, nlame_callback_type type, nlame_callback_func func)
@@ -515,7 +517,7 @@ int nlame_reinit_bitstream( nlame_instance_t* inst )
    return lame_init_bitstream(inst->lgf);
 }
 
-long skipId3v2(FILE * fpStream);
+static long skipId3v2(FILE * fpStream);
 
 void nlame_write_vbr_infotag( nlame_instance_t* inst, FILE* fd )
 {
@@ -528,7 +530,7 @@ void nlame_write_vbr_infotag( nlame_instance_t* inst, FILE* fd )
 
    long lFileSize;
    long id3v2TagSize;
-   char buffer[MAXFRAMESIZE];
+   unsigned char buffer[MAXFRAMESIZE];
    int length;
 
    if (!fd)
