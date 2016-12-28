@@ -366,7 +366,7 @@
     <ProjectReference Include="libraries\src\opus-tools\opus-tools.vcxproj">
       <Project>{67749bc5-f457-478a-9e92-3986654bc068}</Project>
     </ProjectReference>
-    <ProjectReference Include="nlame.vcxproj">
+    <ProjectReference Include="nlame\nlame.vcxproj">
       <Project>{0b3f6b1a-d78e-47db-a48c-d3daa16e17ce}</Project>
     </ProjectReference>
     <ProjectReference Include="winlame_res0407.vcxproj">
