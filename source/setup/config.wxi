@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Include>
+  <?define ProductId = "0915BAC9-8912-419F-A4B5-1DEDB27B2A30" ?>
+  <?define ProductName = "winLAME 2014 beta" ?>
+  <?define Version = "1.0.2014.1" ?>
+  <?define LastVersion = "1.0.2010.2" ?>
+</Include>
