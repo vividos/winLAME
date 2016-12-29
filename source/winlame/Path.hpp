@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014 Michael Fink
+// Copyright (c) 2014-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -33,19 +33,22 @@ public:
    }
 
    /// ctor that takes a path
-   Path(const CString& cszPath)
-      :m_cszPath(cszPath)
+   Path(const CString& path)
+      :m_path(path)
    {
    }
 
    // operators
 
    /// returns CString
-   operator const CString&() const throw() { return m_cszPath; }
+   operator const CString&() const throw() { return m_path; }
    /// returns raw string pointer
-   operator LPCTSTR() const throw() { return m_cszPath; }
+   operator LPCTSTR() const throw() { return m_path; }
 
    // getters
+
+   /// converts path to string
+   CString ToString() const { return m_path; }
 
    /// returns filename and extension
    CString FilenameAndExt() const;
@@ -65,16 +68,16 @@ public:
    bool Canonicalize();
 
    /// combine path with given second part and return new path
-   Path Combine(const CString& cszPart2);
+   Path Combine(const CString& part2);
 
    /// adds a backslash at the end of the path
-   static void AddEndingBackslash(CString& cszPath);
+   static void AddEndingBackslash(CString& path);
 
    /// combine both path parts and return new path
-   static Path Combine(const CString& cszPart1, const CString& cszPart2)
+   static Path Combine(const CString& part1, const CString& part2)
    {
-      Path part1(cszPart1);
-      return part1.Combine(cszPart2);
+      Path path1(part1);
+      return path1.Combine(part2);
    }
 
    // public members
@@ -87,5 +90,5 @@ public:
 
 private:
    /// path
-   CString m_cszPath;
+   CString m_path;
 };

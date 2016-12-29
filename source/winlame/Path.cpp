@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014 Michael Fink
+// Copyright (c) 2014-2016 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,51 +26,52 @@ const TCHAR Path::Separator[2] = _T("\\");
 
 bool Path::Canonicalize()
 {
-   CString cszNewPath;
-   BOOL bRet = ::PathCanonicalize(cszNewPath.GetBuffer(MAX_PATH), m_cszPath);
-   cszNewPath.ReleaseBuffer();
-   if (bRet != FALSE)
-      m_cszPath = cszNewPath;
+   CString newPath;
+   BOOL ret = ::PathCanonicalize(newPath.GetBuffer(MAX_PATH), m_path);
+   newPath.ReleaseBuffer();
 
-   return bRet != FALSE;
+   if (ret != FALSE)
+      m_path = newPath;
+
+   return ret != FALSE;
 }
 
-Path Path::Combine(const CString& cszPart2)
+Path Path::Combine(const CString& part2)
 {
-   CString cszPart1 = m_cszPath;
+   CString part1 = m_path;
 
-   AddEndingBackslash(cszPart1);
+   AddEndingBackslash(part1);
 
-   return Path(cszPart1 + cszPart2);
+   return Path(part1 + part2);
 }
 
 CString Path::FilenameAndExt() const
 {
-   int iPos = m_cszPath.ReverseFind(Path::SeparatorCh);
-   if (iPos == -1)
-      return m_cszPath;
+   int pos = m_path.ReverseFind(Path::SeparatorCh);
+   if (pos == -1)
+      return m_path;
 
-   return m_cszPath.Mid(iPos+1);
+   return m_path.Mid(pos + 1);
 }
 
 CString Path::FilenameOnly() const
 {
-   int iPos = m_cszPath.ReverseFind(Path::SeparatorCh);
+   int pos = m_path.ReverseFind(Path::SeparatorCh);
 
-   int iPos2 = m_cszPath.ReverseFind(_T('.'));
-   if (iPos2 == -1)
-      return m_cszPath.Mid(iPos+1);
+   int pos2 = m_path.ReverseFind(_T('.'));
+   if (pos2 == -1)
+      return m_path.Mid(pos + 1);
 
-   return m_cszPath.Mid(iPos+1, iPos2-iPos-1);
+   return m_path.Mid(pos + 1, pos2 - pos - 1);
 }
 
 bool Path::FileExists() const throw()
 {
-   DWORD dwRet = ::GetFileAttributes(m_cszPath);
-   if (dwRet == INVALID_FILE_ATTRIBUTES)
+   DWORD ret = ::GetFileAttributes(m_path);
+   if (ret == INVALID_FILE_ATTRIBUTES)
       return false; // doesn't exist
 
-   if ((dwRet & FILE_ATTRIBUTE_DIRECTORY) != 0)
+   if ((ret & FILE_ATTRIBUTE_DIRECTORY) != 0)
       return false; // no, it's a folder
 
    return true;
@@ -78,18 +79,18 @@ bool Path::FileExists() const throw()
 
 bool Path::FolderExists() const throw()
 {
-   DWORD dwRet = ::GetFileAttributes(m_cszPath);
-   if (dwRet == INVALID_FILE_ATTRIBUTES)
+   DWORD ret = ::GetFileAttributes(m_path);
+   if (ret == INVALID_FILE_ATTRIBUTES)
       return false; // doesn't exist
 
-   if ((dwRet & FILE_ATTRIBUTE_DIRECTORY) != 0)
+   if ((ret & FILE_ATTRIBUTE_DIRECTORY) != 0)
       return true; // yes, it's a folder
 
    return false;
 }
 
-void Path::AddEndingBackslash(CString& cszPath)
+void Path::AddEndingBackslash(CString& path)
 {
-   if (cszPath.Right(1) != Path::Separator)
-      cszPath += Path::Separator;
+   if (path.Right(1) != Path::Separator)
+      path += Path::Separator;
 }
