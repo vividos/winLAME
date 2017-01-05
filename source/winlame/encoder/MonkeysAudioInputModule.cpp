@@ -2,7 +2,7 @@
 // winLAME - a frontend for the LAME encoding engine
 // Copyright(c) 2004 Kjetil Haga
 // Copyright(c) 2004 DeXT
-// Copyright(c) 2007-2016 Michael Fink
+// Copyright(c) 2007-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,6 +29,16 @@
 #include <cassert>
 #include "Id3v1Tag.hpp"
 
+// Monkey's Audio header files have some incompatibilities; working around that
+#pragma warning(push)
+#pragma warning(disable: 4005)
+namespace APE {}
+using namespace APE;
+#define PLATFORM_WINDOWS
+#include "mac/MACDll.h"
+#include "mac/APETag.h"
+#pragma warning(pop)
+
 using Encoder::MonkeysAudioInputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
@@ -36,11 +46,8 @@ using Encoder::SampleContainer;
 /// monkey namespace contains internal stuff used in MonkeysAudioInputModule
 namespace MonkeysAudio
 {
-#include "mac/MACDll.h"
-#include "mac/APETag.h"
-
    /// typedefs
-   typedef int(__stdcall * proc_APEGetID3Tag)(const char*, ID3_TAG*);
+   typedef int(__stdcall * proc_APEGetID3Tag)(const char*, APE::ID3_TAG*);
 
    /// internal struct with pointers to mac dll functions
    struct MonkeysAudioDll
@@ -107,7 +114,7 @@ namespace MonkeysAudio
             (proc_GetInterfaceCompatibility)GetProcAddress(m_module, "GetInterfaceCompatibility");
          if (GetInterfaceCompatibility)
          {
-            ret = GetInterfaceCompatibility(MAC_VERSION_NUMBER, TRUE, NULL);
+            ret = GetInterfaceCompatibility(MAC_FILE_VERSION_NUMBER, TRUE, NULL);
          }
 
          return ret == 0;
@@ -254,9 +261,9 @@ void MonkeysAudioInputModule::GetDescription(CString& desc) const
       return;
 
    // get fileinfo
-   int samplerateInHz = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_SAMPLE_RATE, 0, 0);
-   int numChannels = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_CHANNELS, 0, 0);
-   int level = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_COMPRESSION_LEVEL, 0, 0);
+   int samplerateInHz = s_dll.GetInfo(m_handle, APE::APE_INFO_SAMPLE_RATE, 0, 0);
+   int numChannels = s_dll.GetInfo(m_handle, APE::APE_INFO_CHANNELS, 0, 0);
+   int level = s_dll.GetInfo(m_handle, APE::APE_INFO_COMPRESSION_LEVEL, 0, 0);
 
    LPCTSTR compressionLevel;
    switch (level)
@@ -331,12 +338,12 @@ int MonkeysAudioInputModule::InitInput(LPCTSTR infilename,
    }
 
    // get some fileinfo
-   int samplerateInHz = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_SAMPLE_RATE, 0, 0);
-   int numChannels = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_CHANNELS, 0, 0);
-   int bitrateInBps = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_BITS_PER_SAMPLE, 0, 0);
+   int samplerateInHz = s_dll.GetInfo(m_handle, APE::APE_INFO_SAMPLE_RATE, 0, 0);
+   int numChannels = s_dll.GetInfo(m_handle, APE::APE_INFO_CHANNELS, 0, 0);
+   int bitrateInBps = s_dll.GetInfo(m_handle, APE::APE_INFO_BITS_PER_SAMPLE, 0, 0);
 
    // set total samples in file (for stats update)
-   m_numTotalSamples = s_dll.GetInfo(m_handle, MonkeysAudio::APE_DECOMPRESS_TOTAL_BLOCKS, 0, 0);
+   m_numTotalSamples = s_dll.GetInfo(m_handle, APE::APE_DECOMPRESS_TOTAL_BLOCKS, 0, 0);
 
    // set up input traits
    samples.SetInputModuleTraits(bitrateInBps, SamplesInterleaved, samplerateInHz, numChannels);
@@ -351,13 +358,13 @@ void MonkeysAudioInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& 
    if (m_handle == nullptr)
       return;
 
-   int bitsPerSample = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_BITS_PER_SAMPLE, 0, 0);
+   int bitsPerSample = s_dll.GetInfo(m_handle, APE::APE_INFO_BITS_PER_SAMPLE, 0, 0);
 
-   numChannels = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_CHANNELS, 0, 0);
+   numChannels = s_dll.GetInfo(m_handle, APE::APE_INFO_CHANNELS, 0, 0);
 
-   samplerateInHz = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_SAMPLE_RATE, 0, 0);
+   samplerateInHz = s_dll.GetInfo(m_handle, APE::APE_INFO_SAMPLE_RATE, 0, 0);
 
-   lengthInSeconds = s_dll.GetInfo(m_handle, MonkeysAudio::APE_DECOMPRESS_LENGTH_MS, 0, 0) / 1000;
+   lengthInSeconds = s_dll.GetInfo(m_handle, APE::APE_DECOMPRESS_LENGTH_MS, 0, 0) / 1000;
 
    bitrateInBps = samplerateInHz * bitsPerSample;
 }
@@ -370,7 +377,7 @@ int MonkeysAudioInputModule::DecodeSamples(SampleContainer& samples)
    int numBlocksRetrieved = 0;
 
    // get data from file
-   int blockalign = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_BLOCK_ALIGN, 0, 0);
+   int blockalign = s_dll.GetInfo(m_handle, APE::APE_INFO_BLOCK_ALIGN, 0, 0);
    int retval = s_dll.GetData(m_handle, reinterpret_cast<char*>(buffer), MonkeysAudio::c_macBufferSize / blockalign, &numBlocksRetrieved);
 
    // success?
@@ -382,7 +389,7 @@ int MonkeysAudioInputModule::DecodeSamples(SampleContainer& samples)
 
    // if we are dealing with 8-bit samples, we have to convert them to signed samples
    // (8-bit samples from MonkeysAudio's audio are unsigned)
-   int bitsPerSample = s_dll.GetInfo(m_handle, MonkeysAudio::APE_INFO_BITS_PER_SAMPLE, 0, 0);
+   int bitsPerSample = s_dll.GetInfo(m_handle, APE::APE_INFO_BITS_PER_SAMPLE, 0, 0);
    if (8 == bitsPerSample)
    {
       for (int i = 0; i < MonkeysAudio::c_macBufferSize; ++i)
@@ -415,7 +422,7 @@ bool MonkeysAudioInputModule::GetID3Tag(LPCTSTR filename, TrackInfo& trackInfo)
    ATLASSERT(s_dll.IsAvail());
 
    Id3v1Tag id3tag;
-   MonkeysAudio::ID3_TAG* info = (MonkeysAudio::ID3_TAG *)id3tag.GetData();
+   APE::ID3_TAG* info = (APE::ID3_TAG *)id3tag.GetData();
 
    if (ERROR_SUCCESS != s_dll.GetID3Tag(CStringA(GetAnsiCompatFilename(filename)), info))
       return false;
