@@ -265,7 +265,7 @@ bool Frame::SetTextEncoding(unsigned int fieldIndex, id3_field_textencoding text
 
    enum id3_field_type type = id3_field_type(field);
 
-   ATLASSERT(type == ID3_FIELD_TYPE_TEXTENCODING);
+   ATLVERIFY(type == ID3_FIELD_TYPE_TEXTENCODING);
 
    int ret = id3_field_settextencoding(field, textEncoding);
 
