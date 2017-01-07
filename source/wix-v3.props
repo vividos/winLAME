@@ -3,7 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <ExecutablePath>D:\devel\tools\wix-v3\bin\;$(ExecutablePath)</ExecutablePath>
+    <ExecutablePath>D:\devel\tools\wix-v3\;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />
