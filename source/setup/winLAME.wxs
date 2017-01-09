@@ -2,7 +2,7 @@
 <!--
 
  winLAME - a frontend for the LAME encoding engine
- Copyright (c) 2005-2016 Michael Fink
+ Copyright (c) 2005-2017 Michael Fink
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ For new releases, do the following:
   <?include config.wxi ?>
 
   <Product
-      Id="$(var.ProductId)"
+      Id="*"
       UpgradeCode="f36dad67-67a5-4d00-83fb-fe8a742c84f4"
       Name="$(var.ProductName)"
       Language="1033"
@@ -40,6 +40,7 @@ For new releases, do the following:
       Manufacturer="Michael Fink"
       InstallerVersion="405"
       InstallPrivileges="elevated"
+      InstallScope="perMachine"
       AdminImage="no"
       Compressed="yes"
       ShortNames="no"
@@ -67,22 +68,28 @@ For new releases, do the following:
 
     <ComponentGroup Id="AllFiles">
 
-      <Component Id="WinLameApp" Guid="3d23d3cd-6b1e-49ed-b0e7-56a04e4cbe0a" Directory="INSTALLDIR">
+      <Component Id="WinLameApp" Guid="*" Directory="INSTALLDIR">
         <File Id="WinLameExe" Name="winLAME.exe" DiskId="1" KeyPath="yes" Source="..\..\bin\Release\winLAME.exe" />
-        <RegistryKey Root="HKCR" Action="createAndRemoveOnUninstall" Key="Applications\winLAME.exe\SupportedTypes">
+        <RegistryKey Root="HKCR" Key="Applications\winLAME.exe\SupportedTypes">
           <RegistryValue Name=".wav" Type="string" Value="" />
           <RegistryValue Name=".mp3" Type="string" Value="" />
+          <RegistryValue Name=".mp2" Type="string" Value="" />
+          <RegistryValue Name=".mpg" Type="string" Value="" />
           <RegistryValue Name=".opus" Type="string" Value="" />
+          <RegistryValue Name=".spx" Type="string" Value="" />
           <RegistryValue Name=".ogg" Type="string" Value="" />
           <RegistryValue Name=".wma" Type="string" Value="" />
           <RegistryValue Name=".flac" Type="string" Value="" />
+          <RegistryValue Name=".aac" Type="string" Value="" />
+          <RegistryValue Name=".m4a" Type="string" Value="" />
+          <RegistryValue Name=".ape" Type="string" Value="" />
           <RegistryValue Name=".m3u" Type="string" Value="" />
           <RegistryValue Name=".pls" Type="string" Value="" />
           <RegistryValue Name=".cue" Type="string" Value="" />
         </RegistryKey>
       </Component>
 
-      <Component Id="WinLameShortcut" Guid="dbc07581-c039-4738-9539-0cc655215cd8" Directory="INSTALLDIR">
+      <Component Id="WinLameShortcut" Guid="*" Directory="INSTALLDIR">
         <RegistryValue Id="RegistryKey1" Root="HKCU" Key="Software\winLAME\Install" Name="winLAMEShortcutPresent" KeyPath="yes" Type="string" Value="" />
         <Shortcut Id="Shortcut1" Directory="WinLameShortcutFolder" Name="winLAME"
           Target="[INSTALLDIR]winLAME.exe" Icon="WinLameShortcutIcon" IconIndex="0" Show="normal"
@@ -90,27 +97,27 @@ For new releases, do the following:
         <RemoveFolder Directory="WinLameShortcutFolder" On="uninstall" Id="Shortcut1" />
       </Component>
 
-      <Component Id="Presets" Guid="5e9a3fc8-2bc1-4e89-8231-72ee18245153" Directory="winLameCommonAppData">
+      <Component Id="Presets" Guid="*" Directory="winLameCommonAppData">
         <File Id="PresetsXml" Name="presets.xml" DiskId="1" KeyPath="yes"
           Source="..\presets.xml" />
       </Component>
 
-      <Component Id="WinLameRes0407" Guid="91cb7f8e-359d-4ece-9ee4-5b318cd6161e" Directory="INSTALLDIR">
+      <Component Id="WinLameRes0407" Guid="*" Directory="INSTALLDIR">
         <File Id="WinLame0407Dll" Name="winLAME.0407.dll" DiskId="1" KeyPath="yes"
            Source="..\..\bin\Release\winLAME.0407.dll" />
       </Component>
 
-      <Component Id="LibMp3LameLibrary" Guid="52bfd80b-562c-4764-bae6-d98fcf85d1be" Directory="INSTALLDIR">
+      <Component Id="LibMp3LameLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibMp3LameDll" Name="libmp3lame.dll" DiskId="1" KeyPath="yes"
            Source="..\libraries\libmp3lame.dll" />
       </Component>
 
-      <Component Id="SndFileLibrary" Guid="24be05fb-0208-4b00-9b3e-d35b1d7ed29c" Directory="INSTALLDIR">
+      <Component Id="SndFileLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibSndFileDll" Name="libsndfile-1.dll" DiskId="1" KeyPath="yes"
            Source="..\libraries\libsndfile-1.dll" />
       </Component>
 
-      <Component Id="MadLibrary" Guid="ae392942-63d2-4e37-b5cc-c8c950a0112a" Directory="INSTALLDIR">
+      <Component Id="MadLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibMadDll" Name="libmad.dll" DiskId="1" KeyPath="yes"
            Source="..\..\bin\Release\libmad.dll" />
       </Component>
@@ -122,34 +129,79 @@ For new releases, do the following:
            Source="..\..\Copying" />
       </Component>
 
-      <Component Id="BassLibrary" Guid="e17b47f8-f028-41b1-9a34-100d077e4c86" Directory="INSTALLDIR">
+      <Component Id="BassLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="BassDll" Name="bass.dll" DiskId="1" KeyPath="yes"
            Source="..\libraries\bass.dll" />
       </Component>
 
-      <Component Id="BassCdLibrary" Guid="2880f073-fd0c-44bc-98c8-6d1dce3ad2d1" Directory="INSTALLDIR">
+      <Component Id="BassCdLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="BassCdDll" Name="basscd.dll" DiskId="1" KeyPath="yes"
            Source="..\libraries\basscd.dll" />
       </Component>
 
-      <Component Id="BassWmaLibrary" Guid="ce569d4b-61cf-498f-a2ff-9b3164def65e" Directory="INSTALLDIR">
+      <Component Id="BassWmaLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="BassWmaDll" Name="basswma.dll" DiskId="1" KeyPath="yes"
            Source="..\libraries\basswma.dll" />
       </Component>
 
-      <Component Id="FlacDynamicLibrary" Guid="0E29E5AF-0421-4F04-B896-E05FEEB6F514" Directory="INSTALLDIR">
+      <Component Id="FlacDynamicLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibFlacDynamicDll" Name="libFLAC_dynamic.dll" DiskId="1" KeyPath="yes"
            Source="..\libraries\libFLAC_dynamic.dll" />
       </Component>
 
-      <Component Id="OggVorbisLibrary" Guid="82eed013-ec92-4934-a5f2-f1db5f7bd12b" Directory="INSTALLDIR">
+      <Component Id="OggVorbisLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibVorbisDll" Name="libvorbis.dll" DiskId="1" KeyPath="yes"
            Source="..\libraries\libvorbis.dll" />
       </Component>
 
-      <Component Id="IclMathLibrary" Guid="a1c17f45-edf5-400c-9478-82857d449fce" Directory="INSTALLDIR">
+      <Component Id="IclMathLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibMmdDll" Name="libmmd.dll" DiskId="1" KeyPath="yes"
            Source="..\libraries\libmmd.dll" />
+      </Component>
+
+      <Component Id="MonkeysAudioLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="MacDllDll" Name="MACDll.dll" DiskId="1" KeyPath="yes"
+           Source="..\libraries\MACDll.dll" />
+      </Component>
+
+      <Component Id="LibFaacLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="LibFaacDll" Name="libfaac.dll" DiskId="1" KeyPath="yes"
+           Source="..\libraries\libfaac.dll" />
+      </Component>
+
+      <Component Id="LibFaad2Library" Guid="*" Directory="INSTALLDIR">
+        <File Id="LibFaad2Dll" Name="libfaad2.dll" DiskId="1" KeyPath="yes"
+           Source="..\libraries\libfaad2.dll" />
+      </Component>
+
+      <Component Id="LibGccLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="LibGccDll" Name="libgcc_s_sjlj-1.dll" DiskId="1" KeyPath="yes"
+           Source="..\libraries\libgcc_s_sjlj-1.dll" />
+      </Component>
+
+      <Component Id="LibOggLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="LibOgg0Dll" Name="libogg-0.dll" DiskId="1" KeyPath="yes"
+           Source="..\libraries\libogg-0.dll" />
+      </Component>
+
+      <Component Id="LibOpusLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="LibOpus0Dll" Name="libopus-0.dll" DiskId="1" KeyPath="yes"
+           Source="..\libraries\libopus-0.dll" />
+      </Component>
+
+      <Component Id="LibOpusFileLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="LibOpusFile0Dll" Name="libopusfile-0.dll" DiskId="1" KeyPath="yes"
+           Source="..\libraries\libopusfile-0.dll" />
+      </Component>
+
+      <Component Id="LibWinPthreadLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="LibWinPthread1Dll" Name="libwinpthread-1.dll" DiskId="1" KeyPath="yes"
+           Source="..\libraries\libwinpthread-1.dll" />
+      </Component>
+
+      <Component Id="LibSpeexLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="LibSpeexDll" Name="libspeex.dll" DiskId="1" KeyPath="yes"
+           Source="..\libraries\libspeex.dll" />
       </Component>
 
     </ComponentGroup>
@@ -166,8 +218,6 @@ For new releases, do the following:
 
     <Icon Id="WinLameShortcutIcon" SourceFile="..\winlame\res\winlame.ico" />
 
-    <Property Id="ALLUSERS"><![CDATA[1]]></Property>
-
     <Property Id="ARPURLINFOABOUT"><![CDATA[http://winLAME.sourceforge.net/]]></Property>
     <Property Id="ARPCOMMENTS"><![CDATA[For more information, please visit http://winLAME.sourceforge.net/]]></Property>
     <Property Id="ARPPRODUCTICON" Value="WinLameShortcutIcon" />
@@ -183,29 +233,21 @@ For new releases, do the following:
       <ProgressText Action="InstallInitialize">Setup is being initialized...</ProgressText>
     </UI>
 
+    <!-- upgrades -->
     <Property Id="UPGRADEGUIDS" Secure="yes" />
     <Property Id="UPGRADEGUIDSOLD" Secure="yes" />
 
+    <MajorUpgrade MigrateFeatures="no" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
     <!-- upgrade section for winLAME 2009 and later versions -->
     <Upgrade Id="f36dad67-67a5-4d00-83fb-fe8a742c84f4">
-      <UpgradeVersion Maximum="$(var.LastVersion)"
-                      Property="UPGRADEGUIDS"
-                      MigrateFeatures="yes"
-                      IncludeMaximum="yes" />
+      <UpgradeVersion Property="UPGRADEGUIDS" Maximum="1.0.2014.1" IncludeMaximum="yes" />
     </Upgrade>
 
     <!-- upgrade section for old versions, <= 0.0.4.0 -->
     <Upgrade Id="6170bb18-ddf6-4d02-b37c-7713d8c43d6e">
-      <UpgradeVersion Maximum="0.0.4.0"
-                      Property="UPGRADEGUIDSOLD"
-                      MigrateFeatures="yes"
-                      IncludeMaximum="yes" />
+      <UpgradeVersion Property="UPGRADEGUIDSOLD" Maximum="0.0.4.0" IncludeMaximum="yes" />
     </Upgrade>
-
-    <!-- add RemoveExistingProducts action for Upgrade to work -->
-    <InstallExecuteSequence>
-      <RemoveExistingProducts After="InstallFinalize"/>
-    </InstallExecuteSequence>
 
   </Product>
 </Wix>
