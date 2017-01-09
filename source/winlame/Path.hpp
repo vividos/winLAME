@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014-2016 Michael Fink
+// Copyright (c) 2014-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -55,6 +55,12 @@ public:
 
    /// returns filename without extension
    CString FilenameOnly() const;
+
+   /// returns folder name, without filename, but ending slash
+   CString FolderName() const;
+
+   /// returns short path name (filename in 8.3 format)
+   CString ShortPathName() const;
 
    /// returns if path represents a file and if it exists
    bool FileExists() const throw();

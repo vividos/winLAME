@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014-2016 Michael Fink
+// Copyright (c) 2014-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -63,6 +63,24 @@ CString Path::FilenameOnly() const
       return m_path.Mid(pos + 1);
 
    return m_path.Mid(pos + 1, pos2 - pos - 1);
+}
+
+CString Path::FolderName() const
+{
+   int pos = m_path.ReverseFind(Path::SeparatorCh);
+   if (pos == -1)
+      return m_path;
+
+   return m_path.Left(pos + 1);
+}
+
+CString Path::ShortPathName() const
+{
+   CString shortPathName;
+   DWORD ret = ::GetShortPathName(m_path, shortPathName.GetBuffer(MAX_PATH), MAX_PATH);
+   shortPathName.ReleaseBuffer();
+
+   return ret == 0 ? m_path : shortPathName;
 }
 
 bool Path::FileExists() const throw()
