@@ -62,6 +62,12 @@ public:
    /// returns short path name (filename in 8.3 format)
    CString ShortPathName() const;
 
+   /// make this path relative to the given root path and returns it
+   CString MakeRelativeTo(const CString& rootPath);
+
+   /// returns if stored path is a relative path
+   bool IsRelative() const throw();
+
    /// returns if path represents a file and if it exists
    bool FileExists() const throw();
 

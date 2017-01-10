@@ -83,6 +83,28 @@ CString Path::ShortPathName() const
    return ret == 0 ? m_path : shortPathName;
 }
 
+CString Path::MakeRelativeTo(const CString& rootPath)
+{
+   CString relativePath;
+
+   DWORD pathAttr = ::GetFileAttributes(m_path) & FILE_ATTRIBUTE_DIRECTORY;
+
+   BOOL ret = ::PathRelativePathTo(
+      relativePath.GetBuffer(MAX_PATH),
+      rootPath, FILE_ATTRIBUTE_DIRECTORY,
+      m_path, pathAttr);
+
+   relativePath.ReleaseBuffer();
+
+   return ret == FALSE ? _T("") : relativePath;
+}
+
+bool Path::IsRelative() const throw()
+{
+   BOOL ret = ::PathIsRelative(m_path);
+   return ret != FALSE;
+}
+
 bool Path::FileExists() const throw()
 {
    DWORD ret = ::GetFileAttributes(m_path);
