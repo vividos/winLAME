@@ -50,7 +50,8 @@ TaskManager::TaskManager()
             std::bind(&TaskManager::RunThread, boost::ref(m_ioService))
       ));
 
-      SetBusyFlag(GetThreadId(spThread->native_handle()), false);
+      // note: GetThreadId() not available in XP
+      //SetBusyFlag(GetThreadId(spThread->native_handle()), false);
 
       m_vecThreadPool.push_back(spThread);
    }
