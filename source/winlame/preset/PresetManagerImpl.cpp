@@ -25,12 +25,12 @@
 #include "stdafx.h"
 #include "PresetManagerImpl.h"
 #include "PropertyDlg.h"
+#include "UTF8.hpp"
 #include <fstream>
 
 std::tstring convertFromUtf8(const std::string& text)
 {
-   // TODO UTF-8 conversion, if needed
-   return std::tstring(CString(text.c_str()).GetString());
+   return std::tstring(UTF8ToString(text.c_str()).GetString());
 }
 
 // PresetManagerInterface methods
