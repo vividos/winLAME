@@ -92,6 +92,8 @@ void CreatePlaylistTask::Run()
    if (m_extendedPlaylist)
       _ftprintf(fd, _T("#EXTM3U\n\n"));
 
+   CString rootFolder = Path(m_playlistFilename).FolderName();
+
    for (size_t entryIndex = 0, maxEntryIndex = m_playlistEntries.size(); entryIndex < maxEntryIndex; entryIndex++)
    {
       const PlaylistEntry& entry = m_playlistEntries[entryIndex];
@@ -99,8 +101,12 @@ void CreatePlaylistTask::Run()
       if (m_extendedPlaylist)
          _ftprintf(fd, _T("#EXTINF:%u,%s\n"), entry.m_trackLengthInSeconds, entry.m_title.GetString());
 
+      CString relativeFilename = Path(entry.m_filename).MakeRelativeTo(rootFolder);
+      if (relativeFilename.IsEmpty())
+         relativeFilename = entry.m_filename;
+
       // TODO write relative filename instead of absolute one
-      _ftprintf(fd, _T("%s\n"), entry.m_filename.GetString());
+      _ftprintf(fd, _T("%s\n"), relativeFilename.GetString());
 
       if (m_extendedPlaylist)
          _ftprintf(fd, _T("\n"));

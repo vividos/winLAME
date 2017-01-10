@@ -6,7 +6,6 @@ winLAME 2017 beta 1, tests:
 winLAME 2017 beta 1, must-do-things:
 - Add showing detail infos about task
 - implement giving LAME context to tasks, for nogap encoding
-- write relative playlist filenames
 - disable CD Read icon when active CD Extract tasks
 - support writing album-artist on non-various cd's
 
