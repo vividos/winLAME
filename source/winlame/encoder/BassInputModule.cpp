@@ -271,20 +271,27 @@ void BassInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthIn
 
 int BassInputModule::DecodeSamples(SampleContainer& samples)
 {
-   if (!BASS_ChannelIsActive(m_channel))
+   if (BASS_ChannelIsActive(m_channel) != BASS_ACTIVE_PLAYING)
       return 0;
 
-   int ret;
+   DWORD ret = BASS_ChannelGetData(m_channel, m_buffer, c_bassInputBufferSize);
 
-   // loop to wait for input data, if available
-   do
+   if (ret != 0 && ret != DWORD(-1))
    {
-      ret = BASS_ChannelGetData(m_channel, m_buffer, c_bassInputBufferSize);
-   } while (!ret && BASS_ChannelIsActive(m_channel));
+      ret /= m_channelInfo.chans * (16 >> 3); // samples
 
-   ret /= m_channelInfo.chans * (16 >> 3); // samples
+      samples.PutSamplesInterleaved(m_buffer, ret);
+   }
 
-   samples.PutSamplesInterleaved(m_buffer, ret);
+   if (ret == DWORD(-1))
+   {
+      if (BASS_ChannelIsActive(m_channel) != BASS_ACTIVE_PLAYING)
+         return 0;
+
+      int errorCode = BASS_ErrorGetCode();
+
+      m_lastError.Format(_T("BASS error: %i"), errorCode);
+   }
 
    return ret;
 }
