@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -32,51 +32,36 @@
 
 #include <string>
 #include "resource.h"
-#include "SettingsManager.h"
-#include "ModuleManager.hpp"
 #include "TrackInfo.hpp"
-#include "CDRipDiscInfo.h"
-#include "CDRipTrackInfo.h"
+#include "EncoderState.hpp"
+
+// forward references
+class SettingsManager;
+class ModuleManager;
 
 /// contains all classes and functions that have to do with encoding
 namespace Encoder
 {
-   // forward references
-   class InputModule;
-
-   /// error handler interface
-   class EncoderErrorHandler
-   {
-   public:
-      /// dtor
-      virtual ~EncoderErrorHandler() throw() {}
-
-      /// action to perform when error is handled
-      enum ErrorAction { Continue = 0, SkipFile, StopEncode };
-
-      /// error handler function
-      virtual ErrorAction handleError(LPCTSTR infilename,
-         LPCTSTR modulename, int errnum, LPCTSTR errormsg, bool bSkipDisabled = false) = 0;
-   };
-
+   class EncoderErrorHandler;
+   struct EncoderSettings;
 
    /// encoder job
    class EncoderJob
    {
    public:
       /// ctor
-      explicit EncoderJob(const CString& cszInputFilename) throw()
-         :m_cszInputFilename(cszInputFilename)
+      explicit EncoderJob(const CString& inputFilename) throw()
+         :m_inputFilename(inputFilename)
       {
       }
 
       // getter
 
       /// returns input filename
-      CString InputFilename() const throw() { return m_cszInputFilename; }
+      CString InputFilename() const throw() { return m_inputFilename; }
 
       /// returns output filename
-      CString OutputFilename() const throw() { return m_cszOutputFilename; }
+      CString OutputFilename() const throw() { return m_outputFilename; }
 
       /// returns track info; const version
       const TrackInfo& GetTrackInfo() const throw() { return m_trackInfo; }
@@ -87,128 +72,61 @@ namespace Encoder
       // setter
 
       /// sets output filename
-      void OutputFilename(const CString& outputFilename) { m_cszOutputFilename = outputFilename; }
-
-   private:
-      CString m_cszInputFilename;   ///< input filename
-      CString m_cszOutputFilename;  ///< output filename
-      TrackInfo m_trackInfo;        ///< track info
-   };
-
-
-   /// infos about a CD read job
-   class CDReadJob
-   {
-   public:
-      /// ctor
-      CDReadJob(const CDRipDiscInfo& discInfo, const CDRipTrackInfo& trackInfo)
-         :m_discInfo(discInfo),
-         m_trackInfo(trackInfo)
-      {
-      }
-
-      // getter
-
-      const CString& OutputFilename() const throw() { return m_outputFilename; }
-      const CDRipDiscInfo& DiscInfo() const throw() { return m_discInfo; }
-      const CDRipTrackInfo& TrackInfo() const throw() { return m_trackInfo; }
-      CDRipTrackInfo& TrackInfo()       throw() { return m_trackInfo; }
-      const CString& Title() const throw() { return m_title; }
-
-      // setter
       void OutputFilename(const CString& outputFilename) { m_outputFilename = outputFilename; }
-      void Title(const CString& title) { m_title = title; }
 
    private:
-      CString m_outputFilename;
-      CDRipDiscInfo m_discInfo;
-      CDRipTrackInfo m_trackInfo;
-      CString m_title;
+      CString m_inputFilename;   ///< input filename
+      CString m_outputFilename;  ///< output filename
+      TrackInfo m_trackInfo;     ///< track info
    };
-
 
    /// encoder interface
    class EncoderInterface
    {
    public:
       /// returns new encoder object; destroy with delete operator
-      static EncoderInterface* getNewEncoder();
-
-      // encoder access functions
-
-      /// locks access to encoder object
-      virtual void lockAccess() = 0;
-
-      /// unlocks access again
-      virtual void unlockAccess() = 0;
+      static EncoderInterface* CreateEncoder();
 
       // encoder functions
 
-      /// sets input filename
-      virtual void setInputFilename(LPCTSTR infile) = 0;
+      /// sets new encoder settings
+      virtual void SetEncoderSettings(const EncoderSettings& encoderSettings) = 0;
 
-      /// sets output path
-      virtual void setOutputPath(LPCTSTR outpath) = 0;
+      /// returns encoder state
+      virtual EncoderState GetEncoderState() const = 0;
 
       /// sets the settings manager to use
-      virtual void setSettingsManager(SettingsManager *settings_mgr) = 0;
-
-      /// sets the module manager to use
-      virtual void setModuleManager(ModuleManager *mgr) = 0;
-
-      /// sets output module to use
-      virtual void setOutputModule(int moduleId) = 0;
-
-      /// sets output module per index
-      virtual void setOutputModulePerIndex(int idx) = 0;
+      virtual void SetSettingsManager(SettingsManager* settingsManager) = 0;
 
       /// sets error handler to use if an error occurs
-      virtual void setErrorHandler(EncoderErrorHandler *handler) = 0;
-
-      /// set if files can be overwritten
-      virtual void setOverwriteFiles(bool overwrite) = 0;
-
-      /// set if source file should be deleted
-      virtual void setDeleteAfterEncode(bool del) = 0;
-
-      /// set warn about lossy transcoding
-      virtual void setWarnLossy(bool overwrite) = 0;
-
-      /// sets track info to use instead of track info read from input module
-      virtual void setTrackInfo(const TrackInfo& trackInfo) = 0;
-
-      /// sets output playlist filename and enables playlist creation
-      virtual void setOutputPlaylistFilename(LPCTSTR plname) = 0;
+      virtual void SetErrorHandler(EncoderErrorHandler* handler) = 0;
 
       /// starts encoding thread; returns immediately
-      virtual void startEncode() = 0;
-
-      /// returns if the encoder thread is running
-      virtual bool isRunning() = 0;
+      virtual void StartEncode() = 0;
 
       /// pauses encoding
-      virtual void pauseEncoding() = 0;
-
-      /// returns if the encoder is currently paused
-      virtual bool isPaused() = 0;
+      virtual void PauseEncoding() = 0;
 
       /// stops encoding
-      virtual void stopEncode() = 0;
-
-      /// \brief returns if there were errors during encoding
-      /// \details 0 means no error, a
-      /// positive int indictates an error, a negative one is a fatal error
-      /// and should stop the whole encoding process
-      virtual int getError() = 0;
-
-      /// returns the percent done of the encoding process
-      virtual float queryPercentDone() = 0;
-
-      /// returns encoding description string
-      virtual CString getEncodingDescription() = 0;
+      virtual void StopEncode() = 0;
 
       /// dtor
       virtual ~EncoderInterface() {}
+
+      // helper methods
+
+      /// returns if the encoder thread is running
+      bool IsRunning() const
+      {
+         return GetEncoderState().m_running;
+      }
+
+      /// returns if the encoder is currently paused
+      bool IsPaused() const
+      {
+         return GetEncoderState().m_paused;
+      }
+
    protected:
       /// ctor
       EncoderInterface() {}

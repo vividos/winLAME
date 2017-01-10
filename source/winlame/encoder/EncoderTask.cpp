@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,58 +26,53 @@ using Encoder::EncoderTask;
 using Encoder::EncoderTaskSettings;
 
 EncoderTask::EncoderTask(unsigned int dependentTaskId, const EncoderTaskSettings& settings)
-:Task(dependentTaskId),
-m_settings(settings),
-m_stopped(false)
+   :Task(dependentTaskId),
+   m_settings(settings),
+   m_stopped(false)
 {
-   EncoderImpl::setInputFilename(m_settings.m_cszInputFilename);
-   EncoderImpl::setOutputPath(m_settings.m_cszOutputPath);
-   EncoderImpl::setSettingsManager(&m_settings.m_settingsManager);
-   EncoderImpl::setModuleManager(m_settings.m_pModuleManager);
-   EncoderImpl::setOutputModule(m_settings.m_iOutputModuleId);
-   EncoderImpl::setErrorHandler(&m_errorHandler);
-   EncoderImpl::setOverwriteFiles(m_settings.m_bOverwriteFiles);
-   EncoderImpl::setDeleteAfterEncode(m_settings.m_bDeleteAfterEncode);
-   EncoderImpl::setWarnLossy(false);
+   m_settings.m_warnLossyTranscoding = false;
 
-   if (m_settings.m_useTrackInfo)
-      EncoderImpl::setTrackInfo(m_settings.m_trackInfo);
+   EncoderImpl::SetEncoderSettings(m_settings);
+
+   EncoderImpl::SetSettingsManager(&m_settings.m_settingsManager);
+   EncoderImpl::SetErrorHandler(&m_errorHandler);
 }
 
 CString EncoderTask::GenerateOutputFilename(const CString& inputFilename)
 {
-   if (m_precalculatedOutputFilename.IsEmpty())
+   if (EncoderImpl::m_encoderSettings.m_outputFilename.IsEmpty())
    {
       Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
       Encoder::ModuleManagerImpl& modImpl = reinterpret_cast<Encoder::ModuleManagerImpl&>(moduleManager);
 
-      std::unique_ptr<Encoder::OutputModule> outputModule(modImpl.GetOutputModule(m_settings.m_iOutputModuleId));
+      std::unique_ptr<Encoder::OutputModule> outputModule(modImpl.GetOutputModule(m_settings.m_outputModuleID));
       ATLASSERT(outputModule != nullptr);
 
       outputModule->PrepareOutput(m_settings.m_settingsManager);
 
-      m_precalculatedOutputFilename = EncoderImpl::GetOutputFilename(m_settings.m_cszOutputPath, inputFilename, *outputModule.get());
+      EncoderImpl::m_encoderSettings.m_outputFilename = EncoderImpl::GetOutputFilename(m_settings.m_outputFolder, inputFilename, *outputModule.get());
    }
 
-   return m_precalculatedOutputFilename;
+   return EncoderImpl::m_encoderSettings.m_outputFilename;
 }
 
 TaskInfo EncoderTask::GetTaskInfo()
 {
    TaskInfo info(Id(), TaskInfo::taskEncoding);
 
-   info.Name(m_settings.m_cszTitle);
+   EncoderState encoderState = EncoderImpl::GetEncoderState();
 
-   info.Description(EncoderImpl::getEncodingDescription());
+   info.Name(m_settings.m_title);
+
+   info.Description(encoderState.m_encodingDescription);
 
    info.Status(
-      finished || m_stopped ? TaskInfo::statusCompleted :
-      error != 0 ? TaskInfo::statusError :
-      running ? TaskInfo::statusRunning :
+      encoderState.m_finished || m_stopped ? TaskInfo::statusCompleted :
+      m_encoderState.m_errorCode != 0 ? TaskInfo::statusError :
+      encoderState.m_running ? TaskInfo::statusRunning :
       TaskInfo::statusWaiting);
 
-   float PercentDone = EncoderImpl::queryPercentDone();
-   info.Progress(static_cast<unsigned int>(PercentDone));
+   info.Progress(static_cast<unsigned int>(encoderState.m_percent));
 
    return info;
 }
@@ -87,10 +82,10 @@ void EncoderTask::Run()
    if (m_stopped)
       return;
 
-   running = true;
+   m_encoderState.m_running = true;
    m_stopped = false;
 
-   EncoderImpl::encode();
+   EncoderImpl::Encode();
 
    if (!m_errorHandler.AllErrors().empty())
    {
@@ -101,7 +96,7 @@ void EncoderTask::Run()
 void EncoderTask::Stop()
 {
    m_stopped = true;
-   EncoderImpl::stopEncode();
+   EncoderImpl::StopEncode();
 }
 
 void EncoderTask::AddErrorText()
@@ -116,7 +111,7 @@ void EncoderTask::AddErrorText()
       if (isFirst)
       {
          errorText.Format(IDS_ENCODER_ERROR_ERRORINFO_FILENAME_S,
-            info.m_cszInputFilename);
+            info.m_inputFilename);
 
          isFirst = false;
       }
@@ -124,11 +119,10 @@ void EncoderTask::AddErrorText()
       errorText.Append(_T("\r\n"));
 
       errorText.AppendFormat(IDS_ENCODER_ERROR_ERRORINFO_SSI,
-         info.m_cszModuleName,
-         info.m_cszErrorMessage,
-         info.m_iErrorNumber);
+         info.m_moduleName,
+         info.m_errorMessage,
+         info.m_errorNumber);
    });
 
    SetTaskError(errorText);
 }
-

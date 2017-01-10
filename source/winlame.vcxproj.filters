@@ -717,6 +717,21 @@
     <ClInclude Include="winlame\encoder\InputModule.hpp">
       <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="winlame\encoder\EncoderSettings.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\EncoderState.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\CDReadJob.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\EncoderErrorHandler.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="winlame\encoder\AlwaysSkipErrorHandler.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="winlame\res\btnicons.bmp">

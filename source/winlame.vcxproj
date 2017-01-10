@@ -199,12 +199,17 @@
     <ClInclude Include="winlame\CommandLineParser.hpp" />
     <ClInclude Include="winlame\encoder\AacInputModule.hpp" />
     <ClInclude Include="winlame\encoder\AacOutputModule.hpp" />
+    <ClInclude Include="winlame\encoder\AlwaysSkipErrorHandler.hpp" />
     <ClInclude Include="winlame\encoder\BassInputModule.hpp" />
     <ClInclude Include="winlame\encoder\BassWmaOutputModule.hpp" />
     <ClInclude Include="winlame\encoder\CDExtractTask.hpp" />
+    <ClInclude Include="winlame\encoder\CDReadJob.hpp" />
     <ClInclude Include="winlame\encoder\CDReadoutModule.hpp" />
     <ClInclude Include="winlame\encoder\CreatePlaylistTask.hpp" />
+    <ClInclude Include="winlame\encoder\EncoderErrorHandler.hpp" />
     <ClInclude Include="winlame\encoder\EncoderImpl.hpp" />
+    <ClInclude Include="winlame\encoder\EncoderSettings.hpp" />
+    <ClInclude Include="winlame\encoder\EncoderState.hpp" />
     <ClInclude Include="winlame\encoder\EncoderTask.hpp" />
     <ClInclude Include="winlame\encoder\FlacInputModule.hpp" />
     <ClInclude Include="winlame\encoder\Id3v1Tag.hpp" />

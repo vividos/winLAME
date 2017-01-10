@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -344,11 +344,7 @@ void ModuleManagerImpl::GetModuleVersionString(CString& version,
    version.Empty();
 }
 
-CString Encoder::GetAnsiCompatFilename(LPCTSTR pszFilename)
+CString Encoder::GetAnsiCompatFilename(LPCTSTR filename)
 {
-   CString cszFilename;
-   DWORD dwRet = GetShortPathName(pszFilename, cszFilename.GetBuffer(MAX_PATH), MAX_PATH);
-   cszFilename.ReleaseBuffer();
-
-   return dwRet == 0 ? CString(pszFilename) : cszFilename;
+   return Path(filename).ShortPathName();
 }

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #include "EncoderTask.hpp"
 #include "CreatePlaylistTask.hpp"
 #include "CDExtractTask.hpp"
+#include "CDReadJob.hpp"
 #include "CDRipTitleFormatManager.hpp"
 #include "RedrawLock.hpp"
 #include <sndfile.h>
@@ -307,22 +308,21 @@ void FinishPage::AddInputFilesTasks()
 
       Encoder::EncoderTaskSettings taskSettings;
 
-      taskSettings.m_cszInputFilename = job.InputFilename();
-      taskSettings.m_cszOutputPath = m_uiSettings.m_defaultSettings.outputdir;
-      taskSettings.m_cszTitle = Path(job.InputFilename()).FilenameAndExt();
+      taskSettings.m_inputFilename = job.InputFilename();
+      taskSettings.m_outputFolder = m_uiSettings.m_defaultSettings.outputdir;
+      taskSettings.m_title = Path(job.InputFilename()).FilenameAndExt();
 
       Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
-      taskSettings.m_iOutputModuleId = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
+      taskSettings.m_outputModuleID = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
       taskSettings.m_settingsManager = m_uiSettings.settings_manager;
       taskSettings.m_trackInfo = job.GetTrackInfo();
-      taskSettings.m_pModuleManager = &moduleManager;
-      taskSettings.m_bOverwriteFiles = m_uiSettings.m_defaultSettings.overwrite_existing;
-      taskSettings.m_bDeleteAfterEncode = m_uiSettings.m_defaultSettings.delete_after_encode;
+      taskSettings.m_overwriteExisting = m_uiSettings.m_defaultSettings.overwrite_existing;
+      taskSettings.m_deleteInputAfterEncode = m_uiSettings.m_defaultSettings.delete_after_encode;
 
       // set previous task id when encoding with LAME and using nogap encoding
       unsigned int dependentTaskId = 0;
-      if (taskSettings.m_iOutputModuleId == ID_OM_LAME &&
+      if (taskSettings.m_outputModuleID == ID_OM_LAME &&
          taskSettings.m_settingsManager.queryValueInt(LameOptNoGap) == 1)
       {
          dependentTaskId = m_lastTaskId;
@@ -406,13 +406,13 @@ std::shared_ptr<Encoder::EncoderTask> FinishPage::CreateEncoderTaskForCDReadJob(
 {
    Encoder::EncoderTaskSettings taskSettings;
 
-   taskSettings.m_cszInputFilename = cdReadJob.OutputFilename();
-   taskSettings.m_cszOutputPath = m_uiSettings.m_defaultSettings.outputdir;
+   taskSettings.m_inputFilename = cdReadJob.OutputFilename();
+   taskSettings.m_outputFolder = m_uiSettings.m_defaultSettings.outputdir;
 
-   taskSettings.m_cszTitle = cdReadJob.Title();
+   taskSettings.m_title = cdReadJob.Title();
 
    Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
-   taskSettings.m_iOutputModuleId = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
+   taskSettings.m_outputModuleID = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
    taskSettings.m_settingsManager = m_uiSettings.settings_manager;
 
@@ -421,9 +421,8 @@ std::shared_ptr<Encoder::EncoderTask> FinishPage::CreateEncoderTaskForCDReadJob(
 
    taskSettings.m_trackInfo = encodeTrackInfo;
    taskSettings.m_useTrackInfo = true;
-   taskSettings.m_pModuleManager = &moduleManager;
-   taskSettings.m_bOverwriteFiles = m_uiSettings.m_defaultSettings.overwrite_existing;
-   taskSettings.m_bDeleteAfterEncode = true; // temporary file created by CDExtractTask
+   taskSettings.m_overwriteExisting = m_uiSettings.m_defaultSettings.overwrite_existing;
+   taskSettings.m_deleteInputAfterEncode = true; // temporary file created by CDExtractTask
 
    return std::make_shared<Encoder::EncoderTask>(cdReadTaskId, taskSettings);
 }

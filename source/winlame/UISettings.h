@@ -30,6 +30,7 @@
 #include "SettingsManager.h"
 #include "PresetManagerInterface.h"
 #include "EncoderInterface.h"
+#include "CDReadJob.hpp"
 
 namespace Encoder
 {

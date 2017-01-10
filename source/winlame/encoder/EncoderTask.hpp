@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,95 +25,27 @@
 #include "TrackInfo.hpp"
 #include "SettingsManager.h"
 #include "EncoderImpl.hpp"
+#include "AlwaysSkipErrorHandler.hpp"
 
 namespace Encoder
 {
    /// settings for EncoderTask
-   struct EncoderTaskSettings
+   struct EncoderTaskSettings : public EncoderSettings
    {
+      /// ctor
       EncoderTaskSettings()
-         :m_useTrackInfo(false),
-         m_pModuleManager(nullptr),
-         m_iOutputModuleId(0),
-         m_bOverwriteFiles(false),
-         m_bDeleteAfterEncode(false)
       {
+         m_warnLossyTranscoding = false;
       }
 
       /// title
-      CString m_cszTitle;
-
-      /// input filename
-      CString m_cszInputFilename;
-
-      /// output path
-      CString m_cszOutputPath;
-
-      /// track info to store in output
-      TrackInfo m_trackInfo;
-
-      /// indicates if the provided track info should be used instead of track info read from
-      /// the input file
-      bool m_useTrackInfo;
+      CString m_title;
 
       /// the settings manager to use
       SettingsManager m_settingsManager;
-
-      /// module manager to use
-      ModuleManager* m_pModuleManager;
-
-      /// output module id
-      int m_iOutputModuleId;
-
-      /// indicates if file should be overwritten
-      bool m_bOverwriteFiles;
-
-      /// indicates if input file should be deleted after encoding
-      bool m_bDeleteAfterEncode;
    };
 
-   class AlwaysSkipErrorHandler : public EncoderErrorHandler
-   {
-   public:
-      /// error info
-      struct ErrorInfo
-      {
-         ErrorInfo()
-            :m_iErrorNumber(0)
-         {
-         }
-
-         CString m_cszInputFilename;
-         CString m_cszModuleName;
-         int m_iErrorNumber;
-         CString m_cszErrorMessage;
-      };
-
-      /// dtor
-      virtual ~AlwaysSkipErrorHandler() throw() {}
-
-      /// error handler function
-      virtual ErrorAction handleError(LPCTSTR infilename,
-         LPCTSTR modulename, int errnum, LPCTSTR errormsg, bool bSkipDisabled) override
-      {
-         ErrorInfo errorInfo;
-         errorInfo.m_cszInputFilename = infilename;
-         errorInfo.m_cszModuleName = modulename;
-         errorInfo.m_iErrorNumber = errnum;
-         errorInfo.m_cszErrorMessage = errormsg;
-
-         m_vecAllErrors.push_back(errorInfo);
-
-         return bSkipDisabled ? EncoderErrorHandler::Continue : EncoderErrorHandler::SkipFile;
-      }
-
-      /// returns list of all errors
-      const std::vector<ErrorInfo>& AllErrors() const throw() { return m_vecAllErrors; }
-
-   private:
-      std::vector<ErrorInfo> m_vecAllErrors;
-   };
-
+   /// encoder task
    class EncoderTask :
       public Task,
       private EncoderImpl
@@ -134,7 +66,7 @@ namespace Encoder
       virtual void Stop();
 
       /// output filename for this task
-      const CString& OutputFilename() const throw() { return m_precalculatedOutputFilename; }
+      const CString& OutputFilename() const throw() { return EncoderImpl::m_encoderSettings.m_outputFilename; }
 
       /// generates output filename for this task
       CString GenerateOutputFilename(const CString& inputFilename);

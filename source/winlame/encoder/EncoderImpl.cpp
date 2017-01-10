@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 //
 #include "stdafx.h"
 #include "EncoderImpl.hpp"
+#include "EncoderErrorHandler.hpp"
 #include <fstream>
 #include "LameOutputModule.hpp"
 #include <sndfile.h>
@@ -30,213 +31,253 @@ using namespace Encoder;
 
 // static EncoderInterface methods
 
-EncoderInterface* EncoderInterface::getNewEncoder()
+EncoderInterface* EncoderInterface::CreateEncoder()
 {
    return new EncoderImpl;
 }
 
 // globals
 
-static bool warned_about_lossy = false;
+static bool s_warnedAboutLossyTranscoding = false;
 
 
 // EncoderImpl methods
 
-void EncoderImpl::encode()
+EncoderImpl::EncoderImpl()
+   :m_settingsManager(nullptr),
+   m_moduleManager(IoCContainer::Current().Resolve<Encoder::ModuleManager>()),
+   m_errorHandler(nullptr)
 {
-   if (!running)
+}
+
+void EncoderImpl::StartEncode()
+{
+   if (m_encoderState.m_running)
+      return;
+
+   if (m_encoderState.m_paused)
+   {
+      PauseEncoding();
+      return;
+   }
+
+   m_encoderState.m_encodingDescription.Empty();
+
+   m_encoderState.m_running = true;
+   m_encoderState.m_paused = false;
+
+   m_workerThread.reset(
+      new std::thread(
+         std::bind(&EncoderImpl::Encode, this)));
+}
+
+void EncoderImpl::StopEncode()
+{
+   // forces encoder to stop
+   {
+      std::unique_lock<std::recursive_mutex> lock(m_mutex);
+      m_encoderState.m_running = false;
+      m_encoderState.m_paused = false;
+   }
+
+   // wait for thread to finish
+   if (m_workerThread != nullptr)
+      m_workerThread->join();
+}
+
+void EncoderImpl::Encode()
+{
+   if (!m_encoderState.m_running)
    {
       return;
    }
 
-   lockAccess();
+   std::unique_lock<std::recursive_mutex> lock(m_mutex, std::defer_lock);
+   lock.lock();
 
-   percent = 0.f;
-   error=0;
-   bool init_outmod = false;
+   m_encoderState.m_percent = 0.f;
+   m_encoderState.m_errorCode = 0;
+   m_encoderState.m_encodingDescription.Empty();
 
-   // empty description string
-   desc.Empty();
+   bool initOutputModule = false;
 
    // get input and output modules
-   ModuleManagerImpl* modimpl = reinterpret_cast<ModuleManagerImpl*>(mod_manager);
-   InputModule* inmod = modimpl->ChooseInputModule(infilename);
-   OutputModule* outmod = modimpl->GetOutputModule(out_module_id);
+   ModuleManagerImpl* modimpl = reinterpret_cast<ModuleManagerImpl*>(&m_moduleManager);
+   m_inputModule = std::unique_ptr<InputModule>(modimpl->ChooseInputModule(m_encoderSettings.m_inputFilename));
+   m_outputModule = std::unique_ptr<OutputModule>(modimpl->GetOutputModule(m_encoderSettings.m_outputModuleID));
 
-   if (inmod == nullptr ||
-      outmod == nullptr)
+   if (m_inputModule == nullptr ||
+      m_outputModule == nullptr)
    {
       // end thread
-      running = false;
-      paused = false;
-      finished = true;
+      m_encoderState.m_running = false;
+      m_encoderState.m_paused = false;
+      m_encoderState.m_finished = true;
       return;
    }
 
-   bool fCompletedTrack = false;
+   bool completedTrack = false;
 
    // init input module
-   TrackInfo trackinfo;
-   SampleContainer sample_container;
+   TrackInfo trackInfo;
 
-   bool bSkipFile = false;
+   bool skipFile = false;
 
-   if (!PrepareInputModule(*inmod, infilename, *settings_mgr, trackinfo, sample_container, error))
-      bSkipFile = true;
+   if (!PrepareInputModule(trackInfo))
+      skipFile = true;
 
-   CString outfilename;
-   CString temp_outfilename;
+   CString outputFilename;
+   CString tempOutputFilename;
 
-   bool bSkipMoveFile = false;
-   if (!bSkipFile)
-   do
+   bool skipMoveFile = false;
+   if (!skipFile)
    {
-      if (!PrepareOutputModule(*inmod, *outmod, *settings_mgr, infilename, outfilename, error))
+      do
       {
-         bSkipFile = true;
-         break;
-      }
-
-      // check if we only need copying a cd ripped file to another filename
-      if (CheckCDExtractDirectCopy(*inmod, *outmod, *settings_mgr))
-      {
-         inmod->DoneInput(false);
-         delete inmod;
-         inmod = NULL;
-
-         BOOL fRet = MoveFile(infilename, outfilename);
-         if (fRet == FALSE)
+         if (!PrepareOutputModule())
          {
-            extern CString GetLastErrorString();
-            DWORD dwError = GetLastError();
-            CString cszErrorMessage = GetLastErrorString();
-
-            CString cszCaption;
-            cszCaption.LoadString(IDS_CDRIP_ERROR_CAPTION);
-            EncoderErrorHandler::ErrorAction action = handler->handleError(outfilename, cszCaption, dwError, cszErrorMessage, true);
-            if (action == EncoderErrorHandler::StopEncode)
-            {
-               error=-2;
-               bSkipFile = true;
-               break;
-            }
+            skipFile = true;
+            break;
          }
-         bSkipMoveFile = true;
-         break;
-      }
 
-      // use the provided track info
-      if (m_useTrackInfo)
-         trackinfo = m_trackInfo;
+         // check if we only need copying a cd ripped file to another filename
+         if (CheckCDExtractDirectCopy())
+         {
+            m_inputModule->DoneInput(false);
+            m_inputModule.reset();
 
-      // generate temporary name, in case the output module doesn't support unicode filenames
-      GenerateTempOutFilename(outfilename, temp_outfilename);
+            BOOL fRet = MoveFile(m_encoderSettings.m_inputFilename, outputFilename);
+            if (fRet == FALSE)
+            {
+               extern CString GetLastErrorString();
+               DWORD lastError = GetLastError();
+               CString errorMessage = GetLastErrorString();
 
-      bool bRet = InitOutputModule(*outmod, temp_outfilename, *settings_mgr, trackinfo,
-         sample_container, error);
-      init_outmod = true;
-      
-      if (!bRet)
-      {
-         bSkipFile = true;
-         break;
-      }
+               CString caption;
+               caption.LoadString(IDS_CDRIP_ERROR_CAPTION);
+               EncoderErrorHandler::ErrorAction action = m_errorHandler->HandleError(outputFilename, caption, lastError, errorMessage, true);
+               if (action == EncoderErrorHandler::StopEncode)
+               {
+                  m_encoderState.m_errorCode = -2;
+                  skipFile = true;
+                  break;
+               }
+            }
+            skipMoveFile = true;
+            break;
+         }
 
-      FormatEncodingDescription(*inmod, *outmod, sample_container);
+         // use the provided track info
+         if (m_encoderSettings.m_useTrackInfo)
+            trackInfo = m_encoderSettings.m_trackInfo;
 
-   } while(false);
+         // generate temporary name, in case the output module doesn't support unicode filenames
+         GenerateTempOutFilename(outputFilename, tempOutputFilename);
 
-   unlockAccess();
+         bool bRet = InitOutputModule(tempOutputFilename, trackInfo);
+         initOutputModule = true;
 
-   if (!bSkipFile)
+         if (!bRet)
+         {
+            skipFile = true;
+            break;
+         }
+
+         FormatEncodingDescription();
+
+      } while (false);
+   }
+
+   lock.unlock();
+
+   if (!skipFile)
    {
       // check if transcoding
       // TODO move this to the wizard pages; warning about lossy conversion shouldn't be
       // done while actually encoding.
-      if (!CheckWarnTranscoding(*inmod, *outmod))
+      if (!CheckWarnTranscoding(*m_inputModule, *m_outputModule))
       {
          // stop encoding
-         error=-2;
-         bSkipFile = true;
+         m_encoderState.m_errorCode = -2;
+         skipFile = true;
       }
    }
 
-   if (!bSkipFile)
-   {
-      if (!bSkipMoveFile)
-         MainLoop(*inmod, *outmod, sample_container, bSkipFile);
-   }
+   if (!skipFile && !skipMoveFile)
+      skipFile = MainLoop();
 
-   if (!bSkipFile)
+   if (!skipFile)
    {
       // write playlist entry, when enabled
-      if (running && !playlist_filename.IsEmpty())
-         WritePlaylistEntry(outfilename);
+      if (m_encoderState.m_running && !m_encoderSettings.m_playlistFilename.IsEmpty())
+         WritePlaylistEntry(outputFilename);
 
-      if (running)
-         fCompletedTrack = true;
+      if (m_encoderState.m_running)
+         completedTrack = true;
    }
 
    // done with modules
-   if (inmod)
-      inmod->DoneInput(fCompletedTrack);
-   if (init_outmod)
-      outmod->DoneOutput();
+   if (m_inputModule != nullptr)
+      m_inputModule->DoneInput(completedTrack);
+
+   if (initOutputModule)
+      m_outputModule->DoneOutput();
 
    // delete modules
-   delete inmod;
-   delete outmod;
+   m_inputModule.reset();
+   m_outputModule.reset();
 
    // rename when we used a temporary filename
-   if (!temp_outfilename.IsEmpty() && outfilename != temp_outfilename)
+   if (!tempOutputFilename.IsEmpty() && outputFilename != tempOutputFilename)
    {
-      if (overwrite)
-         DeleteFile(outfilename);
+      if (m_encoderSettings.m_overwriteExisting)
+         DeleteFile(outputFilename);
       else
-      // not overwriting, but "delete after encoding" flag set?
-      if (delete_after_encode)
-         DeleteFile(infilename);
+         // not overwriting, but "delete after encoding" flag set?
+         if (m_encoderSettings.m_deleteInputAfterEncode)
+            DeleteFile(m_encoderSettings.m_inputFilename);
 
-      MoveFile(temp_outfilename, outfilename);
+      MoveFile(tempOutputFilename, outputFilename);
    }
    else
    {
       // delete the old file, if option is set
       // as no temp output filename was generated, assume the names are different
-      if (delete_after_encode)
-         DeleteFile(infilename);
+      if (m_encoderSettings.m_deleteInputAfterEncode)
+         DeleteFile(m_encoderSettings.m_inputFilename);
    }
 
    // end thread
-   running = false;
-   paused = false;
-   finished = true;
+   m_encoderState.m_running = false;
+   m_encoderState.m_paused = false;
+   m_encoderState.m_finished = true;
 }
 
-bool EncoderImpl::PrepareInputModule(InputModule& inputModule, CString& cszInputFilename,
-   SettingsManager& settingsManager, TrackInfo& trackInfo, SampleContainer& sampleContainer,
-   int& localerror)
+bool EncoderImpl::PrepareInputModule(TrackInfo& trackInfo)
 {
-   int res = inputModule.InitInput(cszInputFilename, *settings_mgr,
-      trackInfo, sampleContainer);
+   // init new
+   m_sampleContainer = SampleContainer();
 
-   inputModule.ResolveRealFilename(cszInputFilename);
+   int res = m_inputModule->InitInput(m_encoderSettings.m_inputFilename, *m_settingsManager,
+      trackInfo, m_sampleContainer);
+
+   m_inputModule->ResolveRealFilename(m_encoderSettings.m_inputFilename);
 
    // catch errors
-   if (handler!=NULL && res<0)
+   if (m_errorHandler != nullptr && res < 0)
    {
-      switch (handler->handleError(cszInputFilename, inputModule.GetModuleName(),
-         -res, inputModule.GetLastError()))
+      switch (m_errorHandler->HandleError(m_encoderSettings.m_inputFilename, m_inputModule->GetModuleName(),
+         -res, m_inputModule->GetLastError()))
       {
       case EncoderErrorHandler::Continue:
          break;
 
       case EncoderErrorHandler::SkipFile:
-         localerror=1;
+         m_encoderState.m_errorCode = 1;
          return false;
 
       case EncoderErrorHandler::StopEncode:
-         localerror =-1;
+         m_encoderState.m_errorCode = -1;
          return false;
       }
    }
@@ -244,46 +285,42 @@ bool EncoderImpl::PrepareInputModule(InputModule& inputModule, CString& cszInput
    return true;
 }
 
-bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& outputModule,
-   SettingsManager& settingsManager, const CString& cszInputFilename, CString& cszOutputFilename,
-   int& localerror)
+bool EncoderImpl::PrepareOutputModule()
 {
    // prepare output module
-   outputModule.PrepareOutput(settingsManager);
+   m_outputModule->PrepareOutput(*m_settingsManager);
 
    // do output filename
-   if (!m_precalculatedOutputFilename.IsEmpty())
-      cszOutputFilename = m_precalculatedOutputFilename;
-   else
-      cszOutputFilename = GetOutputFilename(outpathname, cszInputFilename, outputModule);
+   if (m_encoderSettings.m_outputFilename.IsEmpty())
+      m_encoderSettings.m_outputFilename = GetOutputFilename(m_encoderSettings.m_outputFolder, m_encoderSettings.m_inputFilename, *m_outputModule);
 
    // ugly hack: when input module is cd extraction, remove guid from output filename
-   if (inputModule.GetModuleID() == ID_IM_CDRIP)
+   if (m_inputModule->GetModuleID() == ID_IM_CDRIP)
    {
-      int iPos1 = cszOutputFilename.ReverseFind(_T('{'));
-      int iPos2 = cszOutputFilename.ReverseFind(_T('}'));
+      int pos1 = m_encoderSettings.m_outputFilename.ReverseFind(_T('{'));
+      int pos2 = m_encoderSettings.m_outputFilename.ReverseFind(_T('}'));
 
-      cszOutputFilename.Delete(iPos1, iPos2-iPos1+1);
+      m_encoderSettings.m_outputFilename.Delete(pos1, pos2 - pos1 + 1);
    }
 
    // test if input and output file name is the same file
-   if (!CheckSameInputOutputFilenames(cszInputFilename, cszOutputFilename, outputModule))
+   if (!CheckSameInputOutputFilenames(m_encoderSettings.m_inputFilename, m_encoderSettings.m_outputFilename, *m_outputModule))
    {
-      localerror=2;
+      m_encoderState.m_errorCode = 2;
       return false;
    }
 
-   // check if outfilename already exists
-   if (!overwrite)
+   // check if outputFilename already exists
+   if (!m_encoderSettings.m_overwriteExisting)
    {
       // test if file exists
-      if (::GetFileAttributes(cszOutputFilename) != INVALID_FILE_ATTRIBUTES)
+      if (Path(m_encoderSettings.m_outputFilename).FileExists())
       {
          // note: could do a message box here, but we really want the encoding progress
          // without any message boxes waiting.
 
          // skip this file
-         localerror=2;
+         m_encoderState.m_errorCode = 2;
          return false;
       }
    }
@@ -291,49 +328,47 @@ bool EncoderImpl::PrepareOutputModule(InputModule& inputModule, OutputModule& ou
    return true;
 }
 
-CString EncoderImpl::GetOutputFilename(const CString& outputPath, const CString& cszInputFilename, OutputModule& outputModule)
+CString EncoderImpl::GetOutputFilename(const CString& outputPath, const CString& inputFilename, OutputModule& outputModule)
 {
-   CString cszOutputFilename = outputPath;
+   CString outputFilename = outputPath;
 
-   CString filenameOnly = Path(cszInputFilename).FilenameOnly();
-   cszOutputFilename += filenameOnly;
-   cszOutputFilename += _T(".");
+   CString filenameOnly = Path(inputFilename).FilenameOnly();
+   outputFilename += filenameOnly;
+   outputFilename += _T(".");
+   outputFilename += outputModule.GetOutputExtension();
 
-   cszOutputFilename += outputModule.GetOutputExtension();
-
-   return cszOutputFilename;
+   return outputFilename;
 }
 
-bool EncoderImpl::CheckSameInputOutputFilenames(const CString& cszInputFilename,
-   CString& cszOutputFilename, OutputModule& outputModule)
+bool EncoderImpl::CheckSameInputOutputFilenames(const CString& inputFilename,
+   CString& outputFilename, OutputModule& outputModule)
 {
-   for (int i=0; i<2; i++)
+   for (int i = 0; i < 2; i++)
    {
       // first, test if output filename already exists
-      if (::GetFileAttributes(cszOutputFilename) == 0xFFFFFFFF)
+      if (!Path(outputFilename).FileExists())
          break; // no, so we don't need to test
 
       // check if the file's short name is the same
-      TCHAR buffer1[MAX_PATH], buffer2[MAX_PATH];
-      GetShortPathName(cszInputFilename, buffer1, MAX_PATH);
-      GetShortPathName(cszOutputFilename, buffer2, MAX_PATH);
+      CString shortInputFilename = Path(inputFilename).ShortPathName();
+      CString shortOutputFilename = Path(outputFilename).ShortPathName();
 
-      if (0 == _tcsicmp(buffer1, buffer2))
+      if (0 == shortInputFilename.CompareNoCase(shortOutputFilename))
       {
          if (i == 0)
          {
             // when overwriting original, use same name as input filename
             // test again with another file name
-            if (overwrite)
+            if (m_encoderSettings.m_overwriteExisting)
             {
-               cszOutputFilename = cszInputFilename;
+               outputFilename = inputFilename;
                break;
             }
             else
             {
                // when not overwriting original, add extra extension
-               cszOutputFilename += _T(".");
-               cszOutputFilename += outputModule.GetOutputExtension();
+               outputFilename += _T(".");
+               outputFilename += m_outputModule->GetOutputExtension();
             }
             continue;
          }
@@ -348,18 +383,17 @@ bool EncoderImpl::CheckSameInputOutputFilenames(const CString& cszInputFilename,
    return true;
 }
 
-bool EncoderImpl::CheckCDExtractDirectCopy(InputModule& inputModule, OutputModule& outputModule,
-   SettingsManager& settingsManager)
+bool EncoderImpl::CheckCDExtractDirectCopy()
 {
-   unsigned int in_id = inputModule.GetModuleID();
-   unsigned int out_id = outputModule.GetModuleID();
+   unsigned int inputModuleID = m_inputModule->GetModuleID();
+   unsigned int outputModuleID = m_outputModule->GetModuleID();
 
-   if (in_id == ID_IM_CDRIP && out_id == ID_OM_WAVE)
+   if (inputModuleID == ID_IM_CDRIP && outputModuleID == ID_OM_WAVE)
    {
       // we have the correct input and output modules; now check if output
       // parameters are 44100 Hz, 16 bit, stereo
-      if (settingsManager.queryValueInt(SndFileFormat) == SF_FORMAT_WAV &&
-          settingsManager.queryValueInt(SndFileSubType) == SF_FORMAT_PCM_16)
+      if (m_settingsManager->QueryValueInt(SndFileFormat) == SF_FORMAT_WAV &&
+         m_settingsManager->QueryValueInt(SndFileSubType) == SF_FORMAT_PCM_16)
       {
          return true;
       }
@@ -368,70 +402,57 @@ bool EncoderImpl::CheckCDExtractDirectCopy(InputModule& inputModule, OutputModul
    return false;
 }
 
-void EncoderImpl::GenerateTempOutFilename(const CString& cszOriginalFilename, CString& tempFilename)
+void EncoderImpl::GenerateTempOutFilename(const CString& originalFilename, CString& tempFilename)
 {
-   tempFilename = cszOriginalFilename;
+   tempFilename = originalFilename;
 
-   CString cszPath, cszFilename;
-
-   // split path from filename
-   int iPos = cszOriginalFilename.ReverseFind(_T('\\'));
-   if (iPos != -1)
-   {
-      cszPath = cszOriginalFilename.Left(iPos+1);
-      cszFilename = cszOriginalFilename.Mid(iPos+1);
-   }
-   else
-      cszFilename = cszOriginalFilename;
+   Path originalPath(originalFilename);
+   CString pathName = originalPath.FolderName();
+   CString fileName = originalPath.FilenameAndExt();
 
    // find short name of path
-   CString cszShortPath;
-   ::GetShortPathName(cszPath, cszShortPath.GetBuffer(MAX_PATH), MAX_PATH);
-   cszShortPath.ReleaseBuffer();
+   CString shortPathName = Path(pathName).ShortPathName();
 
    // convert filename to ansi and back, and remove '?' chars
-   cszFilename = CString(CStringA(cszFilename));
-   cszFilename.Replace(_T('?'), _T('_'));
+   fileName = CString(CStringA(fileName));
+   fileName.Replace(_T('?'), _T('_'));
 
-   // now add a ".part"
-   unsigned int uiIndex = 0;
+   // now add a ".part" suffix
+   unsigned int fileIndex = 0;
    do
    {
-      tempFilename = cszShortPath + cszFilename;
-      if (uiIndex == 0)
+      tempFilename = Path::Combine(shortPathName, fileName).ToString();
+      if (fileIndex == 0)
          tempFilename += _T(".temp");
       else
       {
-         CString cszCount;
-         cszCount.Format(_T(".%u.temp"), uiIndex);
-         tempFilename += cszCount;
+         tempFilename.AppendFormat(_T(".%u.temp"), fileIndex);
       }
 
-      uiIndex++;
+      fileIndex++;
    }
-   while (::GetFileAttributes(tempFilename) != INVALID_FILE_ATTRIBUTES);
+   while (Path(tempFilename).FileExists());
 }
 
-bool EncoderImpl::InitOutputModule(OutputModule& outputModule, const CString& cszTempOutputFilename, SettingsManager& settingsManager,
-   TrackInfo& trackInfo, SampleContainer& sampleContainer, int& localerror)
+bool EncoderImpl::InitOutputModule(const CString& tempOutputFilename, TrackInfo& trackInfo)
 {
    // init output module
-   int res = outputModule.InitOutput(cszTempOutputFilename, settingsManager,
-      trackInfo, sampleContainer);
+   int res = m_outputModule->InitOutput(tempOutputFilename, *m_settingsManager,
+      trackInfo, m_sampleContainer);
 
    // catch errors
-   if (handler!=NULL && res<0)
+   if (m_errorHandler != nullptr && res < 0)
    {
-      switch(handler->handleError(infilename, outputModule.GetModuleName(),
-         -res, outputModule.GetLastError()))
+      switch (m_errorHandler->HandleError(m_encoderSettings.m_inputFilename, m_outputModule->GetModuleName(),
+         -res, m_outputModule->GetLastError()))
       {
       case EncoderErrorHandler::Continue:
          break;
       case EncoderErrorHandler::SkipFile:
-         localerror=2;
+         m_encoderState.m_errorCode = 2;
          return false;
       case EncoderErrorHandler::StopEncode:
-         localerror=-2;
+         m_encoderState.m_errorCode = -2;
          return false;
       }
    }
@@ -439,181 +460,176 @@ bool EncoderImpl::InitOutputModule(OutputModule& outputModule, const CString& cs
    return true;
 }
 
-void EncoderImpl::FormatEncodingDescription(InputModule& inputModule, OutputModule& outputModule,
-                                            SampleContainer& sampleContainer)
+void EncoderImpl::FormatEncodingDescription()
 {
-   CString cszInputDesc, cszContainerInfo, cszOutputDesc;
-   inputModule.GetDescription(cszInputDesc);
-   outputModule.GetDescription(cszOutputDesc);
+   CString inputDescription, containerInfo, outputDescription;
+   m_inputModule->GetDescription(inputDescription);
+   m_outputModule->GetDescription(outputDescription);
 
 #ifdef _DEBUG
    // get sample container description
-   cszContainerInfo.Format(
+   containerInfo.Format(
       _T("Sample Container: ")
       _T("Input: %u bit, %u channels, sample rate %u Hz, ")
-      _T("Output: %u bit\r\n")
-      ,
-      sampleContainer.GetInputModuleBitsPerSample(),
-      sampleContainer.GetInputModuleChannels(),
-      sampleContainer.GetInputModuleSampleRate(),
-      sampleContainer.GetOutputModuleBitsPerSample());
+      _T("Output: %u bit\r\n"),
+      m_sampleContainer.GetInputModuleBitsPerSample(),
+      m_sampleContainer.GetInputModuleChannels(),
+      m_sampleContainer.GetInputModuleSampleRate(),
+      m_sampleContainer.GetOutputModuleBitsPerSample());
 #endif
 
    CString cszText;
-   desc.Format(IDS_ENCODER_ENCODE_INFO, cszInputDesc, cszContainerInfo, cszOutputDesc);
+   m_encoderState.m_encodingDescription.Format(IDS_ENCODER_ENCODE_INFO, inputDescription, containerInfo, outputDescription);
 }
 
 CString GetLastErrorString()
 {
    DWORD dwError = GetLastError();
 
-   LPVOID lpMsgBuf = NULL;
+   LPVOID lpMsgBuf = nullptr;
    ::FormatMessage(
       FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-      NULL,
+      nullptr,
       dwError,
       MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // default language
-      reinterpret_cast<LPTSTR>(&lpMsgBuf), 0, NULL);
+      reinterpret_cast<LPTSTR>(&lpMsgBuf), 0, nullptr);
 
-   CString cszErrorMessage;
+   CString errorMessage;
    if (lpMsgBuf)
    {
-      cszErrorMessage = reinterpret_cast<LPTSTR>(lpMsgBuf);
+      errorMessage = reinterpret_cast<LPTSTR>(lpMsgBuf);
       LocalFree(lpMsgBuf);
    }
 
-   cszErrorMessage.TrimRight(_T("\r\n"));
+   errorMessage.TrimRight(_T("\r\n"));
 
-   return cszErrorMessage;
+   return errorMessage;
 }
 
-bool EncoderImpl::IsLossyInputModule(int in_module_id)
+bool EncoderImpl::IsLossyInputModule(int inputModuleID)
 {
    return
-      in_module_id == ID_IM_MAD ||
-      in_module_id == ID_IM_OGGV ||
-      in_module_id == ID_IM_AAC ||
-      in_module_id == ID_IM_BASS ||
-      in_module_id == ID_IM_SPEEX ||
-      in_module_id == ID_IM_OPUS;
+      inputModuleID == ID_IM_MAD ||
+      inputModuleID == ID_IM_OGGV ||
+      inputModuleID == ID_IM_AAC ||
+      inputModuleID == ID_IM_BASS ||
+      inputModuleID == ID_IM_SPEEX ||
+      inputModuleID == ID_IM_OPUS;
 }
 
-bool EncoderImpl::IsLossyOutputModule(int out_module_id)
+bool EncoderImpl::IsLossyOutputModule(int outputModuleID)
 {
    return
-      out_module_id == ID_OM_LAME ||
-      out_module_id == ID_OM_OGGV ||
-      out_module_id == ID_OM_AAC ||
-      out_module_id == ID_OM_BASSWMA ||
-      out_module_id == ID_OM_OPUS;
+      outputModuleID == ID_OM_LAME ||
+      outputModuleID == ID_OM_OGGV ||
+      outputModuleID == ID_OM_AAC ||
+      outputModuleID == ID_OM_BASSWMA ||
+      outputModuleID == ID_OM_OPUS;
 }
 
 bool EncoderImpl::CheckWarnTranscoding(InputModule& inputModule, OutputModule& outputModule)
 {
-   unsigned int in_id = inputModule.GetModuleID();
-   unsigned int out_id = outputModule.GetModuleID();
+   unsigned int inputModuleID = m_inputModule->GetModuleID();
+   unsigned int outputModuleID = m_outputModule->GetModuleID();
 
-   bool in_lossy = IsLossyInputModule(in_id);
-   bool out_lossy = IsLossyOutputModule(out_id);
+   bool inputModuleLossyFormat = IsLossyInputModule(inputModuleID);
+   bool outputModuleLossyFormat = IsLossyOutputModule(outputModuleID);
 
-   if (in_lossy && out_lossy && warn_lossy && !warned_about_lossy)
+   if (inputModuleLossyFormat && outputModuleLossyFormat && m_encoderSettings.m_warnLossyTranscoding && !s_warnedAboutLossyTranscoding)
    {
       // warn user about transcoding
       extern bool WarnAboutTranscode();
 
       if (!WarnAboutTranscode())
-      {
          return false;
 
-      }
-      warned_about_lossy = true;
+      s_warnedAboutLossyTranscoding = true;
    }
 
    return true;
 }
 
-void EncoderImpl::MainLoop(InputModule& inputModule, OutputModule& outputModule,
-   SampleContainer& sampleContainer, bool& bSkipFile)
+bool EncoderImpl::MainLoop()
 {
-   int ret = 0;
+   bool skipFile = false;
 
    do
    {
-      // call input module
-      ret = inputModule.DecodeSamples(sampleContainer);
+      int ret = m_inputModule->DecodeSamples(m_sampleContainer);
 
       // no more samples?
-      if (ret==0)
+      if (ret == 0)
          break;
 
       // catch errors
-      if (handler!=NULL && ret<0)
+      if (m_errorHandler != nullptr && ret < 0)
       {
-         switch(handler->handleError(infilename, inputModule.GetModuleName(),
-            -ret, inputModule.GetLastError()))
+         switch (m_errorHandler->HandleError(m_encoderSettings.m_inputFilename, m_inputModule->GetModuleName(),
+            -ret, m_inputModule->GetLastError()))
          {
          case EncoderErrorHandler::Continue:
             break;
          case EncoderErrorHandler::SkipFile:
-            error=3;
-            bSkipFile = true;
+            m_encoderState.m_errorCode = 3;
+            skipFile = true;
             break;
          case EncoderErrorHandler::StopEncode:
-            error=-3;
-            bSkipFile = true;
+            m_encoderState.m_errorCode = -3;
+            skipFile = true;
             break;
          }
       }
 
       // get percent done
-      percent = inputModule.PercentDone();
+      m_encoderState.m_percent = m_inputModule->PercentDone();
 
       // stuff all samples received into output module
-      ret = outputModule.EncodeSamples(sampleContainer);
+      ret = m_outputModule->EncodeSamples(m_sampleContainer);
 
       // catch errors
-      if (handler!=NULL && ret<0)
+      if (m_errorHandler != nullptr && ret < 0)
       {
-         switch(handler->handleError(infilename, outputModule.GetModuleName(),
-            -ret, outputModule.GetLastError()))
+         switch (m_errorHandler->HandleError(m_encoderSettings.m_inputFilename, m_outputModule->GetModuleName(),
+            -ret, m_outputModule->GetLastError()))
          {
          case EncoderErrorHandler::Continue:
             break;
          case EncoderErrorHandler::SkipFile:
-            error=4;
-            bSkipFile = true;
+            m_encoderState.m_errorCode = 4;
+            skipFile = true;
             break;
          case EncoderErrorHandler::StopEncode:
-            error=-4;
-            bSkipFile = true;
+            m_encoderState.m_errorCode = -4;
+            skipFile = true;
             break;
          }
       }
 
       // check if we should stop the thread
-      if (!running)
+      if (!m_encoderState.m_running)
          break;
 
       // sleep if we should pause
-      while(paused)
+      while (m_encoderState.m_paused)
          Sleep(50);
    }
-   while(true); // outer encoding loop
+   while (true); // outer encoding loop
+
+   return skipFile;
 }
 
-void EncoderImpl::WritePlaylistEntry(const CString& cszOutputFilename)
+void EncoderImpl::WritePlaylistEntry(const CString& outputFilename)
 {
-   FILE* fd = _tfopen(playlist_filename, _T("at"));
+   CString playlistPathAndFilename = Path::Combine(m_encoderSettings.m_outputFolder, m_encoderSettings.m_playlistFilename).ToString();
+
+   FILE* fd = _tfopen(playlistPathAndFilename, _T("at"));
    if (fd == nullptr)
       return;
 
    // get filename, without path
-   CString cszFilename = cszOutputFilename;
-   int iPos = cszFilename.ReverseFind('\\');
-   if (iPos != -1)
-      cszFilename.Delete(0, iPos+1);
+   CString filename = Path(outputFilename).FilenameAndExt();
 
    // write to playlist file
-   _ftprintf(fd, _T("%s\n"), cszFilename.GetString());
+   _ftprintf(fd, _T("%s\n"), filename.GetString());
    fclose(fd);
 }

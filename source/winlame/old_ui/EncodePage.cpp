@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2011 Michael Fink
+   Copyright (c) 2000-2017 Michael Fink
    Copyright (c) 2004 DeXT
 
    This program is free software; you can redistribute it and/or modify
@@ -26,6 +26,8 @@
 #include "EncodePage.h"
 #include "ErrorDlg.h"
 #include "CDRipTrackManager.h"
+#include "EncoderSettings.hpp"
+#include "EncoderState.hpp"
 
 #define IDR_TRAYICON 64
 #define IDM_ABOUTBOX 16 // from MainDlg.cpp
@@ -85,9 +87,7 @@ LRESULT EncodePage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
 
    newfile = true;
 
-   // set module and settings manager for the encoder object
-   encoder->setModuleManager(&IoCContainer::Current().Resolve<Encoder::ModuleManager>());
-   encoder->setSettingsManager(&settings.settings_manager);
+   encoder->SetSettingsManager(&settings.settings_manager);
 
    // load tray icons
    idle_icon = (HICON)LoadImage(_Module.GetResourceInstance(),
@@ -119,10 +119,10 @@ LRESULT EncodePage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
 
 LRESULT EncodePage::OnClickedStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-   if (encoder->isRunning())
+   if (encoder->IsRunning())
    {
       // update pause timer
-      if (encoder->isPaused())
+      if (encoder->IsPaused())
       {
          // encoding continues; read out pause counter
          pausetime += GetTickCount() - startpause;
@@ -134,14 +134,14 @@ LRESULT EncodePage::OnClickedStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
       }
 
       // toggles pausing
-      encoder->pauseEncoding();
+      encoder->PauseEncoding();
 
       SendDlgItemMessage(IDC_ENC_START, BM_SETIMAGE, IMAGE_ICON,
-         (LPARAM)ilIcons.ExtractIcon(encoder->isPaused() ? 2 : 3) );
+         (LPARAM)ilIcons.ExtractIcon(encoder->IsPaused() ? 2 : 3) );
 
       // set appropriate tray icon
       if (intray)
-         trayicon.SetIcon(encoder->isPaused() ? idle_icon : working_icon);
+         trayicon.SetIcon(encoder->IsPaused() ? idle_icon : working_icon);
    }
    else
    {
@@ -165,30 +165,38 @@ LRESULT EncodePage::OnClickedStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
       settings.settings_manager.setValue(GeneralIsLastFile,
          unsigned(curfile+1) >= settings.encoderjoblist.size() ? 1 : 0);
 
+      // set encoder settings
+      Encoder::EncoderSettings encoderSettings;
+
       // set input path
-      encoder->setInputFilename(settings.encoderjoblist[curfile].InputFilename());
+      encoderSettings.m_inputFilename = settings.encoderjoblist[curfile].InputFilename();
 
       // set output path
       if (settings.out_location_use_input_dir)
       {
-         CString outpath(settings.encoderjoblist[curfile].InputFilename());
-         int iPos = outpath.ReverseFind(_T('\\'));
-         if (iPos != -1)
-            outpath = outpath.Left(iPos+1);
+         Path outputPath(settings.encoderjoblist[curfile].InputFilename());
 
-         encoder->setOutputPath(outpath);
+         encoderSettings.m_outputFolder = outputPath.FolderName();
       }
       else
-         encoder->setOutputPath(settings.m_defaultSettings.outputdir);
+         encoderSettings.m_outputFolder = settings.m_defaultSettings.outputdir;
 
-      encoder->setOutputModulePerIndex(settings.output_module);
-      encoder->setErrorHandler(this);
-      encoder->setOverwriteFiles(settings.m_defaultSettings.overwrite_existing);
-      encoder->setDeleteAfterEncode(settings.m_defaultSettings.delete_after_encode);
-      encoder->setWarnLossy(settings.warn_lossy_transcoding);
       if (settings.create_playlist)
-         encoder->setOutputPlaylistFilename(settings.playlist_filename);
-      encoder->startEncode();
+         encoderSettings.m_playlistFilename = settings.playlist_filename;
+
+      Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+      encoderSettings.m_outputModuleID = moduleManager.GetOutputModuleID(settings.output_module);
+
+      encoderSettings.m_overwriteExisting = settings.m_defaultSettings.overwrite_existing;
+      encoderSettings.m_deleteInputAfterEncode = settings.m_defaultSettings.delete_after_encode;
+
+      encoderSettings.m_warnLossyTranscoding = settings.warn_lossy_transcoding;
+
+      encoder->SetEncoderSettings(encoderSettings);
+
+      encoder->SetErrorHandler(this);
+
+      encoder->StartEncode();
 
       // update info every 100 ms
       SetTimer(IDT_ENC_UPDATEINFO,100);
@@ -200,7 +208,8 @@ LRESULT EncodePage::OnClickedStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
       pausetime = 0;
 
       // set tray icon for working
-      if (intray) trayicon.SetIcon(working_icon);
+      if (intray)
+         trayicon.SetIcon(working_icon);
    }
 
    return 0;
@@ -215,7 +224,7 @@ LRESULT EncodePage::OnClickedStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL
    noupdate=true;
 
    // stop encoding
-   encoder->stopEncode();
+   encoder->StopEncode();
 
    // change the icons on the buttons
    SendDlgItemMessage(IDC_ENC_START, BM_SETIMAGE, IMAGE_ICON,
@@ -230,10 +239,12 @@ LRESULT EncodePage::OnClickedStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL
    }
 
    // wait for encoder to finish
-   while(encoder->isRunning()) Sleep(0);
+   while(encoder->IsRunning())
+      Sleep(0);
 
    // set idle tray icon
-   if (intray) trayicon.SetIcon(idle_icon);
+   if (intray)
+      trayicon.SetIcon(idle_icon);
 
    // unlock wizard back button
    pui->lockWizardButtons(false);
@@ -257,7 +268,7 @@ LRESULT EncodePage::OnClickedToTray(WORD wNotifyCode, WORD wID, HWND hWndCtl, BO
 
    // init tray icon
    trayicon.Init(m_hWnd,IDR_TRAYICON,
-      encoder->isRunning() && !encoder->isPaused() ? working_icon : idle_icon,
+      encoder->IsRunning() && !encoder->IsPaused() ? working_icon : idle_icon,
       WL_SYSTRAY_ACTIVE,buffer);
    ::ShowWindow(parent,SW_HIDE);
 
@@ -294,14 +305,14 @@ LRESULT EncodePage::OnSystrayActive(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
 
          // remove either pause or start encoding item
          ::RemoveMenu(menu,
-            (encoder->isRunning() && !encoder->isPaused()?
+            (encoder->IsRunning() && !encoder->IsPaused()?
             ID_TRAY_START : ID_TRAY_PAUSE), MF_BYCOMMAND);
 
          // check if there are files left to encode
          if (pui->getUISettings().encoderjoblist.empty())
          {
             unsigned int searchid =
-               encoder->isRunning() && !encoder->isPaused() ? ID_TRAY_PAUSE : ID_TRAY_START;
+               encoder->IsRunning() && !encoder->IsPaused() ? ID_TRAY_PAUSE : ID_TRAY_START;
 
             // search for entry pos
             HMENU submenu = GetSubMenu(menu,0);
@@ -367,7 +378,7 @@ LRESULT EncodePage::OnSystrayActive(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
    return 0;
 }
 
-Encoder::EncoderErrorHandler::ErrorAction EncodePage::handleError(LPCTSTR infilename,
+Encoder::EncoderErrorHandler::ErrorAction EncodePage::HandleError(LPCTSTR infilename,
    LPCTSTR modulename, int errnum, LPCTSTR errormsg, bool bSkipDisabled)
 {
    // show error dialog
@@ -444,12 +455,12 @@ bool EncodePage::OnLeavePage()
 
 void EncodePage::UpdateInfo()
 {
-   UISettings &settings = pui->getUISettings();
+   UISettings& settings = pui->getUISettings();
 
-   if (encoder->isRunning())
+   Encoder::EncoderState encoderState = encoder->GetEncoderState();
+
+   if (encoderState.m_running)
    {
-      encoder->lockAccess();
-
       CString text;
 
       // update some settings only when a new file has started
@@ -466,17 +477,16 @@ void EncodePage::UpdateInfo()
          ::SetWindowText(GetDlgItem(IDC_ENC_INFO2),text);
 
          // encoding description
-         ::SetWindowText(GetDlgItem(IDC_ENC_ENCINFO), encoder->getEncodingDescription());
+         CString description = encoderState.m_encodingDescription;
+         ::SetWindowText(GetDlgItem(IDC_ENC_ENCINFO), description);
 
          // force a second update when the description is not yet available
-         if (encoder->getEncodingDescription().GetLength()!=0)
+         if (!description.IsEmpty())
             newfile = false;
       }
 
-      // update rest of info text
-      float percent = encoder->queryPercentDone();
-
       // show percent text
+      float percent = encoderState.m_percent;
       text.Format(IDS_ENC_PERCENT_F,int(percent),int((percent-int(percent))*10));
       ::SetWindowText(GetDlgItem(IDC_ENC_INFO3),text);
 
@@ -498,7 +508,7 @@ void EncodePage::UpdateInfo()
 
          text.Format(IDS_ENC_REMAINING_UUU, hours, minutes, seconds);
       }
-      if (!encoder->isPaused())
+      if (!encoderState.m_paused)
          ::SetWindowText(GetDlgItem(IDC_ENC_INFO4),text);
 
       // set progress bar pos
@@ -520,16 +530,12 @@ void EncodePage::UpdateInfo()
 
          trayicon.SetTooltipText(text);
       }
-
-      encoder->unlockAccess();
    }
    else
    {
-      int error = encoder->getError();
-
       // current encoding thread has stopped
 
-      if (unsigned(++curfile)<settings.encoderjoblist.size() && error>=0)
+      if (unsigned(++curfile)<settings.encoderjoblist.size() && encoderState.m_errorCode >= 0)
       {
          // start the next encode
          noupdate=true;
@@ -537,7 +543,8 @@ void EncodePage::UpdateInfo()
          // start new file
          BOOL dummy;
          OnClickedStart(0,0,0,dummy);
-         while(!encoder->isRunning()) Sleep(0);
+         while(!encoder->IsRunning())
+            Sleep(0);
 
          noupdate=false;
       }
@@ -585,10 +592,10 @@ void EncodePage::UpdateInfo()
          pui->lockWizardButtons(false);
 
          // set encoding description
-         ::SetWindowText(GetDlgItem(IDC_ENC_ENCINFO), encoder->getEncodingDescription());
+         ::SetWindowText(GetDlgItem(IDC_ENC_ENCINFO), encoderState.m_encodingDescription);
 
          // check if we should perform an action when finished encoding
-         if (error==0 && settings.after_encoding_action > 0)
+         if (encoderState.m_errorCode == 0 && settings.after_encoding_action > 0)
             ShutdownWindows(settings.after_encoding_action);
       }
    }

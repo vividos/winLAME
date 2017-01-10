@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2005 Michael Fink
+   Copyright (c) 2000-2017 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -30,17 +30,17 @@
 #include "PageBase.h"
 #include "CommonStuff.h"
 #include "EncoderInterface.h"
+#include "EncoderErrorHandler.hpp"
 #include "SystemTrayIcon.h"
 
 
-// systray activation message
+/// systray activation message
 #define WL_SYSTRAY_ACTIVE WM_APP+1
 
-// timer id for updating info
+/// timer id for updating info
 #define IDT_ENC_UPDATEINFO 67
 
 /// encode page class
-
 class EncodePage:
    public PageBase,
    public Encoder::EncoderErrorHandler,
@@ -65,7 +65,7 @@ public:
       helpID = IDS_HTML_ENCODE;
 
       // create new encoder object
-      encoder = Encoder::EncoderInterface::getNewEncoder();
+      encoder = Encoder::EncoderInterface::CreateEncoder();
    }
 
    /// dtor
@@ -108,7 +108,7 @@ END_MSG_MAP()
    LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
    {
       // simulate click on stop button
-      if (encoder->isRunning())
+      if (encoder->IsRunning())
       {
          BOOL dummy;
          OnClickedStop(0,0,0,dummy);
@@ -142,7 +142,7 @@ END_MSG_MAP()
    // virtual function from EncoderErrorHandler
 
    /// error handler function
-   virtual Encoder::EncoderErrorHandler::ErrorAction handleError(LPCTSTR infilename,
+   virtual Encoder::EncoderErrorHandler::ErrorAction HandleError(LPCTSTR infilename,
       LPCTSTR modulename, int errnum, LPCTSTR errormsg, bool bSkipDisabled=false);
 
    // virtual function from PageBase

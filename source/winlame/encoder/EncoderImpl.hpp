@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -26,7 +26,10 @@
 #include "EncoderInterface.h"
 #include "ModuleInterface.hpp"
 #include "ModuleManagerImpl.hpp"
-#include <atomic>
+#include <thread>
+#include <mutex>
+#include "EncoderState.hpp"
+#include "EncoderSettings.hpp"
 
 namespace Encoder
 {
@@ -35,341 +38,126 @@ namespace Encoder
    {
    public:
       /// ctor
-      EncoderImpl()
-      {
-         running = false;
-         paused = false;
-         finished = false;
-         percent = 0.f;
-         handler = NULL;
-         out_module_id = 0;
-         settings_mgr = NULL;
-         mod_manager = NULL;
-         thread_handle = 0;
-         error = 0;
-         overwrite = true;
-         delete_after_encode = false;
-         warn_lossy = true;
-         m_useTrackInfo = false;
-
-         mutex = ::CreateMutex(NULL, FALSE, NULL);
-      }
+      EncoderImpl();
 
       /// dtor
-      virtual ~EncoderImpl()
+      virtual ~EncoderImpl() throw()
       {
-         lockAccess();
-         ::CloseHandle(mutex);
       }
 
-      /// locks access to encoder object
-      virtual void lockAccess()
+      /// sets encoder settings
+      virtual void SetEncoderSettings(const EncoderSettings& encoderSettings) override
       {
-         WaitForSingleObject(mutex, INFINITE);
+         m_encoderSettings = encoderSettings;
       }
 
-      /// try locking access to encoder object
-      virtual bool tryLockAccess()
+      /// returns encoder state
+      virtual EncoderState GetEncoderState() const override
       {
-         return WAIT_OBJECT_0 == WaitForSingleObject(mutex, 0);
-      }
+         std::unique_lock<std::recursive_mutex> lock(m_mutex);
 
-      /// unlocks access again
-      virtual void unlockAccess()
-      {
-         ::ReleaseMutex(mutex);
-      }
-
-      /// sets input filename
-      virtual void setInputFilename(LPCTSTR infile)
-      {
-         infilename = infile;
-      }
-
-      /// sets output path
-      virtual void setOutputPath(LPCTSTR outpath)
-      {
-         outpathname = outpath;
+         return m_encoderState;
       }
 
       /// sets the settings manager to use
-      virtual void setSettingsManager(SettingsManager *mgr)
+      virtual void SetSettingsManager(SettingsManager* settingsManager) override
       {
-         settings_mgr = mgr;
+         m_settingsManager = settingsManager;
       }
 
-      /// sets the module manager to use
-      virtual void setModuleManager(ModuleManager *mgr)
+      /// sets error m_errorHandler to use if an error occurs
+      virtual void SetErrorHandler(EncoderErrorHandler* errorHandler) override
       {
-         mod_manager = mgr;
-      }
-
-      /// sets output module to use
-      virtual void setOutputModule(int moduleId)
-      {
-         out_module_id = moduleId;
-      }
-
-      /// sets output module per index
-      virtual void setOutputModulePerIndex(int idx)
-      {
-         out_module_id = mod_manager->GetOutputModuleID(idx);
-      }
-
-      /// sets error handler to use if an error occurs
-      virtual void setErrorHandler(EncoderErrorHandler *thehandler)
-      {
-         handler = thehandler;
-      }
-
-      /// set if files can be overwritten
-      virtual void setOverwriteFiles(bool overwr)
-      {
-         overwrite = overwr;
-      }
-
-      /// set if source file should be deleted
-      virtual void setDeleteAfterEncode(bool del)
-      {
-         delete_after_encode = del;
-      }
-
-      /// set lossy transcoding warning
-      virtual void setWarnLossy(bool warn)
-      {
-         warn_lossy = warn;
-      }
-
-      /// sets track info to use instead of track info read from input module
-      virtual void setTrackInfo(const TrackInfo& trackInfo)
-      {
-         m_useTrackInfo = true;
-         m_trackInfo = trackInfo;
-      }
-
-      /// sets output playlist filename and enables playlist creation
-      virtual void setOutputPlaylistFilename(LPCTSTR plname)
-      {
-         playlist_filename = outpathname;
-         playlist_filename += plname;
+         m_errorHandler = errorHandler;
       }
 
       /// starts encoding thread; returns immediately
-      virtual void startEncode()
-      {
-         if (running) return;
-         if (paused)
-         {
-            pauseEncoding();
-            return;
-         }
-
-         desc.Empty();
-
-         running = true;
-         paused = false;
-
-         lockAccess();
-         thread_handle = _beginthread(threadProc, 0, this);
-         unlockAccess();
-      }
-
-      /// returns if the encoder thread is running
-      virtual bool isRunning()
-      {
-         if (tryLockAccess())
-         {
-            bool run = running;
-            unlockAccess();
-            return run;
-         }
-         else
-            return true;
-      }
+      virtual void StartEncode() override;
 
       /// pauses encoding
-      virtual void pauseEncoding()
+      virtual void PauseEncoding() override
       {
-         lockAccess();
-         paused = !paused;
-         unlockAccess();
-      }
-
-      /// returns if the encoder is currently paused
-      virtual bool isPaused()
-      {
-         lockAccess();
-         bool pa = paused;
-         unlockAccess();
-         return pa;
+         std::unique_lock<std::recursive_mutex> lock(m_mutex);
+         m_encoderState.m_paused = !m_encoderState.m_paused;
       }
 
       /// stops encoding
-      virtual void stopEncode()
-      {
-         // forces encoder to stop
-         running = false;
-         paused = false;
-
-         // wait for thread to finish, at most 5 seconds
-         if (thread_handle != 0)
-         {
-            ::WaitForSingleObject((HANDLE)thread_handle, 5 * 1000);
-            thread_handle = 0;
-         }
-      }
-
-      /// returns if there were errors during encoding
-      virtual int getError()
-      {
-         lockAccess();
-         int err = error;
-         unlockAccess();
-         return err;
-      }
-
-      /// returns the percent done of the encoding process
-      virtual float queryPercentDone()
-      {
-         lockAccess();
-         float perc = percent;
-         unlockAccess();
-         return perc;
-      }
-
-      /// returns encoding description string
-      virtual CString getEncodingDescription()
-      {
-         lockAccess();
-         CString str(desc);
-         unlockAccess();
-         return str;
-      }
+      virtual void StopEncode() override;
 
       /// creates output filename from input filename
-      static CString GetOutputFilename(const CString& outputPath, const CString& cszInputFilename, OutputModule& outputModule);
+      static CString GetOutputFilename(const CString& outputPath, const CString& inputFilename, OutputModule& outputModule);
 
       /// returns if input module with given id is lossy
-      static bool IsLossyInputModule(int in_module_id);
+      static bool IsLossyInputModule(int inputModuleId);
 
       /// returns if output module with given id is lossy
-      static bool IsLossyOutputModule(int out_module_id);
+      static bool IsLossyOutputModule(int outputModuleID);
 
    protected:
-      /// static thread procedure
-      static void __cdecl threadProc(void *ptr)
-      {
-         EncoderImpl* enc = reinterpret_cast<EncoderImpl*>(ptr);
-         enc->encode();
-         _endthread();
-      }
-
-      /// the real encoder function
-      void encode();
+      /// encodes using encoder settings
+      void Encode();
 
       /// prepares input module for work
-      bool PrepareInputModule(InputModule& inputModule, CString& cszInputFilename,
-         SettingsManager& settingsManager, TrackInfo& trackInfo, SampleContainer& sampleContainer,
-         int& error);
+      bool PrepareInputModule(TrackInfo& trackInfo);
 
       /// prepares output module for work; step 1 of 2; see InitOutputModule()
-      bool PrepareOutputModule(InputModule& inputModule, OutputModule& outputModule,
-         SettingsManager& settingsManager,
-         const CString& cszInputFilename, CString& cszOutputFilename, int& error);
+      bool PrepareOutputModule();
 
       /// checks if the input and output filenames are the same and modifies output filename
-      bool CheckSameInputOutputFilenames(const CString& cszInputFilename,
-         CString& cszOutputFilename, OutputModule& outputModule);
+      bool CheckSameInputOutputFilenames(const CString& inputFilename,
+         CString& outputFilename, OutputModule& outputModule);
 
       /// checks if a direct copy of the cd extracted wave file is possible
-      bool CheckCDExtractDirectCopy(InputModule& inputModule, OutputModule& outputModule,
-         SettingsManager& settingsManager);
+      bool CheckCDExtractDirectCopy();
 
       /// generates temporary output filename
-      void GenerateTempOutFilename(const CString& cszOriginalFilename, CString& tempFilename);
+      void GenerateTempOutFilename(const CString& originalFilename, CString& tempFilename);
 
       /// inits output module; step 2 of 2; see PrepareOutputModule()
-      bool InitOutputModule(OutputModule& outputModule, const CString& cszTempOutputFilename,
-         SettingsManager& settingsManager, TrackInfo& trackInfo, SampleContainer& sampleContainer,
-         int& error);
+      bool InitOutputModule(const CString& tempOutputFilename, TrackInfo& trackInfo);
 
       /// formats encoding description
-      void FormatEncodingDescription(InputModule& inputModule, OutputModule& outputModule,
-         SampleContainer& sampleContainer);
+      void FormatEncodingDescription();
 
       /// checks if we should warn about transcoding
       bool CheckWarnTranscoding(InputModule& inputModule, OutputModule& outputModule);
 
-      /// main encoding loop
-      void MainLoop(InputModule& inputModule, OutputModule& outputModule,
-         SampleContainer& sampleContainer, bool& bSkipFile);
+      /// main encoding loop; returns if file should be skipped
+      bool MainLoop();
 
       /// writes playlist entry
-      void WritePlaylistEntry(const CString& cszOutputFilename);
+      void WritePlaylistEntry(const CString& outputFilename);
 
    protected:
-      /// input filename
-      CString infilename;
-
-      /// output pathname
-      CString outpathname;
-
-      CString m_precalculatedOutputFilename;
+      /// encoder settings
+      EncoderSettings m_encoderSettings;
 
       /// the settings manager to use
-      SettingsManager *settings_mgr;
+      SettingsManager* m_settingsManager;
 
       /// module manager
-      ModuleManager *mod_manager;
+      ModuleManager& m_moduleManager;
 
-      /// error handler interface
-      EncoderErrorHandler *handler;
+      /// error m_errorHandler interface
+      EncoderErrorHandler* m_errorHandler;
 
-      /// id of the output module to use
-      int out_module_id;
+      /// current encoder state
+      EncoderState m_encoderState;
 
-      /// indicates if files can be overwritten
-      bool overwrite;
+      /// input module
+      std::unique_ptr<InputModule> m_inputModule;
 
-      /// indicates if source file should be deleted after encoding
-      bool delete_after_encode;
+      /// input module
+      std::unique_ptr<OutputModule> m_outputModule;
 
-      /// warn about lossy transcoding
-      bool warn_lossy;
+      /// sample container
+      SampleContainer m_sampleContainer;
 
-      /// track info to store in output
-      TrackInfo m_trackInfo;
+      /// mutex to protect encoder state
+      mutable std::recursive_mutex m_mutex;
 
-      /// indicates if the provided track info should be used instead of track info read from
-      /// the input file
-      bool m_useTrackInfo;
-
-      /// indicates percent done
-      float percent;
-
-      /// indicates if encoder is paused
-      std::atomic<bool> paused;
-
-      /// indicates if encoder is running
-      std::atomic<bool> running;
-
-      /// indicates if encoder has been finished
-      std::atomic<bool> finished;
-
-      /// error indicator
-      int error;
-
-      /// encoding description
-      CString desc;
-
-      /// playlist filename
-      CString playlist_filename;
-
-      /// current thread handle
-      unsigned long thread_handle;
-
-      /// mutex to lock encoder object access
-      HANDLE mutex;
+      /// encoder worker thread
+      std::unique_ptr<std::thread> m_workerThread;
    };
 
 } // namespace Encoder
