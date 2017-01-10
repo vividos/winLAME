@@ -27,20 +27,20 @@ namespace Encoder
 {
    // global functions
 
-   /// writes riff wave mp3 header to output stream
-   /// \param ostr output file stream to write to
-   /// \param channels number of channels, either 1 or 2
-   /// \param samplerate mp3 file sample rate
-   /// \param bitrate bitrate of the mp3
-   /// \param codec_delay codec sample delay when decoding
-   void WriteWaveMp3Header(std::ofstream &ostr, unsigned int channels,
-      unsigned int samplerate, unsigned int bitrate, unsigned short codec_delay);
+   /// writes RIFF wave mp3 header to output stream
+   /// \param outputFile output file stream to write to
+   /// \param numChannels number of channels, either 1 or 2
+   /// \param samplerateInHz mp3 file sample rate
+   /// \param bitrateInBps bitrate of the mp3
+   /// \param codecDelay codec sample delay when decoding
+   void WriteWaveMp3Header(std::ofstream& outputFile, unsigned int numChannels,
+      unsigned int samplerateInHz, unsigned int bitrateInBps, unsigned short codecDelay);
 
    /// fixes fact chunk and riff header lengths; seeks around in the file
-   /// \param ostr output file stream to write to
-   /// \param datalen number of mp3 data bytes written
-   /// \param numsamples number of samples written
-   void FixupWaveMp3Header(std::ofstream &ostr, unsigned int datalen,
-      unsigned int numsamples);
+   /// \param outputFile output file stream to write to
+   /// \param dataLength number of mp3 data bytes written
+   /// \param numSamples number of samples written
+   void FixupWaveMp3Header(std::ofstream& outputFile, unsigned int dataLength,
+      unsigned int numSamples);
 
 } // namespace Encoder
