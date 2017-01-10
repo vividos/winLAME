@@ -63,6 +63,7 @@ bool PresetManagerImpl::loadPreset(LPCTSTR filename)
    }
    catch (const std::exception& ex)
    {
+      ex;
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
       return false;
    }
@@ -112,6 +113,7 @@ void PresetManagerImpl::setFacility(LPCTSTR facilityName)
    }
    catch (const std::exception& ex)
    {
+      ex;
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 }
@@ -136,6 +138,7 @@ std::tstring PresetManagerImpl::getPresetName(size_t index)
    }
    catch (const std::exception& ex)
    {
+      ex;
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
@@ -156,6 +159,7 @@ std::tstring PresetManagerImpl::getPresetDescription(size_t index)
    }
    catch (const std::exception& ex)
    {
+      ex;
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
@@ -246,6 +250,7 @@ void PresetManagerImpl::setSettings(size_t index, SettingsManager& settingsManag
    }
    catch (const std::exception& ex)
    {
+      ex;
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 }
@@ -310,6 +315,7 @@ int PresetManagerImpl::GetItemCount(int group)
    }
    catch (const std::exception& ex)
    {
+      ex;
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
@@ -334,6 +340,7 @@ std::tstring PresetManagerImpl::GetItemName(int group, int index)
    }
    catch (const std::exception& ex)
    {
+      ex;
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
@@ -358,6 +365,7 @@ std::tstring PresetManagerImpl::GetItemValue(int group, int index)
    }
    catch (const std::exception& ex)
    {
+      ex;
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
@@ -398,6 +406,7 @@ rapidxml::xml_node<char>* PresetManagerImpl::getPresetValueNode(int group, int i
    }
    catch (const std::exception& ex)
    {
+      ex;
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
