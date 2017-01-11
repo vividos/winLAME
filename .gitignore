@@ -49,3 +49,5 @@ source/winlame/res/MainFrameRibbon.0407.h
 source/winlame/res/MainFrameRibbon.0407.rc
 *.VC.db
 *.VC.opendb
+source/cov-int/
+source/cov-int.zip
