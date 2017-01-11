@@ -92,6 +92,9 @@ public:
       return path1.Combine(part2);
    }
 
+   /// returns special folder; see CSIDL_* constants
+   static CString SpecialFolder(int csidl);
+
    // public members
 
    /// path separator string

@@ -134,3 +134,13 @@ void Path::AddEndingBackslash(CString& path)
    if (path.Right(1) != Path::Separator)
       path += Path::Separator;
 }
+
+CString Path::SpecialFolder(int csidl)
+{
+   CString specialFolder;
+
+   ::SHGetFolderPath(nullptr, csidl, nullptr, SHGFP_TYPE_CURRENT, specialFolder.GetBuffer(MAX_PATH));
+   specialFolder.ReleaseBuffer();
+
+   return specialFolder;
+}
