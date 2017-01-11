@@ -10,31 +10,31 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="winlame\res\about.0407.html">
+    <None Include="res\about.0407.html">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="winlame\res\MainFrameRibbon.0407.bml">
+    <None Include="res\MainFrameRibbon.0407.bml">
       <Filter>Resource Files\Generated Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="winlame\resource.h">
+    <ClInclude Include="resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="winlame\res\MainFrameRibbon.0407.h">
+    <ClInclude Include="res\MainFrameRibbon.0407.h">
       <Filter>Resource Files\Generated Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="winlame\winlame.0407.rc">
+    <ResourceCompile Include="winlame.0407.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="winlame\res\MainFrameRibbon.0407.rc">
+    <ResourceCompile Include="res\MainFrameRibbon.0407.rc">
       <Filter>Resource Files\Generated Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="winlame\res\MainFrameRibbon.0407.xml">
+    <CustomBuild Include="res\MainFrameRibbon.0407.xml">
       <Filter>Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>

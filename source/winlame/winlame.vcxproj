@@ -1,0 +1,382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3D23B065-AB74-4C3D-BCBC-7B7492786FEE}</ProjectGuid>
+    <RootNamespace>winlame</RootNamespace>
+    <ProjectName>winLAME</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\boost.props" />
+    <Import Project="..\winlame-Debug.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\boost.props" />
+    <Import Project="..\winlame-Release.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl />
+    <ClCompile>
+      <AdditionalIncludeDirectories>.;encoder;ui;old_ui;res;..\libraries\include;..\nlame;..\libraries\include\wtl;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalOptions>-Zm140 %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <ResourceCompile />
+    <Link>
+      <AdditionalDependencies>comctl32.lib;version.lib;nlame.lib;libsndfile-1.lib;libmad.lib;libfaac.lib;libfaad2.lib;libopusfile-0.lib;bass.lib;basswma.lib;basscd.lib;libid3tag.lib;libFLAC_dynamic.lib;delayimp.lib;zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DelayLoadDLLs>libfaad2.dll;libfaac.dll;bass.dll;basscd.dll;basswma.dll;libflac_dynamic.dll;libmad.dll;libsndfile-1.dll;libmp3lame.dll;ws2_32.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+    </Link>
+    <Bscmake />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl />
+    <ClCompile>
+      <AdditionalOptions>/IGNORE:4049 -Zm140 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>.;encoder;ui;old_ui;res;..\libraries\include;..\nlame;..\libraries\include\wtl;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ResourceCompile />
+    <Link>
+      <AdditionalDependencies>comctl32.lib;version.lib;nlame.lib;libsndfile-1.lib;libmad.lib;libfaac.lib;libfaad2.lib;libopusfile-0.lib;bass.lib;basswma.lib;basscd.lib;libid3tag.lib;libFLAC_dynamic.lib;delayimp.lib;zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <DelayLoadDLLs>libfaad2.dll;libfaac.dll;bass.dll;basscd.dll;basswma.dll;libflac_dynamic.dll;libmad.dll;libsndfile-1.dll;libmp3lame.dll;ws2_32.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <IgnoreSpecificDefaultLibraries>msvcrt</IgnoreSpecificDefaultLibraries>
+    </Link>
+    <Bscmake />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="CDRipTitleFormatManager.cpp" />
+    <ClCompile Include="CommandLineParser.cpp" />
+    <ClCompile Include="encoder\AacInputModule.cpp" />
+    <ClCompile Include="encoder\AacOutputModule.cpp" />
+    <ClCompile Include="encoder\BassInputModule.cpp" />
+    <ClCompile Include="encoder\BassWmaOutputModule.cpp" />
+    <ClCompile Include="encoder\CDExtractTask.cpp" />
+    <ClCompile Include="encoder\CDReadoutModule.cpp" />
+    <ClCompile Include="encoder\CreatePlaylistTask.cpp" />
+    <ClCompile Include="encoder\EncoderImpl.cpp" />
+    <ClCompile Include="encoder\EncoderTask.cpp" />
+    <ClCompile Include="encoder\FlacInputModule.cpp" />
+    <ClCompile Include="encoder\Id3v1Tag.cpp" />
+    <ClCompile Include="encoder\LameOutputModule.cpp" />
+    <ClCompile Include="encoder\MadMpegInputModule.cpp" />
+    <ClCompile Include="encoder\ModuleManagerImpl.cpp" />
+    <ClCompile Include="encoder\MonkeysAudioInputModule.cpp" />
+    <ClCompile Include="encoder\OggVorbisInputModule.cpp" />
+    <ClCompile Include="encoder\OggVorbisOutputModule.cpp" />
+    <ClCompile Include="encoder\OpusInputModule.cpp" />
+    <ClCompile Include="encoder\OpusOutputModule.cpp" />
+    <ClCompile Include="encoder\SampleContainer.cpp" />
+    <ClCompile Include="encoder\SndFileFormats.cpp" />
+    <ClCompile Include="encoder\SndFileInputModule.cpp" />
+    <ClCompile Include="encoder\SpeexInputModule.cpp" />
+    <ClCompile Include="encoder\TrackInfo.cpp" />
+    <ClCompile Include="encoder\WaveMp3Header.cpp" />
+    <ClCompile Include="encoder\SndFileOutputModule.cpp" />
+    <ClCompile Include="encoder\dither\dither.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="encoder\id3\Field.cpp" />
+    <ClCompile Include="encoder\id3\File.cpp" />
+    <ClCompile Include="encoder\id3\Frame.cpp" />
+    <ClCompile Include="encoder\id3\Tag.cpp" />
+    <ClCompile Include="encoder\aacinfo\aacinfo.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="encoder\aacinfo\filestream.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="FreedbInfo.cpp" />
+    <ClCompile Include="InputFilesParser.cpp" />
+    <ClCompile Include="old_ui\AacSettingsPage_old.cpp" />
+    <ClCompile Include="old_ui\CDRipDlg.cpp" />
+    <ClCompile Include="old_ui\CDRipPage.cpp" />
+    <ClCompile Include="old_ui\CommonStuff.cpp" />
+    <ClCompile Include="old_ui\EncodePage.cpp" />
+    <ClCompile Include="old_ui\InputPage.cpp" />
+    <ClCompile Include="old_ui\LameSimpleSettingsPage.cpp" />
+    <ClCompile Include="old_ui\MainDlg.cpp" />
+    <ClCompile Include="old_ui\OggVorbisSettingsPage_old.cpp" />
+    <ClCompile Include="old_ui\OptionsDlg.cpp" />
+    <ClCompile Include="old_ui\OpusSettingsPage_old.cpp" />
+    <ClCompile Include="old_ui\OutputPage.cpp" />
+    <ClCompile Include="old_ui\PresetsPage.cpp" />
+    <ClCompile Include="Path.cpp" />
+    <ClCompile Include="AudioFileInfoManager.cpp" />
+    <ClCompile Include="ui\AACSettingsPage.cpp" />
+    <ClCompile Include="ui\AboutDlg.cpp" />
+    <ClCompile Include="ui\BevelLine.cpp" />
+    <ClCompile Include="ui\FinishPage.cpp" />
+    <ClCompile Include="ui\FixedValueSpinButtonCtrl.cpp" />
+    <ClCompile Include="ui\FreeDbDiscListDlg.cpp" />
+    <ClCompile Include="ui\ImageListComboBox.cpp" />
+    <ClCompile Include="ui\InputCDPage.cpp" />
+    <ClCompile Include="ui\InputListCtrl.cpp" />
+    <ClCompile Include="ui\LAMESettingsPage.cpp" />
+    <ClCompile Include="ui\LibsndfileSettingsPage.cpp" />
+    <ClCompile Include="ui\OggVorbisSettingsPage.cpp" />
+    <ClCompile Include="ui\OpusSettingsPage.cpp" />
+    <ClCompile Include="ui\OutputSettingsPage.cpp" />
+    <ClCompile Include="ui\PresetSelectionPage.cpp" />
+    <ClCompile Include="ui\Win7Taskbar.cpp" />
+    <ClCompile Include="ui\WMASettingsPage.cpp" />
+    <ClCompile Include="old_ui\WaveOutputSettingsPage.cpp" />
+    <ClCompile Include="old_ui\WmaOutputSettingsPage.cpp" />
+    <ClCompile Include="preset\PresetManagerImpl.cpp" />
+    <ClCompile Include="preset\PropertyListBox.cpp" />
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="CDRipTrackManager.cpp" />
+    <ClCompile Include="LangCountryMapper.cpp" />
+    <ClCompile Include="LanguageResourceManager.cpp" />
+    <ClCompile Include="SettingsManager.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TaskManager.cpp" />
+    <ClCompile Include="UISettings.cpp" />
+    <ClCompile Include="UTF8.cpp" />
+    <ClCompile Include="VariableManager.cpp" />
+    <ClCompile Include="winlame.cpp" />
+    <ClCompile Include="ui\CDReadSettingsPage.cpp" />
+    <ClCompile Include="ui\DropFilesManager.cpp" />
+    <ClCompile Include="ui\GeneralSettingsPage.cpp" />
+    <ClCompile Include="ui\InputFilesPage.cpp" />
+    <ClCompile Include="ui\MainFrame.cpp" />
+    <ClCompile Include="ui\TasksView.cpp" />
+    <ClCompile Include="ui\WizardPageHost.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Atl.h" />
+    <ClInclude Include="Boost.h" />
+    <ClInclude Include="CDRipDiscInfo.h" />
+    <ClInclude Include="CDRipTitleFormatManager.hpp" />
+    <ClInclude Include="CDRipTrackInfo.h" />
+    <ClInclude Include="CommandLineParser.hpp" />
+    <ClInclude Include="encoder\AacInputModule.hpp" />
+    <ClInclude Include="encoder\AacOutputModule.hpp" />
+    <ClInclude Include="encoder\AlwaysSkipErrorHandler.hpp" />
+    <ClInclude Include="encoder\BassInputModule.hpp" />
+    <ClInclude Include="encoder\BassWmaOutputModule.hpp" />
+    <ClInclude Include="encoder\CDExtractTask.hpp" />
+    <ClInclude Include="encoder\CDReadJob.hpp" />
+    <ClInclude Include="encoder\CDReadoutModule.hpp" />
+    <ClInclude Include="encoder\CreatePlaylistTask.hpp" />
+    <ClInclude Include="encoder\EncoderErrorHandler.hpp" />
+    <ClInclude Include="encoder\EncoderImpl.hpp" />
+    <ClInclude Include="encoder\EncoderSettings.hpp" />
+    <ClInclude Include="encoder\EncoderState.hpp" />
+    <ClInclude Include="encoder\EncoderTask.hpp" />
+    <ClInclude Include="encoder\FlacInputModule.hpp" />
+    <ClInclude Include="encoder\Id3v1Tag.hpp" />
+    <ClInclude Include="encoder\InputModule.hpp" />
+    <ClInclude Include="encoder\LameOutputModule.hpp" />
+    <ClInclude Include="encoder\MadMpegInputModule.hpp" />
+    <ClInclude Include="encoder\ModuleBase.hpp" />
+    <ClInclude Include="encoder\ModuleInterface.hpp" />
+    <ClInclude Include="encoder\ModuleManagerImpl.hpp" />
+    <ClInclude Include="encoder\MonkeysAudioInputModule.hpp" />
+    <ClInclude Include="encoder\OggInputStream.hpp" />
+    <ClInclude Include="encoder\OggVorbisInputModule.hpp" />
+    <ClInclude Include="encoder\OggVorbisOutputModule.hpp" />
+    <ClInclude Include="encoder\OpusInputModule.hpp" />
+    <ClInclude Include="encoder\OpusOutputModule.hpp" />
+    <ClInclude Include="encoder\OutputModule.hpp" />
+    <ClInclude Include="encoder\SampleContainer.hpp" />
+    <ClInclude Include="encoder\SndFileFormats.hpp" />
+    <ClInclude Include="encoder\SndFileInputModule.hpp" />
+    <ClInclude Include="encoder\SpeexInputModule.hpp" />
+    <ClInclude Include="encoder\TrackInfo.hpp" />
+    <ClInclude Include="encoder\WaveMp3Header.hpp" />
+    <ClInclude Include="encoder\SndFileOutputModule.hpp" />
+    <ClInclude Include="encoder\dither\dither.h" />
+    <ClInclude Include="encoder\id3\Field.h" />
+    <ClInclude Include="encoder\id3\File.h" />
+    <ClInclude Include="encoder\id3\Frame.h" />
+    <ClInclude Include="encoder\id3\Tag.h" />
+    <ClInclude Include="encoder\aacinfo\aacinfo.h" />
+    <ClInclude Include="encoder\aacinfo\filestream.h" />
+    <ClInclude Include="FreedbInfo.hpp" />
+    <ClInclude Include="IniFile.h" />
+    <ClInclude Include="InputFilesParser.h" />
+    <ClInclude Include="old_ui\AacSettingsPage.h" />
+    <ClInclude Include="old_ui\CDRipDlg.h" />
+    <ClInclude Include="old_ui\CDRipPage.h" />
+    <ClInclude Include="old_ui\CommonStuff.h" />
+    <ClInclude Include="old_ui\EncodePage.h" />
+    <ClInclude Include="old_ui\ErrorDlg.h" />
+    <ClInclude Include="HtmlHelper.h" />
+    <ClInclude Include="old_ui\InputPage.h" />
+    <ClInclude Include="old_ui\LameSimpleSettingsPage.h" />
+    <ClInclude Include="old_ui\MainDlg.h" />
+    <ClInclude Include="old_ui\OggVorbisSettingsPage.h" />
+    <ClInclude Include="old_ui\OptionsDlg.h" />
+    <ClInclude Include="old_ui\OpusSettingsPage.h" />
+    <ClInclude Include="old_ui\OutputPage.h" />
+    <ClInclude Include="old_ui\PageBase.h" />
+    <ClInclude Include="old_ui\PresetsPage.h" />
+    <ClInclude Include="old_ui\SystemTrayIcon.h" />
+    <ClInclude Include="Path.hpp" />
+    <ClInclude Include="StdCppLib.h" />
+    <ClInclude Include="TrackEditListCtrl.h" />
+    <ClInclude Include="AudioFileInfoManager.hpp" />
+    <ClInclude Include="ui\AACSettingsPage.hpp" />
+    <ClInclude Include="ui\AboutDlg.hpp" />
+    <ClInclude Include="ui\AlternateColorsListCtrl.hpp" />
+    <ClInclude Include="ui\BevelLine.hpp" />
+    <ClInclude Include="ui\FinishPage.hpp" />
+    <ClInclude Include="ui\FixedValueSpinButtonCtrl.hpp" />
+    <ClInclude Include="ui\FreeDbDiscListDlg.hpp" />
+    <ClInclude Include="ui\ImageListComboBox.hpp" />
+    <ClInclude Include="ui\InputCDPage.hpp" />
+    <ClInclude Include="ui\InputListCtrl.hpp" />
+    <ClInclude Include="ui\LAMESettingsPage.hpp" />
+    <ClInclude Include="ui\LibsndfileSettingsPage.hpp" />
+    <ClInclude Include="ui\OggVorbisSettingsPage.hpp" />
+    <ClInclude Include="ui\OpusSettingsPage.hpp" />
+    <ClInclude Include="ui\OutputSettingsPage.hpp" />
+    <ClInclude Include="ui\PresetSelectionPage.hpp" />
+    <ClInclude Include="ui\RedrawLock.hpp" />
+    <ClInclude Include="ui\Win7Taskbar.hpp" />
+    <ClInclude Include="ui\WMASettingsPage.hpp" />
+    <ClInclude Include="old_ui\WaveOutputSettingsPage.h" />
+    <ClInclude Include="old_ui\WmaOutputSettingsPage.h" />
+    <ClInclude Include="preset\PresetManagerImpl.h" />
+    <ClInclude Include="preset\PropertyDlg.h" />
+    <ClInclude Include="preset\PropertyListBox.h" />
+    <ClInclude Include="App.h" />
+    <ClInclude Include="CDRipTrackManager.h" />
+    <ClInclude Include="DynamicLibrary.h" />
+    <ClInclude Include="EncoderInterface.h" />
+    <ClInclude Include="IoCContainer.hpp" />
+    <ClInclude Include="LangCountryMapper.hpp" />
+    <ClInclude Include="LanguageResourceManager.hpp" />
+    <ClInclude Include="ModuleManager.hpp" />
+    <ClInclude Include="PresetManagerInterface.h" />
+    <ClInclude Include="SettingsManager.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Task.h" />
+    <ClInclude Include="TaskInfo.h" />
+    <ClInclude Include="TaskManager.h" />
+    <ClInclude Include="TaskManagerConfig.h" />
+    <ClInclude Include="UIinterface.h" />
+    <ClInclude Include="UISettings.h" />
+    <ClInclude Include="UTF8.hpp" />
+    <ClInclude Include="VariableManager.h" />
+    <ClInclude Include="res\MainFrameRibbon.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ui\CDReadSettingsPage.hpp" />
+    <ClInclude Include="ui\DropFilesManager.hpp" />
+    <ClInclude Include="ui\GeneralSettingsPage.hpp" />
+    <ClInclude Include="ui\InputFilesPage.hpp" />
+    <ClInclude Include="ui\MainFrame.hpp" />
+    <ClInclude Include="ui\ResourceInstanceSwitcher.hpp" />
+    <ClInclude Include="ui\TasksView.hpp" />
+    <ClInclude Include="ui\WizardPage.hpp" />
+    <ClInclude Include="ui\WizardPageHost.hpp" />
+    <ClInclude Include="Win32.h" />
+    <ClInclude Include="Wtl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\btnicons.bmp" />
+    <Image Include="res\help.bmp" />
+    <Image Include="res\idle.ico" />
+    <Image Include="res\logo.bmp" />
+    <Image Include="res\working.ico" />
+    <Image Include="res\winlame.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\about.html" />
+    <None Include="res\MainFrameRibbon.bml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\MainFrameRibbon.rc" />
+    <ResourceCompile Include="winlame.rc">
+      <Culture Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">0x0409</Culture>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">winlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Culture Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">0x0409</Culture>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">winlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="res\MainFrameRibbon.xml">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compiling %(Filename)%(Extension)</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">uicc %(FullPath) %(RootDir)%(Directory)%(Filename).bml /header:%(RootDir)%(Directory)%(Filename).h /res:%(RootDir)%(Directory)%(Filename).rc
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)%(Filename).bml;%(RootDir)%(Directory)%(Filename).rc;%(RootDir)%(Directory)%(Filename).h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling %(Filename)%(Extension)</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">uicc %(FullPath) %(RootDir)%(Directory)%(Filename).bml /header:%(RootDir)%(Directory)%(Filename).h /res:%(RootDir)%(Directory)%(Filename).rc
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)%(Filename).bml;%(RootDir)%(Directory)%(Filename).rc;%(RootDir)%(Directory)%(Filename).h;%(Outputs)</Outputs>
+      <SubType>Designer</SubType>
+    </CustomBuild>
+    <Xml Include="..\presets.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\docs\TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\libraries\src\libid3tag\libid3tag.vcxproj">
+      <Project>{b210dd52-187a-44c2-a93f-20f7a05f1bbb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libraries\src\libmad\libmad.vcxproj">
+      <Project>{b89e54c7-562e-4444-a6b2-63ff8db043d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libraries\src\opus-tools\opus-tools.vcxproj">
+      <Project>{67749bc5-f457-478a-9e92-3986654bc068}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\nlame\nlame.vcxproj">
+      <Project>{0b3f6b1a-d78e-47db-a48c-d3daa16e17ce}</Project>
+    </ProjectReference>
+    <ProjectReference Include="winlame_res0407.vcxproj">
+      <Project>{e2d89bae-7448-4af4-9ac9-9cc070e178bd}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
