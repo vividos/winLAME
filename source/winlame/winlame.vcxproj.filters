@@ -1,19 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="old_ui Files">
-      <UniqueIdentifier>{9cf7725f-cee1-4a9d-a721-4d1255dc7a8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="old_ui Files\Header Files">
-      <UniqueIdentifier>{532dbb09-4082-4229-aa52-684cfb627e67}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="old_ui Files\Source Files">
-      <UniqueIdentifier>{d3ce9737-a003-467c-b686-160f28e9efef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="old_ui Files\Resource Files">
-      <UniqueIdentifier>{b42f5ecb-3b06-435a-ab5d-98c3264535b0}</UniqueIdentifier>
-      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
-    </Filter>
     <Filter Include="Preset Files">
       <UniqueIdentifier>{31fd3636-f0fb-4209-8161-90b9c621707f}</UniqueIdentifier>
     </Filter>
@@ -22,19 +9,6 @@
     </Filter>
     <Filter Include="Preset Files\Source Files">
       <UniqueIdentifier>{8e5db12d-be4d-4eb3-b3cb-2263f5d5b676}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI Files">
-      <UniqueIdentifier>{91fdb3c2-3213-46ef-8319-8860047d989f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI Files\Header Files">
-      <UniqueIdentifier>{4e44bfeb-c69d-496a-aae7-77a6b1161aba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI Files\Source Files">
-      <UniqueIdentifier>{0d8c9410-0e0c-4222-8416-7240dde85894}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UI Files\Resource Files">
-      <UniqueIdentifier>{740fc0d6-e2df-406c-a370-db608506fe80}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
     </Filter>
     <Filter Include="Main Program Files">
       <UniqueIdentifier>{8a50c7d7-045b-44c0-8bf1-5e43fbc34fdf}</UniqueIdentifier>
@@ -46,9 +20,6 @@
     <Filter Include="Main Program Files\Header Files">
       <UniqueIdentifier>{aa1984d8-2d06-448b-9d82-b720bbc9e634}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
-    </Filter>
-    <Filter Include="UI Files\Resource Files\Generated Files">
-      <UniqueIdentifier>{7e9e0b1f-aa29-45d6-87c4-ccd49fb40dc5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Encoder Files">
       <UniqueIdentifier>{79b9d66c-80dc-46bd-967a-0b15f7f93710}</UniqueIdentifier>
@@ -67,6 +38,35 @@
     </Filter>
     <Filter Include="Encoder Files\Source Files">
       <UniqueIdentifier>{c3a339cf-6711-4d36-9690-8734c78be610}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modern UI Files">
+      <UniqueIdentifier>{91fdb3c2-3213-46ef-8319-8860047d989f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modern UI Files\Header Files">
+      <UniqueIdentifier>{4e44bfeb-c69d-496a-aae7-77a6b1161aba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modern UI Files\Source Files">
+      <UniqueIdentifier>{0d8c9410-0e0c-4222-8416-7240dde85894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modern UI Files\Resource Files">
+      <UniqueIdentifier>{740fc0d6-e2df-406c-a370-db608506fe80}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
+    </Filter>
+    <Filter Include="Modern UI Files\Resource Files\Generated Files">
+      <UniqueIdentifier>{7e9e0b1f-aa29-45d6-87c4-ccd49fb40dc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classic UI Files">
+      <UniqueIdentifier>{9cf7725f-cee1-4a9d-a721-4d1255dc7a8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classic UI Files\Header Files">
+      <UniqueIdentifier>{532dbb09-4082-4229-aa52-684cfb627e67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classic UI Files\Source Files">
+      <UniqueIdentifier>{d3ce9737-a003-467c-b686-160f28e9efef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Classic UI Files\Resource Files">
+      <UniqueIdentifier>{b42f5ecb-3b06-435a-ab5d-98c3264535b0}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -145,41 +145,41 @@
     <ClCompile Include="encoder\aacinfo\filestream.c">
       <Filter>Encoder Files\aacinfo files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\CDRipDlg.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\CDRipDlg.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\CDRipPage.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\CDRipPage.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\CommonStuff.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\CommonStuff.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\EncodePage.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\EncodePage.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\InputPage.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\InputPage.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\LameSimpleSettingsPage.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\LameSimpleSettingsPage.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\MainDlg.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\MainDlg.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\OptionsDlg.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\OptionsDlg.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\OutputPage.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\OutputPage.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\PresetsPage.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\PresetsPage.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\WaveOutputSettingsPage.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\WaveOutputSettingsPage.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\WmaOutputSettingsPage.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\WmaOutputSettingsPage.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="preset\PresetManagerImpl.cpp">
       <Filter>Preset Files\Source Files</Filter>
@@ -218,79 +218,79 @@
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\CDReadSettingsPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\DropFilesManager.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\GeneralSettingsPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\InputFilesPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\MainFrame.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\TasksView.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\WizardPageHost.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\InputCDPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\PresetSelectionPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\OutputSettingsPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\AACSettingsPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\LAMESettingsPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\WMASettingsPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\OggVorbisSettingsPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\LibsndfileSettingsPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\OggVorbisSettingsPage_old.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\OggVorbisSettingsPage_old.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\AacSettingsPage_old.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\AacSettingsPage_old.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\AboutDlg.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\ImageListComboBox.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\InputListCtrl.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InputFilesParser.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\FinishPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Path.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\FixedValueSpinButtonCtrl.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\BevelLine.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="encoder\CreatePlaylistTask.cpp">
       <Filter>Encoder Files\Source Files</Filter>
@@ -299,7 +299,7 @@
       <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\FreeDbDiscListDlg.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="encoder\SpeexInputModule.cpp">
       <Filter>Encoder Files\Source Files</Filter>
@@ -320,10 +320,10 @@
       <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\OpusSettingsPage.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="old_ui\OpusSettingsPage_old.cpp">
-      <Filter>old_ui Files\Source Files</Filter>
+    <ClCompile Include="classic\OpusSettingsPage_old.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="encoder\SndFileFormats.cpp">
       <Filter>Main Program Files\Source Files</Filter>
@@ -332,7 +332,7 @@
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\Win7Taskbar.cpp">
-      <Filter>UI Files\Source Files</Filter>
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="encoder\SndFileOutputModule.cpp">
       <Filter>Encoder Files\Source Files</Filter>
@@ -366,59 +366,59 @@
     <ClInclude Include="encoder\aacinfo\filestream.h">
       <Filter>Encoder Files\aacinfo files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\AacSettingsPage.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\AacSettingsPage.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\CDRipDlg.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\CDRipDlg.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\CDRipPage.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\CDRipPage.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\CommonStuff.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\CommonStuff.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\EncodePage.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\EncodePage.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\ErrorDlg.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\ErrorDlg.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\InputPage.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\InputPage.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\LameSimpleSettingsPage.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\LameSimpleSettingsPage.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\MainDlg.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\MainDlg.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\OggVorbisSettingsPage.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\OggVorbisSettingsPage.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\OptionsDlg.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\OptionsDlg.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\OutputPage.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\OutputPage.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\PageBase.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\PageBase.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\PresetsPage.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\PresetsPage.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\SystemTrayIcon.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\SystemTrayIcon.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TrackEditListCtrl.h">
-      <Filter>old_ui Files\Header Files</Filter>
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\WaveOutputSettingsPage.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\WaveOutputSettingsPage.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\WmaOutputSettingsPage.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\WmaOutputSettingsPage.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="preset\PresetManagerImpl.h">
       <Filter>Preset Files\Header Files</Filter>
@@ -481,37 +481,37 @@
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
-      <Filter>UI Files\Resource Files</Filter>
+      <Filter>Modern UI Files\Resource Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\OggVorbisSettingsPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\WMASettingsPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\LibsndfileSettingsPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\LAMESettingsPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\FinishPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\InputCDPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\OutputSettingsPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\PresetSelectionPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\AACSettingsPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\AboutDlg.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HtmlHelper.h">
       <Filter>Main Program Files\Header Files</Filter>
@@ -523,46 +523,46 @@
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\AlternateColorsListCtrl.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\FixedValueSpinButtonCtrl.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\BevelLine.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\CDReadSettingsPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\DropFilesManager.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\GeneralSettingsPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\ImageListComboBox.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\InputFilesPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\InputListCtrl.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\MainFrame.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\ResourceInstanceSwitcher.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\TasksView.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\WizardPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\WizardPageHost.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="encoder\CreatePlaylistTask.hpp">
       <Filter>Encoder Files\Header Files</Filter>
@@ -571,7 +571,7 @@
       <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\FreeDbDiscListDlg.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="encoder\SpeexInputModule.hpp">
       <Filter>Encoder Files\Header Files</Filter>
@@ -583,7 +583,7 @@
       <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="res\MainFrameRibbon.h">
-      <Filter>UI Files\Resource Files\Generated Files</Filter>
+      <Filter>Modern UI Files\Resource Files\Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="Atl.h">
       <Filter>Main Program Files\Header Files</Filter>
@@ -604,7 +604,7 @@
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\RedrawLock.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AudioFileInfoManager.hpp">
       <Filter>Main Program Files\Header Files</Filter>
@@ -616,10 +616,10 @@
       <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\OpusSettingsPage.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="old_ui\OpusSettingsPage.h">
-      <Filter>old_ui Files\Header Files</Filter>
+    <ClInclude Include="classic\OpusSettingsPage.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CDRipTrackInfo.h">
       <Filter>Main Program Files\Header Files</Filter>
@@ -637,7 +637,7 @@
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\Win7Taskbar.hpp">
-      <Filter>UI Files\Header Files</Filter>
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="encoder\SndFileOutputModule.hpp">
       <Filter>Encoder Files\Header Files</Filter>
@@ -735,38 +735,38 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\btnicons.bmp">
-      <Filter>old_ui Files\Resource Files</Filter>
+      <Filter>Classic UI Files\Resource Files</Filter>
     </Image>
     <Image Include="res\help.bmp">
-      <Filter>old_ui Files\Resource Files</Filter>
+      <Filter>Classic UI Files\Resource Files</Filter>
     </Image>
     <Image Include="res\idle.ico">
-      <Filter>old_ui Files\Resource Files</Filter>
+      <Filter>Classic UI Files\Resource Files</Filter>
     </Image>
     <Image Include="res\logo.bmp">
-      <Filter>old_ui Files\Resource Files</Filter>
+      <Filter>Classic UI Files\Resource Files</Filter>
     </Image>
     <Image Include="res\working.ico">
-      <Filter>old_ui Files\Resource Files</Filter>
+      <Filter>Classic UI Files\Resource Files</Filter>
     </Image>
     <Image Include="res\winlame.ico">
-      <Filter>UI Files\Resource Files</Filter>
+      <Filter>Modern UI Files\Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\about.html">
-      <Filter>UI Files\Resource Files</Filter>
+      <Filter>Modern UI Files\Resource Files</Filter>
     </None>
     <None Include="res\MainFrameRibbon.bml">
-      <Filter>UI Files\Resource Files\Generated Files</Filter>
+      <Filter>Modern UI Files\Resource Files\Generated Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="winlame.rc">
-      <Filter>UI Files\Resource Files</Filter>
+      <Filter>Modern UI Files\Resource Files</Filter>
     </ResourceCompile>
     <ResourceCompile Include="res\MainFrameRibbon.rc">
-      <Filter>UI Files\Resource Files\Generated Files</Filter>
+      <Filter>Modern UI Files\Resource Files\Generated Files</Filter>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
@@ -777,7 +777,7 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="res\MainFrameRibbon.xml">
-      <Filter>UI Files\Resource Files</Filter>
+      <Filter>Modern UI Files\Resource Files</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>
