@@ -46,6 +46,15 @@ namespace Encoder
 
       /// number of channels
       int numChannels;
+
+      /// ctor
+      ModuleTraits()
+         :bitsPerSample(0),
+         format(SamplesInterleaved),
+         samplerateInHz(0),
+         numChannels(0)
+      {
+      }
    };
 
    /// sample container class
