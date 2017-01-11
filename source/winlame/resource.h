@@ -236,7 +236,6 @@
 #define IDS_ERR_ERRCODE                         40101
 #define IDS_ERR_ERRMSG                          40102
 #define IDS_ERR_NOMODULES                       40103
-#define IDS_WARNING_LOCAL_PRESETS_XML_FILE_SS   40104
 #define IDS_WARN_TRANSCODE                      40105
 #define IDS_PRE_DESC_DEFAULT                    40106
 #define IDS_MAIN_TASKS_STILL_RUNNING            40107

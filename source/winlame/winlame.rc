@@ -834,7 +834,6 @@ BEGIN
     IDS_ERR_ERRCODE               "Error code: %u"
     IDS_ERR_ERRMSG                "Error Message: %s"
     IDS_ERR_NOMODULES             "There are no input or output modules available! Please reinstall winLAME!"
-    IDS_WARNING_LOCAL_PRESETS_XML_FILE_SS "Warning! The presets.xml file in the winLAME program files folder is no longer used. Please move it to the user-specific folder ""%s"" or to the machine-wide folder ""%s""."
     IDS_DLG_CAP_INPUT             "Input Files"
     IDS_DLG_CAP_OUTPUT            "Output Settings"
     IDS_DLG_CAP_PRESETS           "Presets"

@@ -255,35 +255,24 @@ void App::LoadPresetFile()
 {
    // CSIDL_APPDATA - user-dependent app data folder
    // CSIDL_COMMON_APPDATA - machine-wide app data folder
-   CString cszUserSpecificAppFolder, cszMachineWideAppFolder;
+   CString userSpecificAppFolder = Path::SpecialFolder(CSIDL_APPDATA);
+   CString machineWideAppFolder = Path::SpecialFolder(CSIDL_COMMON_APPDATA);
 
-   SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, SHGFP_TYPE_CURRENT, cszUserSpecificAppFolder.GetBuffer(MAX_PATH));
-   cszUserSpecificAppFolder.ReleaseBuffer();
-
-   SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, cszMachineWideAppFolder.GetBuffer(MAX_PATH));
-   cszMachineWideAppFolder.ReleaseBuffer();
-
-   cszUserSpecificAppFolder += _T("\\winLAME\\");
-   cszMachineWideAppFolder += _T("\\winLAME\\");
+   userSpecificAppFolder = Path::Combine(userSpecificAppFolder, _T("winLAME")).ToString();
+   machineWideAppFolder = Path::Combine(machineWideAppFolder, _T("winLAME")).ToString();
 
    // first, check if user has left a presets.xml around in the .exe folder
-   CString presetFilename = AppFolder();
-   presetFilename += _T("presets.xml");
+   CString presetFilename = Path::Combine(AppFolder(), _T("presets.xml"));
 
-   if (::GetFileAttributes(presetFilename) != INVALID_FILE_ATTRIBUTES)
+   if (!Path(presetFilename).FileExists())
    {
-      // found file; warn user about it
-      CString cszWarning;
-      cszWarning.Format(IDS_WARNING_LOCAL_PRESETS_XML_FILE_SS, cszUserSpecificAppFolder, cszMachineWideAppFolder);
-      AppMessageBox(NULL, cszWarning, MB_ICONEXCLAMATION | MB_OK);
-   }
-
-   // first try to check for user-dependend config file
-   presetFilename = cszUserSpecificAppFolder + _T("presets.xml");
-   if (::GetFileAttributes(presetFilename) == INVALID_FILE_ATTRIBUTES)
-   {
-      // not available: try to use machine-wide config file
-      presetFilename = cszMachineWideAppFolder + _T("presets.xml");
+      // next try to check for user-dependend config file
+      presetFilename = Path::Combine(userSpecificAppFolder, _T("presets.xml")).ToString();
+      if (!Path(presetFilename).FileExists())
+      {
+         // not available: try to use machine-wide config file
+         presetFilename = Path::Combine(machineWideAppFolder, _T("presets.xml")).ToString();
+      }
    }
 
    UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
@@ -291,7 +280,7 @@ void App::LoadPresetFile()
 
    PresetManagerInterface& presetManager = IoCContainer::Current().Resolve<PresetManagerInterface>();
 
-   if (::GetFileAttributes(presetFilename) != INVALID_FILE_ATTRIBUTES)
+   if (Path(presetFilename).FileExists())
       settings.preset_avail = presetManager.loadPreset(presetFilename);
    else
       settings.preset_avail = false;

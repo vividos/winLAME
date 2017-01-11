@@ -819,7 +819,6 @@ BEGIN
     IDS_ERR_ERRCODE               "Fehlercode: %u"
     IDS_ERR_ERRMSG                "Fehlermeldung: %s"
     IDS_ERR_NOMODULES             "Es sind keine Eingabe- oder Ausgabemodule verfügbar! Bitte installieren Sie winLAME neu!"
-    IDS_WARNING_LOCAL_PRESETS_XML_FILE_SS "Warnung! Die Datei presets.xml im winLAME-Programme-Ordner wird nicht länger benutzt. Bitte verschieben Sie sie in den benutzerspezifischen Ordner ""%s"" oder den rechnerweiten Ordner ""%s""."
     IDS_DLG_CAP_INPUT             "Quelldateien"
     IDS_DLG_CAP_OUTPUT            "Ausgabe-Einstellungen"
     IDS_DLG_CAP_PRESETS           "Standardeinstellungen"
