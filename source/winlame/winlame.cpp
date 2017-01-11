@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2005 Michael Fink
+   Copyright (c) 2000-2017 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,6 +28,14 @@
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/,
    LPTSTR lpCmdLine, int nCmdShow)
 {
-   App app(hInstance);
-   return app.Run(lpCmdLine, nCmdShow);
+   try
+   {
+      App app(hInstance);
+      return app.Run(lpCmdLine, nCmdShow);
+   }
+   catch (...)
+   {
+      ATLTRACE(_T("Exception while running winLAME\n"));
+      return -1;
+   }
 }

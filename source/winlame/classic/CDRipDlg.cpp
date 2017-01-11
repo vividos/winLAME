@@ -685,7 +685,7 @@ void CDRipDlg::FreedbLookup()
    }
 
    // show dialog when it's more than one item
-   unsigned int nSelected = 0;
+   unsigned int selectedIndex = 0;
 
    if (entriesList.size() > 1)
    {
@@ -696,12 +696,12 @@ void CDRipDlg::FreedbLookup()
       waitCursor.Set();
 
       // select which one to take
-      nSelected = dlg.GetSelectedItem();
+      selectedIndex = dlg.GetSelectedItem();
    }
 
-   if (nSelected >= 0 && nSelected < entriesList.size())
+   if (selectedIndex < entriesList.size())
    {
-      FillListFreedbInfo(entriesList[nSelected]);
+      FillListFreedbInfo(entriesList[selectedIndex]);
 
       m_bAcquiredDiscInfo = true;
    }

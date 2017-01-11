@@ -45,7 +45,7 @@ private:
 class LanguageResourceManager
 {
 public:
-   LanguageResourceManager(LPCTSTR pszLangDllSearchPattern, UINT uiLangNameId, UINT uiLangNameNativeId) throw();
+   LanguageResourceManager(LPCTSTR pszLangDllSearchPattern, UINT uiLangNameId, UINT uiLangNameNativeId);
    ~LanguageResourceManager() throw();
 
    const std::vector<LanguageResourceInfo>& LanguageResourceList() const  throw() { return m_vecLangResourceInfo; }
@@ -57,10 +57,10 @@ public:
 private:
    void UnloadLangResource() throw();
 
-   void ScanResourceDlls(LPCTSTR pszLangDllSearchPattern) throw();
+   void ScanResourceDlls(LPCTSTR pszLangDllSearchPattern);
 
    void AddLanguageResourceInfo(LPCTSTR pszLanghModSearchPattern, const CString& cszResourceFilename,
-      const CString& cszResourceFilenameWithoutPath, HMODULE hMod) throw();
+      const CString& cszResourceFilenameWithoutPath, HMODULE hMod);
 
 private:
    std::vector<LanguageResourceInfo> m_vecLangResourceInfo;

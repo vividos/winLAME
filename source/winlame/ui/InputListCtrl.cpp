@@ -117,12 +117,12 @@ void InputListCtrl::SetItemAudioInfos(int iItem, int length, int bitrate, int sa
    }
 }
 
-LPCTSTR InputListCtrl::GetFileName(int index)
+CString InputListCtrl::GetFileName(int index)
 {
-   AudioFileEntry *entry =
+   AudioFileEntry* entry =
       reinterpret_cast<AudioFileEntry*>(GetItemData(index));
 
-   return entry == NULL ? _T("") : entry->filename;
+   return entry == nullptr ? CString() : entry->filename;
 }
 
 unsigned int InputListCtrl::GetTotalLength()

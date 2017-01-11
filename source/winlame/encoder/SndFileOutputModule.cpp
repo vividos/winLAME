@@ -36,6 +36,7 @@ SndFileOutputModule::SndFileOutputModule()
    m_subType(SF_FORMAT_PCM_16)
 {
    m_moduleId = ID_OM_WAVE;
+   memset(&m_sfinfo, 0, sizeof(m_sfinfo));
 }
 
 bool SndFileOutputModule::IsAvailable() const

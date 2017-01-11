@@ -276,6 +276,8 @@ int FlacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    m_pcmBufferLength = (m_flacFrameSize * m_flacContext->streamInfo.channels * m_flacContext->streamInfo.bits_per_sample);
    m_flacContext->reservoir = new FLAC__int32[m_flacContext->streamInfo.max_blocksize * m_flacContext->streamInfo.channels * 2];
 
+   m_inputBuffer.resize(m_pcmBufferLength);
+
    // set up input traits
    samplecont.SetInputModuleTraits(m_flacContext->streamInfo.bits_per_sample, SamplesChannelArray,
       m_flacContext->streamInfo.sample_rate, m_flacContext->streamInfo.channels);
@@ -293,8 +295,6 @@ void FlacInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthIn
 
 int FlacInputModule::DecodeSamples(SampleContainer& samples)
 {
-   FLAC__int32* inputBuffer = new FLAC__int32[m_pcmBufferLength];
-
    while (m_flacContext->numSamplesInReservoir < m_flacFrameSize)
    {
       if (FLAC__stream_decoder_get_state(m_flacDecoder) == FLAC__STREAM_DECODER_END_OF_STREAM)
@@ -310,7 +310,7 @@ int FlacInputModule::DecodeSamples(SampleContainer& samples)
    unsigned int numSamples = std::min(m_flacContext->numSamplesInReservoir, m_flacFrameSize);
 
    FLAC__pack_pcm_signed_little_endian(
-      (unsigned char*)inputBuffer,
+      (unsigned char*)m_inputBuffer.data(),
       m_flacContext->reservoir,
       numSamples,
       m_flacContext->streamInfo.channels,
@@ -324,9 +324,7 @@ int FlacInputModule::DecodeSamples(SampleContainer& samples)
    m_samplePosition += numSamples;
 
    // copy the samples to the sample container
-   samples.PutSamplesInterleaved(inputBuffer, numSamples);
-
-   delete[] inputBuffer;
+   samples.PutSamplesInterleaved(m_inputBuffer.data(), numSamples);
 
    return numSamples;
 }

@@ -189,7 +189,11 @@ bool OutputSettingsPage::SaveData(bool bSilent)
             return false;
 
          // create the output directory
-         ::_tmkdir(m_uiSettings.m_defaultSettings.outputdir);
+         if (::_tmkdir(m_uiSettings.m_defaultSettings.outputdir) != 0)
+         {
+            AppMessageBox(m_hWnd, IDS_OUT_CREATE_FAILED, MB_OK | MB_ICONEXCLAMATION);
+            return false;
+         }
       }
    }
 

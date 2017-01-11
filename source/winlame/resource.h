@@ -297,6 +297,7 @@
 #define IDS_OUT_ACTION_LOGOFF                   40604
 #define IDS_OUT_ACTION_HIBERNATE                40605
 #define IDS_OUT_ACTION_SUSPEND                  40606
+#define IDS_OUT_CREATE_FAILED                   40607
 #define IDS_ENC_STOPPED                         40700
 #define IDS_ENC_FINISHED                        40701
 #define IDS_ENC_U_OF_U                          40702

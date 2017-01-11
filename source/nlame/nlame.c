@@ -536,7 +536,9 @@ void nlame_write_vbr_infotag( nlame_instance_t* inst, FILE* fd )
    if (!fd)
       return;
 
-   fseek(fd, 0, SEEK_END);
+   if (fseek(fd, 0, SEEK_END) != 0)
+      return;
+
    lFileSize = ftell(fd);
 
    if (lFileSize == 0)
@@ -547,7 +549,8 @@ void nlame_write_vbr_infotag( nlame_instance_t* inst, FILE* fd )
    if (id3v2TagSize < 0)
       return;
 
-   fseek(fd, id3v2TagSize, SEEK_SET);
+   if (fseek(fd, id3v2TagSize, SEEK_SET) != 0)
+      return;
 
    length = lame_get_lametag_frame(inst->lgf, buffer, sizeof(buffer));
    if (length > 0)

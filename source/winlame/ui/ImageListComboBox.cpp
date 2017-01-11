@@ -85,7 +85,7 @@ LRESULT ImageListComboBox::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 */
    {
       // draw the edit box
-      bool bEnabled = true;
+      const bool bEnabled = true;
       if (bEnabled)
          dc.FillSolidRect(rcClient, ::GetSysColor(COLOR_WINDOW));
       else

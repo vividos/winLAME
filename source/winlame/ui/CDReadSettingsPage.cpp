@@ -111,7 +111,8 @@ void CDReadSettingsPage::ShowTagsContextMenu(CButton& button, CEdit& edit)
       CDRipTitleFormatManager::GetAllTags();
 
    CMenu contextMenu;
-   ATLVERIFY(TRUE == contextMenu.CreatePopupMenu());
+   BOOL retCreate = contextMenu.CreatePopupMenu();
+   ATLASSERT(retCreate == TRUE);
 
    //std::for_each(allTags.begin(), allTags.end(), [&](const CString& singleTag) {
    for (size_t tagIndex = 0; tagIndex < allTags.size(); tagIndex++)

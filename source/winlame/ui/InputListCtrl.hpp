@@ -59,7 +59,7 @@ namespace UI
          int bitrate, int length);
 
       /// returns file name
-      LPCTSTR GetFileName(int index);
+      CString GetFileName(int index);
 
       /// returns total length of files in list
       unsigned int GetTotalLength();

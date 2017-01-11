@@ -35,9 +35,13 @@ using Encoder::SampleContainer;
 const int c_sndfileInputBufferSize = 512;
 
 SndFileInputModule::SndFileInputModule()
-   :m_buffer(nullptr)
+   :m_sndfile(nullptr),
+   m_sampleCount(0),
+   m_buffer(nullptr),
+   m_numOutputBits(0)
 {
    m_moduleId = ID_IM_SNDFILE;
+   memset(&m_sfinfo, 0, sizeof(m_sfinfo));
 }
 
 Encoder::InputModule* SndFileInputModule::CloneModule()

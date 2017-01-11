@@ -35,7 +35,11 @@ class SystemTrayIcon
 {
 public:
    /// ctor
-   SystemTrayIcon(){ active=false; }
+   SystemTrayIcon()
+      :active(false)
+   {
+      memset(&nid, 0, sizeof(nid));
+   }
 
    /// dtor
    ~SystemTrayIcon()
@@ -89,7 +93,7 @@ public:
       nid.uFlags = NIF_TIP;
       int size = lstrlen(pszTooltip)+1;
       if (size>64) size=64;
-      lstrcpyn(nid.szTip,pszTooltip,size > 64 ? 64 : size);
+      lstrcpyn(nid.szTip,pszTooltip,size);
       return ::Shell_NotifyIcon(NIM_MODIFY, &nid)==TRUE;
    }
 

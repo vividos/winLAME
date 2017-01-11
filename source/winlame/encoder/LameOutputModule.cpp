@@ -40,11 +40,14 @@ nlame_instance_t* LameOutputModule::m_nogapInstance = nullptr;
 LameOutputModule::LameOutputModule()
    :m_instance(nullptr),
    m_writeInfoTag(true),
-   m_nogapEncoding(false),
-   m_writeWaveHeader(false),
    m_inputBufferFill(0),
    m_bufferType(nle_buffer_short),
-   m_inputBufferSize(1152)
+   m_inputBufferSize(1152),
+   m_nogapEncoding(false),
+   m_nogapIsLastFile(false),
+   m_writeWaveHeader(false),
+   m_numSamplesEncoded(0),
+   m_numDataBytesWritten(0)
 {
    m_moduleId = ID_OM_LAME;
 }

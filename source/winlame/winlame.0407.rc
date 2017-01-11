@@ -860,6 +860,7 @@ BEGIN
     IDS_OUT_ACTION_LOGOFF         "Benutzer abmelden"
     IDS_OUT_ACTION_HIBERNATE      "Computer in Hibernate-Modus versetzen"
     IDS_OUT_ACTION_SUSPEND        "Computer in Suspend-Modus versetzen"
+    IDS_OUT_CREATE_FAILED         "Fehler beim Anlegen des Ausgabeordners!"
     IDS_ENC_STOPPED               "Angehalten. Drücken Sie auf den Startknopf, um das Encodens zu starten."
     IDS_ENC_FINISHED              "Alle Dateien wurden encodet."
     IDS_ENC_U_OF_U                "Datei %u von %u wird bearbeitet"

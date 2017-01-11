@@ -36,6 +36,7 @@ namespace UI
          :m_uiItemWidth(0),
          m_uiItemHeight(0)
       {
+         m_bMsgHandled = false;
       }
 
       /// adds new string with icon

@@ -151,16 +151,21 @@ void TaskManager::CheckRunnableTasks()
    });
 }
 
-bool TaskManager::IsQueueEmpty() const
+bool TaskManager::IsQueueEmpty() const throw()
 {
-   bool bIsEmpty;
+   bool isEmpty = true;
+
+   try
    {
       boost::recursive_mutex::scoped_lock lock(
          const_cast<boost::recursive_mutex&>(m_mutexQueue));
-      bIsEmpty = m_deqTaskQueue.empty();
+      isEmpty = m_deqTaskQueue.empty();
+   }
+   catch (...)
+   {
    }
 
-   return bIsEmpty;
+   return isEmpty;
 }
 
 bool TaskManager::AreRunningTasksAvail() const

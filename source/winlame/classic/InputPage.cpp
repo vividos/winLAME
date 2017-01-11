@@ -283,7 +283,7 @@ LRESULT InputPage::OnDoubleClickedList(int idCtrl, LPNMHDR pnmh, BOOL& bHandled)
 
    if (lpnmlv->iItem != -1)
    {
-      LPCTSTR filename = listctrl.GetFileName(lpnmlv->iItem);
+      CString filename = listctrl.GetFileName(lpnmlv->iItem);
 
       // play file
       PlayFile(filename);

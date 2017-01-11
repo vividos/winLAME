@@ -52,7 +52,8 @@ m_exit(false)
    // remove current directory from search path of LoadLibrary(); see also
    // Microsoft Security Advisory (2269637):
    // http://www.microsoft.com/technet/security/advisory/2269637.mspx
-   ATLVERIFY(TRUE == SetDllDirectory(_T("")));
+   bool ret = SetDllDirectory(_T(""));
+   ATLASSERT(ret == TRUE);
 
 #ifdef _DEBUG
    // turn on leak-checking

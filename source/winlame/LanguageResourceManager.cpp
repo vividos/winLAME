@@ -23,7 +23,7 @@
 #include "StdAfx.h"
 #include "LanguageResourceManager.hpp"
 
-LanguageResourceManager::LanguageResourceManager(LPCTSTR pszLangDllSearchPattern, UINT uiLangNameId, UINT uiLangNameNativeId) throw()
+LanguageResourceManager::LanguageResourceManager(LPCTSTR pszLangDllSearchPattern, UINT uiLangNameId, UINT uiLangNameNativeId)
 :m_hLoadedResourceDll(NULL),
  m_uiLangNameId(uiLangNameId),
  m_uiLangNameNativeId(uiLangNameNativeId)
@@ -97,7 +97,7 @@ void LanguageResourceManager::UnloadLangResource() throw()
    }
 }
 
-void LanguageResourceManager::ScanResourceDlls(LPCTSTR pszLangDllSearchPattern) throw()
+void LanguageResourceManager::ScanResourceDlls(LPCTSTR pszLangDllSearchPattern)
 {
    // search pattern must contain one asterisk
    ATLASSERT(CString(pszLangDllSearchPattern).Find(_T('*')) != -1);
@@ -146,7 +146,7 @@ void LanguageResourceManager::ScanResourceDlls(LPCTSTR pszLangDllSearchPattern) 
 void LanguageResourceManager::AddLanguageResourceInfo(
    LPCTSTR pszLangDllSearchPattern,
    const CString& cszResourceFilename,
-   const CString& cszResourceFilenameWithoutPath, HMODULE hMod) throw()
+   const CString& cszResourceFilenameWithoutPath, HMODULE hMod)
 {
    // find out language id
    UINT uiLanguageId = 0;

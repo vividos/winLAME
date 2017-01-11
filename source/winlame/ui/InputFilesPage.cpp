@@ -86,8 +86,8 @@ LRESULT InputFilesPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hW
    // add encoder job for every file in list
    for (int i = 0; i < max; i++)
    {
-      LPCTSTR pszFilename = m_inputFilesList.GetFileName(i);
-      m_uiSettings.encoderjoblist.push_back(Encoder::EncoderJob(pszFilename));
+      CString filename = m_inputFilesList.GetFileName(i);
+      m_uiSettings.encoderjoblist.push_back(Encoder::EncoderJob(filename));
    }
 
    m_uiSettings.m_bFromInputFilesPage = true;
@@ -188,7 +188,7 @@ LRESULT InputFilesPage::OnDoubleClickedList(int idCtrl, LPNMHDR pnmh, BOOL& bHan
 
    if (lpnmlv->iItem != -1)
    {
-      LPCTSTR filename = m_inputFilesList.GetFileName(lpnmlv->iItem);
+      CString filename = m_inputFilesList.GetFileName(lpnmlv->iItem);
 
       // play file
       PlayFile(filename);
@@ -202,10 +202,9 @@ LRESULT InputFilesPage::OnButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
    // find out which file had the focus
    int index = m_inputFilesList.GetNextItem(-1, LVNI_ALL | LVNI_FOCUSED | LVNI_SELECTED);
 
-   LPCTSTR filename = m_inputFilesList.GetFileName(index);
-
-   // play file
+   CString filename = m_inputFilesList.GetFileName(index);
    PlayFile(filename);
+
    return 0;
 }
 

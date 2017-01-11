@@ -875,6 +875,7 @@ BEGIN
     IDS_OUT_ACTION_LOGOFF         "Log off"
     IDS_OUT_ACTION_HIBERNATE      "Hibernate"
     IDS_OUT_ACTION_SUSPEND        "Suspend"
+    IDS_OUT_CREATE_FAILED         "Error while creating output directory!"
     IDS_ENC_STOPPED               "Stopped. Press play to start encoding."
     IDS_ENC_FINISHED              "Finished encoding all files."
     IDS_ENC_U_OF_U                "Processing File %u of %u"

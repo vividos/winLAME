@@ -95,6 +95,9 @@ namespace Encoder
       /// flac context
       FLAC_context* m_flacContext;
 
+      /// input buffer
+      std::vector<FLAC__int32> m_inputBuffer;
+
       /// sample position
       FLAC__uint64 m_samplePosition;
 
