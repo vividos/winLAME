@@ -332,7 +332,6 @@
   <ItemGroup>
     <None Include="winlame\res\about.html" />
     <None Include="winlame\res\MainFrameRibbon.bml" />
-    <None Include="..\docs\doxygen.cfg" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="winlame\res\MainFrameRibbon.rc" />
@@ -358,7 +357,6 @@
     <Xml Include="presets.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\docs\License.winLAME.txt" />
     <Text Include="..\docs\TODO.txt" />
   </ItemGroup>
   <ItemGroup>
