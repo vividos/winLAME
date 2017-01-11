@@ -1,0 +1,22 @@
+Release checklist
+-----------------
+
+Here's a checklist of what to do before each release:
+
+- Update version number in winlame.rc, winlame.????.rc, config.wxi, doxygen.cfg
+- Update copyright year in about.html, about.????.html, docs\License.winLAME.rtf
+- Check all external libraries for updates and update them
+- Check external tools for updates and update them (doxygen, cppcheck)
+- Build all projects in Win32 | Release
+- Fix cppcheck errors and doxygen warnings
+- Compile all project with /analyze and fix all warnings
+- Use Coverity to find even more warnings and fix them
+- Test built .msi setup if it installs properly
+- Do a short smoke test, encoding all test files
+- Test portable zip archive by extracting and starting winLAME
+- Test winLAME by starting on VirtualBox XP machine
+- Fix all errors, check them in and push all changes
+- Tag the git repository with tag "winlame-yyyy-beta-z" and push the tag
+- Add a release and upload result .msi file, to releases on sourceforge.net
+- Update website and upload it to sourceforge.net
+- Done
