@@ -1,0 +1,459 @@
+<html>
+ <head>
+  <title>winLAME help - Technical Reference: MPEG Audio Compression</title>
+  <link rel="stylesheet" type="text/css" href="../winlame.css">
+ </head>
+<body class="back">
+
+<h1>MPEG Audio Compression</h1>
+
+<!-- begin of text -->
+
+<p>
+The following document explains the MPEG Audio Compression format.
+</p>
+
+<ul>
+ <li><a href="#basics">MPEG Audio Compression Basics</a></li>
+ <li><a href="#audioframe">MPEG Audio Frame Header</a></li>
+ <li><a href="#framesize">How to calculate frame size</a></li>
+ <li><a href="#id3tag">MPEG Audio Tag MP3v1</a></li>
+ <li><a href="#credits">Credits</a></li>
+</ul>
+
+<h2><a name="basics">MPEG Audio Compression Basics</a></h2>
+
+<p>
+This is one of many methods to compress audio in digital form trying to consume as little space as possible but keep audio quality as good as possible. MPEG compression showed up as one of the best achievements in this area.
+</p>
+
+<p>
+This is a lossy compression, which means, you will certainly loose some audio information when you use this compression methods. But, this lost can hardly be noticed because the compression method tries to control it. By using several quite complicate and demanding mathematical algorithms it will only loose those parts of sound that are hard to be heard even in the original form. This leaves more space for information that is important. This way you can compress audio up to 12 times (you may choose compression ratio) which is really significant. Due to its quality MPEG audio became very popular.
+</p>
+
+<p>
+MPEG standards MPEG-1, MPEG-2 and MPEG-4 are known but this document covers first two of them. There is an unofficial MPEG-2.5 which is rarely used. It is also covered.
+</p>
+
+<p>
+<b>MPEG-1 Audio</b> (described in ISO/IEC 11172-3) describes three Layers of audio coding with the following properties:
+</p>
+
+<ul>
+ <li>one or two audio channels</li>
+ <li>sample rate 32kHz, 44.1kHz or 48kHz</li>
+ <li>bit rates from 32kbps up to 448kbps</li>
+</ul>
+
+<p>
+<b>MPEG-2 Audio</b> (described in ISO/IEC 13818-3) has two extensions to MPEG-1, usually referred as MPEG-2/LSF and MPEG-2/Multichannel.
+</p>
+
+<p>MPEG-2/LSF has the following properties:</p>
+
+<ul>
+ <li>one or two audio channels</li>
+ <li>sample rates half those of MPEG-1
+</li>
+ <li>bit rates from 8 kbps up to 256kbps</li>
+</ul>
+
+<p>MPEG-2/Multichannel has the following properties:</p>
+
+<ul>
+ <li>up to 5 full range audio channels and an LFE-channel (Low Frequency Enhancement &lt;&gt; subwoofer!)</li>
+ <li>sample rates the same as those of MPEG-1</li>
+ <li>highest possible bitrate goes up to about 1 Mbps for 5.1</li>
+</ul>
+
+<p><a href="#">back to top</a></p>
+
+<h2><a name="audioframe">MPEG Audio Frame Header</a></h2>
+
+<p>
+An MPEG audio file is built up from smaller parts called frames. Generally, frames are independent items. Each frame has its own header and audio informations. There is no file header. Therefore, you can cut any part of MPEG file and play it correctly (this should be done on frame boundaries but most applications will handle incorrect headers). For Layer III, this is not 100% correct. Due to internal data organization in MPEG version 1 Layer III files, frames are often dependent of each other and they cannot be cut off just like that.
+</p>
+
+<p>
+When you want to read info about an MPEG file, it is usually enough to find the first frame, read its header and assume that the other frames are the same. This may not be always the case. Variable bitrate MPEG files may use so called bitrate switching, which means that bitrate changes according to the content of each frame. This way lower bitrates may be used in frames where it will not reduce sound quality. This allows making better compression while keeping high quality of sound.</p>
+
+<p>
+The frame header is constituted by the very first four bytes (32 bits) in a frame. The first eleven bits (or first twelve bits, see below about frame sync) of a frame header are always set and they are called "frame sync". Therefore, you can search through the file for the first occurence of frame sync (meaning that you have to find a byte with a value of 255, and followed by a byte with its three (or four) most significant bits set). Then you read the whole header and check if the values are correct. You will see in the following table the exact meaning of each bit in the header, and which values may be checked for validity. Each value that is specified as reserved, invalid, bad, or not allowed should indicate an invalid header. Remember, this is not enough, frame sync can be easily (and very frequently) found in any binary file. Also it is likely that MPEG file contains garbage on it's beginning which also may contain false sync. Thus, you have to check two or more frames in a row to assure you are really dealing with MPEG audio file.</p>
+
+<p>
+Frames may have a CRC check. The CRC is 16 bits long and, if it exists, it follows the frame header. After the CRC comes the audio data. You may calculate the length of the frame and use it if you need to read other headers too or just want to calculate the CRC of the frame, to compare it with the one you read from the file. This is actually a very good method to check the MPEG header validity.
+</p>
+
+<p>
+Here is "graphical" presentation of the header content. Characters from A to M are used to indicate different fields. In the table, you can see details about the content of each field.
+</p>
+
+<p align="center">
+ <b style="font-size:14pt;">AAAAAAAA AAABBCCD EEEEFFGH IIJJKLMM</b>
+</p>
+
+<p>
+ <table border="1" align="center" cellpadding="2" cellspacing="0">
+  <tr>
+   <td>Sign</td>
+   <td>Length<br>(bits)</td>
+   <td>Position<br>(bits)</td>
+   <td>Description</td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">A</b></td>
+   <td>11</td>
+   <td>(31-21)</td>
+   <td>Frame sync (all bits set)</td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">B</b></td>
+   <td>2</td>
+   <td>(20,19)</td>
+   <td><p>MPEG Audio version<br>
+    00 - MPEG Version 2.5<br>
+    01 - reserved<br>
+    10 - MPEG Version 2 (ISO/IEC 13818-3)<br>
+    11 - MPEG Version 1 (ISO/IEC 11172-3)
+    </p>
+    <p>Note: MPEG Version 2.5 is not official standard. Bit No 20 in frame header is used to indicate version 2.5. Applications that do not support this MPEG version expect this bit always to be set, meaning that frame sync (A) is twelve bits long, not eleven as stated here. Accordingly, B is one bit long (represents only bit No 19). I recommend using methodology presented here, since this allows you to distinguish all three versions and keep full compatibility.</p>
+   </td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">C</b></td>
+   <td>2</td>
+   <td>(18,17)</td>
+   <td>Layer description<br>
+    00 - reserved<br>
+    01 - Layer III<br>
+    10 - Layer II<br>
+    11 - Layer I
+   </td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">D</b></td>
+   <td>1</td>
+   <td>(16)</td>
+   <td>Protection bit<br>
+    0 - Protected by CRC (16bit CRC follows header)<br>
+    1 - Not protected
+   </td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">E</b></td>
+   <td>4</td>
+   <td>(15-12)</td>
+   <td>Bitrate index<br>
+    <table border="1" cellpadding="1" cellspacing="0">
+     <tr><td rowspan="2"><b>bits</b></td>
+      <td colspan="3" align="center"><b>MPEG-1</b></td>
+      <td colspan="2" align="center"><b>MPEG-2 and 2.5</b></td>
+     </tr>
+     <tr>
+      <td>Layer I</td> <td>Layer II</td> <td>Layer III</td>
+      <td>Layer I</td> <td>Layer II and III</td>
+     </tr>
+
+     <tr>
+      <td>0000</td>
+      <td colspan="5" align="center">Free Format Bitrate</td>
+     </tr>
+     <tr><td>0001</td>  <td>32</td>  <td>32</td>  <td>32</td>  <td>32</td>   <td>8</td></tr>
+     <tr><td>0010</td>  <td>64</td>  <td>48</td>  <td>40</td>  <td>48</td>  <td>16</td></tr>
+     <tr><td>0011</td>  <td>96</td>  <td>56</td>  <td>48</td>  <td>56</td>  <td>24</td></tr>
+     <tr><td>0100</td> <td>128</td>  <td>64</td>  <td>56</td>  <td>64</td>  <td>32</td></tr>
+     <tr><td>0101</td> <td>160</td>  <td>80</td>  <td>64</td>  <td>80</td>  <td>40</td></tr>
+     <tr><td>0110</td> <td>192</td>  <td>96</td>  <td>80</td>  <td>96</td>  <td>48</td></tr>
+     <tr><td>0111</td> <td>224</td> <td>112</td>  <td>96</td> <td>112</td>  <td>56</td></tr>
+     <tr><td>1000</td> <td>256</td> <td>128</td> <td>112</td> <td>128</td>  <td>64</td></tr>
+     <tr><td>1001</td> <td>288</td> <td>160</td> <td>128</td> <td>144</td>  <td>80</td></tr>
+     <tr><td>1010</td> <td>320</td> <td>192</td> <td>160</td> <td>160</td>  <td>96</td></tr>
+     <tr><td>1011</td> <td>352</td> <td>224</td> <td>192</td> <td>176</td> <td>112</td></tr>
+     <tr><td>1100</td> <td>384</td> <td>256</td> <td>224</td> <td>192</td> <td>128</td></tr>
+     <tr><td>1101</td> <td>416</td> <td>320</td> <td>256</td> <td>224</td> <td>144</td></tr>
+     <tr><td>1110</td> <td>448</td> <td>384</td> <td>320</td> <td>256</td> <td>160</td></tr>
+     <tr><td>1111</td> <td colspan="5" align="center">not an allowed value</td></tr>
+    </table>
+    <p>
+    NOTES: All values are in kbps<br>
+    Free Format Bitrate: if the correct fixed bitrate (such files cannot
+    use variable bitrate) is different than those presented in upper table it must
+    be determined by the application. This may be implemented only for internal purposes
+    since third party applications have no means to find out correct bitrate. Howewer,
+    this is not impossible to do but demands lot's of efforts.
+    </p>
+    <p>
+     MPEG files may have variable bitrate (VBR). This means that bitrate in the file may change. I have learned about two used methods:
+    </p>
+    <ul>
+     <li>bitrate switching. Each frame may be created with different bitrate. It may
+      be used in all layers. Layer III decoders must support this method. Layer I & II
+      decoders may support it.</li>
+     <li>bit reservoir. Bitrate may be borrowed (within limits) from previous frames
+      in order to provide more bits to demanding parts of the input signal. This causes,
+      however, that the frames are no longer independent, which means you should not
+      cut this files. This is supported only in Layer III. </li>
+    </ul>
+    
+    <p>
+    For Layer II there are some combinations of bitrate and mode which are not
+    allowed. Here is a list of allowed combinations:
+    </p>
+    
+    <table border="1" cellpadding="1" cellspacing="0">
+     <tr><td><b>Bitrate</b></td> <td><b>allowed Mode</b></td></tr>
+     <tr><td>free, 64, 96, 112, 128, 160, 192</td> <td>all</td></tr>
+     <tr><td>32, 48, 56, 80</td> <td>single channel</td></tr>
+     <tr><td>224, 256, 320, 384</td> <td>stereo, intensity stereo, dual channel</td></tr>
+    </table>
+   </td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">F</b></td>
+   <td>2</td>
+   <td>(11,10)</td>
+   <td>Sampling rate frequency index (values are in Hz)
+    <table border="1" cellpadding="1" cellspacing="0">
+     <tr><td><b>Bits</b></td> <td><b>MPEG-1</b></td> <td><b>MPEG-2</b></td> <td><b>MPEG-2.5</b></td></tr>
+     <tr><td>00</td> <td>44100</td> <td>22050</td> <td>11025</td></tr>
+     <tr><td>01</td> <td>48000</td> <td>24000</td> <td>12000</td></tr>
+     <tr><td>10</td> <td>32000</td> <td>16000</td> <td>8000</td></tr>
+     <tr><td>11</td> <td colspan="3" align="center">reserved</td></tr>
+    </table>
+   </td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">G</b></td>
+   <td>1</td>
+   <td>(9)</td>
+   <td><p>Padding bit<br>
+    0 - frame is not padded<br>
+    1 - frame is padded with one extra slot
+    </p>
+     Padding is used to fit the bit rates exactly. For an example: 128k 44.1kHz layer II
+     uses a lot of 418 bytes and some of 417 bytes long frames to get the exact 128k bitrate.
+     For Layer I slot is 32 bits long, for Layer II and Layer III slot is 8 bits long.
+   </td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">H</b></td>
+   <td>1</td>
+   <td>(8)</td>
+   <td>Private bit. It may be freely used for specific needs of an application, i.e.
+    if it has to trigger some application specific events.</td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">I</b></td>
+   <td>2</td>
+   <td>(7,6)</td>
+   <td>Channel Mode<br>
+    00 - Stereo<br>
+    01 - Joint stereo (Stereo)<br>
+    10 - Dual channel (Stereo)<br>
+    11 - Single channel (Mono)
+   </td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">J</b></td>
+   <td>2</td>
+   <td>(5,4)</td>
+   <td><p>Mode extension (Only if Joint stereo)</p>
+    <p>
+     Mode extension is used to join informations that are of no use for stereo
+     effect, thus reducing needed resources. These bits are dynamically determined
+     by an encoder in Joint stereo mode.
+    </p>
+    <p>
+     Complete frequency range of MPEG file is divided in subbands There are 32
+     subbands. For Layer I & II these two bits determine frequency range (bands)
+     where intensity stereo is applied. For Layer III these two bits determine
+     which type of joint stereo is used (intensity stereo or mid/side stereo). Frequency
+     range is determined within decompression algorithm.
+    </p>
+    <table border="1" cellpadding="1" cellspacing="0">
+     <tr><td rowspan="2"><b>Bits</b></td> <td><b>Layer I and II</b></td>
+      <td colspan="2"><b>Layer III</b></td></tr>
+     <tr><td><b>Intensity Stereo Bands</b></td> <td><b>Intensity stereo</b></td> <td><b>MS stereo</b></td></tr>
+     <tr><td>00</td> <td>bands 4 to 31</td> <td>off</td> <td>off</td></tr>
+     <tr><td>01</td> <td>bands 8 to 31</td> <td>on</td> <td>off</td></tr>
+     <tr><td>10</td> <td>bands 12 to 31</td> <td>off</td> <td>on</td></tr>
+     <tr><td>11</td> <td>bands 16 to 31</td> <td>on</td> <td>on</td></tr>
+    </table>
+   </td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">K</b></td>
+   <td>1</td>
+   <td>(3)</td>
+   <td>Copyright<br>
+    0 - Audio is not copyrighted<br>
+    1 - Audio is copyrighted
+   </td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">L</b></td>
+   <td>1</td>
+   <td>(2)</td>
+   <td>Original<br>
+    0 - Copy of original media<br>
+    1 - Original media
+   </td>
+  </tr>
+
+  <tr>
+   <td><b style="font-size:14pt;">M</b></td>
+   <td>1</td>
+   <td>(1,0)</td>
+   <td>Emphasis<br>
+    00 - none<br>
+    01 - 50/15 ms<br>
+    10 - reserved<br>
+    11 - CCIT J.17
+   </td>
+  </tr>
+ </table>
+</p>
+
+<p><a href="#">back to top</a></p>
+
+<h2><a name="framesize">How to calculate frame size</a></h2>
+
+<p>
+Read the BitRate, SampleRate and Padding (as value of one or zero) of the frame header and use the formula:
+</p>
+
+<p><code>FrameSize = 144 * BitRate / SampleRate + Padding</code></p>
+
+<p>
+Example: BitRate = 128000, SampleRate=441000, Padding=0  ==> FrameSize = 417 bytes
+</p>
+
+<p><a href="#">back to top</a></p>
+
+<h2><a name="id3tag">MPEG Audio Tag MP3v1</a></h2>
+
+<p>
+The TAG is used to describe the MPEG Audio file. It contains information about artist, title, album, publishing year and genre. There is some extra space for comments. It is exactly 128 bytes long and is located at very end of the audio data. You can get it by reading the last 128 bytes of the MPEG audio file.
+</p>
+
+<p>
+<pre style="font-size: 16pt; font-family:mono;" align="center"><b>
+AAABBBBB BBBBBBBB BBBBBBBB BBBBBBBB
+BCCCCCCC CCCCCCCC CCCCCCCC CCCCCCCD
+DDDDDDDD DDDDDDDD DDDDDDDD DDDDDEEE
+EFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFG</b></pre>
+</p>
+
+<p>
+<table border="1" align="center" cellpadding="2" cellspacing="0">
+ <tr valign="top"><td><b>Sign</b></td><td><b>Length<br>(bytes)</b></td><td><b>Position<br>(bytes)</b></td><td><b>Description</b></td></tr>
+ <tr><td>A</td><td>3</td><td>(0-2)</td><td>Tag identification.<br>
+Must contain 'TAG' if tag exists and is correct.</td></tr>
+ <tr><td>B</td><td>30</td><td>(3-32)</td><td>Title</td></tr>
+ <tr><td>C</td><td>30</td><td>(33-62)</td><td>Artist</td></tr>
+ <tr><td>D</td><td>30</td><td>(63-92)</td><td>Album</td></tr>
+ <tr><td>E</td><td>4</td><td>(63-96)</td><td>Year</td></tr>
+ <tr><td>F</td><td>30</td><td>(97-126)</td><td>Comment</td></tr>
+ <tr><td>G</td><td>1</td><td>(127)</td><td>Genre</td></tr>
+</table>
+</p>
+
+<p>
+The specification asks for all fields to be padded with null character (ASCII 0). However, not all applications respect this (an example is Winamp which pads fields with &lt;space&gt;, ASCII 32).
+</p>
+
+<p>
+There is a small change proposed in <b>MP3v1.1</b> structure. The last byte of the Comment field may be used to specify the track number of a song in an album. It should contain a null character (ASCII 0) if the information is unknown.
+</p>
+
+<p>
+Genre is a numeric field which may have one of the following values:
+</p>
+
+<p>
+<table border="1" align="center" cellpadding="2" cellspacing="0">
+ <tr><td>0</td><td>'Blues'</td><td>20</td><td>'Alternative'</td><td>40</td><td>'AlternRock'</td><td>60</td><td>'Top 40'</td></tr>
+ <tr><td>1</td><td>'Classic Rock'</td><td>21</td><td>'Ska'</td><td>41</td><td>'Bass'</td><td>61</td><td>'Christian Rap'</td></tr>
+ <tr><td>2</td><td>'Country'</td><td>22</td><td>'Death Metal'</td><td>42</td><td>'Soul'</td><td>62</td><td>'Pop/Funk'</td></tr>
+ <tr><td>3</td><td>'Dance'</td><td>23</td><td>'Pranks'</td><td>43</td><td>'Punk'</td><td>63</td><td>'Jungle'</td></tr>
+ <tr><td>4</td><td>'Disco'</td><td>24</td><td>'Soundtrack'</td><td>44</td><td>'Space'</td><td>64</td><td>'Native American'</td></tr>
+ <tr><td>5</td><td>'Funk'</td><td>25</td><td>'Euro-Techno'</td><td>45</td><td>'Meditative'</td><td>65</td><td>'Cabaret'</td></tr>
+ <tr><td>6</td><td>'Grunge'</td><td>26</td><td>'Ambient'</td><td>46</td><td>'Instrumental Pop'</td><td>66</td><td>'New Wave'</td></tr>
+ <tr><td>7</td><td>'Hip-Hop'</td><td>27</td><td>'Trip-Hop'</td><td>47</td><td>'Instrumental Rock'</td><td>67</td><td>'Psychadelic'</td></tr>
+ <tr><td>8</td><td>'Jazz'</td><td>28</td><td>'Vocal'</td><td>48</td><td>'Ethnic'</td><td>68</td><td>'Rave'</td></tr>
+ <tr><td>9</td><td>'Metal'</td><td>29</td><td>'Jazz+Funk'</td><td>49</td><td>'Gothic'</td><td>69</td><td>'Showtunes'</td></tr>
+ <tr><td>10</td><td>'New Age'</td><td>30</td><td>'Fusion'</td><td>50</td><td>'Darkwave'</td><td>70</td><td>'Trailer'</td></tr>
+ <tr><td>11</td><td>'Oldies'</td><td>31</td><td>'Trance'</td><td>51</td><td>'Techno-Industrial'</td><td>71</td><td>'Lo-Fi'</td></tr>
+ <tr><td>12</td><td>'Other'</td><td>32</td><td>'Classical'</td><td>52</td><td>'Electronic'</td><td>72</td><td>'Tribal'</td></tr>
+ <tr><td>13</td><td>'Pop'</td><td>33</td><td>'Instrumental'</td><td>53</td><td>'Pop-Folk'</td><td>73</td><td>'Acid Punk'</td></tr>
+ <tr><td>14</td><td>'R&amp;B'</td><td>34</td><td>'Acid'</td><td>54</td><td>'Eurodance'</td><td>74</td><td>'Acid Jazz'</td></tr>
+ <tr><td>15</td><td>'Rap'</td><td>35</td><td>'House'</td><td>55</td><td>'Dream'</td><td>75</td><td>'Polka'</td></tr>
+ <tr><td>16</td><td>'Reggae'</td><td>36</td><td>'Game'</td><td>56</td><td>'Southern Rock'</td><td>76</td><td>'Retro'</td></tr>
+ <tr><td>17</td><td>'Rock'</td><td>37</td><td>'Sound Clip'</td><td>57</td><td>'Comedy'</td><td>77</td><td>'Musical'</td></tr>
+ <tr><td>18</td><td>'Techno'</td><td>38</td><td>'Gospel'</td><td>58</td><td>'Cult'</td><td>78</td><td>'Rock &amp; Roll'</td></tr>
+ <tr><td>19</td><td>'Industrial'</td><td>39</td><td>'Noise'</td><td>59</td><td>'Gangsta'</td><td>79</td><td>'Hard Rock'</td></tr>
+</table>
+</p>
+
+<p>
+Winamp expanded this table with these next codes:
+</p>
+
+<p>
+<table border="1" align="center" cellpadding="2" cellspacing="0">
+ <tr><td>80</td><td>'Folk'</td><td>92</td><td>'Progressive Rock'</td><td>104</td><td>'Chamber Music'</td><td>116</td><td>'Ballad'</td></tr>
+ <tr><td>81</td><td>'Folk-Rock'</td><td>93</td><td>'Psychedelic Rock'</td><td>105</td><td>'Sonata'</td><td>117</td><td>'Power Ballad'</td></tr>
+ <tr><td>82</td><td>'National Folk'</td><td>94</td><td>'Symphonic Rock'</td><td>106</td><td>'Symphony'</td><td>118</td><td>'Rhytmic Soul'</td></tr>
+ <tr><td>83</td><td>'Swing'</td><td>95</td><td>'Slow Rock'</td><td>107</td><td>'Booty Brass'</td><td>119</td><td>'Freestyle'</td></tr>
+ <tr><td>84</td><td>'Fast Fusion'</td><td>96</td><td>'Big Band'</td><td>108</td><td>'Primus'</td><td>120</td><td>'Duet'</td></tr>
+ <tr><td>85</td><td>'Bebob'</td><td>97</td><td>'Chorus'</td><td>109</td><td>'Porn Groove'</td><td>121</td><td>'Punk Rock'</td></tr>
+ <tr><td>86</td><td>'Latin'</td><td>98</td><td>'Easy Listening'</td><td>110</td><td>'Satire'</td><td>122</td><td>'Drum Solo'</td></tr>
+ <tr><td>87</td><td>'Revival'</td><td>99</td><td>'Acoustic'</td><td>111</td><td>'Slow Jam'</td><td>123</td><td>'A Capella'</td></tr>
+ <tr><td>88</td><td>'Celtic'</td><td>100</td><td>'Humour'</td><td>112</td><td>'Club'</td><td>124</td><td>'Euro-House'</td></tr>
+ <tr><td>89</td><td>'Bluegrass'</td><td>101</td><td>'Speech'</td><td>113</td><td>'Tango'</td><td>125</td><td>'Dance Hall'</td></tr>
+ <tr><td>90</td><td>'Avantgarde'</td><td>102</td><td>'Chanson'</td><td>114</td><td>'Samba'</td><td rowspan="2" colspan="2">&nbsp;</td></tr>
+ <tr><td>91</td><td>'Gothic Rock'</td><td>103</td><td>'Opera'</td><td>115</td><td>'Folklore'</td></tr>
+</table>
+</p>
+
+<p>
+Any other value should be considered as 'Unknown'
+</p>
+
+<p><a href="#">back to top</a></p>
+
+<h2><a name="credits">Credits</a></h2>
+
+<p align="center">
+Created on September 1998 by Predrag Supurovic.<br>
+Thanks to Jean for debugging and polishing of this document, Peter Luijer, Guwani, Rob Leslie and
+Franc Zijderveld for valuable comments and corrections.
+</p>
+
+<p align="center">
+&copy; 1998, 1999 Copyright by DataVoyage
+</p>
+
+<p align="center">
+This document may be changed. Check <a href="http://www.dv.co.yu/mpgscript/mpeghdr.htm" target="_blank">
+http://www.dv.co.yu/mpgscript/mpeghdr.htm</a> for updates.<br>
+You may use it freely. If you can help us make it more accurate, please do.
+</p>
+
+<p><a href="#">back to top</a> - <a href="index.html">back to Technical Reference</a></p>
+
+<!-- end of text -->
+</body>
+</html>

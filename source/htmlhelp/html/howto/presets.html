@@ -1,0 +1,104 @@
+<html>
+ <head>
+  <title>winLAME help - How-To's</title>
+  <link rel="stylesheet" type="text/css" href="../winlame.css">
+ </head>
+<body class="back">
+
+<h1>How to make presets for winLAME</h1>
+
+<!-- begin of text -->
+
+<p>
+In this document will be explained how to make new presets for winLAME. This page is for LAME experts only. If you don't know about the internals of LAME, please use the standard presets that winLAME already has. They are already very good.
+</p>
+
+<h2>General file format</h2>
+
+<p>
+Presets are stored in winLAME in an XML file. The presets.xml file is installed and searched in one of the following locations, in this order:
+</p>
+
+<ul>
+<li><i>{Documents and Settings-Folder}</i>\<i>{username}</i>\Application Data\winLAME</li>
+<li><i>{Documents and Settings-Folder}</i>\All Users\Application Data\winLAME</li>
+</ul>
+
+<p>
+The general format for the presets file looks like this:
+</p>
+
+<table border="0" cellpadding="8" class="license"><tr><td>
+<pre style="background-color:#f0f0f0;">
+&lt;presets&gt;
+  &lt;facility name="<i>facility name</i>"&gt;
+    &lt;preset name="<i>preset name</i>"&gt;
+
+      &lt;comment&gt;
+       &nbsp;<i>preset comment visible in preset description</i>
+      &lt;/comment&gt; 
+
+      &lt;value name="<i>value name</i>"&gt;<i>value</i>&lt;/value&gt;
+      &lt;value name="<i>value name</i>"&gt;<i>value</i>&lt;/value&gt;
+      [... more values ...]
+
+    &lt;/preset&gt;
+
+    [... more presets ...]
+  &lt;/facility&gt;
+
+ [... more facilities ...]
+&lt;/presets&gt;
+</pre>
+</td></tr></table>
+
+<p>
+If the file is not valid or wellformed, or doesn't meet the structure shown above, the <a href="../pages/presets.html">presets page</a> won't appear in winLAME. If there is no list of presets for a specific facility (=output module), the <a href="../pages/presets.html">presets page</a> doesn't show up either, since there's no need to show the page.
+</p>
+
+<p>
+This is a list of available facilities:
+</p>
+
+<p>
+<table border="1" cellpadding="2" cellspacing="0">
+ <tr><td><b>Facility Name</b></td><td><b>Output Module</b></td></tr>
+ <tr><td>lame</td><td>LAME mp3 Encoder</td></tr>
+ <tr><td>oggvorbis</td><td>Ogg Vorbis Encoder</td></tr>
+ <tr><td>wave</td><td>Wave Output</td></tr>
+ <tr><td>aac</td><td>libfaac AAC Audio File Encoder</td></tr>
+ <tr><td>wma</td><td>WMA Audio File Encoder</td></tr>
+</table>
+</p>
+
+<h3>LAME mp3 Encoder</h3>
+
+<p>
+Here is a list of possible values, descriptions and their default values for the LAME encoder:
+</p>
+
+<p>
+<table border="1" cellpadding="2" cellspacing="0">
+ <tr><td><b>Value Name</b></td><td><b>Description</b></td><td><b>Default Value</b></td></tr>
+ <tr><td>lameNoGap</td><td>when 1, LAME encodes multiple files as they were one, resulting in mp3 files that can be played back without gap.</td><td>0</td></tr>
+ <tr><td>lameWriteWaveHeader</td><td>when 1, a RIFF Wave header is prepended to the encoded file; the extension changes to ".wav".</td><td>0</td></tr>
+ <tr><td>lameHideSettings</td><td>when 1, winLAME hides all settings pages for LAME</td><td>0</td></tr>
+ <tr><td>lameEncodeQuality</td><td>Encode quality; 0: fast, 1: standard, 2: high</td><td>1</td></tr>
+ <tr><td>lameMono</td><td>when 1, input is encoded as mono</td><td>0</td></tr>
+ <tr><td>lameQualityOrBitrate</td><td>decides between quality or bitrate settings; 0: bitrate mode, 1: quality mode</td><td>0</td></tr>
+ <tr><td>lameBitrate</td><td>Bitrate for ABR or CBR Mode; in kbps; only used when lameQualityOrBitrate is set to 0</td><td>192</td></tr>
+ <tr><td>lameQuality</td><td>Quality value, from 0 to 9; only used when lameQualityOrBitrate is set to 1</td><td>4</td></tr>
+ <tr><td>lameCBR</td><td>when 1, CBR mode is used instead of ABR</td><td>0</td></tr>
+ <tr><td>lameVBRMode</td><td>LAME VBR mode, 0: standard, 1: fast</td><td>0</td></tr>
+</table>
+</p>
+
+<p>
+Note that winLAME sometimes has other default values than the LAME command line tool.
+</p>
+
+<p><a href="#">back to top</a> - <a href="index.html">back to the How To page</a></p>
+
+<!-- end of text -->
+</body>
+</html>

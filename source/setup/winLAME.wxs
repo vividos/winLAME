@@ -204,6 +204,11 @@ For new releases, do the following:
            Source="..\libraries\libspeex.dll" />
       </Component>
 
+      <Component Id="WinLameHelp" Guid="*">
+        <File Id="WinLameChm" Name="winLAME.chm" DiskId="1" KeyPath="yes"
+           Source="..\..\bin\Release\winLAME.chm" />
+      </Component>
+
     </ComponentGroup>
 
     <Feature Id="WinLame" Title="$(var.ProductName)"

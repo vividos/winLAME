@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="BuildHelp.cmd" />
+    <None Include="toc.hhc" />
+    <None Include="winLAMEhelp.hhp" />
+    <None Include="html\misc\credits.html">
+      <Filter>html\misc</Filter>
+    </None>
+    <None Include="html\misc\features.html">
+      <Filter>html\misc</Filter>
+    </None>
+    <None Include="html\misc\intromp3.html">
+      <Filter>html\misc</Filter>
+    </None>
+    <None Include="html\misc\licenses.html">
+      <Filter>html\misc</Filter>
+    </None>
+    <None Include="html\index.html">
+      <Filter>html</Filter>
+    </None>
+    <None Include="html\winlame.css">
+      <Filter>html</Filter>
+    </None>
+    <None Include="html\howto\index.html">
+      <Filter>html\howto</Filter>
+    </None>
+    <None Include="html\howto\plugins.html">
+      <Filter>html\howto</Filter>
+    </None>
+    <None Include="html\howto\presets.html">
+      <Filter>html\howto</Filter>
+    </None>
+    <None Include="html\howto\ripencode.html">
+      <Filter>html\howto</Filter>
+    </None>
+    <None Include="html\pages\aac.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\encode.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\index.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\input.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\lame.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\lameadv.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\lamebasic.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\lamevbr.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\oggvorbis.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\output.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\presets.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\property.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\wave.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\techref\index.html">
+      <Filter>html\techref</Filter>
+    </None>
+    <None Include="html\techref\mpegheader.html">
+      <Filter>html\techref</Filter>
+    </None>
+    <None Include="html\techref\wlarch.html">
+      <Filter>html\techref</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="keywords.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="html">
+      <UniqueIdentifier>{a3226f29-8e15-4d7b-8c32-dddc5f3908c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="html\howto">
+      <UniqueIdentifier>{9e9e8710-63af-4a88-915b-94e894c1e3ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="html\misc">
+      <UniqueIdentifier>{fc263e66-eec1-42b2-b6f1-517d19eae892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="html\pages">
+      <UniqueIdentifier>{789353a1-9255-4df2-82ee-54f3528cffe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="html\techref">
+      <UniqueIdentifier>{9c9f26e7-f04c-40f1-a2a7-488e333ffd0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="html\pages\images">
+      <UniqueIdentifier>{9f621d86-cb11-43d2-aff7-86d7da7d85a5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="html\winlame.png">
+      <Filter>html</Filter>
+    </Image>
+    <Image Include="html\pages\images\btn_addfiles.png">
+      <Filter>html\pages\images</Filter>
+    </Image>
+    <Image Include="html\pages\images\btn_config.png">
+      <Filter>html\pages\images</Filter>
+    </Image>
+    <Image Include="html\pages\images\btn_deleteall.png">
+      <Filter>html\pages\images</Filter>
+    </Image>
+    <Image Include="html\pages\images\btn_pause.png">
+      <Filter>html\pages\images</Filter>
+    </Image>
+    <Image Include="html\pages\images\btn_play.png">
+      <Filter>html\pages\images</Filter>
+    </Image>
+    <Image Include="html\pages\images\btn_stop.png">
+      <Filter>html\pages\images</Filter>
+    </Image>
+    <Image Include="html\pages\images\btn_totray.png">
+      <Filter>html\pages\images</Filter>
+    </Image>
+    <Image Include="html\pages\images\inmod_cfg.png">
+      <Filter>html\pages\images</Filter>
+    </Image>
+    <Image Include="html\pages\images\systemmenu.png">
+      <Filter>html\pages\images</Filter>
+    </Image>
+    <Image Include="html\techref\architecture.fw.png">
+      <Filter>html\techref</Filter>
+    </Image>
+    <Image Include="html\techref\architecture.png">
+      <Filter>html\techref</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

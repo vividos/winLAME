@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <RootNamespace>htmlhelp</RootNamespace>
+    <Keyword>MakeFileProj</Keyword>
+    <ProjectGuid>{75AC1AC1-F11F-40BC-8EE9-008FC4D854BE}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v140_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v140_xp</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\winlame-Release.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\winlame-Debug.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeBuildCommandLine>call BuildHelp.cmd "$(OutDir)"
+type $(IntDir)htmlhelp.txt</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>del $(IntDir)htmlhelp.txt 2&gt; nul
+del $(IntDir)winLAME.chm 2&gt; nul
+call BuildHelp.cmd "$(OutDir)"
+type $(IntDir)htmlhelp.txt</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>del $(IntDir)htmlhelp.txt 2&gt; nul
+del $(IntDir)winLAME.chm 2&gt; nul
+exit 0</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <IntDir>$(SolutionDir)intermediate\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeBuildCommandLine>call BuildHelp.cmd "$(OutDir)"
+type $(IntDir)htmlhelp.txt</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>del $(IntDir)htmlhelp.txt 2&gt; nul
+del $(IntDir)winLAME.chm 2&gt; nul
+call BuildHelp.cmd "$(OutDir)"
+type $(IntDir)htmlhelp.txt</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>del $(IntDir)htmlhelp.txt 2&gt; nul
+del $(IntDir)winLAME.chm 2&gt; nul
+exit 0</NMakeCleanCommandLine>
+    <NMakeOutput />
+    <IntDir>$(SolutionDir)intermediate\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="BuildHelp.cmd" />
+    <None Include="html\howto\index.html" />
+    <None Include="html\howto\plugins.html" />
+    <None Include="html\howto\presets.html" />
+    <None Include="html\howto\ripencode.html" />
+    <None Include="html\index.html" />
+    <None Include="html\misc\credits.html" />
+    <None Include="html\misc\features.html" />
+    <None Include="html\misc\intromp3.html" />
+    <None Include="html\misc\licenses.html" />
+    <None Include="html\pages\aac.html" />
+    <None Include="html\pages\encode.html" />
+    <None Include="html\pages\index.html" />
+    <None Include="html\pages\input.html" />
+    <None Include="html\pages\lame.html" />
+    <None Include="html\pages\lameadv.html" />
+    <None Include="html\pages\lamebasic.html" />
+    <None Include="html\pages\lamevbr.html" />
+    <None Include="html\pages\oggvorbis.html" />
+    <None Include="html\pages\output.html" />
+    <None Include="html\pages\presets.html" />
+    <None Include="html\pages\property.html" />
+    <None Include="html\pages\wave.html" />
+    <None Include="html\techref\index.html" />
+    <None Include="html\techref\mpegheader.html" />
+    <None Include="html\techref\wlarch.html" />
+    <None Include="html\winlame.css" />
+    <None Include="toc.hhc" />
+    <None Include="winLAMEhelp.hhp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="keywords.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="html\pages\images\btn_addfiles.png" />
+    <Image Include="html\pages\images\btn_config.png" />
+    <Image Include="html\pages\images\btn_deleteall.png" />
+    <Image Include="html\pages\images\btn_pause.png" />
+    <Image Include="html\pages\images\btn_play.png" />
+    <Image Include="html\pages\images\btn_stop.png" />
+    <Image Include="html\pages\images\btn_totray.png" />
+    <Image Include="html\pages\images\inmod_cfg.png" />
+    <Image Include="html\pages\images\systemmenu.png" />
+    <Image Include="html\techref\architecture.fw.png" />
+    <Image Include="html\techref\architecture.png" />
+    <Image Include="html\winlame.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

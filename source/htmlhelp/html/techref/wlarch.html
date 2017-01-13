@@ -1,0 +1,48 @@
+<html>
+ <head>
+  <title>winLAME help - winLAME Architecture</title>
+  <link rel="stylesheet" type="text/css" href="../winlame.css">
+ </head>
+<body class="back">
+
+<h1>winLAME Architecture</h1>
+
+<!-- begin of text -->
+
+<p>
+In this document the architecture of the winLAME application is explained. Here is a schematic image of the components of winLAME:
+</p>
+
+<p align="center">
+<img src="architecture.png" align="center" alt="winLAME architecture">
+</p>
+
+<h2>user interface</h2>
+
+<p>
+The user interface handles all visible components, the displayed wizard pages, the user interaction and so on. It interacts with the preset manager and the settings manager, to get and set parameters via the different config pages. The module manager is queried, to get the available modules for input and output. It also uses the encoder via a specified interface (to separate the encoding process).
+</p>
+
+<h2>preset manager &amp; settings manager</h2>
+
+<p>
+The preset manager mainly reads in the prsets.xml file, to get the different presets. The settings manager is used to store the settings for a particular encoding session. The variables can be modified via the user interface, e.g. when the user changes a value.
+</p>
+
+<h2>module manager</h2>
+
+<p>
+The module manager handles all available input and output modules. Input modules can read in files and produce sample streams, whereas output modules can produce files in their format. There are modules for reading and writing wave format, producing MPEG Layer 3 (via LAME), de- and encoding Ogg Vorbis and (via an optional DLL) de- and encoding AAC files.
+</p>
+
+<h2>encoder thread</h2>
+
+<p>
+The encoder thread encodes one file at a time. The settings for the modules are retrieved from the settings manager. The encoder takes sample data from the input module and passes it to the output module. The samples are stored in a sample container, which can hold multiple channel streams, and up to 32 bit wide samples.
+</p>
+
+<p><a href="#">back to top</a> - <a href="index.html">back to Technical Reference</a></p>
+
+<!-- end of text -->
+</body>
+</html>

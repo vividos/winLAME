@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="Window Styles" value="0x800025">
+	<param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="winLAME Help">
+		<param name="Local" value="html\index.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="winLAME Features">
+		<param name="Local" value="html\misc\features.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Introduction for mp3 beginners">
+		<param name="Local" value="html\misc\intromp3.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Licenses">
+		<param name="Local" value="html/misc/licenses.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Credits &amp; Thanks">
+		<param name="Local" value="html\misc\credits.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="How to ...">
+		<param name="Local" value="html/howto/index.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="rip and encode a CD with winLAME">
+			<param name="Local" value="html\howto\ripencode.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="use Winamp Input Plugins with winLAME">
+			<param name="Local" value="html\howto\plugins.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="make presets for winLAME">
+			<param name="Local" value="html\howto\presets.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Wizard Pages">
+		<param name="Local" value="html\pages\index.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Input Files">
+			<param name="Local" value="html\pages\input.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Output Settings">
+			<param name="Local" value="html\pages\output.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Preset Settings">
+			<param name="Local" value="html\pages\presets.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Preset Properties">
+			<param name="Local" value="html/pages/property.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="LAME Settings">
+			<param name="Local" value="html\pages\lame.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Ogg Vorbis Settings">
+			<param name="Local" value="html\pages\oggvorbis.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Wave Output Settings">
+			<param name="Local" value="html\pages\wave.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="AAC Settings">
+			<param name="Local" value="html\pages\aac.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Encode">
+			<param name="Local" value="html\pages\encode.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Technical Reference">
+		<param name="Local" value="html\techref\index.html">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="MPEG Audio Compression">
+			<param name="Local" value="html\techref\mpegheader.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="winLAME architecture">
+			<param name="Local" value="html\techref\wlarch.html">
+			</OBJECT>
+	</UL>
+</UL>
+</BODY></HTML>
