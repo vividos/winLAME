@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2014 Michael Fink
+   Copyright (c) 2000-2017 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@
 // needed includes
 #include "resource.h"
 #include "PageBase.h"
+#include "HtmlHelper.h"
 #include "UIinterface.h"
 #include "LanguageResourceManager.hpp"
 
@@ -66,6 +67,7 @@ BEGIN_DLGRESIZE_MAP(MainDlg)
    DLGRESIZE_CONTROL(IDC_MDLG_EXIT, DLSZ_MOVE_X | DLSZ_MOVE_Y)
    DLGRESIZE_CONTROL(IDC_MDLG_NEXT, DLSZ_MOVE_X | DLSZ_MOVE_Y)
    DLGRESIZE_CONTROL(IDC_MDLG_BACK, DLSZ_MOVE_X | DLSZ_MOVE_Y)
+   DLGRESIZE_CONTROL(IDC_MDLG_HELP, DLSZ_MOVE_Y)
 END_DLGRESIZE_MAP()
 
    // message map
@@ -76,9 +78,11 @@ BEGIN_MSG_MAP(MainDlg)
    COMMAND_HANDLER(IDC_MDLG_EXIT, BN_CLICKED, OnExit)
    COMMAND_HANDLER(IDC_MDLG_BACK, BN_CLICKED, OnButtonBack)
    COMMAND_HANDLER(IDC_MDLG_NEXT, BN_CLICKED, OnButtonNext)
+   COMMAND_HANDLER(IDC_MDLG_HELP, BN_CLICKED, OnHelpButton)
    COMMAND_HANDLER(IDC_MDLG_BACK, 1, OnButtonBack) // from accelerator keys
    COMMAND_HANDLER(IDC_MDLG_NEXT, 1, OnButtonNext)
    COMMAND_HANDLER(IDC_INPUT_BUTTON_INFILESEL, 1, OnSendToPage)
+   MESSAGE_HANDLER(WM_HELP, OnHelp)
    MESSAGE_HANDLER(WM_DRAWITEM, OnDrawItem)
    MESSAGE_HANDLER(WM_SYSCOMMAND, OnSysCommand)
    MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
@@ -180,6 +184,16 @@ END_MSG_MAP()
       return 0;
    }
 
+   /// called on clicking on the help button
+   LRESULT OnHelpButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when pressing F1
+   LRESULT OnHelp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+   {
+      // same as pressing the help button
+      return OnHelpButton(0,0,0,bHandled);
+   }
+
    /// called for every system command; used for the about box system menu entry
    LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
@@ -271,6 +285,15 @@ protected:
 
    /// tooltips ctrl
    CToolTipCtrl tooltips;
+
+   /// help icon
+   CImageList m_helpIcon;
+
+   /// indicates if help file is available
+   bool m_helpAvailable;
+
+   /// html help object
+   HtmlHelper m_htmlHelper;
 
    /// ui settings
    UISettings& settings;

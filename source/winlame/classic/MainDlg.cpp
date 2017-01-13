@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2014 Michael Fink
+   Copyright (c) 2000-2017 Michael Fink
    Copyright (c) 2004 DeXT
 
    This program is free software; you can redistribute it and/or modify
@@ -112,6 +112,20 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    // activate page 0
    ActivatePage(0);
 
+   // set the help button image
+   m_helpIcon.Create(MAKEINTRESOURCE(IDB_HELP),14,0,RGB(192,192,192));
+   CButton helpButton(GetDlgItem(IDC_MDLG_HELP));
+   helpButton.SetIcon(m_helpIcon.ExtractIcon(0));
+
+   // check if html help file is available
+   CString helpFilename = Path::Combine(App::AppFolder(), "winLAME.chm");
+
+   m_helpAvailable = Path(helpFilename).FileExists();
+   if (m_helpAvailable)
+      m_htmlHelper.Init(m_hWnd, helpFilename);
+   else
+      GetDlgItem(IDC_MDLG_HELP).ShowWindow(SW_HIDE);
+
    // add menu items to system menu
 
    // IDM_ABOUTBOX and IDM_OPTIONS must be in the system command range.
@@ -163,6 +177,21 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    DlgResize_Init(true, true);
 
    return 1;  // let the system set the focus
+}
+
+LRESULT MainDlg::OnHelpButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   if (m_helpAvailable)
+   {
+      // load the string with the help string ID
+      CString helpPath;
+      helpPath.LoadString(pages[currentpage]->helpID);
+
+      // display help topic
+      if (!helpPath.IsEmpty())
+         m_htmlHelper.DisplayTopic(helpPath);
+   }
+   return 0;
 }
 
 LRESULT MainDlg::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)

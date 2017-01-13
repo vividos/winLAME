@@ -147,6 +147,7 @@ BEGIN
     PUSHBUTTON      "<< &Zurück", IDC_MDLG_BACK, 133, 188, 50, 14
     DEFPUSHBUTTON   "&Weiter >>", IDC_MDLG_NEXT, 189, 188, 50, 14
     PUSHBUTTON      "&Beenden", IDC_MDLG_EXIT, 245, 188, 50, 14
+    PUSHBUTTON      "Hilfe", IDC_MDLG_HELP, 4, 188, 16, 14, BS_ICON
     CONTROL         "", IDC_MDLG_CAPTIONBAR, WC_BUTTON, NOT WS_TABSTOP | BS_OWNERDRAW | BS_FLAT, 0, 0, 217, 30
     CONTROL         "", IDC_STATIC_MAIN_BEVEL, WC_STATIC, SS_ETCHEDHORZ, 0, 182, 299, 1
     CONTROL         "", IDC_MDLG_FRAME, WC_STATIC, NOT WS_VISIBLE | SS_BLACKFRAME, 4, 35, 291, 143
@@ -881,6 +882,7 @@ BEGIN
     IDC_ENC_TOTRAY                "Schickt winLAME zum Taskbar-Infobereich"
     IDC_MDLG_NEXT                 "Geht weiter zur nächsten Assistenten-Seite"
     IDC_MDLG_BACK                 "Kehrt zur letzten Assistenten-Seite zurück"
+    IDC_MDLG_HELP                 "Zeigt die Hilfe für die aktuelle Assistenten-Seite"
     IDC_MDLG_EXIT                 "Beendet winLAME"
     IDC_OUT_COMBO_OUTMODULE       "Ändert das Ausgabe-Modul, das winLAME benutzen soll"
     IDC_OUT_DELAFTER              "Wenn angehakt, löscht die verarbeiteten Quelldateien nach dem Encoden"
