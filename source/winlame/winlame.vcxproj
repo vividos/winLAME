@@ -60,6 +60,7 @@
       <AdditionalDependencies>comctl32.lib;version.lib;nlame.lib;libsndfile-1.lib;libmad.lib;libfaac.lib;libfaad2.lib;libopusfile-0.lib;bass.lib;basswma.lib;basscd.lib;libid3tag.lib;libFLAC_dynamic.lib;delayimp.lib;zlibstat.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DelayLoadDLLs>libfaad2.dll;libfaac.dll;bass.dll;basscd.dll;basswma.dll;libflac_dynamic.dll;libmad.dll;libsndfile-1.dll;libmp3lame.dll;ws2_32.dll;propsys.dll;dwmapi.dll;Htmlhelp.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <Bscmake />
   </ItemDefinitionGroup>
