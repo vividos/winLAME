@@ -14,33 +14,25 @@
 		<param name="Local" value="html\index.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="winLAME Features">
-		<param name="Local" value="html\misc\features.html">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Introduction for mp3 beginners">
 		<param name="Local" value="html\misc\intromp3.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Licenses">
-		<param name="Local" value="html/misc/licenses.html">
+		<param name="Local" value="html\misc\licenses.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Credits &amp; Thanks">
+		<param name="Name" value="Credits">
 		<param name="Local" value="html\misc\credits.html">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="How to ...">
-		<param name="Local" value="html/howto/index.html">
+		<param name="Local" value="html\howto\index.html">
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="rip and encode a CD with winLAME">
 			<param name="Local" value="html\howto\ripencode.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="use Winamp Input Plugins with winLAME">
-			<param name="Local" value="html\howto\plugins.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="make presets for winLAME">
@@ -53,8 +45,20 @@
 		</OBJECT>
 	<UL>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Modern UI">
+			<param name="Local" value="html\pages\modernui.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Classic UI">
+			<param name="Local" value="html\pages\classicui.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Input Files">
 			<param name="Local" value="html\pages\input.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Input CD">
+			<param name="Local" value="html\pages\inputcd.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Output Settings">
@@ -65,24 +69,36 @@
 			<param name="Local" value="html\pages\presets.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Preset Properties">
-			<param name="Local" value="html/pages/property.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="LAME Settings">
 			<param name="Local" value="html\pages\lame.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Opus Settings">
+			<param name="Local" value="html\pages\opus.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Ogg Vorbis Settings">
 			<param name="Local" value="html\pages\oggvorbis.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Wave Output Settings">
-			<param name="Local" value="html\pages\wave.html">
+			<param name="Name" value="LibSndfile Settings">
+			<param name="Local" value="html\pages\sndfile.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Windows Media Audio Settings">
+			<param name="Local" value="html\pages\wma.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="AAC Settings">
 			<param name="Local" value="html\pages\aac.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="CD Audio Extraction">
+			<param name="Local" value="html\pages\cdaudio.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Finish">
+			<param name="Local" value="html\pages\finish.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Encode">
@@ -97,10 +113,6 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="MPEG Audio Compression">
 			<param name="Local" value="html\techref\mpegheader.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="winLAME architecture">
-			<param name="Local" value="html\techref\wlarch.html">
 			</OBJECT>
 	</UL>
 </UL>

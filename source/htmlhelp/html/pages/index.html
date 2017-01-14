@@ -1,53 +1,92 @@
-<html>
- <head>
-  <title>winLAME help - Pages</title>
-  <link rel="stylesheet" type="text/css" href="../winlame.css">
- </head>
-<body class="back">
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>winLAME Help - Pages</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="margin:16px">
 
-<h1>winLAME Wizard Pages</h1>
+    <h1>winLAME Wizard Pages</h1>
 
-<!-- begin of text -->
+    <!-- begin of text -->
+    <p>
+        winLAME supports working in two different User Interface modes. You can always change
+        between the modes, either by the icon on the ribbon or toolbar in Modern UI mode, or in
+        the system menu of the wizard pages in Classic UI mode.
+    </p>
 
-<p>
-winLAME uses a wizard-dialog style appearance (looks like an Install Shield Wizard), to configure all details of encoding or decoding.
-</p>
+    <p>
+        <div class="list-group">
 
-<p>
-The following configuration wizard pages can appear in winLAME :
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">
+                    <a href="modernui.html">Modern UI</a>
+                </h4>
+                In this mode the main window of the application shows all currently running
+                encoding tasks, and new encoding tasks can be added instantly. Encoding tasks are
+                set up using wizard pages, as in the Classic UI mode.
+            </div>
 
-<p>
- <ul>
-  <li><a href="input.html">Input Files</a></li>
-  <li><a href="output.html">Output Settings</a></li>
-  <li><a href="presets.html">Preset Selection</a></li>
-  <li><a href="lame.html">LAME Settings</a></li>
-  <li><a href="oggvorbis.html">Ogg Vorbis Settings</a></li>
-  <li><a href="wave.html">Wave Output Settings</a></li>
-  <li><a href="aac.html">AAC Settings</a></li>
-  <li><a href="encode.html">Encode</a></li>
- </ul>
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">
+                    <a href="classicui.html">Classic UI</a>
+                </h4>
+                In this mode the wizard that you know from previous versions of winLAME is used.
+                The wizard pages let you configure all details of encoding, and on the final
+                encode page the current encoding task is completed.
+            </div>
+        </div>
+    </p>
 
-<p>
-<b style="color:red;">Note:</b> in winLAME, press F1 to get directly to the help page of the current wizard page. There are tool tips for every control on a page that show up when one hovers over a control longer than one second.
-</p>
+    <p>
+        The following configuration wizard pages can appear in winLAME. Some of the pages are only
+        available in Classic UI or in Modern UI mode.
+    </p>
 
-<h3>System Menu</h3>
+    <p>
+        <ul>
+            <li><a href="input.html">Input Files</a></li>
+            <li><a href="inputcd.html">Input CD</a></li>
+            <li><a href="output.html">Output Settings</a></li>
+            <li><a href="presets.html">Preset Selection</a></li>
+            <li><a href="lame.html">LAME Settings</a></li>
+            <li><a href="opus.html">Opus Settings</a></li>
+            <li><a href="oggvorbis.html">Ogg Vorbis Settings</a></li>
+            <li><a href="sndfile.html">LibSndfile Settings</a></li>
+            <li><a href="wma.html">Windows Media Audio Settings</a></li>
+            <li><a href="aac.html">AAC Settings</a></li>
+            <li><a href="cdaudio.html">CD Audio Extraction</a> (Classic UI only)</li>
+            <li><a href="finish.html">Finish</a> (Modern UI only)</li>
+            <li><a href="encode.html">Encode</a> (Classic UI only)</li>
+        </ul>
+    </p>
 
-<img src="images/systemmenu.png">
+    <p>
+        <h4>
+            <span class="label label-info">Note</span>
+        </h4>
+        In winLAME, press F1 to get directly to the help page of the current wizard page. There
+        are tool tips for every control on each page that show up when you hover over a control
+        longer than one second.
+    </p>
 
-<p>
-<b>uninstall winLAME:</b> quits winLAME and starts the winLAME uninstaller.
-</p>
+    <h3>System Menu</h3>
 
-<p>
-<b>about winLAME:</b> shows the winLAME about box. The about box lists informations about winLAME and the versions of the used libraries.
-</p>
+    <img src="images/systemmenu.png" />
 
-<p><a href="../index.html">back to Main page</a></p>
+    <p>
+        <b>uninstall winLAME:</b> quits winLAME and starts the winLAME uninstaller.
+    </p>
 
-<!-- end of text -->
+    <p>
+        <b>about winLAME:</b> shows the winLAME about box. The about box lists informations about winLAME and the versions of the used libraries.
+    </p>
+
+    <p><a href="../index.html">back to Main page</a></p>
+
+    <!-- end of text -->
 </body>
 </html>

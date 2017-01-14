@@ -1,57 +1,115 @@
-<html>
- <head>
-  <title>winLAME help - Pages: AAC Settings</title>
-  <link rel="stylesheet" type="text/css" href="../winlame.css">
- </head>
-<body class="back">
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>winLAME Help - Pages: AAC Settings</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="margin:16px">
 
-<h1>AAC Settings Page</h1>
+    <h1>AAC Settings Page</h1>
 
-<!-- begin of text -->
+    <!-- begin of text -->
 
-<p>
-This is the settings page for the AAC output module. AAC encoding and decoding is only available if the files "libfaac.dll" (for encoding) and "libfaad2.dll" (for decoding) are present in the winLAME folder. These files are only available as source code, which must be compiled before using. For more, look at: <a href="http://faac.sourceforge.net/" target="_blank">http://faac.sourceforge.net/</a>.
-</p>
+    <p>
+        This is the settings page for the AAC output module. AAC encoding and decoding is only
+        available if the files "libfaac.dll" (for encoding) and "libfaad2.dll" (for decoding) are
+        present in the winLAME folder. These files are only available as source code, which must
+        be compiled before using. For more infos, look at:
+        <a href="http://faac.sourceforge.net/" target="_blank">http://faac.sourceforge.net/</a>.
+    </p>
 
-<h3>Output Format</h3>
+    <h3>Output Format</h3>
 
-<p>
-<b>Bitrate:</b> specifies the bitrate per channel the AAC encoder uses, in bps. Although there are some fixed settings you can cycle through with the up-down-buttons, any bitrate can be typed into the field.
-</p>
+    <p>
+        <div class="list-group">
 
-<p>
-<b>Bandwidth:</b> specifies the bandwidth the encoder uses of the audio input file, in Hz. Higher frequencies will be cut off.
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Quality</h4>
+                <div class="list-group-item-text">
+                    Sets default variable bitrate (VBR) quantizer quality in percent (default:
+                    100, averages at approx. 120 kbps VBR for a normal stereo input file with 16
+                    bit and 44.1 kHz sample rate. Max. value 500, min. 10.
+                </div>
+            </div>
 
-<p>
-<b>Mpeg Version:</b> lets you choose the MPEG version the output AAC file will be. Either 2 or 4.<br>
-<b style="color:red;">Note:</b> libfaac currently doesn't support MPEG2 and the LTP object type at the same time.
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Average Bitrate</h4>
+                <div class="list-group-item-text">
+                    Specifies the bitrate per channel the AAC encoder uses, in kbps. Although
+                    there are some fixed settings you can cycle through with the up-down-buttons,
+                    any bitrate can be typed into the field.
+                </div>
+            </div>
 
-<p>
-<b>AAC Object Type:</b> lets you choose the object type that will be used for the output file.
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Allow Mid/Side</h4>
+                <div class="list-group-item-text">
+                    Allows the AAC encoder to use Mid/Side encoding. Stereo signals are separated
+                    in a mid (left minus right) channel, and a side (left plus right) channel.
+                    Should only be used when there is low stereo separation.
+                </div>
+            </div>
 
-<p>
-<b>allow Mid/Side:</b> allows the AAC encoder to use Mid/Side encoding. Stereo signals are separated in a mid (left minus right) channel, and a side (left plus right) channel. Should only be used when there is low stereo separation.
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Use TNS</h4>
+                <div class="list-group-item-text">
+                    Tells the AAC encoder to use Temporal Noise Shaping.
+                </div>
+            </div>
 
-<p>
-<b>use TNS:</b> tells the AAC encoder to use Temporal Noise Shaping.
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Use LFE channel</h4>
+                <div class="list-group-item-text">
+                    Tells the AAC encoder to use one channel as LFE channel. <i>libfaac doesn't
+                    currently support this.</i>
+                </div>
+            </div>
 
-<p>
-<b>use LFE channel:</b> tells the AAC encoder to use one channel as LFE channel. <i>libfaac doesn't currently support this.</i>
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Cutoff</h4>
+                <div class="list-group-item-text">
+                    Specifies the cutoff frequency the encoder uses of the audio input file, in
+                    Hz. Higher frequencies will be cut off.
+                </div>
+            </div>
 
-<hr size="1" width="80%"/>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">MPEG Version</h4>
+                <div class="list-group-item-text">
+                    Lets you choose the MPEG version the output AAC file will be. Either MPEG2 or
+                    MPEG4. Note that this option doesn't create .mp4 files!
+                </div>
+            </div>
 
-<p>
-Possible next pages: <a href="encode.html">Encode Page</a>.
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">AAC Object Type</h4>
+                <div class="list-group-item-text">
+                    Lets you choose the object type that will be used for the output file.
+                </div>
+            </div>
 
-<p><a href="#">back to top</a> - <a href="index.html">back to Wizard Pages</a></p>
+        </div>
+    </p>
 
-<!-- end of text -->
+    <p>
+        <h3>
+            <span class="label label-warning">Warning</span>
+        </h3>
+        libfaac currently doesn't support MPEG2 and the LTP object type at the same time.
+    </p>
+
+    <hr size="1" width="80%" />
+
+    <p>
+        Possible next pages: <a href="encode.html">Encode Page</a> (Classic UI) or
+        <a href="finish.html">Finish Page</a> (Modern UI).
+    </p>
+
+    <p><a href="#">back to top</a> - <a href="index.html">back to Wizard Pages</a></p>
+
+    <!-- end of text -->
 </body>
 </html>

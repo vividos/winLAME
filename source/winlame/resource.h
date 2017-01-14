@@ -315,8 +315,7 @@
 #define IDS_HTML_WAVE                           40805
 #define IDS_HTML_AAC                            40806
 #define IDS_HTML_ENCODE                         40807
-#define IDS_HTML_PROPERTYDLG                    40808
-#define IDS_HTML_FILEDLG                        40809
+#define IDS_HTML_OPUS                           40808
 #define IDS_HTML_WMA                            40810
 #define IDS_HTML_CDRIP                          40811
 #define IDS_CDRIP_RANDOM_FREEDB_SERVER          40900

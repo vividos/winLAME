@@ -1,39 +1,71 @@
-<html>
- <head>
-  <title>winLAME help - Pages: Preset Selection</title>
-  <link rel="stylesheet" type="text/css" href="../winlame.css">
- </head>
-<body class="back">
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>winLAME Help - Pages: Preset Selection</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="margin:16px">
 
-<h1>Preset Selection Page</h1>
+    <h1>Preset Selection Page</h1>
 
-<!-- begin of text -->
+    <!-- begin of text -->
 
-<p>
-This is the preset selection pages. It only appears when the presets settings file (presets.xml) is installed, and when MSXML3 is available. Normally it is installed with Internet Explorer 5 or higher.
-Also, presets for the specific output module must be available in the presets settings file to show this page.
-</p>
+    <p>
+        This is the preset selection pages. It only appears when the presets settings file
+        (presets.xml) is installed. Also, presets for the specific output module must be available
+        in the presets settings file to show this page.
+    </p>
 
-<p>
-<b>Preset List:</b> lists all available presets for the currently selected output module (from the <a href="output.html">output page</a>). The description box shows the description for the currently selected preset. Double-clicking on one preset shows the <a href="property.html">settings parameter</a> that are used for that preset.
-</p>
+    <p>
+        The first entry "Custom settings" always brings you to the Output Module's configuration
+        page. This is only recommended for experienced users, though. You can double-click on any
+        entry to see what encoding parameters are used for this preset.
+    </p>
 
-<p>
-<b>Preset Description Box:</b> presents a description of the currently selected preset.
-</p>
+    <p>
+        <div class="list-group">
 
-<hr size="1" width="80%"/>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">
+                    Preset List
+                </h4>
+                Lists all available presets for the currently selected output module (from the
+                <a href="output.html">output page</a>). The description box shows the description
+                for the currently selected preset. Double-clicking on one preset shows the
+                settings parameter that are used for that preset.
+            </div>
 
-<p>
-Possible next pages: <a href="lame.html">LAME Settings</a>,
-<a href="oggvorbis.html">Ogg Vorbis Settings</a>,
-<a href="wave.html">Wave Output Settings</a>,
-<a href="aac.html">AAC Settings</a>,
-<a href="encode.html">Encode</a>.
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">
+                    Preset Description Box
+                </h4>
+                Presents a description of the currently selected preset.
+            </div>
 
-<p><a href="#">back to top</a> - <a href="index.html">back to Wizard Pages</a></p>
+        </div>
+    </p>
 
-<!-- end of text -->
+    <hr size="1" width="80%" />
+
+    <p>
+        Possible next pages:
+        <ul>
+            <li><a href="lame.html">LAME Settings</a></li>
+            <li><a href="opus.html">Opus Settings</a></li>
+            <li><a href="oggvorbis.html">Ogg Vorbis Settings</a></li>
+            <li><a href="sndfile.html">LibSndfile Settings</a></li>
+            <li><a href="wma.html">Windows Media Audio Settings</a></li>
+            <li><a href="aac.html">AAC Settings</a></li>
+            <li><a href="finish.html">Finish</a> (Modern UI)</li>
+            <li><a href="encode.html">Encode</a> (Classic UI)</li>
+        </ul>
+    </p>
+
+    <p><a href="#">back to top</a> - <a href="index.html">back to Wizard Pages</a></p>
+
+    <!-- end of text -->
 </body>
 </html>

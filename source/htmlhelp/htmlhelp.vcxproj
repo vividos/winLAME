@@ -66,32 +66,32 @@ exit 0</NMakeCleanCommandLine>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="BuildHelp.cmd" />
+    <None Include="html\css\bootstrap.min.css" />
     <None Include="html\howto\index.html" />
-    <None Include="html\howto\plugins.html" />
     <None Include="html\howto\presets.html" />
     <None Include="html\howto\ripencode.html" />
     <None Include="html\index.html" />
     <None Include="html\misc\credits.html" />
-    <None Include="html\misc\features.html" />
     <None Include="html\misc\intromp3.html" />
     <None Include="html\misc\licenses.html" />
     <None Include="html\pages\aac.html" />
+    <None Include="html\pages\cdaudio.html" />
+    <None Include="html\pages\classicui.html" />
     <None Include="html\pages\encode.html" />
+    <None Include="html\pages\finish.html" />
     <None Include="html\pages\index.html" />
     <None Include="html\pages\input.html" />
+    <None Include="html\pages\inputcd.html" />
     <None Include="html\pages\lame.html" />
-    <None Include="html\pages\lameadv.html" />
-    <None Include="html\pages\lamebasic.html" />
-    <None Include="html\pages\lamevbr.html" />
+    <None Include="html\pages\modernui.html" />
     <None Include="html\pages\oggvorbis.html" />
+    <None Include="html\pages\opus.html" />
     <None Include="html\pages\output.html" />
     <None Include="html\pages\presets.html" />
-    <None Include="html\pages\property.html" />
-    <None Include="html\pages\wave.html" />
+    <None Include="html\pages\sndfile.html" />
+    <None Include="html\pages\wma.html" />
     <None Include="html\techref\index.html" />
     <None Include="html\techref\mpegheader.html" />
-    <None Include="html\techref\wlarch.html" />
-    <None Include="html\winlame.css" />
     <None Include="toc.hhc" />
     <None Include="winLAMEhelp.hhp" />
   </ItemGroup>
@@ -108,8 +108,6 @@ exit 0</NMakeCleanCommandLine>
     <Image Include="html\pages\images\btn_totray.png" />
     <Image Include="html\pages\images\inmod_cfg.png" />
     <Image Include="html\pages\images\systemmenu.png" />
-    <Image Include="html\techref\architecture.fw.png" />
-    <Image Include="html\techref\architecture.png" />
     <Image Include="html\winlame.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

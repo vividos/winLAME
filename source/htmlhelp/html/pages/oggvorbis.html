@@ -1,50 +1,79 @@
-<html>
- <head>
-  <title>winLAME help - pages: Ogg Vorbis Settings</title>
-  <link rel="stylesheet" type="text/css" href="../winlame.css">
- </head>
-<body class="back">
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>winLAME Help - Pages: Ogg Vorbis Settings</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="margin:16px">
 
-<h1>Ogg Vorbis Settings Page</h1>
+    <h1>Ogg Vorbis Settings Page</h1>
 
-<!-- begin of text -->
+    <!-- begin of text -->
 
-<p>
-This is the settings page for generating Ogg Vorbis audio files. Ogg Vorbis encoding and decoding is only available if the file "libvorbis.dll" is present in the winLAME folder.
-</p>
+    <p>
+        This is the settings page for generating Ogg Vorbis audio files.
+    </p>
 
-<h3>Quality Management</h3>
+    <h3>Quality Management</h3>
 
-<p>
-<b>Quality Settings:</b> lets you choose a quality factor from 0.0 (bad quality) to 10.0 (excellent quality) for the encoding process. A value of 4.0 normally yields good results. The estimated approximate bitrate is shown to the right.
-</p>
+    <p>
+        <div class="list-group">
 
-<h3>Bitrate Settings</h3>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Quality Settings</h4>
+                Lets you choose a quality factor from 0.0 (bad quality) to 10.0 (excellent
+                quality) for the encoding process. A value of 4.0 yields good results. The
+                estimated approximate bitrate is shown to the right.
+            </div>
 
-<p>
-<b style="color:red;">Note:</b> These modes are generally not recommended to use for normal encoding!
-</p>
+        </div>
+    </p>
 
-<p>
-<b>variable Bitrate:</b> lets you specify a minimum and maximum bitrate the encoder takes as base for encoding.
-</p>
+    <h3>Bitrate Settings</h3>
 
-<p>
-<b>average Bitrate:</b> lets you specify a nominal bitrate. Target bitrate will always be approximately at the nominal bitrate.
-</p>
+    <p>
+        <h3>
+            <span class="label label-warning">Warning</span>
+        </h3>
+        These modes are generally not recommended to use for normal encoding! Please use the
+        quality management mode.
+    </p>
 
-<p>
-<b>constant Bitrate:</b> lets you specify a constant bitrate that will be ensured in the whole stream.
-</p>
+    <p>
+        <div class="list-group">
 
-<hr size="1" width="80%"/>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Variable Bitrate</h4>
+                Lets you specify a minimum and maximum bitrate the encoder takes as base for
+                encoding.
+            </div>
 
-<p>
-Possible next pages: <a href="encode.html">Encode Page</a>.
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Average Bitrate</h4>
+                Lets you specify a nominal bitrate. Target bitrate will always be approximately at
+                the nominal bitrate.
+            </div>
 
-<p><a href="#">back to top</a> - <a href="index.html">back to Wizard Pages</a></p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Constant Bitrate</h4>
+                Lets you specify a constant bitrate that will be ensured in the whole stream.
+            </div>
 
-<!-- end of text -->
+        </div>
+    </p>
+
+    <hr size="1" width="80%" />
+
+    <p>
+        Possible next pages: <a href="encode.html">Encode Page</a> (Classic UI) or
+        <a href="finish.html">Finish Page</a> (Modern UI).
+    </p>
+
+    <p><a href="#">back to top</a> - <a href="index.html">back to Wizard Pages</a></p>
+
+    <!-- end of text -->
 </body>
 </html>

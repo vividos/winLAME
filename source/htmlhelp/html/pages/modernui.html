@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>winLAME Help - Modern UI</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="margin:16px">
+
+    <h1>winLAME Modern User Interface</h1>
+
+    <!-- begin of text -->
+
+    <p>
+        The Modern User Interface uses a main window that shows the currently running tasks. It
+        lets you start new Encoding and CD Audio Extraction tasks while previous tasks still run.
+        This way the full power of today's modern multi core CPUs can be used.
+    </p>
+
+    <h3>Menu band / ribbon</h3>
+
+    <img src="images/ribbon.png" />
+
+    <p>
+        The main window uses a menu band (also called ribbon) known from modern Office and other
+        applications to show possible actions.
+    </p>
+
+    <h3>Toolbar + Menu</h3>
+
+    <img src="images/toolbar.png" />
+
+    <p>
+        You can also switch to a toolbar + menu mode that uses toolbars and menus to select actions.
+        This mode is also used on Windows XP, since it doesn't support the menu band user
+        interface.
+    </p>
+
+    <h3>Tasks List</h3>
+
+    <img src="images/taskslist.png" />
+
+    <p>
+        The tasks list shows all currently running, queued or finished tasks. The icon of the task
+        indicates the task type. Clicking on a single task shows details about this task in the
+        task details window.
+    </p>
+
+    <h3>Commands</h3>
+
+    <p>
+        The following commands are available in the menu band and in the toolbar / menu mode.
+
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading">Open Files</h4>
+            Starts the wizard pages used to encode files. The first wizard page is the
+            <a href="input.html">Input Files</a> page.
+        </div>
+
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading">Read CD</h4>
+            Starts the wizard pages used to read out CD Audio tracks. The first wizard page is the
+            <a href="inputcd.html">Input CD</a> page.
+        </div>
+
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading">Stop all</h4>
+            Stops all running tasks. All temporary output files are removed again. The tasks are
+            not cleared from the tasks list.
+        </div>
+
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading">Remove completed</h4>
+            Removes completed tasks from the tasks list, in order to clean up the tasks that are
+            no longer relevant.
+        </div>
+
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading">Settings</h4>
+            Shows the general settings page to change settings.
+        </div>
+
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading">CD Read Settings</h4>
+            Shows the settings page for CD Read functions.
+        </div>
+
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading">Encoding finish action</h4>
+            This drop-down button lets you choose which action is carried out when all encoding
+            and CD Audio extraction tasks are finished. The following options are available:
+            <table class="table table-striped table-bordered table-condensed">
+                <thead>
+                    <tr><th>Action</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><b>Do nothing</b></td><td>Does nothing when finished</td></tr>
+                    <tr><td><b>Close winLAME</b></td><td>Closes winLAME when finished</td></tr>
+                    <tr><td><b>Standby PC</b></td><td>Suspends the system to RAM and powers down</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading">Menu band</h4>
+            Changes from menu band mode to toolbar + menu mode and back.
+        </div>
+
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading">Switch to Classic mode</h4>
+            Switches back to <a href="classicui.html">Classic UI mode</a>. Note that you can
+             always switch back to Modern UI mode using the system menu in Classic UI mode.
+        </div>
+
+        <div class="list-group-item">
+            <h4 class="list-group-item-heading"><img src="images/btn_about.png" /> Button</h4>
+            The button shows the About dialog, showing all input and output modules and
+            library versions used in winLAME.
+        </div>
+
+    </p>
+
+    <p><a href="index.html">back to Wizard Pages</a></p>
+
+    <!-- end of text -->
+</body>
+</html>

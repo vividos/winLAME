@@ -44,6 +44,7 @@ public:
       IDD = IDD_DLG_OPUS;
       captionID = IDS_DLG_CAP_OPUS;
       descID = IDS_DLG_DESC_OPUS;
+      helpID = IDS_HTML_OPUS;
    }
 
    BEGIN_DDX_MAP(OpusSettingsPage)

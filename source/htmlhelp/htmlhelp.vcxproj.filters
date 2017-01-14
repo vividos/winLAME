@@ -4,12 +4,6 @@
     <None Include="BuildHelp.cmd" />
     <None Include="toc.hhc" />
     <None Include="winLAMEhelp.hhp" />
-    <None Include="html\misc\credits.html">
-      <Filter>html\misc</Filter>
-    </None>
-    <None Include="html\misc\features.html">
-      <Filter>html\misc</Filter>
-    </None>
     <None Include="html\misc\intromp3.html">
       <Filter>html\misc</Filter>
     </None>
@@ -19,13 +13,7 @@
     <None Include="html\index.html">
       <Filter>html</Filter>
     </None>
-    <None Include="html\winlame.css">
-      <Filter>html</Filter>
-    </None>
     <None Include="html\howto\index.html">
-      <Filter>html\howto</Filter>
-    </None>
-    <None Include="html\howto\plugins.html">
       <Filter>html\howto</Filter>
     </None>
     <None Include="html\howto\presets.html">
@@ -49,15 +37,6 @@
     <None Include="html\pages\lame.html">
       <Filter>html\pages</Filter>
     </None>
-    <None Include="html\pages\lameadv.html">
-      <Filter>html\pages</Filter>
-    </None>
-    <None Include="html\pages\lamebasic.html">
-      <Filter>html\pages</Filter>
-    </None>
-    <None Include="html\pages\lamevbr.html">
-      <Filter>html\pages</Filter>
-    </None>
     <None Include="html\pages\oggvorbis.html">
       <Filter>html\pages</Filter>
     </None>
@@ -67,20 +46,41 @@
     <None Include="html\pages\presets.html">
       <Filter>html\pages</Filter>
     </None>
-    <None Include="html\pages\property.html">
-      <Filter>html\pages</Filter>
-    </None>
-    <None Include="html\pages\wave.html">
-      <Filter>html\pages</Filter>
-    </None>
     <None Include="html\techref\index.html">
       <Filter>html\techref</Filter>
     </None>
     <None Include="html\techref\mpegheader.html">
       <Filter>html\techref</Filter>
     </None>
-    <None Include="html\techref\wlarch.html">
-      <Filter>html\techref</Filter>
+    <None Include="html\css\bootstrap.min.css">
+      <Filter>html\css</Filter>
+    </None>
+    <None Include="html\misc\credits.html">
+      <Filter>html\misc</Filter>
+    </None>
+    <None Include="html\pages\sndfile.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\cdaudio.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\opus.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\wma.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\classicui.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\finish.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\inputcd.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\modernui.html">
+      <Filter>html\pages</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +104,9 @@
     </Filter>
     <Filter Include="html\pages\images">
       <UniqueIdentifier>{9f621d86-cb11-43d2-aff7-86d7da7d85a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="html\css">
+      <UniqueIdentifier>{e82d6ca6-3016-479a-9da4-ea1baed47264}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -136,12 +139,6 @@
     </Image>
     <Image Include="html\pages\images\systemmenu.png">
       <Filter>html\pages\images</Filter>
-    </Image>
-    <Image Include="html\techref\architecture.fw.png">
-      <Filter>html\techref</Filter>
-    </Image>
-    <Image Include="html\techref\architecture.png">
-      <Filter>html\techref</Filter>
     </Image>
   </ItemGroup>
 </Project>

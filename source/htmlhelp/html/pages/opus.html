@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>winLAME Help - Pages: Opus Settings</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="margin:16px">
+
+    <h1>Opus Settings Page</h1>
+
+    <!-- begin of text -->
+
+    <p>
+        This is the settings page for generating Opus audio files.
+    </p>
+
+    <p>
+        <div class="list-group">
+
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Bitrate</h4>
+                The bitrate setting determines the quality by using more bits per encoding frame,
+                yielding in higher quality. Lower bitrates may disable some Opus algorithm
+                details. Generally, Opus at 128 kbit/s is pretty much transparent. Command line
+                option --bitrate
+            </div>
+
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Complexity</h4>
+                This configures the the maximum algorithmic complexity. The default value of 10
+                means, that the encoder doesn't hesitate to use the CPU to give you the best
+                quality encoding at the given bitrate. The allowed values are between 10 (highest
+                CPU usage and quality) and 0 (lowest CPU usage and quality). You should always
+                use the highest value of 10. Command line option --comp
+            </div>
+
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Bitrate control mode</h4>
+                Controls how bitrate is maintained throughout the file.
+
+                <div class="list-group-item">
+                    <h4 class="list-group-item-heading">VBR (recommended)</h4>
+                    Uses variable bitrate encoding (default); command line option --vbr
+                </div>
+
+                <div class="list-group-item">
+                    <h4 class="list-group-item-heading">Constrained VBR</h4>
+                    Uses constrained variable bitrate encoding; command line option --cvbr
+                </div>
+
+                <div class="list-group-item">
+                    <h4 class="list-group-item-heading">Hard CBR</h4>
+                    Uses hard constant bitrate encoding; command line option --hard-cbr
+                </div>
+            </div>
+
+        </div>
+    </p>
+
+    <hr size="1" width="80%" />
+
+    <p>
+        Possible next pages: <a href="encode.html">Encode Page</a> (Classic UI) or
+        <a href="finish.html">Finish Page</a> (Modern UI).
+    </p>
+
+    <p><a href="#">back to top</a> - <a href="index.html">back to Wizard Pages</a></p>
+
+    <!-- end of text -->
+</body>
+</html>

@@ -1,66 +1,128 @@
-<html>
- <head>
-  <title>winLAME help - Pages: Output Settings</title>
-  <link rel="stylesheet" type="text/css" href="../winlame.css">
- </head>
-<body class="back">
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>winLAME Help - Pages: Output Settings</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="margin:16px">
 
-<h1>Output Settings Page</h1>
+    <h1>Output Settings Page</h1>
 
-<!-- begin of text -->
+    <!-- begin of text -->
 
-<p>
-This is the output settings page that configures general output settings.
-</p>
+    <p>
+        This is the output settings page that configures general output settings.
+    </p>
 
-<p>
-<b>Output Module:</b> lets you select the output module that winLAME should use to encode all of your files. Some modules are only available when the proper DLL files are placed into the winLAME folder.
-</p>
+    <p>
+        <div class="list-group">
 
-<p>
-<b>Output Location:</b> lets you specify the output folder. The button at the left lets you select the folder. The folder history is available by clicking the down arrow.
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Output Module</h4>
+                <div class="list-group-item-text">
+                    Lets you select the output module that winLAME should use to encode all of
+                    your files.
+                </div>
+            </div>
 
-<p>
-<b>use input file's folder as output location:</b> uses the same output location as the input file has, for each input file. This allows multi-folder encodes.
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Warn about lossy transcoding</h4>
+                <div class="list-group-item-text">
+                    When this checkbox is active, a warning is shown when transcoding from one
+                    lossy format to another. This is done to accidentally prevent you to encode
+                    and lose quality. In some cases, transcoding is wanted, though.
+                </div>
+            </div>
 
-<p>
-<b>delete after encoding:</b> indicates if the input file should be deleted after successful encoding of that file.
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Output Location</h4>
+                <div class="list-group-item-text">
+                    Lets you specify the output folder. The button at the left lets you select the
+                    folder. The folder history is available by clicking the down arrow.
+                </div>
+            </div>
 
-<p>
-<b>overwrite existing files:</b> indicates if already existing files will be overwritten
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Use input file's folder as output location</h4>
+                <div class="list-group-item-text">
+                    Uses the same output location as the input file has, for each input file.
+                    This allows multi-folder encodes.
+                </div>
+            </div>
 
-<p>
-<b>after encoding, do this:</b> when checked, performs one of the following actions when all files are encoded. Not all actions are available on all Windows versions.<br>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Delete after encoding</h4>
+                <div class="list-group-item-text">
+                    Indicates if the input file should be deleted after successful encoding of
+                    that file. Only use this if you don't need the input file anymore or when you
+                    have another copy of the input files.
+                </div>
+            </div>
 
-<table border="1" cellpadding="1" cellspacing="0">
-<tr><td><b>Close winLAME</b></td><td>closes winLAME when finished</td></tr>
-<tr><td><b>Shutdown</b></td><td>shuts down Windows when finished</td></tr>
-<tr><td><b>Log off</b></td><td>logs off the current user when finished</td></tr>
-<tr><td><b>Hibernate</b></td><td>writes RAM contents to hard disk and powers down</td></tr>
-<tr><td><b>Suspend</b></td><td>suspends the system to RAM and powers down</td></tr>
-</table>
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Overwrite existing files</h4>
+                <div class="list-group-item-text">
+                    Indicates if already existing files will be overwritten.
+                    <h3>
+                        <span class="label label-warning">Warning</span>
+                    </h3>
+                    Be careful with this option when encoding to the sample folder as the input
+                    folder, or when delete files after encoding!
+                </div>
+            </div>
 
-<p>
-<b>create output playlist:</b> when checked, a m3u playlist with the name in the edit field is created while encoding files. Automatically enabled when a playlist was added or dropped into the input files list.	
-</p>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">After encoding, do this</h4>
+                <div class="list-group-item-text">
+                    When checked, performs one of the following actions when all files are
+                    encoded. Not all actions are available on all Windows versions.
+                    <table class="table table-striped table-bordered table-condensed">
+                        <thead>
+                            <tr><th>Action</th><th>Description</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><b>Close winLAME</b></td><td>Closes winLAME when finished</td></tr>
+                            <tr><td><b>Shutdown</b></td><td>Shuts down Windows when finished</td></tr>
+                            <tr><td><b>Log off</b></td><td>Logs off the current user when finished</td></tr>
+                            <tr><td><b>Hibernate</b></td><td>Writes RAM contents to hard disk and powers down</td></tr>
+                            <tr><td><b>Suspend</b></td><td>Suspends the system to RAM and powers down</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-<hr size="1" width="80%"/>
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Create output playlist</h4>
+                <div class="list-group-item-text">
+                    When checked, an .m3u playlist with the name in the edit field is created
+                    while encoding files. Automatically enabled when a playlist was added or
+                    dropped into the input files list, or when a CD is read in.
+                </div>
+            </div>
 
-<p>
-Possible next pages: <a href="presets.html">Preset Selection</a>,
-<a href="lame.html">LAME Settings</a>,
-<a href="oggvorbis.html">Ogg Vorbis Settings</a>,
-<a href="wave.html">Wave Output Settings</a>,
-<a href="aac.html">AAC Settings</a>.
-</p>
+        </div>
+    </p>
 
-<p><a href="#">back to top</a> - <a href="index.html">back to Wizard Pages</a></p>
+    <hr size="1" width="80%" />
 
-<!-- end of text -->
+    <p>
+        Possible next pages:
+        <ul>
+            <li><a href="presets.html">Preset Selection</a></li>
+            <li><a href="lame.html">LAME Settings</a></li>
+            <li><a href="opus.html">Opus Settings</a></li>
+            <li><a href="oggvorbis.html">Ogg Vorbis Settings</a></li>
+            <li><a href="sndfile.html">LibSndfile Settings</a></li>
+            <li><a href="wma.html">Windows Media Audio Settings</a></li>
+            <li><a href="aac.html">AAC Settings</a></li>
+        </ul>
+    </p>
+
+    <p><a href="#">back to top</a> - <a href="index.html">back to Wizard Pages</a></p>
+
+    <!-- end of text -->
 </body>
 </html>

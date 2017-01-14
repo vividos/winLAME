@@ -1,60 +1,64 @@
-<html>
- <head>
-  <title>winLAME help - Introduction to mp3</title>
-  <link rel="stylesheet" type="text/css" href="../winlame.css">
- </head>
-<body class="back">
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>winLAME Help - Introduction to mp3</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="margin:16px">
 
-<h1>Introduction to mp3</h1>
+    <h1>Introduction to mp3</h1>
 
-<!-- begin of text -->
+    <!-- begin of text -->
 
-<h2>Foreword</h2>
+    <h2>Foreword</h2>
 
-<p>
-This document is an introduction to the mp3 format and an explanation of the technology behind lossy compression in mp3 files.
-</p>
+    <p>
+        This document is an introduction to the mp3 format and an explanation of the technology behind lossy compression in mp3 files.
+    </p>
 
-<h2>Basic Concept</h2>
+    <h2>Basic Concept</h2>
 
-<p>
-The target of audio compression is to reduce the space on digital media needed to store audio. On a CD, one second of audio needs (44100 Hz samples per second * 2 channels * 16 bits per sample) 176 kb space. When you want to send an uncompressed song over the internet (say, with a 56k modem), this would take fairly long (and for the impatient, almost forever).
-</p>
+    <p>
+        The target of audio compression is to reduce the space on digital media needed to store audio. On a CD, one second of audio needs (44100 Hz samples per second * 2 channels * 16 bits per sample) 176 kb space. When you want to send an uncompressed song over the internet (say, with a 56k modem), this would take fairly long (and for the impatient, almost forever).
+    </p>
 
-<p>
-There are some methods to compress audio data. Lossless compression methods compact the data in such a way that they can be restored back bit-identical to the original. That is what e.g. the zip format does (even when it wasn't designed for that). There are also lossy compression methods. These take advantage of signals in the audio that cannot be heard by humans, and thus safely be discarded. When these are reconstructed, the unhearable signals are left out of the signal, but because we don't hear them, they aren't noticable.
-</p>
+    <p>
+        There are some methods to compress audio data. Lossless compression methods compact the data in such a way that they can be restored back bit-identical to the original. That is what e.g. the zip format does (even when it wasn't designed for that). There are also lossy compression methods. These take advantage of signals in the audio that cannot be heard by humans, and thus safely be discarded. When these are reconstructed, the unhearable signals are left out of the signal, but because we don't hear them, they aren't noticable.
+    </p>
 
-<p>
-Unfortunately, lossy encoding methods can leave slight distortions in the audio signal which sometimes can be hearable, mostly by people with "golden ears". The loss of hearable signals can be kept in a limit, though.
-</p>
+    <p>
+        Unfortunately, lossy encoding methods can leave slight distortions in the audio signal which sometimes can be hearable, mostly by people with "golden ears". The loss of hearable signals can be kept in a limit, though.
+    </p>
 
-<h2>Technical Infos</h2>
+    <h2>Technical Infos</h2>
 
-<p>
-Technically, audio information in the mp3 file is stored in frames. mp3 frames are a set of bytes that describes audio information. Frames can have different bitrates, that means they have different lengths. Although, every mp3 frame decodes to 1152 audio samples (for MPEG-1 Layer III). With a sample rate of 44100 Hz, a frame holds 26.1 milliseconds audio data. When using variable bitrate, the encoder can decide how much bits to spend on more complex parts of the audio to compress.
-</p>
+    <p>
+        Technically, audio information in the mp3 file is stored in frames. mp3 frames are a set of bytes that describes audio information. Frames can have different bitrates, that means they have different lengths. Although, every mp3 frame decodes to 1152 audio samples (for MPEG-1 Layer III). With a sample rate of 44100 Hz, a frame holds 26.1 milliseconds audio data. When using variable bitrate, the encoder can decide how much bits to spend on more complex parts of the audio to compress.
+    </p>
 
-<p>
-The audio data to compress is transformed into frequency domain with a method called MDCT (modified discrete cosinus transformation). From there, the encoder judges (by using a specific psychoacoustic model) how the transformed spectral values are stored within a frame. The psychoacoustic model determines which values are needed for hearing, and which one can be dropped, because they would be inaudible for the human ear. By optimizing the psychoacoustic model used, quality can be increased, even when using the same technology.
-</p>
+    <p>
+        The audio data to compress is transformed into frequency domain with a method called MDCT (modified discrete cosinus transformation). From there, the encoder judges (by using a specific psychoacoustic model) how the transformed spectral values are stored within a frame. The psychoacoustic model determines which values are needed for hearing, and which one can be dropped, because they would be inaudible for the human ear. By optimizing the psychoacoustic model used, quality can be increased, even when using the same technology.
+    </p>
 
-<p>
-There are different layers in the MPEG audio standard that describes slightly different frame formats and sample rates. Layer I is the simplest layer, whereas Layer III has the most complexity. Because of this, Layer III is mostly used and is called mp3 as an abbreviation.
-</p>
+    <p>
+        There are different layers in the MPEG audio standard that describes slightly different frame formats and sample rates. Layer I is the simplest layer, whereas Layer III has the most complexity. Because of this, Layer III is mostly used and is called mp3 as an abbreviation.
+    </p>
 
-<h2>History</h2>
+    <h2>History</h2>
 
-<p>
-The mp3 standard, also known as MPEG-1 Layer III, was first developed by the Fraunhofer Institute for Integrated Circuits (<a href="http://www.iis.fhg.de/" target="_blank">FhG IIS-A</a>), in 1987. It was primarily developed for digital audio broadcasting (DAB). Two years later, FhG patented the technologies behind the format. Later it was submitted to the ISO (International Standards Organization) and added to the MPEG-1 video standard as audio compression scheme.
-</p>
+    <p>
+        The mp3 standard, also known as MPEG-1 Layer III, was first developed by the Fraunhofer Institute for Integrated Circuits (<a href="http://www.iis.fhg.de/" target="_blank">FhG IIS-A</a>), in 1987. It was primarily developed for digital audio broadcasting (DAB). Two years later, FhG patented the technologies behind the format. Later it was submitted to the ISO (International Standards Organization) and added to the MPEG-1 video standard as audio compression scheme.
+    </p>
 
-<p>
-A nice explanation of the mp3 format can also be found here: <a href="http://www.howstuffworks.com/mp3.htm" target="_blank">Howstuffworks: how mp3 files work</a>.
-</p>
+    <p>
+        A nice explanation of the mp3 format can also be found here: <a href="http://www.howstuffworks.com/mp3.htm" target="_blank">Howstuffworks: how mp3 files work</a>.
+    </p>
 
-<p><a href="#">back to top</a> - <a href="../index.html">back to Main page</a></p>
+    <p><a href="#">back to top</a> - <a href="../index.html">back to Main page</a></p>
 
-<!-- end of text -->
+    <!-- end of text -->
 </body>
 </html>
