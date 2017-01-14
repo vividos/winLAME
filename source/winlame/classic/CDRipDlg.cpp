@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2005-2010 Michael Fink
+   Copyright (c) 2005-2017 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -692,8 +692,11 @@ void CDRipDlg::FreedbLookup()
       UI::FreeDbDiscListDlg dlg(entriesList);
 
       waitCursor.Restore();
-      ATLVERIFY(IDOK == dlg.DoModal());
+      bool ret = IDOK == dlg.DoModal();
       waitCursor.Set();
+
+      if (!ret)
+         return;
 
       // select which one to take
       selectedIndex = dlg.GetSelectedItem();

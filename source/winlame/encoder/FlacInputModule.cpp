@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -189,6 +189,11 @@ unsigned FLAC__pack_pcm_signed_little_endian(FLAC__byte* data, FLAC__int32* inpu
 
 
 FlacInputModule::FlacInputModule()
+   :m_fileLength(0),
+   m_flacDecoder(nullptr),
+   m_flacContext(nullptr),
+   m_samplePosition(0),
+   m_pcmBufferLength(0)
 {
    m_moduleId = ID_IM_FLAC;
 }

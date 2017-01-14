@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014-2016 Michael Fink
+// Copyright (c) 2014-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -33,11 +33,14 @@ namespace Encoder
       /// ctor
       OggInputStream(FILE* fd, bool bFreeFd)
          :m_fd(fd),
-         m_bFreeFd(bFreeFd),
-         m_bEndOfStream(false),
-         m_bStreamInit(false)
+         m_freeFd(bFreeFd),
+         m_endOfStream(false),
+         m_streamInit(false)
       {
          ogg_sync_init(&m_sync);
+
+         memset(&m_stream, 0, sizeof(m_stream));
+         memset(&m_currentPage, 0, sizeof(m_currentPage));
       }
 
       /// dtor; auto-closes stream and file
@@ -46,7 +49,7 @@ namespace Encoder
          ogg_sync_destroy(&m_sync);
          ogg_stream_destroy(&m_stream);
 
-         if (m_bFreeFd)
+         if (m_freeFd)
             fclose(m_fd);
       }
 
@@ -60,7 +63,7 @@ namespace Encoder
          size_t uiRead = fread(data, sizeof(char), uiSize, m_fd);
 
          if (uiRead == 0)
-            m_bEndOfStream = true;
+            m_endOfStream = true;
          else
             ogg_sync_wrote(&m_sync, uiRead);
       }
@@ -68,7 +71,7 @@ namespace Encoder
       /// returns if stream is at its end
       bool IsEndOfStream() const
       {
-         return m_bEndOfStream || feof(m_fd);
+         return m_endOfStream || feof(m_fd);
       }
 
       /// reads next packet
@@ -78,7 +81,7 @@ namespace Encoder
       bool ReadNextPacket(ogg_packet& packet)
       {
          // packet available?
-         if (m_bStreamInit)
+         if (m_streamInit)
          {
             int iRet = ogg_stream_packetout(&m_stream, &packet);
             if (iRet == 1)
@@ -88,10 +91,10 @@ namespace Encoder
          if (1 != ogg_sync_pageout(&m_sync, &m_currentPage))
             return false;
 
-         if (!m_bStreamInit)
+         if (!m_streamInit)
          {
             ogg_stream_init(&m_stream, ogg_page_serialno(&m_currentPage));
-            m_bStreamInit = true;
+            m_streamInit = true;
          }
 
          if (ogg_page_serialno(&m_currentPage) != m_stream.serialno)
@@ -107,13 +110,13 @@ namespace Encoder
       FILE* m_fd;
 
       /// indicates if m_fd is freed in dtor
-      bool m_bFreeFd;
+      bool m_freeFd;
 
       /// indicates if stream is at end
-      bool m_bEndOfStream;
+      bool m_endOfStream;
 
       /// indicates if m_stream has been init'ed
-      bool m_bStreamInit;
+      bool m_streamInit;
 
       /// sync state
       ogg_sync_state m_sync;

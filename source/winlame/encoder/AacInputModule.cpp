@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -47,8 +47,14 @@ const int chmap[MAX_CHANNELS][MAX_CHANNELS] = {
 };
 
 AacInputModule::AacInputModule()
+   :m_decoder(nullptr),
+   m_inputBufferHigh(0),
+   m_inputFileLength(0),
+   m_currentFilePos(0)
 {
    m_moduleId = ID_IM_AAC;
+
+   memset(&m_info, 0, sizeof(m_info));
 }
 
 Encoder::InputModule* AacInputModule::CloneModule()

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -50,8 +50,19 @@ const int chmap[MAX_CHANNELS][MAX_CHANNELS] = {
 };
 
 OggVorbisOutputModule::OggVorbisOutputModule()
+   :m_bitrateMode(0),
+   m_baseQuality(0.0),
+   m_endOfStream(false)
 {
    m_moduleId = ID_OM_OGGV;
+
+   memset(&m_os, 0, sizeof(m_os));
+   memset(&m_og, 0, sizeof(m_og));
+   memset(&m_op, 0, sizeof(m_op));
+   memset(&m_vi, 0, sizeof(m_vi));
+   memset(&m_vc, 0, sizeof(m_vc));
+   memset(&m_vd, 0, sizeof(m_vd));
+   memset(&m_vb, 0, sizeof(m_vb));
 }
 
 OggVorbisOutputModule::~OggVorbisOutputModule() throw()

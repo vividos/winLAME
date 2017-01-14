@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2014 Michael Fink
+   Copyright (c) 2000-2017 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -297,7 +297,7 @@ LRESULT InputPage::OnButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& 
    // find out which file had the focus
    int index = listctrl.GetNextItem(-1, LVNI_ALL | LVNI_FOCUSED | LVNI_SELECTED);
 
-   LPCTSTR filename = listctrl.GetFileName(index);
+   CString filename = listctrl.GetFileName(index);
 
    // play file
    PlayFile(filename);

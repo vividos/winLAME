@@ -1,7 +1,7 @@
 //
 // winLAME - a frontend for the LAME encoding engine
 // Copyright (c) 2004 DeXT
-// Copyright (c) 2009-2016 Michael Fink
+// Copyright (c) 2009-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -41,9 +41,17 @@ const int c_bassInputBufferSize = 4096;
 // BassInputModule methods
 
 BassInputModule::BassInputModule()
-   :m_buffer(nullptr)
+   :m_buffer(nullptr),
+   m_isStream(TRUE),
+   m_fileLength(0),
+   m_lengthInSeconds(0.0),
+   m_modLength(0),
+   m_bitrateInBps(0),
+   m_channel(0)
 {
    m_moduleId = ID_IM_BASS;
+
+   memset(&m_channelInfo, 0, sizeof(m_channelInfo));
 }
 
 Encoder::InputModule* BassInputModule::CloneModule()

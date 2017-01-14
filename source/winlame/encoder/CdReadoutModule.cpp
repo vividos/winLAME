@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2005-2016 Michael Fink
+// Copyright (c) 2005-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
 CDReadoutModule::CDReadoutModule()
+   :m_trackIndex(0)
 {
    m_moduleId = ID_IM_CDRIP;
 }

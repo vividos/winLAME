@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2016 Michael Fink
+// Copyright (c) 2016-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -93,11 +93,27 @@ OpusOutputModule::OpusOutputModule()
    m_opusBitrateMode(0),
    m_codingRate(48000),
    m_downmix(0),
+   m_frameSize(0),
+   m_numSamplesPerFrame(0),
    m_numBytesWritten(0),
    m_numPagesWritten(0),
-   m_32bitMode(false)
+   m_32bitMode(false),
+   eos(0),
+   total_samples(0),
+   m_currentPacketNumber(0),
+   original_samples(0),
+   enc_granulepos(0),
+   last_granulepos(0),
+   last_segments(0),
+   max_ogg_delay(0)
 {
    m_moduleId = ID_OM_OPUS;
+
+   memset(&inopt, 0, sizeof(inopt));
+   memset(&header, 0, sizeof(header));
+   memset(&os, 0, sizeof(os));
+   memset(&og, 0, sizeof(og));
+   memset(&op, 0, sizeof(op));
 }
 
 OpusOutputModule::~OpusOutputModule()

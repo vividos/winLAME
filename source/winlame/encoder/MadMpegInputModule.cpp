@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -35,6 +35,9 @@ using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
 MadMpegInputModule::MadMpegInputModule()
+   :m_endOfStream(false),
+   m_numCurrentSamples(0),
+   m_numMaxSamples(0)
 {
    m_moduleId = ID_IM_MAD;
 

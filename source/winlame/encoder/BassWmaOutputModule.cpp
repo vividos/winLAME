@@ -1,7 +1,7 @@
 //
 // winLAME - a frontend for the LAME encoding engine
 // Copyright (c) 2004 DeXT
-// Copyright (c) 2009-2016 Michael Fink
+// Copyright (c) 2009-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,6 +30,12 @@ using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
 BassWmaOutputModule::BassWmaOutputModule()
+   :m_handle(0),
+   m_samplerateInHz(0),
+   m_numChannels(0),
+   m_bitrateInBps(0),
+   m_quality(0),
+   m_bitrateMode(0)
 {
    m_moduleId = ID_OM_BASSWMA;
 }

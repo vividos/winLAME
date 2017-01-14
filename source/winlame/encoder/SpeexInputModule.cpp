@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014-2016 Michael Fink
+// Copyright (c) 2014-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -39,11 +39,13 @@ extern "C" void speex_header_free(void* ptr)
 }
 
 SpeexInputModule::SpeexInputModule()
-   :m_stereo(SPEEX_STEREO_STATE_INIT),
+   :m_fileSize(0),
    m_packetCount(0),
-   m_fileSize(0)
+   m_stereo(SPEEX_STEREO_STATE_INIT)
 {
    m_moduleId = ID_IM_SPEEX;
+
+   memset(&m_bits, 0, sizeof(m_bits));
 }
 
 Encoder::InputModule* SpeexInputModule::CloneModule()
@@ -231,14 +233,14 @@ void SpeexInputModule::DoneInput()
 void SpeexInputModule::InitDecoder()
 {
    bool bWideband = m_header->mode == 1;
-   bool bPerceptualEnhancer = true;
+   const bool perceptualEnhancer = true;
 
    const SpeexMode* mode = speex_lib_get_mode(bWideband ? SPEEX_MODEID_WB : SPEEX_MODEID_NB);
 
    void* p = speex_decoder_init(mode);
    m_decoderState.reset(p, speex_decoder_destroy);
 
-   int enh = bPerceptualEnhancer ? 1 : 0;
+   int enh = perceptualEnhancer ? 1 : 0;
    speex_decoder_ctl(m_decoderState.get(), SPEEX_SET_ENH, &enh);
 
    // init stereo
