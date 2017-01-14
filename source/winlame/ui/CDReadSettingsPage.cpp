@@ -112,7 +112,7 @@ void CDReadSettingsPage::ShowTagsContextMenu(CButton& button, CEdit& edit)
 
    CMenu contextMenu;
    BOOL retCreate = contextMenu.CreatePopupMenu();
-   ATLASSERT(retCreate == TRUE);
+   ATLASSERT(retCreate == TRUE); retCreate;
 
    //std::for_each(allTags.begin(), allTags.end(), [&](const CString& singleTag) {
    for (size_t tagIndex = 0; tagIndex < allTags.size(); tagIndex++)
