@@ -105,7 +105,6 @@ void CreatePlaylistTask::Run()
       if (relativeFilename.IsEmpty())
          relativeFilename = entry.m_filename;
 
-      // TODO write relative filename instead of absolute one
       _ftprintf(fd, _T("%s\n"), relativeFilename.GetString());
 
       if (m_extendedPlaylist)
