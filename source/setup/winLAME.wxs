@@ -18,10 +18,6 @@
  along with this program; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-Note:
-For new releases, do the following:
-- use new Product Id and Package Id GUIDs
-
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
