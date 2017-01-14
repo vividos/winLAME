@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winLAME", "source\winlame\winlame.vcxproj", "{3D23B065-AB74-4C3D-BCBC-7B7492786FEE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{75AC1AC1-F11F-40BC-8EE9-008FC4D854BE} = {75AC1AC1-F11F-40BC-8EE9-008FC4D854BE}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nlame", "source\nlame\nlame.vcxproj", "{0B3F6B1A-D78E-47DB-A48C-D3DAA16E17CE}"
 EndProject
