@@ -49,9 +49,11 @@ MainDlg::MainDlg(UISettings& settings_, LanguageResourceManager& langResourceMan
 :m_bKeyDownEscape(false),
  settings(settings_),
  m_langResourceManager(langResourceManager),
+   m_helpAvailable(false),
    m_isAppModeChanged(false)
 {
    m_sizeDialog = CSize(0, 0);
+   m_sizePage = CSize(0, 0);
 
    // load icons
    wndicon = ::LoadIcon(_Module.GetResourceInstance(),MAKEINTRESOURCE(IDI_ICON_WINLAME));
