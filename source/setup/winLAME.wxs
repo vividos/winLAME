@@ -23,6 +23,8 @@
 
   <?include config.wxi ?>
 
+  <?define OutputDir = "$(var.winLAME.TargetDir)" ?>
+
   <Product
       Id="*"
       UpgradeCode="f36dad67-67a5-4d00-83fb-fe8a742c84f4"
@@ -65,7 +67,7 @@
     <ComponentGroup Id="AllFiles">
 
       <Component Id="WinLameApp" Guid="*" Directory="INSTALLDIR">
-        <File Id="WinLameExe" Name="winLAME.exe" DiskId="1" KeyPath="yes" Source="..\..\bin\Release\winLAME.exe" />
+        <File Id="WinLameExe" Name="winLAME.exe" DiskId="1" KeyPath="yes" Source="$(var.OutputDir)winLAME.exe" />
         <RegistryKey Root="HKCR" Key="Applications\winLAME.exe\SupportedTypes">
           <RegistryValue Name=".wav" Type="string" Value="" />
           <RegistryValue Name=".mp3" Type="string" Value="" />
@@ -95,114 +97,115 @@
 
       <Component Id="Presets" Guid="*" Directory="winLameCommonAppData">
         <File Id="PresetsXml" Name="presets.xml" DiskId="1" KeyPath="yes"
-          Source="..\presets.xml" />
+          Source="$(var.SolutionDir)source\presets.xml" />
       </Component>
 
       <Component Id="WinLameRes0407" Guid="*" Directory="INSTALLDIR">
         <File Id="WinLame0407Dll" Name="winLAME.0407.dll" DiskId="1" KeyPath="yes"
-           Source="..\..\bin\Release\winLAME.0407.dll" />
+           Source="$(var.OutputDir)winLAME.0407.dll" />
       </Component>
 
       <Component Id="LibMp3LameLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibMp3LameDll" Name="libmp3lame.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libmp3lame.dll" />
+           Source="$(var.SolutionDir)source\libraries\libmp3lame.dll" />
       </Component>
 
       <Component Id="SndFileLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibSndFileDll" Name="libsndfile-1.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libsndfile-1.dll" />
+           Source="$(var.SolutionDir)source\libraries\libsndfile-1.dll" />
       </Component>
 
       <Component Id="MadLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibMadDll" Name="libmad.dll" DiskId="1" KeyPath="yes"
-           Source="..\..\bin\Release\libmad.dll" />
+           Source="$(var.OutputDir)libmad.dll" />
       </Component>
 
       <Component Id="ReadmeFiles" Guid="5224ddc3-9b66-4277-9fae-7f0f296e2e28" Directory="INSTALLDIR">
         <File Id="ReadmeTxt" Name="Readme.txt" DiskId="1" KeyPath="yes"
-           Source="..\..\readme.txt" />
+           Source="$(var.SolutionDir)readme.txt" />
         <File Id="CopyingTxt" Name="Copying.txt" DiskId="1" KeyPath="no"
-           Source="..\..\Copying" />
+           Source="$(var.SolutionDir)Copying" />
       </Component>
 
       <Component Id="BassLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="BassDll" Name="bass.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\bass.dll" />
+           Source="$(var.SolutionDir)source\libraries\bass.dll" />
       </Component>
 
       <Component Id="BassCdLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="BassCdDll" Name="basscd.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\basscd.dll" />
+           Source="$(var.SolutionDir)source\libraries\basscd.dll" />
       </Component>
 
       <Component Id="BassWmaLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="BassWmaDll" Name="basswma.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\basswma.dll" />
+           Source="$(var.SolutionDir)source\libraries\basswma.dll" />
       </Component>
 
       <Component Id="FlacDynamicLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibFlacDynamicDll" Name="libFLAC_dynamic.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libFLAC_dynamic.dll" />
+           Source="$(var.SolutionDir)source\libraries\libFLAC_dynamic.dll" />
       </Component>
 
       <Component Id="OggVorbisLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibVorbisDll" Name="libvorbis.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libvorbis.dll" />
+           Source="$(var.SolutionDir)source\libraries\libvorbis.dll" />
       </Component>
 
       <Component Id="IclMathLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibMmdDll" Name="libmmd.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libmmd.dll" />
+           Source="$(var.SolutionDir)source\libraries\libmmd.dll" />
       </Component>
 
       <Component Id="MonkeysAudioLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="MacDllDll" Name="MACDll.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\MACDll.dll" />
+           Source="$(var.SolutionDir)source\libraries\MACDll.dll" />
       </Component>
 
       <Component Id="LibFaacLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibFaacDll" Name="libfaac.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libfaac.dll" />
+           Source="$(var.SolutionDir)source\libraries\libfaac.dll" />
       </Component>
 
       <Component Id="LibFaad2Library" Guid="*" Directory="INSTALLDIR">
         <File Id="LibFaad2Dll" Name="libfaad2.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libfaad2.dll" />
+           Source="$(var.SolutionDir)source\libraries\libfaad2.dll" />
       </Component>
 
       <Component Id="LibGccLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibGccDll" Name="libgcc_s_sjlj-1.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libgcc_s_sjlj-1.dll" />
+           Source="$(var.SolutionDir)source\libraries\libgcc_s_sjlj-1.dll" />
       </Component>
 
       <Component Id="LibOggLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibOgg0Dll" Name="libogg-0.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libogg-0.dll" />
+           Source="$(var.SolutionDir)source\libraries\libogg-0.dll" />
       </Component>
 
       <Component Id="LibOpusLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibOpus0Dll" Name="libopus-0.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libopus-0.dll" />
+           Source="$(var.SolutionDir)source\libraries\libopus-0.dll" />
       </Component>
 
       <Component Id="LibOpusFileLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibOpusFile0Dll" Name="libopusfile-0.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libopusfile-0.dll" />
+           Source="$(var.SolutionDir)source\libraries\libopusfile-0.dll" />
       </Component>
 
       <Component Id="LibWinPthreadLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibWinPthread1Dll" Name="libwinpthread-1.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libwinpthread-1.dll" />
+           Source="$(var.SolutionDir)source\libraries\libwinpthread-1.dll" />
       </Component>
 
       <Component Id="LibSpeexLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibSpeexDll" Name="libspeex.dll" DiskId="1" KeyPath="yes"
-           Source="..\libraries\libspeex.dll" />
+           Source="$(var.SolutionDir)source\libraries\libspeex.dll" />
       </Component>
 
-      <Component Id="WinLameHelp" Guid="*">
+      <Component Id="WinLameHelp" Guid="*" Directory="INSTALLDIR"
+                 >
         <File Id="WinLameChm" Name="winLAME.chm" DiskId="1" KeyPath="yes"
-           Source="..\..\bin\Release\winLAME.chm" />
+           Source="$(var.OutputDir)winLAME.chm" />
       </Component>
 
     </ComponentGroup>
@@ -217,7 +220,7 @@
       <MergeRef Id="Msvcrt140Msm"/>
     </Feature>
 
-    <Icon Id="WinLameShortcutIcon" SourceFile="..\winlame\res\winlame.ico" />
+    <Icon Id="WinLameShortcutIcon" SourceFile="$(var.winLAME.ProjectDir)res\winlame.ico" />
 
     <Property Id="ARPURLINFOABOUT"><![CDATA[http://winLAME.sourceforge.net/]]></Property>
     <Property Id="ARPCOMMENTS"><![CDATA[For more information, please visit http://winLAME.sourceforge.net/]]></Property>
@@ -225,7 +228,7 @@
     <Property Id="ARPHELPLINK" Value="http://winLAME.sourceforge.net/" />
 
     <Property Id="WIXUI_INSTALLDIR" Value="WinLame" />
-    <WixVariable Id="WixUILicenseRtf" Value="..\..\docs\License.winLAME.rtf" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.SolutionDir)docs\License.winLAME.rtf" />
 
     <UIRef Id="WixUI_InstallDir" />
 
