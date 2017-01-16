@@ -657,10 +657,10 @@ void CDRipDlg::FreedbLookup()
 {
    CString serverAddress = m_uiSettings.freedb_server;
 
-   BOOL ret = BASS_SetConfigPtr(
+   BOOL retConfig = BASS_SetConfigPtr(
       BASS_CONFIG_CD_CDDB_SERVER,
       CStringA(serverAddress).GetString());
-   ATLASSERT(TRUE == ret);
+   ATLASSERT(TRUE == retConfig); retConfig;
 
    CWaitCursor waitCursor;
 

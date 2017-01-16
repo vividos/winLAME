@@ -28,6 +28,7 @@ namespace Encoder
    /// sample format type
    enum SampleFormatType
    {
+      SamplesUnknown = -1,
       SamplesChannelArray = 0,
       SamplesInterleaved = 1
    };
@@ -114,6 +115,9 @@ namespace Encoder
    private:
       /// reallocates internal output buffers
       void ReallocMemory(int newSampleSize);
+
+      /// deallocates memory
+      void DeallocMemory();
 
       /// converts samples to interleaved target buffer
       void InterleaveChannel(unsigned char* samples, int numSamples, int numChannels, int sourceStep);

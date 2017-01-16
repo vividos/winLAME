@@ -141,8 +141,16 @@ static int read_ADTS_header(FILE_STREAM *file, faadAACInfo *info,
 
             if(framesinsec == 0 && seek_table_len)
             {
-                tmp_seek_table = (unsigned long *) realloc(tmp_seek_table, (second + 1) * sizeof(unsigned long));
-                tmp_seek_table[second] = pos;
+               unsigned long* new_seek_table = (unsigned long *) realloc(tmp_seek_table, (second + 1) * sizeof(unsigned long));
+               if (new_seek_table == NULL)
+               {
+                  free(tmp_seek_table);
+                  tmp_seek_table = NULL;
+                  second = 0;
+                  break;
+               }
+               tmp_seek_table = new_seek_table;
+               tmp_seek_table[second] = pos;
             }
             if(framesinsec == 0)
                 second++;

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -32,23 +32,13 @@ SampleContainer::SampleContainer()
    m_numBytesAvail(0),
    m_numSamplesAvail(0)
 {
-   source.format = (SampleFormatType)-1;
-   target.format = (SampleFormatType)-1;
+   source.format = SamplesUnknown;
+   target.format = SamplesUnknown;
 }
 
 SampleContainer::~SampleContainer()
 {
-   // clean up memory areas
-   if (m_channelArray != nullptr)
-   {
-      for (int i = 0; i < target.numChannels; i++)
-         delete m_channelArray[i];
-
-      delete m_channelArray;
-   }
-
-   if (m_interleaved != nullptr)
-      delete[] m_interleaved;
+   DeallocMemory();
 }
 
 void SampleContainer::SetInputModuleTraits(int bitsPerSample,
@@ -163,13 +153,13 @@ void SampleContainer::PutSamplesArray(void** samples, int numSamples)
    m_numSamplesAvail = numSamples;
 }
 
-void *SampleContainer::GetSamplesInterleaved(int& numSamples)
+void* SampleContainer::GetSamplesInterleaved(int& numSamples)
 {
    numSamples = m_numSamplesAvail;
    return m_interleaved;
 }
 
-void **SampleContainer::GetSamplesArray(int& numSamples)
+void** SampleContainer::GetSamplesArray(int& numSamples)
 {
    numSamples = m_numSamplesAvail;
    return m_channelArray;
@@ -186,28 +176,50 @@ void SampleContainer::ReallocMemory(int newSamples)
    {
       for (int i = 0; i < target.numChannels; i++)
       {
-         delete m_channelArray[i];
+         delete[](unsigned char*)m_channelArray[i];
          m_channelArray[i] = new unsigned char[new_size];
       }
    }
    break;
 
    case SamplesInterleaved:
-      delete[] m_interleaved;
+      delete[](unsigned char*)m_interleaved;
       m_interleaved = new unsigned char[new_size * target.numChannels];
       break;
    }
 }
 
-void SampleContainer::InterleaveChannel(unsigned char*samples, int numSamples, int channel, int source_step)
+void SampleContainer::DeallocMemory()
 {
-   int sshift = 32 - source.bitsPerSample;
-   int dbps = target.bitsPerSample >> 3;
-   int dshift = 32 - target.bitsPerSample;
-   int dest_step = target.numChannels * (target.bitsPerSample >> 3);
+   if (m_channelArray != nullptr)
+   {
+      for (int i = 0; i < target.numChannels; i++)
+         delete[](unsigned char*)m_channelArray[i];
 
-   int roundbit = dshift > 0 ? (1 << (dshift - 1)) : 0;
-   int dest_high = (1 << 31) - roundbit;
+      delete[] m_channelArray;
+      m_channelArray = nullptr;
+   }
+
+   if (m_interleaved != nullptr)
+   {
+      delete[](unsigned char*)m_interleaved;
+
+      m_interleaved = nullptr;
+   }
+
+   source.format = SamplesUnknown;
+   target.format = SamplesUnknown;
+}
+
+void SampleContainer::InterleaveChannel(unsigned char* samples, int numSamples, int channel, int sourceStep)
+{
+   int sourceShift = 32 - source.bitsPerSample;
+   int dbps = target.bitsPerSample >> 3;
+   int destShift = 32 - target.bitsPerSample;
+   int destStep = target.numChannels * (target.bitsPerSample >> 3);
+
+   int roundbit = destShift > 0 ? (1 << (destShift - 1)) : 0;
+   int destHigh = std::numeric_limits<int>::max() - roundbit + 1;
 
    unsigned char *destbuf =
       ((unsigned char*)m_interleaved) + dbps*channel;
@@ -221,16 +233,16 @@ void SampleContainer::InterleaveChannel(unsigned char*samples, int numSamples, i
       // normalize
 
       // shift up
-      sample <<= sshift;
+      sample <<= sourceShift;
 
       // do sth with the sample
 
       // add rounding value
-      if (sample < dest_high)
+      if (sample < destHigh)
          sample += roundbit;
 
       // shift to target bps
-      sample >>= dshift;
+      sample >>= destShift;
 
       // store sample in destbuf
       _asm
@@ -244,20 +256,20 @@ void SampleContainer::InterleaveChannel(unsigned char*samples, int numSamples, i
             loop  label1
       }
 
-      destbuf += dest_step;
-      samples += source_step;
+      destbuf += destStep;
+      samples += sourceStep;
    }
 }
 
-void SampleContainer::DeinterleaveChannel(unsigned char*samples, int numSamples, int channel, int source_step)
+void SampleContainer::DeinterleaveChannel(unsigned char*samples, int numSamples, int channel, int sourceStep)
 {
-   int sshift = 32 - source.bitsPerSample;
+   int sourceShift = 32 - source.bitsPerSample;
    int dbps = target.bitsPerSample >> 3;
-   int dshift = 32 - target.bitsPerSample;
-   int dest_step = dbps;
+   int destShift = 32 - target.bitsPerSample;
+   int destStep = dbps;
 
-   int roundbit = dshift > 0 ? (1 << (dshift - 1)) : 0;
-   int dest_high = (1 << 31) - roundbit;
+   int roundbit = destShift > 0 ? (1 << (destShift - 1)) : 0;
+   int destHigh = std::numeric_limits<int>::max() - roundbit + 1;
 
    unsigned char *destbuf = (unsigned char*)m_channelArray[channel];
 
@@ -270,16 +282,16 @@ void SampleContainer::DeinterleaveChannel(unsigned char*samples, int numSamples,
       // normalize
 
       // shift up
-      sample <<= sshift;
+      sample <<= sourceShift;
 
       // do sth with the sample
 
       // add rounding value
-      if (sample < dest_high)
+      if (sample < destHigh)
          sample += roundbit;
 
       // shift to target bps
-      sample >>= dshift;
+      sample >>= destShift;
 
       // store sample in destbuf
       _asm
@@ -293,93 +305,8 @@ void SampleContainer::DeinterleaveChannel(unsigned char*samples, int numSamples,
             loop  label1
       }
 
-      destbuf += dest_step;
-      samples += source_step;
+      destbuf += destStep;
+      samples += sourceStep;
    }
 
 }
-
-/*
-void SampleContainer::interleaveSamples(int channels,int bitpersample, int numSamples, void**samples)
-//void InterleaveSamples(int channels, int len, short **buffer, short *destbuffer)
-{
-   void *destbuf = m_interleaved;
-   if (channels==1)
-   {
-      // mono
-      int len = numSamples * (bitpersample>>3);
-      _asm
-      {
-         mov   ecx, len
-         shr   ecx, 2
-
-         mov   esi, samples
-         mov   edi, destbuf
-         rep   movsd            ; copy with 32 bit access
-
-         mov   ecx, len
-         and   ecx, 3
-         test  ecx, ecx
-         je    label1
-
-         rep   movsb            ; copy remaining bytes
-      label1:
-      }
-   }
-   else
-   if (channels==2)
-   {
-      // stereo
-      void *sbuf0 = samples[0], *sbuf1 = samples[1];
-      int step = (bitpersample>>3);
-      _asm
-      {
-         mov   ebx, numSamples
-         mov   esi, sbuf0
-         mov   edx, sbuf1
-         mov   edi, destbuf
-
-      label2:
-         mov   ecx, step   ; copy left sample
-         rep   movsb
-
-         xchg  edx, esi    ; swap source adresses
-
-         mov   ecx, step   ; copy right sample
-         rep   movsb
-
-         xchg  edx, esi    ; swap source adresses
-
-         dec   ebx
-         jnz   label2
-      }
-   }
-   else
-   {
-      // n-channel
-      for(int ch=0; ch<channels; ch++)
-      {
-         int step = (bitpersample>>3);
-         int dist = channels*step;
-         void *curbuf = samples[ch];
-         unsigned char *curdest = (unsigned char*)destbuf+ch*step;
-
-         _asm
-         {
-            mov   ebx, numSamples
-            mov   esi, curbuf
-            mov   edi, curdest
-
-         label3:
-            mov   ecx, step   ; copy sample
-            rep   movsb
-
-            add   esi, dist   ; jump over samples of other channel
-
-            dec   ebx
-            jnz   label3
-         }
-      }
-   }
-}
-*/
