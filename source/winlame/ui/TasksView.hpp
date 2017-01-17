@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2015 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ class TaskManager;
 namespace UI
 {
 /// win traits for tasks view
-typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS, 0, CControlWinTraits>
+typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER, 0, CControlWinTraits>
    TasksViewWinTraits;
 
 /// tasks view; shows all currently running tasks
