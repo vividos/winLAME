@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2016 Michael Fink
+   Copyright (c) 2000-2017 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -35,6 +35,7 @@
 #include <atlddx.h>
 #include <atlframe.h>
 #include <atlcrack.h>
+#include <atlsplit.h>
 #include <atlribbon.h>
 
 #pragma warning(pop)

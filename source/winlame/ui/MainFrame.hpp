@@ -49,7 +49,7 @@ public:
    /// ctor
    MainFrame(TaskManager& taskManager) throw()
       :m_taskManager(taskManager),
-       m_view(taskManager),
+       m_tasksView(taskManager),
        m_bRefreshActive(false),
        m_isAppModeChanged(false),
        m_encodingFinishAction(T_enEncodingFinishAction::doNothing)
@@ -101,6 +101,7 @@ public:
       COMMAND_ID_HANDLER(ID_VIEW_SWITCH_CLASSIC, OnViewSwitchToClassic)
       COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
       CHAIN_MSG_MAP(BaseClass)
+      REFLECT_NOTIFICATIONS()
    END_MSG_MAP()
 
 private:
@@ -142,12 +143,24 @@ private:
    /// checks task manager and updates Win7 task bar
    void UpdateWin7TaskBar();
 
+   /// called when user clicked on a task list view item
+   void OnClickedTaskItem(size_t clickedIndex);
+
 private:
    /// ref to task manager
    TaskManager& m_taskManager;
 
+   /// splitter window to show tasks view and details
+   CHorSplitterWindow m_splitter;
+
    /// tasks view
-   TasksView m_view;
+   TasksView m_tasksView;
+
+   /// pane for task details view
+   CPaneContainer m_paneTaskDetails;
+
+   /// task details view
+   CEdit m_taskDetailsView;
 
    // access to task bar
    boost::optional<Win7::Taskbar> m_win7TaskBar;

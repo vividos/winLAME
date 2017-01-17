@@ -51,7 +51,7 @@ LPCTSTR c_pszRibbonRegkey = _T("Software\\winLAME");
 
 BOOL MainFrame::PreTranslateMessage(MSG* pMsg)
 {
-   if (m_view.PreTranslateMessage(pMsg))
+   if (m_tasksView.PreTranslateMessage(pMsg))
       return TRUE;
 
    return BaseClass::PreTranslateMessage(pMsg);
@@ -168,10 +168,37 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    };
    m_statusBar.SetPanes(arrParts, sizeof(arrParts) / sizeof(int), false);
 */
+   {
+      m_splitter.Create(*this, rcDefault);
 
-   m_hWndClient = m_view.Create(m_hWnd, rcDefault);
-   m_view.SetFont(AtlGetDefaultGuiFont());
-   m_view.Init();
+      m_tasksView.Create(m_splitter, rcDefault);
+      m_tasksView.SetFont(AtlGetDefaultGuiFont());
+
+      m_tasksView.Init();
+      m_tasksView.SetClickedTaskHandler(std::bind(&MainFrame::OnClickedTaskItem, this, std::placeholders::_1));
+
+      m_paneTaskDetails.Create(m_splitter, IDS_MAIN_TASKS_PANE_CONTAINER);
+      m_paneTaskDetails.SetPaneContainerExtendedStyle(PANECNT_NOCLOSEBUTTON);
+
+      m_taskDetailsView.Create(m_paneTaskDetails, rcDefault, nullptr,
+         WS_CHILD | WS_VISIBLE | ES_READONLY | ES_MULTILINE);
+      m_taskDetailsView.SetFont(AtlGetDefaultGuiFont());
+
+      m_paneTaskDetails.SetClient(m_taskDetailsView);
+
+      m_splitter.SetSplitterPanes(m_tasksView, m_paneTaskDetails);
+      m_splitter.SetSplitterExtendedStyle(SPLIT_BOTTOMALIGNED | SPLIT_NONINTERACTIVE);
+      m_splitter.SetActivePane(SPLIT_PANE_TOP);
+      m_splitter.SetDefaultActivePane(SPLIT_PANE_TOP);
+
+      m_hWndClient = m_splitter;
+      UpdateLayout();
+
+      CRect rectFrame;
+      m_splitter.GetWindowRect(rectFrame);
+
+      m_splitter.SetSplitterPos(rectFrame.Height() - 85);
+   }
 
    // register object for message filtering and idle updates
    CMessageLoop* pLoop = _Module.GetMessageLoop();
@@ -242,7 +269,7 @@ LRESULT MainFrame::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL
 {
    if (wParam == IDT_REFRESH_TASKS_LIST)
    {
-      m_view.UpdateTasks();
+      m_tasksView.UpdateTasks();
    }
 
    return 0;
@@ -465,4 +492,18 @@ void MainFrame::UpdateWin7TaskBar()
    }
    else
       m_win7TaskBarProgressBar.reset();
+}
+
+void MainFrame::OnClickedTaskItem(size_t clickedIndex)
+{
+   std::vector<TaskInfo> taskInfoList = m_taskManager.CurrentTasks();
+   if (clickedIndex >= taskInfoList.size())
+      return; // index has become invalid between clicking and getting task info list
+
+   CString description = taskInfoList[clickedIndex].Description();
+
+   description.Replace(_T("\n"), _T("\r\n"));
+   description += _T("\r\n\r\n");
+
+   m_taskDetailsView.SetWindowText(description);
 }

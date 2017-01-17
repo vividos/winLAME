@@ -37,6 +37,9 @@ typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER, 0, CCont
 class TasksView : public CWindowImpl<TasksView, CListViewCtrl, TasksViewWinTraits>
 {
 public:
+   /// function type of handler called when a task item was clicked
+   typedef std::function<void(size_t clickedIndex)> T_fnOnClickedTask;
+
    /// ctor
    TasksView(TaskManager& taskManager)
       :m_taskManager(taskManager)
@@ -45,6 +48,12 @@ public:
 
    /// initialize tasks view list
    void Init();
+
+   /// sets "clicked task" handler
+   void SetClickedTaskHandler(T_fnOnClickedTask fnOnClickedTask)
+   {
+      m_fnOnClickedTask = fnOnClickedTask;
+   }
 
    /// update tasks list
    void UpdateTasks();
@@ -57,11 +66,15 @@ private:
    BEGIN_MSG_MAP(TasksView)
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       MESSAGE_HANDLER(WM_TIMER, OnTimer)
+      REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnItemClick)
    END_MSG_MAP()
 
    LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
+   /// called when a task item has been clicked
+   LRESULT OnItemClick(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
 private:
    /// returns status text from task status
@@ -75,6 +88,9 @@ private:
 
    /// ref to task manager
    TaskManager& m_taskManager;
+
+   /// "clicked task" handler
+   T_fnOnClickedTask m_fnOnClickedTask;
 
    // UI
 

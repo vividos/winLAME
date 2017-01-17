@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,12 +30,13 @@
 using UI::TasksView;
 
 /// timer id for updating the list
-const UINT c_uiTimerIdUpdateList = 128;
+const UINT c_timerIdUpdateList = 128;
 
 /// update cycle time in milliseconds
-const UINT c_uiUpdateCycleInMilliseconds = 2 * 100;
+const UINT c_updateCycleInMilliseconds = 2 * 100;
 
-const UINT ITEM_ID_NODATA = 0xffffffff;
+/// item ID that represents "no data" entry
+const UINT c_itemIdNoData = 0xffffffff;
 
 /// index of name column
 const int c_nameColumn = 0;
@@ -46,22 +47,34 @@ const int c_progressColumn = 1;
 /// index of status column
 const int c_statusColumn = 2;
 
-BOOL TasksView::PreTranslateMessage(MSG* pMsg)
+BOOL TasksView::PreTranslateMessage(MSG* /*msg*/)
 {
-   pMsg;
    return FALSE;
 }
 
 LRESULT TasksView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   KillTimer(c_uiTimerIdUpdateList);
+   KillTimer(c_timerIdUpdateList);
    return 0;
 }
 
 LRESULT TasksView::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   if (wParam == c_uiTimerIdUpdateList)
+   if (wParam == c_timerIdUpdateList)
       UpdateTasks();
+
+   return 0;
+}
+
+LRESULT TasksView::OnItemClick(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
+{
+   LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE)pnmh;
+
+   if (lpnmitem->iItem >= 0 &&
+      m_fnOnClickedTask != nullptr)
+   {
+      m_fnOnClickedTask(static_cast<unsigned int>(lpnmitem->iItem));
+   }
 
    return 0;
 }
@@ -84,7 +97,7 @@ void TasksView::Init()
 
    SetImageList(m_taskImages, LVSIL_SMALL);
 
-   SetTimer(c_uiTimerIdUpdateList, c_uiUpdateCycleInMilliseconds);
+   SetTimer(c_timerIdUpdateList, c_updateCycleInMilliseconds);
 }
 
 void TasksView::UpdateTasks()
@@ -108,7 +121,7 @@ void TasksView::UpdateTasks()
    if (taskInfoList.empty())
    {
       int itemIndex = InsertItem(0, CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_VIEW_NO_TASK)));
-      SetItemData(itemIndex, ITEM_ID_NODATA);
+      SetItemData(itemIndex, c_itemIdNoData);
 
       return;
    }
