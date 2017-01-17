@@ -1,6 +1,6 @@
 /*
    winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2016 Michael Fink
+   Copyright (c) 2000-2017 Michael Fink
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -17,22 +17,25 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file StdCppLib.h
-/// \brief Standard C++ Library includes
+/// \file Wtl.hpp
+/// \brief WTL includes
 
 #pragma once
 
+// ignore /analyze warnings in WTL header files
 #pragma warning(push)
-#pragma warning(disable: 28252 28253)
+#pragma warning(disable: 4127 6001 6011 6031 6387)
 
-#include <string>
-#include <vector>
-#include <memory>
-
-#ifdef _UNICODE
-#define tstring wstring
-#else
-#define tstring string
-#endif
+#include <atlapp.h>
+#include <atlmisc.h>
+#include <atlctrls.h>
+#include <atldlgs.h>
+#include <atlctrlw.h>
+#include <atlctrlx.h>
+#include <atlddx.h>
+#include <atlframe.h>
+#include <atlcrack.h>
+#include <atlsplit.h>
+#include <atlribbon.h>
 
 #pragma warning(pop)

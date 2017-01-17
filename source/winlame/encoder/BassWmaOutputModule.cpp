@@ -23,7 +23,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "BassWmaOutputModule.hpp"
-#include "DynamicLibrary.h"
+#include "DynamicLibrary.hpp"
 
 using Encoder::BassWmaOutputModule;
 using Encoder::TrackInfo;

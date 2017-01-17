@@ -28,8 +28,8 @@
 // needed includes
 #include "resource.h"
 #include "PageBase.h"
-#include "HtmlHelper.h"
-#include "UIinterface.h"
+#include "HtmlHelper.hpp"
+#include "UIinterface.hpp"
 #include "LanguageResourceManager.hpp"
 
 

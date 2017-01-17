@@ -23,7 +23,7 @@
 #pragma once
 
 #include "CommonStuff.h"
-#include "UIinterface.h"
+#include "UIinterface.hpp"
 #include "ImageListComboBox.hpp"
 
 class LanguageResourceManager;

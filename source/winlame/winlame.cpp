@@ -22,7 +22,7 @@
 
 // needed includes
 #include "stdafx.h"
-#include "App.h"
+#include "App.hpp"
 
 /// win main function
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/,

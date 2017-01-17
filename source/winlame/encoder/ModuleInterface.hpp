@@ -22,7 +22,7 @@
 #pragma once
 
 #include <string>
-#include "SettingsManager.h"
+#include "SettingsManager.hpp"
 #include "TrackInfo.hpp"
 #include "SampleContainer.hpp"
 #include "InputModule.hpp"

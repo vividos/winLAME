@@ -22,7 +22,7 @@
 
 // needed includes
 #include "stdafx.h"
-#include "SettingsManager.h"
+#include "SettingsManager.hpp"
 
 // SettingsManager methods
 

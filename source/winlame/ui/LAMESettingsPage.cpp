@@ -23,7 +23,7 @@
 #include "LAMESettingsPage.hpp"
 #include "WizardPageHost.hpp"
 #include "IoCContainer.hpp"
-#include "UISettings.h"
+#include "UISettings.hpp"
 #include "OutputSettingsPage.hpp"
 #include "PresetSelectionPage.hpp"
 #include "FinishPage.hpp"

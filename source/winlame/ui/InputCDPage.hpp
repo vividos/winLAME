@@ -24,8 +24,8 @@
 // includes
 #include "WizardPage.hpp"
 #include "TrackEditListCtrl.h"
-#include "CDRipDiscInfo.h"
-#include "CDRipTrackInfo.h"
+#include "CDRipDiscInfo.hpp"
+#include "CDRipTrackInfo.hpp"
 #include "resource.h"
 
 // forward references

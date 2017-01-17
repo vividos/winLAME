@@ -22,7 +22,7 @@
 #pragma once
 
 // includes
-#include "TaskInfo.h"
+#include "TaskInfo.hpp"
 
 // forward references
 class TaskManager;

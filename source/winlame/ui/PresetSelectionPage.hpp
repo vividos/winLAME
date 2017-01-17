@@ -25,7 +25,7 @@
 #include "WizardPage.hpp"
 #include "resource.h"
 #include "CommonStuff.h"
-#include "PresetManagerInterface.h"
+#include "PresetManagerInterface.hpp"
 
 // forward references
 struct UISettings;

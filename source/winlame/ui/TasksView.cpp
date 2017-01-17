@@ -22,8 +22,8 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "TasksView.hpp"
-#include "TaskManager.h"
-#include "TaskInfo.h"
+#include "TaskManager.hpp"
+#include "TaskInfo.hpp"
 #include "RedrawLock.hpp"
 #include <set>
 

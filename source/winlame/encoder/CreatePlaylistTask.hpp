@@ -21,8 +21,8 @@
 //
 #pragma once
 
-#include "Task.h"
-#include "UISettings.h"
+#include "Task.hpp"
+#include "UISettings.hpp"
 #include <atomic>
 
 namespace Encoder

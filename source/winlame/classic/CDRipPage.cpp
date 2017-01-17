@@ -23,7 +23,7 @@
 // needed includes
 #include "stdafx.h"
 #include "CDRipPage.h"
-#include "CDRipTrackManager.h"
+#include "CDRipTrackManager.hpp"
 #include "ui/RedrawLock.hpp"
 #include "basscd.h"
 #include <memory>

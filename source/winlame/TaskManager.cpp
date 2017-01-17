@@ -21,9 +21,9 @@
 
 // includes
 #include "stdafx.h"
-#include "TaskManager.h"
+#include "TaskManager.hpp"
 #include "CDExtractTask.hpp"
-#include "Task.h"
+#include "Task.hpp"
 #include <boost/foreach.hpp>
 #include <boost/bind.hpp>
 #include <algorithm>

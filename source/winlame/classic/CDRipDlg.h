@@ -28,7 +28,7 @@
 // needed includes
 #include "resource.h"
 #include "CommonStuff.h"
-#include "UIinterface.h"
+#include "UIinterface.hpp"
 #include "TrackEditListCtrl.h"
 
 // forward references

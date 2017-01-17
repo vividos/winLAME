@@ -20,7 +20,7 @@
 /// \brief Input files parser
 
 #include "stdafx.h"
-#include "InputFilesParser.h"
+#include "InputFilesParser.hpp"
 #include <fstream>
 #include <sys/types.h>
 #include <sys/stat.h>

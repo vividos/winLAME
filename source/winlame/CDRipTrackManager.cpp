@@ -22,7 +22,7 @@
 
 // needed includes
 #include "stdafx.h"
-#include "CDRipTrackManager.h"
+#include "CDRipTrackManager.hpp"
 #include <memory>
 
 LPCTSTR g_pszCDRipPrefix = _T("cdrip://");

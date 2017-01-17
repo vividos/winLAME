@@ -29,7 +29,7 @@
 #include "resource.h"
 #include "PageBase.h"
 #include "CommonStuff.h"
-#include "PresetManagerInterface.h"
+#include "PresetManagerInterface.hpp"
 
 /// presets selection page
 

@@ -25,10 +25,10 @@
 // needed includes
 #include "stdafx.h"
 #include "InputPage.h"
-#include "EncoderInterface.h"
+#include "EncoderInterface.hpp"
 #include "encoder/ModuleInterface.hpp"
 #include "CDRipDlg.h"
-#include "CDRipTrackManager.h"
+#include "CDRipTrackManager.hpp"
 #include <fstream>
 #include <sys/types.h>
 #include <sys/stat.h>

@@ -23,7 +23,7 @@
 
 // needed includes
 #include "stdafx.h"
-#include "VariableManager.h"
+#include "VariableManager.hpp"
 #include "ModuleInterface.hpp"
 #include "resource.h"
 

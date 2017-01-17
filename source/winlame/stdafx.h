@@ -29,15 +29,15 @@
 #define _WIN32_WINNT   0x0601
 #define _WIN32_IE      0x0700
 
-#include "Win32.h"
-#include "Atl.h"
-#include "Wtl.h"
+#include "Win32.hpp"
+#include "Atl.hpp"
+#include "Wtl.hpp"
 
 // undefine macros so that std::min and std::max can be used
 #undef min
 #undef max
 
-#include "StdCppLib.h"
+#include "StdCppLib.hpp"
 #include "Boost.hpp"
 
 // winLAME includes

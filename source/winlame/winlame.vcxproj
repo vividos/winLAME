@@ -192,11 +192,11 @@
     <ClCompile Include="ui\WizardPageHost.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Atl.h" />
+    <ClInclude Include="Atl.hpp" />
     <ClInclude Include="Boost.hpp" />
-    <ClInclude Include="CDRipDiscInfo.h" />
+    <ClInclude Include="CDRipDiscInfo.hpp" />
     <ClInclude Include="CDRipTitleFormatManager.hpp" />
-    <ClInclude Include="CDRipTrackInfo.h" />
+    <ClInclude Include="CDRipTrackInfo.hpp" />
     <ClInclude Include="CommandLineParser.hpp" />
     <ClInclude Include="encoder\AacInputModule.hpp" />
     <ClInclude Include="encoder\AacOutputModule.hpp" />
@@ -242,15 +242,15 @@
     <ClInclude Include="encoder\aacinfo\aacinfo.h" />
     <ClInclude Include="encoder\aacinfo\filestream.h" />
     <ClInclude Include="FreedbInfo.hpp" />
-    <ClInclude Include="IniFile.h" />
-    <ClInclude Include="InputFilesParser.h" />
+    <ClInclude Include="IniFile.hpp" />
+    <ClInclude Include="InputFilesParser.hpp" />
     <ClInclude Include="classic\AacSettingsPage.h" />
     <ClInclude Include="classic\CDRipDlg.h" />
     <ClInclude Include="classic\CDRipPage.h" />
     <ClInclude Include="classic\CommonStuff.h" />
     <ClInclude Include="classic\EncodePage.h" />
     <ClInclude Include="classic\ErrorDlg.h" />
-    <ClInclude Include="HtmlHelper.h" />
+    <ClInclude Include="HtmlHelper.hpp" />
     <ClInclude Include="classic\InputPage.h" />
     <ClInclude Include="classic\LameSimpleSettingsPage.h" />
     <ClInclude Include="classic\MainDlg.h" />
@@ -262,7 +262,7 @@
     <ClInclude Include="classic\PresetsPage.h" />
     <ClInclude Include="classic\SystemTrayIcon.h" />
     <ClInclude Include="Path.hpp" />
-    <ClInclude Include="StdCppLib.h" />
+    <ClInclude Include="StdCppLib.hpp" />
     <ClInclude Include="TrackEditListCtrl.h" />
     <ClInclude Include="AudioFileInfoManager.hpp" />
     <ClInclude Include="ui\AACSettingsPage.hpp" />
@@ -289,25 +289,25 @@
     <ClInclude Include="preset\PresetManagerImpl.h" />
     <ClInclude Include="preset\PropertyDlg.h" />
     <ClInclude Include="preset\PropertyListBox.h" />
-    <ClInclude Include="App.h" />
-    <ClInclude Include="CDRipTrackManager.h" />
-    <ClInclude Include="DynamicLibrary.h" />
-    <ClInclude Include="EncoderInterface.h" />
+    <ClInclude Include="App.hpp" />
+    <ClInclude Include="CDRipTrackManager.hpp" />
+    <ClInclude Include="DynamicLibrary.hpp" />
+    <ClInclude Include="EncoderInterface.hpp" />
     <ClInclude Include="IoCContainer.hpp" />
     <ClInclude Include="LangCountryMapper.hpp" />
     <ClInclude Include="LanguageResourceManager.hpp" />
     <ClInclude Include="ModuleManager.hpp" />
-    <ClInclude Include="PresetManagerInterface.h" />
-    <ClInclude Include="SettingsManager.h" />
+    <ClInclude Include="PresetManagerInterface.hpp" />
+    <ClInclude Include="SettingsManager.hpp" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Task.h" />
-    <ClInclude Include="TaskInfo.h" />
-    <ClInclude Include="TaskManager.h" />
-    <ClInclude Include="TaskManagerConfig.h" />
-    <ClInclude Include="UIinterface.h" />
-    <ClInclude Include="UISettings.h" />
+    <ClInclude Include="Task.hpp" />
+    <ClInclude Include="TaskInfo.hpp" />
+    <ClInclude Include="TaskManager.hpp" />
+    <ClInclude Include="TaskManagerConfig.hpp" />
+    <ClInclude Include="UIinterface.hpp" />
+    <ClInclude Include="UISettings.hpp" />
     <ClInclude Include="UTF8.hpp" />
-    <ClInclude Include="VariableManager.h" />
+    <ClInclude Include="VariableManager.hpp" />
     <ClInclude Include="res\MainFrameRibbon.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ui\CDReadSettingsPage.hpp" />
@@ -319,8 +319,8 @@
     <ClInclude Include="ui\TasksView.hpp" />
     <ClInclude Include="ui\WizardPage.hpp" />
     <ClInclude Include="ui\WizardPageHost.hpp" />
-    <ClInclude Include="Win32.h" />
-    <ClInclude Include="Wtl.h" />
+    <ClInclude Include="Win32.hpp" />
+    <ClInclude Include="Wtl.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\btnicons.bmp" />

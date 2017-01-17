@@ -21,8 +21,8 @@
 //
 #pragma once
 
-#include "CDRipDiscInfo.h"
-#include "CDRipTrackInfo.h"
+#include "CDRipDiscInfo.hpp"
+#include "CDRipTrackInfo.hpp"
 
 namespace Encoder
 {

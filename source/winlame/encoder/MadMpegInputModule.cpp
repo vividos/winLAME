@@ -28,7 +28,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "id3/File.h"
-#include "DynamicLibrary.h"
+#include "DynamicLibrary.hpp"
 
 using Encoder::MadMpegInputModule;
 using Encoder::TrackInfo;

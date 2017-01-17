@@ -23,7 +23,7 @@
 #pragma once
 
 #include <string>
-#include "EncoderInterface.h"
+#include "EncoderInterface.hpp"
 #include "ModuleInterface.hpp"
 #include "ModuleManagerImpl.hpp"
 #include <thread>

@@ -23,10 +23,10 @@
 #include "PresetSelectionPage.hpp"
 #include "WizardPageHost.hpp"
 #include "IoCContainer.hpp"
-#include "UISettings.h"
+#include "UISettings.hpp"
 #include "OutputSettingsPage.hpp"
 #include "FinishPage.hpp"
-#include "EncoderInterface.h"
+#include "EncoderInterface.hpp"
 
 using namespace UI;
 

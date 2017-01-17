@@ -24,7 +24,7 @@
 #include "stdafx.h"
 #include "AboutDlg.hpp"
 #include "ModuleInterface.hpp"
-#include "App.h"
+#include "App.hpp"
 
 using UI::AboutDlg;
 

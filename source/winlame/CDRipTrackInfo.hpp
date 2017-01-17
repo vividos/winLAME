@@ -16,40 +16,35 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-/// \file CDRipDiscInfo.h
-/// \brief CD rip disc info
+/// \file CDRipTrackInfo.hpp
+/// \brief CD rip track info
 //
 #pragma once
 
-/// contains infos about a CD disc to rip
-struct CDRipDiscInfo
+/// contains infos about a CD track to rip
+struct CDRipTrackInfo
 {
    /// ctor
-   CDRipDiscInfo()
-      :m_variousArtists(false),
-      m_year(0),
-      m_discDrive(0)
+   CDRipTrackInfo()
+      :m_numTrackOnDisc(0),
+      m_trackLengthInSeconds(0),
+      m_isActive(true)
    {
    }
 
-   /// disc title
-   CString m_discTitle;
+   /// number of track on disc
+   unsigned int m_numTrackOnDisc;
 
-   /// disc artist
-   CString m_discArtist;
+   /// track title
+   CString m_trackTitle;
+   //CString m_trackArtist; // TODO fill
 
-   /// indicates if disc has various artists
-   bool m_variousArtists;
+   /// track length, in seconds
+   unsigned int m_trackLengthInSeconds;
 
-   /// disc year
-   unsigned int m_year;
+   /// indicates if track is active (should be ripped)
+   bool m_isActive;
 
-   /// disc drive index
-   unsigned int m_discDrive;
-
-   /// genre of CD
-   CString m_genre;
-
-   /// FreeDB's CDID
-   CString m_CDID;
+   /// ripped filename in temp folder
+   CString m_rippedFilename;
 };

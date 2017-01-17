@@ -21,7 +21,7 @@
 //
 #include "StdAfx.h"
 #include "GeneralSettingsPage.hpp"
-#include "UISettings.h"
+#include "UISettings.hpp"
 #include "LanguageResourceManager.hpp"
 #include "LangCountryMapper.hpp"
 

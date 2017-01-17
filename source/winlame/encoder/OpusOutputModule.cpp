@@ -55,7 +55,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "OpusOutputModule.hpp"
-#include "..\App.h"
+#include "..\App.hpp"
 
 #pragma comment(lib, "libopusfile-0.lib")
 #pragma comment(lib, "libopus-0.lib")

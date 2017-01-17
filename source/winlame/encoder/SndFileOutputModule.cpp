@@ -24,7 +24,7 @@
 #include "resource.h"
 #include "SndFileOutputModule.hpp"
 #include "SndFileFormats.hpp"
-#include "DynamicLibrary.h"
+#include "DynamicLibrary.hpp"
 
 using Encoder::SndFileOutputModule;
 using Encoder::TrackInfo;

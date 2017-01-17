@@ -21,12 +21,12 @@
 //
 #include "StdAfx.h"
 #include "CDReadSettingsPage.hpp"
-#include "UISettings.h"
+#include "UISettings.hpp"
 #include "LanguageResourceManager.hpp"
 #include "LangCountryMapper.hpp"
 #include "CDRipTitleFormatManager.hpp"
 #include "CommonStuff.h"
-#include "App.h"
+#include "App.hpp"
 #include <vector>
 
 using namespace UI;

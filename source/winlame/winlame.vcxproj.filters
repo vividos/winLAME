@@ -369,9 +369,6 @@
     <ClInclude Include="classic\AacSettingsPage.h">
       <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="classic\CDRipDlg.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="classic\CDRipPage.h">
       <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
@@ -429,18 +426,6 @@
     <ClInclude Include="preset\PropertyListBox.h">
       <Filter>Preset Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="App.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CDRipTrackManager.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DynamicLibrary.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EncoderInterface.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IoCContainer.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
@@ -450,34 +435,7 @@
     <ClInclude Include="LanguageResourceManager.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PresetManagerInterface.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsManager.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Task.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskInfo.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskManager.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskManagerConfig.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UIinterface.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UISettings.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VariableManager.h">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -512,12 +470,6 @@
     </ClInclude>
     <ClInclude Include="ui\AboutDlg.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HtmlHelper.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InputFilesParser.h">
-      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Path.hpp">
       <Filter>Main Program Files\Header Files</Filter>
@@ -585,18 +537,6 @@
     <ClInclude Include="res\MainFrameRibbon.h">
       <Filter>Modern UI Files\Resource Files\Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="Atl.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Win32.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Wtl.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StdCppLib.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CommandLineParser.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
@@ -617,15 +557,6 @@
     </ClInclude>
     <ClInclude Include="classic\OpusSettingsPage.h">
       <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CDRipTrackInfo.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CDRipDiscInfo.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IniFile.h">
-      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="encoder\SndFileFormats.hpp">
       <Filter>Main Program Files\Header Files</Filter>
@@ -731,6 +662,75 @@
     </ClInclude>
     <ClInclude Include="Boost.hpp">
       <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdCppLib.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskInfo.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskManager.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskManagerConfig.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Win32.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Wtl.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Atl.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="App.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CDRipDiscInfo.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicLibrary.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HtmlHelper.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IniFile.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputFilesParser.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CDRipTrackInfo.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CDRipTrackManager.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EncoderInterface.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsManager.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PresetManagerInterface.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UIinterface.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UISettings.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableManager.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\CDRipDlg.h">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

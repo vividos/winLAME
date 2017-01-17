@@ -26,9 +26,9 @@
 #pragma once
 
 // needed includes
-#include "../PresetManagerInterface.h"
+#include "../PresetManagerInterface.hpp"
 #include "PropertyListBox.h"
-#include "../VariableManager.h"
+#include "../VariableManager.hpp"
 #include <string>
 #include "rapidxml/rapidxml.hpp"
 

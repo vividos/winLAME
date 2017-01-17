@@ -31,7 +31,7 @@
 #include "AacSettingsPage.h"
 #include "WmaOutputSettingsPage.h"
 #include "OpusSettingsPage.h"
-#include "EncoderInterface.h"
+#include "EncoderInterface.hpp"
 #include "CDRipPage.h"
 #include "ModuleInterface.hpp"
 

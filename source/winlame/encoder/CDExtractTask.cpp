@@ -22,7 +22,7 @@
 #include "StdAfx.h"
 #include "CDExtractTask.hpp"
 #include "SndFileOutputModule.hpp"
-#include "UISettings.h"
+#include "UISettings.hpp"
 #include "resource.h"
 #include <basscd.h>
 #include "CDRipTitleFormatManager.hpp"

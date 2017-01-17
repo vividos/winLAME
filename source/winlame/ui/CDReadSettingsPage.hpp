@@ -24,7 +24,7 @@
 // includes
 #include "WizardPage.hpp"
 #include "ImageListComboBox.hpp"
-#include "UISettings.h"
+#include "UISettings.hpp"
 #include "resource.h"
 
 // forward references

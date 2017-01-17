@@ -25,7 +25,7 @@
 #include "resource.h"
 #include "Id3v1Tag.hpp"
 #include "SndFileFormats.hpp"
-#include "DynamicLibrary.h"
+#include "DynamicLibrary.hpp"
 
 using Encoder::SndFileInputModule;
 using Encoder::TrackInfo;

@@ -21,9 +21,9 @@
 //
 #pragma once
 
-#include "Task.h"
+#include "Task.hpp"
 #include "TrackInfo.hpp"
-#include "SettingsManager.h"
+#include "SettingsManager.hpp"
 #include "EncoderImpl.hpp"
 #include "AlwaysSkipErrorHandler.hpp"
 

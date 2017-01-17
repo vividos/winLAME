@@ -23,15 +23,15 @@
 // needed includes
 #include "stdafx.h"
 #include "CDRipDlg.h"
-#include "CDRipTrackManager.h"
+#include "CDRipTrackManager.hpp"
 #include "OptionsDlg.h"
 #include "basscd.h"
 #include "encoder/TrackInfo.hpp"
 #include <shellapi.h>
 #include <atlctrlx.h> // CWaitCursor
-#include "DynamicLibrary.h"
-#include "IniFile.h"
-#include "App.h"
+#include "DynamicLibrary.hpp"
+#include "IniFile.hpp"
+#include "App.hpp"
 #include "FreedbInfo.hpp"
 #include "FreeDbDiscListDlg.hpp"
 #include "UTF8.hpp"

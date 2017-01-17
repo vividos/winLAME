@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2012 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,35 +16,26 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-/// \file CDRipTrackInfo.h
-/// \brief CD rip track info
-//
+/// \file TaskManagerConfig.hpp
+/// \brief TaskManagerConfig class
+
+// include guard
 #pragma once
 
-/// contains infos about a CD track to rip
-struct CDRipTrackInfo
+/// task manager config
+struct TaskManagerConfig
 {
    /// ctor
-   CDRipTrackInfo()
-      :m_numTrackOnDisc(0),
-      m_trackLengthInSeconds(0),
-      m_isActive(true)
+   TaskManagerConfig() throw()
+      :m_bAutoTasksPerCpu(true),
+       m_uiUseNumTasks(2)
    {
    }
 
-   /// number of track on disc
-   unsigned int m_numTrackOnDisc;
+   /// when enabled, as many tasks as CPU cores are available are run
+   bool m_bAutoTasksPerCpu;
 
-   /// track title
-   CString m_trackTitle;
-   //CString m_trackArtist; // TODO fill
-
-   /// track length, in seconds
-   unsigned int m_trackLengthInSeconds;
-
-   /// indicates if track is active (should be ripped)
-   bool m_isActive;
-
-   /// ripped filename in temp folder
-   CString m_rippedFilename;
+   /// when m_bAutoTasksPerCpu is false, TaskManager uses this many concurrent threads
+   /// to run tasks
+   unsigned int m_uiUseNumTasks;
 };

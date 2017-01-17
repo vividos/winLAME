@@ -21,8 +21,8 @@
 //
 #include "StdAfx.h"
 #include "InputFilesPage.hpp"
-#include "UISettings.h"
-#include "InputFilesParser.h"
+#include "UISettings.hpp"
+#include "InputFilesParser.hpp"
 #include "DropFilesManager.hpp"
 #include "CommonStuff.h"
 #include "WizardPageHost.hpp"

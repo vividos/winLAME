@@ -29,7 +29,7 @@
 #include "resource.h"
 #include "PageBase.h"
 #include "CommonStuff.h"
-#include "EncoderInterface.h"
+#include "EncoderInterface.hpp"
 #include "EncoderErrorHandler.hpp"
 #include "SystemTrayIcon.h"
 

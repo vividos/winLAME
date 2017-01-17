@@ -23,7 +23,7 @@
 #include "OutputSettingsPage.hpp"
 #include "WizardPageHost.hpp"
 #include "IoCContainer.hpp"
-#include "UISettings.h"
+#include "UISettings.hpp"
 #include "InputFilesPage.hpp"
 #include "InputCDPage.hpp"
 #include "PresetSelectionPage.hpp"

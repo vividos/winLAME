@@ -30,7 +30,7 @@
 #pragma once
 
 // needed includes
-#include "UIinterface.h"
+#include "UIinterface.hpp"
 
 
 /// common page base class

@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file Win32.h
+/// \file Win32.hpp
 /// \brief Win32 includes
 
 #pragma once

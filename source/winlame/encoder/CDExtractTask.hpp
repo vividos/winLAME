@@ -21,8 +21,8 @@
 //
 #pragma once
 
-#include "Task.h"
-#include "CDRipTrackManager.h"
+#include "Task.hpp"
+#include "CDRipTrackManager.hpp"
 #include <atomic>
 
 // forward references

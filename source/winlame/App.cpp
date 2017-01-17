@@ -20,7 +20,7 @@
 /// \brief App class
 
 #include "StdAfx.h"
-#include "App.h"
+#include "App.hpp"
 #include "MainDlg.h"
 #include "ui\MainFrame.hpp"
 #include "preset\PresetManagerImpl.h"

@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "CDReadoutModule.hpp"
-#include "CDRipTrackManager.h"
+#include "CDRipTrackManager.hpp"
 
 using Encoder::CDReadoutModule;
 using Encoder::TrackInfo;

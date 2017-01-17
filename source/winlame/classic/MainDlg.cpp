@@ -33,7 +33,7 @@
 #include "EncodePage.h"
 #include "AboutDlg.hpp"
 #include "OptionsDlg.h"
-#include "App.h"
+#include "App.hpp"
 #include "CommandLineParser.hpp"
 #include <sys/types.h>
 #include <sys/stat.h>
