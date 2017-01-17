@@ -50,7 +50,6 @@ public:
    MainFrame(TaskManager& taskManager) throw()
       :m_taskManager(taskManager),
        m_tasksView(taskManager),
-       m_bRefreshActive(false),
        m_isAppModeChanged(false),
        m_encodingFinishAction(T_enEncodingFinishAction::doNothing)
    {
@@ -85,7 +84,6 @@ public:
       MESSAGE_HANDLER(WM_CREATE, OnCreate)
       MESSAGE_HANDLER(WM_CLOSE, OnClose)
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
-      MESSAGE_HANDLER(WM_TIMER, OnTimer)
       MESSAGE_HANDLER(WM_DROPFILES, OnDropFiles)
       MESSAGE_HANDLER(WM_CHECK_COMMAND_LINE, OnCheckCommandLine)
       COMMAND_ID_HANDLER(ID_APP_EXIT, OnAppExit)
@@ -113,7 +111,6 @@ private:
    LRESULT OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
-   LRESULT OnTimer(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled);
    LRESULT OnDropFiles(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnCheckCommandLine(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
    LRESULT OnAppExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
@@ -134,9 +131,6 @@ private:
    LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 private:
-   /// enables tasks list refresh
-   void EnableRefresh(bool bEnable = true);
-
    /// collects command line files and opens input files page when necessary
    void GetCommandLineFiles();
 
@@ -167,9 +161,6 @@ private:
 
    // access to task bar progress bar
    boost::optional<Win7::TaskbarProgressBar> m_win7TaskBarProgressBar;
-
-   /// indicates if tasks list refresh is active
-   bool m_bRefreshActive;
 
    /// indicates if the dialog has been closed to change the app mode to classic mode
    bool m_isAppModeChanged;

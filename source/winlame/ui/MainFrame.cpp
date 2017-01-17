@@ -42,9 +42,6 @@ using namespace UI;
 /// tasks list refresh cycle in ms
 const UINT c_uiTasksListRefreshCycleInMs = 500;
 
-/// timer id for tasks list refresh
-const UINT IDT_REFRESH_TASKS_LIST = 128;
-
 /// ribbon registry key (subkey "Ribbon" is used)
 LPCTSTR c_pszRibbonRegkey = _T("Software\\winLAME");
 
@@ -239,8 +236,6 @@ LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, 
       }
    }
 
-   EnableRefresh(false);
-
    if (RunTimeHelper::IsRibbonUIAvailable())
    {
       bool bRibbonUI = IsRibbonUI();
@@ -263,16 +258,6 @@ LRESULT MainFrame::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 
    bHandled = FALSE;
    return 1;
-}
-
-LRESULT MainFrame::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
-{
-   if (wParam == IDT_REFRESH_TASKS_LIST)
-   {
-      m_tasksView.UpdateTasks();
-   }
-
-   return 0;
 }
 
 LRESULT MainFrame::OnDropFiles(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
@@ -421,26 +406,6 @@ LRESULT MainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 
    dlg.DoModal();
    return 0;
-}
-
-void MainFrame::EnableRefresh(bool bEnable)
-{
-   if (bEnable)
-   {
-      if (!m_bRefreshActive)
-      {
-         m_bRefreshActive = true;
-         SetTimer(IDT_REFRESH_TASKS_LIST, c_uiTasksListRefreshCycleInMs);
-      }
-   }
-   else
-   {
-      if (m_bRefreshActive)
-      {
-         m_bRefreshActive = false;
-         KillTimer(IDT_REFRESH_TASKS_LIST);
-      }
-   }
 }
 
 void MainFrame::GetCommandLineFiles()
