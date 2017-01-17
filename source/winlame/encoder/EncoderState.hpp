@@ -44,6 +44,7 @@ namespace Encoder
          m_paused((bool)otherState.m_paused),
          m_finished((bool)otherState.m_finished),
          m_percent((float)otherState.m_percent),
+         m_encodingDescription(otherState.m_encodingDescription),
          m_errorCode((int)otherState.m_errorCode)
       {
       }
@@ -55,6 +56,7 @@ namespace Encoder
          m_paused = (bool)otherState.m_paused;
          m_finished = (bool)otherState.m_finished;
          m_percent = (float)otherState.m_percent;
+         m_encodingDescription = otherState.m_encodingDescription;
          m_errorCode = (int)otherState.m_errorCode;
 
          return *this;

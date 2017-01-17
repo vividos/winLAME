@@ -478,7 +478,6 @@ void EncoderImpl::FormatEncodingDescription()
       m_sampleContainer.GetOutputModuleBitsPerSample());
 #endif
 
-   CString cszText;
    m_encoderState.m_encodingDescription.Format(IDS_ENCODER_ENCODE_INFO, inputDescription, containerInfo, outputDescription);
 }
 
