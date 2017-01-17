@@ -38,7 +38,7 @@
 #undef max
 
 #include "StdCppLib.h"
-#include "Boost.h"
+#include "Boost.hpp"
 
 // winLAME includes
 #include "IoCContainer.hpp"

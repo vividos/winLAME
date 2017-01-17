@@ -30,7 +30,7 @@
 #include <atomic>
 #include <boost/thread/recursive_mutex.hpp>
 #include <thread>
-#include <boost/asio.hpp>
+#include "Boost.hpp"
 #include "TaskInfo.h"
 #include "TaskManagerConfig.h"
 

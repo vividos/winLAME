@@ -594,9 +594,6 @@
     <ClInclude Include="Wtl.h">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Boost.h">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StdCppLib.h">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
@@ -731,6 +728,9 @@
     </ClInclude>
     <ClInclude Include="encoder\AlwaysSkipErrorHandler.hpp">
       <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Boost.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

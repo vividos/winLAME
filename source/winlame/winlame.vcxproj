@@ -193,7 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Atl.h" />
-    <ClInclude Include="Boost.h" />
+    <ClInclude Include="Boost.hpp" />
     <ClInclude Include="CDRipDiscInfo.h" />
     <ClInclude Include="CDRipTitleFormatManager.hpp" />
     <ClInclude Include="CDRipTrackInfo.h" />
