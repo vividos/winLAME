@@ -290,18 +290,18 @@ void UISettings::StoreSettings()
    regRoot.SetValue(value, g_pszAppMode);
 
    // store "output path history" entries
-   TCHAR buffer[64];
+   CString buffer;
    int i,max = outputhistory.size() > 10 ? 10 : outputhistory.size();
    for(i=0; i<max; i++)
    {
-      _sntprintf(buffer, 64, g_pszOutputPathHistory, i);
+      buffer.Format(g_pszOutputPathHistory, i);
       regRoot.SetValue(outputhistory[i], buffer);
    }
 
    // delete the rest of the entries
    for(i=max; i<10; i++)
    {
-      _sntprintf(buffer, 64, g_pszOutputPathHistory, i);
+      buffer.Format(g_pszOutputPathHistory, i);
       regRoot.DeleteValue(buffer);
    }
 #pragma warning(pop)

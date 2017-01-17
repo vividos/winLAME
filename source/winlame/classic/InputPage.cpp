@@ -191,7 +191,7 @@ LRESULT InputPage::OnButtonCDRip(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
          CDRipTrackInfo& trackinfo = pManager->GetTrackInfo(n);
 
          cszCDRipUri.Format(_T("%s%u\\%u. %s"), g_pszCDRipPrefix, n,
-            trackinfo.m_numTrackOnDisc+1, trackinfo.m_trackTitle);
+            trackinfo.m_numTrackOnDisc+1, trackinfo.m_trackTitle.GetString());
 
          InsertFileWithIcon(cszCDRipUri, cszTestCdaFilename, 44100, 44100*16*2, trackinfo.m_trackLengthInSeconds);
       }
@@ -767,7 +767,7 @@ void InputPage::InsertFileWithIcon(LPCTSTR pszRealFilename, LPCTSTR pszFilenameF
    int nSamplefreq, int nBps, int nLength)
 {
    // find out icon image
-   SHFILEINFO sfi;
+   SHFILEINFO sfi = {0};
    HIMAGELIST hImageList = (HIMAGELIST)SHGetFileInfo(
       pszFilenameForIcon, 0, &sfi, sizeof(SHFILEINFO),
       SHGFI_SYSICONINDEX | SHGFI_SMALLICON );

@@ -29,6 +29,9 @@
 #define _WIN32_WINNT   0x0601
 #define _WIN32_IE      0x0700
 
+// switch off some /analyze warnings
+#pragma warning(disable: 6031) // Return value ignored : 'CString::LoadString'
+
 #include "Win32.hpp"
 #include "Atl.hpp"
 #include "Wtl.hpp"

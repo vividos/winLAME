@@ -80,7 +80,10 @@ void LanguageResourceManager::LoadLangResource(UINT uiLanguageId) throw()
          {
             // use loaded instance
             m_hLoadedResourceDll = ::LoadLibrary(info.DllName());
-            _Module.m_hInstResource = m_hLoadedResourceDll;
+            if (m_hLoadedResourceDll != nullptr)
+               _Module.m_hInstResource = m_hLoadedResourceDll;
+            else
+               _Module.m_hInstResource = _Module.m_hInst;
          }
 
          break;

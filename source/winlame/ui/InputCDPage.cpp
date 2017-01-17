@@ -232,7 +232,7 @@ void InputCDPage::SetupDriveCombobox()
          if (nLetter == -1)
             cszText = cszDriveDescription; // couldn't get drive letter; restricted user account
          else
-            cszText.Format(_T("[%c:] %s"), _T('A') + nLetter, cszDriveDescription);
+            cszText.Format(_T("[%c:] %s"), _T('A') + nLetter, cszDriveDescription.GetString());
 
          int nItem = m_cbDrives.AddString(cszText);
          m_cbDrives.SetItemData(nItem, n);
@@ -534,7 +534,7 @@ void InputCDPage::ReadCDText(bool& bVarious)
             vecPerformer[n] == vecPerformer[0])
             cszFormat = vecTitles[n];
          else
-            cszFormat.Format(_T("%s / %s"), vecPerformer[n], vecTitles[n]);
+            cszFormat.Format(_T("%s / %s"), vecPerformer[n].GetString(), vecTitles[n].GetString());
 
          m_lcTracks.SetItemText(n - 1, 1, cszFormat);
       }
@@ -623,13 +623,13 @@ void InputCDPage::UpdatePlaylistFilename(DWORD driveIndex)
    {
       m_uiSettings.playlist_filename.Format(
          _T("%s.m3u"),
-         discInfo.m_discTitle);
+         discInfo.m_discTitle.GetString());
    }
    else
    {
       m_uiSettings.playlist_filename.Format(
          _T("%s - %s.m3u"),
-         discInfo.m_discArtist, discInfo.m_discTitle);
+         discInfo.m_discArtist.GetString(), discInfo.m_discTitle.GetString());
    }
 }
 

@@ -22,6 +22,7 @@
 
 #pragma once
 
+// switch off some /analyze warnings
 #pragma warning(push)
 #pragma warning(disable: 28252 28253)
 

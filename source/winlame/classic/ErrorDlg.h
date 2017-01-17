@@ -81,22 +81,17 @@ END_MSG_MAP()
       SendDlgItemMessage(IDC_ERR_STATIC_ICON,STM_SETICON,(WPARAM)icon);
 
       // set all variable strings
-      CString temp;
-      TCHAR buffer[512];
+      SetDlgItemText(IDC_ERR_STATIC_FILENAME, filename);
 
-      SetDlgItemText(IDC_ERR_STATIC_FILENAME,filename);
+      CString buffer;
+      buffer.Format(IDS_ERR_MODULE, modulename);
+      SetDlgItemText(IDC_ERR_STATIC_MODULE, buffer);
 
-      temp.LoadString(IDS_ERR_MODULE);
-      _sntprintf(buffer,512,temp,modulename);
-      SetDlgItemText(IDC_ERR_STATIC_MODULE,buffer);
+      buffer.Format(IDS_ERR_ERRCODE, errorcode);
+      SetDlgItemText(IDC_ERR_STATIC_ERRCODE, buffer);
 
-      temp.LoadString(IDS_ERR_ERRCODE);
-      _sntprintf(buffer,512,temp,errorcode);
-      SetDlgItemText(IDC_ERR_STATIC_ERRCODE,buffer);
-
-      temp.LoadString(IDS_ERR_ERRMSG);
-      _sntprintf(buffer,512,temp,errormsg);
-      SetDlgItemText(IDC_ERR_STATIC_ERRMSG,buffer);
+      buffer.Format(IDS_ERR_ERRMSG, errormsg);
+      SetDlgItemText(IDC_ERR_STATIC_ERRMSG, buffer);
 
       if (m_bSkipDisabled)
          ::EnableWindow(GetDlgItem(IDC_ERR_BUTTON_SKIPFILE), FALSE);

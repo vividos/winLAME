@@ -296,7 +296,7 @@ void InputFilesPage::InsertFilenames(const std::vector<CString>& vecInputFiles)
 void InputFilesPage::InsertFilenameWithIcon(const CString& cszFilename)
 {
    // find out icon image
-   SHFILEINFO sfi;
+   SHFILEINFO sfi = {0};
    HIMAGELIST hImageList = (HIMAGELIST)SHGetFileInfo(
       cszFilename, 0, &sfi, sizeof(SHFILEINFO),
       SHGFI_SYSICONINDEX | SHGFI_SMALLICON);

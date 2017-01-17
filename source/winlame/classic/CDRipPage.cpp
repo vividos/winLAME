@@ -216,7 +216,8 @@ void CDRipPage::ExtractAudio()
       else
       {
          discTrackTitle.Format(_T("%s - %s"),
-            discinfo.m_discTitle, trackinfo.m_trackTitle);
+            discinfo.m_discTitle.GetString(),
+            trackinfo.m_trackTitle.GetString());
       }
 
       discTrackTitle.Replace(_T(" / "), _T(" - "));
@@ -242,9 +243,10 @@ void CDRipPage::ExtractAudio()
 
       CString tempFilename;
       tempFilename.Format(_T("%s\\(%02u) %s%s.wav"),
-         cszTempFolder,
+         cszTempFolder.GetString(),
          trackinfo.m_numTrackOnDisc+1,
-         discTrackTitle, cszGuid);
+         discTrackTitle.GetString(),
+         cszGuid.GetString());
 
       trackinfo.m_rippedFilename = tempFilename;
 
