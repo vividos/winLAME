@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 // includes
 #include "WizardPage.hpp"
 #include "BevelLine.hpp"
+#include "TaskCreationHelper.hpp"
 #include "resource.h"
 
 // forward references
@@ -91,12 +92,6 @@ private:
    /// called when page is left with Back button
    LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   ///  determines if any files would be transcoded from lossy to lossy format
-   bool IsTranscodingLossy() const;
-
-   /// determines if any output files would overwrite original input files
-   bool IsOverwritingOriginalFiles() const;
-
    /// moves around and hides warning controls, depending on if they should appear
    void MoveAndHideWarnings(bool warnLossyTranscoding, bool warnOverwriteOriginal);
 
@@ -108,21 +103,6 @@ private:
 
    /// updates output module name
    void UpdateOutputModule();
-
-   /// adds tasks to task manager
-   void AddTasks();
-
-   /// adds tasks for input files to task manager
-   void AddInputFilesTasks();
-
-   /// adds tasks for CD extraction to task manager
-   void AddCDExtractTasks();
-
-   /// creates encoder task for a CD Extract task
-   std::shared_ptr<Encoder::EncoderTask> CreateEncoderTaskForCDReadJob(unsigned int cdReadTaskId, const Encoder::CDReadJob& cdReadJob);
-
-   /// adds task to create a playlist to task manager
-   void AddPlaylistTask();
 
 private:
    // controls
@@ -153,8 +133,8 @@ private:
 
    // model
 
-   /// last task id used for an encoding task or a CD extract task
-   unsigned int m_lastTaskId;
+   /// task creation helper
+   TaskCreationHelper m_helper;
 
    /// settings
    UISettings& m_uiSettings;

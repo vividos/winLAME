@@ -343,6 +343,9 @@
     <ClCompile Include="UTF8.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TaskCreationHelper.cpp">
+      <Filter>Main Program Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="encoder\dither\dither.h">
@@ -731,6 +734,9 @@
     </ClInclude>
     <ClInclude Include="classic\CDRipDlg.h">
       <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskCreationHelper.hpp">
+      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
