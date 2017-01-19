@@ -126,7 +126,6 @@ void EncoderImpl::Encode()
    if (!PrepareInputModule(trackInfo))
       skipFile = true;
 
-   CString outputFilename;
    CString tempOutputFilename;
 
    bool skipMoveFile = false;
@@ -146,7 +145,7 @@ void EncoderImpl::Encode()
             m_inputModule->DoneInput(false);
             m_inputModule.reset();
 
-            BOOL fRet = MoveFile(m_encoderSettings.m_inputFilename, outputFilename);
+            BOOL fRet = MoveFile(m_encoderSettings.m_inputFilename, m_encoderSettings.m_outputFilename);
             if (fRet == FALSE)
             {
                extern CString GetLastErrorString();
@@ -155,7 +154,7 @@ void EncoderImpl::Encode()
 
                CString caption;
                caption.LoadString(IDS_CDRIP_ERROR_CAPTION);
-               EncoderErrorHandler::ErrorAction action = m_errorHandler->HandleError(outputFilename, caption, lastError, errorMessage, true);
+               EncoderErrorHandler::ErrorAction action = m_errorHandler->HandleError(m_encoderSettings.m_outputFilename, caption, lastError, errorMessage, true);
                if (action == EncoderErrorHandler::StopEncode)
                {
                   m_encoderState.m_errorCode = -2;
@@ -172,7 +171,7 @@ void EncoderImpl::Encode()
             trackInfo = m_encoderSettings.m_trackInfo;
 
          // generate temporary name, in case the output module doesn't support unicode filenames
-         GenerateTempOutFilename(outputFilename, tempOutputFilename);
+         GenerateTempOutFilename(m_encoderSettings.m_outputFilename, tempOutputFilename);
 
          bool bRet = InitOutputModule(tempOutputFilename, trackInfo);
          initOutputModule = true;
@@ -210,7 +209,7 @@ void EncoderImpl::Encode()
    {
       // write playlist entry, when enabled
       if (m_encoderState.m_running && !m_encoderSettings.m_playlistFilename.IsEmpty())
-         WritePlaylistEntry(outputFilename);
+         WritePlaylistEntry(m_encoderSettings.m_outputFilename);
 
       if (m_encoderState.m_running)
          completedTrack = true;
@@ -228,16 +227,17 @@ void EncoderImpl::Encode()
    m_outputModule.reset();
 
    // rename when we used a temporary filename
-   if (!tempOutputFilename.IsEmpty() && outputFilename != tempOutputFilename)
+   if (!tempOutputFilename.IsEmpty() &&
+      m_encoderSettings.m_outputFilename != tempOutputFilename)
    {
       if (m_encoderSettings.m_overwriteExisting)
-         DeleteFile(outputFilename);
+         DeleteFile(m_encoderSettings.m_outputFilename);
       else
          // not overwriting, but "delete after encoding" flag set?
          if (m_encoderSettings.m_deleteInputAfterEncode)
             DeleteFile(m_encoderSettings.m_inputFilename);
 
-      MoveFile(tempOutputFilename, outputFilename);
+      MoveFile(tempOutputFilename, m_encoderSettings.m_outputFilename);
    }
    else
    {
