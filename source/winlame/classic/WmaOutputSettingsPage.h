@@ -49,7 +49,7 @@ public:
 
    // resize map
 BEGIN_DLGRESIZE_MAP(WmaOutputSettingsPage)
-   // empty
+   DLGRESIZE_CONTROL(IDC_WMA_BEVEL1, DLSZ_SIZE_X)
 END_DLGRESIZE_MAP()
 
    // message map
