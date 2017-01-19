@@ -76,6 +76,8 @@ void PresetManagerImpl::setFacility(LPCTSTR facilityName)
    try
    {
       m_currentFacilityName = CStringA(facilityName).GetString();
+      m_currentFacilityNode = nullptr;
+      m_currentPresetsList.clear();
 
       rapidxml::xml_node<char>* presetsNode =
          m_presetsDocument.first_node("presets");
