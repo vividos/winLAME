@@ -26,6 +26,9 @@ BEGIN
     BUTTON      ID_VIEW_SWITCH_CLASSIC
     BUTTON      ID_APP_ABOUT
     SEPARATOR
+    BUTTON      ID_FEEDBACK_POSITIVE
+    BUTTON      ID_FEEDBACK_NEGATIVE
+    SEPARATOR
     BUTTON      ID_APP_EXIT
 END
 
@@ -59,6 +62,10 @@ LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_VIEW_RIBBON     BITMAP         "res\\view_ribbon.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_VIEW_SWITCH_CLASSIC BITMAP         "res\\switch_classic.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_FEEDBACK_POSITIVE BITMAP         "res\\emoticon_grin.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_FEEDBACK_NEGATIVE BITMAP         "res\\emoticon_unhappy.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_APP_EXIT        BITMAP         "res\\app_exit.bmp"
 
@@ -97,6 +104,11 @@ BEGIN
     BEGIN
         MENUITEM "&Menu band", ID_VIEW_RIBBON
         MENUITEM "Switch to &Classic mode", ID_VIEW_SWITCH_CLASSIC
+    END
+    POPUP "Beta &Feedback"
+    BEGIN
+        MENUITEM "Send a &Smile", ID_FEEDBACK_POSITIVE
+        MENUITEM "Send a &Frown", ID_FEEDBACK_NEGATIVE
     END
     POPUP "&Help"
     BEGIN
@@ -1073,6 +1085,8 @@ BEGIN
     ID_SETTINGS_FINISH_ACTION_STANDBY "Standby PC\nStandby PC"
     ID_VIEW_RIBBON                "Toggles between menu band and toolbar\nToggle Menu band"
     ID_VIEW_SWITCH_CLASSIC        "Switches to Classic mode\nClassic Mode"
+    ID_FEEDBACK_POSITIVE          "Sends a positive feedback\nSmile"
+    ID_FEEDBACK_NEGATIVE          "Sends a negative feedback\nFrown"
     ID_APP_ABOUT                  "Show application infos\nAbout"
     ID_APP_EXIT                   "Exit the application\nExit"
 END

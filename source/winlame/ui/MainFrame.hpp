@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -97,6 +97,8 @@ public:
       COMMAND_RANGE_HANDLER(ID_SETTINGS_FINISH_ACTION_NONE, ID_SETTINGS_FINISH_ACTION_STANDBY, OnSettingsFinishActionRange)
       COMMAND_ID_HANDLER(ID_VIEW_RIBBON, OnToggleRibbon)
       COMMAND_ID_HANDLER(ID_VIEW_SWITCH_CLASSIC, OnViewSwitchToClassic)
+      COMMAND_ID_HANDLER(ID_FEEDBACK_POSITIVE, OnFeedbackPositive)
+      COMMAND_ID_HANDLER(ID_FEEDBACK_NEGATIVE, OnFeedbackNegative)
       COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
       CHAIN_MSG_MAP(BaseClass)
       REFLECT_NOTIFICATIONS()
@@ -128,6 +130,13 @@ private:
 
    LRESULT OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
    LRESULT OnViewSwitchToClassic(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when the positive feedback command has been invoked
+   LRESULT OnFeedbackPositive(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when the negative feedback command has been invoked
+   LRESULT OnFeedbackNegative(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
    LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 private:

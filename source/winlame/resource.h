@@ -22,6 +22,8 @@
 #define ID_SETTINGS_GENERAL                     94
 #define ID_SETTINGS_CDREAD                      95
 #define ID_VIEW_SWITCH_CLASSIC                  96
+#define ID_FEEDBACK_POSITIVE                    97
+#define ID_FEEDBACK_NEGATIVE                    98
 #define IDD_MAINDLG                             100
 #define IDD_ABOUTDLG                            101
 #define IDD_DLG_INPUT                           102

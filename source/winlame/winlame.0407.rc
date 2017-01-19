@@ -26,6 +26,9 @@ BEGIN
     BUTTON      ID_VIEW_SWITCH_CLASSIC
     BUTTON      ID_APP_ABOUT
     SEPARATOR
+    BUTTON      ID_FEEDBACK_POSITIVE
+    BUTTON      ID_FEEDBACK_NEGATIVE
+    SEPARATOR
     BUTTON      ID_APP_EXIT
 END
 
@@ -51,6 +54,10 @@ LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
 ID_VIEW_RIBBON     BITMAP         "res\\view_ribbon.bmp"
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
 ID_VIEW_SWITCH_CLASSIC BITMAP         "res\\switch_classic.bmp"
+LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+ID_FEEDBACK_POSITIVE BITMAP         "res\\emoticon_grin.bmp"
+LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+ID_FEEDBACK_NEGATIVE BITMAP         "res\\emoticon_unhappy.bmp"
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
 ID_APP_EXIT        BITMAP         "res\\app_exit.bmp"
 
@@ -82,6 +89,11 @@ BEGIN
     BEGIN
         MENUITEM "&Menüband", ID_VIEW_RIBBON
         MENUITEM "Zum &Klassischen Modus wechseln", ID_VIEW_SWITCH_CLASSIC
+    END
+    POPUP "Beta-&Feedback"
+    BEGIN
+        MENUITEM "Sende &positives Feedback", ID_FEEDBACK_POSITIVE
+        MENUITEM "Sende &negatives Feedback", ID_FEEDBACK_NEGATIVE
     END
     POPUP "&Hilfe"
     BEGIN
@@ -1043,6 +1055,8 @@ BEGIN
     ID_SETTINGS_CDREAD            "Zeigt CD-Auslese-Einstellungen an\CD-Auslese-Einstellungen"
     ID_VIEW_RIBBON                "Schaltet zwischen Menüband und Werkzeugleiste um\nMenüband umschalten"
     ID_VIEW_SWITCH_CLASSIC        "Wechselt zum klassischen Modus\nKlassischer Modus"
+    ID_FEEDBACK_POSITIVE          "Sendet ein positives Feedback\nPositiv"
+    ID_FEEDBACK_NEGATIVE          "Sendet ein negatives Feedback\nNegativ"
     ID_APP_ABOUT                  "Zeit Anwendungs-Informationen\nÜber"
     ID_APP_EXIT                   "Beendet die Anwendung\nBeenden"
 END
