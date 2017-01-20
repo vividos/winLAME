@@ -123,9 +123,12 @@ void StringToUcs4(CString text, std::vector<id3_ucs4_t>& str)
    // convert to utf-16, then copy to CString
    const id3_utf16_t* str1 = reinterpret_cast<const id3_utf16_t*>(text.GetString());
    id3_ucs4_t* str2 = id3_utf16_ucs4duplicate(str1);
-   size_t length = id3_utf16_length(str1 + 1);
 
-   str.assign(str2, str2 + length);
+   // find end
+   id3_ucs4_t* current = str2;
+   while (*current++ != 0);
+
+   str.assign(str2, current);
 
    free(str2);
 }
