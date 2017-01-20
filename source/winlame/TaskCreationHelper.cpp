@@ -133,7 +133,16 @@ void TaskCreationHelper::AddInputFilesTasks()
       Encoder::EncoderTaskSettings taskSettings;
 
       taskSettings.m_inputFilename = job.InputFilename();
-      taskSettings.m_outputFolder = m_uiSettings.m_defaultSettings.outputdir;
+
+      if (m_uiSettings.out_location_use_input_dir)
+      {
+         Path outputPath(job.InputFilename());
+
+         taskSettings.m_outputFolder = outputPath.FolderName();
+      }
+      else
+         taskSettings.m_outputFolder = m_uiSettings.m_defaultSettings.outputdir;
+
       taskSettings.m_title = Path(job.InputFilename()).FilenameAndExt();
 
       Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
