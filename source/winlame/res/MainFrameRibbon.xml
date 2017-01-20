@@ -26,6 +26,8 @@
       <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
       <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141"/>
 
+      <Command Name="wtl_HELP" Symbol="ID_HELP" Id="0xE146"/>
+
       <!-- Tabs -->
       <Command Name="TabHome" Symbol="ID_TAB_HOME" LabelTitle="Home" />
 
@@ -58,6 +60,7 @@
                </MenuGroup>
                <MenuGroup>
                   <Button CommandName="winlame_VIEW_SWITCH_CLASSIC"/>
+                  <Button CommandName="wtl_APP_ABOUT"/>
                </MenuGroup>
                <MenuGroup>
                   <Button CommandName="wtl_APP_EXIT"/>
@@ -67,7 +70,7 @@
 
          <!-- Help button -->
          <Ribbon.HelpButton>
-            <HelpButton CommandName="wtl_APP_ABOUT" />
+            <HelpButton CommandName="wtl_HELP" />
          </Ribbon.HelpButton>
 
          <!-- QAT (Quick Access Toolbar) -->

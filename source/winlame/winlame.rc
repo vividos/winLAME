@@ -24,11 +24,12 @@ BEGIN
     SEPARATOR
     BUTTON      ID_VIEW_RIBBON
     BUTTON      ID_VIEW_SWITCH_CLASSIC
-    BUTTON      ID_APP_ABOUT
     SEPARATOR
     BUTTON      ID_FEEDBACK_POSITIVE
     BUTTON      ID_FEEDBACK_NEGATIVE
     SEPARATOR
+    BUTTON      ID_HELP
+    BUTTON      ID_APP_ABOUT
     BUTTON      ID_APP_EXIT
 END
 
@@ -66,6 +67,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_FEEDBACK_POSITIVE BITMAP         "res\\emoticon_grin.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_FEEDBACK_NEGATIVE BITMAP         "res\\emoticon_unhappy.bmp"
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+ID_APP_ABOUT       BITMAP         "res\\app_about.bmp"
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
 ID_APP_EXIT        BITMAP         "res\\app_exit.bmp"
 
@@ -112,7 +115,8 @@ BEGIN
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&About winLAME...", ID_APP_ABOUT
+        MENUITEM "Show &help", ID_HELP
+        MENUITEM "About &winLAME...", ID_APP_ABOUT
     END
 END
 
@@ -1089,8 +1093,9 @@ BEGIN
     ID_VIEW_SWITCH_CLASSIC        "Switches to Classic mode\nClassic Mode"
     ID_FEEDBACK_POSITIVE          "Sends a positive feedback\nSmile"
     ID_FEEDBACK_NEGATIVE          "Sends a negative feedback\nFrown"
-    ID_APP_ABOUT                  "Show application infos\nAbout"
+    ID_APP_ABOUT                  "Shows application infos\nAbout"
     ID_APP_EXIT                   "Exit the application\nExit"
+    ID_HELP                       "Shows the help\nHelp"
 END
 
 LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT

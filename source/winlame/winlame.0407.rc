@@ -24,11 +24,12 @@ BEGIN
     SEPARATOR
     BUTTON      ID_VIEW_RIBBON
     BUTTON      ID_VIEW_SWITCH_CLASSIC
-    BUTTON      ID_APP_ABOUT
     SEPARATOR
     BUTTON      ID_FEEDBACK_POSITIVE
     BUTTON      ID_FEEDBACK_NEGATIVE
     SEPARATOR
+    BUTTON      ID_HELP
+    BUTTON      ID_APP_ABOUT
     BUTTON      ID_APP_EXIT
 END
 
@@ -58,6 +59,8 @@ LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
 ID_FEEDBACK_POSITIVE BITMAP         "res\\emoticon_grin.bmp"
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
 ID_FEEDBACK_NEGATIVE BITMAP         "res\\emoticon_unhappy.bmp"
+LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+ID_APP_ABOUT       BITMAP         "res\\app_about.bmp"
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
 ID_APP_EXIT        BITMAP         "res\\app_exit.bmp"
 
@@ -97,7 +100,8 @@ BEGIN
     END
     POPUP "&Hilfe"
     BEGIN
-        MENUITEM "&‹ber winLAME...", ID_APP_ABOUT
+        MENUITEM "&Hilfe anzeigen", ID_HELP
+        MENUITEM "‹ber &winLAME...", ID_APP_ABOUT
     END
 END
 
@@ -1061,6 +1065,7 @@ BEGIN
     ID_FEEDBACK_NEGATIVE          "Sendet ein negatives Feedback\nNegativ"
     ID_APP_ABOUT                  "Zeit Anwendungs-Informationen\n‹ber"
     ID_APP_EXIT                   "Beendet die Anwendung\nBeenden"
+    ID_HELP                       "Zeigt die Hilfe\nHilfe"
 END
 
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
