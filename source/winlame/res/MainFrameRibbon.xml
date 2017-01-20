@@ -54,7 +54,7 @@
          <!-- Application Menu -->
          <Ribbon.ApplicationMenu >
             <ApplicationMenu CommandName="AppMenu" >
-               <MenuGroup Class="StandardItems" >
+               <MenuGroup>
                   <Button CommandName="winlame_ENCODE_FILES"/>
                   <Button CommandName="winlame_ENCODE_CD"/>
                </MenuGroup>
