@@ -1,50 +1,30 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2005 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2005 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file LameSimpleSettingsPage.hpp
 /// \brief contains the basic settings page for the LAME encoder
-/// \ingroup userinterface
-/// @{
-
-// include guard
+//
 #pragma once
 
-// needed includes
 #include "resource.h"
 #include "PageBase.hpp"
 #include "CommonStuff.hpp"
 
-
-// classes
-/*
-IDC_LAME_COMBO_ENCODING_QUALITY
-IDC_LAME_CHECK_MONO
-IDC_LAME_CHECK_CBR
-IDC_LAME_RADIO_TYPE1
-IDC_LAME_RADIO_TYPE2
-IDC_LAME_EDIT_BITRATE
-IDC_LAME_SPIN_BITRATE
-IDC_LAME_EDIT_QUALITY
-IDC_LAME_SPIN_QUALITY
-IDC_LAME_COMBO_VBR_MODE
-IDC_LAME_STATIC_VBR_MODE
-*/
 /// simple settings page for LAME
 class LameSimpleSettingsPage:
    public PageBase,
@@ -118,6 +98,3 @@ protected:
    BevelLine bevel1; ///< bevel line
    BevelLine bevel2; ///< bevel line
 };
-
-
-/// @}

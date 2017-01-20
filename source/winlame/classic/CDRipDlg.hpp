@@ -1,31 +1,26 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2005-2007 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2005-2007 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file CDRipDlg.hpp
 /// \brief contains the dialog for cd ripping
-/// \ingroup userinterface
-/// @{
-
-// include guard
+//
 #pragma once
 
-// needed includes
 #include "resource.h"
 #include "CommonStuff.hpp"
 #include "UIinterface.hpp"
@@ -37,7 +32,7 @@ class FreedbInfo;
 /// timer id for timer checking for cd in drive
 #define IDT_CDRIP_CHECK 66
 
-/// cd rip dialog
+/// CD rip dialog
 class CDRipDlg:
    public CDialogImpl<CDRipDlg>,
    public CWinDataExchange<CDRipDlg>,
@@ -193,6 +188,3 @@ protected:
 
    UIinterface& m_UIinterface;
 };
-
-
-/// @}
