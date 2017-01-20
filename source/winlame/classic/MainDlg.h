@@ -68,6 +68,8 @@ BEGIN_DLGRESIZE_MAP(MainDlg)
    DLGRESIZE_CONTROL(IDC_MDLG_NEXT, DLSZ_MOVE_X | DLSZ_MOVE_Y)
    DLGRESIZE_CONTROL(IDC_MDLG_BACK, DLSZ_MOVE_X | DLSZ_MOVE_Y)
    DLGRESIZE_CONTROL(IDC_MDLG_HELP, DLSZ_MOVE_Y)
+   DLGRESIZE_CONTROL(ID_FEEDBACK_POSITIVE, DLSZ_MOVE_Y)
+   DLGRESIZE_CONTROL(ID_FEEDBACK_NEGATIVE, DLSZ_MOVE_Y)
 END_DLGRESIZE_MAP()
 
    // message map
@@ -79,6 +81,8 @@ BEGIN_MSG_MAP(MainDlg)
    COMMAND_HANDLER(IDC_MDLG_BACK, BN_CLICKED, OnButtonBack)
    COMMAND_HANDLER(IDC_MDLG_NEXT, BN_CLICKED, OnButtonNext)
    COMMAND_HANDLER(IDC_MDLG_HELP, BN_CLICKED, OnHelpButton)
+   COMMAND_HANDLER(ID_FEEDBACK_POSITIVE, BN_CLICKED, OnFeedbackPositive)
+   COMMAND_HANDLER(ID_FEEDBACK_NEGATIVE, BN_CLICKED, OnFeedbackNegative)
    COMMAND_HANDLER(IDC_MDLG_BACK, 1, OnButtonBack) // from accelerator keys
    COMMAND_HANDLER(IDC_MDLG_NEXT, 1, OnButtonNext)
    COMMAND_HANDLER(IDC_INPUT_BUTTON_INFILESEL, 1, OnSendToPage)
@@ -193,6 +197,12 @@ END_MSG_MAP()
       // same as pressing the help button
       return OnHelpButton(0,0,0,bHandled);
    }
+
+   /// called when the positive feedback button has been pressed
+   LRESULT OnFeedbackPositive(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when the negative feedback button has been pressed
+   LRESULT OnFeedbackNegative(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// called for every system command; used for the about box system menu entry
    LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

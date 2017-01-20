@@ -119,6 +119,20 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    CButton helpButton(GetDlgItem(IDC_MDLG_HELP));
    helpButton.SetIcon(m_helpIcon.ExtractIcon(0));
 
+   // set the feedback buttons images
+   CImageList feedbackIcons;
+   feedbackIcons.Create(16, 16, ILC_MASK | ILC_COLOR32, 0, 0);
+
+   CBitmap bmpIcons;
+   bmpIcons.LoadBitmap(IDR_MAINFRAME);
+   feedbackIcons.Add(bmpIcons, RGB(0, 0, 0));
+
+   CButton positiveButton(GetDlgItem(ID_FEEDBACK_POSITIVE));
+   positiveButton.SetIcon(feedbackIcons.ExtractIcon(9));
+
+   CButton negativeButton(GetDlgItem(ID_FEEDBACK_NEGATIVE));
+   negativeButton.SetIcon(feedbackIcons.ExtractIcon(10));
+
    // check if html help file is available
    CString helpFilename = Path::Combine(App::AppFolder(), "winLAME.chm");
 
@@ -193,6 +207,22 @@ LRESULT MainDlg::OnHelpButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bH
       if (!helpPath.IsEmpty())
          m_htmlHelper.DisplayTopic(helpPath);
    }
+   return 0;
+}
+
+LRESULT MainDlg::OnFeedbackPositive(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   extern LPCTSTR c_urlFeedbackPositive;
+
+   ShellExecute(m_hWnd, _T("open"), c_urlFeedbackPositive, nullptr, nullptr, SW_SHOWNORMAL);
+   return 0;
+}
+
+LRESULT MainDlg::OnFeedbackNegative(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   extern LPCTSTR c_urlFeedbackNegative;
+
+   ShellExecute(m_hWnd, _T("open"), c_urlFeedbackNegative, nullptr, nullptr, SW_SHOWNORMAL);
    return 0;
 }
 
