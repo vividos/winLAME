@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -43,6 +43,9 @@ public:
    App(HINSTANCE hInstance);
    /// dtor
    ~App();
+
+   /// initialzes crash reporter
+   static void InitCrashReporter();
 
    /// returns if help file is available
    bool IsHelpAvailable() const throw() { return m_helpAvailable; }

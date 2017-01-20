@@ -30,6 +30,8 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/,
 {
    try
    {
+      App::InitCrashReporter();
+
       App app(hInstance);
       return app.Run(lpCmdLine, nCmdShow);
    }

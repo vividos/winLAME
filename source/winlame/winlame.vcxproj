@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClCompile Include="CDRipTitleFormatManager.cpp" />
     <ClCompile Include="CommandLineParser.cpp" />
+    <ClCompile Include="CrashReporter.cpp" />
     <ClCompile Include="encoder\AacInputModule.cpp" />
     <ClCompile Include="encoder\AacOutputModule.cpp" />
     <ClCompile Include="encoder\BassInputModule.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="CDRipTitleFormatManager.hpp" />
     <ClInclude Include="CDRipTrackInfo.hpp" />
     <ClInclude Include="CommandLineParser.hpp" />
+    <ClInclude Include="CrashReporter.hpp" />
     <ClInclude Include="encoder\AacInputModule.hpp" />
     <ClInclude Include="encoder\AacOutputModule.hpp" />
     <ClInclude Include="encoder\AlwaysSkipErrorHandler.hpp" />

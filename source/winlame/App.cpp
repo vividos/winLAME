@@ -26,6 +26,7 @@
 #include "preset\PresetManagerImpl.h"
 #include "encoder\ModuleManagerImpl.hpp"
 #include "CommonStuff.hpp"
+#include "CrashReporter.hpp"
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -111,6 +112,22 @@ App::~App()
 
    _Module.Term();
    ::CoUninitialize();
+}
+
+void App::InitCrashReporter()
+{
+   // local app-data, non-roaming
+   CString folder = Path::Combine(Path::SpecialFolder(CSIDL_LOCAL_APPDATA), _T("winLAME"));
+
+   if (!Path(folder).FolderExists())
+      CreateDirectory(folder, nullptr);
+
+   folder = Path::Combine(folder, _T("crashdumps")).ToString();
+
+   if (!Path(folder).FolderExists())
+      CreateDirectory(folder, nullptr);
+
+   CrashReporter::Init(_T("winLAME"), folder);
 }
 
 int App::Run(LPTSTR /*lpstrCmdLine*/, int nCmdShow)
