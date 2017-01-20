@@ -23,7 +23,7 @@
 #include "WaveOutputSettingsPage.hpp"
 #include "encoder/SndFileFormats.hpp"
 
-// WaveOutputSettingsPage methods
+using ClassicUI::WaveOutputSettingsPage;
 
 LRESULT WaveOutputSettingsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {

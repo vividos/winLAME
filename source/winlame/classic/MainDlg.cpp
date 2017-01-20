@@ -37,6 +37,8 @@
 #include <sys/stat.h>
 #include <shlobj.h>
 
+using ClassicUI::MainDlg;
+
 #define IDM_ABOUTBOX 16    ///< menu id for about box
 #define IDM_OPTIONS 48     ///< menu id for options
 #define IDM_APPMODE 64     ///< menu id for app mode change
@@ -44,9 +46,9 @@
 // MainDlg methods
 
 MainDlg::MainDlg(UISettings& settings_, LanguageResourceManager& langResourceManager)
-:m_bKeyDownEscape(false),
- settings(settings_),
- m_langResourceManager(langResourceManager),
+   :m_bKeyDownEscape(false),
+   settings(settings_),
+   m_langResourceManager(langResourceManager),
    m_helpAvailable(false),
    m_isAppModeChanged(false)
 {
@@ -54,9 +56,9 @@ MainDlg::MainDlg(UISettings& settings_, LanguageResourceManager& langResourceMan
    m_sizePage = CSize(0, 0);
 
    // load icons
-   wndicon = ::LoadIcon(_Module.GetResourceInstance(),MAKEINTRESOURCE(IDI_ICON_WINLAME));
+   wndicon = ::LoadIcon(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME));
    wndicon_small = (HICON)::LoadImage(_Module.GetResourceInstance(),
-      MAKEINTRESOURCE(IDI_ICON_WINLAME),IMAGE_ICON,16,16,LR_DEFAULTCOLOR);
+      MAKEINTRESOURCE(IDI_ICON_WINLAME), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 
    // load accelerator table
    actable = ::LoadAccelerators(_Module.GetResourceInstance(),
@@ -77,12 +79,12 @@ MainDlg::~MainDlg()
    ::DestroyIcon(wndicon_small);
 
    // destroy the table
-   if (actable!=NULL)
+   if (actable != NULL)
       ::DestroyAcceleratorTable(actable);
 
    // delete all page pointers
    int max = pages.size();
-   for(int i=0; i<max; i++)
+   for (int i = 0; i < max; i++)
       delete pages[i];
 }
 
@@ -96,15 +98,15 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    SetWindowText(cszCaption);
 
    // set icon
-   SetIcon(wndicon,TRUE);
-   SetIcon(wndicon_small,FALSE);
+   SetIcon(wndicon, TRUE);
+   SetIcon(wndicon_small, FALSE);
    ShowWindow(SW_SHOW);
 
    // create tooltip control
    tooltips.Create(m_hWnd);
 
    // add tool tips for every control
-   AddTooltips(m_hWnd,tooltips);
+   AddTooltips(m_hWnd, tooltips);
 
    // activate tooltips
    tooltips.Activate(TRUE);
@@ -113,7 +115,7 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    ActivatePage(0);
 
    // set the help button image
-   m_helpIcon.Create(MAKEINTRESOURCE(IDB_HELP),14,0,RGB(192,192,192));
+   m_helpIcon.Create(MAKEINTRESOURCE(IDB_HELP), 14, 0, RGB(192, 192, 192));
    CButton helpButton(GetDlgItem(IDC_MDLG_HELP));
    helpButton.SetIcon(m_helpIcon.ExtractIcon(0));
 
@@ -152,7 +154,7 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
 
    CMenu sysmenu;
    sysmenu.Attach(GetSystemMenu(FALSE));
-   if (sysmenu!=NULL)
+   if (sysmenu != NULL)
    {
       sysmenu.AppendMenu(MF_SEPARATOR);
 
@@ -226,7 +228,7 @@ LRESULT MainDlg::OnFeedbackNegative(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*h
 
 LRESULT MainDlg::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
-   if ((wParam & 0xFFF0)==IDM_ABOUTBOX)
+   if ((wParam & 0xFFF0) == IDM_ABOUTBOX)
    {
       // show about dialog
       UI::AboutDlg dlg;
@@ -234,23 +236,23 @@ LRESULT MainDlg::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
       dlg.DoModal();
    }
    else
-   if ((wParam & 0xFFF0)==IDM_OPTIONS)
-   {
-      OptionsDlg dlg(settings, m_langResourceManager);
-      dlg.DoModal(m_hWnd);
-   }
-   else
-   if ((wParam & 0xFFF0)==IDM_APPMODE)
-   {
-      m_isAppModeChanged = true;
+      if ((wParam & 0xFFF0) == IDM_OPTIONS)
+      {
+         OptionsDlg dlg(settings, m_langResourceManager);
+         dlg.DoModal(m_hWnd);
+      }
+      else
+         if ((wParam & 0xFFF0) == IDM_APPMODE)
+         {
+            m_isAppModeChanged = true;
 
-      settings.m_appMode = UISettings::modernMode;
-      settings.StoreSettings();
+            settings.m_appMode = UISettings::modernMode;
+            settings.StoreSettings();
 
-      PostQuitMessage(0);
-   }
-   else
-      bHandled = false;
+            PostQuitMessage(0);
+         }
+         else
+            bHandled = false;
 
    return 0;
 }
@@ -265,12 +267,12 @@ void MainDlg::RunDialog()
    }
 
    // create the dialog
-   Create(NULL,CWindow::rcDefault);
+   Create(NULL, CWindow::rcDefault);
 
    // check if input or output modules are available
    Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
-   if (0==moduleManager.GetInputModuleCount() ||
-       0==moduleManager.GetOutputModuleCount() )
+   if (0 == moduleManager.GetInputModuleCount() ||
+      0 == moduleManager.GetOutputModuleCount())
    {
       // show warning message box
       AppMessageBox(m_hWnd, IDS_ERR_NOMODULES, MB_OK | MB_ICONSTOP);
@@ -282,7 +284,7 @@ void MainDlg::RunDialog()
    // runs the message loop of the modeless dialog
    MSG msg;
 
-   for(;;)
+   for (;;)
    {
       // retrieve next message
       BOOL bRet = ::GetMessage(&msg, NULL, 0, 0);
@@ -292,7 +294,7 @@ void MainDlg::RunDialog()
          break;
 
       // deliver message
-      if(!PreTranslateMessage(&msg) && !IsDialogMessage(&msg))
+      if (!PreTranslateMessage(&msg) && !IsDialogMessage(&msg))
       {
          ::TranslateMessage(&msg);
          ::DispatchMessage(&msg);
@@ -306,17 +308,17 @@ void MainDlg::RunDialog()
 void MainDlg::DrawCaptionBar(HDC &hDC, RECT &rc)
 {
    // paint background white
-   ::SetBkColor(hDC, RGB(255,255,255));
+   ::SetBkColor(hDC, RGB(255, 255, 255));
    ::ExtTextOut(hDC, 0, 0, ETO_OPAQUE, &rc, NULL, 0, NULL);
 
    // get default font and logfont struct
    HFONT font = (HFONT)::GetStockObject(DEFAULT_GUI_FONT);
    LOGFONT lf;
-   ::GetObject(font,sizeof(LOGFONT), &lf);
+   ::GetObject(font, sizeof(LOGFONT), &lf);
 
    // create normal font
-   _tcscpy(lf.lfFaceName,_T("MS Shell Dlg"));
-//   lf.lfHeight = 14;
+   _tcscpy(lf.lfFaceName, _T("MS Shell Dlg"));
+   //   lf.lfHeight = 14;
    HFONT normfont = ::CreateFontIndirect(&lf);
 
    // create font with height 24
@@ -324,28 +326,28 @@ void MainDlg::DrawCaptionBar(HDC &hDC, RECT &rc)
    HFONT bigfont = ::CreateFontIndirect(&lf);
 
    // set some modes and color
-   SetBkMode(hDC,TRANSPARENT);
-   SetTextColor(hDC,RGB(0,0,0));
+   SetBkMode(hDC, TRANSPARENT);
+   SetTextColor(hDC, RGB(0, 0, 0));
 
    // load caption string
    CString caption;
    caption.LoadString(pages[currentpage]->captionID);
 
-   rc.top+=3; rc.left+=7;
+   rc.top += 3; rc.left += 7;
 
    // draw text one
-   ::SelectObject(hDC,bigfont);
-   ::DrawText(hDC,caption,caption.GetLength(), &rc, DT_VCENTER | DT_LEFT );
+   ::SelectObject(hDC, bigfont);
+   ::DrawText(hDC, caption, caption.GetLength(), &rc, DT_VCENTER | DT_LEFT);
 
    // load description string
    CString desc;
    desc.LoadString(pages[currentpage]->descID);
 
-   rc.top+=22+3; rc.left+=5+2;
+   rc.top += 22 + 3; rc.left += 5 + 2;
 
    // draw text two
-   ::SelectObject(hDC,normfont);
-   ::DrawText(hDC, desc, desc.GetLength(), &rc, DT_VCENTER | DT_LEFT );
+   ::SelectObject(hDC, normfont);
+   ::DrawText(hDC, desc, desc.GetLength(), &rc, DT_VCENTER | DT_LEFT);
 
    // delete the created fonts
    ::DeleteObject(bigfont);
@@ -376,12 +378,12 @@ bool MainDlg::ActivatePage(int page)
 
    // set current page
    if (currentpage == oldpage_index)
-      currentpage=page;
+      currentpage = page;
 
    // find out rect for sub dialog
    RECT rc;
    HWND tmpWnd = GetDlgItem(IDC_MDLG_FRAME);
-   ::GetWindowRect( tmpWnd, &rc );
+   ::GetWindowRect(tmpWnd, &rc);
    ScreenToClient(&rc);
 
    // create the modeless sub dialog
@@ -393,7 +395,7 @@ bool MainDlg::ActivatePage(int page)
    newpage->OnEnterPage();
 
    // add tool tips for every control
-   AddTooltips(newpage->m_hWnd,tooltips);
+   AddTooltips(newpage->m_hWnd, tooltips);
 
    // enable or disable the buttons below
    lockWizardButtons(false);

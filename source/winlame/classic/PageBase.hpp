@@ -27,61 +27,65 @@
 
 #include "UIinterface.hpp"
 
-/// common page base class
-class PageBase:
-   public CDialogImpl<PageBase>,
-   public CWinDataExchange<PageBase>
+namespace ClassicUI
 {
-public:
-   /// ctor
-   PageBase()
-      :IDD(0),
-       captionID(0),
-       descID(0),
-       helpID(0),
-       pui(NULL)
+   /// common page base class
+   class PageBase :
+      public CDialogImpl<PageBase>,
+      public CWinDataExchange<PageBase>
    {
-   }
+   public:
+      /// ctor
+      PageBase()
+         :IDD(0),
+         captionID(0),
+         descID(0),
+         helpID(0),
+         pui(NULL)
+      {
+      }
 
-   /// dtor
-   virtual ~PageBase(){}
+      /// dtor
+      virtual ~PageBase() {}
 
-   /// dialog id
-   int IDD;
+      /// dialog id
+      int IDD;
 
-   /// caption string resource id
-   int captionID;
+      /// caption string resource id
+      int captionID;
 
-   /// description string resource id
-   int descID;
+      /// description string resource id
+      int descID;
 
-   /// html help path string id
-   int helpID;
+      /// html help path string id
+      int helpID;
 
-   /// pointer to the ui interface
-   UIinterface *pui;
+      /// pointer to the ui interface
+      UIinterface *pui;
 
-   /// called when leaving the page; returns if we really should leave
-   virtual bool OnLeavePage(){ return true; }
+      /// called when leaving the page; returns if we really should leave
+      virtual bool OnLeavePage() { return true; }
 
-   /// called on entering the page
-   virtual void OnEnterPage(){}
+      /// called on entering the page
+      virtual void OnEnterPage() {}
 
-   /// returns if page should be removed
-   virtual bool ShouldRemovePage() const { return false; }
+      /// returns if page should be removed
+      virtual bool ShouldRemovePage() const { return false; }
 
-   /// creates the dialog; overlaps the version in CDialogImpl<T>
-   HWND Create(HWND hWndParent, LPARAM dwInitParam = NULL)
-   {
-      // copied from ATL
-      ATLASSERT(m_hWnd == NULL);
-      _Module.AddCreateWndData(&m_thunk.cd, (CDialogImplBaseT<CWindow>*)this);
+      /// creates the dialog; overlaps the version in CDialogImpl<T>
+      HWND Create(HWND hWndParent, LPARAM dwInitParam = NULL)
+      {
+         // copied from ATL
+         ATLASSERT(m_hWnd == NULL);
+         _Module.AddCreateWndData(&m_thunk.cd, (CDialogImplBaseT<CWindow>*)this);
 #ifdef _DEBUG
-      m_bModal = false;
+         m_bModal = false;
 #endif //_DEBUG
-      HWND hWnd = ::CreateDialogParam(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDD),
-         hWndParent, (DLGPROC)CDialogImplBaseT<CWindow>::StartDialogProc, dwInitParam);
-      ATLASSERT(m_hWnd == hWnd);
-      return hWnd;
-   }
-};
+         HWND hWnd = ::CreateDialogParam(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDD),
+            hWndParent, (DLGPROC)CDialogImplBaseT<CWindow>::StartDialogProc, dwInitParam);
+         ATLASSERT(m_hWnd == hWnd);
+         return hWnd;
+      }
+   };
+
+} // namespace ClassicUI

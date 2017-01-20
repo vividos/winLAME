@@ -34,14 +34,16 @@
 #include "FreeDbDiscListDlg.hpp"
 #include "UTF8.hpp"
 
+using ClassicUI::CDRipDlg;
+
 const DWORD INVALID_DRIVE_ID = 0xffffffff;
 
-CDRipDlg::CDRipDlg(UISettings& uiSettings, UIinterface& UIinterface)
-:m_uiSettings(uiSettings),
- m_bDriveActive(false),
- m_bAcquiredDiscInfo(false),
- m_bEditedTrack(false),
- m_UIinterface(UIinterface)
+CDRipDlg::CDRipDlg(UISettings& uiSettings, ClassicUI::UIinterface& UIinterface)
+   :m_uiSettings(uiSettings),
+   m_bDriveActive(false),
+   m_bAcquiredDiscInfo(false),
+   m_bEditedTrack(false),
+   m_UIinterface(UIinterface)
 {
 }
 
@@ -56,10 +58,10 @@ LRESULT CDRipDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
    CenterWindow();
 
    // set icons
-   HICON hIcon = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME), 
+   HICON hIcon = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME),
       IMAGE_ICON, ::GetSystemMetrics(SM_CXICON), ::GetSystemMetrics(SM_CYICON), LR_DEFAULTCOLOR);
    SetIcon(hIcon, TRUE);
-   HICON hIconSmall = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME), 
+   HICON hIconSmall = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME),
       IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR);
    SetIcon(hIconSmall, FALSE);
 
@@ -68,9 +70,9 @@ LRESULT CDRipDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
    // drive combobox
    unsigned int nDriveCount = 0;
    {
-      for (DWORD n=0; n<26; n++)
+      for (DWORD n = 0; n < 26; n++)
       {
-         BASS_CD_INFO info = {0};
+         BASS_CD_INFO info = { 0 };
          BOOL bRet = BASS_CD_GetInfo(n, &info);
          if (bRet == FALSE)
             break;
@@ -127,7 +129,7 @@ LRESULT CDRipDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
 
    // genre combobox
    LPCTSTR* apszGenre = Encoder::TrackInfo::GetGenreList();
-   for (unsigned int i=0, iMax = Encoder::TrackInfo::GetGenreListLength(); i<iMax; i++)
+   for (unsigned int i = 0, iMax = Encoder::TrackInfo::GetGenreListLength(); i < iMax; i++)
       m_cbGenre.AddString(apszGenre[i]);
 
    // misc.
@@ -140,7 +142,7 @@ LRESULT CDRipDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
 
    CheckCD();
 
-   SetTimer(IDT_CDRIP_CHECK, 2*1000);
+   SetTimer(IDT_CDRIP_CHECK, 2 * 1000);
 
    DlgResize_Init(true, true);
 
@@ -258,10 +260,10 @@ void CDRipDlg::RefreshCDList()
       return;
    }
 
-   for(DWORD n=0; n<uMaxCDTracks; n++)
+   for (DWORD n = 0; n < uMaxCDTracks; n++)
    {
       CString cszText;
-      cszText.Format(_T("%u"), n+1);
+      cszText.Format(_T("%u"), n + 1);
 
       DWORD nLength = BASS_CD_GetTrackLength(nDrive, n);
       bool bDataTrack = (nLength == 0xFFFFFFFF && BASS_ERROR_NOTAUDIO == BASS_ErrorGetCode());
@@ -269,7 +271,7 @@ void CDRipDlg::RefreshCDList()
       int nItem = m_lcTracks.InsertItem(m_lcTracks.GetItemCount(), cszText);
       m_lcTracks.SetItemData(nItem, n);
 
-      cszText.Format(IDS_CDRIP_TRACK_U, n+1);
+      cszText.Format(IDS_CDRIP_TRACK_U, n + 1);
       m_lcTracks.SetItemText(nItem, 1, cszText);
 
       if (!bDataTrack)
@@ -278,7 +280,7 @@ void CDRipDlg::RefreshCDList()
          {
             nLength /= 176400;
 
-            cszText.Format(_T("%u:%02u"), nLength/60, nLength%60);
+            cszText.Format(_T("%u:%02u"), nLength / 60, nLength % 60);
             m_lcTracks.SetItemText(nItem, 2, cszText);
          }
          else
@@ -419,29 +421,29 @@ void CDRipDlg::ReadCDText(bool& bVarious)
    const CHAR* cdtext = BASS_CD_GetID(nDrive, BASS_CDID_TEXT);
    if (cdtext != NULL)
    {
-      std::vector<CString> vecTitles(uMaxCDTracks+1);
-      std::vector<CString> vecPerformer(uMaxCDTracks+1);
+      std::vector<CString> vecTitles(uMaxCDTracks + 1);
+      std::vector<CString> vecPerformer(uMaxCDTracks + 1);
 
       CString cszOutput;
       const CHAR* endpos = cdtext;
       do
       {
-         while(*endpos++ != 0);
+         while (*endpos++ != 0);
 
          CString cszText(cdtext);
          if (cdtext == strstr(cdtext, "TITLE"))
          {
             LPSTR pNext = NULL;
-            unsigned long uTrack = strtoul(cdtext+5, &pNext, 10);
-            if (uTrack < uMaxCDTracks+1)
-               vecTitles[uTrack] = pNext+1;
+            unsigned long uTrack = strtoul(cdtext + 5, &pNext, 10);
+            if (uTrack < uMaxCDTracks + 1)
+               vecTitles[uTrack] = pNext + 1;
          }
          if (cdtext == strstr(cdtext, "PERFORMER"))
          {
             LPSTR pNext = NULL;
-            unsigned long uPerf = strtoul(cdtext+9, &pNext, 10);
-            if (uPerf < uMaxCDTracks+1)
-               vecPerformer[uPerf] = pNext+1;
+            unsigned long uPerf = strtoul(cdtext + 9, &pNext, 10);
+            if (uPerf < uMaxCDTracks + 1)
+               vecPerformer[uPerf] = pNext + 1;
 
             if (uPerf > 0 &&
                strlen(pNext + 1) > 0 &&
@@ -452,15 +454,14 @@ void CDRipDlg::ReadCDText(bool& bVarious)
          }
 
          cdtext = endpos;
-      }
-      while(*endpos != 0);
+      } while (*endpos != 0);
 
       // set title and artist
       SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, vecTitles[0]);
       SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, vecPerformer[0]);
 
       CString cszFormat;
-      for (DWORD n=1; n<uMaxCDTracks+1; n++)
+      for (DWORD n = 1; n < uMaxCDTracks + 1; n++)
       {
          if (vecPerformer[n].IsEmpty() ||
             vecPerformer[n] == vecPerformer[0])
@@ -468,7 +469,7 @@ void CDRipDlg::ReadCDText(bool& bVarious)
          else
             cszFormat.Format(_T("%s / %s"), vecPerformer[n].GetString(), vecTitles[n].GetString());
 
-         m_lcTracks.SetItemText(n-1, 1, cszFormat);
+         m_lcTracks.SetItemText(n - 1, 1, cszFormat);
       }
 
       m_bAcquiredDiscInfo = true;
@@ -540,13 +541,13 @@ void CDRipDlg::UpdateTrackManager()
    {
       // add all items
       int nMax = m_lcTracks.GetItemCount();
-      for(int n=0; n<nMax; n++)
+      for (int n = 0; n < nMax; n++)
          vecTracks.push_back(m_lcTracks.GetItemData(n));
    }
 
    unsigned int nMax = vecTracks.size();
 
-   for(unsigned int n=0; n<nMax; n++)
+   for (unsigned int n = 0; n < nMax; n++)
    {
       CDRipTrackInfo trackinfo;
 
@@ -607,7 +608,7 @@ void CDRipDlg::StoreInCdplayerIni(unsigned int nDrive)
 
    // tracks
    CString cszTrackText;
-   for (unsigned int n=0; n<nNumTracks; n++)
+   for (unsigned int n = 0; n < nNumTracks; n++)
    {
       cszFormat.Format(_T("%u"), n);
 
@@ -714,7 +715,7 @@ void CDRipDlg::FillListFreedbInfo(const FreedbInfo& info)
 {
    CString cszText;
    unsigned int nMax = info.TrackTitles().size();
-   for(unsigned int n=0; n<nMax; n++)
+   for (unsigned int n = 0; n < nMax; n++)
    {
       cszText = info.TrackTitles()[n];
       m_lcTracks.SetItemText(n, 1, cszText);

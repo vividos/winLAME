@@ -26,10 +26,10 @@
 #include "basscd.h"
 #include <memory>
 
-// CDRipPage methods
+using ClassicUI::CDRipPage;
 
 CDRipPage::CDRipPage()
-:m_bFinishedAllTracks(false)
+   :m_bFinishedAllTracks(false)
 {
    IDD = IDD_DLG_CDRIP;
    captionID = IDS_DLG_CAP_CDRIP;
@@ -112,14 +112,14 @@ void CDRipPage::OnEnterPage()
       CDRipTrackManager* pManager = CDRipTrackManager::getCDRipTrackManager();
 
       unsigned int nMax = pManager->GetMaxTrackInfo();
-      for(unsigned int n=0; n<nMax; n++)
+      for (unsigned int n = 0; n < nMax; n++)
       {
          CDRipTrackInfo& trackinfo = pManager->GetTrackInfo(n);
          if (!trackinfo.m_isActive)
             continue;
 
          CString cszText;
-         cszText.Format(_T("%u."), trackinfo.m_numTrackOnDisc+1);
+         cszText.Format(_T("%u."), trackinfo.m_numTrackOnDisc + 1);
          int nItem = m_lcTracks.InsertItem(m_lcTracks.GetItemCount(), cszText);
          m_lcTracks.SetItemText(nItem, 1, trackinfo.m_trackTitle);
 
@@ -132,7 +132,7 @@ void CDRipPage::OnEnterPage()
 bool CDRipPage::OnLeavePage()
 {
    pui->getUISettings().cdrip_autostart_encoding =
-      BST_CHECKED==SendDlgItemMessage(IDC_CDRIP_CHECK_AUTOSTART_ENC, BM_GETCHECK);
+      BST_CHECKED == SendDlgItemMessage(IDC_CDRIP_CHECK_AUTOSTART_ENC, BM_GETCHECK);
 
    pui->getUISettings().last_page_was_cdrip_page = true;
 
@@ -199,7 +199,7 @@ void CDRipPage::ExtractAudio()
    CDRipDiscInfo& discinfo = pManager->GetDiscInfo();
 
    unsigned int nMax = pManager->GetMaxTrackInfo();
-   for(unsigned int n=0; n<nMax; n++)
+   for (unsigned int n = 0; n < nMax; n++)
    {
       m_lcTracks.EnsureVisible(n, FALSE);
 
@@ -242,7 +242,7 @@ void CDRipPage::ExtractAudio()
       CString tempFilename;
       tempFilename.Format(_T("%s\\(%02u) %s%s.wav"),
          cszTempFolder.GetString(),
-         trackinfo.m_numTrackOnDisc+1,
+         trackinfo.m_numTrackOnDisc + 1,
          discTrackTitle.GetString(),
          cszGuid.GetString());
 
@@ -251,26 +251,26 @@ void CDRipPage::ExtractAudio()
       bool bRet = ExtractTrack(discinfo, trackinfo, tempFilename);
       if (!bRet)
       {
-//         m_lcTracks.SetItemText(n, 2, _T("cancelled"));
+         //         m_lcTracks.SetItemText(n, 2, _T("cancelled"));
          return;
       }
 
-/*
-      // rewrite all entries in the filenames list with this entry number
-      CString cszTrackUriStart;
-      cszTrackUriStart.Format(_T("%s%u\\"), g_pszCDRipPrefix, n);
+      /*
+            // rewrite all entries in the filenames list with this entry number
+            CString cszTrackUriStart;
+            cszTrackUriStart.Format(_T("%s%u\\"), g_pszCDRipPrefix, n);
 
-      FilenameList& fnlist = pui->getUISettings().filenamelist;
-      unsigned int nMax2 = fnlist.size();
-      for(unsigned int i=0; i<nMax2; i++)
-      {
-         if (0 == fnlist[i].find(cszTrackUriStart))
-         {
-            // found one
-            fnlist[i] = tempFilename;
-         }
-      }
-*/
+            FilenameList& fnlist = pui->getUISettings().filenamelist;
+            unsigned int nMax2 = fnlist.size();
+            for(unsigned int i=0; i<nMax2; i++)
+            {
+               if (0 == fnlist[i].find(cszTrackUriStart))
+               {
+                  // found one
+                  fnlist[i] = tempFilename;
+               }
+            }
+      */
       cszText.LoadString(IDS_CDRIP_PAGE_STATUS_FINISHED);
       m_lcTracks.SetItemText(n, 2, cszText);
    }
@@ -332,9 +332,9 @@ bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo,
 
    bool bFinished = true;
 
-   while(BASS_ACTIVE_STOPPED != BASS_ChannelIsActive(hStream))
+   while (BASS_ACTIVE_STOPPED != BASS_ChannelIsActive(hStream))
    {
-      DWORD nAvail = BASS_ChannelGetData(hStream, &vecBuffer[0], nBufferSize*sizeof(vecBuffer[0]));
+      DWORD nAvail = BASS_ChannelGetData(hStream, &vecBuffer[0], nBufferSize * sizeof(vecBuffer[0]));
 
       if (nAvail == 0)
          break; // couldn't read more samples
@@ -350,7 +350,7 @@ bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo,
          break;
       }
 
-      unsigned int nNewPos = nCurLength/nTrackLength;
+      unsigned int nNewPos = nCurLength / nTrackLength;
       if (nNewPos != nCurPos)
       {
          if (m_pcProgress.IsWindow())

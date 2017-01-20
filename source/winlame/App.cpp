@@ -138,7 +138,7 @@ int App::Run(LPTSTR /*lpstrCmdLine*/, int nCmdShow)
 void App::RunClassicDialog()
 {
    // start dialog
-   MainDlg dlg(m_settings, m_langResourceManager);
+   ClassicUI::MainDlg dlg(m_settings, m_langResourceManager);
    dlg.RunDialog();
 
    if (!dlg.IsAppModeChanged())

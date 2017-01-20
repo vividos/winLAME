@@ -37,7 +37,7 @@
 #include <sys/stat.h>
 #include <direct.h>
 
-// OutputPage methods
+using ClassicUI::OutputPage;
 
 LRESULT OutputPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
@@ -47,18 +47,18 @@ LRESULT OutputPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
    bevel3.SubclassWindow(GetDlgItem(IDC_OUT_BEVEL3));
 
    // create the image list
-   ilIcons.Create(MAKEINTRESOURCE(IDB_BITMAP_BTNICONS),16,0,RGB(192,192,192));
+   ilIcons.Create(MAKEINTRESOURCE(IDB_BITMAP_BTNICONS), 16, 0, RGB(192, 192, 192));
 
    // set icons on buttons
    SendDlgItemMessage(IDC_OUT_SELECTPATH, BM_SETIMAGE, IMAGE_ICON,
-      (LPARAM)ilIcons.ExtractIcon(0) );
+      (LPARAM)ilIcons.ExtractIcon(0));
 
    // query module names from encoder interface
    Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
    int max = moduleManager.GetOutputModuleCount();
-   for(int i=0; i<max; i++)
+   for (int i = 0; i < max; i++)
       SendDlgItemMessage(IDC_OUT_COMBO_OUTMODULE, CB_ADDSTRING, 0,
-         (LPARAM)(LPCTSTR)moduleManager.GetOutputModuleName(i));
+      (LPARAM)(LPCTSTR)moduleManager.GetOutputModuleName(i));
 
    // insert all possible "shutdown" actions
    UINT ActionStringIDs[] = {
@@ -67,7 +67,7 @@ LRESULT OutputPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& 
    };
 
    CString action;
-   for(int j=0; j<sizeof(ActionStringIDs)/sizeof(ActionStringIDs[0]); j++)
+   for (int j = 0; j < sizeof(ActionStringIDs) / sizeof(ActionStringIDs[0]); j++)
    {
       action.LoadString(ActionStringIDs[j]);
       SendDlgItemMessage(IDC_OUT_COMBO_FINISHED_ACTION, CB_ADDSTRING, 0,
@@ -90,7 +90,7 @@ LRESULT OutputPage::OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    // get control values
    settings.m_defaultSettings.delete_after_encode = BST_CHECKED == SendDlgItemMessage(IDC_OUT_DELAFTER, BM_GETCHECK);
    settings.output_module = SendDlgItemMessage(IDC_OUT_COMBO_OUTMODULE, CB_GETCURSEL);
-   settings.out_location_use_input_dir = BST_CHECKED==SendDlgItemMessage(IDC_OUT_USE_INDIR, BM_GETCHECK);
+   settings.out_location_use_input_dir = BST_CHECKED == SendDlgItemMessage(IDC_OUT_USE_INDIR, BM_GETCHECK);
 
    return 0;
 }
@@ -107,10 +107,10 @@ void OutputPage::RefreshHistory()
       (LPARAM)(LPCTSTR)settings.m_defaultSettings.outputdir);
 
    // output directory history
-   int max=settings.outputhistory.size();
-   for(int i=0; i<max; i++)
+   int max = settings.outputhistory.size();
+   for (int i = 0; i < max; i++)
       SendDlgItemMessage(IDC_OUT_OUTPATH, CB_ADDSTRING, 0,
-         (LPARAM)(LPCTSTR)settings.outputhistory[i]);
+      (LPARAM)(LPCTSTR)settings.outputhistory[i]);
 
    // select first
    SendDlgItemMessage(IDC_OUT_OUTPATH, CB_SETCURSEL, 0);
@@ -124,7 +124,7 @@ void OutputPage::OnEnterPage()
    if (settings.m_defaultSettings.outputdir.IsEmpty())
    {
       LPITEMIDLIST ppidl;
-      ::SHGetSpecialFolderLocation(m_hWnd, CSIDL_PERSONAL , &ppidl);
+      ::SHGetSpecialFolderLocation(m_hWnd, CSIDL_PERSONAL, &ppidl);
       TCHAR buffer[MAX_PATH];
       ::SHGetPathFromIDList(ppidl, buffer);
       settings.m_defaultSettings.outputdir = buffer;
@@ -146,7 +146,7 @@ void OutputPage::OnEnterPage()
 
    // update edit field state
    BOOL dummy;
-   OnCheckUseInputFolder(0,0,0,dummy);
+   OnCheckUseInputFolder(0, 0, 0, dummy);
 
    // "overwrite existing" check
    SendDlgItemMessage(IDC_OUT_CHECK_OVERWRITE, BM_SETCHECK,
@@ -161,9 +161,9 @@ void OutputPage::OnEnterPage()
       settings.create_playlist ? BST_CHECKED : BST_UNCHECKED);
 
    // playlist filename
-   SetDlgItemText(IDC_OUT_PLAYLISTNAME,settings.playlist_filename);
+   SetDlgItemText(IDC_OUT_PLAYLISTNAME, settings.playlist_filename);
    ::EnableWindow(GetDlgItem(IDC_OUT_PLAYLISTNAME),
-      settings.create_playlist ? TRUE: FALSE);
+      settings.create_playlist ? TRUE : FALSE);
 
    // "after encoding" check
    int value = settings.after_encoding_action;
@@ -171,20 +171,20 @@ void OutputPage::OnEnterPage()
       value > 0 ? BST_CHECKED : BST_UNCHECKED);
 
    ::EnableWindow(GetDlgItem(IDC_OUT_COMBO_FINISHED_ACTION),
-      value > 0 ? TRUE: FALSE);
+      value > 0 ? TRUE : FALSE);
 
    // combo box
-   SendDlgItemMessage(IDC_OUT_COMBO_FINISHED_ACTION, CB_SETCURSEL, abs(value)-1);
+   SendDlgItemMessage(IDC_OUT_COMBO_FINISHED_ACTION, CB_SETCURSEL, abs(value) - 1);
 
    // delete all pages up to the encoder page
-   int pos = pui->getCurrentWizardPage()+1;
+   int pos = pui->getCurrentWizardPage() + 1;
 
-      while(pui->getWizardPageID(pos)!=IDD_DLG_ENCODE && pui->getWizardPageID(pos)!=IDD_DLG_CDRIP)
-         pui->deleteWizardPage(pos);
+   while (pui->getWizardPageID(pos) != IDD_DLG_ENCODE && pui->getWizardPageID(pos) != IDD_DLG_CDRIP)
+      pui->deleteWizardPage(pos);
 }
 
 /// insert pages depending on selected module
-void InsertWizardPages(UIinterface *pui,int pos)
+void InsertWizardPages(ClassicUI::UIinterface *pui, int pos)
 {
    // find out output module id
    UISettings& settings = pui->getUISettings();
@@ -192,33 +192,33 @@ void InsertWizardPages(UIinterface *pui,int pos)
 
    int modid = moduleManager.GetOutputModuleID(settings.output_module);
 
-   switch(modid)
+   switch (modid)
    {
    case ID_OM_LAME:
       //pui->insertWizardPage(pos,new LameBasicSettingsPage);
-      pui->insertWizardPage(pos,new LameSimpleSettingsPage);
+      pui->insertWizardPage(pos, new ClassicUI::LameSimpleSettingsPage);
       break;
 
    case ID_OM_OGGV:
-      pui->insertWizardPage(pos,new OggVorbisSettingsPage);
+      pui->insertWizardPage(pos, new ClassicUI::OggVorbisSettingsPage);
       break;
 
    case ID_OM_WAVE:
-      pui->insertWizardPage(pos,new WaveOutputSettingsPage);
+      pui->insertWizardPage(pos, new ClassicUI::WaveOutputSettingsPage);
       break;
 
    case ID_OM_AAC:
-      pui->insertWizardPage(pos,new AacSettingsPage);
+      pui->insertWizardPage(pos, new ClassicUI::AacSettingsPage);
       break;
 
    case ID_OM_BASSWMA:
-      pui->insertWizardPage(pos,new WmaOutputSettingsPage);
+      pui->insertWizardPage(pos, new ClassicUI::WmaOutputSettingsPage);
       break;
 
    case ID_OM_OPUS:
-      pui->insertWizardPage(pos, new OpusSettingsPage);
+      pui->insertWizardPage(pos, new ClassicUI::OpusSettingsPage);
       break;
-      
+
    default:
       ATLASSERT(false);
       break;
@@ -235,26 +235,26 @@ bool OutputPage::OnLeavePage()
 
    // "delete after encoding" check
    settings.m_defaultSettings.delete_after_encode =
-      BST_CHECKED==SendDlgItemMessage(IDC_OUT_DELAFTER, BM_GETCHECK);
+      BST_CHECKED == SendDlgItemMessage(IDC_OUT_DELAFTER, BM_GETCHECK);
 
    // output module combo box
    settings.output_module = SendDlgItemMessage(IDC_OUT_COMBO_OUTMODULE, CB_GETCURSEL);
 
    // "use input folder as output location" check
    settings.out_location_use_input_dir =
-      BST_CHECKED==SendDlgItemMessage(IDC_OUT_USE_INDIR, BM_GETCHECK);
+      BST_CHECKED == SendDlgItemMessage(IDC_OUT_USE_INDIR, BM_GETCHECK);
 
    // "overwrite existing" check
    settings.m_defaultSettings.overwrite_existing =
-      BST_CHECKED==SendDlgItemMessage(IDC_OUT_CHECK_OVERWRITE, BM_GETCHECK);
+      BST_CHECKED == SendDlgItemMessage(IDC_OUT_CHECK_OVERWRITE, BM_GETCHECK);
 
    // "warn about lossy transcoding" check
    settings.warn_lossy_transcoding =
-      BST_CHECKED==SendDlgItemMessage(IDC_OUT_CHECK_WARN, BM_GETCHECK);
+      BST_CHECKED == SendDlgItemMessage(IDC_OUT_CHECK_WARN, BM_GETCHECK);
 
    // "create output playlist" check
    settings.create_playlist =
-      BST_CHECKED==SendDlgItemMessage(IDC_OUT_CREATEPLAYLIST, BM_GETCHECK);
+      BST_CHECKED == SendDlgItemMessage(IDC_OUT_CREATEPLAYLIST, BM_GETCHECK);
 
    // playlist filename
    GetDlgItemText(IDC_OUT_PLAYLISTNAME, settings.playlist_filename.GetBuffer(MAX_PATH), MAX_PATH);
@@ -264,7 +264,7 @@ bool OutputPage::OnLeavePage()
    int check = SendDlgItemMessage(IDC_OUT_CHECK_FINISHED_ACTION, BM_GETCHECK);
 
    // update action value
-   settings.after_encoding_action = (check==BST_CHECKED ? 1 : -1) *
+   settings.after_encoding_action = (check == BST_CHECKED ? 1 : -1) *
       (SendDlgItemMessage(IDC_OUT_COMBO_FINISHED_ACTION, CB_GETCURSEL) + 1);
 
    // do we have to check the output location string?
@@ -286,7 +286,7 @@ bool OutputPage::OnLeavePage()
       path.TrimRight(_T('\\'));
 
       struct _stat filestat;
-      if (-1==::_tstat(path, &filestat) && !(path.GetLength()==2 && path[1]==':'))
+      if (-1 == ::_tstat(path, &filestat) && !(path.GetLength() == 2 && path[1] == ':'))
       {
          if (IDNO == AppMessageBox(m_hWnd, IDS_OUT_CREATE, MB_YESNO | MB_ICONQUESTION))
             return false;
@@ -301,12 +301,12 @@ bool OutputPage::OnLeavePage()
    }
 
    // insert config pages depending on output selection
-   int pos = pui->getCurrentWizardPage()+1;
+   int pos = pui->getCurrentWizardPage() + 1;
 
    // delete all next pages up to the encode page
    {
-      int nMax = pui->getWizardPageCount()-1;
-      for(int n=pos; n<nMax; n++)
+      int nMax = pui->getWizardPageCount() - 1;
+      for (int n = pos; n < nMax; n++)
          pui->deleteWizardPage(n);
    }
 
@@ -327,11 +327,11 @@ bool OutputPage::OnLeavePage()
 
       // do we have more than the default preset?
       if (presetManager.getPresetCount() > 0)
-         pui->insertWizardPage(pos++,new PresetsPage);
+         pui->insertWizardPage(pos++, new PresetsPage);
    }
 
    // insert pages depending on selected module
-   InsertWizardPages(pui,pos);
+   InsertWizardPages(pui, pos);
 
    // insert cd rip page when a cdrip-filename is in the file list
    {
@@ -339,15 +339,15 @@ bool OutputPage::OnLeavePage()
 
       bool bCdRipNeeded = false;
       unsigned int nMax = settings.encoderjoblist.size();
-      for(unsigned int n=0; n<nMax; n++)
-      if (0 == settings.encoderjoblist[n].InputFilename().Find(g_pszCDRipPrefix))
-      {
-         bCdRipNeeded = true;
-         break;
-      }
+      for (unsigned int n = 0; n < nMax; n++)
+         if (0 == settings.encoderjoblist[n].InputFilename().Find(g_pszCDRipPrefix))
+         {
+            bCdRipNeeded = true;
+            break;
+         }
 
       if (bCdRipNeeded)
-         pui->insertWizardPage(pos+1,new CDRipPage);
+         pui->insertWizardPage(pos + 1, new CDRipPage);
    }
 
    // delete playlist file

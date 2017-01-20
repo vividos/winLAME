@@ -23,6 +23,8 @@
 #include "OpusSettingsPage.hpp"
 #include "CommonStuff.hpp"
 
+using ClassicUI::OpusSettingsPage;
+
 // arrays and mappings
 
 /// possible bitrate values

@@ -25,77 +25,81 @@
 #include "PageBase.hpp"
 #include "CommonStuff.hpp"
 
-/// wave output settings page class
-class WaveOutputSettingsPage:
-   public PageBase,
-   public CDialogResize<WaveOutputSettingsPage>
+namespace ClassicUI
 {
-public:
-   /// ctor
-   WaveOutputSettingsPage()
+   /// wave output settings page class
+   class WaveOutputSettingsPage :
+      public PageBase,
+      public CDialogResize<WaveOutputSettingsPage>
    {
-      IDD = IDD_DLG_WAVE;
-      captionID = IDS_DLG_CAP_WAVE;
-      descID = IDS_DLG_DESC_WAVE;
-      helpID = IDS_HTML_WAVE;
-   }
+   public:
+      /// ctor
+      WaveOutputSettingsPage()
+      {
+         IDD = IDD_DLG_WAVE;
+         captionID = IDS_DLG_CAP_WAVE;
+         descID = IDS_DLG_DESC_WAVE;
+         helpID = IDS_HTML_WAVE;
+      }
 
-private:
-   friend CDialogResize<WaveOutputSettingsPage>;
+   private:
+      friend CDialogResize<WaveOutputSettingsPage>;
 
-   BEGIN_DDX_MAP(WaveOutputSettingsPage)
-      DDX_CONTROL(IDC_WAVE_BEVEL1, m_bevel1);
+      BEGIN_DDX_MAP(WaveOutputSettingsPage)
+         DDX_CONTROL(IDC_WAVE_BEVEL1, m_bevel1);
       DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_FORMAT, m_cbFormat);
       DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_SUBTYPE, m_cbSubType);
-   END_DDX_MAP()
+      END_DDX_MAP()
 
-   // resize map
-   BEGIN_DLGRESIZE_MAP(WaveOutputSettingsPage)
-      DLGRESIZE_CONTROL(IDC_WAVE_COMBO_FORMAT, DLSZ_SIZE_X)
-      DLGRESIZE_CONTROL(IDC_WAVE_COMBO_SUBTYPE, DLSZ_SIZE_X)
-   END_DLGRESIZE_MAP()
+      // resize map
+      BEGIN_DLGRESIZE_MAP(WaveOutputSettingsPage)
+         DLGRESIZE_CONTROL(IDC_WAVE_COMBO_FORMAT, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_WAVE_COMBO_SUBTYPE, DLSZ_SIZE_X)
+      END_DLGRESIZE_MAP()
 
-   // message map
-   BEGIN_MSG_MAP(WaveOutputSettingsPage)
-      MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      COMMAND_HANDLER(IDC_WAVE_COMBO_FORMAT, CBN_SELENDOK, OnFormatSelEndOk)
-      CHAIN_MSG_MAP(CDialogResize<WaveOutputSettingsPage>)
-      REFLECT_NOTIFICATIONS()
-   END_MSG_MAP()
-// Handler prototypes:
-//  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-//  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-//  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+      // message map
+      BEGIN_MSG_MAP(WaveOutputSettingsPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         COMMAND_HANDLER(IDC_WAVE_COMBO_FORMAT, CBN_SELENDOK, OnFormatSelEndOk)
+         CHAIN_MSG_MAP(CDialogResize<WaveOutputSettingsPage>)
+         REFLECT_NOTIFICATIONS()
+      END_MSG_MAP()
+      // Handler prototypes:
+      //  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   /// inits the page
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+         /// inits the page
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when selection on format combobox has changed
-   LRESULT OnFormatSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when selection on format combobox has changed
+      LRESULT OnFormatSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// updates file formats combobox list
-   void UpdateFileFormatList();
+      /// updates file formats combobox list
+      void UpdateFileFormatList();
 
-   /// updates sub type combobox based on selected format
-   void UpdateSubTypeCombobox();
+      /// updates sub type combobox based on selected format
+      void UpdateSubTypeCombobox();
 
-   // virtual functions from PageBase
+      // virtual functions from PageBase
 
-   // called on entering the page
-   virtual void OnEnterPage();
+      // called on entering the page
+      virtual void OnEnterPage();
 
-   // called on leaving the page
-   virtual bool OnLeavePage();
+      // called on leaving the page
+      virtual bool OnLeavePage();
 
-protected:
-   // controls
+   protected:
+      // controls
 
-   /// bevel line
-   BevelLine m_bevel1;
+      /// bevel line
+      BevelLine m_bevel1;
 
-   /// format combobox
-   CComboBox m_cbFormat;
+      /// format combobox
+      CComboBox m_cbFormat;
 
-   /// file format combobox
-   CComboBox m_cbSubType;
-};
+      /// file format combobox
+      CComboBox m_cbSubType;
+   };
+
+} // namespace ClassicUI

@@ -26,64 +26,68 @@
 #include "CommonStuff.hpp"
 #include "PresetManagerInterface.hpp"
 
-/// presets selection page
-class PresetsPage:
-   public PageBase,
-   public CDialogResize<PresetsPage>
+namespace ClassicUI
 {
-public:
-   /// ctor
-   PresetsPage()
-      :m_presetManager(IoCContainer::Current().Resolve<PresetManagerInterface>())
+   /// presets selection page
+   class PresetsPage :
+      public PageBase,
+      public CDialogResize<PresetsPage>
    {
-      IDD = IDD_DLG_PRESETS;
-      captionID = IDS_DLG_CAP_PRESETS;
-      descID = IDS_DLG_DESC_PRESETS;
-      helpID = IDS_HTML_PRESETS;
-   }
+   public:
+      /// ctor
+      PresetsPage()
+         :m_presetManager(IoCContainer::Current().Resolve<PresetManagerInterface>())
+      {
+         IDD = IDD_DLG_PRESETS;
+         captionID = IDS_DLG_CAP_PRESETS;
+         descID = IDS_DLG_DESC_PRESETS;
+         helpID = IDS_HTML_PRESETS;
+      }
 
-   // resize map
-BEGIN_DLGRESIZE_MAP(PresetsPage)
-   DLGRESIZE_CONTROL(IDC_PRE_BEVEL1, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_PRE_LIST_PRESET, DLSZ_SIZE_X | DLSZ_SIZE_Y)
-   DLGRESIZE_CONTROL(IDC_PRE_DESC, DLSZ_MOVE_Y | DLSZ_SIZE_X)
-END_DLGRESIZE_MAP()
+      // resize map
+      BEGIN_DLGRESIZE_MAP(PresetsPage)
+         DLGRESIZE_CONTROL(IDC_PRE_BEVEL1, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_PRE_LIST_PRESET, DLSZ_SIZE_X | DLSZ_SIZE_Y)
+         DLGRESIZE_CONTROL(IDC_PRE_DESC, DLSZ_MOVE_Y | DLSZ_SIZE_X)
+      END_DLGRESIZE_MAP()
 
-   // message map
-BEGIN_MSG_MAP(PresetsPage)
-   MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-   COMMAND_HANDLER(IDC_PRE_LIST_PRESET,LBN_SELCHANGE,OnSelItemChanged)
-   COMMAND_HANDLER(IDC_PRE_LIST_PRESET,LBN_DBLCLK,OnLButtonDblClk)
-   CHAIN_MSG_MAP(CDialogResize<PresetsPage>)
-END_MSG_MAP()
-// Handler prototypes:
-//  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-//  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-//  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+      // message map
+      BEGIN_MSG_MAP(PresetsPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         COMMAND_HANDLER(IDC_PRE_LIST_PRESET, LBN_SELCHANGE, OnSelItemChanged)
+         COMMAND_HANDLER(IDC_PRE_LIST_PRESET, LBN_DBLCLK, OnLButtonDblClk)
+         CHAIN_MSG_MAP(CDialogResize<PresetsPage>)
+      END_MSG_MAP()
+      // Handler prototypes:
+      //  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   /// inits the page
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-   /// called when a presets listbox item selection changes
-   LRESULT OnSelItemChanged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   /// called when the user double-clicks on a preset item
-   LRESULT OnLButtonDblClk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+         /// inits the page
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      /// called when a presets listbox item selection changes
+      LRESULT OnSelItemChanged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when the user double-clicks on a preset item
+      LRESULT OnLButtonDblClk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   // virtual functions from PageBase
+      // virtual functions from PageBase
 
-   // called on entering the page
-   virtual void OnEnterPage();
+      // called on entering the page
+      virtual void OnEnterPage();
 
-   // called on leaving the page
-   virtual bool OnLeavePage();
+      // called on leaving the page
+      virtual bool OnLeavePage();
 
-protected:
-   /// bevel lines
-   BevelLine bevel1;
+   protected:
+      /// bevel lines
+      BevelLine bevel1;
 
-   /// last selected index
-   static int lastindex;
+      /// last selected index
+      static int lastindex;
 
-private:
-   /// preset manager
-   PresetManagerInterface& m_presetManager;
-};
+   private:
+      /// preset manager
+      PresetManagerInterface& m_presetManager;
+   };
+
+} // namespace ClassicUI

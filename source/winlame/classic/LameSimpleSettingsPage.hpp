@@ -25,76 +25,80 @@
 #include "PageBase.hpp"
 #include "CommonStuff.hpp"
 
-/// simple settings page for LAME
-class LameSimpleSettingsPage:
-   public PageBase,
-   public CDialogResize<LameSimpleSettingsPage>
+namespace ClassicUI
 {
-public:
-   /// ctor
-   LameSimpleSettingsPage()
+   /// simple settings page for LAME
+   class LameSimpleSettingsPage :
+      public PageBase,
+      public CDialogResize<LameSimpleSettingsPage>
    {
-      IDD = IDD_DLG_LAME_SIMPLE;
-      captionID = IDS_DLG_CAP_LAME_SIMPLE;
-      descID = IDS_DLG_DESC_LAME_SIMPLE;
-      helpID = IDS_HTML_LAME_SIMPLE;
-   }
+   public:
+      /// ctor
+      LameSimpleSettingsPage()
+      {
+         IDD = IDD_DLG_LAME_SIMPLE;
+         captionID = IDS_DLG_CAP_LAME_SIMPLE;
+         descID = IDS_DLG_DESC_LAME_SIMPLE;
+         helpID = IDS_HTML_LAME_SIMPLE;
+      }
 
-   // resize map
-BEGIN_DLGRESIZE_MAP(LameSimpleSettingsPage)
-   DLGRESIZE_CONTROL(IDC_LAME_BEVEL1, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_LAME_COMBO_ENCODING_QUALITY, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_LAME_CHECK_MONO, DLSZ_MOVE_X)
-   DLGRESIZE_CONTROL(IDC_LAME_COMBO_VBR_MODE, DLSZ_SIZE_X)
-END_DLGRESIZE_MAP()
+      // resize map
+      BEGIN_DLGRESIZE_MAP(LameSimpleSettingsPage)
+         DLGRESIZE_CONTROL(IDC_LAME_BEVEL1, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_LAME_COMBO_ENCODING_QUALITY, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_LAME_CHECK_MONO, DLSZ_MOVE_X)
+         DLGRESIZE_CONTROL(IDC_LAME_COMBO_VBR_MODE, DLSZ_SIZE_X)
+      END_DLGRESIZE_MAP()
 
-   // message map
-BEGIN_MSG_MAP(LameSimpleSettingsPage)
-   MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-   MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
-   COMMAND_HANDLER(IDC_LAME_RADIO_TYPE1, BN_CLICKED, OnRadioEncodeType)
-   COMMAND_HANDLER(IDC_LAME_RADIO_TYPE2, BN_CLICKED, OnRadioEncodeType)
-   CHAIN_MSG_MAP(CDialogResize<LameSimpleSettingsPage>)
-   REFLECT_NOTIFICATIONS()
-END_MSG_MAP()
-// Handler prototypes:
-//  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-//  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-//  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+      // message map
+      BEGIN_MSG_MAP(LameSimpleSettingsPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
+         COMMAND_HANDLER(IDC_LAME_RADIO_TYPE1, BN_CLICKED, OnRadioEncodeType)
+         COMMAND_HANDLER(IDC_LAME_RADIO_TYPE2, BN_CLICKED, OnRadioEncodeType)
+         CHAIN_MSG_MAP(CDialogResize<LameSimpleSettingsPage>)
+         REFLECT_NOTIFICATIONS()
+      END_MSG_MAP()
+      // Handler prototypes:
+      //  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   /// inits the page
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+         /// inits the page
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when the dialog is about to be destroyed
-   LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-   {
-      m_cbEncodingQuality.m_hWnd = NULL;
-      m_cbVariableBitrateMode.m_hWnd = NULL;
-      return 0;
-   }
+      /// called when the dialog is about to be destroyed
+      LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+      {
+         m_cbEncodingQuality.m_hWnd = NULL;
+         m_cbVariableBitrateMode.m_hWnd = NULL;
+         return 0;
+      }
 
-   /// called when radio button for encode type changes
-   LRESULT OnRadioEncodeType(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when radio button for encode type changes
+      LRESULT OnRadioEncodeType(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   // virtual functions from PageBase
+      // virtual functions from PageBase
 
-   // called on entering the page
-   virtual void OnEnterPage();
+      // called on entering the page
+      virtual void OnEnterPage();
 
-   // called on leaving the page
-   virtual bool OnLeavePage();
+      // called on leaving the page
+      virtual bool OnLeavePage();
 
-protected:
-   /// bitrate spin button control
-   FixedValueSpinButtonCtrl m_bitrateSpin;
-   /// quality spin button control
-   FixedValueSpinButtonCtrl m_qualitySpin;
+   protected:
+      /// bitrate spin button control
+      FixedValueSpinButtonCtrl m_bitrateSpin;
+      /// quality spin button control
+      FixedValueSpinButtonCtrl m_qualitySpin;
 
-   /// quality combobox
-   CComboBox m_cbEncodingQuality;
-   /// VBR combobox
-   CComboBox m_cbVariableBitrateMode;
+      /// quality combobox
+      CComboBox m_cbEncodingQuality;
+      /// VBR combobox
+      CComboBox m_cbVariableBitrateMode;
 
-   BevelLine bevel1; ///< bevel line
-   BevelLine bevel2; ///< bevel line
-};
+      BevelLine bevel1; ///< bevel line
+      BevelLine bevel2; ///< bevel line
+   };
+
+} // namespace ClassicUI

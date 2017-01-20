@@ -23,12 +23,9 @@
 #include "PresetsPage.hpp"
 #include "EncoderInterface.hpp"
 
-// static variable
+using ClassicUI::PresetsPage;
 
 int PresetsPage::lastindex = 1;
-
-
-// PresetsPage methods
 
 LRESULT PresetsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
@@ -51,13 +48,13 @@ LRESULT PresetsPage::OnSelItemChanged(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
       return 0;
 
    if (index > 0)
-      SetDlgItemText(IDC_PRE_DESC, m_presetManager.getPresetDescription(index-1).c_str());
+      SetDlgItemText(IDC_PRE_DESC, m_presetManager.getPresetDescription(index - 1).c_str());
    else
    {
       // set default description
       CString text;
       text.LoadString(IDS_PRE_DESC_DEFAULT);
-      SetDlgItemText(IDC_PRE_DESC,text);
+      SetDlgItemText(IDC_PRE_DESC, text);
    }
 
    return 0;
@@ -70,8 +67,8 @@ LRESULT PresetsPage::OnLButtonDblClk(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
    int index = listbox.GetCurSel();
 
    // edit doubleclicked item
-   if (index!=0)
-      m_presetManager.showPropertyDialog(index-1);
+   if (index != 0)
+      m_presetManager.showPropertyDialog(index - 1);
 #endif
 
    return 0;
@@ -86,22 +83,22 @@ void PresetsPage::OnEnterPage()
    listbox.AddString(cszText);
 
    size_t max = m_presetManager.getPresetCount();
-   for(size_t i=0; i<max; i++)
+   for (size_t i = 0; i < max; i++)
       listbox.AddString(m_presetManager.getPresetName(i).c_str());
 
    listbox.SetCurSel(lastindex);
 
    BOOL dummy;
-   OnSelItemChanged(0,0,GetDlgItem(IDC_PRE_LIST_PRESET),dummy);
+   OnSelItemChanged(0, 0, GetDlgItem(IDC_PRE_LIST_PRESET), dummy);
 
    // delete all pages up to the encoder page
-   int pos = pui->getCurrentWizardPage()+1;
+   int pos = pui->getCurrentWizardPage() + 1;
 
-      while(pui->getWizardPageID(pos)!=IDD_DLG_ENCODE && pui->getWizardPageID(pos)!=IDD_DLG_CDRIP)
-         pui->deleteWizardPage(pos);
+   while (pui->getWizardPageID(pos) != IDD_DLG_ENCODE && pui->getWizardPageID(pos) != IDD_DLG_CDRIP)
+      pui->deleteWizardPage(pos);
 }
 
-extern void InsertWizardPages(UIinterface *pui,int pos);
+extern void InsertWizardPages(ClassicUI::UIinterface *pui, int pos);
 
 bool PresetsPage::OnLeavePage()
 {
@@ -113,18 +110,18 @@ bool PresetsPage::OnLeavePage()
    m_presetManager.setDefaultSettings(settings.settings_manager);
 
    // set selected preset
-   if (lastindex!=0)
-      m_presetManager.setSettings(lastindex-1,settings.settings_manager);
+   if (lastindex != 0)
+      m_presetManager.setSettings(lastindex - 1, settings.settings_manager);
 
    // insert config pages depending on output selection
-   InsertWizardPages(pui,pui->getCurrentWizardPage()+1);
+   InsertWizardPages(pui, pui->getCurrentWizardPage() + 1);
 
    // hide all pages when hideLameSettings is set to 1 in the preset
-   if (1==pui->getUISettings().settings_manager.queryValueInt(LameHideSettings))
+   if (1 == pui->getUISettings().settings_manager.queryValueInt(LameHideSettings))
    {
-      int pos = pui->getCurrentWizardPage()+1;
+      int pos = pui->getCurrentWizardPage() + 1;
 
-      while(pui->getWizardPageID(pos)!=IDD_DLG_ENCODE && pui->getWizardPageID(pos)!=IDD_DLG_CDRIP)
+      while (pui->getWizardPageID(pos) != IDD_DLG_ENCODE && pui->getWizardPageID(pos) != IDD_DLG_CDRIP)
          pui->deleteWizardPage(pos);
    }
 

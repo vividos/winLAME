@@ -27,40 +27,45 @@
 #include "UISettings.hpp"
 
 // forward declarations
-class PageBase;
 class LanguageResourceManager;
 
-/// ui interface
-class UIinterface
+namespace ClassicUI
 {
-public:
-   /// ctor
-   UIinterface(){}
+   class PageBase;
 
-   /// returns the currently displayed wizard page
-   virtual int getCurrentWizardPage()=0;
+   /// ui interface
+   class UIinterface
+   {
+   public:
+      /// ctor
+      UIinterface() {}
 
-   /// returns wizard page count
-   virtual int getWizardPageCount()=0;
+      /// returns the currently displayed wizard page
+      virtual int getCurrentWizardPage() = 0;
 
-   /// inserts a wizard page at a given position
-   virtual void insertWizardPage(int at, PageBase *page)=0;
+      /// returns wizard page count
+      virtual int getWizardPageCount() = 0;
 
-   /// returns the wizard page dialog ID
-   virtual int getWizardPageID(int at)=0;
+      /// inserts a wizard page at a given position
+      virtual void insertWizardPage(int at, PageBase *page) = 0;
 
-   /// deletes a wizard page from the given position
-   virtual void deleteWizardPage(int at)=0;
+      /// returns the wizard page dialog ID
+      virtual int getWizardPageID(int at) = 0;
 
-   /// sets a new current page
-   virtual void setCurrentPage(int page)=0;
+      /// deletes a wizard page from the given position
+      virtual void deleteWizardPage(int at) = 0;
 
-   /// locks or unlocks the wizard back and next buttons
-   virtual void lockWizardButtons(bool lock, bool only_lock_next=false)=0;
+      /// sets a new current page
+      virtual void setCurrentPage(int page) = 0;
 
-   /// returns user interface settings struct
-   virtual UISettings& getUISettings()=0;
+      /// locks or unlocks the wizard back and next buttons
+      virtual void lockWizardButtons(bool lock, bool only_lock_next = false) = 0;
 
-   /// returns language resource manager
-   virtual LanguageResourceManager& GetLanguageResourceManager() = 0;
-};
+      /// returns user interface settings struct
+      virtual UISettings& getUISettings() = 0;
+
+      /// returns language resource manager
+      virtual LanguageResourceManager& GetLanguageResourceManager() = 0;
+   };
+
+} // namespace ClassicUI

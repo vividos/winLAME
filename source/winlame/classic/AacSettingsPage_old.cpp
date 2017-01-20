@@ -23,13 +23,15 @@
 #include "stdafx.h"
 #include "AacSettingsPage.hpp"
 
+using ClassicUI::AacSettingsPage;
+
 // arrays and mappings
 
 /// possible bitrate values
 static int AacBitrates[] =
 {
-//   24000,32000,48000,56000,64000,96000,112000,128000,160000,192000
-   24,32,48,56,64,96,112,128,160,192,224,256,320,384,448,576
+   //   24000,32000,48000,56000,64000,96000,112000,128000,160000,192000
+      24,32,48,56,64,96,112,128,160,192,224,256,320,384,448,576
 };
 
 /// possible bandwidth frequency values
@@ -50,11 +52,11 @@ LRESULT AacSettingsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, B
    // subclass spin button controls
    bitrateSpin.SubclassWindow(GetDlgItem(IDC_AAC_SPIN_BITRATE));
    bitrateSpin.SetBuddy(GetDlgItem(IDC_AAC_EDIT_BITRATE));
-   bitrateSpin.SetFixedValues(AacBitrates, sizeof(AacBitrates)/sizeof(AacBitrates[0]));
+   bitrateSpin.SetFixedValues(AacBitrates, sizeof(AacBitrates) / sizeof(AacBitrates[0]));
 
    bandwidthSpin.SubclassWindow(GetDlgItem(IDC_AAC_SPIN_BANDWIDTH));
    bandwidthSpin.SetBuddy(GetDlgItem(IDC_AAC_EDIT_BANDWIDTH));
-   bandwidthSpin.SetFixedValues(AacBandwidthValues, sizeof(AacBandwidthValues)/sizeof(AacBandwidthValues[0]));
+   bandwidthSpin.SetFixedValues(AacBandwidthValues, sizeof(AacBandwidthValues) / sizeof(AacBandwidthValues[0]));
 
    // set up range of slider control
    SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY, TBM_SETRANGEMIN, FALSE, 50);
@@ -79,16 +81,16 @@ LRESULT AacSettingsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, B
 void AacSettingsPage::UpdateQuality()
 {
    // update slider quality text
-   int pos = SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY,TBM_GETPOS);
+   int pos = SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY, TBM_GETPOS);
 
    CString text;
-   text.Format(IDS_AAC_QUALITY_U,pos);
-   SetDlgItemText(IDC_AAC_STATIC_QUALITY,text);
+   text.Format(IDS_AAC_QUALITY_U, pos);
+   SetDlgItemText(IDC_AAC_STATIC_QUALITY, text);
 
    int kbps = ((pos * 2 / 5) + 85) / 2;
 
    text.Format(IDS_AAC_KBPS_PER_CH_U, kbps);
-   SetDlgItemText(IDC_AAC_STATIC_KBPS,text);
+   SetDlgItemText(IDC_AAC_STATIC_KBPS, text);
 }
 
 void AacSettingsPage::UpdateBandwidth()
@@ -96,13 +98,13 @@ void AacSettingsPage::UpdateBandwidth()
    // check if bandwidth button is checked
    if (BST_CHECKED == SendDlgItemMessage(IDC_AAC_CHECK_BANDWIDTH, BM_GETCHECK))
    {
-      ::EnableWindow(GetDlgItem(IDC_AAC_EDIT_BANDWIDTH),FALSE);
-      ::EnableWindow(GetDlgItem(IDC_AAC_SPIN_BANDWIDTH),FALSE);
+      ::EnableWindow(GetDlgItem(IDC_AAC_EDIT_BANDWIDTH), FALSE);
+      ::EnableWindow(GetDlgItem(IDC_AAC_SPIN_BANDWIDTH), FALSE);
    }
    else
    {
-      ::EnableWindow(GetDlgItem(IDC_AAC_EDIT_BANDWIDTH),TRUE);
-      ::EnableWindow(GetDlgItem(IDC_AAC_SPIN_BANDWIDTH),TRUE);
+      ::EnableWindow(GetDlgItem(IDC_AAC_EDIT_BANDWIDTH), TRUE);
+      ::EnableWindow(GetDlgItem(IDC_AAC_SPIN_BANDWIDTH), TRUE);
    }
 }
 
@@ -112,36 +114,36 @@ void AacSettingsPage::OnEnterPage()
    SettingsManager& mgr = pui->getUISettings().settings_manager;
 
    // set bitrate and bandwidth
-   SetDlgItemInt(IDC_AAC_EDIT_BITRATE,mgr.queryValueInt(AacBitrate),FALSE);
-   SetDlgItemInt(IDC_AAC_EDIT_BANDWIDTH,mgr.queryValueInt(AacBandwidth),FALSE);
+   SetDlgItemInt(IDC_AAC_EDIT_BITRATE, mgr.queryValueInt(AacBitrate), FALSE);
+   SetDlgItemInt(IDC_AAC_EDIT_BANDWIDTH, mgr.queryValueInt(AacBandwidth), FALSE);
 
    // set combo box selections
    SendDlgItemMessage(IDC_AAC_COMBO_MPEGVER, CB_SETCURSEL,
-      mgr.queryValueInt(AacMpegVersion)==2 ? 0 : 1);
+      mgr.queryValueInt(AacMpegVersion) == 2 ? 0 : 1);
 
    SendDlgItemMessage(IDC_AAC_COMBO_OBJTYPE, CB_SETCURSEL, mgr.queryValueInt(AacObjectType));
 
    // set checks
    SendDlgItemMessage(IDC_AAC_CHECK_MIDSIDE, BM_SETCHECK,
-      mgr.queryValueInt(AacAllowMS)==0 ? BST_UNCHECKED : BST_CHECKED);
+      mgr.queryValueInt(AacAllowMS) == 0 ? BST_UNCHECKED : BST_CHECKED);
 
    SendDlgItemMessage(IDC_AAC_CHECK_USETNS, BM_SETCHECK,
-      mgr.queryValueInt(AacUseTNS)==0 ? BST_UNCHECKED : BST_CHECKED);
+      mgr.queryValueInt(AacUseTNS) == 0 ? BST_UNCHECKED : BST_CHECKED);
 
    SendDlgItemMessage(IDC_AAC_CHECK_USELFE, BM_SETCHECK,
-      mgr.queryValueInt(AacUseLFEChan)==0 ? BST_UNCHECKED : BST_CHECKED);
+      mgr.queryValueInt(AacUseLFEChan) == 0 ? BST_UNCHECKED : BST_CHECKED);
 
    SendDlgItemMessage(IDC_AAC_CHECK_BANDWIDTH, BM_SETCHECK,
-      mgr.queryValueInt(AacAutoBandwidth)==0 ? BST_UNCHECKED : BST_CHECKED);
+      mgr.queryValueInt(AacAutoBandwidth) == 0 ? BST_UNCHECKED : BST_CHECKED);
    UpdateBandwidth();
 
    // bitrate control
    int value = mgr.queryValueInt(AacBRCMethod);
-   DDX_Radio(IDC_AAC_RADIO_BRCMODE1,value,DDX_LOAD);
+   DDX_Radio(IDC_AAC_RADIO_BRCMODE1, value, DDX_LOAD);
 
    // quality slider
    value = mgr.queryValueInt(AacQuality);
-   SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY,TBM_SETPOS,TRUE,(LONG)value);
+   SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY, TBM_SETPOS, TRUE, (LONG)value);
    UpdateQuality();
 }
 
@@ -151,44 +153,44 @@ bool AacSettingsPage::OnLeavePage()
    SettingsManager& mgr = pui->getUISettings().settings_manager;
 
    // get bitrate and bandwidth
-   mgr.setValue(AacBitrate,(int)GetDlgItemInt(IDC_AAC_EDIT_BITRATE,NULL,FALSE));
-   mgr.setValue(AacBandwidth,(int)GetDlgItemInt(IDC_AAC_EDIT_BANDWIDTH,NULL,FALSE));
+   mgr.setValue(AacBitrate, (int)GetDlgItemInt(IDC_AAC_EDIT_BITRATE, NULL, FALSE));
+   mgr.setValue(AacBandwidth, (int)GetDlgItemInt(IDC_AAC_EDIT_BANDWIDTH, NULL, FALSE));
 
    // get combo box selections
    int mpeg = SendDlgItemMessage(IDC_AAC_COMBO_MPEGVER, CB_GETCURSEL);
-   mgr.setValue(AacMpegVersion,mpeg==0 ? 2 : 4);
+   mgr.setValue(AacMpegVersion, mpeg == 0 ? 2 : 4);
 
    int value = SendDlgItemMessage(IDC_AAC_COMBO_OBJTYPE, CB_GETCURSEL);
-   mgr.setValue(AacObjectType,value);
+   mgr.setValue(AacObjectType, value);
 
    // currently it is not possible to use LTP together with MPEG2
-   if (mpeg==0 && value==2)
+   if (mpeg == 0 && value == 2)
    {
       // give user a message explaining that fact
-      AppMessageBox(m_hWnd, IDS_AAC_NO_MPEG2_LTP, MB_OK|MB_ICONEXCLAMATION);
+      AppMessageBox(m_hWnd, IDS_AAC_NO_MPEG2_LTP, MB_OK | MB_ICONEXCLAMATION);
       return false;
    }
 
    // get checks
-   value = SendDlgItemMessage(IDC_AAC_CHECK_MIDSIDE,BM_GETCHECK)==BST_CHECKED ? 1 : 0;
-   mgr.setValue(AacAllowMS,value);
+   value = SendDlgItemMessage(IDC_AAC_CHECK_MIDSIDE, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   mgr.setValue(AacAllowMS, value);
 
-   value = SendDlgItemMessage(IDC_AAC_CHECK_USETNS,BM_GETCHECK)==BST_CHECKED ? 1 : 0;
-   mgr.setValue(AacUseTNS,value);
+   value = SendDlgItemMessage(IDC_AAC_CHECK_USETNS, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   mgr.setValue(AacUseTNS, value);
 
-   value = SendDlgItemMessage(IDC_AAC_CHECK_USELFE,BM_GETCHECK)==BST_CHECKED ? 1 : 0;
-   mgr.setValue(AacUseLFEChan,value);
+   value = SendDlgItemMessage(IDC_AAC_CHECK_USELFE, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   mgr.setValue(AacUseLFEChan, value);
 
-   value = SendDlgItemMessage(IDC_AAC_CHECK_BANDWIDTH,BM_GETCHECK)==BST_CHECKED ? 1 : 0;
-   mgr.setValue(AacAutoBandwidth,value);
+   value = SendDlgItemMessage(IDC_AAC_CHECK_BANDWIDTH, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   mgr.setValue(AacAutoBandwidth, value);
 
    // bitrate control
-   DDX_Radio(IDC_AAC_RADIO_BRCMODE1,value,DDX_SAVE);
-   mgr.setValue(AacBRCMethod,value);
+   DDX_Radio(IDC_AAC_RADIO_BRCMODE1, value, DDX_SAVE);
+   mgr.setValue(AacBRCMethod, value);
 
    // quality slider
-   value = SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY,TBM_GETPOS);
-   mgr.setValue(AacQuality,value);
+   value = SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY, TBM_GETPOS);
+   mgr.setValue(AacQuality, value);
 
    return true;
 }

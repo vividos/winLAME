@@ -25,140 +25,144 @@
 #include "PageBase.hpp"
 #include "CommonStuff.hpp"
 
-/// output settings page
-class OutputPage:
-   public PageBase,
-   public CDialogResize<OutputPage>
+namespace ClassicUI
 {
-public:
-   /// ctor
-   OutputPage()
+   /// output settings page
+   class OutputPage :
+      public PageBase,
+      public CDialogResize<OutputPage>
    {
-      IDD = IDD_DLG_OUTPUT;
-      captionID = IDS_DLG_CAP_OUTPUT;
-      descID = IDS_DLG_DESC_OUTPUT;
-      helpID = IDS_HTML_OUTPUT;
-   }
-
-   // resize map
-BEGIN_DLGRESIZE_MAP(OutputPage)
-   DLGRESIZE_CONTROL(IDC_OUT_BEVEL1, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_OUT_COMBO_OUTMODULE, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_OUT_CHECK_WARN, DLSZ_MOVE_X)
-   DLGRESIZE_CONTROL(IDC_OUT_BEVEL2, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_OUT_OUTPATH, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_OUT_SELECTPATH, DLSZ_MOVE_X)
-   DLGRESIZE_CONTROL(IDC_OUT_COMBO_FINISHED_ACTION, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_OUT_PLAYLISTNAME, DLSZ_SIZE_X)
-END_DLGRESIZE_MAP()
-
-   // message map
-BEGIN_MSG_MAP(OutputPage)
-   MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-   MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
-   COMMAND_HANDLER(IDC_OUT_SELECTPATH, BN_CLICKED, OnButtonSelectOutputPath)
-   COMMAND_HANDLER(IDC_OUT_CHECK_FINISHED_ACTION, BN_CLICKED, OnCheckFinishedAction)
-   COMMAND_HANDLER(IDC_OUT_CREATEPLAYLIST, BN_CLICKED, OnCheckCreatePlaylist)
-   COMMAND_HANDLER(IDC_OUT_USE_INDIR, BN_CLICKED, OnCheckUseInputFolder)
-   COMMAND_HANDLER(IDC_OUT_OUTPATH ,CBN_SELENDOK, OnOutPathSelEndOk)
-   CHAIN_MSG_MAP(CDialogResize<OutputPage>)
-END_MSG_MAP()
-// Handler prototypes:
-//  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-//  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-//  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
-
-   /// inits the page
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-
-   /// called when the page is about to be destroyed
-   LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-
-   /// called when the user clicks on the button to select the output path
-   LRESULT OnButtonSelectOutputPath(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-   {
-      UISettings &settings = pui->getUISettings();
-      CString path = settings.m_defaultSettings.outputdir;
-
-      // lets user select a path
-      if (BrowseForFolder(m_hWnd, path))
+   public:
+      /// ctor
+      OutputPage()
       {
-         // move history entries
-         settings.outputhistory.insert(settings.outputhistory.begin(),
-            settings.m_defaultSettings.outputdir);
-         settings.m_defaultSettings.outputdir = path;
+         IDD = IDD_DLG_OUTPUT;
+         captionID = IDS_DLG_CAP_OUTPUT;
+         descID = IDS_DLG_DESC_OUTPUT;
+         helpID = IDS_HTML_OUTPUT;
+      }
 
-         // update combobox
+      // resize map
+      BEGIN_DLGRESIZE_MAP(OutputPage)
+         DLGRESIZE_CONTROL(IDC_OUT_BEVEL1, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_OUT_COMBO_OUTMODULE, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_OUT_CHECK_WARN, DLSZ_MOVE_X)
+         DLGRESIZE_CONTROL(IDC_OUT_BEVEL2, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_OUT_OUTPATH, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_OUT_SELECTPATH, DLSZ_MOVE_X)
+         DLGRESIZE_CONTROL(IDC_OUT_COMBO_FINISHED_ACTION, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_OUT_PLAYLISTNAME, DLSZ_SIZE_X)
+      END_DLGRESIZE_MAP()
+
+      // message map
+      BEGIN_MSG_MAP(OutputPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
+         COMMAND_HANDLER(IDC_OUT_SELECTPATH, BN_CLICKED, OnButtonSelectOutputPath)
+         COMMAND_HANDLER(IDC_OUT_CHECK_FINISHED_ACTION, BN_CLICKED, OnCheckFinishedAction)
+         COMMAND_HANDLER(IDC_OUT_CREATEPLAYLIST, BN_CLICKED, OnCheckCreatePlaylist)
+         COMMAND_HANDLER(IDC_OUT_USE_INDIR, BN_CLICKED, OnCheckUseInputFolder)
+         COMMAND_HANDLER(IDC_OUT_OUTPATH, CBN_SELENDOK, OnOutPathSelEndOk)
+         CHAIN_MSG_MAP(CDialogResize<OutputPage>)
+      END_MSG_MAP()
+      // Handler prototypes:
+      //  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+
+         /// inits the page
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
+      /// called when the page is about to be destroyed
+      LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
+      /// called when the user clicks on the button to select the output path
+      LRESULT OnButtonSelectOutputPath(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+      {
+         UISettings &settings = pui->getUISettings();
+         CString path = settings.m_defaultSettings.outputdir;
+
+         // lets user select a path
+         if (BrowseForFolder(m_hWnd, path))
+         {
+            // move history entries
+            settings.outputhistory.insert(settings.outputhistory.begin(),
+               settings.m_defaultSettings.outputdir);
+            settings.m_defaultSettings.outputdir = path;
+
+            // update combobox
+            RefreshHistory();
+         }
+
+         return 0;
+      }
+
+      /// called when the state of the "finished action" check changes
+      LRESULT OnCheckFinishedAction(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+      {
+         int check = SendDlgItemMessage(IDC_OUT_CHECK_FINISHED_ACTION, BM_GETCHECK);
+         ::EnableWindow(GetDlgItem(IDC_OUT_COMBO_FINISHED_ACTION),
+            check == BST_CHECKED ? TRUE : FALSE);
+
+         return 0;
+      }
+
+      /// called when the state of the "create playlist" check changes
+      LRESULT OnCheckCreatePlaylist(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+      {
+         int check = SendDlgItemMessage(IDC_OUT_CREATEPLAYLIST, BM_GETCHECK);
+         ::EnableWindow(GetDlgItem(IDC_OUT_PLAYLISTNAME),
+            check == BST_CHECKED ? TRUE : FALSE);
+
+         return 0;
+      }
+
+      /// called when check "use input dir as output location" is clicked
+      LRESULT OnCheckUseInputFolder(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+      {
+         BOOL check = SendDlgItemMessage(IDC_OUT_USE_INDIR, BM_GETCHECK) == BST_CHECKED ? FALSE : TRUE;
+         ::EnableWindow(GetDlgItem(IDC_OUT_OUTPATH), check);
+         ::EnableWindow(GetDlgItem(IDC_OUT_SELECTPATH), check);
+
+         return 0;
+      }
+
+      /// called when output path combo box selection ends
+      LRESULT OnOutPathSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+      {
+         // on selection, remove selected item from history
+         UISettings &settings = pui->getUISettings();
+
+         int sel = SendDlgItemMessage(wID, CB_GETCURSEL);
+         if (sel > 0 && unsigned(sel) <= settings.outputhistory.size())
+         {
+            settings.outputhistory.insert(settings.outputhistory.begin(), settings.m_defaultSettings.outputdir);
+            settings.m_defaultSettings.outputdir = settings.outputhistory[sel];
+            settings.outputhistory.erase(settings.outputhistory.begin() + sel);
+         }
+
          RefreshHistory();
+         return 0;
       }
 
-      return 0;
-   }
+      /// refreshes output dir history combobox
+      void RefreshHistory();
 
-   /// called when the state of the "finished action" check changes
-   LRESULT OnCheckFinishedAction(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-   {
-      int check = SendDlgItemMessage(IDC_OUT_CHECK_FINISHED_ACTION, BM_GETCHECK);
-      ::EnableWindow(GetDlgItem(IDC_OUT_COMBO_FINISHED_ACTION),
-         check==BST_CHECKED ? TRUE: FALSE);
+      // virtual functions from PageBase
 
-      return 0;
-   }
+      // called on entering the page
+      virtual void OnEnterPage();
 
-   /// called when the state of the "create playlist" check changes
-   LRESULT OnCheckCreatePlaylist(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-   {
-      int check = SendDlgItemMessage(IDC_OUT_CREATEPLAYLIST, BM_GETCHECK);
-      ::EnableWindow(GetDlgItem(IDC_OUT_PLAYLISTNAME),
-         check==BST_CHECKED ? TRUE: FALSE);
+      // called on leaving the page
+      virtual bool OnLeavePage();
 
-      return 0;
-   }
+   protected:
+      BevelLine bevel1; ///< bevel line
+      BevelLine bevel2; ///< bevel line
+      BevelLine bevel3; ///< bevel line
 
-   /// called when check "use input dir as output location" is clicked
-   LRESULT OnCheckUseInputFolder(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-   {
-      BOOL check = SendDlgItemMessage(IDC_OUT_USE_INDIR, BM_GETCHECK) == BST_CHECKED ? FALSE : TRUE;
-      ::EnableWindow(GetDlgItem(IDC_OUT_OUTPATH),check);
-      ::EnableWindow(GetDlgItem(IDC_OUT_SELECTPATH),check);
+      /// icon list for image buttons
+      CImageList ilIcons;
+   };
 
-      return 0;
-   }
-
-   /// called when output path combo box selection ends
-   LRESULT OnOutPathSelEndOk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-   {
-      // on selection, remove selected item from history
-      UISettings &settings = pui->getUISettings();
-
-      int sel = SendDlgItemMessage(wID,CB_GETCURSEL);
-      if (sel>0 && unsigned(sel)<=settings.outputhistory.size())
-      {
-         settings.outputhistory.insert(settings.outputhistory.begin(), settings.m_defaultSettings.outputdir);
-         settings.m_defaultSettings.outputdir = settings.outputhistory[sel];
-         settings.outputhistory.erase(settings.outputhistory.begin()+sel);
-      }
-
-      RefreshHistory();
-      return 0;
-   }
-
-   /// refreshes output dir history combobox
-   void RefreshHistory();
-
-   // virtual functions from PageBase
-
-   // called on entering the page
-   virtual void OnEnterPage();
-
-   // called on leaving the page
-   virtual bool OnLeavePage();
-
-protected:
-   BevelLine bevel1; ///< bevel line
-   BevelLine bevel2; ///< bevel line
-   BevelLine bevel3; ///< bevel line
-
-   /// icon list for image buttons
-   CImageList ilIcons;
-};
+} // namespace ClassicUI

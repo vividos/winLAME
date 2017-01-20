@@ -29,95 +29,99 @@
 struct CDRipDiscInfo;
 struct CDRipTrackInfo;
 
+namespace ClassicUI
+{
 #define WM_LOCK_NEXT_BUTTON (WM_APP+2)
 
-/// CD extraction page
-class CDRipPage:
-   public PageBase,
-   public CDialogResize<CDRipPage>
-{
-public:
-   /// ctor
-   CDRipPage();
-
-   /// dtor
-   virtual ~CDRipPage();
-
-   // resize map
-BEGIN_DLGRESIZE_MAP(CDRipPage)
-   DLGRESIZE_CONTROL(IDC_CDRIP_BEVEL1, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_CDRIP_PROGRESS, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_CDRIP_LIST_TRACKS, DLSZ_SIZE_X | DLSZ_SIZE_Y)
-   DLGRESIZE_CONTROL(IDC_CDRIP_CHECK_AUTOSTART_ENC, DLSZ_MOVE_Y)
-END_DLGRESIZE_MAP()
-
-   // message map
-BEGIN_MSG_MAP(CDRipPage)
-   MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-   MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
-   COMMAND_HANDLER(IDC_CDRIP_START, BN_CLICKED, OnButtonStart)
-   MESSAGE_HANDLER(WM_LOCK_NEXT_BUTTON, OnLockNextButton)
-   CHAIN_MSG_MAP(CDialogResize<CDRipPage>)
-   REFLECT_NOTIFICATIONS()
-END_MSG_MAP()
-// Handler prototypes:
-//  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-//  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-//  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
-
-   /// inits the page
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-
-   /// called when dialog is about to be destroyed
-   LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-
-   /// called when "next" button should be locked
-   LRESULT OnLockNextButton(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+   /// CD extraction page
+   class CDRipPage :
+      public PageBase,
+      public CDialogResize<CDRipPage>
    {
-      pui->lockWizardButtons(true, true);
-      return 0;
-   }
+   public:
+      /// ctor
+      CDRipPage();
 
-   /// called when the user clicks on the start
-   LRESULT OnButtonStart(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+      /// dtor
+      virtual ~CDRipPage();
 
-   // called on entering the page
-   virtual void OnEnterPage();
+      // resize map
+      BEGIN_DLGRESIZE_MAP(CDRipPage)
+         DLGRESIZE_CONTROL(IDC_CDRIP_BEVEL1, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_CDRIP_PROGRESS, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_CDRIP_LIST_TRACKS, DLSZ_SIZE_X | DLSZ_SIZE_Y)
+         DLGRESIZE_CONTROL(IDC_CDRIP_CHECK_AUTOSTART_ENC, DLSZ_MOVE_Y)
+      END_DLGRESIZE_MAP()
 
-   // called on leaving the page
-   virtual bool OnLeavePage();
+      // message map
+      BEGIN_MSG_MAP(CDRipPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
+         COMMAND_HANDLER(IDC_CDRIP_START, BN_CLICKED, OnButtonStart)
+         MESSAGE_HANDLER(WM_LOCK_NEXT_BUTTON, OnLockNextButton)
+         CHAIN_MSG_MAP(CDialogResize<CDRipPage>)
+         REFLECT_NOTIFICATIONS()
+      END_MSG_MAP()
+      // Handler prototypes:
+      //  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   virtual bool ShouldRemovePage() const { return m_bFinishedAllTracks; }
+         /// inits the page
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-protected:
-   /// thread procedure
-   static DWORD CALLBACK ThreadProc(void* pData);
+      /// called when dialog is about to be destroyed
+      LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// extracts audio
-   void ExtractAudio();
+      /// called when "next" button should be locked
+      LRESULT OnLockNextButton(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+      {
+         pui->lockWizardButtons(true, true);
+         return 0;
+      }
 
-   /// extracts single track
-   bool ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo, const CString& tempFilename);
+      /// called when the user clicks on the start
+      LRESULT OnButtonStart(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
-protected:
-   /// bevel line
-   BevelLine bevel1;
+      // called on entering the page
+      virtual void OnEnterPage();
 
-   /// tracks list
-   AlternateColorsListCtrl m_lcTracks;
+      // called on leaving the page
+      virtual bool OnLeavePage();
 
-   /// indicates if all tracks are finished
-   bool m_bFinishedAllTracks;
+      virtual bool ShouldRemovePage() const { return m_bFinishedAllTracks; }
 
-   /// progress bar control
-   CProgressBarCtrl m_pcProgress;
+   protected:
+      /// thread procedure
+      static DWORD CALLBACK ThreadProc(void* pData);
 
-   /// stop event
-   HANDLE m_hEventStop;
+      /// extracts audio
+      void ExtractAudio();
 
-   /// worker thread
-   HANDLE m_hWorkerThread;
+      /// extracts single track
+      bool ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo, const CString& tempFilename);
 
-   /// counter for destroy handler
-   LONG m_lInDestroyHandler;
-};
+   protected:
+      /// bevel line
+      BevelLine bevel1;
+
+      /// tracks list
+      AlternateColorsListCtrl m_lcTracks;
+
+      /// indicates if all tracks are finished
+      bool m_bFinishedAllTracks;
+
+      /// progress bar control
+      CProgressBarCtrl m_pcProgress;
+
+      /// stop event
+      HANDLE m_hEventStop;
+
+      /// worker thread
+      HANDLE m_hWorkerThread;
+
+      /// counter for destroy handler
+      LONG m_lInDestroyHandler;
+   };
+
+} // namespace ClassicUI

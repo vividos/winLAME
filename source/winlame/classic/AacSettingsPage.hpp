@@ -25,85 +25,89 @@
 #include "PageBase.hpp"
 #include "CommonStuff.hpp"
 
-/// settings page for AAC settings
-class AacSettingsPage:
-   public PageBase,
-   public CDialogResize<AacSettingsPage>
+namespace ClassicUI
 {
-public:
-   /// ctor
-   AacSettingsPage()
+   /// settings page for AAC settings
+   class AacSettingsPage :
+      public PageBase,
+      public CDialogResize<AacSettingsPage>
    {
-      IDD = IDD_DLG_AAC;
-      captionID = IDS_DLG_CAP_AAC;
-      descID = IDS_DLG_DESC_AAC;
-      helpID = IDS_HTML_AAC;
-   }
+   public:
+      /// ctor
+      AacSettingsPage()
+      {
+         IDD = IDD_DLG_AAC;
+         captionID = IDS_DLG_CAP_AAC;
+         descID = IDS_DLG_DESC_AAC;
+         helpID = IDS_HTML_AAC;
+      }
 
-   // resize map
-BEGIN_DLGRESIZE_MAP(AacSettingsPage)
-   DLGRESIZE_CONTROL(IDC_AAC_BEVEL1, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_AAC_BEVEL2, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_AAC_SLIDER_QUALITY, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_AAC_STATIC_QUALITY, DLSZ_MOVE_X)
-   DLGRESIZE_CONTROL(IDC_AAC_STATIC_KBPS, DLSZ_MOVE_X)
-   DLGRESIZE_CONTROL(IDC_AAC_COMBO_MPEGVER, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_AAC_COMBO_OBJTYPE, DLSZ_SIZE_X)
-END_DLGRESIZE_MAP()
+      // resize map
+      BEGIN_DLGRESIZE_MAP(AacSettingsPage)
+         DLGRESIZE_CONTROL(IDC_AAC_BEVEL1, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_AAC_BEVEL2, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_AAC_SLIDER_QUALITY, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_AAC_STATIC_QUALITY, DLSZ_MOVE_X)
+         DLGRESIZE_CONTROL(IDC_AAC_STATIC_KBPS, DLSZ_MOVE_X)
+         DLGRESIZE_CONTROL(IDC_AAC_COMBO_MPEGVER, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_AAC_COMBO_OBJTYPE, DLSZ_SIZE_X)
+      END_DLGRESIZE_MAP()
 
-   // message map
-BEGIN_MSG_MAP(AacSettingsPage)
-   MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-   COMMAND_HANDLER(IDC_AAC_CHECK_BANDWIDTH, BN_CLICKED, OnCheckBandwidth)
-   MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
-   CHAIN_MSG_MAP(CDialogResize<AacSettingsPage>)
-   REFLECT_NOTIFICATIONS()
-END_MSG_MAP()
-// Handler prototypes:
-//  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-//  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-//  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+      // message map
+      BEGIN_MSG_MAP(AacSettingsPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         COMMAND_HANDLER(IDC_AAC_CHECK_BANDWIDTH, BN_CLICKED, OnCheckBandwidth)
+         MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
+         CHAIN_MSG_MAP(CDialogResize<AacSettingsPage>)
+         REFLECT_NOTIFICATIONS()
+      END_MSG_MAP()
+      // Handler prototypes:
+      //  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   /// inits the page
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+         /// inits the page
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when user clicks on the bandwidth check
-   LRESULT OnCheckBandwidth(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-   {
-      UpdateBandwidth();
-      return 0;
-   }
+      /// called when user clicks on the bandwidth check
+      LRESULT OnCheckBandwidth(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+      {
+         UpdateBandwidth();
+         return 0;
+      }
 
-   /// called when slider is moved
-   LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-   {
-      // check if the vbr quality slider was moved
-      if ((HWND)lParam == GetDlgItem(IDC_AAC_SLIDER_QUALITY))
-         UpdateQuality();
-      return 0;
-   }
+      /// called when slider is moved
+      LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+      {
+         // check if the vbr quality slider was moved
+         if ((HWND)lParam == GetDlgItem(IDC_AAC_SLIDER_QUALITY))
+            UpdateQuality();
+         return 0;
+      }
 
-   /// updates quality value
-   void UpdateQuality();
+      /// updates quality value
+      void UpdateQuality();
 
-   /// shows bandwidth edit control
-   void UpdateBandwidth();
+      /// shows bandwidth edit control
+      void UpdateBandwidth();
 
-   // virtual functions from PageBase
+      // virtual functions from PageBase
 
-   // called on entering the page
-   virtual void OnEnterPage();
+      // called on entering the page
+      virtual void OnEnterPage();
 
-   // called on leaving the page
-   virtual bool OnLeavePage();
+      // called on leaving the page
+      virtual bool OnLeavePage();
 
-protected:
-   /// bitrate spin button control
-   FixedValueSpinButtonCtrl bitrateSpin;
+   protected:
+      /// bitrate spin button control
+      FixedValueSpinButtonCtrl bitrateSpin;
 
-   /// bandwidth spin button control
-   FixedValueSpinButtonCtrl bandwidthSpin;
+      /// bandwidth spin button control
+      FixedValueSpinButtonCtrl bandwidthSpin;
 
-   /// bevel lines
-   BevelLine bevel1, bevel2;
-};
+      /// bevel lines
+      BevelLine bevel1, bevel2;
+   };
+
+} // namespace ClassicUI

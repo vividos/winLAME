@@ -25,58 +25,64 @@
 #include "UIinterface.hpp"
 #include "ImageListComboBox.hpp"
 
+// forward references
 class LanguageResourceManager;
 
-class OptionsDlg:
-   public CDialogImpl<OptionsDlg>,
-   public CWinDataExchange<OptionsDlg>
+namespace ClassicUI
 {
-public:
-   OptionsDlg(UISettings& uiSettings, LanguageResourceManager& langResourceManager)
-      :m_uiSettings(uiSettings),
-       m_langResourceManager(langResourceManager)
+   /// options dialog
+   class OptionsDlg :
+      public CDialogImpl<OptionsDlg>,
+      public CWinDataExchange<OptionsDlg>
    {
-   }
+   public:
+      OptionsDlg(UISettings& uiSettings, LanguageResourceManager& langResourceManager)
+         :m_uiSettings(uiSettings),
+         m_langResourceManager(langResourceManager)
+      {
+      }
 
-   enum { IDD = IDD_CDRIP_OPTIONS };
+      enum { IDD = IDD_CDRIP_OPTIONS };
 
-// DLGRESIZE_CONTROL(IDC_CDRIP_OPT_COMBO_LANGUAGE, DLSZ_SIZE_X)
-// DLGRESIZE_CONTROL(IDC_CDRIP_OPT_BEVEL1, DLSZ_SIZE_X)
+      // DLGRESIZE_CONTROL(IDC_CDRIP_OPT_COMBO_LANGUAGE, DLSZ_SIZE_X)
+      // DLGRESIZE_CONTROL(IDC_CDRIP_OPT_BEVEL1, DLSZ_SIZE_X)
 
-   BEGIN_MSG_MAP(OptionsDlg)
-      MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      COMMAND_ID_HANDLER(IDOK, OnExit)
-      COMMAND_ID_HANDLER(IDCANCEL, OnExit)
-      COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, OnButtonSelectPath)
-      REFLECT_NOTIFICATIONS()
-   END_MSG_MAP()
+      BEGIN_MSG_MAP(OptionsDlg)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         COMMAND_ID_HANDLER(IDOK, OnExit)
+         COMMAND_ID_HANDLER(IDCANCEL, OnExit)
+         COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, OnButtonSelectPath)
+         REFLECT_NOTIFICATIONS()
+      END_MSG_MAP()
 
-   BEGIN_DDX_MAP(OptionsDlg)
-      DDX_CONTROL(IDC_CDRIP_OPT_COMBO_LANGUAGE, m_cbLanguages)
-      DDX_CONTROL(IDC_CDRIP_OPT_BEVEL1, m_bevel1);
+      BEGIN_DDX_MAP(OptionsDlg)
+         DDX_CONTROL(IDC_CDRIP_OPT_COMBO_LANGUAGE, m_cbLanguages)
+         DDX_CONTROL(IDC_CDRIP_OPT_BEVEL1, m_bevel1);
       DDX_CONTROL(IDC_CDRIP_OPT_BEVEL2, m_bevel2);
       DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, m_btnSelectPath);
       DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, m_cbFreedbServer);
       DDX_CHECK(IDC_CDRIP_OPT_CHECK_CDPLAYER_INI, m_uiSettings.store_disc_infos_cdplayer_ini);
       DDX_TEXT(IDC_CDRIP_OPT_EDIT_TEMP_FOLDER, m_uiSettings.cdrip_temp_folder);
       DDX_TEXT(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, m_uiSettings.freedb_server);
-   END_DDX_MAP()
+      END_DDX_MAP()
 
-   LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-   LRESULT OnExit(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
-   LRESULT OnButtonSelectPath(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+      LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
+      LRESULT OnExit(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+      LRESULT OnButtonSelectPath(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
-private:
-   UISettings& m_uiSettings;
-   LanguageResourceManager& m_langResourceManager;
+   private:
+      UISettings& m_uiSettings;
+      LanguageResourceManager& m_langResourceManager;
 
-   UI::ImageListComboBox m_cbLanguages;
+      UI::ImageListComboBox m_cbLanguages;
 
-   BevelLine m_bevel1, m_bevel2;
+      BevelLine m_bevel1, m_bevel2;
 
-   CButton m_btnSelectPath;
+      CButton m_btnSelectPath;
 
-   CComboBox m_cbFreedbServer;
+      CComboBox m_cbFreedbServer;
 
-   CImageList m_ilIcons;
-};
+      CImageList m_ilIcons;
+   };
+
+} // namespace ClassicUI

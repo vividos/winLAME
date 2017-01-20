@@ -22,6 +22,8 @@
 #include "stdafx.h"
 #include "LameSimpleSettingsPage.hpp"
 
+using ClassicUI::LameSimpleSettingsPage;
+
 // arrays and mappings
 
 /// bitrate values
@@ -44,11 +46,11 @@ LRESULT LameSimpleSettingsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lP
    // subclass spin button controls
    m_bitrateSpin.SubclassWindow(GetDlgItem(IDC_LAME_SPIN_BITRATE));
    m_bitrateSpin.SetBuddy(GetDlgItem(IDC_LAME_EDIT_BITRATE));
-   m_bitrateSpin.SetFixedValues(LameBitrates, sizeof(LameBitrates)/sizeof(LameBitrates[0]));
+   m_bitrateSpin.SetFixedValues(LameBitrates, sizeof(LameBitrates) / sizeof(LameBitrates[0]));
 
    m_qualitySpin.SubclassWindow(GetDlgItem(IDC_LAME_SPIN_QUALITY));
    m_qualitySpin.SetBuddy(GetDlgItem(IDC_LAME_EDIT_QUALITY));
-   m_qualitySpin.SetFixedValues(LameQualities, sizeof(LameQualities)/sizeof(LameQualities[0]));
+   m_qualitySpin.SetFixedValues(LameQualities, sizeof(LameQualities) / sizeof(LameQualities[0]));
 
    DDX_Control_Handle(IDC_LAME_COMBO_ENCODING_QUALITY, m_cbEncodingQuality, DDX_LOAD);
    DDX_Control_Handle(IDC_LAME_COMBO_VBR_MODE, m_cbVariableBitrateMode, DDX_LOAD);
@@ -111,7 +113,7 @@ void LameSimpleSettingsPage::OnEnterPage()
 
    // Mono check
    SendDlgItemMessage(IDC_LAME_CHECK_MONO, BM_SETCHECK,
-      mgr.queryValueInt(LameSimpleMono)==0 ? BST_UNCHECKED : BST_CHECKED);
+      mgr.queryValueInt(LameSimpleMono) == 0 ? BST_UNCHECKED : BST_CHECKED);
 
    // bitrate
    value = mgr.queryValueInt(LameSimpleBitrate);
@@ -123,7 +125,7 @@ void LameSimpleSettingsPage::OnEnterPage()
 
    // CBR check
    SendDlgItemMessage(IDC_LAME_CHECK_CBR, BM_SETCHECK,
-      mgr.queryValueInt(LameSimpleCBR)==0 ? BST_UNCHECKED : BST_CHECKED);
+      mgr.queryValueInt(LameSimpleCBR) == 0 ? BST_UNCHECKED : BST_CHECKED);
 
    // VBR mode
    value = mgr.queryValueInt(LameSimpleVBRMode);
@@ -131,11 +133,11 @@ void LameSimpleSettingsPage::OnEnterPage()
 
    // "nogap" check
    SendDlgItemMessage(IDC_LAME_CHECK_NOGAP, BM_SETCHECK,
-      mgr.queryValueInt(LameOptNoGap)==0 ? BST_UNCHECKED : BST_CHECKED);
+      mgr.queryValueInt(LameOptNoGap) == 0 ? BST_UNCHECKED : BST_CHECKED);
 
    // "prepend RIFF WAVE Header" check
    SendDlgItemMessage(IDC_LAME_CHECK_WRITE_WAVEMP3, BM_SETCHECK,
-      mgr.queryValueInt(LameWriteWaveHeader)==0 ? BST_UNCHECKED : BST_CHECKED);
+      mgr.queryValueInt(LameWriteWaveHeader) == 0 ? BST_UNCHECKED : BST_CHECKED);
 }
 
 bool LameSimpleSettingsPage::OnLeavePage()
@@ -152,32 +154,32 @@ bool LameSimpleSettingsPage::OnLeavePage()
    mgr.setValue(LameSimpleQualityOrBitrate, value);
 
    // Mono check
-   value = SendDlgItemMessage(IDC_LAME_CHECK_MONO,BM_GETCHECK)==BST_CHECKED ? 1 : 0;
-   mgr.setValue(LameSimpleMono,value);
+   value = SendDlgItemMessage(IDC_LAME_CHECK_MONO, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   mgr.setValue(LameSimpleMono, value);
 
    // bitrate
-   mgr.setValue(LameSimpleBitrate,(int)GetDlgItemInt(IDC_LAME_EDIT_BITRATE,NULL,FALSE));
+   mgr.setValue(LameSimpleBitrate, (int)GetDlgItemInt(IDC_LAME_EDIT_BITRATE, NULL, FALSE));
 
    // quality
-   mgr.setValue(LameSimpleQuality,(int)GetDlgItemInt(IDC_LAME_EDIT_QUALITY,NULL,FALSE));
+   mgr.setValue(LameSimpleQuality, (int)GetDlgItemInt(IDC_LAME_EDIT_QUALITY, NULL, FALSE));
 
    // CBR check
-   value = SendDlgItemMessage(IDC_LAME_CHECK_CBR,BM_GETCHECK)==BST_CHECKED ? 1 : 0;
-   mgr.setValue(LameSimpleCBR,value);
+   value = SendDlgItemMessage(IDC_LAME_CHECK_CBR, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   mgr.setValue(LameSimpleCBR, value);
 
    // VBR mode
    mgr.setValue(LameSimpleVBRMode, m_cbVariableBitrateMode.GetCurSel());
 
    // "nogap" check
-   value = SendDlgItemMessage(IDC_LAME_CHECK_NOGAP,BM_GETCHECK)==BST_CHECKED ? 1 : 0;
-   mgr.setValue(LameOptNoGap,value);
+   value = SendDlgItemMessage(IDC_LAME_CHECK_NOGAP, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   mgr.setValue(LameOptNoGap, value);
 
    // "prepend RIFF WAVE Header" check
-   value = SendDlgItemMessage(IDC_LAME_CHECK_WRITE_WAVEMP3,BM_GETCHECK)==BST_CHECKED ? 1 : 0;
-   mgr.setValue(LameWriteWaveHeader,value);
+   value = SendDlgItemMessage(IDC_LAME_CHECK_WRITE_WAVEMP3, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   mgr.setValue(LameWriteWaveHeader, value);
 
    // switch on simple mode
-   mgr.setValue(LameSimpleMode,1);
+   mgr.setValue(LameSimpleMode, 1);
 
    return true;
 }

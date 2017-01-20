@@ -26,15 +26,17 @@
 #include "LanguageResourceManager.hpp"
 #include "LangCountryMapper.hpp"
 
+using ClassicUI::OptionsDlg;
+
 LRESULT OptionsDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    DoDataExchange(DDX_LOAD);
 
    // set icons
-   HICON hIcon = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME), 
+   HICON hIcon = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME),
       IMAGE_ICON, ::GetSystemMetrics(SM_CXICON), ::GetSystemMetrics(SM_CYICON), LR_DEFAULTCOLOR);
    SetIcon(hIcon, TRUE);
-   HICON hIconSmall = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME), 
+   HICON hIconSmall = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME),
       IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR);
    SetIcon(hIconSmall, FALSE);
 
@@ -45,7 +47,7 @@ LRESULT OptionsDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPar
    CBitmap bmpIcons;
    // load bitmap, but always from main module (bmp not in translation dlls)
    bmpIcons.Attach(::LoadBitmap(ModuleHelper::GetModuleInstance(), MAKEINTRESOURCE(IDB_BITMAP_FLAGS)));
-   ilLangIcons.Add(bmpIcons, RGB(255,255,255));
+   ilLangIcons.Add(bmpIcons, RGB(255, 255, 255));
 
    m_cbLanguages.SetImageList(ilLangIcons);
 
@@ -55,7 +57,7 @@ LRESULT OptionsDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPar
 
       const std::vector<LanguageResourceInfo>& vecLangResourceList = m_langResourceManager.LanguageResourceList();
       int iSelectedLangIndex = -1;
-      for (size_t i=0,iMax=vecLangResourceList.size(); i<iMax; i++)
+      for (size_t i = 0, iMax = vecLangResourceList.size(); i < iMax; i++)
       {
          const LanguageResourceInfo& info = vecLangResourceList[i];
 
@@ -72,12 +74,12 @@ LRESULT OptionsDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPar
       m_cbLanguages.SetCurSel(iSelectedLangIndex);
    }
 
-//   m_cbLanguages.Invalidate();
-//   m_cbLanguages.SetItemHeight(-1, 15);
+   //   m_cbLanguages.Invalidate();
+   //   m_cbLanguages.SetItemHeight(-1, 15);
 
 
-   // set icons
-   m_ilIcons.Create(MAKEINTRESOURCE(IDB_BITMAP_BTNICONS),16,0,RGB(192,192,192));
+      // set icons
+   m_ilIcons.Create(MAKEINTRESOURCE(IDB_BITMAP_BTNICONS), 16, 0, RGB(192, 192, 192));
 
    m_btnSelectPath.ModifyStyle(0, BS_ICON);
    m_btnSelectPath.SetIcon(m_ilIcons.ExtractIcon(0));

@@ -25,54 +25,58 @@
 #include "PageBase.hpp"
 #include "CommonStuff.hpp"
 
-/// WMA output settings page class
-class WmaOutputSettingsPage:
-   public PageBase,
-   public CDialogResize<WmaOutputSettingsPage>
+namespace ClassicUI
 {
-public:
-   /// ctor
-   WmaOutputSettingsPage()
+   /// WMA output settings page class
+   class WmaOutputSettingsPage :
+      public PageBase,
+      public CDialogResize<WmaOutputSettingsPage>
    {
-      IDD = IDD_DLG_WMA;
-      captionID = IDS_DLG_CAP_WMA;
-      descID = IDS_DLG_DESC_WMA;
-      helpID = IDS_HTML_WMA;
-   }
+   public:
+      /// ctor
+      WmaOutputSettingsPage()
+      {
+         IDD = IDD_DLG_WMA;
+         captionID = IDS_DLG_CAP_WMA;
+         descID = IDS_DLG_DESC_WMA;
+         helpID = IDS_HTML_WMA;
+      }
 
-   // resize map
-BEGIN_DLGRESIZE_MAP(WmaOutputSettingsPage)
-   DLGRESIZE_CONTROL(IDC_WMA_BEVEL1, DLSZ_SIZE_X)
-END_DLGRESIZE_MAP()
+      // resize map
+      BEGIN_DLGRESIZE_MAP(WmaOutputSettingsPage)
+         DLGRESIZE_CONTROL(IDC_WMA_BEVEL1, DLSZ_SIZE_X)
+      END_DLGRESIZE_MAP()
 
-   // message map
-BEGIN_MSG_MAP(WmaOutputSettingsPage)
-   MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-   CHAIN_MSG_MAP(CDialogResize<WmaOutputSettingsPage>)
-   REFLECT_NOTIFICATIONS()
-END_MSG_MAP()
-// Handler prototypes:
-//  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-//  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-//  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+      // message map
+      BEGIN_MSG_MAP(WmaOutputSettingsPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         CHAIN_MSG_MAP(CDialogResize<WmaOutputSettingsPage>)
+         REFLECT_NOTIFICATIONS()
+      END_MSG_MAP()
+      // Handler prototypes:
+      //  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   /// inits the page
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+         /// inits the page
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   // virtual functions from PageBase
+      // virtual functions from PageBase
 
-   // called on entering the page
-   virtual void OnEnterPage();
+      // called on entering the page
+      virtual void OnEnterPage();
 
-   // called on leaving the page
-   virtual bool OnLeavePage();
+      // called on leaving the page
+      virtual bool OnLeavePage();
 
-protected:
-   /// bitrate spin button control
-   FixedValueSpinButtonCtrl bitrateSpin;
-   /// quality spin button control
-   FixedValueSpinButtonCtrl qualitySpin;
+   protected:
+      /// bitrate spin button control
+      FixedValueSpinButtonCtrl bitrateSpin;
+      /// quality spin button control
+      FixedValueSpinButtonCtrl qualitySpin;
 
-   /// bevel line
-   BevelLine bevel1;
-};
+      /// bevel line
+      BevelLine bevel1;
+   };
+
+} // namespace ClassicUI

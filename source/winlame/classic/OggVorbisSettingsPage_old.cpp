@@ -23,10 +23,12 @@
 #include "OggVorbisSettingsPage.hpp"
 #include <cmath>
 
+using ClassicUI::OggVorbisSettingsPage;
+
 // arrays
 
 /// possible bitrates for the fixed value spin button ctrl
-static int OggVorbisBitrates[] = 
+static int OggVorbisBitrates[] =
 {
    64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 500
 };
@@ -45,19 +47,19 @@ float OggVorbisCalculateBitrate(float quality)
 
    if (quality < 4.10)
    {
-      bitrate = quality*16 + 64;
+      bitrate = quality * 16 + 64;
    }
    else if (quality < 8.10)
    {
-      bitrate = quality*32;
+      bitrate = quality * 32;
    }
    else if (quality < 9.10)
    {
-      bitrate = quality*32 + (quality-8.f)*32;
+      bitrate = quality * 32 + (quality - 8.f) * 32;
    }
    else
    {
-      bitrate = quality*32 + (quality-8.f)*32 + (quality-9.f)*116;
+      bitrate = quality * 32 + (quality - 8.f) * 32 + (quality - 9.f) * 116;
    }
 
    return bitrate;
@@ -80,15 +82,15 @@ LRESULT OggVorbisSettingsPage::OnInitDialog_(UINT uMsg, WPARAM wParam, LPARAM lP
    // subclass spin button controls
    bitrateMinSpin.SubclassWindow(GetDlgItem(IDC_OGGV_SPIN_MIN_BITRATE));
    bitrateMinSpin.SetBuddy(GetDlgItem(IDC_OGGV_EDIT_MIN_BITRATE));
-   bitrateMinSpin.SetFixedValues(OggVorbisBitrates, sizeof(OggVorbisBitrates)/sizeof(OggVorbisBitrates[0]));
+   bitrateMinSpin.SetFixedValues(OggVorbisBitrates, sizeof(OggVorbisBitrates) / sizeof(OggVorbisBitrates[0]));
 
    bitrateNominalSpin.SubclassWindow(GetDlgItem(IDC_OGGV_SPIN_NOM_BITRATE));
    bitrateNominalSpin.SetBuddy(GetDlgItem(IDC_OGGV_EDIT_NOM_BITRATE));
-   bitrateNominalSpin.SetFixedValues(OggVorbisBitrates, sizeof(OggVorbisBitrates)/sizeof(OggVorbisBitrates[0]));
+   bitrateNominalSpin.SetFixedValues(OggVorbisBitrates, sizeof(OggVorbisBitrates) / sizeof(OggVorbisBitrates[0]));
 
    bitrateMaxSpin.SubclassWindow(GetDlgItem(IDC_OGGV_SPIN_MAX_BITRATE));
    bitrateMaxSpin.SetBuddy(GetDlgItem(IDC_OGGV_EDIT_MAX_BITRATE));
-   bitrateMaxSpin.SetFixedValues(OggVorbisBitrates, sizeof(OggVorbisBitrates)/sizeof(OggVorbisBitrates[0]));
+   bitrateMaxSpin.SetFixedValues(OggVorbisBitrates, sizeof(OggVorbisBitrates) / sizeof(OggVorbisBitrates[0]));
 
    // set up range of slider control
    CUpDownCtrl ud;
@@ -107,123 +109,123 @@ LRESULT OggVorbisSettingsPage::OnChangeEditNominalBitrate(WORD wNotifyCode, WORD
 {
    // get value of radio button
    int value = pui->getUISettings().settings_manager.queryValueInt(OggBitrateMode);
-   DDX_Radio(IDC_OGGV_RADIO_BRMODE1,value,DDX_SAVE);
+   DDX_Radio(IDC_OGGV_RADIO_BRMODE1, value, DDX_SAVE);
 
-   if (value==3)
+   if (value == 3)
    {
       // for constant bitrate, we "mirror" the nominal bitrate value to the
       // min and max field, too
-      int nombr = GetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE,NULL,FALSE);
-      SetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE,nombr,FALSE);
-      SetDlgItemInt(IDC_OGGV_EDIT_MAX_BITRATE,nombr,FALSE);
+      int nombr = GetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE, NULL, FALSE);
+      SetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE, nombr, FALSE);
+      SetDlgItemInt(IDC_OGGV_EDIT_MAX_BITRATE, nombr, FALSE);
    }
    return 0;
 }
 
-void OggVorbisSettingsPage::UpdateBitrateMode(int pos,bool init)
+void OggVorbisSettingsPage::UpdateBitrateMode(int pos, bool init)
 {
    // get settings manager
    SettingsManager& mgr = pui->getUISettings().settings_manager;
 
-   int minbr,nombr,maxbr;
-   minbr = GetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE,NULL,FALSE);
-   nombr = GetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE,NULL,FALSE);
-   maxbr = GetDlgItemInt(IDC_OGGV_EDIT_MAX_BITRATE,NULL,FALSE);
+   int minbr, nombr, maxbr;
+   minbr = GetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE, NULL, FALSE);
+   nombr = GetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE, NULL, FALSE);
+   maxbr = GetDlgItemInt(IDC_OGGV_EDIT_MAX_BITRATE, NULL, FALSE);
 
    // store old values
    if (!init)
-   switch(mgr.queryValueInt(OggBitrateMode))
-   {
-   case 1: // variable bitrate
-      mgr.setValue(OggVarMinBitrate,minbr);
-      mgr.setValue(OggVarMaxBitrate,maxbr);
-      break;
-   case 2: // average bitrate
-      mgr.setValue(OggVarNominalBitrate,nombr);
-      break;
-   case 3: // constant bitrate
-      mgr.setValue(OggVarNominalBitrate,nombr);
-      break;
-   }
+      switch (mgr.queryValueInt(OggBitrateMode))
+      {
+      case 1: // variable bitrate
+         mgr.setValue(OggVarMinBitrate, minbr);
+         mgr.setValue(OggVarMaxBitrate, maxbr);
+         break;
+      case 2: // average bitrate
+         mgr.setValue(OggVarNominalBitrate, nombr);
+         break;
+      case 3: // constant bitrate
+         mgr.setValue(OggVarNominalBitrate, nombr);
+         break;
+      }
 
    // enable or disable controls
-   BOOL enableQuality = pos==0 ? TRUE : FALSE;
+   BOOL enableQuality = pos == 0 ? TRUE : FALSE;
    BOOL enableMin = FALSE;
    BOOL enableNom = FALSE;
    BOOL enableMax = FALSE;
 
    if (pos != -1)
-      mgr.setValue(OggBitrateMode,pos);
+      mgr.setValue(OggBitrateMode, pos);
 
-   switch(pos)
+   switch (pos)
    {
    case 0: // quality settings
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MIN_BITRATE),_T(""));
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_NOM_BITRATE),_T(""));
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MAX_BITRATE),_T(""));
+      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MIN_BITRATE), _T(""));
+      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_NOM_BITRATE), _T(""));
+      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MAX_BITRATE), _T(""));
       break;
 
    case 1: // variable bitrate
-      SetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE,mgr.queryValueInt(OggVarMinBitrate),FALSE);
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_NOM_BITRATE),_T(""));
-      SetDlgItemInt(IDC_OGGV_EDIT_MAX_BITRATE,mgr.queryValueInt(OggVarMaxBitrate),FALSE);
+      SetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE, mgr.queryValueInt(OggVarMinBitrate), FALSE);
+      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_NOM_BITRATE), _T(""));
+      SetDlgItemInt(IDC_OGGV_EDIT_MAX_BITRATE, mgr.queryValueInt(OggVarMaxBitrate), FALSE);
 
       enableMin = TRUE;
       enableMax = TRUE;
       break;
 
    case 2: // average bitrate
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MIN_BITRATE),_T(""));
-      SetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE,mgr.queryValueInt(OggVarNominalBitrate),FALSE);
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MAX_BITRATE),_T(""));
+      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MIN_BITRATE), _T(""));
+      SetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE, mgr.queryValueInt(OggVarNominalBitrate), FALSE);
+      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MAX_BITRATE), _T(""));
 
       enableNom = TRUE;
       break;
 
    case 3: // constant bitrate
-      SetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE,mgr.queryValueInt(OggVarNominalBitrate),FALSE);
+      SetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE, mgr.queryValueInt(OggVarNominalBitrate), FALSE);
 
       enableNom = TRUE;
       break;
    }
 
    // quality settings controls
-   ::EnableWindow(GetDlgItem(IDC_OGGV_SLIDER_QUALITY),enableQuality);
-   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC_QUALITY),enableQuality);
-   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC_BITRATE),enableQuality);
-   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC1),enableQuality);
-   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC2),enableQuality);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_SLIDER_QUALITY), enableQuality);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC_QUALITY), enableQuality);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC_BITRATE), enableQuality);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC1), enableQuality);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC2), enableQuality);
 
    // min bitrate controls
-   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC3),enableMin);
-   ::EnableWindow(GetDlgItem(IDC_OGGV_EDIT_MIN_BITRATE),enableMin);
-   ::EnableWindow(GetDlgItem(IDC_OGGV_SPIN_MIN_BITRATE),enableMin);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC3), enableMin);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_EDIT_MIN_BITRATE), enableMin);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_SPIN_MIN_BITRATE), enableMin);
 
    // nominal bitrate controls
-   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC4),enableNom);
-   ::EnableWindow(GetDlgItem(IDC_OGGV_EDIT_NOM_BITRATE),enableNom);
-   ::EnableWindow(GetDlgItem(IDC_OGGV_SPIN_NOM_BITRATE),enableNom);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC4), enableNom);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_EDIT_NOM_BITRATE), enableNom);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_SPIN_NOM_BITRATE), enableNom);
 
    // max bitrate controls
-   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC5),enableMax);
-   ::EnableWindow(GetDlgItem(IDC_OGGV_EDIT_MAX_BITRATE),enableMax);
-   ::EnableWindow(GetDlgItem(IDC_OGGV_SPIN_MAX_BITRATE),enableMax);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_STATIC5), enableMax);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_EDIT_MAX_BITRATE), enableMax);
+   ::EnableWindow(GetDlgItem(IDC_OGGV_SPIN_MAX_BITRATE), enableMax);
 }
 
 void OggVorbisSettingsPage::UpdateQuality()
 {
    // update slider quality text
-   int pos = SendDlgItemMessage(IDC_OGGV_SLIDER_QUALITY,TBM_GETPOS);
+   int pos = SendDlgItemMessage(IDC_OGGV_SLIDER_QUALITY, TBM_GETPOS);
 
    CString text;
-   text.Format(IDS_OGGV_QUALITY,pos < 0 ? "-" : "",
-      unsigned(fabs(pos/100.0)), unsigned(fabs(fmod(pos,100.0))));
-   SetDlgItemText(IDC_OGGV_STATIC_QUALITY,text);
+   text.Format(IDS_OGGV_QUALITY, pos < 0 ? "-" : "",
+      unsigned(fabs(pos / 100.0)), unsigned(fabs(fmod(pos, 100.0))));
+   SetDlgItemText(IDC_OGGV_STATIC_QUALITY, text);
 
-   float brate = OggVorbisCalculateBitrate(pos/100.f);
+   float brate = OggVorbisCalculateBitrate(pos / 100.f);
 
-   text.Format(IDS_OGGV_BITRATE,int(brate),int(brate*10.f)%10);
-   SetDlgItemText(IDC_OGGV_STATIC_BITRATE,text);
+   text.Format(IDS_OGGV_BITRATE, int(brate), int(brate*10.f) % 10);
+   SetDlgItemText(IDC_OGGV_STATIC_BITRATE, text);
 }
 
 void OggVorbisSettingsPage::OnQuickQualitySpin(WORD wCount, WORD wType)
@@ -231,7 +233,7 @@ void OggVorbisSettingsPage::OnQuickQualitySpin(WORD wCount, WORD wType)
    if (wType == SB_THUMBPOSITION)
    {
       int iDelta = 10;
-      int pos = SendDlgItemMessage(IDC_OGGV_SLIDER_QUALITY,TBM_GETPOS);
+      int pos = SendDlgItemMessage(IDC_OGGV_SLIDER_QUALITY, TBM_GETPOS);
       int iRest = int(fmod(pos, double(iDelta)));
 
       // we recognize "up" as changing updown control to 2, and
@@ -242,7 +244,7 @@ void OggVorbisSettingsPage::OnQuickQualitySpin(WORD wCount, WORD wType)
       else
          pos -= iRest == 0 ? iDelta : iRest;
 
-      SendDlgItemMessage(IDC_OGGV_SLIDER_QUALITY,TBM_SETPOS,TRUE,(LONG)pos);
+      SendDlgItemMessage(IDC_OGGV_SLIDER_QUALITY, TBM_SETPOS, TRUE, (LONG)pos);
 
       UpdateQuality();
    }
@@ -260,12 +262,12 @@ void OggVorbisSettingsPage::OnEnterPage()
 
    // bitrate mode radio buttons
    int value = mgr.queryValueInt(OggBitrateMode);
-   DDX_Radio(IDC_OGGV_RADIO_BRMODE1,value,DDX_LOAD);
-   UpdateBitrateMode(value,true);
+   DDX_Radio(IDC_OGGV_RADIO_BRMODE1, value, DDX_LOAD);
+   UpdateBitrateMode(value, true);
 
    // base quality slider
    value = mgr.queryValueInt(OggBaseQuality);
-   SendDlgItemMessage(IDC_OGGV_SLIDER_QUALITY,TBM_SETPOS,TRUE,(LONG)value);
+   SendDlgItemMessage(IDC_OGGV_SLIDER_QUALITY, TBM_SETPOS, TRUE, (LONG)value);
    UpdateQuality();
 }
 
@@ -274,13 +276,13 @@ bool OggVorbisSettingsPage::OnLeavePage()
    // get settings manager
    SettingsManager& mgr = pui->getUISettings().settings_manager;
 
-   int value=0;
-   DDX_Radio(IDC_OGGV_RADIO_BRMODE1,value,DDX_SAVE);
-   mgr.setValue(OggBitrateMode,value);
+   int value = 0;
+   DDX_Radio(IDC_OGGV_RADIO_BRMODE1, value, DDX_SAVE);
+   mgr.setValue(OggBitrateMode, value);
 
    // base quality slider
-   value = SendDlgItemMessage(IDC_OGGV_SLIDER_QUALITY,TBM_GETPOS);
-   mgr.setValue(OggBaseQuality,value);
+   value = SendDlgItemMessage(IDC_OGGV_SLIDER_QUALITY, TBM_GETPOS);
+   mgr.setValue(OggBaseQuality, value);
 
    // update bitrate values
    UpdateBitrateMode(-1);

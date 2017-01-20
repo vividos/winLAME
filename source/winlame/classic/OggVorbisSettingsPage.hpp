@@ -25,98 +25,102 @@
 #include "PageBase.hpp"
 #include "CommonStuff.hpp"
 
-/// ogg vorbis settings page class
-class OggVorbisSettingsPage:
-   public PageBase,
-   public CDialogResize<OggVorbisSettingsPage>
+namespace ClassicUI
 {
-public:
-   /// ctor
-   OggVorbisSettingsPage()
+   /// ogg vorbis settings page class
+   class OggVorbisSettingsPage :
+      public PageBase,
+      public CDialogResize<OggVorbisSettingsPage>
    {
-      IDD = IDD_DLG_OGGVORBIS;
-      captionID = IDS_DLG_CAP_OGGVORBIS;
-      descID = IDS_DLG_DESC_OGGVORBIS;
-      helpID = IDS_HTML_OGGVORBIS;
-   }
+   public:
+      /// ctor
+      OggVorbisSettingsPage()
+      {
+         IDD = IDD_DLG_OGGVORBIS;
+         captionID = IDS_DLG_CAP_OGGVORBIS;
+         descID = IDS_DLG_DESC_OGGVORBIS;
+         helpID = IDS_HTML_OGGVORBIS;
+      }
 
-   // resize map
-BEGIN_DLGRESIZE_MAP(OggVorbisSettingsPage)
-   DLGRESIZE_CONTROL(IDC_OGGV_BEVEL1, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_OGGV_SLIDER_QUALITY, DLSZ_SIZE_X)
-   DLGRESIZE_CONTROL(IDC_OGGV_STATIC_QUALITY, DLSZ_MOVE_X)
-   DLGRESIZE_CONTROL(IDC_OGGV_STATIC_BITRATE, DLSZ_MOVE_X)
-   DLGRESIZE_CONTROL(IDC_OGGV_STATIC2, DLSZ_MOVE_X)
-   DLGRESIZE_CONTROL(IDC_OGGV_BEVEL2, DLSZ_SIZE_X)
-END_DLGRESIZE_MAP()
+      // resize map
+      BEGIN_DLGRESIZE_MAP(OggVorbisSettingsPage)
+         DLGRESIZE_CONTROL(IDC_OGGV_BEVEL1, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_OGGV_SLIDER_QUALITY, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_OGGV_STATIC_QUALITY, DLSZ_MOVE_X)
+         DLGRESIZE_CONTROL(IDC_OGGV_STATIC_BITRATE, DLSZ_MOVE_X)
+         DLGRESIZE_CONTROL(IDC_OGGV_STATIC2, DLSZ_MOVE_X)
+         DLGRESIZE_CONTROL(IDC_OGGV_BEVEL2, DLSZ_SIZE_X)
+      END_DLGRESIZE_MAP()
 
-   // message map
-BEGIN_MSG_MAP(OggVorbisSettingsPage)
-   MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog_)
-   COMMAND_HANDLER(IDC_OGGV_RADIO_BRMODE1, BN_CLICKED, OnSetBitrateMode)
-   COMMAND_HANDLER(IDC_OGGV_RADIO_BRMODE2, BN_CLICKED, OnSetBitrateMode)
-   COMMAND_HANDLER(IDC_OGGV_RADIO_BRMODE3, BN_CLICKED, OnSetBitrateMode)
-   COMMAND_HANDLER(IDC_OGGV_RADIO_BRMODE4, BN_CLICKED, OnSetBitrateMode)
-   COMMAND_HANDLER(IDC_OGGV_EDIT_NOM_BITRATE, EN_CHANGE, OnChangeEditNominalBitrate)
-   MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
-   CHAIN_MSG_MAP(CDialogResize<OggVorbisSettingsPage>)
-   REFLECT_NOTIFICATIONS()
-END_MSG_MAP()
-// Handler prototypes:
-//  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-//  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-//  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+      // message map
+      BEGIN_MSG_MAP(OggVorbisSettingsPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog_)
+         COMMAND_HANDLER(IDC_OGGV_RADIO_BRMODE1, BN_CLICKED, OnSetBitrateMode)
+         COMMAND_HANDLER(IDC_OGGV_RADIO_BRMODE2, BN_CLICKED, OnSetBitrateMode)
+         COMMAND_HANDLER(IDC_OGGV_RADIO_BRMODE3, BN_CLICKED, OnSetBitrateMode)
+         COMMAND_HANDLER(IDC_OGGV_RADIO_BRMODE4, BN_CLICKED, OnSetBitrateMode)
+         COMMAND_HANDLER(IDC_OGGV_EDIT_NOM_BITRATE, EN_CHANGE, OnChangeEditNominalBitrate)
+         MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
+         CHAIN_MSG_MAP(CDialogResize<OggVorbisSettingsPage>)
+         REFLECT_NOTIFICATIONS()
+      END_MSG_MAP()
+      // Handler prototypes:
+      //  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   /// inits the page
-   LRESULT OnInitDialog_(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+         /// inits the page
+      LRESULT OnInitDialog_(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when the bitrate mode changes
-   LRESULT OnSetBitrateMode(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
-   {
-      // look which radio button was activated
-      int pos;
-      DDX_Radio(IDC_OGGV_RADIO_BRMODE1,pos,DDX_SAVE);
-      UpdateBitrateMode(pos);
+      /// called when the bitrate mode changes
+      LRESULT OnSetBitrateMode(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+      {
+         // look which radio button was activated
+         int pos;
+         DDX_Radio(IDC_OGGV_RADIO_BRMODE1, pos, DDX_SAVE);
+         UpdateBitrateMode(pos);
 
-      return 0;
-   }
+         return 0;
+      }
 
-   /// called when the text of the "nominal bitrate" edit control changes
-   LRESULT OnChangeEditNominalBitrate(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when the text of the "nominal bitrate" edit control changes
+      LRESULT OnChangeEditNominalBitrate(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when slider is moved
-   LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-   {
-      // check if the vbr quality slider was moved
-      if ((HWND)lParam == GetDlgItem(IDC_OGGV_SLIDER_QUALITY))
-         UpdateQuality();
-      else
-         if ((HWND)lParam == GetDlgItem(IDC_OGGV_SPIN_QUICK_QUALITY))
-            OnQuickQualitySpin(HIWORD(wParam), LOWORD(wParam));
-      return 0;
-   }
+      /// called when slider is moved
+      LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+      {
+         // check if the vbr quality slider was moved
+         if ((HWND)lParam == GetDlgItem(IDC_OGGV_SLIDER_QUALITY))
+            UpdateQuality();
+         else
+            if ((HWND)lParam == GetDlgItem(IDC_OGGV_SPIN_QUICK_QUALITY))
+               OnQuickQualitySpin(HIWORD(wParam), LOWORD(wParam));
+         return 0;
+      }
 
-   /// updates controls when bitrate mode changes
-   void UpdateBitrateMode(int pos,bool init=false);
+      /// updates controls when bitrate mode changes
+      void UpdateBitrateMode(int pos, bool init = false);
 
-   /// updates quality value
-   void UpdateQuality();
+      /// updates quality value
+      void UpdateQuality();
 
-   /// user clicked on quick quality spin control
-   void OnQuickQualitySpin(WORD wCount, WORD wType);
+      /// user clicked on quick quality spin control
+      void OnQuickQualitySpin(WORD wCount, WORD wType);
 
-   // virtual functions from PageBase
+      // virtual functions from PageBase
 
-   // called on entering the page
-   virtual void OnEnterPage();
+      // called on entering the page
+      virtual void OnEnterPage();
 
-   // called on leaving the page
-   virtual bool OnLeavePage();
+      // called on leaving the page
+      virtual bool OnLeavePage();
 
-protected:
-   FixedValueSpinButtonCtrl bitrateNominalSpin;  ///< nominal bitrate spin button control
-   FixedValueSpinButtonCtrl bitrateMinSpin;      ///< min bitrate spin button control
-   FixedValueSpinButtonCtrl bitrateMaxSpin;      ///< max bitrate spin button control
-   BevelLine bevel1; ///< bevel line
-   BevelLine bevel2; ///< bevel line
-};
+   protected:
+      FixedValueSpinButtonCtrl bitrateNominalSpin;  ///< nominal bitrate spin button control
+      FixedValueSpinButtonCtrl bitrateMinSpin;      ///< min bitrate spin button control
+      FixedValueSpinButtonCtrl bitrateMaxSpin;      ///< max bitrate spin button control
+      BevelLine bevel1; ///< bevel line
+      BevelLine bevel2; ///< bevel line
+   };
+
+} // namespace ClassicUI

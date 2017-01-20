@@ -25,69 +25,73 @@
 #include "PageBase.hpp"
 #include "FixedValueSpinButtonCtrl.hpp"
 
-/// settings page for Opus settings
-class OpusSettingsPage:
-   public PageBase,
-   public CDialogResize<OpusSettingsPage>
+namespace ClassicUI
 {
-public:
-   /// ctor
-   OpusSettingsPage()
+   /// settings page for Opus settings
+   class OpusSettingsPage :
+      public PageBase,
+      public CDialogResize<OpusSettingsPage>
    {
-      IDD = IDD_DLG_OPUS;
-      captionID = IDS_DLG_CAP_OPUS;
-      descID = IDS_DLG_DESC_OPUS;
-      helpID = IDS_HTML_OPUS;
-   }
+   public:
+      /// ctor
+      OpusSettingsPage()
+      {
+         IDD = IDD_DLG_OPUS;
+         captionID = IDS_DLG_CAP_OPUS;
+         descID = IDS_DLG_DESC_OPUS;
+         helpID = IDS_HTML_OPUS;
+      }
 
-   BEGIN_DDX_MAP(OpusSettingsPage)
-      DDX_CONTROL(IDC_OPUS_SPIN_BITRATE, m_spinBitrate)
-      DDX_CONTROL_HANDLE(IDC_OPUS_SLIDER_COMPLEXITY, m_sliderComplexity)
-   END_DDX_MAP()
+      BEGIN_DDX_MAP(OpusSettingsPage)
+         DDX_CONTROL(IDC_OPUS_SPIN_BITRATE, m_spinBitrate)
+         DDX_CONTROL_HANDLE(IDC_OPUS_SLIDER_COMPLEXITY, m_sliderComplexity)
+      END_DDX_MAP()
 
-   // resize map
-   BEGIN_DLGRESIZE_MAP(OpusSettingsPage)
-   END_DLGRESIZE_MAP()
+      // resize map
+      BEGIN_DLGRESIZE_MAP(OpusSettingsPage)
+      END_DLGRESIZE_MAP()
 
-   // message map
-   BEGIN_MSG_MAP(OpusSettingsPage)
-      MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
-      CHAIN_MSG_MAP(CDialogResize<OpusSettingsPage>)
-      REFLECT_NOTIFICATIONS()
-   END_MSG_MAP()
-   // Handler prototypes:
-   //  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-   //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+      // message map
+      BEGIN_MSG_MAP(OpusSettingsPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
+         CHAIN_MSG_MAP(CDialogResize<OpusSettingsPage>)
+         REFLECT_NOTIFICATIONS()
+      END_MSG_MAP()
+      // Handler prototypes:
+      //  LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   /// inits the page
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      /// inits the page
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when slider is moved
-   LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-   {
-      // check if the vbr quality slider was moved
-      if ((HWND)lParam == GetDlgItem(IDC_OPUS_SLIDER_COMPLEXITY))
-         UpdateComplexity();
-      return 0;
-   }
+      /// called when slider is moved
+      LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+      {
+         // check if the vbr quality slider was moved
+         if ((HWND)lParam == GetDlgItem(IDC_OPUS_SLIDER_COMPLEXITY))
+            UpdateComplexity();
+         return 0;
+      }
 
-   /// updates complexity value
-   void UpdateComplexity();
+      /// updates complexity value
+      void UpdateComplexity();
 
-   // virtual functions from PageBase
+      // virtual functions from PageBase
 
-   // called on entering the page
-   virtual void OnEnterPage();
+      // called on entering the page
+      virtual void OnEnterPage();
 
-   // called on leaving the page
-   virtual bool OnLeavePage();
+      // called on leaving the page
+      virtual bool OnLeavePage();
 
-protected:
-   /// bitrate spin button control
-   UI::FixedValueSpinButtonCtrl m_spinBitrate;
+   protected:
+      /// bitrate spin button control
+      UI::FixedValueSpinButtonCtrl m_spinBitrate;
 
-   /// complexity slider
-   CTrackBarCtrl m_sliderComplexity;
-};
+      /// complexity slider
+      CTrackBarCtrl m_sliderComplexity;
+   };
+
+} // namespace ClassicUI

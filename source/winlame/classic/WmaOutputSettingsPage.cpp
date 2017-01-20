@@ -22,6 +22,8 @@
 #include "stdafx.h"
 #include "WmaOutputSettingsPage.hpp"
 
+using ClassicUI::WmaOutputSettingsPage;
+
 /// suggested bitrate values
 static int WmaBitrates[] =
 {
@@ -33,8 +35,6 @@ static int WmaVBRQuality[] =
    10,25,50,75,90,98,100
 };
 
-// WmaOutputSettingsPage methods
-
 LRESULT WmaOutputSettingsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    // subclass bevel lines
@@ -42,11 +42,11 @@ LRESULT WmaOutputSettingsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lPa
 
    bitrateSpin.SubclassWindow(GetDlgItem(IDC_WMA_SPIN_BITRATE));
    bitrateSpin.SetBuddy(GetDlgItem(IDC_WMA_EDIT_BITRATE));
-   bitrateSpin.SetFixedValues(WmaBitrates, sizeof(WmaBitrates)/sizeof(WmaBitrates[0]));
+   bitrateSpin.SetFixedValues(WmaBitrates, sizeof(WmaBitrates) / sizeof(WmaBitrates[0]));
 
    qualitySpin.SubclassWindow(GetDlgItem(IDC_WMA_SPIN_QUALITY));
    qualitySpin.SetBuddy(GetDlgItem(IDC_WMA_EDIT_QUALITY));
-   qualitySpin.SetFixedValues(WmaVBRQuality, sizeof(WmaVBRQuality)/sizeof(WmaVBRQuality[0]));
+   qualitySpin.SetFixedValues(WmaVBRQuality, sizeof(WmaVBRQuality) / sizeof(WmaVBRQuality[0]));
 
    // enable resizing
    DlgResize_Init(false, true);
@@ -58,14 +58,14 @@ void WmaOutputSettingsPage::OnEnterPage()
 {
    // get settings manager
    SettingsManager& mgr = pui->getUISettings().settings_manager;
-   
+
    // set output bitrate
-   SetDlgItemInt(IDC_WMA_EDIT_BITRATE,mgr.queryValueInt(WmaBitrate),FALSE);
-   SetDlgItemInt(IDC_WMA_EDIT_QUALITY,mgr.queryValueInt(WmaQuality),FALSE);
+   SetDlgItemInt(IDC_WMA_EDIT_BITRATE, mgr.queryValueInt(WmaBitrate), FALSE);
+   SetDlgItemInt(IDC_WMA_EDIT_QUALITY, mgr.queryValueInt(WmaQuality), FALSE);
 
    // bitrate mode radio buttons
    int value = mgr.queryValueInt(WmaBitrateMode);
-   DDX_Radio(IDC_WMA_RADIO_BRMODE1,value,DDX_LOAD);
+   DDX_Radio(IDC_WMA_RADIO_BRMODE1, value, DDX_LOAD);
 }
 
 bool WmaOutputSettingsPage::OnLeavePage()
@@ -73,12 +73,12 @@ bool WmaOutputSettingsPage::OnLeavePage()
    // get settings manager
    SettingsManager& mgr = pui->getUISettings().settings_manager;
 
-   mgr.setValue(WmaBitrate,(int)GetDlgItemInt(IDC_WMA_EDIT_BITRATE,NULL,FALSE));
-   mgr.setValue(WmaQuality,(int)GetDlgItemInt(IDC_WMA_EDIT_QUALITY,NULL,FALSE));
+   mgr.setValue(WmaBitrate, (int)GetDlgItemInt(IDC_WMA_EDIT_BITRATE, NULL, FALSE));
+   mgr.setValue(WmaQuality, (int)GetDlgItemInt(IDC_WMA_EDIT_QUALITY, NULL, FALSE));
 
-   int value=0;
-   DDX_Radio(IDC_WMA_RADIO_BRMODE1,value,DDX_SAVE);
-   mgr.setValue(WmaBitrateMode,value);
+   int value = 0;
+   DDX_Radio(IDC_WMA_RADIO_BRMODE1, value, DDX_SAVE);
+   mgr.setValue(WmaBitrateMode, value);
 
    return true;
 }
