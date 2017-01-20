@@ -24,6 +24,7 @@
 // includes
 #include "resource.h"
 #include "WizardPage.hpp"
+#include "HtmlHelper.hpp"
 
 namespace UI
 {
@@ -37,7 +38,7 @@ class WizardPageHost:
 {
 public:
    /// ctor
-   WizardPageHost() throw() {}
+   WizardPageHost();
    /// dtor
    ~WizardPageHost() throw() {}
 
@@ -76,6 +77,7 @@ public:
       MESSAGE_HANDLER(WM_SIZE, OnSize)
       MESSAGE_HANDLER(WM_CTLCOLORSTATIC, OnStaticColor)
       MESSAGE_HANDLER(WM_DRAWITEM, OnDrawItem)
+      MESSAGE_HANDLER(WM_HELP, OnHelp)
       COMMAND_HANDLER(IDC_WIZARDPAGE_BUTTON_ACTION1, BN_CLICKED, OnButtonClicked)
       COMMAND_HANDLER(IDC_WIZARDPAGE_BUTTON_ACTION2, BN_CLICKED, OnButtonClicked)
       COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnButtonClicked)
@@ -88,6 +90,9 @@ public:
    LRESULT OnStaticColor(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnDrawItem(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
    LRESULT OnButtonClicked(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+   /// called when pressing F1
+   LRESULT OnHelp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 private:
    void InitPage();
@@ -119,6 +124,9 @@ private:
 
    /// current wizard page
    std::shared_ptr<WizardPage> m_spCurrentPage;
+
+   /// html help object
+   HtmlHelper m_htmlHelper;
 };
 
 } // namespace UI

@@ -321,6 +321,9 @@
 #define IDS_HTML_OPUS                           40808
 #define IDS_HTML_WMA                            40810
 #define IDS_HTML_CDRIP                          40811
+#define IDS_HTML_FINISH                         40812
+#define IDS_HTML_SETTINGS_CDREAD                40813
+#define IDS_HTML_SETTINGS_GENERAL               40814
 #define IDS_CDRIP_RANDOM_FREEDB_SERVER          40900
 #define IDS_CDRIP_COLUMN_NR                     40902
 #define IDS_CDRIP_COLUMN_TRACK                  40903

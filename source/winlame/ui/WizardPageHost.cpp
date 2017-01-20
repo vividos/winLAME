@@ -22,9 +22,14 @@
 #include "StdAfx.h"
 #include "WizardPageHost.hpp"
 #include "WizardPage.hpp"
+#include "App.hpp"
 
 using UI::WizardPageHost;
 using UI::WizardPage;
+
+WizardPageHost::WizardPageHost()
+{
+}
 
 void WizardPageHost::SetWizardPage(std::shared_ptr<WizardPage> spCurrentPage)
 {
@@ -33,6 +38,10 @@ void WizardPageHost::SetWizardPage(std::shared_ptr<WizardPage> spCurrentPage)
 
 int WizardPageHost::Run(HWND hWndParent)
 {
+   // check if help is available
+   if (App::Current().IsHelpAvailable())
+      m_htmlHelper.Init(m_hWnd, App::Current().HelpFilename());
+
    // note: parent must be disabled after creating dialog, and enabled before
    // destroying dialog.
    // see http://blogs.msdn.com/b/oldnewthing/archive/2004/02/27/81155.aspx
@@ -307,6 +316,53 @@ LRESULT WizardPageHost::OnButtonClicked(WORD /*wNotifyCode*/, WORD wID, HWND /*h
       // init next dialog
       InitPage();
    }
+
+   return 0;
+}
+
+/// maps dialog id to help path
+static CString MapDialogIdToHelpPath(UINT dialogId)
+{
+   UINT helpId = 0;
+   switch (dialogId)
+   {
+   case IDD_PAGE_INPUT_FILES: helpId = IDS_HTML_INPUT; break;
+   case IDD_PAGE_INPUT_CD: helpId = IDS_HTML_CDRIP; break;
+   case IDD_PAGE_OUTPUT_SETTINGS: helpId = IDS_HTML_OUTPUT; break;
+   case IDD_PAGE_LAME_SETTINGS: helpId = IDS_HTML_LAME_SIMPLE; break;
+   case IDD_PAGE_OPUS_SETTINGS: helpId = IDS_HTML_OPUS; break;
+   case IDD_PAGE_LIBSNDFILE_SETTINGS: helpId = IDS_HTML_WAVE; break;
+   case IDD_PAGE_OGGVORBIS_SETTINGS: helpId = IDS_HTML_OGGVORBIS; break;
+   case IDD_PAGE_AAC_SETTINGS: helpId = IDS_HTML_AAC; break;
+   case IDD_PAGE_WMA_SETTINGS: helpId = IDS_HTML_WMA; break;
+   case IDD_PAGE_PRESET_SELECTION: helpId = IDS_HTML_PRESETS; break;
+   case IDD_PAGE_FINISH: helpId = IDS_HTML_FINISH; break;
+   case IDD_SETTINGS_CDREAD: helpId = IDS_HTML_SETTINGS_CDREAD; break;
+   case IDD_SETTINGS_GENERAL: helpId = IDS_HTML_SETTINGS_GENERAL; break;
+   }
+
+   if (helpId == 0)
+      return CString();
+
+   CString helpPath;
+   helpPath.LoadString(helpId);
+
+   return helpPath;
+}
+
+LRESULT WizardPageHost::OnHelp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
+{
+   if (!App::Current().IsHelpAvailable())
+      return 0;
+
+   // get help topic path
+   UINT dialogId = m_spCurrentPage->CaptionId();
+   CString helpPath = MapDialogIdToHelpPath(dialogId);
+
+   if (!helpPath.IsEmpty())
+      m_htmlHelper.DisplayTopic(helpPath);
+   else
+      m_htmlHelper.DisplayTopic(_T("/html/pages/modernui.html"));
 
    return 0;
 }
