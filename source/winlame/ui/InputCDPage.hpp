@@ -23,7 +23,7 @@
 
 // includes
 #include "WizardPage.hpp"
-#include "TrackEditListCtrl.h"
+#include "TrackEditListCtrl.hpp"
 #include "CDRipDiscInfo.hpp"
 #include "CDRipTrackInfo.hpp"
 #include "resource.h"

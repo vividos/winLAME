@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file WaveOutputSettingsPage.h
+/// \file WaveOutputSettingsPage.hpp
 /// \brief contains the settings page for the wave output module
 /// \ingroup userinterface
 /// @{
@@ -27,8 +27,8 @@
 
 // needed includes
 #include "resource.h"
-#include "PageBase.h"
-#include "CommonStuff.h"
+#include "PageBase.hpp"
+#include "CommonStuff.hpp"
 
 
 /// wave output settings page class

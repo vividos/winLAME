@@ -369,57 +369,6 @@
     <ClInclude Include="encoder\aacinfo\filestream.h">
       <Filter>Encoder Files\aacinfo files</Filter>
     </ClInclude>
-    <ClInclude Include="classic\AacSettingsPage.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\CDRipPage.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\CommonStuff.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\EncodePage.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\ErrorDlg.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\InputPage.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\LameSimpleSettingsPage.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\MainDlg.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\OggVorbisSettingsPage.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\OptionsDlg.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\OutputPage.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\PageBase.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\PresetsPage.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\SystemTrayIcon.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TrackEditListCtrl.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\WaveOutputSettingsPage.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\WmaOutputSettingsPage.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="preset\PresetManagerImpl.h">
       <Filter>Preset Files\Header Files</Filter>
     </ClInclude>
@@ -557,9 +506,6 @@
     </ClInclude>
     <ClInclude Include="ui\OpusSettingsPage.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\OpusSettingsPage.h">
-      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="encoder\SndFileFormats.hpp">
       <Filter>Main Program Files\Header Files</Filter>
@@ -732,11 +678,65 @@
     <ClInclude Include="VariableManager.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="classic\CDRipDlg.h">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TaskCreationHelper.hpp">
       <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\AacSettingsPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\CDRipDlg.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\CDRipPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\EncodePage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\ErrorDlg.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\InputPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\LameSimpleSettingsPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\MainDlg.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\OggVorbisSettingsPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\OptionsDlg.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\OpusSettingsPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\OutputPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\WmaOutputSettingsPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\WaveOutputSettingsPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackEditListCtrl.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\SystemTrayIcon.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\PresetsPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\PageBase.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\CommonStuff.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

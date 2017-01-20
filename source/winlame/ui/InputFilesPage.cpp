@@ -24,7 +24,7 @@
 #include "UISettings.hpp"
 #include "InputFilesParser.hpp"
 #include "DropFilesManager.hpp"
-#include "CommonStuff.h"
+#include "CommonStuff.hpp"
 #include "WizardPageHost.hpp"
 #include "OutputSettingsPage.hpp"
 #include "RedrawLock.hpp"

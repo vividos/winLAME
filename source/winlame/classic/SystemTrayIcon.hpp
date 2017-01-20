@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file SystemTrayIcon.h
+/// \file SystemTrayIcon.hpp
 /// \brief contains a wrapper class for handling a system tray icon
 /// \ingroup userinterface
 /// @{

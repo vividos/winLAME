@@ -17,12 +17,12 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file OptionsDlg.h
+/// \file OptionsDlg.hpp
 /// \brief options dialog
 
 #pragma once
 
-#include "CommonStuff.h"
+#include "CommonStuff.hpp"
 #include "UIinterface.hpp"
 #include "ImageListComboBox.hpp"
 

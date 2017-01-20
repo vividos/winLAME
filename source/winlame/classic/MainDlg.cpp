@@ -26,13 +26,13 @@
 
 // needed includes
 #include "stdafx.h"
-#include "MainDlg.h"
-#include "CommonStuff.h"
-#include "InputPage.h"
-#include "OutputPage.h"
-#include "EncodePage.h"
+#include "MainDlg.hpp"
+#include "CommonStuff.hpp"
+#include "InputPage.hpp"
+#include "OutputPage.hpp"
+#include "EncodePage.hpp"
 #include "AboutDlg.hpp"
-#include "OptionsDlg.h"
+#include "OptionsDlg.hpp"
 #include "App.hpp"
 #include "CommandLineParser.hpp"
 #include <sys/types.h>

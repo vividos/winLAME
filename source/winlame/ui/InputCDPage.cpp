@@ -29,7 +29,7 @@
 #include "DynamicLibrary.hpp"
 #include "IniFile.hpp"
 #include "basscd.h"
-#include "CommonStuff.h"
+#include "CommonStuff.hpp"
 #include "FreedbInfo.hpp"
 #include "FreeDbDiscListDlg.hpp"
 #include "RedrawLock.hpp"

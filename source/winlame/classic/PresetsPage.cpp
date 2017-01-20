@@ -22,7 +22,7 @@
 
 // needed includes
 #include "stdafx.h"
-#include "PresetsPage.h"
+#include "PresetsPage.hpp"
 #include "EncoderInterface.hpp"
 
 // static variable

@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file MainDlg.h
+/// \file MainDlg.hpp
 /// \brief contains the main dialog window
 /// \ingroup userinterface
 /// @{
@@ -27,7 +27,7 @@
 
 // needed includes
 #include "resource.h"
-#include "PageBase.h"
+#include "PageBase.hpp"
 #include "HtmlHelper.hpp"
 #include "UIinterface.hpp"
 #include "LanguageResourceManager.hpp"

@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file EncodePage.h
+/// \file EncodePage.hpp
 /// \brief contains the definition of the encode page
 /// \ingroup userinterface
 /// @{
@@ -27,11 +27,11 @@
 
 // needed includes
 #include "resource.h"
-#include "PageBase.h"
-#include "CommonStuff.h"
+#include "PageBase.hpp"
+#include "CommonStuff.hpp"
 #include "EncoderInterface.hpp"
 #include "EncoderErrorHandler.hpp"
-#include "SystemTrayIcon.h"
+#include "SystemTrayIcon.hpp"
 
 
 /// systray activation message

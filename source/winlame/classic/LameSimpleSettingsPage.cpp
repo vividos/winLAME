@@ -22,7 +22,7 @@
 
 // needed includes
 #include "stdafx.h"
-#include "LameSimpleSettingsPage.h"
+#include "LameSimpleSettingsPage.hpp"
 
 // arrays and mappings
 

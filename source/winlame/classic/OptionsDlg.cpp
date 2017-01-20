@@ -22,7 +22,7 @@
 
 #include "stdafx.h"
 #include "resource.h"
-#include "OptionsDlg.h"
+#include "OptionsDlg.hpp"
 #include "LanguageResourceManager.hpp"
 #include "LangCountryMapper.hpp"
 

@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file CommonStuff.h
+/// \file CommonStuff.hpp
 /// \brief commonly used functions and UI classes
 /// \details contains commonly used functions and UI classes, such as a bevel line
 /// control and functions to add tooltips and to browse for a folder

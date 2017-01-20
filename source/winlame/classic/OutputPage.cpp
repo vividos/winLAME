@@ -23,16 +23,16 @@
 
 // needed includes
 #include "stdafx.h"
-#include "OutputPage.h"
-#include "PresetsPage.h"
-#include "LameSimpleSettingsPage.h"
-#include "OggVorbisSettingsPage.h"
-#include "WaveOutputSettingsPage.h"
-#include "AacSettingsPage.h"
-#include "WmaOutputSettingsPage.h"
-#include "OpusSettingsPage.h"
+#include "OutputPage.hpp"
+#include "PresetsPage.hpp"
+#include "LameSimpleSettingsPage.hpp"
+#include "OggVorbisSettingsPage.hpp"
+#include "WaveOutputSettingsPage.hpp"
+#include "AacSettingsPage.hpp"
+#include "WmaOutputSettingsPage.hpp"
+#include "OpusSettingsPage.hpp"
 #include "EncoderInterface.hpp"
-#include "CDRipPage.h"
+#include "CDRipPage.hpp"
 #include "ModuleInterface.hpp"
 
 #include <sys/types.h>

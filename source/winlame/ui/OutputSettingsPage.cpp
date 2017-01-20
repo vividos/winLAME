@@ -34,7 +34,7 @@
 #include "WMASettingsPage.hpp"
 #include "OpusSettingsPage.hpp"
 #include "ModuleInterface.hpp"
-#include "CommonStuff.h"
+#include "CommonStuff.hpp"
 
 using namespace UI;
 

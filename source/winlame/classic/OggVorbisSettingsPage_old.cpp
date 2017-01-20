@@ -22,7 +22,7 @@
 
 // needed includes
 #include "stdafx.h"
-#include "OggVorbisSettingsPage.h"
+#include "OggVorbisSettingsPage.hpp"
 #include <cmath>
 
 // arrays

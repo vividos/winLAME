@@ -21,11 +21,11 @@
 
 #include "StdAfx.h"
 #include "App.hpp"
-#include "MainDlg.h"
+#include "MainDlg.hpp"
 #include "ui\MainFrame.hpp"
 #include "preset\PresetManagerImpl.h"
 #include "encoder\ModuleManagerImpl.hpp"
-#include "CommonStuff.h"
+#include "CommonStuff.hpp"
 
 #ifdef _DEBUG
 #include <crtdbg.h>

@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file ErrorDlg.h
+/// \file ErrorDlg.hpp
 /// \brief shows an error dialog which lets the user decide what to do (try continue,
 /// skip file or stop encoding)
 /// \ingroup userinterface
@@ -28,7 +28,7 @@
 
 // needed includes
 #include "resource.h"
-#include "CommonStuff.h"
+#include "CommonStuff.hpp"
 
 
 /// error dialog class

@@ -22,7 +22,7 @@
 
 // needed includes
 #include "stdafx.h"
-#include "WaveOutputSettingsPage.h"
+#include "WaveOutputSettingsPage.hpp"
 #include "encoder/SndFileFormats.hpp"
 
 // WaveOutputSettingsPage methods

@@ -23,7 +23,7 @@
 
 // needed includes
 #include "stdafx.h"
-#include "AacSettingsPage.h"
+#include "AacSettingsPage.hpp"
 
 // arrays and mappings
 

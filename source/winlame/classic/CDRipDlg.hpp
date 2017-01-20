@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file CDRipDlg.h
+/// \file CDRipDlg.hpp
 /// \brief contains the dialog for cd ripping
 /// \ingroup userinterface
 /// @{
@@ -27,9 +27,9 @@
 
 // needed includes
 #include "resource.h"
-#include "CommonStuff.h"
+#include "CommonStuff.hpp"
 #include "UIinterface.hpp"
-#include "TrackEditListCtrl.h"
+#include "TrackEditListCtrl.hpp"
 
 // forward references
 class FreedbInfo;

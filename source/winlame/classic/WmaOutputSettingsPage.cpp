@@ -22,7 +22,7 @@
 
 // needed includes
 #include "stdafx.h"
-#include "WmaOutputSettingsPage.h"
+#include "WmaOutputSettingsPage.hpp"
 
 /// suggested bitrate values
 static int WmaBitrates[] =

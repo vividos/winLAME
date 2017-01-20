@@ -24,7 +24,7 @@
 // includes
 #include "WizardPage.hpp"
 #include "resource.h"
-#include "CommonStuff.h"
+#include "CommonStuff.hpp"
 #include "PresetManagerInterface.hpp"
 
 // forward references

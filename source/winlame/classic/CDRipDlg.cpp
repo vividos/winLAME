@@ -22,9 +22,9 @@
 
 // needed includes
 #include "stdafx.h"
-#include "CDRipDlg.h"
+#include "CDRipDlg.hpp"
 #include "CDRipTrackManager.hpp"
-#include "OptionsDlg.h"
+#include "OptionsDlg.hpp"
 #include "basscd.h"
 #include "encoder/TrackInfo.hpp"
 #include <shellapi.h>

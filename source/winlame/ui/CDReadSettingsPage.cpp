@@ -25,7 +25,7 @@
 #include "LanguageResourceManager.hpp"
 #include "LangCountryMapper.hpp"
 #include "CDRipTitleFormatManager.hpp"
-#include "CommonStuff.h"
+#include "CommonStuff.hpp"
 #include "App.hpp"
 #include <vector>
 

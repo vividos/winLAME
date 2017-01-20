@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file PresetsPage.h
+/// \file PresetsPage.hpp
 /// \brief contains the presets page
 /// \ingroup userinterface
 /// @{
@@ -27,8 +27,8 @@
 
 // needed includes
 #include "resource.h"
-#include "PageBase.h"
-#include "CommonStuff.h"
+#include "PageBase.hpp"
+#include "CommonStuff.hpp"
 #include "PresetManagerInterface.hpp"
 
 /// presets selection page

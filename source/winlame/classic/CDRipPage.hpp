@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file CDRipPage.h
+/// \file CDRipPage.hpp
 /// \brief contains the output page
 /// \ingroup userinterface
 /// @{
@@ -27,8 +27,8 @@
 
 // needed includes
 #include "resource.h"
-#include "PageBase.h"
-#include "CommonStuff.h"
+#include "PageBase.hpp"
+#include "CommonStuff.hpp"
 
 
 struct CDRipDiscInfo;

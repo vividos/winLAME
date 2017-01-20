@@ -22,8 +22,8 @@
 
 // needed includes
 #include "stdafx.h"
-#include "OpusSettingsPage.h"
-#include "CommonStuff.h"
+#include "OpusSettingsPage.hpp"
+#include "CommonStuff.hpp"
 
 // arrays and mappings
 

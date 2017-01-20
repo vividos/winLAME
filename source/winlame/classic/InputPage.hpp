@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file InputPage.h
+/// \file InputPage.hpp
 /// \brief contains the input page and a list ctrl to show the files to encode
 /// \ingroup userinterface
 /// @{
@@ -27,7 +27,7 @@
 
 // needed includes
 #include "resource.h"
-#include "PageBase.h"
+#include "PageBase.hpp"
 #include "InputListCtrl.hpp"
 
 /// input files page

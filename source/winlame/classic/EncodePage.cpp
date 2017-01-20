@@ -23,8 +23,8 @@
 
 // needed includes
 #include "stdafx.h"
-#include "EncodePage.h"
-#include "ErrorDlg.h"
+#include "EncodePage.hpp"
+#include "ErrorDlg.hpp"
 #include "CDRipTrackManager.hpp"
 #include "EncoderSettings.hpp"
 #include "EncoderState.hpp"

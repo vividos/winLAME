@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file PageBase.h
+/// \file PageBase.hpp
 /// \brief PageBase is a common base class for all wizard child dialogs
 /// \details
 /// a bit of tweaking must be used to get this work; IDD is not an enum

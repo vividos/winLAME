@@ -24,7 +24,7 @@
 // includes
 #include "WizardPage.hpp"
 #include "resource.h"
-#include "CommonStuff.h"
+#include "CommonStuff.hpp"
 
 // forward references
 struct UISettings;
