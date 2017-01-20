@@ -252,13 +252,13 @@ bool MonkeysAudioInputModule::IsAvailable() const
    return true;
 }
 
-void MonkeysAudioInputModule::GetDescription(CString& desc) const
+CString MonkeysAudioInputModule::GetDescription() const
 {
    ATLASSERT(s_dll.IsAvail());
 
    // sanity check .. ;)
    if (!m_handle)
-      return;
+      return CString();
 
    // get fileinfo
    int samplerateInHz = s_dll.GetInfo(m_handle, APE::APE_INFO_SAMPLE_RATE, 0, 0);
@@ -288,11 +288,13 @@ void MonkeysAudioInputModule::GetDescription(CString& desc) const
       break;
    }
 
-   // encode desc string
+   CString desc;
    desc.Format(IDS_FORMAT_INFO_MONKEYS_AUDIO,
       compressionLevel,
       samplerateInHz,
       numChannels);
+
+   return desc;
 }
 
 void MonkeysAudioInputModule::GetVersionString(CString& version, int special) const

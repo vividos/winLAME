@@ -59,7 +59,7 @@ bool MadMpegInputModule::IsAvailable() const
    return lib.IsLoaded();
 }
 
-void MadMpegInputModule::GetDescription(CString& desc) const
+CString MadMpegInputModule::GetDescription() const
 {
    // mpeg version
    LPCTSTR mpegVersion = _T("1");
@@ -100,6 +100,7 @@ void MadMpegInputModule::GetDescription(CString& desc) const
       }
    }
 
+   CString desc;
    desc.Format(IDS_FORMAT_INFO_MAD_MPEG,
       mpegVersion,
       m_initHeader.layer,
@@ -107,6 +108,8 @@ void MadMpegInputModule::GetDescription(CString& desc) const
       m_initHeader.samplerate,
       stereo,
       option);
+
+   return desc;
 }
 
 void MadMpegInputModule::GetVersionString(CString& version, int special) const

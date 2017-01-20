@@ -59,16 +59,19 @@ bool SpeexInputModule::IsAvailable() const
    return true;
 }
 
-void SpeexInputModule::GetDescription(CString& desc) const
+CString SpeexInputModule::GetDescription() const
 {
    ATLASSERT(m_header != nullptr);
 
+   CString desc;
    desc.Format(IDS_FORMAT_INFO_SPEEX_INPUT,
       m_header->mode == 0 ? _T("narrow-band") : m_header->mode == 1 ? _T("wide-band") : _T("???"),
       m_header->vbr == 1 ? _T(" VBR") : _T(""),
       m_header->nb_channels,
       m_header->rate,
       m_header->speex_version);
+
+   return desc;
 }
 
 void SpeexInputModule::GetVersionString(CString& version, int special) const

@@ -126,7 +126,7 @@ bool OpusOutputModule::IsAvailable() const
    return true;
 }
 
-void OpusOutputModule::GetDescription(CString& desc) const
+CString OpusOutputModule::GetDescription() const
 {
    LPCTSTR bitrateMode = _T("???");
 
@@ -140,6 +140,7 @@ void OpusOutputModule::GetDescription(CString& desc) const
       break;
    }
 
+   CString desc;
    desc.Format(IDS_FORMAT_INFO_OPUS_OUTPUT,
       inopt.channels,
       inopt.rate,
@@ -147,6 +148,8 @@ void OpusOutputModule::GetDescription(CString& desc) const
       bitrateMode,
       m_bitrateInBps / 1000,
       m_complexity);
+
+   return desc;
 }
 
 void OpusOutputModule::GetVersionString(CString& version, int special) const

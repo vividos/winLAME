@@ -49,7 +49,7 @@ namespace Encoder
       virtual bool IsAvailable() const override;
 
       // returns description of current file
-      virtual void GetDescription(CString& desc) const override;
+      virtual CString GetDescription() const override;
 
       // returns filter string
       virtual CString GetFilterString() const override;

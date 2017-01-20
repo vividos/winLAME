@@ -75,8 +75,10 @@ bool OggVorbisOutputModule::IsAvailable() const
    return true;
 }
 
-void OggVorbisOutputModule::GetDescription(CString& desc) const
+CString OggVorbisOutputModule::GetDescription() const
 {
+   CString desc;
+
    switch (m_bitrateMode)
    {
    case 0: // quality mode
@@ -107,6 +109,8 @@ void OggVorbisOutputModule::GetDescription(CString& desc) const
          m_vi.bitrate_nominal / 1000, m_vi.rate, m_vi.channels);
       break;
    }
+
+   return desc;
 }
 
 void OggVorbisOutputModule::GetVersionString(CString& version, int special) const

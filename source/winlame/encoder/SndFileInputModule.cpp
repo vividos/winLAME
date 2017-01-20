@@ -62,19 +62,21 @@ bool SndFileInputModule::IsAvailable() const
    return avail;
 }
 
-void SndFileInputModule::GetDescription(CString& desc) const
+CString SndFileInputModule::GetDescription() const
 {
    CString formatName, outputExtension;
    SndFileFormats::GetFormatInfo(m_sfinfo.format & SF_FORMAT_TYPEMASK, formatName, outputExtension);
 
    CString subTypeName = SndFileFormats::GetSubTypeName(m_sfinfo.format & SF_FORMAT_SUBMASK);
 
-   // format string
+   CString desc;
    desc.Format(IDS_FORMAT_INFO_SNDFILE,
       formatName.GetString(),
       subTypeName.GetString(),
       m_sfinfo.samplerate,
       m_sfinfo.channels);
+
+   return desc;
 }
 
 void SndFileInputModule::GetVersionString(CString& version, int special) const

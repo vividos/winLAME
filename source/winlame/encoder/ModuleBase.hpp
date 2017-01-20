@@ -51,7 +51,7 @@ namespace Encoder
       int GetModuleID() const { return m_moduleId; }
 
       /// returns description of current file
-      virtual void GetDescription(CString& desc) const { desc.Empty(); }
+      virtual CString GetDescription() const { return CString(); }
 
       /// returns version string; value in special may denote special type of string
       virtual void GetVersionString(CString& version, int special = 0) const { version.Empty(); special; }

@@ -62,12 +62,13 @@ bool AacOutputModule::IsAvailable() const
    return DynamicLibrary(_T("libfaac.dll")).IsLoaded();
 }
 
-void AacOutputModule::GetDescription(CString& desc) const
+CString AacOutputModule::GetDescription() const
 {
    // get config
    faacEncConfigurationPtr config = faacEncGetCurrentConfiguration(m_handle);
 
    // format string
+   CString desc;
    desc.Format(IDS_FORMAT_INFO_AAC_OUTPUT,
       config->mpegVersion == MPEG4 ? 4 : 2,
       (m_bitrateControlMethod == 0) ? _T("Quality ") : _T(""),
@@ -78,6 +79,8 @@ void AacOutputModule::GetDescription(CString& desc) const
       config->allowMidside == 1 ? _T(", Mid/Side") : _T(""),
       config->useTns == 1 ? _T(", Temporal Noise Shaping") : _T(""),
       config->useLfe == 1 ? _T(", LFE channel") : _T(""));
+
+   return desc;
 }
 
 void AacOutputModule::GetVersionString(CString& version, int special) const

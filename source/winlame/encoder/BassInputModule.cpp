@@ -67,8 +67,10 @@ bool BassInputModule::IsAvailable() const
    return bassLib.IsLoaded() && bassWmaLib.IsLoaded();
 }
 
-void BassInputModule::GetDescription(CString& desc) const
+CString BassInputModule::GetDescription() const
 {
+   CString desc;
+
    if (!m_isStream) // MOD file
    {
       desc.Format(IDS_FORMAT_INFO_BASS_INPUT_MUSIC,
@@ -87,6 +89,8 @@ void BassInputModule::GetDescription(CString& desc) const
          m_channelInfo.freq,
          m_channelInfo.chans);
    }
+
+   return desc;
 }
 
 void BassInputModule::GetVersionString(CString& version, int special) const

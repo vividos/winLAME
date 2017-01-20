@@ -215,14 +215,16 @@ bool FlacInputModule::IsAvailable() const
    return false;
 }
 
-void FlacInputModule::GetDescription(CString& desc) const
+CString FlacInputModule::GetDescription() const
 {
-   // format string
+   CString desc;
    desc.Format(IDS_FORMAT_INFO_FLAC_INPUT,
       (m_fileLength << 3 / m_flacContext->totalLengthInMs) / 1000,
       m_flacContext->streamInfo.sample_rate,
       m_flacContext->streamInfo.channels,
       m_flacContext->streamInfo.bits_per_sample);
+
+   return desc;
 }
 
 void FlacInputModule::GetVersionString(CString& version, int special) const

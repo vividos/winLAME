@@ -104,10 +104,11 @@ bool OggVorbisInputModule::IsAvailable() const
    return true;
 }
 
-void OggVorbisInputModule::GetDescription(CString& desc) const
+CString OggVorbisInputModule::GetDescription() const
 {
    const vorbis_info* vi = ov_info(const_cast<OggVorbis_File*>(&m_vf), -1);
 
+   CString desc;
    if (vi->bitrate_upper != -1 && vi->bitrate_lower != -1)
    {
       desc.Format(IDS_FORMAT_INFO_OGGV_INPUT_VBR,
@@ -129,6 +130,8 @@ void OggVorbisInputModule::GetDescription(CString& desc) const
          m_channels,
          m_samplerate);
    }
+
+   return desc;
 }
 
 CString OggVorbisInputModule::GetFilterString() const

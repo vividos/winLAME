@@ -48,9 +48,9 @@ bool BassWmaOutputModule::IsAvailable() const
    return bassLib.IsLoaded() && bassWmaLib.IsLoaded();
 }
 
-void BassWmaOutputModule::GetDescription(CString& desc) const
+CString BassWmaOutputModule::GetDescription() const
 {
-   // format string
+   CString desc;
    desc.Format(IDS_FORMAT_INFO_BASS_WMA_OUTPUT,
       m_bitrateMode == 1 ? _T("Quality ") : _T(""),
       m_bitrateMode == 1 ? m_quality : m_bitrateInBps / 1000,
@@ -58,6 +58,8 @@ void BassWmaOutputModule::GetDescription(CString& desc) const
       m_bitrateMode == 1 ? _T("VBR") : _T("CBR"),
       m_samplerateInHz,
       m_numChannels);
+
+   return desc;
 }
 
 void BassWmaOutputModule::PrepareOutput(SettingsManager& mgr)

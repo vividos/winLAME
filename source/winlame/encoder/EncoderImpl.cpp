@@ -462,10 +462,10 @@ bool EncoderImpl::InitOutputModule(const CString& tempOutputFilename, TrackInfo&
 
 void EncoderImpl::FormatEncodingDescription()
 {
-   CString inputDescription, containerInfo, outputDescription;
-   m_inputModule->GetDescription(inputDescription);
-   m_outputModule->GetDescription(outputDescription);
+   CString inputDescription = m_inputModule->GetDescription();
+   CString outputDescription = m_outputModule->GetDescription();
 
+   CString containerInfo;
 #ifdef _DEBUG
    // get sample container description
    containerInfo.Format(

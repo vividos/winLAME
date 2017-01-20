@@ -52,15 +52,18 @@ bool OpusInputModule::IsAvailable() const
    return true;
 }
 
-void OpusInputModule::GetDescription(CString& desc) const
+CString OpusInputModule::GetDescription() const
 {
    ATLASSERT(m_inputFile != nullptr);
 
    const OpusHead* header = op_head(m_inputFile.get(), 0);
 
+   CString desc;
    desc.Format(IDS_FORMAT_INFO_OPUS_INPUT,
       header->channel_count,
       header->input_sample_rate);
+
+   return desc;
 }
 
 void OpusInputModule::GetVersionString(CString& version, int special) const

@@ -39,9 +39,9 @@ Encoder::InputModule* CDReadoutModule::CloneModule()
    return new CDReadoutModule;
 }
 
-void CDReadoutModule::GetDescription(CString& desc) const
+CString CDReadoutModule::GetDescription() const
 {
-   SndFileInputModule::GetDescription(desc); // TODO add track data
+   return SndFileInputModule::GetDescription(); // TODO add track data
 }
 
 CString CDReadoutModule::GetFilterString() const

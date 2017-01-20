@@ -67,7 +67,7 @@ bool AacInputModule::IsAvailable() const
    return DynamicLibrary(_T("libfaad2.dll")).IsLoaded();
 }
 
-void AacInputModule::GetDescription(CString& desc) const
+CString AacInputModule::GetDescription() const
 {
    // determine object type
    LPCTSTR object = _T("???");
@@ -120,7 +120,7 @@ void AacInputModule::GetDescription(CString& desc) const
       break;
    }
 
-   // format info string
+   CString desc;
    desc.Format(IDS_FORMAT_INFO_AAC_INFO,
       m_info.version,
       object,
@@ -128,6 +128,8 @@ void AacInputModule::GetDescription(CString& desc) const
       m_info.sampling_rate,
       m_info.channels,
       header);
+
+   return desc;
 }
 
 void AacInputModule::GetVersionString(CString& version, int special) const

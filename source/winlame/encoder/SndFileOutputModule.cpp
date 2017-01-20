@@ -52,15 +52,18 @@ bool SndFileOutputModule::IsAvailable() const
    return avail;
 }
 
-void SndFileOutputModule::GetDescription(CString& desc) const
+CString SndFileOutputModule::GetDescription() const
 {
    CString formatName, outputExtension;
    SndFileFormats::GetFormatInfo(m_format, formatName, outputExtension);
 
+   CString desc;
    desc.Format(IDS_FORMAT_INFO_WAVE_OUTPUT,
       formatName.GetString(),
       m_sfinfo.samplerate,
       m_sfinfo.channels);
+
+   return desc;
 }
 
 CString SndFileOutputModule::GetOutputExtension() const

@@ -42,7 +42,7 @@ namespace Encoder
       virtual CString GetModuleName() const override { return _T("CD Audio Extraction"); }
 
       /// returns description of current file
-      virtual void GetDescription(CString& desc) const override;
+      virtual CString GetDescription() const override;
 
       /// returns filter string
       virtual CString GetFilterString() const override;

@@ -49,7 +49,7 @@ namespace Encoder
       virtual bool IsAvailable() const override;
 
       /// returns description of current file
-      virtual void GetDescription(CString& desc) const override { desc = m_description; }
+      virtual CString GetDescription() const override { return m_description; }
 
       /// returns version string
       virtual void GetVersionString(CString& version, int special = 0) const override;

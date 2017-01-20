@@ -45,7 +45,7 @@ namespace Encoder
       virtual bool IsAvailable() const override;
 
       /// returns description of current file
-      virtual void GetDescription(CString& desc) const override;
+      virtual CString GetDescription() const override;
 
       /// returns the extension the output module produces
       virtual CString GetOutputExtension() const override;
