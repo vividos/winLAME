@@ -977,6 +977,7 @@ BEGIN
     IDS_ENCODER_ERROR_ERRORINFO_FILENAME_S "Dateiname: "
     IDS_ENCODER_ERROR_ERRORINFO_SSI "[%s] %s (Fehlercode %i)"
     IDS_PLAYLIST_TASK_ERROR_CREATE_FILE "Fehler beim Erstellen der Playlist-Datei"
+    IDS_PLAYLIST_TASK_DESCRIPTION_SU "Schreibe Playlist-Datei %s mit %u Einträgen"
     IDS_FILTER_AAC_INPUT          "AAC-Dateien [*.aac, *.m4a]|*.aac;*.m4a|"
     IDS_FILTER_BASS_INPUT         "Modul-Dateien [*.mod, *.s3m, *.xm, *.it, *.mtm, *.mo3, *.umx]|*.mod;*.s3m;*.xm;*.it;*.mtm;*.mo3;*.umx|"
     IDS_FILTER_BASS_WMA_INPUT     "Windows Media Audio-Dateien [*.wma, *.asf]|*.wma;*.asf|"

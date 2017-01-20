@@ -67,6 +67,11 @@ TaskInfo CreatePlaylistTask::GetTaskInfo()
    TaskInfo info(Id(), TaskInfo::taskWritePlaylist);
 
    info.Name(_T("Playlist: ") + Path(m_playlistFilename).FilenameAndExt());
+
+   CString description;
+   description.Format(IDS_PLAYLIST_TASK_DESCRIPTION_SU, m_playlistFilename, m_playlistEntries.size());
+   info.Description(description);
+
    info.Progress(m_finished || m_stopped ? 100 : 0);
    info.Status(m_finished || m_stopped ? TaskInfo::statusCompleted : TaskInfo::statusWaiting);
 
