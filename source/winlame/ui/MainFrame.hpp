@@ -149,6 +149,21 @@ private:
    LRESULT OnHelp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 private:
+   /// sets up command bar
+   void SetupCmdBar();
+
+   /// sets up ribbon bar
+   void SetupRibbonBar();
+
+   /// sets up toolbar
+   void SetupToolbar();
+
+   /// sets up status bar
+   void SetupStatusBar();
+
+   /// sets up view
+   void SetupView();
+
    /// collects command line files and opens input files page when necessary
    void GetCommandLineFiles();
 

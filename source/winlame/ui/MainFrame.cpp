@@ -103,14 +103,11 @@ void EnableButtonText(CToolBarCtrl& tb, UINT uiId)
 
 LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   // create command bar window
-   HWND hWndCmdBar = m_CmdBar.Create(m_hWnd, rcDefault, NULL, ATL_SIMPLE_CMDBAR_PANE_STYLE);
-   // attach menu
-   m_CmdBar.AttachMenu(GetMenu());
-   // load command bar images
-   m_CmdBar.LoadImages(IDR_MAINFRAME);
-   // remove old menu
-   SetMenu(NULL);
+   SetupCmdBar();
+   SetupRibbonBar();
+   SetupToolbar();
+   SetupStatusBar();
+   SetupView();
 
    // set caption
    CString cszCaption;
@@ -118,100 +115,13 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    cszCaption += _T(" ") + App::Version();
    SetWindowText(cszCaption);
 
-   // check if ribbon is available
-   bool bRibbonUI = RunTimeHelper::IsRibbonUIAvailable();
-
-   if (bRibbonUI)
-   {
-      UIAddMenu(m_CmdBar.GetMenu(), true);
-
-      CRibbonPersist(c_pszRibbonRegkey).Restore(bRibbonUI, m_hgRibbonSettings);
-   }
-   else
-      CMenuHandle(m_CmdBar.GetMenu()).DeleteMenu(ID_VIEW_RIBBON, MF_BYCOMMAND);
-
-   // remove, it's only in the menu to provide a caption for the ribbon dropdown gallery
-   m_CmdBar.GetMenu().RemoveMenu(ID_SETTINGS_FINISH_ACTION, MF_BYCOMMAND);
-
-   // toolbar setup
-   {
-      HWND hWndToolBar;
-      {
-         // switch to module handle, since toolbar isn't in translated language dll
-         ResourceInstanceSwitcher sw(::_Module.GetModuleInstance());
-
-         hWndToolBar = CreateSimpleToolBarCtrl(m_hWnd, IDR_MAINFRAME, FALSE,
-            ATL_SIMPLE_TOOLBAR_PANE_STYLE | BTNS_SHOWTEXT | TBSTYLE_LIST);
-      }
-
-      CreateSimpleReBar(ATL_SIMPLE_REBAR_NOBORDER_STYLE);
-      AddSimpleReBarBand(hWndCmdBar);
-      AddSimpleReBarBand(hWndToolBar, NULL, TRUE);
-
-      CToolBarCtrl tb(hWndToolBar);
-      tb.SetExtendedStyle(TBSTYLE_EX_MIXEDBUTTONS);
-
-      EnableButtonText(tb, ID_ENCODE_FILES);
-      EnableButtonText(tb, ID_ENCODE_CD);
-
-      if (!InputCDPage::IsCDExtractionAvail())
-         UIEnable(ID_ENCODE_CD, FALSE);
-
-      EnableButtonText(tb, ID_FEEDBACK_POSITIVE);
-      EnableButtonText(tb, ID_FEEDBACK_NEGATIVE);
-
-      UIAddToolBar(hWndToolBar);
-   }
-
-   CreateSimpleStatusBar();
-/* TODO status bar panes
-   m_statusBar.SubclassWindow(m_hWndStatusBar);
-   int arrParts[] =
-   {
-      ID_DEFAULT_PANE,
-      ID_ROW_PANE,
-      ID_COL_PANE
-   };
-   m_statusBar.SetPanes(arrParts, sizeof(arrParts) / sizeof(int), false);
-*/
-   {
-      m_splitter.Create(*this, rcDefault);
-
-      m_tasksView.Create(m_splitter, rcDefault);
-      m_tasksView.SetFont(AtlGetDefaultGuiFont());
-
-      m_tasksView.Init();
-      m_tasksView.SetClickedTaskHandler(std::bind(&MainFrame::OnClickedTaskItem, this, std::placeholders::_1));
-
-      m_paneTaskDetails.Create(m_splitter, IDS_MAIN_TASKS_PANE_CONTAINER);
-      m_paneTaskDetails.SetPaneContainerExtendedStyle(PANECNT_NOCLOSEBUTTON);
-
-      m_taskDetailsView.Create(m_paneTaskDetails, rcDefault, nullptr,
-         WS_CHILD | WS_VISIBLE | ES_READONLY | ES_MULTILINE);
-      m_taskDetailsView.SetFont(AtlGetDefaultGuiFont());
-
-      m_paneTaskDetails.SetClient(m_taskDetailsView);
-
-      m_splitter.SetSplitterPanes(m_tasksView, m_paneTaskDetails);
-      m_splitter.SetSplitterExtendedStyle(SPLIT_BOTTOMALIGNED | SPLIT_NONINTERACTIVE);
-      m_splitter.SetActivePane(SPLIT_PANE_TOP);
-      m_splitter.SetDefaultActivePane(SPLIT_PANE_TOP);
-
-      m_hWndClient = m_splitter;
-      UpdateLayout();
-
-      CRect rectFrame;
-      m_splitter.GetWindowRect(rectFrame);
-
-      m_splitter.SetSplitterPos(rectFrame.Height() - 85);
-   }
-
    // register object for message filtering and idle updates
    CMessageLoop* pLoop = _Module.GetMessageLoop();
    ATLASSERT(pLoop != NULL);
    pLoop->AddMessageFilter(this);
    pLoop->AddIdleHandler(this);
 
+   bool bRibbonUI = RunTimeHelper::IsRibbonUIAvailable();
    ShowRibbonUI(bRibbonUI);
    UISetCheck(ID_VIEW_RIBBON, bRibbonUI);
 
@@ -232,6 +142,113 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
       m_CmdBar.GetMenu().RemoveMenu(ID_HELP, MF_BYCOMMAND);
 
    return 0;
+}
+
+void MainFrame::SetupCmdBar()
+{
+   m_CmdBar.Create(m_hWnd, rcDefault, nullptr, ATL_SIMPLE_CMDBAR_PANE_STYLE);
+
+   m_CmdBar.AttachMenu(GetMenu());
+   m_CmdBar.LoadImages(IDR_MAINFRAME);
+
+   // remove old menu
+   SetMenu(nullptr);
+}
+
+void MainFrame::SetupRibbonBar()
+{
+   // check if ribbon is available
+   bool bRibbonUI = RunTimeHelper::IsRibbonUIAvailable();
+
+   if (bRibbonUI)
+   {
+      UIAddMenu(m_CmdBar.GetMenu(), true);
+
+      CRibbonPersist(c_pszRibbonRegkey).Restore(bRibbonUI, m_hgRibbonSettings);
+   }
+   else
+      CMenuHandle(m_CmdBar.GetMenu()).DeleteMenu(ID_VIEW_RIBBON, MF_BYCOMMAND);
+
+   // remove, it's only in the menu to provide a caption for the ribbon dropdown gallery
+   m_CmdBar.GetMenu().RemoveMenu(ID_SETTINGS_FINISH_ACTION, MF_BYCOMMAND);
+}
+
+void MainFrame::SetupToolbar()
+{
+   HWND hWndToolBar;
+   {
+      // switch to module handle, since toolbar isn't in translated language dll
+      ResourceInstanceSwitcher sw(::_Module.GetModuleInstance());
+
+      hWndToolBar = CreateSimpleToolBarCtrl(m_hWnd, IDR_MAINFRAME, FALSE,
+         ATL_SIMPLE_TOOLBAR_PANE_STYLE | BTNS_SHOWTEXT | TBSTYLE_LIST);
+   }
+
+   CreateSimpleReBar(ATL_SIMPLE_REBAR_NOBORDER_STYLE);
+   AddSimpleReBarBand(m_CmdBar);
+   AddSimpleReBarBand(hWndToolBar, NULL, TRUE);
+
+   CToolBarCtrl tb(hWndToolBar);
+   tb.SetExtendedStyle(TBSTYLE_EX_MIXEDBUTTONS);
+
+   EnableButtonText(tb, ID_ENCODE_FILES);
+   EnableButtonText(tb, ID_ENCODE_CD);
+
+   if (!InputCDPage::IsCDExtractionAvail())
+      UIEnable(ID_ENCODE_CD, FALSE);
+
+   EnableButtonText(tb, ID_FEEDBACK_POSITIVE);
+   EnableButtonText(tb, ID_FEEDBACK_NEGATIVE);
+
+   UIAddToolBar(hWndToolBar);
+}
+
+void MainFrame::SetupStatusBar()
+{
+   CreateSimpleStatusBar();
+/* TODO status bar panes
+   m_statusBar.SubclassWindow(m_hWndStatusBar);
+   int arrParts[] =
+   {
+      ID_DEFAULT_PANE,
+      ID_ROW_PANE,
+      ID_COL_PANE
+   };
+   m_statusBar.SetPanes(arrParts, sizeof(arrParts) / sizeof(int), false);
+*/
+}
+
+void MainFrame::SetupView()
+{
+   m_splitter.Create(*this, rcDefault);
+
+   m_tasksView.Create(m_splitter, rcDefault);
+   m_tasksView.SetFont(AtlGetDefaultGuiFont());
+
+   m_tasksView.Init();
+   m_tasksView.SetClickedTaskHandler(std::bind(&MainFrame::OnClickedTaskItem, this, std::placeholders::_1));
+
+   m_paneTaskDetails.Create(m_splitter, IDS_MAIN_TASKS_PANE_CONTAINER);
+   m_paneTaskDetails.SetPaneContainerExtendedStyle(PANECNT_NOCLOSEBUTTON);
+
+   m_taskDetailsView.Create(m_paneTaskDetails, rcDefault, nullptr,
+      WS_CHILD | WS_VISIBLE | ES_READONLY | ES_MULTILINE);
+   m_taskDetailsView.SetFont(AtlGetDefaultGuiFont());
+
+   m_paneTaskDetails.SetClient(m_taskDetailsView);
+
+   m_splitter.SetSplitterPanes(m_tasksView, m_paneTaskDetails);
+   m_splitter.SetSplitterExtendedStyle(SPLIT_BOTTOMALIGNED | SPLIT_NONINTERACTIVE);
+   m_splitter.SetActivePane(SPLIT_PANE_TOP);
+   m_splitter.SetDefaultActivePane(SPLIT_PANE_TOP);
+
+   m_hWndClient = m_splitter;
+   UpdateLayout();
+
+   CRect rectFrame;
+   m_splitter.GetWindowRect(rectFrame);
+
+   m_splitter.SetSplitterPos(rectFrame.Height() - 85);
 }
 
 LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
