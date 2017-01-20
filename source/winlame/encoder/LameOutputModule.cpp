@@ -431,12 +431,10 @@ int LameOutputModule::SetEncodingParameters(SettingsManager& mgr)
    else if (encodingQuality == 2)
       nlame_var_set_int(m_instance, nle_var_quality, nlame_var_get_int(m_instance, nle_var_quality_value_high));
 
-   // always use replay gain
+   // always use replay gain, and decode on-the-fly to get the peak sample
+   // the result is written into the LAME VBR Info tag
    nlame_var_set_int(m_instance, nle_var_find_replay_gain, 1);
-   // note: decode on the fly is not supported, since nLAME.dll doesn't have the
-   //       decoder compiled in; so no --replaygain-accurate for now
-   // TODO
-   //   nlame_var_set_int(m_instance,nle_var_decode_on_the_fly,0);
+   nlame_var_set_int(m_instance, nle_var_decode_on_the_fly, 1);
 
    // init more settings in nlame
    return nlame_init_params(m_instance);
