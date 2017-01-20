@@ -45,6 +45,7 @@ App* App::s_pApp = NULL;
 App::App(HINSTANCE hInstance)
 :m_langResourceManager(_T("winlame.*.dll"), IDS_LANG_ENGLISH, IDS_LANG_NATIVE),
 m_alreadyReadCommandLine(false),
+m_helpAvailable(false),
 m_exit(false)
 {
    s_pApp = this;
@@ -94,6 +95,11 @@ m_exit(false)
    // set language to use
    if (m_langResourceManager.IsLangResourceAvail(m_settings.language_id))
       m_langResourceManager.LoadLangResource(m_settings.language_id);
+
+   // check if html help file is available
+   m_helpFilename = Path::Combine(App::AppFolder(), "winLAME.chm").ToString();
+
+   m_helpAvailable = Path(m_helpFilename).FileExists();
 }
 
 App::~App()

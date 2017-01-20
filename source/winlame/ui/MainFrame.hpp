@@ -24,6 +24,7 @@
 // includes
 #include "TasksView.hpp"
 #include "Win7Taskbar.hpp"
+#include "HtmlHelper.hpp"
 #include <boost/optional.hpp>
 
 #define WM_CHECK_COMMAND_LINE WM_APP+2
@@ -100,6 +101,8 @@ public:
       COMMAND_ID_HANDLER(ID_FEEDBACK_POSITIVE, OnFeedbackPositive)
       COMMAND_ID_HANDLER(ID_FEEDBACK_NEGATIVE, OnFeedbackNegative)
       COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
+      COMMAND_ID_HANDLER(ID_HELP, OnHelpCommand)
+      MESSAGE_HANDLER(WM_HELP, OnHelp)
       CHAIN_MSG_MAP(BaseClass)
       REFLECT_NOTIFICATIONS()
    END_MSG_MAP()
@@ -138,6 +141,12 @@ private:
    LRESULT OnFeedbackNegative(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+   /// called when the help command has been invoked
+   LRESULT OnHelpCommand(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when pressing F1
+   LRESULT OnHelp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
 private:
    /// collects command line files and opens input files page when necessary
@@ -184,6 +193,9 @@ private:
 
    /// current encoding finish action
    T_enEncodingFinishAction m_encodingFinishAction;
+
+   /// html help object
+   HtmlHelper m_htmlHelper;
 };
 
 } // namespace UI

@@ -225,6 +225,12 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
    PostMessage(WM_CHECK_COMMAND_LINE);
 
+   // check if help is available
+   if (App::Current().IsHelpAvailable())
+      m_htmlHelper.Init(m_hWnd, App::Current().HelpFilename());
+   else
+      m_CmdBar.GetMenu().RemoveMenu(ID_HELP, MF_BYCOMMAND);
+
    return 0;
 }
 
@@ -427,6 +433,22 @@ LRESULT MainFrame::OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 
    dlg.DoModal();
    return 0;
+}
+
+LRESULT MainFrame::OnHelpCommand(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   if (!App::Current().IsHelpAvailable())
+      return 0;
+
+   m_htmlHelper.DisplayTopic(_T("/html/pages/modernui.html"));
+
+   return 0;
+}
+
+LRESULT MainFrame::OnHelp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
+{
+   // same as pressing the help icon
+   return OnHelpCommand(0, 0, 0, bHandled);
 }
 
 void MainFrame::GetCommandLineFiles()

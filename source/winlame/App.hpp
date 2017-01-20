@@ -44,6 +44,12 @@ public:
    /// dtor
    ~App();
 
+   /// returns if help file is available
+   bool IsHelpAvailable() const throw() { return m_helpAvailable; }
+
+   /// returns help filename
+   CString HelpFilename() const { return m_helpFilename; }
+
    /// indicates if command line was already read by main dialog
    bool AlreadyReadCommandLine() const throw() { return m_alreadyReadCommandLine; }
 
@@ -105,6 +111,12 @@ private:
 
    /// module manager
    std::shared_ptr<Encoder::ModuleManager> m_spModuleManager;
+
+   /// indicates if help file is available
+   bool m_helpAvailable;
+
+   /// help filename
+   CString m_helpFilename;
 
    /// indicates if command line was already read by main dialog
    bool m_alreadyReadCommandLine;

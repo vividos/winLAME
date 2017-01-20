@@ -49,7 +49,6 @@ MainDlg::MainDlg(UISettings& settings_, LanguageResourceManager& langResourceMan
    :m_bKeyDownEscape(false),
    settings(settings_),
    m_langResourceManager(langResourceManager),
-   m_helpAvailable(false),
    m_isAppModeChanged(false)
 {
    m_sizeDialog = CSize(0, 0);
@@ -133,12 +132,9 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    CButton negativeButton(GetDlgItem(ID_FEEDBACK_NEGATIVE));
    negativeButton.SetIcon(feedbackIcons.ExtractIcon(10));
 
-   // check if html help file is available
-   CString helpFilename = Path::Combine(App::AppFolder(), "winLAME.chm");
-
-   m_helpAvailable = Path(helpFilename).FileExists();
-   if (m_helpAvailable)
-      m_htmlHelper.Init(m_hWnd, helpFilename);
+   // check if help is available
+   if (App::Current().IsHelpAvailable())
+      m_htmlHelper.Init(m_hWnd, App::Current().HelpFilename());
    else
       GetDlgItem(IDC_MDLG_HELP).ShowWindow(SW_HIDE);
 
@@ -197,16 +193,17 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
 
 LRESULT MainDlg::OnHelpButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-   if (m_helpAvailable)
-   {
-      // load the string with the help string ID
-      CString helpPath;
-      helpPath.LoadString(pages[currentpage]->helpID);
+   if (!App::Current().IsHelpAvailable())
+      return 0;
 
-      // display help topic
-      if (!helpPath.IsEmpty())
-         m_htmlHelper.DisplayTopic(helpPath);
-   }
+   // load the string with the help string ID
+   CString helpPath;
+   helpPath.LoadString(pages[currentpage]->helpID);
+
+   // display help topic
+   if (!helpPath.IsEmpty())
+      m_htmlHelper.DisplayTopic(helpPath);
+
    return 0;
 }
 

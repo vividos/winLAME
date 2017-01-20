@@ -295,9 +295,6 @@ namespace ClassicUI
       /// help icon
       CImageList m_helpIcon;
 
-      /// indicates if help file is available
-      bool m_helpAvailable;
-
       /// html help object
       HtmlHelper m_htmlHelper;
 
