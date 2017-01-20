@@ -11,6 +11,10 @@
 
       <Command Name="winlame_SETTINGS_GENERAL" Symbol="ID_SETTINGS_GENERAL" Id="94"/>
       <Command Name="winlame_SETTINGS_FREEDB" Symbol="ID_SETTINGS_FREEDB" Id="95"/>
+      <Command Name="winlame_SETTINGS_FINISH_ACTION" Symbol="ID_SETTINGS_FINISH_ACTION" Id="200"/>
+      <Command Name="winlame_SETTINGS_FINISH_ACTION_NONE" Symbol="ID_SETTINGS_FINISH_ACTION_NONE" Id="201"/>
+      <Command Name="winlame_SETTINGS_FINISH_ACTION_CLOSE" Symbol="ID_SETTINGS_FINISH_ACTION_CLOSE" Id="202"/>
+      <Command Name="winlame_SETTINGS_FINISH_ACTION_STANDBY" Symbol="ID_SETTINGS_FINISH_ACTION_STANDBY" Id="203"/>
 
       <Command Name="winlame_VIEW_SWITCH_CLASSIC" Symbol="ID_VIEW_SWITCH_CLASSIC" Id="96"/>
 
@@ -101,9 +105,18 @@
                   <Button CommandName="winlame_TASKS_REMOVE_COMPLETED"/>
                </Group>
 
-               <Group CommandName="GroupSettings" SizeDefinition="TwoButtons">
+               <Group CommandName="GroupSettings" SizeDefinition="ThreeButtons">
                   <Button CommandName="winlame_SETTINGS_GENERAL"/>
                   <Button CommandName="winlame_SETTINGS_FREEDB"/>
+                  <DropDownGallery CommandName="winlame_SETTINGS_FINISH_ACTION"
+                                   HasLargeItems="false"
+                                   TextPosition="Right">
+                    <DropDownGallery.MenuLayout>
+                      <VerticalMenuLayout
+                        Gripper="None"
+                        Rows="3" />
+                    </DropDownGallery.MenuLayout>
+                  </DropDownGallery>
                </Group>
 
               <Group CommandName="GroupView" SizeDefinition="TwoButtons">
