@@ -23,6 +23,8 @@
 
 // includes
 #include "TaskInfo.hpp"
+#include <atlgdix.h>
+#include "ListViewNoFlicker.h"
 
 // forward references
 class TaskManager;
@@ -30,12 +32,16 @@ class TaskManager;
 namespace UI
 {
 /// win traits for tasks view
-typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER, 0, CControlWinTraits>
+typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER, LVS_EX_DOUBLEBUFFER, CControlWinTraits>
    TasksViewWinTraits;
 
 /// tasks view; shows all currently running tasks
-class TasksView : public CWindowImpl<TasksView, CListViewCtrl, TasksViewWinTraits>
+class TasksView :
+   public CWindowImpl<TasksView, CListViewCtrl, TasksViewWinTraits>,
+   public CListViewNoFlickerT<TasksView>
 {
+   typedef CListViewNoFlickerT<TasksView> noFlickerClass;
+
 public:
    /// function type of handler called when a task item was clicked
    typedef std::function<void(size_t clickedIndex)> T_fnOnClickedTask;
@@ -64,10 +70,15 @@ public:
 
 private:
    BEGIN_MSG_MAP(TasksView)
+      MESSAGE_HANDLER(WM_CREATE, OnCreate)
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       MESSAGE_HANDLER(WM_TIMER, OnTimer)
+      MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBackground)
       REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnItemClick)
+      CHAIN_MSG_MAP_ALT(noFlickerClass, 1)
    END_MSG_MAP()
+
+   LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 

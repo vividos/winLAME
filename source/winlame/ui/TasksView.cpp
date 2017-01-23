@@ -52,9 +52,23 @@ BOOL TasksView::PreTranslateMessage(MSG* /*msg*/)
    return FALSE;
 }
 
+LRESULT TasksView::OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+   LRESULT lRet = DefWindowProc(uMsg, wParam, lParam);
+
+   noFlickerClass::Initialize(this->GetHeader());
+
+   // already called DefWindowProc
+   bHandled = TRUE;
+   return lRet;
+}
+
 LRESULT TasksView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
+   noFlickerClass::Uninitialize();
+
    KillTimer(c_timerIdUpdateList);
+
    return 0;
 }
 
@@ -73,7 +87,11 @@ LRESULT TasksView::OnItemClick(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
    if (lpnmitem->iItem >= 0 &&
       m_fnOnClickedTask != nullptr)
    {
-      m_fnOnClickedTask(static_cast<unsigned int>(lpnmitem->iItem));
+      unsigned int itemIndex = static_cast<unsigned int>(lpnmitem->iItem);
+
+      m_fnOnClickedTask(itemIndex);
+
+      SetItemState(itemIndex, LVIS_SELECTED, LVIS_SELECTED);
    }
 
    return 0;
@@ -102,8 +120,6 @@ void TasksView::Init()
 
 void TasksView::UpdateTasks()
 {
-   RedrawLock lock(*this);
-
    std::set<int> selectedTaskIds;
 
    int selectedItemIndex = GetNextItem(-1, LVNI_SELECTED);
@@ -114,6 +130,9 @@ void TasksView::UpdateTasks()
       selectedItemIndex = GetNextItem(selectedItemIndex, LVNI_SELECTED);
    }
 
+   std::set<int> itemIndicesToSelect;
+
+   RedrawLock lock(*this);
    DeleteAllItems();
 
    std::vector<TaskInfo> taskInfoList = m_taskManager.CurrentTasks();
@@ -126,9 +145,9 @@ void TasksView::UpdateTasks()
       return;
    }
 
-   for (size_t iInfos = 0, iMaxInfos = taskInfoList.size(); iInfos < iMaxInfos; iInfos++)
+   for (size_t infoIndex = 0, maxInfoIndex = taskInfoList.size(); infoIndex < maxInfoIndex; infoIndex++)
    {
-      const TaskInfo& info = taskInfoList[iInfos];
+      const TaskInfo& info = taskInfoList[infoIndex];
 
       int itemIndex = InsertItem(GetItemCount(), info.Name(), IconFromTaskType(info));
       SetItemData(itemIndex, info.Id());
@@ -144,8 +163,14 @@ void TasksView::UpdateTasks()
       // select item when previously selected
       if (selectedTaskIds.find(info.Id()) != selectedTaskIds.end())
       {
-         SetItemState(itemIndex, LVIS_SELECTED, LVIS_SELECTED);
+         itemIndicesToSelect.insert(itemIndex);
       }
+   }
+
+   for (auto iter = itemIndicesToSelect.begin(); iter != itemIndicesToSelect.end(); iter++)
+   {
+      int itemIndex = *iter;
+      SetItemState(itemIndex, LVIS_SELECTED, LVIS_SELECTED);
    }
 }
 
