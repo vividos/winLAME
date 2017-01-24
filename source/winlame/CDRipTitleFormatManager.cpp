@@ -22,6 +22,15 @@
 #include "stdafx.h"
 #include "CDRipTitleFormatManager.hpp"
 #include "CDRipTrackManager.hpp"
+#include "UISettings.hpp"
+
+CString CDRipTitleFormatManager::FormatTitle(UISettings& settings,
+   const CDRipDiscInfo& discInfo, const CDRipTrackInfo& trackInfo)
+{
+   return FormatTitle(
+      discInfo.m_variousArtists ? settings.cdrip_format_various_track : settings.cdrip_format_album_track,
+      discInfo, trackInfo);
+}
 
 CString CDRipTitleFormatManager::FormatTitle(const CString& format,
    const CDRipDiscInfo& discInfo, const CDRipTrackInfo& trackInfo)

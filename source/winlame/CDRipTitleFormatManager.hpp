@@ -26,11 +26,15 @@
 // forward references
 struct CDRipDiscInfo;
 struct CDRipTrackInfo;
+struct UISettings;
 
 /// Manager to help formatting titles while CD ripping
 class CDRipTitleFormatManager
 {
 public:
+   static CString FormatTitle(UISettings& settings,
+      const CDRipDiscInfo& discInfo, const CDRipTrackInfo& trackInfo);
+
    /// formats a track title for CD ripping
    static CString FormatTitle(const CString& format,
       const CDRipDiscInfo& discInfo, const CDRipTrackInfo& trackInfo);

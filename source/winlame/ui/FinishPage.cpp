@@ -184,9 +184,7 @@ void FinishPage::UpdateInputTracksList()
          if (!trackInfo.m_isActive)
             continue;
 
-         CString title = CDRipTitleFormatManager::FormatTitle(
-            discInfo.m_variousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
-            discInfo, trackInfo);
+         CString title = CDRipTitleFormatManager::FormatTitle(m_uiSettings, discInfo, trackInfo);
 
          m_listInputTracks.InsertItem(jobIndex, title, 2); // icon 2: CD extraction
       }

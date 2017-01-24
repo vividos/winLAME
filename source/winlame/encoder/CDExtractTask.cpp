@@ -40,9 +40,7 @@ CDExtractTask::CDExtractTask(unsigned int dependentTaskId, const CDRipDiscInfo& 
    m_finished(false),
    m_progressInPercent(0)
 {
-   m_title = CDRipTitleFormatManager::FormatTitle(
-      m_discinfo.m_variousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
-      m_discinfo, m_trackinfo);
+   m_title = CDRipTitleFormatManager::FormatTitle(m_uiSettings, m_discinfo, m_trackinfo);
 
    if (m_trackinfo.m_rippedFilename.IsEmpty())
    {

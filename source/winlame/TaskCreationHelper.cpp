@@ -231,14 +231,11 @@ void TaskCreationHelper::AddCDExtractTasks()
       {
          // when outputting to CD format, we can store the wave file directly without writing
          // to temp storage first
-         CString title = CDRipTitleFormatManager::FormatTitle(
-            discInfo.m_variousArtists ? m_uiSettings.cdrip_format_various_track : m_uiSettings.cdrip_format_album_track,
-            discInfo, trackInfo);
+         CString title = CDRipTitleFormatManager::FormatTitle(m_uiSettings, discInfo, trackInfo);
 
-         trackInfo.m_rippedFilename =
-            (const CString&)Path::Combine(
-               m_uiSettings.m_defaultSettings.outputdir,
-               title + _T(".wav"));
+         trackInfo.m_rippedFilename = Path::Combine(
+            m_uiSettings.m_defaultSettings.outputdir,
+            title + _T(".wav")).ToString();
       }
 
       std::shared_ptr<Encoder::CDExtractTask> spCDExtractTask(new Encoder::CDExtractTask(lastCDReadTaskId, discInfo, trackInfo));
