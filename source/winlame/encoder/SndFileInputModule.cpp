@@ -331,7 +331,7 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
 
    // RIFF format type
    fread(buffer, 4, 1, wav);
-   ATLTRACE(_T("RIFF type: %s, length 0x%08x\n"), buffer, length);
+   ATLTRACE(_T("RIFF type: %hs, length 0x%08x\n"), buffer, length);
    if (stricmp(buffer, "wave") != 0)
       return false;
 
@@ -340,7 +340,7 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
    {
       // chunk type
       fread(buffer, 4, 1, wav);
-      ATLTRACE(_T("chunk %s, "), buffer);
+      ATLTRACE(_T("chunk %hs, "), buffer);
 
       if (strncmp(buffer, "TAG", 3) == 0)
          break;
