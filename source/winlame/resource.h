@@ -24,6 +24,7 @@
 #define ID_VIEW_SWITCH_CLASSIC                  96
 #define ID_FEEDBACK_POSITIVE                    97
 #define ID_FEEDBACK_NEGATIVE                    98
+#define ID_VIEW_SWITCH_MODERN                   99
 #define IDD_MAINDLG                             100
 #define IDD_ABOUTDLG                            101
 #define IDD_DLG_INPUT                           102

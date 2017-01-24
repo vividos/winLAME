@@ -127,10 +127,13 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    feedbackIcons.Add(bmpIcons, RGB(0, 0, 0));
 
    CButton positiveButton(GetDlgItem(ID_FEEDBACK_POSITIVE));
-   positiveButton.SetIcon(feedbackIcons.ExtractIcon(9));
+   positiveButton.SetIcon(feedbackIcons.ExtractIcon(8));
 
    CButton negativeButton(GetDlgItem(ID_FEEDBACK_NEGATIVE));
-   negativeButton.SetIcon(feedbackIcons.ExtractIcon(10));
+   negativeButton.SetIcon(feedbackIcons.ExtractIcon(9));
+
+   CButton switchModernButton(GetDlgItem(ID_VIEW_SWITCH_MODERN));
+   switchModernButton.SetIcon(feedbackIcons.ExtractIcon(7));
 
    // check if help is available
    if (App::Current().IsHelpAvailable())
@@ -191,6 +194,12 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
    return 1;  // let the system set the focus
 }
 
+LRESULT MainDlg::OnViewSwitchToModern(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   SwitchToModernMode();
+   return 0;
+}
+
 LRESULT MainDlg::OnHelpButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
    if (!App::Current().IsHelpAvailable())
@@ -241,12 +250,7 @@ LRESULT MainDlg::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
       else
          if ((wParam & 0xFFF0) == IDM_APPMODE)
          {
-            m_isAppModeChanged = true;
-
-            settings.m_appMode = UISettings::modernMode;
-            settings.StoreSettings();
-
-            PostQuitMessage(0);
+            SwitchToModernMode();
          }
          else
             bHandled = false;
@@ -441,4 +445,14 @@ LRESULT MainDlg::OnSize(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, BOOL& bHand
    }
 
    return 0;
+}
+
+void MainDlg::SwitchToModernMode()
+{
+   m_isAppModeChanged = true;
+
+   settings.m_appMode = UISettings::modernMode;
+   settings.StoreSettings();
+
+   PostQuitMessage(0);
 }

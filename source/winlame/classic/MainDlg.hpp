@@ -49,6 +49,9 @@ namespace ClassicUI
       /// runs the winLAME dialog
       void RunDialog();
 
+      /// switches to Modern UI mode
+      void SwitchToModernMode();
+
       /// returns if the dialog has been closed to change the app mode to modern mode
       bool IsAppModeChanged() const throw() { return m_isAppModeChanged; }
 
@@ -66,6 +69,7 @@ namespace ClassicUI
          DLGRESIZE_CONTROL(IDC_MDLG_HELP, DLSZ_MOVE_Y)
          DLGRESIZE_CONTROL(ID_FEEDBACK_POSITIVE, DLSZ_MOVE_Y)
          DLGRESIZE_CONTROL(ID_FEEDBACK_NEGATIVE, DLSZ_MOVE_Y)
+         DLGRESIZE_CONTROL(ID_VIEW_SWITCH_MODERN, DLSZ_MOVE_Y)
       END_DLGRESIZE_MAP()
 
       // message map
@@ -82,6 +86,7 @@ namespace ClassicUI
          COMMAND_HANDLER(IDC_MDLG_BACK, 1, OnButtonBack) // from accelerator keys
          COMMAND_HANDLER(IDC_MDLG_NEXT, 1, OnButtonNext)
          COMMAND_HANDLER(IDC_INPUT_BUTTON_INFILESEL, 1, OnSendToPage)
+         COMMAND_ID_HANDLER(ID_VIEW_SWITCH_MODERN, OnViewSwitchToModern)
          MESSAGE_HANDLER(WM_HELP, OnHelp)
          MESSAGE_HANDLER(WM_DRAWITEM, OnDrawItem)
          MESSAGE_HANDLER(WM_SYSCOMMAND, OnSysCommand)
@@ -183,6 +188,9 @@ namespace ClassicUI
          pageWnd->SendMessage(WM_COMMAND, MAKEWPARAM(wID, BN_CLICKED), (LPARAM)hWndCtl);
          return 0;
       }
+
+      /// called when clicking the "switch to Modern UI" button
+      LRESULT OnViewSwitchToModern(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
       /// called on clicking on the help button
       LRESULT OnHelpButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
