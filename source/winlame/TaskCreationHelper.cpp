@@ -233,9 +233,11 @@ void TaskCreationHelper::AddCDExtractTasks()
          // to temp storage first
          CString title = CDRipTitleFormatManager::FormatTitle(m_uiSettings, discInfo, trackInfo);
 
+         CString titleFilename = CDRipTitleFormatManager::GetFilenameByTitle(title);
+
          trackInfo.m_rippedFilename = Path::Combine(
             m_uiSettings.m_defaultSettings.outputdir,
-            title + _T(".wav")).ToString();
+            titleFilename + _T(".wav")).ToString();
       }
 
       std::shared_ptr<Encoder::CDExtractTask> spCDExtractTask(new Encoder::CDExtractTask(lastCDReadTaskId, discInfo, trackInfo));
@@ -257,7 +259,14 @@ void TaskCreationHelper::AddCDExtractTasks()
          std::shared_ptr<Encoder::EncoderTask> spEncoderTask =
             CreateEncoderTaskForCDReadJob(cdReadTaskId, cdReadJob, nogapInstanceId, isLastTrack);
 
-         cdReadJob.OutputFilename(spEncoderTask->GenerateOutputFilename(cdReadJob.Title()));
+         CString titleFilename = CDRipTitleFormatManager::GetFilenameByTitle(cdReadJob.Title());
+
+         CString inputFilenameFromTitle =
+            Path::Combine(
+               Path(cdReadJob.OutputFilename()).FolderName(),
+               titleFilename + _T(".wav"));
+
+         cdReadJob.OutputFilename(spEncoderTask->GenerateOutputFilename(inputFilenameFromTitle));
 
          taskMgr.AddTask(spEncoderTask);
 
