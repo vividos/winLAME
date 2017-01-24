@@ -54,6 +54,11 @@ struct id3_file {
   struct filetag *tags;
 };
 
+bool File::IsValid() const throw()
+{
+   return m_spFile != NULL;
+}
+
 bool File::HasID3v1Tag() const throw()
 {
    if (m_spFile == NULL)

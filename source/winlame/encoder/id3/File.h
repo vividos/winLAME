@@ -36,6 +36,9 @@ public:
    File(const CString& cszFilename, bool bReadOnly);
    ~File(){}
 
+   /// returns if file is valid
+   bool IsValid() const throw();
+
    /// returns if a ID3v1 tag is present
    bool HasID3v1Tag() const throw();
 
