@@ -637,6 +637,17 @@ void LameOutputModule::WriteID3v2Tag()
       tag.AttachFrame(frame);
    }
 
+   textValue = trackInfo.TextInfo(TrackInfoDiscArtist, isAvail);
+   if (isAvail)
+   {
+      tag.RemoveFrame(ID3::FrameId::AlbumArtist);
+
+      ID3::Frame frame(ID3::FrameId::AlbumArtist);
+      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
+      frame.SetString(1, textValue);
+      tag.AttachFrame(frame);
+   }
+
    textValue = trackInfo.TextInfo(TrackInfoComment, isAvail);
    if (isAvail)
    {
