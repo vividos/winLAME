@@ -33,6 +33,7 @@ class PresetManagerInterface;
 namespace Encoder
 {
    class ModuleManager;
+   class LameNogapInstanceManager;
 }
 
 /// main application class
@@ -108,6 +109,9 @@ private:
 
    /// task manager
    TaskManager m_taskManager;
+
+   /// LAME nogap instance manager
+   std::shared_ptr<Encoder::LameNogapInstanceManager> m_spLameNogapInstanceManager;
 
    /// preset manager
    std::shared_ptr<PresetManagerInterface> m_spPresetManager;

@@ -79,6 +79,7 @@ enum
 {
    VarFirst = 0,
    LameOptNoGap,
+   LameNoGapInstanceId,
    LameHideSettings,
    LameWriteWaveHeader,
 

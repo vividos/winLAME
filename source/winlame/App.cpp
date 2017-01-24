@@ -25,6 +25,7 @@
 #include "ui\MainFrame.hpp"
 #include "preset\PresetManagerImpl.h"
 #include "encoder\ModuleManagerImpl.hpp"
+#include "encoder\LameNogapInstanceManager.hpp"
 #include "CommonStuff.hpp"
 #include "CrashReporter.hpp"
 
@@ -81,6 +82,9 @@ m_exit(false)
    ioc.Register<LanguageResourceManager>(boost::ref(m_langResourceManager));
    ioc.Register<TaskManager>(boost::ref(m_taskManager));
    ioc.Register<UISettings>(boost::ref(m_settings));
+
+   m_spLameNogapInstanceManager.reset(new Encoder::LameNogapInstanceManager);
+   ioc.Register<Encoder::LameNogapInstanceManager>(boost::ref(*m_spLameNogapInstanceManager.get()));
 
    m_spPresetManager.reset(new PresetManagerImpl);
    ioc.Register<PresetManagerInterface>(boost::ref(*m_spPresetManager.get()));

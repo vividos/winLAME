@@ -26,6 +26,7 @@
 #include "CreatePlaylistTask.hpp"
 #include "CDExtractTask.hpp"
 #include "CDRipTitleFormatManager.hpp"
+#include "LameNogapInstanceManager.hpp"
 #include <sndfile.h>
 
 TaskCreationHelper::TaskCreationHelper()
@@ -126,6 +127,21 @@ void TaskCreationHelper::AddInputFilesTasks()
 
    m_lastTaskId = 0;
 
+   Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
+
+   bool lameNogapEncoding =
+      moduleManager.GetOutputModuleID(m_uiSettings.output_module) == ID_OM_LAME &&
+      m_uiSettings.settings_manager.QueryValueInt(LameOptNoGap) == 1;
+
+   int nogapInstanceId = -1; // valid values start at 0
+   if (lameNogapEncoding)
+   {
+      Encoder::LameNogapInstanceManager& nogapInstanceManager =
+         IoCContainer::Current().Resolve<Encoder::LameNogapInstanceManager>();
+
+      nogapInstanceId = nogapInstanceManager.NextNogapInstanceId();
+   }
+
    for (int i = 0, iMax = m_uiSettings.encoderjoblist.size(); i < iMax; i++)
    {
       Encoder::EncoderJob& job = m_uiSettings.encoderjoblist[i];
@@ -145,7 +161,6 @@ void TaskCreationHelper::AddInputFilesTasks()
 
       taskSettings.m_title = Path(job.InputFilename()).FilenameAndExt();
 
-      Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
       taskSettings.m_outputModuleID = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
       taskSettings.m_settingsManager = m_uiSettings.settings_manager;
@@ -155,10 +170,14 @@ void TaskCreationHelper::AddInputFilesTasks()
 
       // set previous task id when encoding with LAME and using nogap encoding
       unsigned int dependentTaskId = 0;
-      if (taskSettings.m_outputModuleID == ID_OM_LAME &&
-         taskSettings.m_settingsManager.queryValueInt(LameOptNoGap) == 1)
+      if (lameNogapEncoding)
       {
          dependentTaskId = m_lastTaskId;
+
+         taskSettings.m_settingsManager.setValue(LameNoGapInstanceId, nogapInstanceId);
+
+         if (i == iMax - 1)
+            taskSettings.m_settingsManager.setValue(GeneralIsLastFile, 1);
       }
 
       std::shared_ptr<Encoder::EncoderTask> spTask(new Encoder::EncoderTask(dependentTaskId, taskSettings));
@@ -177,8 +196,21 @@ void TaskCreationHelper::AddCDExtractTasks()
 
    bool outputWaveFile16bit =
       moduleManager.GetOutputModuleID(m_uiSettings.output_module) == ID_OM_WAVE &&
-      m_uiSettings.settings_manager.queryValueInt(SndFileFormat) == SF_FORMAT_WAV &&
-      m_uiSettings.settings_manager.queryValueInt(SndFileSubType) == SF_FORMAT_PCM_16;
+      m_uiSettings.settings_manager.QueryValueInt(SndFileFormat) == SF_FORMAT_WAV &&
+      m_uiSettings.settings_manager.QueryValueInt(SndFileSubType) == SF_FORMAT_PCM_16;
+
+   bool lameNogapEncoding =
+      moduleManager.GetOutputModuleID(m_uiSettings.output_module) == ID_OM_LAME &&
+      m_uiSettings.settings_manager.QueryValueInt(LameOptNoGap) == 1;
+
+   int nogapInstanceId = -1; // valid values start at 0
+   if (lameNogapEncoding)
+   {
+      Encoder::LameNogapInstanceManager& nogapInstanceManager =
+         IoCContainer::Current().Resolve<Encoder::LameNogapInstanceManager>();
+
+      nogapInstanceId = nogapInstanceManager.NextNogapInstanceId();
+   }
 
    TaskManager& taskMgr = IoCContainer::Current().Resolve<TaskManager>();
 
@@ -222,9 +254,11 @@ void TaskCreationHelper::AddCDExtractTasks()
 
       if (!outputWaveFile16bit)
       {
+         bool isLastTrack = jobIndex == maxJobIndex - 1;
+
          // also add encode task
          std::shared_ptr<Encoder::EncoderTask> spEncoderTask =
-            CreateEncoderTaskForCDReadJob(cdReadTaskId, cdReadJob);
+            CreateEncoderTaskForCDReadJob(cdReadTaskId, cdReadJob, nogapInstanceId, isLastTrack);
 
          cdReadJob.OutputFilename(spEncoderTask->GenerateOutputFilename(cdReadJob.Title()));
 
@@ -235,7 +269,9 @@ void TaskCreationHelper::AddCDExtractTasks()
    }
 }
 
-std::shared_ptr<Encoder::EncoderTask> TaskCreationHelper::CreateEncoderTaskForCDReadJob(unsigned int cdReadTaskId, const Encoder::CDReadJob& cdReadJob)
+std::shared_ptr<Encoder::EncoderTask> TaskCreationHelper::CreateEncoderTaskForCDReadJob(
+   unsigned int cdReadTaskId, const Encoder::CDReadJob& cdReadJob,
+   int nogapInstanceId, bool isLastTrack)
 {
    Encoder::EncoderTaskSettings taskSettings;
 
@@ -249,6 +285,9 @@ std::shared_ptr<Encoder::EncoderTask> TaskCreationHelper::CreateEncoderTaskForCD
 
    taskSettings.m_settingsManager = m_uiSettings.settings_manager;
 
+   if (nogapInstanceId >= 0)
+      taskSettings.m_settingsManager.setValue(LameNoGapInstanceId, nogapInstanceId);
+
    Encoder::TrackInfo encodeTrackInfo;
    Encoder::CDExtractTask::SetTrackInfoFromCDTrackInfo(encodeTrackInfo, cdReadJob);
 
@@ -256,6 +295,9 @@ std::shared_ptr<Encoder::EncoderTask> TaskCreationHelper::CreateEncoderTaskForCD
    taskSettings.m_useTrackInfo = true;
    taskSettings.m_overwriteExisting = m_uiSettings.m_defaultSettings.overwrite_existing;
    taskSettings.m_deleteInputAfterEncode = true; // temporary file created by CDExtractTask
+
+   if (isLastTrack)
+      taskSettings.m_settingsManager.setValue(GeneralIsLastFile, 1);
 
    return std::make_shared<Encoder::EncoderTask>(cdReadTaskId, taskSettings);
 }

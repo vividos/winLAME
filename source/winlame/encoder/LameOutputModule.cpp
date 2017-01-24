@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -24,6 +24,7 @@
 #include <fstream>
 #include "resource.h"
 #include "LameOutputModule.hpp"
+#include "LameNogapInstanceManager.hpp"
 #include "WaveMp3Header.hpp"
 #include "Id3v1Tag.hpp"
 #include "id3/file.h"
@@ -33,10 +34,6 @@ using Encoder::LameOutputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
-// static variables
-
-nlame_instance_t* LameOutputModule::m_nogapInstance = nullptr;
-
 LameOutputModule::LameOutputModule()
    :m_instance(nullptr),
    m_writeInfoTag(true),
@@ -45,6 +42,8 @@ LameOutputModule::LameOutputModule()
    m_inputBufferSize(1152),
    m_nogapEncoding(false),
    m_nogapIsLastFile(false),
+   m_nogapInstanceManager(IoCContainer::Current().Resolve<LameNogapInstanceManager>()),
+   m_nogapInstanceId(-1),
    m_writeWaveHeader(false),
    m_numSamplesEncoded(0),
    m_numDataBytesWritten(0)
@@ -117,20 +116,28 @@ int LameOutputModule::InitOutput(LPCTSTR outfilename,
    // check if we do nogap encoding
    m_nogapEncoding = mgr.QueryValueInt(LameOptNoGap) == 1;
 
-   if (m_nogapEncoding && m_nogapInstance != nullptr)
+   if (m_nogapEncoding)
    {
+      m_nogapInstanceId = mgr.QueryValueInt(LameNoGapInstanceId);
+
       // use last stored nlame instance
-      m_instance = m_nogapInstance;
-      m_nogapInstance = nullptr;
+      if (m_nogapInstanceManager.IsRegistered(m_nogapInstanceId))
+      {
+         m_instance = m_nogapInstanceManager.GetInstance(m_nogapInstanceId);
 
-      // update tag for next track
-      if (!m_writeWaveHeader)
-         AddLameID3v2Tag(m_trackInfoID3v2);
+         // update tag for next track
+         if (!m_writeWaveHeader)
+            AddLameID3v2Tag(m_trackInfoID3v2);
 
-      // reinit bitstream with new tag infos
-      nlame_reinit_bitstream(m_instance);
+         // set callbacks
+         nlame_callback_set(m_instance, nle_callback_error, LameErrorCallback);
+
+         // reinit bitstream with new tag infos
+         nlame_reinit_bitstream(m_instance);
+      }
    }
-   else
+
+   if (m_instance == nullptr)
    {
       // init nlame
       m_instance = nlame_new();
@@ -355,9 +362,18 @@ void LameOutputModule::DoneOutput()
    if (m_writeInfoTag && !m_nogapEncoding && !m_writeWaveHeader)
       WriteVBRInfoTag(m_instance, m_mp3Filename);
 
-   if (m_nogapEncoding && !m_nogapIsLastFile)
+   if (m_nogapEncoding)
    {
-      m_nogapInstance = m_instance;
+      if (!m_nogapIsLastFile)
+      {
+         if (!m_nogapInstanceManager.IsRegistered(m_nogapInstanceId))
+            m_nogapInstanceManager.RegisterInstance(m_nogapInstanceId, m_instance);
+      }
+      else
+      {
+         m_nogapInstanceManager.UnregisterInstance(m_nogapInstanceId);
+         nlame_delete(m_instance);
+      }
    }
    else
    {

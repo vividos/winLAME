@@ -349,6 +349,9 @@
     <ClCompile Include="CrashReporter.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="encoder\LameNogapInstanceManager.cpp">
+      <Filter>Encoder Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="encoder\dither\dither.h">
@@ -743,6 +746,9 @@
     </ClInclude>
     <ClInclude Include="CrashReporter.hpp">
       <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="encoder\LameNogapInstanceManager.hpp">
+      <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -54,7 +54,9 @@ private:
    void AddCDExtractTasks();
 
    /// creates encoder task for a CD Extract task
-   std::shared_ptr<Encoder::EncoderTask> CreateEncoderTaskForCDReadJob(unsigned int cdReadTaskId, const Encoder::CDReadJob& cdReadJob);
+   std::shared_ptr<Encoder::EncoderTask> CreateEncoderTaskForCDReadJob(
+      unsigned int cdReadTaskId, const Encoder::CDReadJob& cdReadJob,
+      int nogapInstanceId, bool isLastTrack);
 
    /// adds task to create a playlist to task manager
    void AddPlaylistTask();

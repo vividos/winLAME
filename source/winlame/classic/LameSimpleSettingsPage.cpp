@@ -21,6 +21,7 @@
 //
 #include "stdafx.h"
 #include "LameSimpleSettingsPage.hpp"
+#include "LameNogapInstanceManager.hpp"
 
 using ClassicUI::LameSimpleSettingsPage;
 
@@ -173,6 +174,16 @@ bool LameSimpleSettingsPage::OnLeavePage()
    // "nogap" check
    value = SendDlgItemMessage(IDC_LAME_CHECK_NOGAP, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
    mgr.setValue(LameOptNoGap, value);
+
+   if (value == 1)
+   {
+      Encoder::LameNogapInstanceManager& nogapInstanceManager =
+         IoCContainer::Current().Resolve<Encoder::LameNogapInstanceManager>();
+
+      int nogapInstanceId = nogapInstanceManager.NextNogapInstanceId();
+
+      mgr.setValue(LameNoGapInstanceId, nogapInstanceId);
+   }
 
    // "prepend RIFF WAVE Header" check
    value = SendDlgItemMessage(IDC_LAME_CHECK_WRITE_WAVEMP3, BM_GETCHECK) == BST_CHECKED ? 1 : 0;

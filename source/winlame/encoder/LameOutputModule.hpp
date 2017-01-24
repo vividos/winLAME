@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ namespace Encoder
 {
    // forward references
    struct Id3v1Tag;
+   class LameNogapInstanceManager;
 
    /// LAME output module
    class LameOutputModule : public OutputModule
@@ -138,8 +139,11 @@ namespace Encoder
       /// indicates if we encode the last file
       bool m_nogapIsLastFile;
 
-      /// saved nlame instance for nogap encoding
-      static nlame_instance_t* m_nogapInstance;
+      /// instance manager
+      LameNogapInstanceManager& m_nogapInstanceManager;
+
+      /// nogap instance ID
+      int m_nogapInstanceId;
 
       /// indicates if we should write a wave header
       bool m_writeWaveHeader;

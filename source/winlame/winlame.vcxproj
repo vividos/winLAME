@@ -95,6 +95,7 @@
     <ClCompile Include="encoder\EncoderTask.cpp" />
     <ClCompile Include="encoder\FlacInputModule.cpp" />
     <ClCompile Include="encoder\Id3v1Tag.cpp" />
+    <ClCompile Include="encoder\LameNogapInstanceManager.cpp" />
     <ClCompile Include="encoder\LameOutputModule.cpp" />
     <ClCompile Include="encoder\MadMpegInputModule.cpp" />
     <ClCompile Include="encoder\ModuleManagerImpl.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="encoder\FlacInputModule.hpp" />
     <ClInclude Include="encoder\Id3v1Tag.hpp" />
     <ClInclude Include="encoder\InputModule.hpp" />
+    <ClInclude Include="encoder\LameNogapInstanceManager.hpp" />
     <ClInclude Include="encoder\LameOutputModule.hpp" />
     <ClInclude Include="encoder\MadMpegInputModule.hpp" />
     <ClInclude Include="encoder\ModuleBase.hpp" />
