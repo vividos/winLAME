@@ -55,7 +55,7 @@ CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CStri
       PlaylistEntry entry;
 
       entry.m_filename = cdReadJob.OutputFilename();
-      entry.m_title = cdReadJob.TrackInfo().m_trackTitle;
+      entry.m_title = cdReadJob.Title();
       entry.m_trackLengthInSeconds = cdReadJob.TrackInfo().m_trackLengthInSeconds;
 
       m_playlistEntries.push_back(entry);
