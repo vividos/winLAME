@@ -37,7 +37,9 @@ struct CDRipTrackInfo
 
    /// track title
    CString m_trackTitle;
-   //CString m_trackArtist; // TODO fill
+
+   /// track artist; for "various artists" discs
+   CString m_trackArtist;
 
    /// track length, in seconds
    unsigned int m_trackLengthInSeconds;

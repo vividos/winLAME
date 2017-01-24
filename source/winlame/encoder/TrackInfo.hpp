@@ -30,8 +30,9 @@ namespace Encoder
    /// track text info enum
    enum TrackInfoTextType
    {
-      TrackInfoTitle = 0,  ///< title info
-      TrackInfoArtist,     ///< artist info
+      TrackInfoTitle = 0,  ///< title
+      TrackInfoArtist,     ///< track artist
+      TrackInfoDiscArtist, ///< disc artist
       TrackInfoAlbum,      ///< album name
       TrackInfoComment,    ///< track comment
       TrackInfoGenre,      ///< track genre
@@ -42,6 +43,7 @@ namespace Encoder
    {
       TrackInfoYear = 0,   ///< year of track
       TrackInfoTrack,      ///< track number
+      TrackInfoDiscNumber, ///< disc number
    };
 
    /// track info class

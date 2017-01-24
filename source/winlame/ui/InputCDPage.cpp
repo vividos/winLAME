@@ -605,7 +605,7 @@ void InputCDPage::UpdateCDReadJobList(unsigned int dwDrive)
    {
       unsigned int nTrack = vecTracks[n];
 
-      CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, nTrack);
+      CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, nTrack, discInfo);
 
       Encoder::CDReadJob cdReadJob(discInfo, trackInfo);
       m_uiSettings.cdreadjoblist.push_back(cdReadJob);
@@ -657,12 +657,31 @@ CDRipDiscInfo InputCDPage::ReadDiscInfo(DWORD driveIndex)
    return discInfo;
 }
 
-CDRipTrackInfo InputCDPage::ReadTrackInfo(DWORD driveIndex, unsigned int trackNum)
+CDRipTrackInfo InputCDPage::ReadTrackInfo(DWORD driveIndex, unsigned int trackNum, const CDRipDiscInfo& discInfo)
 {
    CDRipTrackInfo trackInfo;
 
    trackInfo.m_numTrackOnDisc = trackNum;
-   m_lcTracks.GetItemText(trackNum, 1, trackInfo.m_trackTitle);
+
+   CString entry;
+   m_lcTracks.GetItemText(trackNum, 1, entry);
+
+   // try to split text by "/" or "-"
+   int pos = entry.Find(_T('/'));
+   if (pos == -1)
+      pos = entry.Find(_T('-'));
+
+   if (pos == -1)
+   {
+      trackInfo.m_trackTitle = entry;
+      trackInfo.m_trackArtist = discInfo.m_discArtist;
+   }
+   else
+   {
+      trackInfo.m_trackTitle = entry.Mid(pos + 1).Trim();
+      trackInfo.m_trackArtist = entry.Left(pos).Trim();
+   }
+
    trackInfo.m_trackLengthInSeconds = BASS_CD_GetTrackLength(driveIndex, trackNum) / 176400L;
 
    return trackInfo;
@@ -716,7 +735,7 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
    {
       cszFormat.Format(_T("%u"), n);
 
-      CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, n);
+      CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, n, discinfo);
 
       ini.WriteString(cdplayer_id, cszFormat, trackInfo.m_trackTitle);
    }

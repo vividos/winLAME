@@ -205,28 +205,25 @@ bool CDExtractTask::ExtractTrack(const CString& tempFilename)
 
 void CDExtractTask::SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, const Encoder::CDReadJob& cdReadJob)
 {
+   // disc info
    const CDRipDiscInfo& discInfo = cdReadJob.DiscInfo();
-   const CDRipTrackInfo& cdTrackInfo = cdReadJob.TrackInfo();
 
-   // add track info
-   encodeTrackInfo.TextInfo(TrackInfoTitle, cdTrackInfo.m_trackTitle);
-
-   CString value = discInfo.m_discArtist;
-   if (discInfo.m_variousArtists)
-      value.LoadString(IDS_CDRIP_ARTIST_VARIOUS);
-
-   encodeTrackInfo.TextInfo(TrackInfoArtist, value);
-
+   encodeTrackInfo.TextInfo(TrackInfoDiscArtist, discInfo.m_discArtist);
    encodeTrackInfo.TextInfo(TrackInfoAlbum, discInfo.m_discTitle);
 
-   // year
    if (discInfo.m_year != 0)
       encodeTrackInfo.NumberInfo(TrackInfoYear, discInfo.m_year);
 
-   // track number
-   encodeTrackInfo.NumberInfo(TrackInfoTrack, cdTrackInfo.m_numTrackOnDisc + 1);
-
-   // genre
    if (!discInfo.m_genre.IsEmpty())
       encodeTrackInfo.TextInfo(TrackInfoGenre, discInfo.m_genre);
+
+   // add track info
+   const CDRipTrackInfo& cdTrackInfo = cdReadJob.TrackInfo();
+
+   encodeTrackInfo.TextInfo(TrackInfoTitle, cdTrackInfo.m_trackTitle);
+
+   CString trackArist = cdTrackInfo.m_trackArtist;
+   encodeTrackInfo.TextInfo(TrackInfoArtist, trackArist);
+
+   encodeTrackInfo.NumberInfo(TrackInfoTrack, cdTrackInfo.m_numTrackOnDisc + 1);
 }

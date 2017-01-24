@@ -140,7 +140,7 @@ private:
    void ReadCDText(bool& bVarious);
    void CheckCD();
    CDRipDiscInfo ReadDiscInfo(DWORD driveIndex);
-   CDRipTrackInfo ReadTrackInfo(DWORD driveIndex, unsigned int trackNum);
+   CDRipTrackInfo ReadTrackInfo(DWORD driveIndex, unsigned int trackNum, const CDRipDiscInfo& discInfo);
    void StoreSettings();
    void UpdateCDReadJobList(unsigned int dwDrive);
    void UpdatePlaylistFilename(DWORD driveIndex);

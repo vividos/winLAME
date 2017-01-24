@@ -546,14 +546,11 @@ void CDRipDlg::UpdateTrackManager()
 
    for (unsigned int n = 0; n < nMax; n++)
    {
-      CDRipTrackInfo trackinfo;
-
       unsigned int nTrack = vecTracks[n];
-      trackinfo.m_numTrackOnDisc = nTrack;
-      m_lcTracks.GetItemText(nTrack, 1, trackinfo.m_trackTitle);
-      trackinfo.m_trackLengthInSeconds = BASS_CD_GetTrackLength(nDrive, nTrack) / 176400L;
 
-      pManager->AddTrackInfo(trackinfo);
+      CDRipTrackInfo trackInfo = ReadTrackInfo(nDrive, nTrack, discinfo);
+
+      pManager->AddTrackInfo(trackInfo);
    }
 
    // when acquired freedb info, store  in cdplayer.ini, too
@@ -731,4 +728,34 @@ void CDRipDlg::FillListFreedbInfo(const FreedbInfo& info)
 
       m_cbGenre.SetCurSel(nItem);
    }
+}
+
+CDRipTrackInfo CDRipDlg::ReadTrackInfo(DWORD driveIndex, unsigned int trackNum, const CDRipDiscInfo& discInfo)
+{
+   CDRipTrackInfo trackInfo;
+
+   trackInfo.m_numTrackOnDisc = trackNum;
+
+   CString entry;
+   m_lcTracks.GetItemText(trackNum, 1, entry);
+
+   // try to split text by "/" or "-"
+   int pos = entry.Find(_T('/'));
+   if (pos == -1)
+      pos = entry.Find(_T('-'));
+
+   if (pos == -1)
+   {
+      trackInfo.m_trackTitle = entry;
+      trackInfo.m_trackArtist = discInfo.m_discArtist;
+   }
+   else
+   {
+      trackInfo.m_trackTitle = entry.Mid(pos + 1).Trim();
+      trackInfo.m_trackArtist = entry.Left(pos).Trim();
+   }
+
+   trackInfo.m_trackLengthInSeconds = BASS_CD_GetTrackLength(driveIndex, trackNum) / 176400L;
+
+   return trackInfo;
 }

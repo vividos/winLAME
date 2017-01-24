@@ -38,7 +38,7 @@ CString CDRipTitleFormatManager::FormatTitle(const CString& format,
    CString title = format;
 
    title.Replace(_T("%album%"), discInfo.m_discTitle);
-   title.Replace(_T("%artist%"), /*discInfo.m_variousArtists ? trackInfo.m_cszTrackArtist :*/ discInfo.m_discArtist);
+   title.Replace(_T("%artist%"), discInfo.m_variousArtists ? trackInfo.m_trackArtist : discInfo.m_discArtist);
    title.Replace(_T("%genre%"), discInfo.m_genre);
    title.Replace(_T("%title%"), trackInfo.m_trackTitle);
 

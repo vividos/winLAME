@@ -155,6 +155,7 @@ namespace ClassicUI
       bool ReadCdplayerIni(bool& bVarious);
       void ReadCDText(bool& bVarious);
       void CheckCD();
+      CDRipTrackInfo ReadTrackInfo(DWORD driveIndex, unsigned int trackNum, const CDRipDiscInfo& discInfo);
       void UpdateTrackManager();
       void StoreInCdplayerIni(unsigned int nDrive);
       void UpdatePlaylistFilename();
