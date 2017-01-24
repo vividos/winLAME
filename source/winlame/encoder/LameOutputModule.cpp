@@ -359,7 +359,7 @@ void LameOutputModule::DoneOutput()
    // note: since nlame_write_vbr_infotag() seeks to the front of the output
    //       file, the wave header might get overwritten, so we don't write a
    //       info tag when writing a wave header
-   if (m_writeInfoTag && !m_nogapEncoding && !m_writeWaveHeader)
+   if (m_writeInfoTag && !m_writeWaveHeader)
       WriteVBRInfoTag(m_instance, m_mp3Filename);
 
    if (m_nogapEncoding)
