@@ -397,10 +397,7 @@ bool InputCDPage::ReadCachedCDDB(bool& bVarious)
 bool InputCDPage::ReadCdplayerIni(bool& bVarious)
 {
    // retrieve info from cdplayer.ini
-   CString cszCDPlayerIniFilename;
-   ::GetWindowsDirectory(cszCDPlayerIniFilename.GetBuffer(MAX_PATH), MAX_PATH);
-   cszCDPlayerIniFilename.ReleaseBuffer();
-   cszCDPlayerIniFilename += _T("\\cdplayer.ini");
+   CString cszCDPlayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini"));
 
    DWORD nDrive = GetCurrentDrive();
 
@@ -680,10 +677,7 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
    if (dwDrive == INVALID_DRIVE_ID)
       return;
 
-   CString cszCDPlayerIniFilename;
-   ::GetWindowsDirectory(cszCDPlayerIniFilename.GetBuffer(MAX_PATH), MAX_PATH);
-   cszCDPlayerIniFilename.ReleaseBuffer();
-   cszCDPlayerIniFilename += _T("\\cdplayer.ini");
+   CString cszCDPlayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini"));
 
    const char* cdplayer_id_raw = BASS_CD_GetID(nDrive, BASS_CDID_CDPLAYER);
 
