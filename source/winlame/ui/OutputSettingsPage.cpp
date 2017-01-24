@@ -125,6 +125,12 @@ void OutputSettingsPage::LoadData()
    // "use input folder as output location" check
    m_checkUseInputDir.SetCheck(m_uiSettings.out_location_use_input_dir ? BST_CHECKED : BST_UNCHECKED);
 
+   if (!m_uiSettings.m_bFromInputFilesPage)
+   {
+      // there's no real "input dir" when reading from CD
+      m_checkUseInputDir.EnableWindow(FALSE);
+   }
+
    // update edit field state
    BOOL dummy;
    OnCheckUseInputFolder(0, 0, 0, dummy);
