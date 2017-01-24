@@ -602,6 +602,10 @@ void LameOutputModule::WriteID3v2Tag()
 {
    ID3::File file(m_mp3Filename, false); // read-write
 
+   ATLASSERT(file.IsValid());
+   if (!file.IsValid())
+      return;
+
    // get primary tag
    ID3::Tag tag = file.GetTag();
 
