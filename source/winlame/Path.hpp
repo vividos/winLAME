@@ -95,6 +95,9 @@ public:
    /// returns special folder; see CSIDL_* constants
    static CString SpecialFolder(int csidl);
 
+   /// returns the windows folder
+   static CString WindowsFolder();
+
    // public members
 
    /// path separator string

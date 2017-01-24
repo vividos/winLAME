@@ -144,3 +144,13 @@ CString Path::SpecialFolder(int csidl)
 
    return specialFolder;
 }
+
+CString Path::WindowsFolder()
+{
+   CString windowsFolder;
+
+   ::GetWindowsDirectory(windowsFolder.GetBuffer(MAX_PATH), MAX_PATH);
+   windowsFolder.ReleaseBuffer();
+
+   return windowsFolder;
+}
