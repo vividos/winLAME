@@ -35,6 +35,9 @@
 /// base path for writing minidump file
 static TCHAR g_minidumpBasePath[MAX_PATH] = { 0 };
 
+/// function to call to show a crash dialog; may be null
+static CrashReporter::T_fnShowCrashDialog g_fnShowCrashDialog = nullptr;
+
 /// writes minidump file
 bool WriteMinidump(HANDLE fileHandle, _EXCEPTION_POINTERS* exceptionInfo)
 {
@@ -82,7 +85,7 @@ void GetMinidumpFilename(LPTSTR minidumpFilename, UINT numMaxChars)
    localtime_s(&now, &nowt);
 
    _sntprintf_s(start, numRemaining, numRemaining,
-      _T("%04u-%02u-%02u %02u.%02u.%02u.mdmp"),
+      _T("%04u-%02u-%02u %02u_%02u_%02u.mdmp"),
       now.tm_year + 1900,
       now.tm_mon + 1,
       now.tm_mday,
@@ -121,22 +124,20 @@ LONG WINAPI ExceptionFilterWriteMinidump(_EXCEPTION_POINTERS* exceptionInfo)
 
    WriteMinidump(fileHandle, exceptionInfo);
 
-   CloseHandle(fileHandle);
+   file.reset();
 
-   // as last resort, try to log error
    ATLTRACE(CString(_T("wrote minidump file: ")) + minidumpFilename);
 
-   return EXCEPTION_CONTINUE_SEARCH;
+   if (g_fnShowCrashDialog != nullptr)
+      g_fnShowCrashDialog(minidumpFilename);
+
+   return EXCEPTION_EXECUTE_HANDLER;
 }
 
 /// handler function for std::terminate
 void OnStdTerminate()
 {
    OutputDebugString(_T("!!! OnStdTerminate() called!\n"));
-
-   // construct filename
-   TCHAR minidumpFilename[MAX_PATH];
-   GetMinidumpFilename(minidumpFilename, sizeof(minidumpFilename) / sizeof(*minidumpFilename));
 
    // cause an exception, so that we can write a minidump
    EXCEPTION_POINTERS* exceptionInfo = nullptr;
@@ -151,8 +152,10 @@ void OnStdTerminate()
    }
 }
 
-void CrashReporter::Init(const CString& appName, const CString& basePath)
+void CrashReporter::Init(const CString& appName, const CString& basePath, T_fnShowCrashDialog fnShowCrashDialog)
 {
+   g_fnShowCrashDialog = fnShowCrashDialog;
+
    // set minidump base path
    CString path = basePath;
    Path::AddEndingBackslash(path);

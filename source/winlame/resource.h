@@ -45,6 +45,7 @@
 #define IDD_DLG_OPUS                            123
 #define IDD_SETTINGS_GENERAL                    150
 #define IDD_SETTINGS_CDREAD                     151
+#define IDD_CRASHDUMP_SAVE_RESULTS              152
 #define ID_SETTINGS_FINISH_ACTION               200
 #define ID_SETTINGS_FINISH_ACTION_NONE          201
 #define ID_SETTINGS_FINISH_ACTION_CLOSE         202
@@ -227,6 +228,8 @@
 #define IDC_OPUS_RADIO_BRCMODE2                 4505
 #define IDC_OPUS_RADIO_BRCMODE3                 4506
 #define IDC_SETTINGS_COMBO_LANGUAGE             5000
+#define IDC_CRASH_STATIC_TEXT                   6000
+#define IDC_CRASH_LIST_RESULTS                  6001
 #define ID_TRAY_ABOUT                           30000
 #define ID_TRAY_PAUSE                           30001
 #define ID_TRAY_START                           30002

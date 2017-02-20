@@ -28,6 +28,7 @@
 #include "encoder\LameNogapInstanceManager.hpp"
 #include "CommonStuff.hpp"
 #include "CrashReporter.hpp"
+#include "CrashSaveResultsDlg.hpp"
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -131,7 +132,16 @@ void App::InitCrashReporter()
    if (!Path(folder).FolderExists())
       CreateDirectory(folder, nullptr);
 
-   CrashReporter::Init(_T("winLAME"), folder);
+   CrashReporter::Init(_T("winLAME"), folder, &App::ShowCrashErrorDialog);
+}
+
+void App::ShowCrashErrorDialog(LPCTSTR crashDumpFilename)
+{
+   std::vector<CString> resultFilenamesList;
+   resultFilenamesList.push_back(crashDumpFilename);
+
+   CrashSaveResultsDlg dlg(resultFilenamesList);
+   dlg.DoModal();
 }
 
 int App::Run(LPTSTR /*lpstrCmdLine*/, int nCmdShow)

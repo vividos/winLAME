@@ -154,6 +154,7 @@
     <ClCompile Include="ui\AACSettingsPage.cpp" />
     <ClCompile Include="ui\AboutDlg.cpp" />
     <ClCompile Include="ui\BevelLine.cpp" />
+    <ClCompile Include="ui\CrashSaveResultsDlg.cpp" />
     <ClCompile Include="ui\FinishPage.cpp" />
     <ClCompile Include="ui\FixedValueSpinButtonCtrl.cpp" />
     <ClCompile Include="ui\FreeDbDiscListDlg.cpp" />
@@ -275,6 +276,7 @@
     <ClInclude Include="ui\AboutDlg.hpp" />
     <ClInclude Include="ui\AlternateColorsListCtrl.hpp" />
     <ClInclude Include="ui\BevelLine.hpp" />
+    <ClInclude Include="ui\CrashSaveResultsDlg.hpp" />
     <ClInclude Include="ui\FinishPage.hpp" />
     <ClInclude Include="ui\FixedValueSpinButtonCtrl.hpp" />
     <ClInclude Include="ui\FreeDbDiscListDlg.hpp" />

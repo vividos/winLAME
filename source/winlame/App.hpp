@@ -48,6 +48,9 @@ public:
    /// initialzes crash reporter
    static void InitCrashReporter();
 
+   /// shows error dialog on crash
+   static void ShowCrashErrorDialog(LPCTSTR crashDumpFilename);
+
    /// returns if help file is available
    bool IsHelpAvailable() const throw() { return m_helpAvailable; }
 

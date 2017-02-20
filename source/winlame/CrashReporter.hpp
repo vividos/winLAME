@@ -25,6 +25,10 @@
 class CrashReporter
 {
 public:
+   /// function type that can show a crash dialog
+   typedef void (*T_fnShowCrashDialog)(LPCTSTR);
+
    /// sets up crash reporting
-   static void Init(const CString& appName, const CString& basePath);
+   static void Init(const CString& appName, const CString& basePath,
+      T_fnShowCrashDialog fnShowCrashDialog = T_fnShowCrashDialog());
 };

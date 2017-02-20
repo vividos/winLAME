@@ -484,6 +484,20 @@ BEGIN
 END
 
 
+LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+IDD_CRASHDUMP_SAVE_RESULTS DIALOGEX 0, 0, 281, 92
+STYLE DS_3DLOOK | DS_CENTER | DS_SHELLFONT | WS_VISIBLE | WS_BORDER | WS_CAPTION | WS_DLGFRAME | WS_POPUP | WS_THICKFRAME | WS_SYSMENU
+EXSTYLE WS_EX_WINDOWEDGE
+CAPTION "Crash Dump - Speichere Ergebnisse"
+FONT 8, "Ms Shell Dlg 2", 400, 0, 1
+BEGIN
+    DEFPUSHBUTTON   "&Speichern...", IDOK, 226, 5, 50, 14
+    PUSHBUTTON      "S&chließen", IDCANCEL, 226, 22, 50, 14
+    CONTROL         "", IDC_CRASH_LIST_RESULTS, WC_LISTVIEW, WS_TABSTOP | WS_BORDER | LVS_ALIGNLEFT | LVS_NOSORTHEADER | LVS_SINGLESEL | LVS_REPORT, 5, 41, 271, 46
+    LTEXT           "winLAME hat einen internen Fehler festgestellt und hat Crash Dump-Daten gesammelt. Siehe unten für Details der gesammelten Data. Bitte speichern Sie die Dateien senden sie an den Anwendungs-Entwickler.", IDC_CRASH_STATIC_TEXT, 5, 5, 216, 31
+END
+
+
 //
 // Menu resources
 //

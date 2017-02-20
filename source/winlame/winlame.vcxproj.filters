@@ -352,6 +352,9 @@
     <ClCompile Include="encoder\LameNogapInstanceManager.cpp">
       <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ui\CrashSaveResultsDlg.cpp">
+      <Filter>Modern UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="encoder\dither\dither.h">
@@ -749,6 +752,9 @@
     </ClInclude>
     <ClInclude Include="encoder\LameNogapInstanceManager.hpp">
       <Filter>Encoder Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\CrashSaveResultsDlg.hpp">
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
