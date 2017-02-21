@@ -59,11 +59,9 @@
 
 #pragma comment(lib, "libopusfile-0.lib")
 #pragma comment(lib, "libopus-0.lib")
+#pragma comment(lib, "libogg-0.lib")
 
 #pragma warning (disable: 4706) // assignment within conditional expression
-
-/// we still have the old Ogg libraries
-#define OLD_LIBOGG
 
 static inline int oe_write_page(ogg_page *page, FILE *fp);
 static void comment_init(char **comments, int* length, const char *vendor_string);
