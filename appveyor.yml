@@ -1,0 +1,14 @@
+version: '2.0.17.{build}'
+
+image: Visual Studio 2015
+
+platform:
+  - Win32
+
+configuration:
+  - Debug
+  - Release
+
+build:
+  project: winlame.sln
+  parallel: true
