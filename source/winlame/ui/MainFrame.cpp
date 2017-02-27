@@ -46,10 +46,10 @@ const UINT c_uiTasksListRefreshCycleInMs = 500;
 LPCTSTR c_pszRibbonRegkey = _T("Software\\winLAME");
 
 /// URL for positive feedback
-LPCTSTR c_urlFeedbackPositive = _T("http://winlame.sourceforge.net/feedback_positive.html");
+LPCTSTR c_urlFeedbackPositive = _T("https://winlame.sourceforge.io/feedback_positive.html");
 
 /// URL for negative feedback
-LPCTSTR c_urlFeedbackNegative = _T("http://winlame.sourceforge.net/feedback_negative.html");
+LPCTSTR c_urlFeedbackNegative = _T("https://winlame.sourceforge.io/feedback_negative.html");
 
 
 BOOL MainFrame::PreTranslateMessage(MSG* pMsg)
