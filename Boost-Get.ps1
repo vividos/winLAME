@@ -9,10 +9,10 @@ Write-Host ""
 
 Add-Type -assembly "System.IO.Compression.Filesystem"
 
-#Write-Host "Downloading Boost.."
-# (New-Object net.webclient).DownloadFile("https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.zip/download?use_mirror=autoselect", "d:\temp\boost_1_63_0.zip")
+Write-Host "Downloading Boost.."
+ (New-Object net.webclient).DownloadFile("https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.zip/download?use_mirror=autoselect", "d:\temp\boost_1_63_0.zip")
 
 Write-Host "Extracting archive.."
 [io.compression.zipfile]::ExtractToDirectory("d:\temp\boost_1_63_0.zip", "c:\devel\packages\")
 
-subst z: c:\
+subst d: c:\
