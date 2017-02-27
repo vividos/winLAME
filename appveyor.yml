@@ -12,3 +12,6 @@ configuration:
 build:
   project: winlame.sln
   parallel: true
+
+before_build:
+  - Boost-Get.ps1
