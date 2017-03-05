@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClCompile Include="CDRipTitleFormatManager.cpp" />
     <ClCompile Include="CommandLineParser.cpp" />
+    <ClCompile Include="CoverArtArchive.cpp" />
     <ClCompile Include="CrashReporter.cpp" />
     <ClCompile Include="encoder\AacInputModule.cpp" />
     <ClCompile Include="encoder\AacOutputModule.cpp" />
@@ -134,6 +135,7 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="FreedbInfo.cpp" />
+    <ClCompile Include="HttpClient.cpp" />
     <ClCompile Include="InputFilesParser.cpp" />
     <ClCompile Include="classic\AacSettingsPage_old.cpp" />
     <ClCompile Include="classic\CDRipDlg.cpp" />
@@ -202,6 +204,7 @@
     <ClInclude Include="CDRipTitleFormatManager.hpp" />
     <ClInclude Include="CDRipTrackInfo.hpp" />
     <ClInclude Include="CommandLineParser.hpp" />
+    <ClInclude Include="CoverArtArchive.hpp" />
     <ClInclude Include="CrashReporter.hpp" />
     <ClInclude Include="encoder\AacInputModule.hpp" />
     <ClInclude Include="encoder\AacOutputModule.hpp" />
@@ -248,6 +251,7 @@
     <ClInclude Include="encoder\aacinfo\aacinfo.h" />
     <ClInclude Include="encoder\aacinfo\filestream.h" />
     <ClInclude Include="FreedbInfo.hpp" />
+    <ClInclude Include="HttpClient.hpp" />
     <ClInclude Include="IniFile.hpp" />
     <ClInclude Include="InputFilesParser.hpp" />
     <ClInclude Include="classic\AacSettingsPage.hpp" />

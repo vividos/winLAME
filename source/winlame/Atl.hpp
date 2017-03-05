@@ -44,6 +44,7 @@ extern CAppModule _Module;
 #include <atlwin.h>
 #include <atlcom.h>
 #include <atlhost.h>
+#include <atlimage.h>
 #pragma warning(pop)
 
 #if defined _M_IX86
