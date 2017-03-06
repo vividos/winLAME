@@ -1,14 +1,10 @@
 TODO list for winLAME
 
 winLAME 2017 beta 1, must-do-things:
-- implement giving LAME context to tasks, for nogap encoding
-- fix task list flicker
-
-winLAME 2017 beta 1, nice-to-have:
-- Add adjusting number of threads in thread pool to settings
-- remove code TODOs
-- Add translated preset texts
-- check all tooltip texts
+- Cover art: Show large image when clicking on image
+- Cover art: Port to Classic UI
+- Cover art: store in ID3v2 tags
+- Opus input module: read track info
 
 winLAME 2017 beta 1, tests:
 - test every input module, encoding, tag reading/writing
@@ -18,11 +14,19 @@ winLAME 2017 beta 2, must-do-things:
 - draw task list progress
 - support album artist, album art, composer tags
 - support writing album-artist on non-various cd's
+- implement Speex input file length reading
+- AAC output tag writing
+- AAC allow quality range from 10..500
 
 winLAME 2017 beta 2, nice-to-have:
+- Add adjusting number of threads in thread pool to settings
+- remove code TODOs
+- Add translated preset texts
+- check all tooltip texts
 - fix remaining Coverity scan warnings
 - fix remaining /analyze warnings
 - write help pages for general settings and cd read settings
+- setup uninstall: add option to finish page to remove all settings
 
 winLAME 2017 beta 2, tests:
 - fuzz testing using WinAFL and standalone cmdline executable
@@ -33,10 +37,3 @@ future versions:
 - mp3 libmad dither
 - ID3 tag editor
 - ReplayGain
-
-TODO Encoder refactoring:
-- implement Speex input file length reading
-- Use newer Ogg Vorbis libraries for Opus output module
-- Opus input module: read track info
-- AAC output tag writing
-- AAC allow quality range from 10..500
