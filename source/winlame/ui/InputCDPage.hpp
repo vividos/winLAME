@@ -65,6 +65,7 @@ private:
       DDX_CONTROL_HANDLE(IDC_CDSELECT_BUTTON_STOP, m_buttonStop)
       DDX_CONTROL_HANDLE(IDC_CDSELECT_COMBO_GENRE, m_cbGenre)
       DDX_CONTROL_HANDLE(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, m_checkVariousArtists)
+      DDX_CONTROL_HANDLE(IDC_CDSELECT_STATIC_ALBUMART, m_staticAlbumArtImage)
    END_DDX_MAP()
 
    BEGIN_DLGRESIZE_MAP(InputCDPage)
@@ -82,7 +83,9 @@ private:
       DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_PLAY, DLSZ_MOVE_X)
       DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_STOP, DLSZ_MOVE_X)
       DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_FREEDB, DLSZ_MOVE_X)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_ALBUMART, DLSZ_MOVE_X)
       DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_OPTIONS, DLSZ_MOVE_X)
+      DLGRESIZE_CONTROL(IDC_CDSELECT_STATIC_ALBUMART, DLSZ_MOVE_X)
    END_DLGRESIZE_MAP()
 
    BEGIN_MSG_MAP(InputCDPage)
@@ -95,6 +98,8 @@ private:
       COMMAND_HANDLER(IDC_CDSELECT_BUTTON_PLAY, BN_CLICKED, OnClickedButtonPlay)
       COMMAND_HANDLER(IDC_CDSELECT_BUTTON_STOP, BN_CLICKED, OnClickedButtonStop)
       COMMAND_HANDLER(IDC_CDSELECT_BUTTON_FREEDB, BN_CLICKED, OnClickedButtonFreedb)
+      COMMAND_HANDLER(IDC_CDSELECT_BUTTON_ALBUMART, BN_CLICKED, OnClickedButtonAlbumArt)
+      COMMAND_HANDLER(IDC_CDSELECT_STATIC_ALBUMART, STN_CLICKED, OnClickedStaticAlbumArt)
       COMMAND_HANDLER(IDC_CDSELECT_BUTTON_OPTIONS, BN_CLICKED, OnClickedButtonOptions)
       COMMAND_HANDLER(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, BN_CLICKED, OnClickedCheckVariousArtists)
       COMMAND_HANDLER(IDC_CDSELECT_EDIT_TITLE, EN_CHANGE, OnChangedEditCtrl)
@@ -120,6 +125,12 @@ private:
    LRESULT OnClickedButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnClickedButtonStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnClickedButtonFreedb(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// clicked when button "album art" has been pressed
+   LRESULT OnClickedButtonAlbumArt(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// clicked when the "album art" image has been pressed
+   LRESULT OnClickedStaticAlbumArt(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnClickedButtonOptions(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnClickedCheckVariousArtists(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
    LRESULT OnChangedEditCtrl(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
@@ -148,6 +159,12 @@ private:
    void FreedbLookup();
    void FillListFreedbInfo(const FreedbInfo& info);
 
+   /// retrieves album cover art for given MusicBrainz disc id
+   void RetrieveAlbumCoverArt(const std::string& discId);
+
+   /// sets front cover art from loaded image
+   void SetFrontCoverArt(const ATL::CImage& image);
+
 private:
    // controls
 
@@ -169,6 +186,9 @@ private:
    /// various artists checkbox
    CButton m_checkVariousArtists;
 
+   /// album art static image
+   CStatic m_staticAlbumArtImage;
+
    /// current page width
    int m_pageWidth;
 
@@ -185,6 +205,9 @@ private:
 
    /// indicates if disc info has already been acquired
    bool m_bAcquiredDiscInfo;
+
+   /// JPEG image data of last retrieved cover art
+   std::vector<unsigned char> m_covertArtImageData;
 };
 
 } // namespace UI

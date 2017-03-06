@@ -194,6 +194,8 @@
 #define IDC_CDSELECT_STATIC_YEAR                4012
 #define IDC_CDSELECT_STATIC_GENRE               4013
 #define IDC_CDSELECT_BUTTON_OPTIONS             4014
+#define IDC_CDSELECT_BUTTON_ALBUMART            4015
+#define IDC_CDSELECT_STATIC_ALBUMART            4016
 #define IDC_PRE_LIST_PRESET                     4100
 #define IDC_PRE_DESC                            4101
 #define IDC_PRE_BEVEL1                          4102

@@ -34,6 +34,8 @@
 #include "FreeDbDiscListDlg.hpp"
 #include "RedrawLock.hpp"
 #include "UTF8.hpp"
+#include "CoverArtArchive.hpp"
+#include "App.hpp"
 
 using namespace UI;
 
@@ -171,6 +173,25 @@ LRESULT InputCDPage::OnClickedButtonFreedb(WORD wNotifyCode, WORD wID, HWND hWnd
 {
    FreedbLookup();
 
+   return 0;
+}
+
+LRESULT InputCDPage::OnClickedButtonAlbumArt(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   DWORD driveIndex = GetCurrentDrive();
+
+   const char* cdid = BASS_CD_GetID(driveIndex, BASS_CDID_MUSICBRAINZ);
+   if (cdid == nullptr || strlen(cdid) == 0)
+      return 0;
+
+   RetrieveAlbumCoverArt(cdid);
+
+   return 0;
+}
+
+LRESULT InputCDPage::OnClickedStaticAlbumArt(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   // TODO display image in full size
    return 0;
 }
 
@@ -824,4 +845,49 @@ void InputCDPage::FillListFreedbInfo(const FreedbInfo& info)
 
       m_cbGenre.SetCurSel(nItem);
    }
+}
+
+void InputCDPage::RetrieveAlbumCoverArt(const std::string& discId)
+{
+   std::string errorText;
+   try
+   {
+      CString userAgent;
+      userAgent.Format(_T("winLAME/%s ( https://winlame.sourceforge.io )"), App::Version().GetString());
+      CoverArtArchive archive(CStringA(userAgent).GetString());
+
+      std::vector<CoverArtResult> response = archive.Request(discId, true);
+
+      if (!response.empty())
+      {
+         std::vector<unsigned char> imageData = response[0].FrontCover();
+
+         ATL::CImage image;
+         if (CoverArtArchive::ImageFromJpegByteArray(imageData, image))
+         {
+            SetFrontCoverArt(image);
+
+            m_covertArtImageData = imageData;
+         }
+      }
+      else
+      {
+         AtlMessageBox(m_hWnd, _T("Couldn't find Cover Art for this disc"), _T("winLAME"), MB_OK);
+      }
+   }
+   catch (const std::exception& ex)
+   {
+      errorText = ex.what();
+   }
+}
+
+void InputCDPage::SetFrontCoverArt(const ATL::CImage& image)
+{
+   if (image.IsNull())
+      return;
+
+   m_staticAlbumArtImage.ShowWindow(SW_SHOW);
+
+   m_staticAlbumArtImage.ModifyStyle(SS_BLACKFRAME, SS_BITMAP | SS_REALSIZECONTROL);
+   m_staticAlbumArtImage.SetBitmap(image);
 }
