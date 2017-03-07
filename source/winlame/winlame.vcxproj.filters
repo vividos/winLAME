@@ -361,6 +361,9 @@
     <ClCompile Include="HttpClient.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\CoverArtDlg.cpp">
+      <Filter>Modern UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="encoder\dither\dither.h">
@@ -762,10 +765,13 @@
     <ClInclude Include="ui\CrashSaveResultsDlg.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CoverArtArchive.hpp">
+    <ClInclude Include="HttpClient.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HttpClient.hpp">
+    <ClInclude Include="UI\CoverArtDlg.hpp">
+      <Filter>Modern UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoverArtArchive.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
