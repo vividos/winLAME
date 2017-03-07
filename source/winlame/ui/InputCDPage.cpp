@@ -851,6 +851,8 @@ void InputCDPage::FillListFreedbInfo(const FreedbInfo& info)
 
 void InputCDPage::RetrieveAlbumCoverArt(const std::string& discId)
 {
+   CWaitCursor waitCursor;
+
    std::string errorText;
    try
    {
