@@ -226,4 +226,10 @@ void CDExtractTask::SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, cons
    encodeTrackInfo.TextInfo(TrackInfoArtist, trackArist);
 
    encodeTrackInfo.NumberInfo(TrackInfoTrack, cdTrackInfo.m_numTrackOnDisc + 1);
+
+   // cover art
+   if (!cdReadJob.FrontCoverArtImage().empty())
+   {
+      encodeTrackInfo.BinaryInfo(TrackInfoFrontCover, cdReadJob.FrontCoverArtImage());
+   }
 }

@@ -54,6 +54,12 @@ namespace Encoder
       /// returns title
       const CString& Title() const throw() { return m_title; }
 
+      /// return front cover art image
+      const std::vector<unsigned char>& FrontCoverArtImage() const throw()
+      {
+         return m_covertArtImageData;
+      }
+
       // setter
 
       /// sets output filename
@@ -62,11 +68,20 @@ namespace Encoder
       /// sets title
       void Title(const CString& title) { m_title = title; }
 
+      /// sets front cover art image
+      void FrontCoverArtImage(const std::vector<unsigned char>& covertArtImageData)
+      {
+         m_covertArtImageData = covertArtImageData;
+      }
+
    private:
       CString m_outputFilename;     ///< output filename
       CDRipDiscInfo m_discInfo;     ///< disc info
       CDRipTrackInfo m_trackInfo;   ///< track info
       CString m_title;              ///< track title
+
+      /// front cover art image; empty when not set
+      std::vector<unsigned char> m_covertArtImageData;
    };
 
 } // namespace Encoder

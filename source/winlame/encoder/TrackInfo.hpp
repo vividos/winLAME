@@ -46,6 +46,12 @@ namespace Encoder
       TrackInfoDiscNumber, ///< disc number
    };
 
+   /// track binary info enum
+   enum TrackInfoBinaryType
+   {
+      TrackInfoFrontCover = 0,   ///< front cover art, in JPEG format
+   };
+
    /// track info class
    class TrackInfo
    {
@@ -60,6 +66,7 @@ namespace Encoder
       {
          m_mapTextInfos.clear();
          m_mapNumberInfos.clear();
+         m_mapBinaryInfos.clear();
       }
 
       /// sets a text info value
@@ -103,8 +110,31 @@ namespace Encoder
          return avail ? iter->second : -1;
       }
 
+      /// sets a binary info value
+      void BinaryInfo(TrackInfoBinaryType type, const std::vector<unsigned char>& value)
+      {
+         m_mapBinaryInfos[type] = value;
+      }
+
+      /// retrieves a binary info value
+      bool BinaryInfo(TrackInfoBinaryType type, std::vector<unsigned char>& binaryInfo) const
+      {
+         auto iter = m_mapBinaryInfos.find(type);
+         bool avail = iter != m_mapBinaryInfos.end();
+
+         if (avail)
+            binaryInfo.assign(iter->second.begin(), iter->second.end());
+
+         return avail;
+      }
+
       /// returns if track info is empty
-      bool IsEmpty() const throw() { return m_mapTextInfos.empty() && m_mapNumberInfos.empty(); }
+      bool IsEmpty() const throw()
+      {
+         return m_mapTextInfos.empty() &&
+            m_mapNumberInfos.empty() &&
+            m_mapBinaryInfos.empty();
+      }
 
       /// converts genre ID to text
       static CString GenreIDToText(unsigned int genreID);
@@ -124,6 +154,9 @@ namespace Encoder
 
       /// number infos map
       std::map<TrackInfoNumberType, int> m_mapNumberInfos;
+
+      /// binary infos map
+      std::map<TrackInfoBinaryType, std::vector<unsigned char>> m_mapBinaryInfos;
    };
 
 } // namespace Encoder

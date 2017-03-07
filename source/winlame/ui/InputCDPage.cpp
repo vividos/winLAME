@@ -631,6 +631,8 @@ void InputCDPage::UpdateCDReadJobList(unsigned int dwDrive)
       CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, nTrack, discInfo);
 
       Encoder::CDReadJob cdReadJob(discInfo, trackInfo);
+      cdReadJob.FrontCoverArtImage(m_covertArtImageData);
+
       m_uiSettings.cdreadjoblist.push_back(cdReadJob);
    }
 }
