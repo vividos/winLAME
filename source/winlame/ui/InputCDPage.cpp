@@ -35,6 +35,7 @@
 #include "RedrawLock.hpp"
 #include "UTF8.hpp"
 #include "CoverArtArchive.hpp"
+#include "CoverArtDlg.hpp"
 #include "App.hpp"
 
 using namespace UI;
@@ -189,9 +190,10 @@ LRESULT InputCDPage::OnClickedButtonAlbumArt(WORD wNotifyCode, WORD wID, HWND hW
    return 0;
 }
 
-LRESULT InputCDPage::OnClickedStaticAlbumArt(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+LRESULT InputCDPage::OnClickedStaticAlbumArt(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   // TODO display image in full size
+   UI::CoverArtDlg dlg(m_coverArtImage);
+   dlg.DoModal(m_hWnd);
    return 0;
 }
 
@@ -862,10 +864,9 @@ void InputCDPage::RetrieveAlbumCoverArt(const std::string& discId)
       {
          std::vector<unsigned char> imageData = response[0].FrontCover();
 
-         ATL::CImage image;
-         if (CoverArtArchive::ImageFromJpegByteArray(imageData, image))
+         if (CoverArtArchive::ImageFromJpegByteArray(imageData, m_coverArtImage))
          {
-            SetFrontCoverArt(image);
+            SetFrontCoverArt(m_coverArtImage);
 
             m_covertArtImageData = imageData;
          }

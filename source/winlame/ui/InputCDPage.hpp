@@ -206,6 +206,9 @@ private:
    /// indicates if disc info has already been acquired
    bool m_bAcquiredDiscInfo;
 
+   /// last retrieved cover art
+   ATL::CImage m_coverArtImage;
+
    /// JPEG image data of last retrieved cover art
    std::vector<unsigned char> m_covertArtImageData;
 };
