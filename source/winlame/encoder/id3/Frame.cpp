@@ -345,3 +345,32 @@ bool Frame::SetString(unsigned int fieldIndex, const CString& cszText)
 
    return ret == 0;
 }
+
+bool Frame::SetInt8(unsigned int fieldIndex, char fieldValue)
+{
+   id3_field* field = id3_frame_field(m_spFrame.get(), fieldIndex);
+
+   enum id3_field_type type = id3_field_type(field);
+
+   ATLVERIFY(type == ID3_FIELD_TYPE_INT8 ||
+      type == ID3_FIELD_TYPE_INT16 ||
+      type == ID3_FIELD_TYPE_INT24 ||
+      type == ID3_FIELD_TYPE_INT32);
+
+   int ret = ::id3_field_setint(field, fieldValue);
+
+   return ret == 0;
+}
+
+bool Frame::SetBinaryData(unsigned int fieldIndex, const std::vector<unsigned char>& binaryData)
+{
+   id3_field* field = id3_frame_field(m_spFrame.get(), fieldIndex);
+
+   enum id3_field_type type = id3_field_type(field);
+
+   ATLVERIFY(type == ID3_FIELD_TYPE_BINARYDATA);
+
+   int ret = ::id3_field_setbinarydata(field, binaryData.data(), binaryData.size());
+
+   return ret == 0;
+}

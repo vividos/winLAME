@@ -47,6 +47,7 @@ namespace ID3
       static TCHAR Artist[] =             _T("TPE1"); // lead performer(s)/soloist(s)
       static TCHAR Title[] =              _T("TIT2");
       static TCHAR RecordingTime[] =      _T("TDRC");
+      static TCHAR AttachedPicture[] =    _T("APIC"); ///< attached picture
       //static TCHAR Xxx[] = _T("");
    }
 
@@ -88,6 +89,12 @@ public:
 
    /// write text as string entry
    bool SetString(unsigned int fieldIndex, const CString& cszText);
+
+   /// write integer entry
+   bool SetInt8(unsigned int fieldIndex, char fieldValue);
+
+   /// write binary data entry
+   bool SetBinaryData(unsigned int fieldIndex, const std::vector<unsigned char>& binaryData);
 
 private:
    friend class Tag;
