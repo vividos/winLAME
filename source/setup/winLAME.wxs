@@ -202,8 +202,7 @@
            Source="$(var.SolutionDir)source\libraries\libspeex.dll" />
       </Component>
 
-      <Component Id="WinLameHelp" Guid="*" Directory="INSTALLDIR"
-                 >
+      <Component Id="WinLameHelp" Guid="*" Directory="INSTALLDIR">
         <File Id="WinLameChm" Name="winLAME.chm" DiskId="1" KeyPath="yes"
            Source="$(var.OutputDir)winLAME.chm" />
       </Component>
