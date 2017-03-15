@@ -605,7 +605,8 @@ bool EncoderImpl::MainLoop()
       }
 
       // check if we should stop the thread
-      if (!m_encoderState.m_running)
+      if (!m_encoderState.m_running ||
+         skipFile)
          break;
 
       // sleep if we should pause
