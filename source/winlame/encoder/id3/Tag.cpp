@@ -88,6 +88,20 @@ const ID3::Frame Tag::GetByIndex(unsigned int uiFrameIndex) const
    return ID3::Frame(spFrame);
 }
 
+unsigned int Tag::ID3v2TagLength() const
+{
+   int savedOptions = id3_tag_options(m_spTag.get(), 0, 0);
+
+   // mask out ID3v1 to only get v2 size
+   id3_tag_options(m_spTag.get(), ID3_TAG_OPTION_ID3V1, 0);
+
+   id3_length_t v2size = id3_tag_render(m_spTag.get(), 0);
+
+   id3_tag_options(m_spTag.get(), ~0, savedOptions);
+
+   return static_cast<unsigned int>(v2size);
+}
+
 void Tag::SetOption(TagOption enOpt, bool bSetOpt)
 {
    id3_tag_options(m_spTag.get(), enOpt, bSetOpt ? enOpt : 0);

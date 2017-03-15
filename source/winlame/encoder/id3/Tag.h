@@ -63,6 +63,9 @@ public:
    /// gets frame by index; const version
    const Frame GetByIndex(unsigned int uiFrameIndex) const;
 
+   /// returns the current ID3v2 tag length when the tag would be written to file now
+   unsigned int ID3v2TagLength() const;
+
    // write access to tag
 
    /// sets option for tag
