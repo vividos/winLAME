@@ -37,6 +37,10 @@ public:
    /// tag option for SetOption()
    enum TagOption
    {
+      foUnsynchronisation = 0x0001, ///< when set, tags use unsynchronisation schema
+      foCompression = 0x0002, ///< when set, tags use compression
+      foCRC = 0x0004, ///< when set, each tag contains CRC values
+
       foID3v1 = 0x100, ///< when set, writes frame to ID3v1 tag, too
    };
 
