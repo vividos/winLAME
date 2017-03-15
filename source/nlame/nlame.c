@@ -1,6 +1,6 @@
 /*
    nlame - an alternative API for libmp3lame
-   copyright (c) 2001-2016 Michael Fink
+   copyright (c) 2001-2017 Michael Fink
    Copyright (c) 2004 DeXT
 
    This library is free software; you can redistribute it and/or
@@ -33,6 +33,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+/*! sets id3 tag text info as UCS-2 value; not declared by lame.h, but exported from the
+    library, so we declare it here. */
+extern int CDECL id3tag_set_textinfo_ucs2(lame_t gfp, char const *id, unsigned short const *text);
 
 /*! quality values to use in a call to nlame_var_set_int(nle_var_quality,x)
     note: these are now internal and can't be reached from nlame.h anymore.
@@ -41,7 +44,7 @@
 */
 typedef enum
 {
-   nle_quality_high=2,   
+   nle_quality_high=2,
    nle_quality_fast=7,
 
 } nlame_quality_value;
@@ -283,6 +286,11 @@ int nlame_var_set_int(nlame_instance_t* inst, nlame_var_int_type type, int value
       // replay-gain settings
       nlame_var_set_switch_type(nle_var_find_replay_gain,findReplayGain);
       nlame_var_set_switch_type(nle_var_decode_on_the_fly,decode_on_the_fly);
+
+      case nle_var_id3tag_write_automatic:
+         lame_set_write_id3tag_automatic(inst->lgf, value);
+         ret = 0;
+         break;
    }
 
    return ret;
@@ -358,6 +366,7 @@ int nlame_var_get_int(nlame_instance_t* inst, nlame_var_int_type type)
       nlame_var_get_switch_type(nle_var_decode_on_the_fly,decode_on_the_fly);
 
       nlame_var_get_switch_type(nle_var_framesize,framesize);
+      nlame_var_get_switch_type(nle_var_id3tag_write_automatic,write_id3tag_automatic);
    }
    return val;
 }
@@ -519,6 +528,11 @@ int nlame_reinit_bitstream( nlame_instance_t* inst )
 
 static long skipId3v2(FILE * fpStream);
 
+int nlame_get_vbr_infotag_length(nlame_instance_t* inst)
+{
+   return lame_get_lametag_frame(inst->lgf, NULL, 0);
+}
+
 void nlame_write_vbr_infotag( nlame_instance_t* inst, FILE* fd )
 {
    /* instead of just calling lame_mp3_tags_fid we have to do everything
@@ -633,6 +647,31 @@ void nlame_id3tag_setfield_latin1( nlame_instance_t* inst,
    case nif_track:   id3tag_set_track(inst->lgf, text); break;
    case nif_genre:   id3tag_set_genre(inst->lgf, text); break;
    }
+}
+
+void nlame_id3tag_setfield_ucs2(nlame_instance_t* inst,
+   enum nlame_id3tag_field field, const wchar_t* text)
+{
+   switch (field)
+   {
+   case nif_title:   id3tag_set_textinfo_ucs2(inst->lgf, "TIT2", text); break;
+   case nif_artist:  id3tag_set_textinfo_ucs2(inst->lgf, "TPE1", text); break;
+   case nif_album:   id3tag_set_textinfo_ucs2(inst->lgf, "TALB", text); break;
+   case nif_year:    id3tag_set_textinfo_ucs2(inst->lgf, "TYER", text); break;
+   case nif_comment: id3tag_set_textinfo_ucs2(inst->lgf, "COMM", text); break;
+   case nif_track:   id3tag_set_textinfo_ucs2(inst->lgf, "TRCK", text); break;
+   case nif_genre:   id3tag_set_textinfo_ucs2(inst->lgf, "TPOS", text); break;
+   }
+}
+
+void nlame_id3tag_set_albumart(nlame_instance_t* inst, const char* image, size_t size)
+{
+   id3tag_set_albumart(inst->lgf, image, size);
+}
+
+int nlame_id3tag_get_id3v2_tag(nlame_instance_t* inst, unsigned char* buffer, size_t size)
+{
+   return lame_get_id3v2_tag(inst->lgf, buffer, size);
 }
 
 // copied from VbrTag.c from LAME sourcecode

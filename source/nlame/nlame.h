@@ -57,6 +57,15 @@
     Version 4: introduced on 2009-10-26
       Added nlame_reinit_bitstream()
 
+    Version 5: introduced on 2017-03-15
+      The following new variable values were added:
+      nle_var_id3tag_write_automatic
+      The following functions were added:
+      nlame_get_vbr_infotag_length
+      nlame_id3tag_setfield_ucs2
+      nlame_id3tag_set_albumart
+      nlame_id3tag_get_id3v2_tag
+
 */
 /*! \defgroup nlame nlame Documentation
 
@@ -364,6 +373,10 @@ typedef enum
    /*! number of samples in one frame; read only */
    nle_var_framesize = 50,
 
+   /*! when 1, id3 tag is written automatically; when 0 the tag isn't written, but can
+       be requested using nlame_id3tag_get_id3v2_tag(). */
+   nle_var_id3tag_write_automatic = 51,
+
 } nlame_var_int_type;
 
 
@@ -553,6 +566,12 @@ int nlame_reinit_bitstream( nlame_instance_t* inst );
 /* misc. functions */
 
 
+/*! returns the length of the VBR info tag; this can be used to ensure that
+    padding bytes are inserted after the ID3v2 tag in order to write the whole
+    VBR info tag. */
+int nlame_get_vbr_infotag_length(nlame_instance_t* inst);
+
+
 /*! writes VBR info tag to an open file descriptor fd */
 /*! These calls perform forward and backwards seeks, so make
     sure fd is a real file. Make sure nlame_encode_flush has been called,
@@ -621,6 +640,21 @@ enum nlame_id3tag_field
 /*! must be called before any encoding happens */
 void nlame_id3tag_setfield_latin1( nlame_instance_t* inst,
    enum nlame_id3tag_field field, const char* text);
+
+/*! writes ucs2 string text field to stream */
+/*! must be called before any encoding happens */
+void nlame_id3tag_setfield_ucs2(nlame_instance_t* inst,
+   enum nlame_id3tag_field field, const wchar_t* text);
+
+/*! writes album art into id3v2 tag; must be a JPEG byte stream */
+/*! must be called before any encoding happens */
+void nlame_id3tag_set_albumart(nlame_instance_t* inst, const char* image, size_t size);
+
+/*! returns the current ID3v2 tag that was set using above functions. Use this
+    when you want to write the ID3v2 tag yourself. for this to happen, set the
+    nle_var_id3tag_write_automatic value to 0. when you pass NULL as buffer,
+    the required buffer size is returned. */
+int nlame_id3tag_get_id3v2_tag(nlame_instance_t* inst, unsigned char* buffer, size_t size);
 
 
 /*! returns the version number of the nLAME API */
