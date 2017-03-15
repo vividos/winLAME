@@ -25,6 +25,11 @@
 #include <iosfwd>
 #include "nlame.h"
 
+namespace ID3
+{
+   class Tag;
+}
+
 namespace Encoder
 {
    // forward references
@@ -81,6 +86,9 @@ namespace Encoder
       /// encodes one frame
       int EncodeFrame();
 
+      /// flushes LAME output buffer without encoding more samples
+      void FlushOutputBuffer();
+
       /// adds id3v2 tag infos to nlame instance
       void AddLameID3v2Tag(const TrackInfo& trackinfo);
 
@@ -89,6 +97,9 @@ namespace Encoder
 
       /// writes out ID3v2 tag
       void WriteID3v2Tag();
+
+      /// updates ID3 tag from data in track info
+      void UpdateId3TagFromTrackInfo(ID3::Tag& tag, const TrackInfo& trackInfo);
 
       /// Writes VBR Info tag
       static void WriteVBRInfoTag(nlame_instance_t* inst, LPCTSTR mp3filename);

@@ -104,6 +104,16 @@ int LameOutputModule::InitOutput(LPCTSTR outfilename,
    SettingsManager& mgr, const TrackInfo& trackInfo,
    SampleContainer& samples)
 {
+   // open output file
+   m_mp3Filename = outfilename;
+
+   m_outputFile.open(outfilename, std::ios::out | std::ios::binary);
+   if (!m_outputFile.is_open())
+   {
+      m_lastError.LoadString(IDS_ENCODER_OUTPUT_FILE_CREATE_ERROR);
+      return -1;
+   }
+
    // alloc memory for output mp3 buffer
    m_mp3OutputBuffer.resize(nlame_const_maxmp3buffer);
 
@@ -125,14 +135,14 @@ int LameOutputModule::InitOutput(LPCTSTR outfilename,
       {
          m_instance = m_nogapInstanceManager.GetInstance(m_nogapInstanceId);
 
-         // update tag for next track
-         if (!m_writeWaveHeader)
-            AddLameID3v2Tag(m_trackInfoID3v2);
-
          // set callbacks
          nlame_callback_set(m_instance, nle_callback_error, LameErrorCallback);
+         nlame_callback_set(m_instance, nle_callback_debug, LameErrorCallback);
+         nlame_callback_set(m_instance, nle_callback_message, LameErrorCallback);
 
-         // reinit bitstream with new tag infos
+         // we write the ID3 tag ourselves, so switch off LAME's automatic writing
+         nlame_var_set_int(m_instance, nle_var_id3tag_write_automatic, 0);
+
          nlame_reinit_bitstream(m_instance);
       }
    }
@@ -148,11 +158,13 @@ int LameOutputModule::InitOutput(LPCTSTR outfilename,
          return -1;
       }
 
-      if (!m_writeWaveHeader)
-         AddLameID3v2Tag(m_trackInfoID3v2);
+      // we write the ID3 tag ourselves, so switch off LAME's automatic writing
+      nlame_var_set_int(m_instance, nle_var_id3tag_write_automatic, 0);
 
       // set callbacks
       nlame_callback_set(m_instance, nle_callback_error, LameErrorCallback);
+      nlame_callback_set(m_instance, nle_callback_debug, LameErrorCallback);
+      nlame_callback_set(m_instance, nle_callback_message, LameErrorCallback);
 
       // set all nlame variables
       int ret = SetEncodingParameters(mgr);
@@ -164,10 +176,11 @@ int LameOutputModule::InitOutput(LPCTSTR outfilename,
       }
    }
 
+   if (!m_writeWaveHeader)
+      AddLameID3v2Tag(m_trackInfoID3v2);
+
    // do description string
    GenerateDescription(mgr);
-
-   m_mp3Filename = outfilename;
 
    // always write VBR info tag
    //m_writeInfoTag = mgr.QueryValueInt(LameVBRWriteTag) == 1;
@@ -180,14 +193,6 @@ int LameOutputModule::InitOutput(LPCTSTR outfilename,
    // create id3 tag data
    if (!trackInfo.IsEmpty())
       m_ID33v1Tag.reset(new Id3v1Tag(trackInfo));
-
-   // open output file
-   m_outputFile.open(outfilename, std::ios::out | std::ios::binary);
-   if (!m_outputFile.is_open())
-   {
-      m_lastError.LoadString(IDS_ENCODER_OUTPUT_FILE_CREATE_ERROR);
-      return -1;
-   }
 
    // set up output traits
    int bitsPerSample = 16;
@@ -307,12 +312,8 @@ int LameOutputModule::EncodeSamples(SampleContainer& samples)
    return ret;
 }
 
-void LameOutputModule::DoneOutput()
+void LameOutputModule::FlushOutputBuffer()
 {
-   // encode remaining samples, if any
-   EncodeFrame();
-
-   // finish encoding
    int ret;
 
    if (m_nogapEncoding && !m_nogapIsLastFile)
@@ -329,8 +330,16 @@ void LameOutputModule::DoneOutput()
       m_outputFile.write(reinterpret_cast<char*>(m_mp3OutputBuffer.data()), ret);
       m_numDataBytesWritten += ret;
    }
+}
 
-   // write id3 tag when available
+void LameOutputModule::DoneOutput()
+{
+   // encode remaining samples, if any
+   EncodeFrame();
+
+   FlushOutputBuffer();
+
+   // write ID3v1 tag when available
    // note: we write id3 tag when we do gapless encoding, too, since
    //       most decoders should be aware now
    // note: we don't write id3 tags to wave files when we wrote a wave header,
@@ -506,12 +515,19 @@ void LameOutputModule::AddLameID3v2Tag(const TrackInfo& trackInfo)
    // with text encoded as ISO-8859-1 (Latin1) that may not be able to represent all
    // characters we have
 
-   unsigned int paddingLength = GetID3v2PaddingLength();
-   nlame_id3tag_init(m_instance, false, true, paddingLength);
+   // leave some bytes as padding
+   unsigned int lamePaddingSize = 256;
+
+   // LAME (and nlame) can't write Album Artist, so add some bytes for padding
+   bool isAvail = false;
+   CString textValue = trackInfo.TextInfo(TrackInfoDiscArtist, isAvail);
+   if (isAvail)
+      lamePaddingSize += textValue.GetLength() + 4 + 3; // tag ID + tag header + string length
+
+   nlame_id3tag_init(m_instance, false, true, lamePaddingSize);
 
    // add all tags
-   bool isAvail = false;
-   CString textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
+   textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
    if (isAvail)
       nlame_id3tag_setfield_latin1(m_instance, nif_title, CStringA(textValue));
 
@@ -547,55 +563,71 @@ void LameOutputModule::AddLameID3v2Tag(const TrackInfo& trackInfo)
    {
       nlame_id3tag_setfield_latin1(m_instance, nif_genre, CStringA(textValue));
    }
+
+   std::vector<unsigned char> binaryInfo;
+
+   isAvail = trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+   if (isAvail)
+   {
+      nlame_id3tag_set_albumart(m_instance, reinterpret_cast<const char*>(binaryInfo.data()), binaryInfo.size());
+   }
+
+   // write out ID3v2 tag
+   int requiredSize = nlame_id3tag_get_id3v2_tag(m_instance, nullptr, 0);
+   if (requiredSize > 0)
+   {
+      std::vector<unsigned char> id3v2tag(requiredSize, 0);
+
+      int ret = nlame_id3tag_get_id3v2_tag(m_instance, id3v2tag.data(), id3v2tag.size());
+      ATLVERIFY(ret == requiredSize);
+
+      m_outputFile.write(reinterpret_cast<const char*>(id3v2tag.data()), id3v2tag.size());
+   }
+
+   // add remaining padding in order to write full ID3v2 tag after encoding has finished
+   unsigned int paddingLength = GetID3v2PaddingLength();
+
+   int paddingToAdd = int(paddingLength) - int(requiredSize);
+   if (paddingToAdd < 0)
+      paddingToAdd = 0;
+
+   // add bytes for the VBR Info tag
+   if (m_writeInfoTag)
+      paddingToAdd += nlame_get_vbr_infotag_length(m_instance);
+
+   if (paddingToAdd > 0)
+   {
+      std::array<char, 4096> paddingBuffer = {};
+      while (paddingToAdd > 0)
+      {
+         size_t sizeToWrite = std::min(size_t(paddingToAdd), paddingBuffer.size());
+         m_outputFile.write(paddingBuffer.data(), sizeToWrite);
+
+         paddingToAdd -= int(sizeToWrite);
+      }
+   }
 }
 
 unsigned int LameOutputModule::GetID3v2PaddingLength()
 {
-   unsigned int length = 0;
+   ID3::File file(m_mp3Filename, false); // read-write
 
-   const TrackInfo& trackInfo = m_trackInfoID3v2;
+   ATLASSERT(file.IsValid());
+   if (!file.IsValid())
+      return 0;
 
-   // add all frames
-   bool isAvail = false;
-   CString textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
-   if (isAvail)
-      length += textValue.GetLength() + 1;
+   // get primary tag
+   ID3::Tag tag = file.GetTag();
 
-   textValue = trackInfo.TextInfo(TrackInfoArtist, isAvail);
-   if (isAvail)
-      length += textValue.GetLength() + 1;
+   // set the same flags that mp3tag would use in an ID3v2 tag
+   tag.SetOption(ID3::Tag::foUnsynchronisation, 0);
+   tag.SetOption(ID3::Tag::foCompression, 0);
+   tag.SetOption(ID3::Tag::foCRC, 0);
+   tag.SetOption(ID3::Tag::foID3v1, 0);
 
-   textValue = trackInfo.TextInfo(TrackInfoComment, isAvail);
-   if (isAvail)
-      length += textValue.GetLength() + 1;
+   UpdateId3TagFromTrackInfo(tag, m_trackInfoID3v2);
 
-   textValue = trackInfo.TextInfo(TrackInfoAlbum, isAvail);
-   if (isAvail)
-      length += textValue.GetLength() + 1;
-
-   // numeric
-
-   int intValue = trackInfo.NumberInfo(TrackInfoYear, isAvail);
-   if (isAvail)
-   {
-      textValue.Format(_T("%i"), intValue);
-      length += textValue.GetLength() + 1;
-   }
-
-   intValue = trackInfo.NumberInfo(TrackInfoTrack, isAvail);
-   if (isAvail)
-   {
-      textValue.Format(_T("%i"), intValue);
-      length += textValue.GetLength() + 1;
-   }
-
-   textValue = trackInfo.TextInfo(TrackInfoGenre, isAvail);
-   if (isAvail)
-   {
-      length += textValue.GetLength() + 1;
-   }
-
-   return unsigned((length * 4) * 1.5); // multiply with 4 for UCS-32, and add 50% overhead due to tag headers
+   return tag.ID3v2TagLength();
 }
 
 void LameOutputModule::WriteID3v2Tag()
@@ -609,10 +641,19 @@ void LameOutputModule::WriteID3v2Tag()
    // get primary tag
    ID3::Tag tag = file.GetTag();
 
+   // set the same flags that mp3tag would use in an ID3v2 tag
+   tag.SetOption(ID3::Tag::foUnsynchronisation, 0);
+   tag.SetOption(ID3::Tag::foCompression, 0);
+   tag.SetOption(ID3::Tag::foCRC, 0);
    tag.SetOption(ID3::Tag::foID3v1, 0);
 
-   const TrackInfo& trackInfo = m_trackInfoID3v2;
+   UpdateId3TagFromTrackInfo(tag, m_trackInfoID3v2);
 
+   file.Update();
+}
+
+void LameOutputModule::UpdateId3TagFromTrackInfo(ID3::Tag& tag, const TrackInfo& trackInfo)
+{
    // add all frames
    bool isAvail = false;
    CString textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
@@ -711,7 +752,22 @@ void LameOutputModule::WriteID3v2Tag()
       tag.AttachFrame(frame);
    }
 
-   file.Update();
+   // binary
+
+   std::vector<unsigned char> binaryInfo;
+
+   isAvail = trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+   if (isAvail)
+   {
+      tag.RemoveFrame(ID3::FrameId::AttachedPicture);
+
+      ID3::Frame frame(ID3::FrameId::AttachedPicture);
+      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
+      frame.SetString(1, "image/jpeg");
+      frame.SetInt8(2, 0x03); // 0x03 = Front Cover
+      frame.SetBinaryData(4, binaryInfo);
+      tag.AttachFrame(frame);
+   }
 }
 
 void LameOutputModule::WriteVBRInfoTag(nlame_instance_t* instance, LPCTSTR mp3Filename)
