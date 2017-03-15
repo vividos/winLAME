@@ -671,7 +671,7 @@ int nlame_get_api_version();
     actually using is new enough to support the features you need. See
     the version history at the beginning of this file.
 */
-#define NLAME_CURRENT_API_VERSION 4
+#define NLAME_CURRENT_API_VERSION 5
 
 
 
