@@ -30,6 +30,7 @@ enum id3_field_textencoding;
 
 namespace ID3
 {
+   /// ID3 tag frame IDs
    namespace FrameId
    {
       static TCHAR TrackNumber[] =        _T("TRCK");

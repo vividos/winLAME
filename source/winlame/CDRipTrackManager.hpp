@@ -28,6 +28,7 @@
 
 extern LPCTSTR g_pszCDRipPrefix;
 
+/// cd audio extraction manager
 class CDRipTrackManager: public boost::noncopyable
 {
 public:

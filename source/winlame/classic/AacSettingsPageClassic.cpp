@@ -17,11 +17,11 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-/// \file AacSettingsPage_old.cpp
+/// \file AacSettingsPageClassic.cpp
 /// \brief contains implementation of the AAC settings page
 //
 #include "stdafx.h"
-#include "AacSettingsPage.hpp"
+#include "AacSettingsPageClassic.hpp"
 
 using ClassicUI::AacSettingsPage;
 

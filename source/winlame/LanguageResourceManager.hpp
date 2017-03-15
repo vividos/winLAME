@@ -22,6 +22,7 @@
 
 #pragma once
 
+/// info about a language resource
 class LanguageResourceInfo
 {
 public:
@@ -42,6 +43,7 @@ private:
    CString m_cszLanguageName;
 };
 
+/// manager for all language resource files
 class LanguageResourceManager
 {
 public:

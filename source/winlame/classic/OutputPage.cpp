@@ -26,7 +26,7 @@
 #include "LameSimpleSettingsPage.hpp"
 #include "OggVorbisSettingsPage.hpp"
 #include "WaveOutputSettingsPage.hpp"
-#include "AacSettingsPage.hpp"
+#include "AacSettingsPageClassic.hpp"
 #include "WmaOutputSettingsPage.hpp"
 #include "OpusSettingsPage.hpp"
 #include "EncoderInterface.hpp"

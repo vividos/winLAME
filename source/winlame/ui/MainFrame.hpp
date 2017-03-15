@@ -32,6 +32,7 @@
 // forward references
 class TaskManager;
 
+/// Modern UI classes
 namespace UI
 {
 

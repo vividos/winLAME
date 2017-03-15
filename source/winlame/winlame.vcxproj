@@ -137,7 +137,7 @@
     <ClCompile Include="FreedbInfo.cpp" />
     <ClCompile Include="HttpClient.cpp" />
     <ClCompile Include="InputFilesParser.cpp" />
-    <ClCompile Include="classic\AacSettingsPage_old.cpp" />
+    <ClCompile Include="classic\AacSettingsPageClassic.cpp" />
     <ClCompile Include="classic\CDRipDlg.cpp" />
     <ClCompile Include="classic\CDRipPage.cpp" />
     <ClCompile Include="classic\CommonStuff.cpp" />
@@ -255,7 +255,7 @@
     <ClInclude Include="HttpClient.hpp" />
     <ClInclude Include="IniFile.hpp" />
     <ClInclude Include="InputFilesParser.hpp" />
-    <ClInclude Include="classic\AacSettingsPage.hpp" />
+    <ClInclude Include="classic\AacSettingsPageClassic.hpp" />
     <ClInclude Include="classic\CDRipDlg.hpp" />
     <ClInclude Include="classic\CDRipPage.hpp" />
     <ClInclude Include="classic\CommonStuff.hpp" />

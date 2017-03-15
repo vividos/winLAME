@@ -35,6 +35,7 @@ CoverArtArchive::~CoverArtArchive() throw()
 
 /// \param[in] musicBrainzDiscId is a SHA-1 hash of the disc TOC, e.g. like
 /// h1RuRzDGd48cHYnfOVN6e6wGr3o-
+/// \param[in] onlyLoadFirst indicates if only the first entry should be loaded
 std::vector<CoverArtResult> CoverArtArchive::Request(const std::string& musicBrainzDiscId, bool onlyLoadFirst)
 {
    //http:// 9712d52a-4509-3d4b-a1a2-67c88c643e31

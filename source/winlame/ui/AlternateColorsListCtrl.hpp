@@ -16,13 +16,14 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-/// \file FixedValueSpinButtonCtrl.hpp
-/// \brief Fixed value spin button control
+/// \file AlternateColorsListCtrl.hpp
+/// \brief List control with alternating colors
 //
 #pragma once
 
 namespace UI
 {
+   /// List control with alternating colors
    class AlternateColorsListCtrl :
       public CWindowImpl<AlternateColorsListCtrl, CListViewCtrl>,
       public CCustomDraw<AlternateColorsListCtrl>

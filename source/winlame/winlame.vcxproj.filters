@@ -265,9 +265,6 @@
     <ClCompile Include="classic\OggVorbisSettingsPage_old.cpp">
       <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="classic\AacSettingsPage_old.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ui\AboutDlg.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
@@ -363,6 +360,9 @@
     </ClCompile>
     <ClCompile Include="UI\CoverArtDlg.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="classic\AacSettingsPageClassic.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -699,9 +699,6 @@
     <ClInclude Include="TaskCreationHelper.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="classic\AacSettingsPage.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="classic\CDRipDlg.hpp">
       <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
@@ -773,6 +770,9 @@
     </ClInclude>
     <ClInclude Include="CoverArtArchive.hpp">
       <Filter>Main Program Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\AacSettingsPageClassic.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

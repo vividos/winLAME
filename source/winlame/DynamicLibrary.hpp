@@ -21,6 +21,7 @@
 //
 #pragma once
 
+/// dynamic library loading
 class DynamicLibrary
 {
 public:
