@@ -530,7 +530,41 @@ static long skipId3v2(FILE * fpStream);
 
 int nlame_get_vbr_infotag_length(nlame_instance_t* inst)
 {
-   return lame_get_lametag_frame(inst->lgf, NULL, 0);
+   /* code borrowed from InitVbrTag() */
+#define XING_BITRATE1 128
+#define XING_BITRATE2  64
+#define XING_BITRATE25 32
+
+   int kbps_header;
+   int version;
+   int samplerate_out;
+   vbr_mode vbr;
+   int avg_bitrate;
+   int total_frame_size;
+
+   version = lame_get_version(inst->lgf);
+   samplerate_out = lame_get_out_samplerate(inst->lgf);
+   vbr = lame_get_VBR(inst->lgf);
+   avg_bitrate = lame_get_brate(inst->lgf);
+
+   if (1 == version)
+   {
+      kbps_header = XING_BITRATE1;
+   }
+   else
+   {
+      if (samplerate_out < 16000)
+         kbps_header = XING_BITRATE25;
+      else
+         kbps_header = XING_BITRATE2;
+   }
+
+   if (vbr == vbr_off)
+      kbps_header = avg_bitrate;
+
+   total_frame_size = ((version + 1) * 72000 * kbps_header) / samplerate_out;
+
+   return total_frame_size;
 }
 
 void nlame_write_vbr_infotag( nlame_instance_t* inst, FILE* fd )

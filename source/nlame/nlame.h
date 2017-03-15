@@ -568,7 +568,8 @@ int nlame_reinit_bitstream( nlame_instance_t* inst );
 
 /*! returns the length of the VBR info tag; this can be used to ensure that
     padding bytes are inserted after the ID3v2 tag in order to write the whole
-    VBR info tag. */
+    VBR info tag. note that the info is only available after
+    nlame_init_params() or nlame_reinit_bitstream() was called. */
 int nlame_get_vbr_infotag_length(nlame_instance_t* inst);
 
 
@@ -580,7 +581,10 @@ int nlame_get_vbr_infotag_length(nlame_instance_t* inst);
 
     NOTE:
     if VBR tags are turned off by the user, or turned off by LAME because
-    the output is not a regular file, this call does nothing
+    the output is not a regular file, this call does nothing.
+
+    See also:
+    http://gabriel.mp3-tech.org/mp3infotag.html
 */
 void nlame_write_vbr_infotag( nlame_instance_t* inst, FILE* fd );
 
