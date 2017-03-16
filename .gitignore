@@ -51,3 +51,5 @@ source/winlame/res/MainFrameRibbon.0407.rc
 *.VC.opendb
 source/cov-int/
 source/cov-int.zip
+buildtools/portable/PortableApps.comInstaller/
+buildtools/portable/PortableApps.comLauncher/
