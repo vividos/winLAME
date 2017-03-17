@@ -37,7 +37,6 @@ const int c_sndfileInputBufferSize = 512;
 SndFileInputModule::SndFileInputModule()
    :m_sndfile(nullptr),
    m_sampleCount(0),
-   m_buffer(nullptr),
    m_numOutputBits(0)
 {
    m_moduleId = ID_IM_SNDFILE;
@@ -174,9 +173,9 @@ int SndFileInputModule::InitInput(LPCTSTR infilename,
 
    // prepare input buffer
    if (m_numOutputBits == 32)
-      m_buffer = new int[c_sndfileInputBufferSize * m_sfinfo.channels];
+      m_buffer.resize(sizeof(int) * c_sndfileInputBufferSize * m_sfinfo.channels);
    else
-      m_buffer = new short[c_sndfileInputBufferSize * m_sfinfo.channels];
+      m_buffer.resize(sizeof(short) * c_sndfileInputBufferSize * m_sfinfo.channels);
 
    // set up input traits
    samples.SetInputModuleTraits(m_numOutputBits, SamplesInterleaved,
@@ -258,10 +257,13 @@ int SndFileInputModule::DecodeSamples(SampleContainer& samples)
    // read samples
    sf_count_t ret;
 
+   int* intBuffer = reinterpret_cast<int*>(m_buffer.data());
+   short* shortBuffer = reinterpret_cast<short*>(m_buffer.data());
+
    if (m_numOutputBits == 32)
-      ret = sf_readf_int(m_sndfile, (int *)m_buffer, c_sndfileInputBufferSize);
+      ret = sf_readf_int(m_sndfile, intBuffer, c_sndfileInputBufferSize);
    else
-      ret = sf_readf_short(m_sndfile, (short *)m_buffer, c_sndfileInputBufferSize);
+      ret = sf_readf_short(m_sndfile, shortBuffer, c_sndfileInputBufferSize);
 
    int iret = static_cast<int>(ret);
 
@@ -275,7 +277,7 @@ int SndFileInputModule::DecodeSamples(SampleContainer& samples)
    }
 
    // put samples in container
-   samples.PutSamplesInterleaved(m_buffer, iret);
+   samples.PutSamplesInterleaved(m_buffer.data(), iret);
 
    // count samples
    m_sampleCount += iret;
@@ -291,8 +293,6 @@ float SndFileInputModule::PercentDone() const
 void SndFileInputModule::DoneInput()
 {
    sf_close(m_sndfile);
-
-   delete[] m_buffer;
 }
 
 bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
@@ -305,61 +305,80 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
 
    // first check for last 0x80 bytes for id3 tag
    {
-      fseek(wav, -128, SEEK_END);
+      int ret = fseek(wav, -128, SEEK_END);
+      if (ret != 0)
+      {
+         ret = fseek(wav, 0, SEEK_SET);
+         ATLASSERT(ret == 0); ret;
+         return false;
+      }
 
       // read in id3 tag
       Id3v1Tag id3tag;
-      fread(id3tag.GetData(), 128, 1, wav);
+      size_t sizeTagRead = fread(id3tag.GetData(), 1, 128, wav);
+      if (sizeTagRead != 128)
+      {
+         ret = fseek(wav, 0, SEEK_SET);
+         ATLASSERT(ret == 0); ret;
+         return false;
+      }
 
       if (id3tag.IsValidTag())
          id3tag.ToTrackInfo(trackInfo);
 
-      fseek(wav, 0, SEEK_SET);
+      ret = fseek(wav, 0, SEEK_SET);
+      ATLASSERT(ret == 0); ret;
    }
 
    char buffer[5];
    buffer[4] = 0;
 
    // RIFF header
-   fread(buffer, 4, 1, wav);
-   if (strcmp(buffer, "RIFF") != 0)
+   size_t sizeRead = fread(buffer, 1, 4, wav);
+   if (sizeRead != 4 || strcmp(buffer, "RIFF") != 0)
       return false;
 
    // file length
-   fread(buffer, 4, 1, wav);
+   sizeRead = fread(buffer, 1, 4, wav);
    int length = *((int*)buffer) + 8;
 
    // RIFF format type
-   fread(buffer, 4, 1, wav);
+   sizeRead = fread(buffer, 1, 4, wav);
    ATLTRACE(_T("RIFF type: %hs, length 0x%08x\n"), buffer, length);
-   if (stricmp(buffer, "wave") != 0)
+   if (sizeRead != 4 || stricmp(buffer, "wave") != 0)
       return false;
 
    // now all chunks follow
    while (!feof(wav))
    {
       // chunk type
-      fread(buffer, 4, 1, wav);
+      sizeRead = fread(buffer, 1, 4, wav);
       ATLTRACE(_T("chunk %hs, "), buffer);
 
-      if (strncmp(buffer, "TAG", 3) == 0)
+      if (sizeRead != 4 || strncmp(buffer, "TAG", 3) == 0)
          break;
 
       bool isid3 = strcmp(buffer, "id3 ") == 0;
 
       // chunk length
-      fread(buffer, 4, 1, wav);
+      sizeRead = fread(buffer, 1, 4, wav);
+      if (sizeRead != 1)
+         break;
+
       int clength = *((int*)buffer);
       ATLTRACE(_T("length 0x%08x\n"), clength);
 
       if (isid3)
       {
          // check tag length
-         if (clength != 128) return false;
+         if (clength != 128)
+            return false;
 
          // read in id3 tag
          Id3v1Tag id3tag;
-         fread(id3tag.GetData(), 128, 1, wav);
+         sizeRead = fread(id3tag.GetData(), 1, 128, wav);
+         if (sizeRead != 128)
+            break;
 
          if (id3tag.IsValidTag())
             id3tag.ToTrackInfo(trackInfo);

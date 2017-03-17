@@ -56,10 +56,26 @@
 #include "resource.h"
 #include "OpusOutputModule.hpp"
 #include "..\App.hpp"
+#include <WinCrypt.h>
 
 #pragma comment(lib, "libopusfile-0.lib")
 #pragma comment(lib, "libopus-0.lib")
 #pragma comment(lib, "libogg-0.lib")
+
+bool GetRandomNumber(unsigned int& randomNumber)
+{
+   HCRYPTPROV provider = 0;
+   if (!CryptAcquireContext(&provider, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT | CRYPT_SILENT))
+      return false;
+
+   randomNumber = 0;
+   BOOL ret = CryptGenRandom(provider, sizeof(randomNumber), reinterpret_cast<BYTE*>(&randomNumber));
+
+   CryptReleaseContext(provider, 0);
+
+   return ret != FALSE;
+}
+
 
 #pragma warning (disable: 4706) // assignment within conditional expression
 
@@ -521,8 +537,11 @@ bool OpusOutputModule::WriteHeader()
    FILE* fout = m_outputFile.get();
 
    // Initialize Ogg stream struct
-   time_t start_time = time(NULL);
-   srand((unsigned int)(((getpid() & 65535) << 15) ^ (unsigned int)start_time));
+   unsigned int seed = 0;
+   if (!GetRandomNumber(seed))
+      return false;
+
+   srand(seed);
    int serialno = rand();
 
    if (ogg_stream_init(&os, serialno) == -1)
@@ -548,7 +567,6 @@ bool OpusOutputModule::WriteHeader()
 
       while ((ret = ogg_stream_flush(&os, &og)))
       {
-         if (!ret) break;
          ret = oe_write_page(&og, fout);
          if (ret != og.header_len + og.body_len)
          {
@@ -574,7 +592,6 @@ bool OpusOutputModule::WriteHeader()
    /* writing the rest of the opus header packets */
    while ((ret = ogg_stream_flush(&os, &og)))
    {
-      if (!ret)break;
       ret = oe_write_page(&og, fout);
       if (ret != og.header_len + og.body_len)
       {
@@ -876,10 +893,10 @@ The comment header is decoded as follows:
 static void comment_init(char **comments, int* length, const char *vendor_string)
 {
    /*The 'vendor' field should be the actual encoding library used.*/
-   int vendor_length = strlen(vendor_string);
+   size_t vendor_length = strlen(vendor_string);
    int user_comment_list_length = 0;
-   int len = 8 + 4 + vendor_length + 4;
-   char *p = (char*)malloc(len);
+   size_t len = 8 + 4 + vendor_length + 4;
+   unsigned char* p = (unsigned char*)malloc(len);
    if (p == NULL) {
       fprintf(stderr, "malloc failed in comment_init()\n");
       exit(1);
@@ -889,7 +906,7 @@ static void comment_init(char **comments, int* length, const char *vendor_string
    memcpy(p + 12, vendor_string, vendor_length);
    writeint(p, 12 + vendor_length, user_comment_list_length);
    *length = len;
-   *comments = p;
+   *comments = reinterpret_cast<char*>(p);
 }
 
 void comment_add(char **comments, int* length, char *tag, const char *val)

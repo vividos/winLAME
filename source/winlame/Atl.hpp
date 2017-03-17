@@ -44,7 +44,13 @@ extern CAppModule _Module;
 #include <atlwin.h>
 #include <atlcom.h>
 #include <atlhost.h>
+// atlimage.h declares throw() on methods that may throw; this would lead to calling
+// std::unexpected(), which would quit the application; define throw() as empty macro in order to
+// get the different behavior that exceptions are propagated to the caller.
+#define throw()
+#pragma warning(disable: 4002) // too many actual parameters for macro 'throw'
 #include <atlimage.h>
+#undef throw
 #pragma warning(pop)
 
 #if defined _M_IX86

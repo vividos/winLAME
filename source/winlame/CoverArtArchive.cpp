@@ -178,7 +178,13 @@ void CoverArtArchive::DownloadCoverArt(const std::string& coverArtReleaseId, std
 bool CoverArtArchive::ImageFromJpegByteArray(const std::vector<unsigned char>& data, ATL::CImage& image)
 {
    HGLOBAL hGlobal = ::GlobalAlloc(GHND, data.size());
-   LPBYTE  lpByte = (LPBYTE)::GlobalLock(hGlobal);
+   if (hGlobal == nullptr)
+      return false;
+
+   LPBYTE lpByte = (LPBYTE)::GlobalLock(hGlobal);
+   if (lpByte == nullptr)
+      return false;
+
    CopyMemory(lpByte, data.data(), data.size());
    ::GlobalUnlock(hGlobal);
 

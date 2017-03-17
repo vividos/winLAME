@@ -33,6 +33,8 @@ using Encoder::OggVorbisOutputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
+extern bool GetRandomNumber(unsigned int& randomNumber);
+
 // link to libvorbis.dll
 #pragma comment(lib, "libvorbis.lib")
 
@@ -321,7 +323,11 @@ void OggVorbisOutputModule::InitEncoder()
    // set up our packet->stream encoder
    // pick a random serial number; that way we can more likely build
    // chained streams just by concatenation
-   srand(static_cast<unsigned int>(time(NULL)));
+   unsigned int seed = 0;
+   if (!GetRandomNumber(seed))
+      return;
+
+   srand(seed);
    ogg_stream_init(&m_os, rand());
 }
 

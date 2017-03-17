@@ -68,7 +68,9 @@ int read_byte_filestream(FILE_STREAM *fs)
     {
         fs->buffer_offset = 0;
 
-        ReadFile(fs->stream, fs->data, m_local_buffer_size * 1024, &fs->buffer_length, 0);
+        BOOL ret = ReadFile(fs->stream, fs->data, m_local_buffer_size * 1024, &fs->buffer_length, 0);
+        if (!ret)
+           return -1;
 
         if(fs->buffer_length <= 0)
         {

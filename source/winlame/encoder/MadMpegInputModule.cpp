@@ -396,11 +396,11 @@ bool MadMpegInputModule::CheckVBRInfoTag(unsigned char* buffer)
 
          // calculate number of samples
          if (m_initHeader.layer == 1)
-            m_numMaxSamples = frames * 384;
+            m_numMaxSamples = __int64(frames) * 384;
          else if (!id && m_initHeader.layer == 3)
-            m_numMaxSamples = frames * 576;
+            m_numMaxSamples = __int64(frames) * 576;
          else
-            m_numMaxSamples = frames * 1152;
+            m_numMaxSamples = __int64(frames) * 1152;
       }
 
       return true;

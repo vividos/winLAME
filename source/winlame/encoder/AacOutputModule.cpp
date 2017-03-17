@@ -217,7 +217,7 @@ int AacOutputModule::EncodeSamples(SampleContainer& samples)
 
          // adjust values
          m_sampleBufferHigh = rest;
-         size -= size;
+         size = 0;
          pos += size;
       }
 

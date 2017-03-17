@@ -579,7 +579,7 @@ void LameOutputModule::AddLameID3v2Tag(const TrackInfo& trackInfo)
       std::vector<unsigned char> id3v2tag(requiredSize, 0);
 
       int ret = nlame_id3tag_get_id3v2_tag(m_instance, id3v2tag.data(), id3v2tag.size());
-      ATLVERIFY(ret == requiredSize);
+      ATLASSERT(ret == requiredSize); ret;
 
       m_outputFile.write(reinterpret_cast<const char*>(id3v2tag.data()), id3v2tag.size());
    }

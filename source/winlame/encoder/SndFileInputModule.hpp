@@ -92,7 +92,7 @@ namespace Encoder
       CString m_lastError;
 
       /// sample buffer
-      void* m_buffer;
+      std::vector<unsigned char> m_buffer;
 
       /// number of output bits
       int m_numOutputBits;

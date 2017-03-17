@@ -268,7 +268,7 @@ bool Frame::SetTextEncoding(unsigned int fieldIndex, id3_field_textencoding text
 
    enum id3_field_type type = id3_field_type(field);
 
-   ATLVERIFY(type == ID3_FIELD_TYPE_TEXTENCODING);
+   ATLASSERT(type == ID3_FIELD_TYPE_TEXTENCODING); type;
 
    int ret = id3_field_settextencoding(field, textEncoding);
 
@@ -350,9 +350,9 @@ bool Frame::SetInt8(unsigned int fieldIndex, char fieldValue)
 {
    id3_field* field = id3_frame_field(m_spFrame.get(), fieldIndex);
 
-   enum id3_field_type type = id3_field_type(field);
+   enum id3_field_type type = id3_field_type(field); type;
 
-   ATLVERIFY(type == ID3_FIELD_TYPE_INT8 ||
+   ATLASSERT(type == ID3_FIELD_TYPE_INT8 ||
       type == ID3_FIELD_TYPE_INT16 ||
       type == ID3_FIELD_TYPE_INT24 ||
       type == ID3_FIELD_TYPE_INT32);
@@ -366,9 +366,9 @@ bool Frame::SetBinaryData(unsigned int fieldIndex, const std::vector<unsigned ch
 {
    id3_field* field = id3_frame_field(m_spFrame.get(), fieldIndex);
 
-   enum id3_field_type type = id3_field_type(field);
+   enum id3_field_type type = id3_field_type(field); type;
 
-   ATLVERIFY(type == ID3_FIELD_TYPE_BINARYDATA);
+   ATLASSERT(type == ID3_FIELD_TYPE_BINARYDATA);
 
    int ret = ::id3_field_setbinarydata(field, binaryData.data(), binaryData.size());
 

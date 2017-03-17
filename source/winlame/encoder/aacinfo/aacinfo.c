@@ -172,9 +172,17 @@ static int read_ADTS_header(FILE_STREAM *file, faadAACInfo *info,
     }
 
     info->sampling_rate = sample_rates[sr_idx];
-    info->bitrate = (int)(((t_framelength / frames) * (info->sampling_rate/1024.0)) +0.5)*8;
 
-    info->length = (int)((float)(frames/frames_per_sec))*1000;
+    if (frames != 0)
+    {
+       info->bitrate = (int)(((t_framelength / frames) * (info->sampling_rate/1024.0)) +0.5)*8;
+       info->length = (int)((float)(frames/frames_per_sec))*1000;
+    }
+    else
+    {
+       info->bitrate = 0;
+       info->length = 0;
+    }
 
     return 0;
 }
