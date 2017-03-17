@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>winLAME - History Page</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="navbar-brand" style="height:50px;position:relative">
+                    <a href="index.html">
+                        <img src="images/logo.png" width="32" height="32" style="position:absolute;bottom:8px" alt="winLAME logo" />
+                        <div style="margin-left:40px">winLAME</div>
+                    </a>
+                </div>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="download.html">Download</a></li>
+                    <li><a href="features.html">Features</a></li>
+                    <li><a href="screenshots.html">Screenshots</a></li>
+                    <li><a href="development.html">Development</a></li>
+                    <li class="dropdown active open">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li class="active"><a href="#">History</a></li>
+                            <li><a href="feedback_positive.html">Send a Smile</a></li>
+                            <li><a href="feedback_negative.html">Send a Frown</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 48px">
+
+        <div style="max-width:768px">
+
+            <h1>History</h1>
+
+            <p>
+                For all interested in how winLAME came to be, here's a little story.
+            </p>
+
+            <h2>The early years (2000-2001)</h2>
+
+            <p>
+                winLAME started in the year 2000 when I was programming User
+                Interfaces at a small company, during semester breaks. I had only
+                two weeks left to work when the company was closed down due to the
+                dot com bubble burst. My team lead said "You get paid for the
+                remaining time, but you don't have to actually program anymore".
+            </p>
+
+            <p>
+                The idea to do winLAME came from experimenting with LAME. I had a
+                small Linux server at home where I managed to compile LAME and
+                encode Wave files to MP3. I thought, why not doing a Windows
+                version with a neat User Interface. Together with the free time
+                at work, I started coding.
+            </p>
+
+            <p>
+                Since LAME was an Open Source project, I also started winLAME as
+                one, using the SourceForge services, which were very helpful at
+                the time. The project was registered in February 2001, code was
+                stored in CVS (Concurrent Versions System) and I did a small
+                website to download the first versions:
+            </p>
+
+            <h2>The productive years (2001-2010)</h2>
+
+            <p>
+                The next years I was rather active on the project,
+                experimenting with user interfaces and source code. I did
+                several releases of the software, in the "release early,
+                release often" style. I also got positive feedback from single
+                enthusiastic users. The wizard style of the user interface was
+                praised the most. I was also fascinated how many downloads the
+                software packages had, which was about 800 dowloads/week, at
+                peak times.
+            </p>
+
+            <p>
+                During these years LAME was updated very often. It had many
+                obscure switches and was complicated to use. winLAME also used
+                the same switches. The LAME team realized that presets would
+                be easier for the average user to grasp, and so the
+                "alt-presets" were introduced. I changed winLAME also, to only
+                offer LAME options they could understand. After all, winLAME
+                should be a tool for the normal user.
+            </p>
+
+            <p>
+                winLAME also incorporated other audio libraries, e.g. Ogg
+                Vorbis or LibSndFile, which supported many audio input
+                formats. Other programmers also worked on winLAME, e.g. a CD
+                reading module from DeXT, a Monkey's Audio decoding module
+                from Kjetil Haga or optimized LAME DLLs from John33.
+            </p>
+
+            <p>
+                In 2006 work on winLAME slowed down quite a bit. I did some
+                releases in 2009 and 2010, but I considered winLAME as
+                "mature" and complete.
+            </p>
+
+            <h2>The lazy years (2011-2016)</h2>
+
+            <p>
+                New ideas about user interface design sometimes came up, and
+                I thought about reviving winLAME. I wanted to use multiple CPU
+                cores, which now were a common thing. In 2012 I moved the
+                source code from CVS to Git and started to refactor code,
+                generally clean up the project and trying out some things.
+                I implemented a ribbon style main window (ribbons were
+                introduced in Office 2007) and began writing a task manager
+                that manages running multiple encoder tasks in parallel.
+                Development on the new version stalled again, and I didn't
+                release a new version.
+            </p>
+
+            <h2>Now and the future (2016-2017)</h2>
+
+            <p>
+                In late 2016 I wanted to finally finish the winLAME project
+                that accompanied me for the last 16 years. I first updated all
+                the audio encoding and decoding libraries and realized that
+                there wasn't a lot of movement in the audio encoding scene in
+                the last years. LAME development has stalled, and the only new
+                encoders were Speex (which was already obsolete again) and
+                Opus.
+            </p>
+
+            <p>
+                I finished the parallel encoding task manager and the new
+                ribbon interface and made many improvements under the hood. I
+                decided to keep the wizard dialogs as "Classic UI", so that
+                veteran users could switch to their known user interface.
+                There are also presets for all encoders, not just LAME. I even
+                cleaned up the winLAME help file, since one user wrote that he
+                finds it very informational.
+            </p>
+
+            <p>
+                So now we are here in the present. I decided to do some "beta"
+                releases in order to give the users something to try out, and
+                to gather more feedback. Once the users (and me) are
+                satisfied, I'd do a "winLAME 2017 Release" version and be done
+                with it. But who knows how long winLAME will be maintained?
+                After all, it exists for 17 years already!
+            </p>
+
+            <h2>Some interesting material</h2>
+
+            <p>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        You can browse the full winLAME website history using Archive.org:
+                        <a href="http://web.archive.org/web/http://winlame.sourceforge.net/">
+                            winLAME home page on Archive.org
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        You can look at the old pre-2012 source code on winLAME's CVS repository:
+                        <a href="http://winlame.cvs.sourceforge.net/viewvc/winlame/winlame/">
+                            winLAME CVS repository browser
+                        </a>
+                    </li>
+                </ul>
+            </p>
+
+        </div>
+
+        <hr />
+
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+        </a>
+        This work is licensed under a
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            Creative Commons Attribution-ShareAlike 4.0 International License
+        </a>.
+
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
