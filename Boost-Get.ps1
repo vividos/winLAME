@@ -12,10 +12,15 @@ Add-Type -assembly "System.IO.Compression.Filesystem"
 New-Item c:\temp -type directory
 New-Item c:\devel -type directory
 
-Write-Host "Downloading Boost.."
+Write-Host "Downloading Boost..."
  (New-Object net.webclient).DownloadFile("https://sourceforge.net/projects/boost/files/boost/1.63.0/boost_1_63_0.zip/download?use_mirror=autoselect", "c:\temp\boost_1_63_0.zip")
 
-Write-Host "Extracting archive.."
+Write-Host "Extracting archive..."
 [io.compression.zipfile]::ExtractToDirectory("c:\temp\boost_1_63_0.zip", "c:\devel\packages\")
+
+Write-Host "Building Boost..."
+Set-Location "c:\devel\packages\boost_1_63_0" 
+.\bootstrap.bat
+.\b2 -j4 --with-system runtime-link=shared link=static threading=multi stage
 
 subst d: c:\
