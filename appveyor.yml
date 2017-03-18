@@ -1,0 +1,25 @@
+#
+# winLAME - a frontend for the LAME encoding engine
+# Copyright (c) 2000-2017 Michael Fink
+#
+# AppVeyor build configuration file
+#
+version: 2.17.1.{build}
+
+image: Visual Studio 2015
+
+platform: Win32
+
+configuration: Release
+
+before_build:
+- cmd: powershell .\Boost-Get.ps1
+
+build:
+  project: winlame.sln
+  parallel: true
+  verbosity: minimal
+
+artifacts:
+- path: bin\Release\*.dll
+- path: bin\Release\*.exe
