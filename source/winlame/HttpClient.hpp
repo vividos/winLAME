@@ -42,7 +42,7 @@ class HttpClient
 {
 public:
    /// ctor; creates new client
-   HttpClient(std::string userAgent)
+   HttpClient(const std::string& userAgent)
       :m_userAgent(userAgent)
    {
    }

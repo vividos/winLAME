@@ -275,7 +275,7 @@ CString App::Version()
    {
       DWORD nLang = *(DWORD*)pVersion;
 
-      cszFileVersion.Format(_T("\\StringFileInfo\\%02X%02X%02X%02X\\FileVersion"),
+      cszFileVersion.Format(_T("\\StringFileInfo\\%02lX%02lX%02lX%02lX\\FileVersion"),
          (nLang & 0xff00)>>8, nLang & 0xff, (nLang & 0xff000000)>>24, (nLang & 0xff0000)>>16);
    }
    else

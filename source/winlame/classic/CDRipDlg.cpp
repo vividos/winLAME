@@ -87,7 +87,7 @@ LRESULT CDRipDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
             if (nLetter == -1)
                cszText = cszDriveDescription; // couldn't get drive letter; restricted user account
             else
-               cszText.Format(_T("[%c:] %s"), _T('A') + nLetter, cszDriveDescription.GetString());
+               cszText.Format(_T("[%c:] %s"), static_cast<char>(_T('A') + nLetter), cszDriveDescription.GetString());
 
             int nItem = m_cbDrives.AddString(cszText);
             m_cbDrives.SetItemData(nItem, n);
@@ -263,7 +263,7 @@ void CDRipDlg::RefreshCDList()
    for (DWORD n = 0; n < uMaxCDTracks; n++)
    {
       CString cszText;
-      cszText.Format(_T("%u"), n + 1);
+      cszText.Format(_T("%lu"), n + 1);
 
       DWORD nLength = BASS_CD_GetTrackLength(nDrive, n);
       bool bDataTrack = (nLength == 0xFFFFFFFF && BASS_ERROR_NOTAUDIO == BASS_ErrorGetCode());
@@ -280,7 +280,7 @@ void CDRipDlg::RefreshCDList()
          {
             nLength /= 176400;
 
-            cszText.Format(_T("%u:%02u"), nLength / 60, nLength % 60);
+            cszText.Format(_T("%lu:%02lu"), nLength / 60, nLength % 60);
             m_lcTracks.SetItemText(nItem, 2, cszText);
          }
          else

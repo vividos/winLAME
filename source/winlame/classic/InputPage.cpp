@@ -175,10 +175,7 @@ LRESULT InputPage::OnButtonCDRip(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL&
       CDRipTrackManager* pManager = CDRipTrackManager::getCDRipTrackManager();
       unsigned int nMax = pManager->GetMaxTrackInfo();
 
-      CString cszTestCdaFilename;
-      GetTempPath(MAX_PATH, cszTestCdaFilename.GetBuffer(MAX_PATH));
-      cszTestCdaFilename.ReleaseBuffer();
-      cszTestCdaFilename += _T("Track01.cda");
+      CString cszTestCdaFilename = Path::Combine(Path::TempFolder(), _T("Track01.cda"));
 
       FILE* fd = ::_tfopen(cszTestCdaFilename, _T("wb"));
       fclose(fd);
@@ -515,10 +512,7 @@ void InputPage::InsertFilename(LPCTSTR filename)
 
 void InputPage::OnEnterPage()
 {
-   CString cszTestCdaFilename;
-   GetTempPath(MAX_PATH, cszTestCdaFilename.GetBuffer(MAX_PATH));
-   cszTestCdaFilename.ReleaseBuffer();
-   cszTestCdaFilename += _T("Track01.cda");
+   CString cszTestCdaFilename = Path::Combine(Path::TempFolder(), _T("Track01.cda"));
 
    FILE* fd = _tfopen(cszTestCdaFilename, _T("wb"));
    fclose(fd);

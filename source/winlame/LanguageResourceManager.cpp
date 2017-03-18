@@ -121,9 +121,7 @@ void LanguageResourceManager::ScanResourceDlls(LPCTSTR pszLangDllSearchPattern)
 
    // find resource hMods
    WIN32_FIND_DATA findData = {0};
-   HANDLE hFind = NULL;
-
-   hFind = ::FindFirstFile(cszApplicationPath + pszLangDllSearchPattern, &findData);
+   HANDLE hFind = ::FindFirstFile(cszApplicationPath + pszLangDllSearchPattern, &findData);
    if (INVALID_HANDLE_VALUE == hFind)
       return;
 

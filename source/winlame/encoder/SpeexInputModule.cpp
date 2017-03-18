@@ -260,14 +260,12 @@ void SpeexInputModule::InitDecoder()
 
 bool SpeexInputModule::ReadNextPacket(ogg_packet& packet)
 {
-   unsigned int uiReads = 0;
    while (!m_inputStream->ReadNextPacket(packet))
    {
       if (m_inputStream->IsEndOfStream())
          return false;
 
       m_inputStream->ReadInput(4000); // read some more
-      uiReads++;
    }
 
    return true;

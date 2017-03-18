@@ -72,7 +72,7 @@ int read_byte_filestream(FILE_STREAM *fs)
         if (!ret)
            return -1;
 
-        if(fs->buffer_length <= 0)
+        if(fs->buffer_length == 0)
         {
             fs->buffer_length = 0;
             return -1;
@@ -86,12 +86,13 @@ int read_byte_filestream(FILE_STREAM *fs)
 
 int read_buffer_filestream(FILE_STREAM *fs, void *data, int length)
 {
-    int i, tmp;
-    unsigned char *data2 = (unsigned char *)data;
+    int i;
+    unsigned char* data2 = (unsigned char *)data;
 
     for(i=0; i < length; i++)
     {
-        if((tmp = read_byte_filestream(fs)) < 0)
+        int tmp = read_byte_filestream(fs);
+        if(tmp < 0)
         {
             if(i)
             {

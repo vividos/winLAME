@@ -386,7 +386,7 @@ void TaskManager::RemoveTask(std::shared_ptr<Task> spTask)
 
    // search for task
    for (T_deqTaskQueue::iterator iterTaskQueue = m_deqTaskQueue.begin(),
-      stop = m_deqTaskQueue.end(); iterTaskQueue != stop; iterTaskQueue++)
+      stop = m_deqTaskQueue.end(); iterTaskQueue != stop; ++iterTaskQueue)
    {
       if (spTask == *iterTaskQueue)
       {

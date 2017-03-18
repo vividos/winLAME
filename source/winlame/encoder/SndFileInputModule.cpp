@@ -340,6 +340,9 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
 
    // file length
    sizeRead = fread(buffer, 1, 4, wav);
+   if (sizeRead != 4)
+      return false;
+
    int length = *((int*)buffer) + 8;
 
    // RIFF format type

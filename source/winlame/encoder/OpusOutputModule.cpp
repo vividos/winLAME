@@ -599,7 +599,6 @@ bool OpusOutputModule::WriteHeader()
          return false;
       }
       bytes_written += ret;
-      pages_out++;
    }
 
    free(inopt.comments);
@@ -740,7 +739,6 @@ bool OpusOutputModule::EncodeInputBufferFrame()
 
    // read samples
    opus_int32 nb_samples = -1; // number of samples, per channel
-   if (nb_samples < 0)
    {
       nb_samples = inopt.read_samples(inopt.readdata, m_inputFloatBuffer.data(), frame_size);
 
@@ -854,7 +852,6 @@ bool OpusOutputModule::EncodeInputBufferFrame()
          return false;
       }
       bytes_written += ret;
-      pages_out++;
    }
 
    return true; // no errors

@@ -159,8 +159,8 @@ CString Path::TempFolder()
 {
    CString tempFolder;
 
-   ::GetTempPath(MAX_PATH, tempFolder.GetBuffer(MAX_PATH));
-   tempFolder.ReleaseBuffer();
+   DWORD ret = ::GetTempPath(MAX_PATH, tempFolder.GetBuffer(MAX_PATH));
+   tempFolder.ReleaseBuffer(ret);
 
    return tempFolder;
 }

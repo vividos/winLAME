@@ -88,7 +88,7 @@ void FreedbInfo::ParseTrackTitles()
    for (size_t trackIndex = 0; trackIndex < 256; trackIndex++)
    {
       CString entryName;
-      entryName.Format(_T("TTITLE%u"), trackIndex);
+      entryName.Format(_T("TTITLE%Iu"), trackIndex);
 
       auto iter = m_allEntries.find(entryName);
 

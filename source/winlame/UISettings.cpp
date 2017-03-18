@@ -83,8 +83,7 @@ UISettings::UISettings()
    language_id(MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)),
    m_appMode(modernMode)
 {
-   ::GetTempPath(MAX_PATH, cdrip_temp_folder.GetBuffer(MAX_PATH));
-   cdrip_temp_folder.ReleaseBuffer();
+   cdrip_temp_folder = Path::TempFolder();
 }
 
 #pragma warning(push)
