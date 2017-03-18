@@ -79,7 +79,7 @@ UISettings::UISettings()
    freedb_server(_T("freedb.freedb.org")),
    store_disc_infos_cdplayer_ini(true),
    cdrip_format_various_track(_T("%track% - %album% - %artist% - %title%")),
-   cdrip_format_album_track(_T("%track% - %album% - %title%")),
+   cdrip_format_album_track(_T("%track% - %albumartist% - %album% - %title%")),
    language_id(MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)),
    m_appMode(modernMode)
 {
