@@ -877,12 +877,15 @@ void InputCDPage::RetrieveAlbumCoverArt(const std::string& discId)
       }
       else
       {
-         AtlMessageBox(m_hWnd, _T("Couldn't find Cover Art for this disc"), _T("winLAME"), MB_OK);
+         AppMessageBox(m_hWnd, IDS_CDRIP_COVERART_ERROR_NOART, MB_OK | MB_ICONSTOP);
       }
    }
    catch (const std::exception& ex)
    {
       errorText = ex.what();
+      ATLTRACE(_T("Error retrieving cover art: %hs"), errorText.c_str());
+
+      AppMessageBox(m_hWnd, IDS_CDRIP_COVERART_ERROR_NOART, MB_OK | MB_ICONSTOP);
    }
 }
 

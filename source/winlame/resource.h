@@ -345,6 +345,7 @@
 #define IDS_CDRIP_ERROR_CAPTION                 40913
 #define IDS_CDRIP_ERROR_NOCDINFO                40914
 #define IDS_CDRIP_ARTIST_VARIOUS                40915
+#define IDS_CDRIP_COVERART_ERROR_NOART          40916
 #define IDS_CDRIP_PAGE_COLUMN_TRACK             41000
 #define IDS_CDRIP_PAGE_COLUMN_TITLE             41001
 #define IDS_CDRIP_PAGE_COLUMN_STATUS            41002
