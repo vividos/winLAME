@@ -62,7 +62,7 @@
 #pragma comment(lib, "libopus-0.lib")
 #pragma comment(lib, "libogg-0.lib")
 
-bool GetRandomNumber(unsigned int& randomNumber)
+bool GetRandomNumber(int& randomNumber)
 {
    HCRYPTPROV provider = 0;
    if (!CryptAcquireContext(&provider, nullptr, nullptr, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT | CRYPT_SILENT))
@@ -537,14 +537,11 @@ bool OpusOutputModule::WriteHeader()
    FILE* fout = m_outputFile.get();
 
    // Initialize Ogg stream struct
-   unsigned int seed = 0;
-   if (!GetRandomNumber(seed))
+   int randomNumber = 0;
+   if (!GetRandomNumber(randomNumber))
       return false;
 
-   srand(seed);
-   int serialno = rand();
-
-   if (ogg_stream_init(&os, serialno) == -1)
+   if (ogg_stream_init(&os, randomNumber) == -1)
    {
       m_lastError = _T("Error: stream init failed\n");
       return false;
