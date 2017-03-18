@@ -98,6 +98,9 @@ public:
    /// returns the windows folder
    static CString WindowsFolder();
 
+   /// returns the temp folder
+   static CString TempFolder();
+
    // public members
 
    /// path separator string

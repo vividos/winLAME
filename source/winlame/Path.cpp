@@ -154,3 +154,13 @@ CString Path::WindowsFolder()
 
    return windowsFolder;
 }
+
+CString Path::TempFolder()
+{
+   CString tempFolder;
+
+   ::GetTempPath(MAX_PATH, tempFolder.GetBuffer(MAX_PATH));
+   tempFolder.ReleaseBuffer();
+
+   return tempFolder;
+}
