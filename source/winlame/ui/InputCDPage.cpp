@@ -283,13 +283,12 @@ void InputCDPage::HideDriveCombobox()
 void InputCDPage::SetupTracksList()
 {
    // tracks list
-   m_lcTracks.SetExtendedListViewStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT,
-      LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT);
+   m_lcTracks.SetExtendedListViewStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT, 0);
 
    CString cszText(MAKEINTRESOURCE(IDS_CDRIP_COLUMN_NR));
-   m_lcTracks.InsertColumn(0, cszText, LVCFMT_LEFT, 30, 0);
+   m_lcTracks.InsertColumn(0, cszText, LVCFMT_LEFT, 40, 0);
    cszText.LoadString(IDS_CDRIP_COLUMN_TRACK);
-   m_lcTracks.InsertColumn(1, cszText, LVCFMT_LEFT, 250, 0);
+   m_lcTracks.InsertColumn(1, cszText, LVCFMT_LEFT, 240, 0);
    cszText.LoadString(IDS_CDRIP_COLUMN_LENGTH);
    m_lcTracks.InsertColumn(2, cszText, LVCFMT_LEFT, 60, 0);
 
@@ -355,6 +354,7 @@ void InputCDPage::RefreshCDList()
 
       int nItem = m_lcTracks.InsertItem(m_lcTracks.GetItemCount(), cszText);
       m_lcTracks.SetItemData(nItem, n);
+      m_lcTracks.SetCheckState(nItem, true);
 
       cszText.Format(IDS_CDRIP_TRACK_U, n + 1);
       m_lcTracks.SetItemText(nItem, 1, cszText);
@@ -612,25 +612,13 @@ void InputCDPage::UpdateCDReadJobList(unsigned int dwDrive)
 
    // get all track infos
    std::vector<DWORD> vecTracks;
+
+   for (int itemIndex = 0; itemIndex < m_lcTracks.GetItemCount(); itemIndex++)
    {
-      int nItem = m_lcTracks.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
+      if (!m_lcTracks.GetCheckState(itemIndex))
+         continue;
 
-      if (nItem >= 0)
-      {
-         // add all selected items
-         do
-         {
-            vecTracks.push_back(m_lcTracks.GetItemData(nItem));
-
-         } while (-1 != (nItem = m_lcTracks.GetNextItem(nItem, LVNI_ALL | LVNI_SELECTED)));
-      }
-      else
-      {
-         // add all items
-         int nMax = m_lcTracks.GetItemCount();
-         for (int n = 0; n < nMax; n++)
-            vecTracks.push_back(m_lcTracks.GetItemData(n));
-      }
+      vecTracks.push_back(m_lcTracks.GetItemData(itemIndex));
    }
 
    unsigned int nMax = vecTracks.size();
