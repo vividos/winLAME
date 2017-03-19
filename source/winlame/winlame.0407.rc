@@ -52,6 +52,14 @@ ID_SETTINGS_GENERAL BITMAP         "res\\settings_general.bmp"
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
 ID_SETTINGS_CDREAD BITMAP         "res\\settings_freedb.bmp"
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+ID_SETTINGS_FINISH_ACTION BITMAP         "res\\finish_action.bmp"
+LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+ID_SETTINGS_FINISH_ACTION_NONE BITMAP         "res\\finish_action_none.bmp"
+LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+ID_SETTINGS_FINISH_ACTION_CLOSE BITMAP         "res\\finish_action_close.bmp"
+LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
+ID_SETTINGS_FINISH_ACTION_STANDBY BITMAP         "res\\finish_action_standby.bmp"
+LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
 ID_VIEW_RIBBON     BITMAP         "res\\view_ribbon.bmp"
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
 ID_VIEW_SWITCH_CLASSIC BITMAP         "res\\switch_classic.bmp"
@@ -87,6 +95,13 @@ BEGIN
     BEGIN
         MENUITEM "&Allgemeine Einstellungen", ID_SETTINGS_GENERAL
         MENUITEM "&CD-Lese-Einstellungen", ID_SETTINGS_CDREAD
+        MENUITEM "Aktion nach dem &Encoden", ID_SETTINGS_FINISH_ACTION
+        POPUP "&Beenden-Aktion"
+        BEGIN
+            MENUITEM "&Nichts tun", ID_SETTINGS_FINISH_ACTION_NONE
+            MENUITEM "winLAME &schließen", ID_SETTINGS_FINISH_ACTION_CLOSE
+            MENUITEM "&Energie sparen", ID_SETTINGS_FINISH_ACTION_STANDBY
+        END
     END
     POPUP "&Ansicht"
     BEGIN
@@ -484,7 +499,6 @@ BEGIN
     PUSHBUTTON      "Abbrechen", IDCANCEL, 146, 131, 50, 14
     DEFPUSHBUTTON   "OK", IDOK, 203, 131, 50, 14
 END
-
 
 LANGUAGE LANG_GERMAN, SUBLANG_DEFAULT
 IDD_CRASHDUMP_SAVE_RESULTS DIALOGEX 0, 0, 281, 92
@@ -942,6 +956,20 @@ BEGIN
     IDC_OUT_PLAYLISTNAME          "Dateiname der m3u-Playliste; Pfad wird automatisch hinzugefügt"
     IDC_OUT_USE_INDIR             "Wenn angehakt, wird der Ordner jeder Quelldatei für die Ausgabedatei benutzt (erlaubt Encoden von mehreren getrennten Ordnern)"
     IDC_OUT_CHECK_WARN            "Wenn angehakt, warnt winLAME über möglichen Qualitätsverlust beim Transcoden von einem verlustbehafteten Format in ein anderes."
+    IDS_HTML_INPUT                "/html/pages/input.html"
+    IDS_HTML_OUTPUT               "/html/pages/output.html"
+    IDS_HTML_PRESETS              "/html/pages/presets.html"
+    IDS_HTML_LAME_SIMPLE          "/html/pages/lame.html"
+    IDS_HTML_OPUS                 "/html/pages/opus.html"
+    IDS_HTML_OGGVORBIS            "/html/pages/oggvorbis.html"
+    IDS_HTML_WAVE                 "/html/pages/sndfile.html"
+    IDS_HTML_WMA                  "/html/pages/wma.html"
+    IDS_HTML_AAC                  "/html/pages/aac.html"
+    IDS_HTML_ENCODE               "/html/pages/encode.html"
+    IDS_HTML_CDRIP                "/html/pages/cdaudio.html"
+    IDS_HTML_FINISH               "/html/pages/finish.html"
+    IDS_HTML_SETTINGS_CDREAD      "/html/pages/modernui.html"
+    IDS_HTML_SETTINGS_GENERAL     "/html/pages/modernui.html"
     IDS_WARN_TRANSCODE            "Warnung!\nSie sind dabei, Audiodateien von einem verlustbehafteten Format in ein anderes zu transkodieren. Dies kann die Soundqualität ernsthaft degradieren!\n\nWeiter?"
     IDS_PRE_DESC_DEFAULT          "Wählen Sie dies aus, um die winLAME-Einstellungen selbst festzulegen; nur empfohlen für erfahrene Benutzer!"
     IDS_MAIN_TASKS_STILL_RUNNING  "Es gibt noch Aufgaben, die verarbeitet werden; wirklich beenden?"
@@ -1090,6 +1118,10 @@ BEGIN
     ID_TASKS_REMOVE_COMPLETED     "Entfernt alle vollständigen Aufgaben\nEntfernt vollständige"
     ID_SETTINGS_GENERAL           "Zeit allgemeine Einstellungen an\nAllgemeine Einstellungen"
     ID_SETTINGS_CDREAD            "Zeigt CD-Auslese-Einstellungen an\CD-Auslese-Einstellungen"
+    ID_SETTINGS_FINISH_ACTION     "Beenden-Aktion\nBeenden-Aktion"
+    ID_SETTINGS_FINISH_ACTION_NONE "Nichts tun\nNichts tun"
+    ID_SETTINGS_FINISH_ACTION_CLOSE "winLAME schließen\nwinLAME schließen"
+    ID_SETTINGS_FINISH_ACTION_STANDBY "Energie sparen\nEnergie sparen"
     ID_VIEW_RIBBON                "Schaltet zwischen Menüband und Werkzeugleiste um\nMenüband umschalten"
     ID_VIEW_SWITCH_CLASSIC        "Wechselt zum klassischen Modus\nKlassischer Modus"
     ID_FEEDBACK_POSITIVE          "Sendet ein positives Feedback\nPositiv"
