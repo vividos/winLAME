@@ -520,18 +520,24 @@ void InputCDPage::ReadCDText(bool& bVarious)
             LPSTR pNext = NULL;
             unsigned long uTrack = strtoul(cdtext + 5, &pNext, 10);
             if (uTrack < uMaxCDTracks + 1)
+            {
                vecTitles[uTrack] = pNext + 1;
+               vecTitles[uTrack].Trim();
+            }
          }
          if (cdtext == strstr(cdtext, "PERFORMER"))
          {
             LPSTR pNext = NULL;
             unsigned long uPerf = strtoul(cdtext + 9, &pNext, 10);
             if (uPerf < uMaxCDTracks + 1)
+            {
                vecPerformer[uPerf] = pNext + 1;
+               vecPerformer[uPerf].Trim();
+            }
 
             if (uPerf > 0 &&
-               strlen(pNext + 1) > 0 &&
-               vecPerformer[0] != CString(pNext + 1))
+               !vecPerformer[uPerf].IsEmpty() &&
+               vecPerformer[0] != vecPerformer[uPerf])
             {
                bVarious = true;
             }
