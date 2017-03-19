@@ -50,6 +50,22 @@ EncoderImpl::EncoderImpl()
 {
 }
 
+EncoderImpl::~EncoderImpl() throw()
+{
+   if (m_workerThread != nullptr)
+   {
+      try
+      {
+         m_workerThread->join();
+         m_workerThread.reset();
+      }
+      catch (const std::exception& ex)
+      {
+         ATLTRACE(_T("Exception while joining worker thread: %hs"), ex.what()); ex;
+      }
+   }
+}
+
 void EncoderImpl::StartEncode()
 {
    if (m_encoderState.m_running)
@@ -82,7 +98,10 @@ void EncoderImpl::StopEncode()
 
    // wait for thread to finish
    if (m_workerThread != nullptr)
+   {
       m_workerThread->join();
+      m_workerThread.reset();
+   }
 }
 
 void EncoderImpl::Encode()
