@@ -158,6 +158,26 @@ LRESULT CDRipDlg::OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandle
    return 0;
 }
 
+LRESULT CDRipDlg::OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   KillTimer(IDT_CDRIP_CHECK);
+
+   if (wID == IDOK)
+   {
+      if (m_bEditedTrack)
+         StoreInCdplayerIni(GetCurrentDrive());
+
+      UpdateTrackManager();
+
+      UpdatePlaylistFilename();
+   }
+
+   // ends the modal dialog
+   EndDialog(wID);
+
+   return 0;
+}
+
 LRESULT CDRipDlg::OnDriveSelEndOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)//(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
 {
    RefreshCDList();
