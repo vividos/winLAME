@@ -571,6 +571,11 @@ void CDRipDlg::UpdateTrackManager()
    {
       unsigned int nTrack = vecTracks[n];
 
+      DWORD nLength = BASS_CD_GetTrackLength(nDrive, nTrack);
+      bool isDataTrack = (nLength == 0xFFFFFFFF && BASS_ERROR_NOTAUDIO == BASS_ErrorGetCode());
+      if (isDataTrack)
+         continue;
+
       CDRipTrackInfo trackInfo = ReadTrackInfo(nDrive, nTrack, discinfo);
 
       pManager->AddTrackInfo(trackInfo);

@@ -628,6 +628,11 @@ void InputCDPage::UpdateCDReadJobList(unsigned int dwDrive)
    {
       unsigned int nTrack = vecTracks[n];
 
+      DWORD nLength = BASS_CD_GetTrackLength(dwDrive, nTrack);
+      bool isDataTrack = (nLength == 0xFFFFFFFF && BASS_ERROR_NOTAUDIO == BASS_ErrorGetCode());
+      if (isDataTrack)
+         continue;
+
       CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, nTrack, discInfo);
 
       Encoder::CDReadJob cdReadJob(discInfo, trackInfo);
