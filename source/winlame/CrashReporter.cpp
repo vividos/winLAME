@@ -126,7 +126,7 @@ LONG WINAPI ExceptionFilterWriteMinidump(_EXCEPTION_POINTERS* exceptionInfo)
 
    file.reset();
 
-   ATLTRACE(CString(_T("wrote minidump file: ")) + minidumpFilename);
+   ATLTRACE(_T("wrote minidump file: %s\n"), minidumpFilename);
 
    if (g_fnShowCrashDialog != nullptr)
       g_fnShowCrashDialog(minidumpFilename);
