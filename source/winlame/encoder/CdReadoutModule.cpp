@@ -88,18 +88,16 @@ int CDReadoutModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
 
    trackInfo.TextInfo(TrackInfoAlbum, discInfo.m_discTitle);
 
-   // year
+   trackInfo.TextInfo(TrackInfoDiscArtist, discInfo.m_discArtist);
+
    if (discInfo.m_year != 0)
       trackInfo.NumberInfo(TrackInfoYear, discInfo.m_year);
 
-   // track number
    trackInfo.NumberInfo(TrackInfoTrack, cdTrackInfo.m_numTrackOnDisc + 1);
 
-   // genre
    if (!discInfo.m_genre.IsEmpty())
       trackInfo.TextInfo(TrackInfoGenre, discInfo.m_genre);
 
-   // cover art
    if (!ripTrackManager->GetFrontCoverArtImage().empty())
    {
       trackInfo.BinaryInfo(TrackInfoFrontCover, ripTrackManager->GetFrontCoverArtImage());
