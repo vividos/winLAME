@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2005 Michael Fink
+// Copyright (c) 2005-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -41,15 +41,33 @@ public:
 
    CDRipTrackInfo& GetTrackInfo(unsigned int nIndex){ ATLASSERT(nIndex < GetMaxTrackInfo()); return m_vecTrackInfo[nIndex]; }
 
+   const std::vector<unsigned char>& GetFrontCoverArtImage() const
+   {
+      return m_covertArtImageData;
+   }
+
    void RemoveTrackInfo(unsigned int nIndex){ ATLASSERT(nIndex < GetMaxTrackInfo()); m_vecTrackInfo.erase(m_vecTrackInfo.begin() + nIndex); }
 
    void ResetTrackInfo(){ m_vecTrackInfo.clear(); }
 
+   void ResetFrontCoverArtImage()
+   {
+      m_covertArtImageData.clear();
+   }
+
    void AddTrackInfo(CDRipTrackInfo& info){ m_vecTrackInfo.push_back(info); }
+
+   void SetFrontCoverArtImage(const std::vector<unsigned char>& covertArtImageData)
+   {
+      m_covertArtImageData = covertArtImageData;
+   }
 
 protected:
    CDRipDiscInfo m_discInfo;
    std::vector<CDRipTrackInfo> m_vecTrackInfo;
+
+   /// JPEG image data of cover art to use
+   std::vector<unsigned char> m_covertArtImageData;
 
    static CDRipTrackManager* m_pManagerInstance;
 };

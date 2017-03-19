@@ -99,6 +99,12 @@ int CDReadoutModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    if (!discInfo.m_genre.IsEmpty())
       trackInfo.TextInfo(TrackInfoGenre, discInfo.m_genre);
 
+   // cover art
+   if (!ripTrackManager->GetFrontCoverArtImage().empty())
+   {
+      trackInfo.BinaryInfo(TrackInfoFrontCover, ripTrackManager->GetFrontCoverArtImage());
+   }
+
    return nRet;
 }
 

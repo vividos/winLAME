@@ -576,6 +576,8 @@ void CDRipDlg::UpdateTrackManager()
       pManager->AddTrackInfo(trackInfo);
    }
 
+   pManager->SetFrontCoverArtImage(m_covertArtImageData);
+
    // when acquired freedb info, store  in cdplayer.ini, too
    if (m_bAcquiredDiscInfo)
       StoreInCdplayerIni(nDrive);
