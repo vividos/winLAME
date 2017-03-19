@@ -79,6 +79,7 @@ namespace ClassicUI
          COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnExit)
          COMMAND_HANDLER(IDC_CDSELECT_COMBO_DRIVES, CBN_SELENDOK, OnDriveSelEndOk)
          NOTIFY_HANDLER(IDC_CDSELECT_LIST_TRACKS, NM_DBLCLK, OnListDoubleClick)
+         NOTIFY_HANDLER(IDC_CDSELECT_LIST_TRACKS, LVN_ITEMCHANGED, OnListItemChanged)
          COMMAND_HANDLER(IDC_CDSELECT_BUTTON_PLAY, BN_CLICKED, OnClickedButtonPlay)
          COMMAND_HANDLER(IDC_CDSELECT_BUTTON_STOP, BN_CLICKED, OnClickedButtonStop)
          COMMAND_HANDLER(IDC_CDSELECT_BUTTON_FREEDB, BN_CLICKED, OnClickedButtonFreedb)
@@ -133,6 +134,10 @@ namespace ClassicUI
 
       LRESULT OnDriveSelEndOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
       LRESULT OnListDoubleClick(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/);
+
+      /// called when tracks list item has changed its state
+      LRESULT OnListItemChanged(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+
       LRESULT OnClickedButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
       LRESULT OnClickedButtonStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
       LRESULT OnClickedButtonFreedb(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);

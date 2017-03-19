@@ -138,6 +138,51 @@ LRESULT InputCDPage::OnListDoubleClick(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& b
    return OnClickedButtonPlay(0, 0, 0, bHandled);
 }
 
+LRESULT InputCDPage::OnListItemChanged(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
+{
+   static bool s_ignoreChangedMessage = false;
+
+   if (s_ignoreChangedMessage)
+      return 0;
+
+   NM_LISTVIEW& nmListView = *reinterpret_cast<NM_LISTVIEW*>(pnmh);
+
+   if (nmListView.uOldState == 0 && nmListView.uNewState == 0)
+      return 0;
+
+   BOOL prevState = (BOOL)(((nmListView.uOldState & LVIS_STATEIMAGEMASK) >> 12) - 1);
+   if (prevState < 0) // on startup there's no previous state
+      prevState = 0;
+
+   BOOL isChecked = (BOOL)(((nmListView.uNewState & LVIS_STATEIMAGEMASK) >> 12) - 1);
+   if (isChecked < 0) // on non-checkbox notifications assume false
+      isChecked = 0;
+
+   if (prevState == isChecked) // no change in check box
+      return 0;
+
+   // when a check was changed of a selected item, change the check boxes of
+   // the selected items, too
+   if (m_lcTracks.GetItemState(nmListView.iItem, LVIS_SELECTED) != 0)
+   {
+      s_ignoreChangedMessage = true;
+
+      for (int itemIndex = 0; itemIndex < m_lcTracks.GetItemCount(); itemIndex++)
+      {
+         if (nmListView.iItem == itemIndex)
+            continue; // ignore currently changed list item
+
+         // only change selected lines
+         if (m_lcTracks.GetItemState(itemIndex, LVIS_SELECTED) != 0)
+            m_lcTracks.SetCheckState(itemIndex, isChecked);
+      }
+
+      s_ignoreChangedMessage = false;
+   }
+
+   return 0;
+}
+
 LRESULT InputCDPage::OnClickedButtonPlay(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    DWORD nDrive = GetCurrentDrive();
