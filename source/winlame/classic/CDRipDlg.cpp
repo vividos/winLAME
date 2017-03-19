@@ -230,7 +230,7 @@ LRESULT CDRipDlg::OnClickedButtonOptions(WORD wNotifyCode, WORD wID, HWND hWndCt
 
 LRESULT CDRipDlg::OnClickedCheckVariousArtists(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-   bool bCheck = BST_CHECKED == m_checkVariousArtists.GetCheck();
+   bool bCheck = BST_CHECKED != m_checkVariousArtists.GetCheck();
 
    GetDlgItem(IDC_CDSELECT_EDIT_ARTIST).EnableWindow(bCheck);
    GetDlgItem(IDC_CDSELECT_STATIC_ARTIST).EnableWindow(bCheck);
