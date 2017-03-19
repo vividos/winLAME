@@ -110,8 +110,8 @@ BEGIN
     END
     POPUP "Beta-&Feedback"
     BEGIN
-        MENUITEM "Sende &positives Feedback", ID_FEEDBACK_POSITIVE
-        MENUITEM "Sende &negatives Feedback", ID_FEEDBACK_NEGATIVE
+        MENUITEM "Sende ein &Lächeln", ID_FEEDBACK_POSITIVE
+        MENUITEM "Sende ein &Stirnrunzeln", ID_FEEDBACK_NEGATIVE
     END
     POPUP "&Hilfe"
     BEGIN
@@ -1125,8 +1125,8 @@ BEGIN
     ID_SETTINGS_FINISH_ACTION_STANDBY "Energie sparen\nEnergie sparen"
     ID_VIEW_RIBBON                "Schaltet zwischen Menüband und Werkzeugleiste um\nMenüband umschalten"
     ID_VIEW_SWITCH_CLASSIC        "Wechselt zum klassischen Modus\nKlassischer Modus"
-    ID_FEEDBACK_POSITIVE          "Sendet ein positives Feedback\nPositiv"
-    ID_FEEDBACK_NEGATIVE          "Sendet ein negatives Feedback\nNegativ"
+    ID_FEEDBACK_POSITIVE          "Sendet ein Lächeln\nLächeln"
+    ID_FEEDBACK_NEGATIVE          "Sendet ein Stirnrunzeln\nStirnrunzeln"
     ID_VIEW_SWITCH_MODERN         "Wechselt zum modernen Modus\nModerner Modus"
     ID_APP_ABOUT                  "Zeit Anwendungs-Informationen\nÜber"
     ID_APP_EXIT                   "Beendet die Anwendung\nBeenden"
