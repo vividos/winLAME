@@ -332,6 +332,7 @@
 #define IDS_HTML_FINISH                         40812
 #define IDS_HTML_SETTINGS_CDREAD                40813
 #define IDS_HTML_SETTINGS_GENERAL               40814
+#define IDS_HTML_INPUT_CD                       40815
 #define IDS_CDRIP_RANDOM_FREEDB_SERVER          40900
 #define IDS_CDRIP_COLUMN_NR                     40902
 #define IDS_CDRIP_COLUMN_TRACK                  40903

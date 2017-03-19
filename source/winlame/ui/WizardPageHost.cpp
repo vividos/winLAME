@@ -327,7 +327,7 @@ static CString MapDialogIdToHelpPath(UINT dialogId)
    switch (dialogId)
    {
    case IDD_PAGE_INPUT_FILES: helpId = IDS_HTML_INPUT; break;
-   case IDD_PAGE_INPUT_CD: helpId = IDS_HTML_CDRIP; break;
+   case IDD_PAGE_INPUT_CD: helpId = IDS_HTML_INPUT_CD; break;
    case IDD_PAGE_OUTPUT_SETTINGS: helpId = IDS_HTML_OUTPUT; break;
    case IDD_PAGE_LAME_SETTINGS: helpId = IDS_HTML_LAME_SIMPLE; break;
    case IDD_PAGE_OPUS_SETTINGS: helpId = IDS_HTML_OPUS; break;
