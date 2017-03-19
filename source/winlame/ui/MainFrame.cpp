@@ -408,6 +408,10 @@ LRESULT MainFrame::OnSettingsFinishActionSelChanged(UI_EXECUTIONVERB verb, WORD 
    {
       m_encodingFinishAction = static_cast<T_enEncodingFinishAction>(uSel);
 
+      UISetCheck(ID_SETTINGS_FINISH_ACTION_NONE, false);
+      UISetCheck(ID_SETTINGS_FINISH_ACTION_CLOSE, false);
+      UISetCheck(ID_SETTINGS_FINISH_ACTION_STANDBY, false);
+
       UISetCheck(ID_SETTINGS_FINISH_ACTION_NONE + uSel, true);
       m_cbSettingsFinishAction.Select(uSel);
    }
@@ -418,6 +422,10 @@ LRESULT MainFrame::OnSettingsFinishActionSelChanged(UI_EXECUTIONVERB verb, WORD 
 LRESULT MainFrame::OnSettingsFinishActionRange(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    m_encodingFinishAction = static_cast<T_enEncodingFinishAction>(wID - ID_SETTINGS_FINISH_ACTION_NONE);
+
+   UISetCheck(ID_SETTINGS_FINISH_ACTION_NONE, false);
+   UISetCheck(ID_SETTINGS_FINISH_ACTION_CLOSE, false);
+   UISetCheck(ID_SETTINGS_FINISH_ACTION_STANDBY, false);
 
    UISetCheck(wID, true);
    m_cbSettingsFinishAction.Select(wID - ID_SETTINGS_FINISH_ACTION_NONE);
