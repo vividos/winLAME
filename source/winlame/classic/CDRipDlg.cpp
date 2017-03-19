@@ -143,7 +143,7 @@ LRESULT CDRipDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bH
 
    m_bEditedTrack = false;
 
-   CheckCD();
+   PostMessage(WM_TIMER, IDT_CDRIP_CHECK);
 
    SetTimer(IDT_CDRIP_CHECK, 2 * 1000);
 

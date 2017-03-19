@@ -84,7 +84,7 @@ LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
 
    m_bEditedTrack = false;
 
-   CheckCD();
+   PostMessage(WM_TIMER, IDT_CDRIP_CHECK);
 
    SetTimer(IDT_CDRIP_CHECK, 2 * 1000);
 
