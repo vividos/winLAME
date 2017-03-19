@@ -153,11 +153,12 @@ private:
    CDRipDiscInfo ReadDiscInfo(DWORD driveIndex);
    CDRipTrackInfo ReadTrackInfo(DWORD driveIndex, unsigned int trackNum, const CDRipDiscInfo& discInfo);
    void StoreSettings();
+   void UpdateVariousArtistsCheck();
    void UpdateCDReadJobList(unsigned int dwDrive);
    void UpdatePlaylistFilename(DWORD driveIndex);
    void StoreInCdplayerIni(unsigned int nDrive);
    void FreedbLookup();
-   void FillListFreedbInfo(const FreedbInfo& info);
+   void FillListFreedbInfo(const FreedbInfo& info, bool& variousArtists);
 
    /// retrieves album cover art for given MusicBrainz disc id
    void RetrieveAlbumCoverArt(const std::string& discId);

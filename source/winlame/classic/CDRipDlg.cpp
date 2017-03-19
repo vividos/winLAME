@@ -230,11 +230,7 @@ LRESULT CDRipDlg::OnClickedButtonOptions(WORD wNotifyCode, WORD wID, HWND hWndCt
 
 LRESULT CDRipDlg::OnClickedCheckVariousArtists(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-   bool bCheck = BST_CHECKED != m_checkVariousArtists.GetCheck();
-
-   GetDlgItem(IDC_CDSELECT_EDIT_ARTIST).EnableWindow(bCheck);
-   GetDlgItem(IDC_CDSELECT_STATIC_ARTIST).EnableWindow(bCheck);
-
+   UpdateVariousArtistsCheck();
    return 0;
 }
 
@@ -329,9 +325,7 @@ void CDRipDlg::RefreshCDList()
 
    // check or uncheck "various artists"
    m_checkVariousArtists.SetCheck(bVarious ? BST_CHECKED : BST_UNCHECKED);
-
-   BOOL bDummy = true;
-   OnClickedCheckVariousArtists(0, 0, NULL, bDummy);
+   UpdateVariousArtistsCheck();
 
    m_bEditedTrack = false;
 }
@@ -345,7 +339,8 @@ bool CDRipDlg::ReadCachedCDDB(bool& bVarious)
       return false;
 
    FreedbInfo info(UTF8ToString(entry));
-   FillListFreedbInfo(info);
+   FillListFreedbInfo(info, bVarious);
+
    m_bAcquiredDiscInfo = true;
 
    return true;
@@ -382,7 +377,9 @@ bool CDRipDlg::ReadCdplayerIni(bool& bVarious)
       if (cszText != _T("[]#"))
          SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, cszText);
 
-      if (-1 != cszText.Find(_T("various")))
+      CString textLower(cszText);
+      textLower.MakeLower();
+      if (-1 != textLower.Find(_T("various")))
          bVarious = true;
 
       // year
@@ -512,6 +509,14 @@ void CDRipDlg::CheckCD()
    {
       RefreshCDList();
    }
+}
+
+void CDRipDlg::UpdateVariousArtistsCheck()
+{
+   bool isChecked = BST_CHECKED != m_checkVariousArtists.GetCheck();
+
+   GetDlgItem(IDC_CDSELECT_EDIT_ARTIST).EnableWindow(isChecked);
+   GetDlgItem(IDC_CDSELECT_STATIC_ARTIST).EnableWindow(isChecked);
 }
 
 void CDRipDlg::UpdateTrackManager()
@@ -726,13 +731,17 @@ void CDRipDlg::FreedbLookup()
 
    if (selectedIndex < entriesList.size())
    {
-      FillListFreedbInfo(entriesList[selectedIndex]);
+      bool variousArtists = false;
+      FillListFreedbInfo(entriesList[selectedIndex], variousArtists);
+
+      m_checkVariousArtists.SetCheck(variousArtists ? BST_CHECKED : BST_UNCHECKED);
+      UpdateVariousArtistsCheck();
 
       m_bAcquiredDiscInfo = true;
    }
 }
 
-void CDRipDlg::FillListFreedbInfo(const FreedbInfo& info)
+void CDRipDlg::FillListFreedbInfo(const FreedbInfo& info, bool& variousArtists)
 {
    CString cszText;
    unsigned int nMax = info.TrackTitles().size();
@@ -758,6 +767,12 @@ void CDRipDlg::FillListFreedbInfo(const FreedbInfo& info)
 
       m_cbGenre.SetCurSel(nItem);
    }
+
+   CString discArtistLower = info.DiscArtist();
+   discArtistLower.MakeLower();
+
+   if (discArtistLower.Find(_T("various")) != -1)
+      variousArtists = true;
 }
 
 CDRipTrackInfo CDRipDlg::ReadTrackInfo(DWORD driveIndex, unsigned int trackNum, const CDRipDiscInfo& discInfo)

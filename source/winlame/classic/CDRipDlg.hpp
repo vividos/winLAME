@@ -168,11 +168,12 @@ namespace ClassicUI
       void ReadCDText(bool& bVarious);
       void CheckCD();
       CDRipTrackInfo ReadTrackInfo(DWORD driveIndex, unsigned int trackNum, const CDRipDiscInfo& discInfo);
+      void UpdateVariousArtistsCheck();
       void UpdateTrackManager();
       void StoreInCdplayerIni(unsigned int nDrive);
       void UpdatePlaylistFilename();
       void FreedbLookup();
-      void FillListFreedbInfo(const FreedbInfo& info);
+      void FillListFreedbInfo(const FreedbInfo& info, bool& variousArtists);
 
       /// retrieves album cover art for given MusicBrainz disc id
       void RetrieveAlbumCoverArt(const std::string& discId);
