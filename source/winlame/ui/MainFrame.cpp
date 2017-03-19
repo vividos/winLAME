@@ -296,9 +296,26 @@ LRESULT MainFrame::OnDropFiles(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, 
 {
    DropFilesManager dropMgr((HDROP)wParam);
 
-   // show input files page
+   bool cdaFiles = false;
+   const std::vector<CString>& filenamesList = dropMgr.Filenames();
+
+   for (auto filename : filenamesList)
+   {
+      if (filename.Find(_T(".cda")) != -1)
+      {
+         cdaFiles = true;
+         break;
+      }
+   }
+
+   // show input files or input cd page
    WizardPageHost host;
-   host.SetWizardPage(std::shared_ptr<WizardPage>(new InputFilesPage(host, dropMgr.Filenames())));
+
+   if (cdaFiles)
+      host.SetWizardPage(std::make_shared<InputCDPage>(host));
+   else
+      host.SetWizardPage(std::make_shared<InputFilesPage>(host, filenamesList));
+
    host.Run(m_hWnd);
 
    return 0;
