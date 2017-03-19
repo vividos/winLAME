@@ -1,9 +1,6 @@
 TODO list for winLAME
 
 winLAME 2017 beta 1, must-do-things:
-- Cover art: Show large image when clicking on image
-- Cover art: Port to Classic UI
-- Cover art: store in ID3v2 tags
 - Opus input module: read track info
 
 winLAME 2017 beta 1, tests:
