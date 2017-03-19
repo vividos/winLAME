@@ -127,8 +127,9 @@ void OutputSettingsPage::LoadData()
 
    if (!m_uiSettings.m_bFromInputFilesPage)
    {
-      // there's no real "input dir" when reading from CD
+      // there's no real "input dir" when reading from CD, so disable some options
       m_checkUseInputDir.EnableWindow(FALSE);
+      m_checkDeleteAfter.EnableWindow(FALSE);
    }
 
    // update edit field state
