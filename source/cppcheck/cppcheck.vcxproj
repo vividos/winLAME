@@ -37,8 +37,8 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)..\intermediate\$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</IntDir>
     <NMakeBuildCommandLine>call RunCppCheck.cmd "$(IntDir)"
 type $(IntDir)cppcheck.txt</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>call RunCppCheck.cmd "$(IntDir)"
@@ -48,8 +48,8 @@ type $(IntDir)cppcheck.txt</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)..\intermediate\$(Configuration)\$(ProjectName)\</OutDir>
-    <IntDir>$(SolutionDir)..\intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <OutDir>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</IntDir>
     <NMakeBuildCommandLine>call RunCppCheck.cmd "$(IntDir)"
 type $(IntDir)cppcheck.txt</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine>call RunCppCheck.cmd "$(IntDir)"
