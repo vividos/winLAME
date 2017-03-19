@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2005-2007 Michael Fink
+// Copyright (c) 2005-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -66,7 +66,9 @@ namespace ClassicUI
          DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_PLAY, DLSZ_MOVE_X)
          DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_STOP, DLSZ_MOVE_X)
          DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_FREEDB, DLSZ_MOVE_X)
+         DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_ALBUMART, DLSZ_MOVE_X)
          DLGRESIZE_CONTROL(IDC_CDSELECT_BUTTON_OPTIONS, DLSZ_MOVE_X)
+         DLGRESIZE_CONTROL(IDC_CDSELECT_STATIC_ALBUMART, DLSZ_MOVE_X)
       END_DLGRESIZE_MAP()
 
       // message map
@@ -80,6 +82,8 @@ namespace ClassicUI
          COMMAND_HANDLER(IDC_CDSELECT_BUTTON_PLAY, BN_CLICKED, OnClickedButtonPlay)
          COMMAND_HANDLER(IDC_CDSELECT_BUTTON_STOP, BN_CLICKED, OnClickedButtonStop)
          COMMAND_HANDLER(IDC_CDSELECT_BUTTON_FREEDB, BN_CLICKED, OnClickedButtonFreedb)
+         COMMAND_HANDLER(IDC_CDSELECT_BUTTON_ALBUMART, BN_CLICKED, OnClickedButtonAlbumArt)
+         COMMAND_HANDLER(IDC_CDSELECT_STATIC_ALBUMART, STN_CLICKED, OnClickedStaticAlbumArt)
          COMMAND_HANDLER(IDC_CDSELECT_BUTTON_OPTIONS, BN_CLICKED, OnClickedButtonOptions)
          COMMAND_HANDLER(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, BN_CLICKED, OnClickedCheckVariousArtists)
          COMMAND_HANDLER(IDC_CDSELECT_EDIT_TITLE, EN_CHANGE, OnChangedEditCtrl)
@@ -99,6 +103,7 @@ namespace ClassicUI
          DDX_CONTROL_HANDLE(IDC_CDSELECT_BUTTON_STOP, m_buttonStop)
          DDX_CONTROL_HANDLE(IDC_CDSELECT_COMBO_GENRE, m_cbGenre)
          DDX_CONTROL_HANDLE(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, m_checkVariousArtists)
+         DDX_CONTROL_HANDLE(IDC_CDSELECT_STATIC_ALBUMART, m_staticAlbumArtImage)
       END_DDX_MAP()
 
       /// called to init the dialog
@@ -131,6 +136,13 @@ namespace ClassicUI
       LRESULT OnClickedButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
       LRESULT OnClickedButtonStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
       LRESULT OnClickedButtonFreedb(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+      /// clicked when button "album art" has been pressed
+      LRESULT OnClickedButtonAlbumArt(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+      /// clicked when the "album art" image has been pressed
+      LRESULT OnClickedStaticAlbumArt(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
       LRESULT OnClickedButtonOptions(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
       LRESULT OnClickedCheckVariousArtists(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
       LRESULT OnChangedEditCtrl(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
@@ -162,6 +174,12 @@ namespace ClassicUI
       void FreedbLookup();
       void FillListFreedbInfo(const FreedbInfo& info);
 
+      /// retrieves album cover art for given MusicBrainz disc id
+      void RetrieveAlbumCoverArt(const std::string& discId);
+
+      /// sets front cover art from loaded image
+      void SetFrontCoverArt(const ATL::CImage& image);
+
    protected:
       /// drives combobox (hidden when only one drive is present)
       CComboBox m_cbDrives;
@@ -181,6 +199,9 @@ namespace ClassicUI
       /// various artists checkbox
       CButton m_checkVariousArtists;
 
+      /// album art static image
+      CStatic m_staticAlbumArtImage;
+
       bool m_bEditedTrack;
 
       bool m_bDriveActive;
@@ -190,6 +211,12 @@ namespace ClassicUI
       UISettings& m_uiSettings;
 
       UIinterface& m_UIinterface;
+
+      /// last retrieved cover art
+      ATL::CImage m_coverArtImage;
+
+      /// JPEG image data of last retrieved cover art
+      std::vector<unsigned char> m_covertArtImageData;
    };
 
 } // namespace ClassicUI

@@ -33,6 +33,9 @@
 #include "FreedbInfo.hpp"
 #include "FreeDbDiscListDlg.hpp"
 #include "UTF8.hpp"
+#include "CoverArtArchive.hpp"
+#include "CoverArtDlg.hpp"
+#include "App.hpp"
 
 using ClassicUI::CDRipDlg;
 
@@ -195,6 +198,26 @@ LRESULT CDRipDlg::OnClickedButtonStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, 
 LRESULT CDRipDlg::OnClickedButtonFreedb(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
    FreedbLookup();
+   return 0;
+}
+
+LRESULT CDRipDlg::OnClickedButtonAlbumArt(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   DWORD driveIndex = GetCurrentDrive();
+
+   const char* cdid = BASS_CD_GetID(driveIndex, BASS_CDID_MUSICBRAINZ);
+   if (cdid == nullptr || strlen(cdid) == 0)
+      return 0;
+
+   RetrieveAlbumCoverArt(cdid);
+
+   return 0;
+}
+
+LRESULT CDRipDlg::OnClickedStaticAlbumArt(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   UI::CoverArtDlg dlg(m_coverArtImage);
+   dlg.DoModal(m_hWnd);
    return 0;
 }
 
@@ -758,4 +781,54 @@ CDRipTrackInfo CDRipDlg::ReadTrackInfo(DWORD driveIndex, unsigned int trackNum, 
    trackInfo.m_trackLengthInSeconds = BASS_CD_GetTrackLength(driveIndex, trackNum) / 176400L;
 
    return trackInfo;
+}
+
+
+void CDRipDlg::RetrieveAlbumCoverArt(const std::string& discId)
+{
+   CWaitCursor waitCursor;
+
+   std::string errorText;
+   try
+   {
+      CString userAgent;
+      userAgent.Format(_T("winLAME/%s ( https://winlame.sourceforge.io )"), App::Version().GetString());
+      CoverArtArchive archive(CStringA(userAgent).GetString());
+
+      std::vector<CoverArtResult> response = archive.Request(discId, true);
+
+      if (!response.empty())
+      {
+         std::vector<unsigned char> imageData = response[0].FrontCover();
+
+         if (CoverArtArchive::ImageFromJpegByteArray(imageData, m_coverArtImage))
+         {
+            SetFrontCoverArt(m_coverArtImage);
+
+            m_covertArtImageData = imageData;
+         }
+      }
+      else
+      {
+         AppMessageBox(m_hWnd, IDS_CDRIP_COVERART_ERROR_NOART, MB_OK | MB_ICONSTOP);
+      }
+   }
+   catch (const std::exception& ex)
+   {
+      errorText = ex.what();
+      ATLTRACE(_T("Error retrieving cover art: %hs"), errorText.c_str());
+
+      AppMessageBox(m_hWnd, IDS_CDRIP_COVERART_ERROR_NOART, MB_OK | MB_ICONSTOP);
+   }
+}
+
+void CDRipDlg::SetFrontCoverArt(const ATL::CImage& image)
+{
+   if (image.IsNull())
+      return;
+
+   m_staticAlbumArtImage.ShowWindow(SW_SHOW);
+
+   m_staticAlbumArtImage.ModifyStyle(SS_BLACKFRAME, SS_BITMAP | SS_REALSIZECONTROL);
+   m_staticAlbumArtImage.SetBitmap(image);
 }
