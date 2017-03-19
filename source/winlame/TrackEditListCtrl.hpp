@@ -207,6 +207,13 @@ END_MSG_MAP()
             EditItem(1, item);
       }
 
+      // do we have Ctrl+A? then select all items
+      if ('A' == (char)(int)wParam &&
+         GetKeyState(VK_CONTROL) < 0)
+      {
+         SetItemState(-1, LVIS_SELECTED, LVIS_SELECTED);
+      }
+
       bHandled = FALSE;
       return 0;
    }
