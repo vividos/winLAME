@@ -15,13 +15,15 @@ REM -{ config end }------------------------------
 REM set up build environment
 call "%MSVC_PATH%\Common7\Tools\VsDevCmd.bat"
 
+cd source\libraries
+call CopyLibraries.cmd Release
+cd ..\..
+
 REM build solution
 msbuild /m:4 winlame.sln /property:Configuration=Release /target:Rebuild
 
 set ZIP="%ProgramFiles%\7-Zip\7z.exe"
 %ZIP% a bin\winLAME-pdbs.zip bin\Release\pdb\winLAME.pdb
-
-call source\libraries\CopyLibraries.cmd Release
 
 REM build winLAME Portable
 call BuildPortable.cmd
