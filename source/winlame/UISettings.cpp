@@ -74,7 +74,7 @@ UISettings::UISettings()
    create_playlist(false),
    playlist_filename(MAKEINTRESOURCE(IDS_GENERAL_PLAYLIST_FILENAME)),
    cdrip_autostart_encoding(true),
-   m_iLastSelectedPresetIndex(0),
+   m_iLastSelectedPresetIndex(1), // first preset is the "best practice" preset
    last_page_was_cdrip_page(false),
    freedb_server(_T("freedb.freedb.org")),
    store_disc_infos_cdplayer_ini(true),

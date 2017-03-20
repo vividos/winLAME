@@ -117,7 +117,7 @@ void PresetSelectionPage::LoadData()
       m_lbPresets.AddString(m_presetManager.getPresetName(i).c_str());
 
    if (m_uiSettings.m_iLastSelectedPresetIndex >= m_lbPresets.GetCount())
-      m_uiSettings.m_iLastSelectedPresetIndex = 0;
+      m_uiSettings.m_iLastSelectedPresetIndex = 1; // preset 1 is the "best practice" preset
 
    m_lbPresets.SetCurSel(m_uiSettings.m_iLastSelectedPresetIndex);
 
