@@ -55,8 +55,13 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "OpusOutputModule.hpp"
+#include "UTF8.hpp"
 #include "..\App.hpp"
 #include <WinCrypt.h>
+extern "C"
+{
+#include "picture.h"
+}
 
 #pragma comment(lib, "libopusfile-0.lib")
 #pragma comment(lib, "libopus-0.lib")
@@ -307,25 +312,69 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
       CStringA(encoderOptions).GetString());
 
    CString text;
+   std::vector<char> utf8Buffer;
    if (trackinfo.TextInfo(TrackInfoArtist, text))
-      comment_add(&inopt.comments, &inopt.comments_length, "artist", CStringA(text).GetString());
+   {
+      StringToUTF8(text, utf8Buffer);
+      comment_add(&inopt.comments, &inopt.comments_length, "artist", utf8Buffer.data());
+   }
 
    if (trackinfo.TextInfo(TrackInfoTitle, text))
-      comment_add(&inopt.comments, &inopt.comments_length, "title", CStringA(text).GetString());
+   {
+      StringToUTF8(text, utf8Buffer);
+      comment_add(&inopt.comments, &inopt.comments_length, "title", utf8Buffer.data());
+   }
 
    if (trackinfo.TextInfo(TrackInfoAlbum, text))
-      comment_add(&inopt.comments, &inopt.comments_length, "album", CStringA(text).GetString());
+   {
+      StringToUTF8(text, utf8Buffer);
+      comment_add(&inopt.comments, &inopt.comments_length, "album", utf8Buffer.data());
+   }
+
+   if (trackinfo.TextInfo(TrackInfoDiscArtist, text))
+   {
+      StringToUTF8(text, utf8Buffer);
+      comment_add(&inopt.comments, &inopt.comments_length, "albumartist", utf8Buffer.data());
+   }
+
+   if (trackinfo.TextInfo(TrackInfoComment, text))
+   {
+      StringToUTF8(text, utf8Buffer);
+      comment_add(&inopt.comments, &inopt.comments_length, "comment", utf8Buffer.data());
+   }
 
    bool avail = false;
    int year = trackinfo.NumberInfo(TrackInfoYear, avail);
    if (avail && year != -1)
    {
       text.Format(_T("%i"), year);
-      comment_add(&inopt.comments, &inopt.comments_length, "date", CStringA(text).GetString());
+      StringToUTF8(text, utf8Buffer);
+      comment_add(&inopt.comments, &inopt.comments_length, "date", utf8Buffer.data());
+   }
+
+   int trackNumber = trackinfo.NumberInfo(TrackInfoTrack, avail);
+   if (avail && trackNumber > 0)
+   {
+      text.Format(_T("%i"), trackNumber);
+      StringToUTF8(text, utf8Buffer);
+      comment_add(&inopt.comments, &inopt.comments_length, "tracknumber", utf8Buffer.data());
    }
 
    if (trackinfo.TextInfo(TrackInfoGenre, text))
-      comment_add(&inopt.comments, &inopt.comments_length, "genre", CStringA(text).GetString());
+   {
+      StringToUTF8(text, utf8Buffer);
+      comment_add(&inopt.comments, &inopt.comments_length, "genre", utf8Buffer.data());
+   }
+
+   std::vector<unsigned char> binaryInfo;
+   avail = trackinfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+   if (avail)
+   {
+      std::string pictureData = GetMetadataBlockPicture(binaryInfo);
+
+      if (!pictureData.empty())
+         comment_add(&inopt.comments, &inopt.comments_length, "METADATA_BLOCK_PICTURE", pictureData.c_str());
+   }
 
    return true;
 }
@@ -852,6 +901,80 @@ bool OpusOutputModule::EncodeInputBufferFrame()
    }
 
    return true; // no errors
+}
+
+/// adds a 32-bit unsigned int value to buffer, in big-endian format
+static void AddUint32BE(std::vector<unsigned char>& buffer, ogg_uint32_t value)
+{
+   buffer.push_back((unsigned char)((value)>>24));
+   buffer.push_back((unsigned char)((value)>>16));
+   buffer.push_back((unsigned char)((value)>>8));
+   buffer.push_back((unsigned char)(value));
+}
+
+std::string OpusOutputModule::GetMetadataBlockPicture(const std::vector<unsigned char>& imageData)
+{
+   std::string mime_type;
+   std::string description; // not filled at this point
+
+   ogg_uint32_t file_width = 0;
+   ogg_uint32_t file_height = 0;
+   ogg_uint32_t file_depth = 0;
+   ogg_uint32_t file_colors = 0;
+   int          has_palette = 0;
+
+   if (is_jpeg(imageData.data(), imageData.size()))
+   {
+      mime_type = "image/jpeg";
+
+      extract_jpeg_params(imageData.data(), imageData.size(),
+         &file_width, &file_height, &file_depth, &file_colors, &has_palette);
+   }
+   else if (is_png(imageData.data(), imageData.size()))
+   {
+      mime_type = "image/png";
+
+      extract_png_params(imageData.data(), imageData.size(),
+         &file_width, &file_height, &file_depth, &file_colors, &has_palette);
+   }
+   else if (is_gif(imageData.data(), imageData.size()))
+   {
+      mime_type = "image/gif";
+
+      extract_gif_params(imageData.data(), imageData.size(),
+         &file_width, &file_height, &file_depth, &file_colors, &has_palette);
+   }
+   else
+      return std::string(); // unknown data
+
+   // Build the METADATA_BLOCK_PICTURE buffer.
+   // see https://xiph.org/flac/format.html#metadata_block_picture
+   std::vector<unsigned char> buffer;
+
+   AddUint32BE(buffer, 0x03); // picture type; 3 = cover (front)
+
+   AddUint32BE(buffer, mime_type.size());
+   buffer.insert(buffer.end(), mime_type.begin(), mime_type.end());
+
+   AddUint32BE(buffer, description.size());
+   buffer.insert(buffer.end(), description.begin(), description.end());
+
+   AddUint32BE(buffer, file_width);
+   AddUint32BE(buffer, file_height);
+   AddUint32BE(buffer, file_colors);
+   AddUint32BE(buffer, 0); // palette indices
+
+   // image data
+   AddUint32BE(buffer, imageData.size());
+   buffer.insert(buffer.end(), imageData.begin(), imageData.end());
+
+   // base64 encode the buffer
+   std::vector<char> base64Buffer;
+
+   base64Buffer.resize(BASE64_LENGTH(buffer.size()) + 1);
+   base64_encode(base64Buffer.data(), reinterpret_cast<char*>(buffer.data()), buffer.size());
+
+   return std::string(base64Buffer.data());
 }
 
 // Note: The following code is from opusenc.c
