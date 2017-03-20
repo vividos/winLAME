@@ -24,6 +24,7 @@
 #include <fstream>
 #include "resource.h"
 #include "OggVorbisOutputModule.hpp"
+#include "OpusOutputModule.hpp"
 #include "vorbis/vorbisenc.h"
 #include <ctime>
 #include <cmath>
@@ -276,6 +277,13 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
       vorbis_comment_add_tag(&m_vc, "ARTIST", buffer.data());
    }
 
+   text = trackInfo.TextInfo(TrackInfoDiscArtist, avail);
+   if (avail && !text.IsEmpty())
+   {
+      StringToUTF8(text, buffer);
+      vorbis_comment_add_tag(&m_vc, "ALBUMARTIST", buffer.data());
+   }
+
    text = trackInfo.TextInfo(TrackInfoAlbum, avail);
    if (avail && !text.IsEmpty())
    {
@@ -311,6 +319,16 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
    {
       StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "GENRE", buffer.data());
+   }
+
+   std::vector<unsigned char> binaryInfo;
+   avail = trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+   if (avail)
+   {
+      std::string pictureData = OpusOutputModule::GetMetadataBlockPicture(binaryInfo);
+
+      if (!pictureData.empty())
+         vorbis_comment_add_tag(&m_vc, "METADATA_BLOCK_PICTURE", pictureData.c_str());
    }
 }
 

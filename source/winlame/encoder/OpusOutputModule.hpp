@@ -69,6 +69,9 @@ namespace Encoder
       // cleans up the output module
       virtual void DoneOutput() override;
 
+      /// generates text for a picture metadata block from an image
+      static std::string GetMetadataBlockPicture(const std::vector<unsigned char>& imageData);
+
    private:
       /// initializes inopt struct
       void InitInopt();
@@ -111,9 +114,6 @@ namespace Encoder
 
       /// encodes input buffer samples for one frame with encoder
       bool EncodeInputBufferFrame();
-
-      /// generates text for a picture metadata block from an image
-      static std::string GetMetadataBlockPicture(const std::vector<unsigned char>& imageData);
 
    private:
       /// last error occured
