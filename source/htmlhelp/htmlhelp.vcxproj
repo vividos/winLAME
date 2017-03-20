@@ -99,6 +99,7 @@ exit 0</NMakeCleanCommandLine>
     <Text Include="keywords.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="html\cc-by-sa-logo.png" />
     <Image Include="html\pages\images\btn_addfiles.png" />
     <Image Include="html\pages\images\btn_config.png" />
     <Image Include="html\pages\images\btn_deleteall.png" />

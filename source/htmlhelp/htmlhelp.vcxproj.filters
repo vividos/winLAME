@@ -140,5 +140,8 @@
     <Image Include="html\pages\images\systemmenu.png">
       <Filter>html\pages\images</Filter>
     </Image>
+    <Image Include="html\cc-by-sa-logo.png">
+      <Filter>html</Filter>
+    </Image>
   </ItemGroup>
 </Project>
