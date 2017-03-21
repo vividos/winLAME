@@ -24,6 +24,7 @@
     </p>
 
     <ul>
+        <li><i>{Application-Folder}</i> - used for portable and zip versions of winLAME</li>
         <li><i>{Documents and Settings-Folder}</i>\<i>{username}</i>\Application Data\winLAME</li>
         <li><i>{Documents and Settings-Folder}</i>\All Users\Application Data\winLAME</li>
     </ul>
@@ -56,7 +57,12 @@
     </table>
 
     <p>
-        If the file is not valid or wellformed, or doesn't meet the structure shown above, the <a href="../pages/presets.html">presets page</a> won't appear in winLAME. If there is no list of presets for a specific facility (=output module), the <a href="../pages/presets.html">presets page</a> doesn't show up either, since there's no need to show the page.
+        If the file is not valid or wellformed, or doesn't meet the structure shown above, the
+        <a href="../pages/presets.html">presets page</a> won't appear in winLAME. You can check
+        if it is wellformed by opening the file with Internet Explorer. If there is no list of
+        presets for a specific facility (=output module), the
+        <a href="../pages/presets.html">presets page</a> doesn't show up either, since there's no
+        need to show the page.
     </p>
 
     <p>
@@ -64,13 +70,14 @@
     </p>
 
     <p>
-        <table border="1" cellpadding="2" cellspacing="0">
+        <table class="table table-striped table-condensed" style="width: auto">
             <tr><td><b>Facility Name</b></td><td><b>Output Module</b></td></tr>
             <tr><td>lame</td><td>LAME mp3 Encoder</td></tr>
+            <tr><td>opus</td><td>Opus Encoder</td></tr>
             <tr><td>oggvorbis</td><td>Ogg Vorbis Encoder</td></tr>
-            <tr><td>sndfile</td><td>Sndfile</td></tr>
-            <tr><td>aac</td><td>libfaac AAC Audio File Encoder</td></tr>
+            <tr><td>sndFile</td><td>Libsndfile Audio File Encoder</td></tr>
             <tr><td>wma</td><td>WMA Audio File Encoder</td></tr>
+            <tr><td>aac</td><td>libfaac AAC Audio File Encoder</td></tr>
         </table>
     </p>
 
@@ -81,23 +88,116 @@
     </p>
 
     <p>
-        <table border="1" cellpadding="2" cellspacing="0">
-            <tr><td><b>Value Name</b></td><td><b>Description</b></td><td><b>Default Value</b></td></tr>
-            <tr><td>lameNoGap</td><td>when 1, LAME encodes multiple files as they were one, resulting in mp3 files that can be played back without gap.</td><td>0</td></tr>
-            <tr><td>lameWriteWaveHeader</td><td>when 1, a RIFF Wave header is prepended to the encoded file; the extension changes to ".wav".</td><td>0</td></tr>
-            <tr><td>lameHideSettings</td><td>when 1, winLAME hides all settings pages for LAME</td><td>0</td></tr>
+        <table class="table table-striped table-condensed" style="width: auto">
+            <thead><th><b>Value Name</b></th><th><b>Description</b></th><th><b>Default Value</b></th></thead>
+            <tr><td>lameNoGap</td><td>When 1, LAME encodes multiple files as they were one, resulting in mp3 files that can be played back without gap</td><td>0</td></tr>
+            <tr><td>lameWriteWaveHeader</td><td>When 1, a RIFF Wave header is prepended to the encoded file; the extension changes to ".wav"</td><td>0</td></tr>
+            <tr><td>lameHideSettings</td><td>When 1, winLAME hides all settings pages for LAME</td><td>0</td></tr>
             <tr><td>lameEncodeQuality</td><td>Encode quality; 0: fast, 1: standard, 2: high</td><td>1</td></tr>
-            <tr><td>lameMono</td><td>when 1, input is encoded as mono</td><td>0</td></tr>
-            <tr><td>lameQualityOrBitrate</td><td>decides between quality or bitrate settings; 0: bitrate mode, 1: quality mode</td><td>0</td></tr>
+            <tr><td>lameMono</td><td>When 1, input is encoded as mono</td><td>0</td></tr>
+            <tr><td>lameQualityOrBitrate</td><td>Decides between quality or bitrate settings; 0: bitrate mode, 1: quality mode</td><td>0</td></tr>
             <tr><td>lameBitrate</td><td>Bitrate for ABR or CBR Mode; in kbps; only used when lameQualityOrBitrate is set to 0</td><td>192</td></tr>
             <tr><td>lameQuality</td><td>Quality value, from 0 to 9; only used when lameQualityOrBitrate is set to 1</td><td>4</td></tr>
-            <tr><td>lameCBR</td><td>when 1, CBR mode is used instead of ABR</td><td>0</td></tr>
+            <tr><td>lameCBR</td><td>When 1, CBR mode is used instead of ABR</td><td>0</td></tr>
             <tr><td>lameVBRMode</td><td>LAME VBR mode, 0: standard, 1: fast</td><td>0</td></tr>
         </table>
     </p>
 
     <p>
         Note that winLAME sometimes has other default values than the LAME command line tool.
+    </p>
+
+    <h3>Opus Encoder</h3>
+
+    <p>
+        Here is a list of possible values, descriptions and their default values for the Opus encoder:
+    </p>
+
+    <p>
+        <table class="table table-striped table-condensed" style="width: auto">
+            <thead><th><b>Value Name</b></th><th><b>Description</b></th><th><b>Default Value</b></th></thead>
+            <tr><td>opusTargetBitrate</td><td>Target bitrate in kbps per channel</td><td>256</td></tr>
+            <tr><td>opusComplexity</td><td>Determines the maximum algorithmic complexity; values between 10 (highest CPU usage and quality) and 0 (lowest CPU usage and quality)</td><td>10</td></tr>
+            <tr><td>opusBitrateMode</td><td>Bitrate mode; 0: VBR (recommended), 1: Constrained VBR, 2: Hard VBR</td><td>0</td></tr>
+        </table>
+    </p>
+
+    <h3>Ogg Vorbis Encoder</h3>
+
+    <p>
+        Here is a list of possible values, descriptions and their default values for the Ogg Vorbis encoder:
+    </p>
+
+    <p>
+        <table class="table table-striped table-condensed" style="width: auto">
+            <thead><th><b>Value Name</b></th><th><b>Description</b></th><th><b>Default Value</b></th></thead>
+            <tr><td>vorbisBitrateMode</td><td>Decides between quality management and bitrate settings; 0: quality management, 1: variable bitrate settings, 2: average bitrate settings, 3: constant bitrate settings</td><td>0</td></tr>
+            <tr><td>vorbisBaseQuality</td><td>Quality settings, in 0.01 steps; values between 0 (0.0) and 1000 (10.0) are allowed</td><td>400</td></tr>
+            <tr><td>vorbisVarMinBitrate</td><td>Minimum bitrate, used for "variable bitrate" mode</td><td>64</td></tr>
+            <tr><td>vorbisVarMaxBitrate</td><td>Maximum bitrate, used for "variable bitrate" mode</td><td>256</td></tr>
+            <tr><td>vorbisVarNominal</td><td>Nominal bitrate, used for "average bitrate" and "constant bitrate" modes</td><td>128</td></tr>
+        </table>
+    </p>
+
+    <h3>Libsndfile Audio File Encoder</h3>
+
+    <p>
+        Here is a list of possible values, descriptions and their default values for the Libsndfile audio file encoder:
+    </p>
+
+    <p>
+        <table class="table table-striped table-condensed" style="width: auto">
+            <thead><th><b>Value Name</b></th><th><b>Description</b></th><th><b>Default Value</b></th></thead>
+            <tr><td>sndFileFormat</td><td>Format code</td><td>0</td></tr>
+            <tr><td>sndFileSubType</td><td>File sub type</td><td>0</td></tr>
+        </table>
+    </p>
+        The exact values to use can be obtained from the
+        <a href="http://www.mega-nerd.com/libsndfile/api.html" target="_blank">Libsndfile API page</a>.
+        The values beginning with SF_FORMAT_ are the constants to use. The values listed under
+        "Major formats" are the "sndFileFormat" values, and the "Subtypes" are the
+        "sndFileSubType" values. All values must be specified as decimal, and so must be converted
+        from hexadecimal, to be usable in the presets.xml file. Also note that not all
+        combinations of format and subtype codes are possible. Use the
+        <a href="../pages/sndfile.html">LibSndfile Settings Page</a> wizard page to check valid
+        combinations.
+    </p>
+
+    <h3>WMA Audio File Encoder</h3>
+
+    <p>
+        Here is a list of possible values, descriptions and their default values for the WMA audio file encoder:
+    </p>
+
+    <p>
+        <table class="table table-striped table-condensed" style="width: auto">
+            <thead><th><b>Value Name</b></th><th><b>Description</b></th><th><b>Default Value</b></th></thead>
+            <tr><td>wmaBitrate</td><td>Constant bitrate in kbps</td><td>64</td></tr>
+            <tr><td>wmaQuality</td><td>Quality value in percent; allowed values are from 10 to 100</td><td>50</td></tr>
+            <tr><td>wmaBitrateMode</td><td>Decides between quality and bitrate mode; 0: quality mode (VBR), 1: constant bitrate mode (CBR)</td><td>0</td></tr>
+        </table>
+    </p>
+
+    <h3>libfaac AAC Audio File Encoder</h3>
+
+    <p>
+        Here is a list of possible values, descriptions and their default values for the libfaac AAC adio file encoder:
+    </p>
+
+    <p>
+        <table class="table table-striped table-condensed" style="width: auto">
+            <thead><th><b>Value Name</b></th><th><b>Description</b></th><th><b>Default Value</b></th></thead>
+            <tr><td>aacBitrate</td><td>Average bitrate in kbps per channel; used in bitrate mode</td><td>128</td></tr>
+            <tr><td>aacBandwidth</td><td>Cutoff frequency for input, in Hz; only active when aacAutoBandwidth is 0</td><td>16000</td></tr>
+            <tr><td>aacMpegVer</td><td>MPEG version: 2: MPEG2, 4: MPEG4; note that this value doesn't create .mp4 files!</td><td>2</td></tr>
+            <tr><td>aacObjectType</td><td>AAC object type; 0: Main, 1: Low complexity, 2: LTP</td><td>1</td></tr>
+            <tr><td>aacAllowMS</td><td>When 1, allows the AAC encoder to use Mid/Side encoding; 0 disables it</td><td>1</td></tr>
+            <tr><td>aacUseTNS</td><td>When 1, uses Temporal Noise Shaping; 0 disables it</td><td>1</td></tr>
+            <tr><td>aacUseLFE</td><td>When 1, uses one channel as LFE channel; 0 disables it - currently not supported by libfaac</td><td>1</td></tr>
+            <tr><td>aacBRCmethod</td><td>Bitrate control method; 0: quality mode, 1: bitrate mode</td><td>0</td></tr>
+            <tr><td>aacQuality</td><td>Default VBR quality in percent; values between 10 and 500 are allowed; used in quality mode</td><td>100</td></tr>
+            <tr><td>aacAutoBandwidth</td><td>When 1, automatically manages cutoff frequency; when 0, uses the frequency in aacBandwidth</td><td>1</td></tr>
+        </table>
     </p>
 
     <p><a href="#">back to top</a> - <a href="index.html">back to the How To page</a></p>
