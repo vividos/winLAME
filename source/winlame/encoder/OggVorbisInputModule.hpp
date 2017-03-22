@@ -74,6 +74,10 @@ namespace Encoder
       virtual void DoneInput() override;
 
    private:
+      /// reads track info from input file
+      void GetTrackInfo(TrackInfo& trackInfo);
+
+   private:
       /// last error occured
       CString m_lastError;
 

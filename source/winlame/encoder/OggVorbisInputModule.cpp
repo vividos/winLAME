@@ -25,6 +25,8 @@
 #include "resource.h"
 #include <fstream>
 #include "vorbis/vorbisfile.h"
+#include "UTF8.hpp"
+#include <opus/opusfile.h>
 
 using Encoder::OggVorbisInputModule;
 using Encoder::TrackInfo;
@@ -142,7 +144,7 @@ CString OggVorbisInputModule::GetFilterString() const
 }
 
 int OggVorbisInputModule::InitInput(LPCTSTR m_inputFilename,
-   SettingsManager& mgr, TrackInfo& trackinfo,
+   SettingsManager& mgr, TrackInfo& trackInfo,
    SampleContainer& samplecont)
 {
    IsAvailable();
@@ -172,6 +174,8 @@ int OggVorbisInputModule::InitInput(LPCTSTR m_inputFilename,
 
    // set up input traits
    samplecont.SetInputModuleTraits(sizeof(short) * 8, SamplesInterleaved, m_samplerate, m_channels);
+
+   GetTrackInfo(trackInfo);
 
    return 0;
 }
@@ -244,4 +248,104 @@ void OggVorbisInputModule::DoneInput()
    ov_clear(&m_vf);
 
    fclose(m_inputFile);
+}
+
+void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
+{
+   vorbis_comment* comment = ov_comment(&m_vf, 0);
+
+   const char* utf8text = nullptr;
+   CString text;
+   if (vorbis_comment_query_count(comment, "artist") > 0)
+   {
+      utf8text = vorbis_comment_query(comment, "artist", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoArtist, text);
+   }
+
+   if (vorbis_comment_query_count(comment, "title") > 0)
+   {
+      utf8text = vorbis_comment_query(comment, "title", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoTitle, text);
+   }
+
+   if (vorbis_comment_query_count(comment, "album") > 0)
+   {
+      utf8text = vorbis_comment_query(comment, "album", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoAlbum, text);
+   }
+
+   if (vorbis_comment_query_count(comment, "albumartist") > 0)
+   {
+      utf8text = vorbis_comment_query(comment, "albumartist", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoDiscArtist, text);
+   }
+
+   if (vorbis_comment_query_count(comment, "comment") > 0)
+   {
+      utf8text = vorbis_comment_query(comment, "comment", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoComment, text);
+   }
+
+   if (vorbis_comment_query_count(comment, "genre") > 0)
+   {
+      utf8text = vorbis_comment_query(comment, "genre", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoGenre, text);
+   }
+
+   if (vorbis_comment_query_count(comment, "date") > 0)
+   {
+      utf8text = vorbis_comment_query(comment, "date", 0);
+      text = UTF8ToString(utf8text);
+
+      int year = _ttoi(text);
+
+      if (year > 0)
+         trackInfo.NumberInfo(TrackInfoYear, year);
+   }
+
+   if (vorbis_comment_query_count(comment, "tracknumber") > 0)
+   {
+      utf8text = vorbis_comment_query(comment, "tracknumber", 0);
+      text = UTF8ToString(utf8text);
+
+      int trackNumber = _ttoi(text);
+
+      if (trackNumber > 0)
+         trackInfo.NumberInfo(TrackInfoTrack, trackNumber);
+   }
+
+   if (vorbis_comment_query_count(comment, "METADATA_BLOCK_PICTURE") > 0)
+   {
+      // reuse the code that is using opusfile functions
+      OpusPictureTag pictureTag = { 0 };
+      opus_picture_tag_init(&pictureTag);
+
+      const char* metadataBlock = vorbis_comment_query(comment, "METADATA_BLOCK_PICTURE", 0);
+      int errorCode = opus_picture_tag_parse(&pictureTag, metadataBlock);
+
+      if (errorCode == 0 &&
+         pictureTag.data_length > 0)
+      {
+         const std::vector<unsigned char> binaryData(
+            pictureTag.data, pictureTag.data + pictureTag.data_length);
+
+         trackInfo.BinaryInfo(TrackInfoFrontCover, binaryData);
+      }
+
+      opus_picture_tag_clear(&pictureTag);
+   }
+
+   vorbis_comment_clear(comment);
 }
