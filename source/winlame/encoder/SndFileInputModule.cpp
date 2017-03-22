@@ -151,6 +151,8 @@ int SndFileInputModule::InitInput(LPCTSTR infilename,
       WaveGetID3Tag(infilename, trackInfo);
    }
 
+   GetTrackInfos(trackInfo);
+
    switch (m_sfinfo.format & SF_FORMAT_SUBMASK)
    {
    case SF_FORMAT_PCM_S8:
@@ -365,7 +367,7 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
 
       // chunk length
       sizeRead = fread(buffer, 1, 4, wav);
-      if (sizeRead != 1)
+      if (sizeRead != 4)
          break;
 
       int clength = *((int*)buffer);
@@ -384,7 +386,10 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
             break;
 
          if (id3tag.IsValidTag())
+         {
             id3tag.ToTrackInfo(trackInfo);
+            return true;
+         }
       }
       else
       {
@@ -399,5 +404,47 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
          break;
    }
 
-   return true;
+   return false;
+}
+
+void SndFileInputModule::GetTrackInfos(TrackInfo& trackInfo)
+{
+   CString text = sf_get_string(m_sndfile, SF_STR_TITLE);
+   if (!text.IsEmpty())
+      trackInfo.TextInfo(TrackInfoTitle, text);
+
+   text = sf_get_string(m_sndfile, SF_STR_ARTIST);
+   if (!text.IsEmpty())
+      trackInfo.TextInfo(TrackInfoArtist, text);
+
+   text = sf_get_string(m_sndfile, SF_STR_ALBUM);
+   if (!text.IsEmpty())
+      trackInfo.TextInfo(TrackInfoAlbum, text);
+
+   text = sf_get_string(m_sndfile, SF_STR_DATE);
+   if (!text.IsEmpty())
+   {
+      int year = _ttoi(text);
+      if (year > 0)
+         trackInfo.NumberInfo(TrackInfoYear, year);
+   }
+
+   text = sf_get_string(m_sndfile, SF_STR_COMMENT);
+   if (!text.IsEmpty())
+      trackInfo.TextInfo(TrackInfoComment, text);
+
+   text = sf_get_string(m_sndfile, SF_STR_TRACKNUMBER);
+   if (!text.IsEmpty())
+   {
+      int trackNumber = _ttoi(text);
+      if (trackNumber > 0)
+         trackInfo.NumberInfo(TrackInfoTrack, trackNumber);
+   }
+
+   text = sf_get_string(m_sndfile, SF_STR_GENRE);
+   if (!text.IsEmpty())
+      trackInfo.TextInfo(TrackInfoGenre, text);
+
+   text = sf_get_string(m_sndfile, SF_STR_SOFTWARE);
+   ATLTRACE(_T("File produced by: %s\n"), text.GetString());
 }

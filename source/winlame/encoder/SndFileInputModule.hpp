@@ -78,6 +78,9 @@ namespace Encoder
       /// searches for id3 tag chunk in the wave file
       bool WaveGetID3Tag(LPCTSTR wavfile, TrackInfo &trackinfo);
 
+      /// retrieves track infos from tags read by libsndfile
+      void GetTrackInfos(TrackInfo& trackInfo);
+
    private:
       /// file handle
       SNDFILE* m_sndfile;
