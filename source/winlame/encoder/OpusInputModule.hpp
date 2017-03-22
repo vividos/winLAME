@@ -73,6 +73,9 @@ namespace Encoder
       virtual void DoneInput() override;
 
    private:
+      /// reads track info from Opus tags
+      void GetTrackInfo(TrackInfo& trackInfo);
+
       /// formats error text from error code
       static LPCTSTR ErrorTextFromCode(int errorCode);
 

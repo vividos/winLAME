@@ -22,6 +22,7 @@
 #include "stdafx.h"
 #include "OpusInputModule.hpp"
 #include "resource.h"
+#include "UTF8.hpp"
 
 using Encoder::OpusInputModule;
 using Encoder::TrackInfo;
@@ -111,6 +112,8 @@ int OpusInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
 
    m_numTotalSamples = op_pcm_total(m_inputFile.get(), -1);
 
+   GetTrackInfo(trackInfo);
+
    return 0;
 }
 
@@ -163,6 +166,106 @@ float OpusInputModule::PercentDone() const
 void OpusInputModule::DoneInput()
 {
    m_inputFile.reset();
+}
+
+void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
+{
+   const OpusTags* tags = op_tags(m_inputFile.get(), 0);
+
+   const char* utf8text = nullptr;
+   CString text;
+   if (opus_tags_query_count(tags, "artist") > 0)
+   {
+      utf8text = opus_tags_query(tags, "artist", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoArtist, text);
+   }
+
+   if (opus_tags_query_count(tags, "title") > 0)
+   {
+      utf8text = opus_tags_query(tags, "title", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoTitle, text);
+   }
+
+   if (opus_tags_query_count(tags, "album") > 0)
+   {
+      utf8text = opus_tags_query(tags, "album", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoAlbum, text);
+   }
+
+   if (opus_tags_query_count(tags, "albumartist") > 0)
+   {
+      utf8text = opus_tags_query(tags, "albumartist", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoDiscArtist, text);
+   }
+
+   if (opus_tags_query_count(tags, "comment") > 0)
+   {
+      utf8text = opus_tags_query(tags, "comment", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoComment, text);
+   }
+
+   if (opus_tags_query_count(tags, "genre") > 0)
+   {
+      utf8text = opus_tags_query(tags, "genre", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoGenre, text);
+   }
+
+   if (opus_tags_query_count(tags, "date") > 0)
+   {
+      utf8text = opus_tags_query(tags, "date", 0);
+      text = UTF8ToString(utf8text);
+
+      int year = _ttoi(text);
+
+      if (year > 0)
+         trackInfo.NumberInfo(TrackInfoYear, year);
+   }
+
+   if (opus_tags_query_count(tags, "tracknumber") > 0)
+   {
+      utf8text = opus_tags_query(tags, "tracknumber", 0);
+      text = UTF8ToString(utf8text);
+
+      int trackNumber = _ttoi(text);
+
+      if (trackNumber > 0)
+         trackInfo.NumberInfo(TrackInfoTrack, trackNumber);
+   }
+
+   if (opus_tags_query_count(tags, "METADATA_BLOCK_PICTURE") > 0)
+   {
+      OpusPictureTag pictureTag = { 0 };
+      opus_picture_tag_init(&pictureTag);
+
+      const char* metadataBlock = opus_tags_query(tags, "METADATA_BLOCK_PICTURE", 0);
+      int errorCode = opus_picture_tag_parse(&pictureTag, metadataBlock);
+
+      if (errorCode != 0)
+         ATLTRACE(_T("Error reading metadata block: %s\n"), ErrorTextFromCode(errorCode));
+
+      if (errorCode == 0 &&
+         pictureTag.data_length > 0)
+      {
+         const std::vector<unsigned char> binaryData(
+            pictureTag.data, pictureTag.data + pictureTag.data_length);
+
+         trackInfo.BinaryInfo(TrackInfoFrontCover, binaryData);
+      }
+
+      opus_picture_tag_clear(&pictureTag);
+   }
 }
 
 LPCTSTR OpusInputModule::ErrorTextFromCode(int errorCode)
