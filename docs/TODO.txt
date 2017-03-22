@@ -1,15 +1,9 @@
 TODO list for winLAME
 
-winLAME 2017 beta 1, must-do-things:
-- Opus input module: read track info
-
-winLAME 2017 beta 1, tests:
-- test every input module, encoding, tag reading/writing
-
 winLAME 2017 beta 2, must-do-things:
 - store last settings for output page
 - draw task list progress
-- support album artist, album art, composer tags
+- support composer tags
 - support writing album-artist on non-various cd's
 - implement Speex input file length reading
 - AAC output tag writing
@@ -22,6 +16,7 @@ winLAME 2017 beta 2, nice-to-have:
 - check all tooltip texts
 - fix remaining Coverity scan warnings
 - fix remaining /analyze warnings
+- fix remaining SonarQube bugs and vulnerabilities
 - write help pages for general settings and cd read settings
 - setup uninstall: add option to finish page to remove all settings
 
