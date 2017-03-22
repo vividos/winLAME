@@ -140,7 +140,7 @@
         See also: http://wiki.hydrogenaud.io/index.php?title=Recommended_Ogg_Vorbis
       </comment>
       <value name="vorbisBitrateMode">0</value>
-      <value name="vorbisBaseQuality">6</value>
+      <value name="vorbisBaseQuality">600</value>
     </preset>
 
     <preset name="Ogg Vorbis Default">
@@ -152,7 +152,7 @@
         See also: http://wiki.hydrogenaud.io/index.php?title=Recommended_Ogg_Vorbis
       </comment>
       <value name="vorbisBitrateMode">0</value>
-      <value name="vorbisBaseQuality">3</value>
+      <value name="vorbisBaseQuality">300</value>
     </preset>
   </facility>
 
