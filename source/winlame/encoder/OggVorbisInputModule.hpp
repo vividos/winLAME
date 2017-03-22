@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -31,46 +31,46 @@ namespace Encoder
    class OggVorbisInputModule : public InputModule
    {
    public:
-      // ctor
+      /// ctor
       OggVorbisInputModule();
-      // dtor
+      /// dtor
       virtual ~OggVorbisInputModule() throw();
 
       /// clones input module
       virtual InputModule* CloneModule() override;
 
-      // returns the module name
+      /// returns the module name
       virtual CString GetModuleName() const override { return _T("Ogg Vorbis Decoder"); }
 
-      // returns the last error
+      /// returns the last error
       virtual CString GetLastError() const override { return m_lastError; }
 
-      // returns if the module is available
+      /// returns if the module is available
       virtual bool IsAvailable() const override;
 
-      // returns description of current file
+      /// returns description of current file
       virtual CString GetDescription() const override;
 
-      // returns filter string
+      /// returns filter string
       virtual CString GetFilterString() const override;
 
-      // initializes the input module
+      /// initializes the input module
       virtual int InitInput(LPCTSTR infilename, SettingsManager& mgr,
          TrackInfo& trackInfo, SampleContainer& samples) override;
 
-      // returns info about the input file
+      /// returns info about the input file
       virtual void GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const override;
 
-      // decodes samples and stores them in the sample container
+      /// decodes samples and stores them in the sample container
       virtual int DecodeSamples(SampleContainer& samples) override;
 
-      // returns the number of percent done
+      /// returns the number of percent done
       virtual float PercentDone() const override
       {
          return m_numMaxSamples > 0 ? float(m_numCurrentSamples)*100.f / m_numMaxSamples : 0.f;
       }
 
-      // called when done with decoding
+      /// called when done with decoding
       virtual void DoneInput() override;
 
    private:
