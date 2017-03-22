@@ -238,7 +238,7 @@ void EncoderImpl::Encode()
    if (m_inputModule != nullptr)
       m_inputModule->DoneInput(completedTrack);
 
-   if (initOutputModule)
+   if (initOutputModule && m_outputModule != nullptr)
       m_outputModule->DoneOutput();
 
    // delete modules
