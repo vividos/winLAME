@@ -25,6 +25,7 @@
 #include "SndFileOutputModule.hpp"
 #include "SndFileFormats.hpp"
 #include "DynamicLibrary.hpp"
+#include "App.hpp"
 
 using Encoder::SndFileOutputModule;
 using Encoder::TrackInfo;
@@ -187,36 +188,54 @@ void SndFileOutputModule::DoneOutput()
 
 void SndFileOutputModule::SetTrackInfo(const TrackInfo& trackInfo)
 {
-   bool avail = false;
+   // Note: all track info values are converted to ANSI; there is no way to
+   // know how the values are stored; at least for RIFF Wave INFO header, it
+   // seems that UTF-8 as text would be ignored.
+   bool avail;
    CStringA text = trackInfo.TextInfo(TrackInfoTitle, avail);
-   if (avail)
-      sf_set_string(m_sndfile, SF_STR_TITLE, text);
+   if (avail && !text.IsEmpty())
+   {
+      sf_set_string(m_sndfile, SF_STR_TITLE, text.GetString());
+   }
 
    text = trackInfo.TextInfo(TrackInfoArtist, avail);
-   if (avail)
-      sf_set_string(m_sndfile, SF_STR_ARTIST, text);
+   if (avail && !text.IsEmpty())
+   {
+      sf_set_string(m_sndfile, SF_STR_ARTIST, text.GetString());
+   }
 
    text = trackInfo.TextInfo(TrackInfoAlbum, avail);
-   if (avail)
-      sf_set_string(m_sndfile, SF_STR_ALBUM, text);
+   if (avail && !text.IsEmpty())
+   {
+      sf_set_string(m_sndfile, SF_STR_ALBUM, text.GetString());
+   }
 
    int number = trackInfo.NumberInfo(TrackInfoYear, avail);
-   text.Format("%i", number);
-   if (avail)
-      sf_set_string(m_sndfile, SF_STR_DATE, text);
+   if (avail && number > 0)
+   {
+      text.Format("%i", number);
+      sf_set_string(m_sndfile, SF_STR_DATE, text.GetString());
+   }
 
    text = trackInfo.TextInfo(TrackInfoComment, avail);
-   if (avail)
-      sf_set_string(m_sndfile, SF_STR_COMMENT, text);
+   if (avail && !text.IsEmpty())
+   {
+      sf_set_string(m_sndfile, SF_STR_COMMENT, text.GetString());
+   }
 
    number = trackInfo.NumberInfo(TrackInfoTrack, avail);
-   text.Format("%i", number);
-   if (avail)
-      sf_set_string(m_sndfile, SF_STR_TRACKNUMBER, text);
+   if (avail && number > 0)
+   {
+      text.Format("%i", number);
+      sf_set_string(m_sndfile, SF_STR_TRACKNUMBER, text.GetString());
+   }
 
    text = trackInfo.TextInfo(TrackInfoGenre, avail);
-   if (avail)
-      sf_set_string(m_sndfile, SF_STR_GENRE, text);
+   if (avail && !text.IsEmpty())
+   {
+      sf_set_string(m_sndfile, SF_STR_GENRE, text.GetString());
+   }
 
-   sf_set_string(m_sndfile, SF_STR_SOFTWARE, "winLAME");
+   text.Format("winLAME %ls", App::Version().GetString());
+   sf_set_string(m_sndfile, SF_STR_SOFTWARE, text.GetString());
 }
