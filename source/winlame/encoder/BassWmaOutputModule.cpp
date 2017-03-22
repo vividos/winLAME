@@ -24,6 +24,9 @@
 #include "resource.h"
 #include "BassWmaOutputModule.hpp"
 #include "DynamicLibrary.hpp"
+#include "UTF8.hpp"
+#include "App.hpp"
+#include <wmsdk.h> // for WM_PICTURE
 
 using Encoder::BassWmaOutputModule;
 using Encoder::TrackInfo;
@@ -187,50 +190,95 @@ void BassWmaOutputModule::DoneOutput()
 void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
 {
    bool isAvail = false;
+
+   std::vector<char> utf8Buffer;
+
    CString textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
-      BASS_WMA_EncodeSetTag(m_handle, "Title", CStringA(textValue), BASS_WMA_TAG_ANSI);
+      StringToUTF8(textValue, utf8Buffer);
+      BASS_WMA_EncodeSetTag(m_handle, "Title", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
    textValue = trackInfo.TextInfo(TrackInfoArtist, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
-      BASS_WMA_EncodeSetTag(m_handle, "Author", CStringA(textValue), BASS_WMA_TAG_ANSI);
+      StringToUTF8(textValue, utf8Buffer);
+      BASS_WMA_EncodeSetTag(m_handle, "Author", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
+   }
+
+   textValue = trackInfo.TextInfo(TrackInfoDiscArtist, isAvail);
+   if (isAvail && !textValue.IsEmpty())
+   {
+      StringToUTF8(textValue, utf8Buffer);
+      BASS_WMA_EncodeSetTag(m_handle, "WM/AlbumArtist", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
    textValue = trackInfo.TextInfo(TrackInfoAlbum, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
-      BASS_WMA_EncodeSetTag(m_handle, "WM/AlbumTitle", CStringA(textValue), BASS_WMA_TAG_ANSI);
+      StringToUTF8(textValue, utf8Buffer);
+      BASS_WMA_EncodeSetTag(m_handle, "WM/AlbumTitle", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
    int intValue = trackInfo.NumberInfo(TrackInfoYear, isAvail);
    if (isAvail && intValue != -1)
    {
       textValue.Format(_T("%i"), intValue);
-      BASS_WMA_EncodeSetTag(m_handle, "WM/Year", CStringA(textValue), BASS_WMA_TAG_ANSI);
+      StringToUTF8(textValue, utf8Buffer);
+      BASS_WMA_EncodeSetTag(m_handle, "WM/Year", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
    textValue = trackInfo.TextInfo(TrackInfoComment, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
-      BASS_WMA_EncodeSetTag(m_handle, "Description", CStringA(textValue), BASS_WMA_TAG_ANSI);
+      StringToUTF8(textValue, utf8Buffer);
+      BASS_WMA_EncodeSetTag(m_handle, "Description", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
    intValue = trackInfo.NumberInfo(TrackInfoTrack, isAvail);
    if (isAvail && intValue != -1)
    {
       textValue.Format(_T("%i"), intValue);
-      BASS_WMA_EncodeSetTag(m_handle, "WM/TrackNumber", CStringA(textValue), BASS_WMA_TAG_ANSI);
+      StringToUTF8(textValue, utf8Buffer);
+      BASS_WMA_EncodeSetTag(m_handle, "WM/TrackNumber", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
    textValue = trackInfo.TextInfo(TrackInfoGenre, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
-      BASS_WMA_EncodeSetTag(m_handle, "WM/Genre", CStringA(textValue), BASS_WMA_TAG_ANSI);
+      StringToUTF8(textValue, utf8Buffer);
+      BASS_WMA_EncodeSetTag(m_handle, "WM/Genre", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
-   BASS_WMA_EncodeSetTag(m_handle, "WM/ToolName", "winLAME", BASS_WMA_TAG_ANSI);
-   BASS_WMA_EncodeSetTag(m_handle, 0, 0, BASS_WMA_TAG_ANSI);
+   BASS_WMA_EncodeSetTag(m_handle, "WM/ToolName", "winLAME", BASS_WMA_TAG_UTF8);
+
+   CStringA version = App::Version();
+   BASS_WMA_EncodeSetTag(m_handle, "WM/ToolVersion", version, BASS_WMA_TAG_UTF8);
+
+   std::vector<unsigned char> binaryInfo;
+   isAvail = trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+   if (isAvail)
+   {
+      // BASS WMA just takes a WM_PICTURE struct and hands it over to the WMA
+      // SDK, so just prepare that struct, call BASS_WMA_EncodeSetTag with the
+      // tag type binary and the size of the WM_PICTURE struct. The WMA SDK
+      // then writes the infos from the struct as the correct byte stream.
+      WM_PICTURE wmPictureData = { 0 };
+
+      wmPictureData.bPictureType = 3; // 3: front cover
+      wmPictureData.pwszMIMEType = L"image/jpeg";
+      wmPictureData.pwszDescription = L"";
+      wmPictureData.pbData = binaryInfo.data();
+      wmPictureData.dwDataLen = binaryInfo.size();
+
+      DWORD type = MAKELONG(BASS_WMA_TAG_BINARY, sizeof(wmPictureData));
+
+      BASS_WMA_EncodeSetTag(m_handle,
+         "WM/Picture",
+         reinterpret_cast<const char*>(&wmPictureData),
+         type);
+   }
+
+   BASS_WMA_EncodeSetTag(m_handle, 0, 0, BASS_WMA_TAG_UTF8);
 }
