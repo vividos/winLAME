@@ -194,6 +194,26 @@ CString Frame::GetString(unsigned int fieldIndex) const
    return cszText;
 }
 
+std::vector<unsigned char> Frame::GetBinaryData(unsigned int fieldIndex) const
+{
+   ATLASSERT(m_spFrame != NULL);
+
+   id3_field* field = id3_frame_field(m_spFrame.get(), fieldIndex);
+
+   std::vector<unsigned char> binaryData;
+
+   enum id3_field_type type = id3_field_type(field);
+   if (type == ID3_FIELD_TYPE_BINARYDATA)
+   {
+      id3_length_t size = 0;
+      const id3_byte_t* data = id3_field_getbinarydata(field, &size);
+
+      binaryData.assign(data, data + size);
+   }
+
+   return binaryData;
+}
+
 CString Frame::AsString()
 {
    ATLASSERT(m_spFrame != NULL);

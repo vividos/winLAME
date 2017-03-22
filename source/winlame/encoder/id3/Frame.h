@@ -77,6 +77,9 @@ public:
    /// returns string field
    CString GetString(unsigned int fieldIndex) const;
 
+   /// returns binary data field
+   std::vector<unsigned char> GetBinaryData(unsigned int fieldIndex) const;
+
    /// returns frame value as integer
    signed long AsInteger();
 
