@@ -433,8 +433,15 @@ bool MadMpegInputModule::GetId3v2TagInfos(const CString& filename, TrackInfo& tr
       trackInfo.TextInfo(TrackInfoArtist, textValue);
    }
 
+   if (tag.IsFrameAvail(ID3::FrameId::AlbumArtist))
+   {
+      textValue = tag.FindFrame(ID3::FrameId::AlbumArtist).GetString(1);
+      trackInfo.TextInfo(TrackInfoDiscArtist, textValue);
+   }
+
    if (tag.IsFrameAvail(ID3::FrameId::Comment))
    {
+      // COMM field is layout differently: 0: ID3_FIELD_TYPE_TEXTENCODING, 1: ID3_FIELD_TYPE_LANGUAGE, 2: ID3_FIELD_TYPE_STRING, 3: ID3_FIELD_TYPE_STRINGFULL
       textValue = tag.FindFrame(ID3::FrameId::Comment).GetString(3);
       trackInfo.TextInfo(TrackInfoComment, textValue);
    }
@@ -462,6 +469,15 @@ bool MadMpegInputModule::GetId3v2TagInfos(const CString& filename, TrackInfo& tr
       textValue = tag.FindFrame(ID3::FrameId::Genre).GetString(1);
       if (!textValue.IsEmpty())
          trackInfo.TextInfo(TrackInfoGenre, textValue);
+   }
+
+   if (tag.IsFrameAvail(ID3::FrameId::AttachedPicture))
+   {
+      const std::vector<unsigned char> binaryData =
+         tag.FindFrame(ID3::FrameId::AttachedPicture).GetBinaryData(4);
+
+      if (!binaryData.empty())
+         trackInfo.BinaryInfo(TrackInfoFrontCover, binaryData);
    }
 
    return true;
