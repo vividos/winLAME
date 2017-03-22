@@ -921,7 +921,7 @@ std::string OpusOutputModule::GetMetadataBlockPicture(const std::vector<unsigned
    ogg_uint32_t file_height = 0;
    ogg_uint32_t file_depth = 0;
    ogg_uint32_t file_colors = 0;
-   int          has_palette = 0;
+   int          has_palette = -1;
 
    if (is_jpeg(imageData.data(), imageData.size()))
    {
@@ -947,6 +947,12 @@ std::string OpusOutputModule::GetMetadataBlockPicture(const std::vector<unsigned
    else
       return std::string(); // unknown data
 
+   // These fields MUST be set correctly OR all set to zero.
+   // So if any of them (except colors, for which 0 is a valid value) are still
+   // zero, clear the rest to zero.*/
+   if (file_width == 0 || file_height == 0 || file_depth == 0)
+      file_width = file_height = file_depth = file_colors = 0;
+
    // Build the METADATA_BLOCK_PICTURE buffer.
    // see https://xiph.org/flac/format.html#metadata_block_picture
    std::vector<unsigned char> buffer;
@@ -961,8 +967,8 @@ std::string OpusOutputModule::GetMetadataBlockPicture(const std::vector<unsigned
 
    AddUint32BE(buffer, file_width);
    AddUint32BE(buffer, file_height);
+   AddUint32BE(buffer, file_depth);
    AddUint32BE(buffer, file_colors);
-   AddUint32BE(buffer, 0); // palette indices
 
    // image data
    AddUint32BE(buffer, imageData.size());
