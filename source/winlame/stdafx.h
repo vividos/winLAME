@@ -47,8 +47,8 @@
 #include "IoCContainer.hpp"
 #include "Path.hpp"
 #include "ModuleManager.hpp"
-#include "encoder\ModuleInterface.hpp"
-#include "ui\WizardPage.hpp"
-#include "ui\WizardPageHost.hpp"
+#include "encoder/ModuleInterface.hpp"
+#include "ui/WizardPage.hpp"
+#include "ui/WizardPageHost.hpp"
 
 #pragma warning(disable: 4100) // unreferenced formal parameter

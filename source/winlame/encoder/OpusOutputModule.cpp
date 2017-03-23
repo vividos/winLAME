@@ -56,7 +56,7 @@
 #include "resource.h"
 #include "OpusOutputModule.hpp"
 #include "UTF8.hpp"
-#include "..\App.hpp"
+#include "App.hpp"
 #include <WinCrypt.h>
 extern "C"
 {
