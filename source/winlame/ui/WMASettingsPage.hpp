@@ -41,13 +41,13 @@ class WMASettingsPage:
 {
 public:
    /// ctor
-   WMASettingsPage(WizardPageHost& pageHost) throw()
+   WMASettingsPage(WizardPageHost& pageHost)
       :WizardPage(pageHost, IDD_PAGE_WMA_SETTINGS, WizardPage::typeCancelBackNext),
       m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
    {
    }
    /// dtor
-   ~WMASettingsPage() throw()
+   ~WMASettingsPage()
    {
    }
 

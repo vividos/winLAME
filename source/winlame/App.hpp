@@ -52,16 +52,16 @@ public:
    static void ShowCrashErrorDialog(LPCTSTR crashDumpFilename);
 
    /// returns if help file is available
-   bool IsHelpAvailable() const throw() { return m_helpAvailable; }
+   bool IsHelpAvailable() const { return m_helpAvailable; }
 
    /// returns help filename
    CString HelpFilename() const { return m_helpFilename; }
 
    /// indicates if command line was already read by main dialog
-   bool AlreadyReadCommandLine() const throw() { return m_alreadyReadCommandLine; }
+   bool AlreadyReadCommandLine() const { return m_alreadyReadCommandLine; }
 
    /// sets flag that command line was already read by MainDlg or MainFrame
-   void SetAlreadyReadCommandLine() throw() { m_alreadyReadCommandLine = true; }
+   void SetAlreadyReadCommandLine() { m_alreadyReadCommandLine = true; }
 
    /// runs application
    int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT);

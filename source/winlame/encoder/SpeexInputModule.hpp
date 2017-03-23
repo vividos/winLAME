@@ -37,7 +37,7 @@ namespace Encoder
       /// ctor
       SpeexInputModule();
       /// dtor
-      virtual ~SpeexInputModule() throw() {}
+      virtual ~SpeexInputModule() {}
 
       /// clones input module
       virtual InputModule* CloneModule() override;

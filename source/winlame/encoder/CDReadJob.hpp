@@ -40,22 +40,22 @@ namespace Encoder
       // getter
 
       /// returns output filename
-      const CString& OutputFilename() const throw() { return m_outputFilename; }
+      const CString& OutputFilename() const { return m_outputFilename; }
 
       /// returns disc info
-      const CDRipDiscInfo& DiscInfo() const throw() { return m_discInfo; }
+      const CDRipDiscInfo& DiscInfo() const { return m_discInfo; }
 
       /// returns track info
-      const CDRipTrackInfo& TrackInfo() const throw() { return m_trackInfo; }
+      const CDRipTrackInfo& TrackInfo() const { return m_trackInfo; }
 
       /// returns track info; non-const version
-      CDRipTrackInfo& TrackInfo()       throw() { return m_trackInfo; }
+      CDRipTrackInfo& TrackInfo() { return m_trackInfo; }
 
       /// returns title
-      const CString& Title() const throw() { return m_title; }
+      const CString& Title() const { return m_title; }
 
       /// return front cover art image
-      const std::vector<unsigned char>& FrontCoverArtImage() const throw()
+      const std::vector<unsigned char>& FrontCoverArtImage() const
       {
          return m_covertArtImageData;
       }

@@ -31,7 +31,7 @@ namespace Encoder
    {
    public:
       /// dtor
-      virtual ~ModuleManager() throw() {}
+      virtual ~ModuleManager() {}
 
       // info functions
 

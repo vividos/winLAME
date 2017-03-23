@@ -40,7 +40,7 @@ public:
    /// ctor
    WizardPageHost();
    /// dtor
-   ~WizardPageHost() throw() {}
+   ~WizardPageHost() {}
 
    /// sets wizard page
    void SetWizardPage(std::shared_ptr<WizardPage> spCurrentPage);

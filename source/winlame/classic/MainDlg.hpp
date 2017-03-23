@@ -53,7 +53,7 @@ namespace ClassicUI
       void SwitchToModernMode();
 
       /// returns if the dialog has been closed to change the app mode to modern mode
-      bool IsAppModeChanged() const throw() { return m_isAppModeChanged; }
+      bool IsAppModeChanged() const { return m_isAppModeChanged; }
 
       // resize map
       BEGIN_DLGRESIZE_MAP(MainDlg)

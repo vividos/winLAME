@@ -68,7 +68,7 @@ OggVorbisOutputModule::OggVorbisOutputModule()
    memset(&m_vb, 0, sizeof(m_vb));
 }
 
-OggVorbisOutputModule::~OggVorbisOutputModule() throw()
+OggVorbisOutputModule::~OggVorbisOutputModule()
 {
 }
 

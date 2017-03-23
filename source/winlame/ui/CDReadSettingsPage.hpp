@@ -42,13 +42,13 @@ class CDReadSettingsPage:
 {
 public:
    /// ctor
-   CDReadSettingsPage(WizardPageHost& pageHost, UISettings& settings) throw()
+   CDReadSettingsPage(WizardPageHost& pageHost, UISettings& settings)
       :WizardPage(pageHost, IDD_SETTINGS_CDREAD, WizardPage::typeCancelOk),
        m_settings(settings)
    {
    }
    /// dtor
-   ~CDReadSettingsPage() throw()
+   ~CDReadSettingsPage()
    {
    }
 

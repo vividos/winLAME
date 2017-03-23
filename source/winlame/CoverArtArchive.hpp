@@ -58,7 +58,7 @@ public:
    /// ctor; specifies user agent
    CoverArtArchive(const std::string& userAgent);
    /// dtor
-   ~CoverArtArchive() throw();
+   ~CoverArtArchive();
 
    /// sends a request
    std::vector<CoverArtResult> Request(const std::string& musicBrainzDiscId, bool onlyLoadFirst);

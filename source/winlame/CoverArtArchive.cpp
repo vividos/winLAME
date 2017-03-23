@@ -29,7 +29,7 @@ CoverArtArchive::CoverArtArchive(const std::string& userAgent)
 {
 }
 
-CoverArtArchive::~CoverArtArchive() throw()
+CoverArtArchive::~CoverArtArchive()
 {
 }
 

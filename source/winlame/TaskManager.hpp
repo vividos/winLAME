@@ -62,7 +62,7 @@ public:
    void CheckRunnableTasks();
 
    /// returns if task queue is empty
-   bool IsQueueEmpty() const throw();
+   bool IsQueueEmpty() const;
 
    /// returns if there are running tasks
    bool AreRunningTasksAvail() const;

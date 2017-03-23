@@ -46,14 +46,14 @@ class InputCDPage:
 {
 public:
    /// ctor
-   InputCDPage(WizardPageHost& pageHost) throw();
+   InputCDPage(WizardPageHost& pageHost);
    /// dtor
-   ~InputCDPage() throw()
+   ~InputCDPage()
    {
    }
 
    /// returns if CD extraction is avail
-   static bool IsCDExtractionAvail() throw();
+   static bool IsCDExtractionAvail();
 
 private:
    friend CDialogResize<InputCDPage>;

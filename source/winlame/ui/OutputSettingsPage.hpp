@@ -40,9 +40,9 @@ class OutputSettingsPage:
 {
 public:
    /// ctor
-   OutputSettingsPage(WizardPageHost& pageHost) throw();
+   OutputSettingsPage(WizardPageHost& pageHost);
    /// dtor
-   ~OutputSettingsPage() throw()
+   ~OutputSettingsPage()
    {
    }
 

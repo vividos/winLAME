@@ -38,7 +38,7 @@
 
 using namespace UI;
 
-OutputSettingsPage::OutputSettingsPage(WizardPageHost& pageHost) throw()
+OutputSettingsPage::OutputSettingsPage(WizardPageHost& pageHost)
 :WizardPage(pageHost, IDD_PAGE_OUTPUT_SETTINGS, WizardPage::typeCancelBackNext),
 m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
 {

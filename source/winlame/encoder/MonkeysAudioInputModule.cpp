@@ -231,7 +231,7 @@ MonkeysAudioInputModule::MonkeysAudioInputModule()
 {
 }
 
-MonkeysAudioInputModule::~MonkeysAudioInputModule() throw()
+MonkeysAudioInputModule::~MonkeysAudioInputModule()
 {
 }
 

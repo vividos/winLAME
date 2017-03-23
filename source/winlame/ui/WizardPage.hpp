@@ -40,22 +40,22 @@ public:
    };
 
    /// ctor
-   WizardPage(WizardPageHost& pageHost, UINT uiDialogId, T_enWizardPageType enWizardPageType) throw()
+   WizardPage(WizardPageHost& pageHost, UINT uiDialogId, T_enWizardPageType enWizardPageType)
       :m_pageHost(pageHost),
        IDD(uiDialogId),
        m_enWizardPageType(enWizardPageType)
    {
    }
    /// dtor
-   ~WizardPage() throw()
+   ~WizardPage()
    {
    }
 
    /// returns caption string id
-   UINT CaptionId() const throw() { return IDD; }
+   UINT CaptionId() const { return IDD; }
 
    /// returns wizard page type
-   T_enWizardPageType WizardPageType() const throw() { return m_enWizardPageType; }
+   T_enWizardPageType WizardPageType() const { return m_enWizardPageType; }
 
    friend HWND CDialogImpl<WizardPage>::Create(HWND, LPARAM);
 

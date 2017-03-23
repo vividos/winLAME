@@ -34,7 +34,7 @@ using namespace UI;
 CString InputFilesPage::m_cszFilterString;
 
 InputFilesPage::InputFilesPage(WizardPageHost& pageHost,
-   const std::vector<CString>& vecInputFiles) throw()
+   const std::vector<CString>& vecInputFiles)
 :WizardPage(pageHost, IDD_PAGE_INPUT_FILES, WizardPage::typeCancelNext),
 m_pageWidth(0),
 m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),

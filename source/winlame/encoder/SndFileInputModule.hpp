@@ -35,7 +35,7 @@ namespace Encoder
       /// ctor
       SndFileInputModule();
       /// dtor
-      virtual ~SndFileInputModule() throw() {}
+      virtual ~SndFileInputModule() {}
 
       /// clones input module
       virtual InputModule* CloneModule() override;

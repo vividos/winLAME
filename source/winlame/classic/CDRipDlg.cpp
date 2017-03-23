@@ -50,7 +50,7 @@ CDRipDlg::CDRipDlg(UISettings& uiSettings, ClassicUI::UIinterface& UIinterface)
 {
 }
 
-bool CDRipDlg::IsCDExtractionAvail() throw()
+bool CDRipDlg::IsCDExtractionAvail()
 {
    return DynamicLibrary(_T("basscd.dll")).IsLoaded();
 }

@@ -41,14 +41,14 @@ namespace UI
    public:
       /// ctor
       GeneralSettingsPage(WizardPageHost& pageHost,
-         UISettings& settings, LanguageResourceManager& langResourceManager) throw()
+         UISettings& settings, LanguageResourceManager& langResourceManager)
          :WizardPage(pageHost, IDD_SETTINGS_GENERAL, WizardPage::typeCancelOk),
          m_settings(settings),
          m_langResourceManager(langResourceManager)
       {
       }
       /// dtor
-      ~GeneralSettingsPage() throw()
+      ~GeneralSettingsPage()
       {
       }
 

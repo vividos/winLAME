@@ -28,7 +28,7 @@ public:
    // ctors
 
    /// default ctor
-   Path() throw()
+   Path()
    {
    }
 
@@ -41,9 +41,9 @@ public:
    // operators
 
    /// returns CString
-   operator const CString&() const throw() { return m_path; }
+   operator const CString&() const { return m_path; }
    /// returns raw string pointer
-   operator LPCTSTR() const throw() { return m_path; }
+   operator LPCTSTR() const { return m_path; }
 
    // getters
 
@@ -66,13 +66,13 @@ public:
    CString MakeRelativeTo(const CString& rootPath);
 
    /// returns if stored path is a relative path
-   bool IsRelative() const throw();
+   bool IsRelative() const;
 
    /// returns if path represents a file and if it exists
-   bool FileExists() const throw();
+   bool FileExists() const;
 
    /// returns if path represents a folder and if it exists
-   bool FolderExists() const throw();
+   bool FolderExists() const;
 
    // methods
 

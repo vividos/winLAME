@@ -40,13 +40,13 @@ class OpusSettingsPage:
 {
 public:
    /// ctor
-   OpusSettingsPage(WizardPageHost& pageHost) throw()
+   OpusSettingsPage(WizardPageHost& pageHost)
       :WizardPage(pageHost, IDD_PAGE_OPUS_SETTINGS, WizardPage::typeCancelBackNext),
       m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
    {
    }
    /// dtor
-   ~OpusSettingsPage() throw()
+   ~OpusSettingsPage()
    {
    }
 

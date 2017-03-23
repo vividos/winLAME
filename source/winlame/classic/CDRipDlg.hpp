@@ -44,7 +44,7 @@ namespace ClassicUI
       /// ctor
       CDRipDlg(UISettings& uiSettings, UIinterface& UIinterface);
 
-      static bool IsCDExtractionAvail() throw();
+      static bool IsCDExtractionAvail();
 
       /// dialog id
       enum { IDD = IDD_CDSELECT };

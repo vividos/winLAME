@@ -33,7 +33,7 @@ namespace Encoder
       // ctor
       CDReadoutModule();
       /// dtor
-      virtual ~CDReadoutModule() throw() {}
+      virtual ~CDReadoutModule() {}
 
       /// clones input module
       virtual InputModule* CloneModule() override;

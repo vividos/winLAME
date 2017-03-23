@@ -56,22 +56,22 @@ public:
    // get methods
 
    /// returns task id
-   unsigned int Id() const throw() { return m_uiId; }
+   unsigned int Id() const { return m_uiId; }
 
    /// returns name of file, track, etc. associated with the task
-   CString Name() const throw() { return m_cszName; }
+   CString Name() const { return m_cszName; }
 
    /// returns description of encoder task
-   CString Description() const throw() { return m_description; }
+   CString Description() const { return m_description; }
 
    /// returns status of task
-   TaskStatus Status() const throw() { return m_taskStatus; }
+   TaskStatus Status() const { return m_taskStatus; }
 
    /// returns type of task
-   TaskType Type() const throw() { return m_taskType; }
+   TaskType Type() const { return m_taskType; }
 
    /// returns progress in percent; [0; 100]
-   unsigned int Progress() const throw() { return m_progressInPercent; }
+   unsigned int Progress() const { return m_progressInPercent; }
 
    // set methods
 
@@ -82,10 +82,10 @@ public:
    void Description(const CString& description) { m_description = description; }
 
    /// sets status of task
-   void Status(TaskStatus taskStatus) throw() { m_taskStatus = taskStatus; }
+   void Status(TaskStatus taskStatus) { m_taskStatus = taskStatus; }
 
    /// sets progress in percent; [0; 100]
-   void Progress(unsigned int uiProgress) throw() { m_progressInPercent = uiProgress; }
+   void Progress(unsigned int uiProgress) { m_progressInPercent = uiProgress; }
 
 private:
    unsigned int m_uiId;       ///< task id

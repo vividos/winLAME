@@ -41,7 +41,7 @@ namespace Encoder
       /// ctor
       MonkeysAudioInputModule();
       /// dtor
-      virtual ~MonkeysAudioInputModule() throw();
+      virtual ~MonkeysAudioInputModule();
 
       /// clones input module
       virtual InputModule* CloneModule() override;

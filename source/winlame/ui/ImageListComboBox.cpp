@@ -28,13 +28,13 @@ using UI::ImageListComboBox;
 class BrushChanger
 {
 public:
-   BrushChanger(CDCHandle& dc, CBrush& br) throw()
+   BrushChanger(CDCHandle& dc, CBrush& br)
       :m_dc(dc),
        m_hOldBrush(dc.SelectBrush(br))
    {
    }
 
-   ~BrushChanger() throw()
+   ~BrushChanger()
    {
       m_dc.SelectBrush(m_hOldBrush);
    }
@@ -48,13 +48,13 @@ private:
 class PenChanger
 {
 public:
-   PenChanger(CDCHandle& dc, CPen& br) throw()
+   PenChanger(CDCHandle& dc, CPen& br)
       :m_dc(dc),
        m_hOldPen(dc.SelectPen(br))
    {
    }
 
-   ~PenChanger() throw()
+   ~PenChanger()
    {
       m_dc.SelectPen(m_hOldPen);
    }

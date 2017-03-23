@@ -129,7 +129,7 @@ namespace Encoder
       }
 
       /// returns if track info is empty
-      bool IsEmpty() const throw()
+      bool IsEmpty() const
       {
          return m_mapTextInfos.empty() &&
             m_mapNumberInfos.empty() &&

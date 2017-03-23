@@ -36,10 +36,10 @@ public:
    {
    }
    /// dtor
-   virtual ~Task() throw() {}
+   virtual ~Task() {}
 
    /// returns task id
-   unsigned int Id() const throw() { return m_id; }
+   unsigned int Id() const { return m_id; }
 
    /// returns current task info; must return immediately
    virtual TaskInfo GetTaskInfo() = 0;
@@ -54,7 +54,7 @@ protected:
    friend class TaskManager;
 
    /// sets task id
-   void Id(unsigned int id) throw() { m_id = id; }
+   void Id(unsigned int id) { m_id = id; }
 
    /// sets task error text
    void SetTaskError(UINT stringResourceId)
@@ -75,10 +75,10 @@ protected:
    }
 
    /// returns dependent task id
-   unsigned int DependentTaskId() const throw() { return m_dependentTaskId; }
+   unsigned int DependentTaskId() const { return m_dependentTaskId; }
 
    /// returns error text, if any
-   const CString& ErrorText() const throw() { return m_errorText; }
+   const CString& ErrorText() const { return m_errorText; }
 
 private:
    /// task id

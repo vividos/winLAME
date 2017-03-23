@@ -33,7 +33,7 @@ namespace Encoder
       /// ctor
       OpusInputModule();
       /// dtor
-      virtual ~OpusInputModule() throw() {}
+      virtual ~OpusInputModule() {}
 
       /// clones input module
       virtual InputModule* CloneModule() override;

@@ -54,12 +54,12 @@ struct id3_file {
   struct filetag *tags;
 };
 
-bool File::IsValid() const throw()
+bool File::IsValid() const
 {
    return m_spFile != NULL;
 }
 
-bool File::HasID3v1Tag() const throw()
+bool File::HasID3v1Tag() const
 {
    if (m_spFile == NULL)
       return false;
@@ -73,7 +73,7 @@ bool File::HasID3v1Tag() const throw()
    return false;
 }
 
-bool File::HasID3v2Tag() const throw()
+bool File::HasID3v2Tag() const
 {
    if (m_spFile == NULL)
       return false;

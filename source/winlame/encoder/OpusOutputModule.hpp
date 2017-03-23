@@ -39,7 +39,7 @@ namespace Encoder
       // ctor
       OpusOutputModule();
       // dtor
-      virtual ~OpusOutputModule() throw();
+      virtual ~OpusOutputModule();
 
       // returns the module name
       virtual CString GetModuleName() const override { return _T("Opus Encoder"); }

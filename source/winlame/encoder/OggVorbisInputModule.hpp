@@ -34,7 +34,7 @@ namespace Encoder
       /// ctor
       OggVorbisInputModule();
       /// dtor
-      virtual ~OggVorbisInputModule() throw();
+      virtual ~OggVorbisInputModule();
 
       /// clones input module
       virtual InputModule* CloneModule() override;

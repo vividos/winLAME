@@ -41,9 +41,9 @@ class LAMESettingsPage:
 {
 public:
    /// ctor
-   LAMESettingsPage(WizardPageHost& pageHost) throw();
+   LAMESettingsPage(WizardPageHost& pageHost);
    /// dtor
-   ~LAMESettingsPage() throw()
+   ~LAMESettingsPage()
    {
    }
 

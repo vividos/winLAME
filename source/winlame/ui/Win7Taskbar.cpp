@@ -54,7 +54,7 @@ void TaskbarProgressBar::SetPos(UINT currentPos, UINT maxPos)
    m_impl->m_taskBarList->SetProgressValue(m_impl->m_hwnd, currentPos, maxPos);
 }
 
-Taskbar::Taskbar(HWND hwnd) throw()
+Taskbar::Taskbar(HWND hwnd)
 :m_impl(new TaskbarImpl)
 {
    m_impl->m_hwnd = hwnd;
@@ -62,7 +62,7 @@ Taskbar::Taskbar(HWND hwnd) throw()
    ATLVERIFY(SUCCEEDED(hr));
 }
 
-bool Taskbar::IsAvailable() const throw()
+bool Taskbar::IsAvailable() const
 {
    return m_impl->m_taskBarList != nullptr;
 }

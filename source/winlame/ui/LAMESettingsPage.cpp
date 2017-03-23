@@ -43,7 +43,7 @@ static const int LameQualities[] =
 };
 
 
-LAMESettingsPage::LAMESettingsPage(WizardPageHost& pageHost) throw()
+LAMESettingsPage::LAMESettingsPage(WizardPageHost& pageHost)
 :WizardPage(pageHost, IDD_PAGE_LAME_SETTINGS, WizardPage::typeCancelBackNext),
 m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
 m_iRadioType(0)

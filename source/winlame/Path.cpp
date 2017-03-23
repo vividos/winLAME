@@ -99,13 +99,13 @@ CString Path::MakeRelativeTo(const CString& rootPath)
    return ret == FALSE ? _T("") : relativePath;
 }
 
-bool Path::IsRelative() const throw()
+bool Path::IsRelative() const
 {
    BOOL ret = ::PathIsRelative(m_path);
    return ret != FALSE;
 }
 
-bool Path::FileExists() const throw()
+bool Path::FileExists() const
 {
    DWORD ret = ::GetFileAttributes(m_path);
    if (ret == INVALID_FILE_ATTRIBUTES)
@@ -117,7 +117,7 @@ bool Path::FileExists() const throw()
    return true;
 }
 
-bool Path::FolderExists() const throw()
+bool Path::FolderExists() const
 {
    DWORD ret = ::GetFileAttributes(m_path);
    if (ret == INVALID_FILE_ATTRIBUTES)

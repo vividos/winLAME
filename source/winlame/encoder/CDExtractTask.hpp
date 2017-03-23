@@ -40,7 +40,7 @@ namespace Encoder
       /// ctor
       CDExtractTask(unsigned int dependentTaskId, const CDRipDiscInfo& discinfo, const CDRipTrackInfo& trackinfo);
       /// dtor
-      virtual ~CDExtractTask() throw() {}
+      virtual ~CDExtractTask() {}
 
       /// returns current task info; must return immediately
       virtual TaskInfo GetTaskInfo();

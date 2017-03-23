@@ -34,7 +34,7 @@ namespace Encoder
       /// ctor
       OggVorbisOutputModule();
       /// dtor
-      ~OggVorbisOutputModule() throw();
+      ~OggVorbisOutputModule();
 
       /// returns the module name
       virtual CString GetModuleName() const override { return _T("Ogg Vorbis Encoder"); }

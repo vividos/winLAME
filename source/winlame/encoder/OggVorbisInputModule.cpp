@@ -91,7 +91,7 @@ OggVorbisInputModule::OggVorbisInputModule()
    memset(&m_vf, 0, sizeof(m_vf));
 }
 
-OggVorbisInputModule::~OggVorbisInputModule() throw()
+OggVorbisInputModule::~OggVorbisInputModule()
 {
 }
 

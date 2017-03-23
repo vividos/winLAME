@@ -26,16 +26,16 @@
 class LanguageResourceInfo
 {
 public:
-   LanguageResourceInfo(LPCTSTR pszDllName, UINT uiLanguageId, LPCTSTR pszLanguageName) throw()
+   LanguageResourceInfo(LPCTSTR pszDllName, UINT uiLanguageId, LPCTSTR pszLanguageName)
       :m_cszDllName(pszDllName),
        m_uiLanguageId(uiLanguageId),
        m_cszLanguageName(pszLanguageName)
    {
    }
 
-   const CString& DllName() const throw() { return m_cszDllName; }
-   UINT LanguageId() const throw() { return m_uiLanguageId; }
-   const CString& LanguageName() const throw() { return m_cszLanguageName; }
+   const CString& DllName() const { return m_cszDllName; }
+   UINT LanguageId() const { return m_uiLanguageId; }
+   const CString& LanguageName() const { return m_cszLanguageName; }
 
 private:
    CString m_cszDllName;
@@ -48,16 +48,16 @@ class LanguageResourceManager
 {
 public:
    LanguageResourceManager(LPCTSTR pszLangDllSearchPattern, UINT uiLangNameId, UINT uiLangNameNativeId);
-   ~LanguageResourceManager() throw();
+   ~LanguageResourceManager();
 
-   const std::vector<LanguageResourceInfo>& LanguageResourceList() const  throw() { return m_vecLangResourceInfo; }
+   const std::vector<LanguageResourceInfo>& LanguageResourceList() const  { return m_vecLangResourceInfo; }
 
-   bool IsLangResourceAvail(UINT uiLanguageId) const throw();
+   bool IsLangResourceAvail(UINT uiLanguageId) const;
 
-   void LoadLangResource(UINT uiLanguageId) throw();
+   void LoadLangResource(UINT uiLanguageId);
 
 private:
-   void UnloadLangResource() throw();
+   void UnloadLangResource();
 
    void ScanResourceDlls(LPCTSTR pszLangDllSearchPattern);
 

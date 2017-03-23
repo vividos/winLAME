@@ -151,7 +151,7 @@ void TaskManager::CheckRunnableTasks()
    });
 }
 
-bool TaskManager::IsQueueEmpty() const throw()
+bool TaskManager::IsQueueEmpty() const
 {
    bool isEmpty = true;
 

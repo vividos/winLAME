@@ -28,7 +28,7 @@ namespace Encoder
    {
    public:
       /// dtor
-      virtual ~EncoderErrorHandler() throw() {}
+      virtual ~EncoderErrorHandler() {}
 
       /// action to perform when error is handled
       enum ErrorAction

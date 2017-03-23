@@ -40,13 +40,13 @@ class LibsndfileSettingsPage:
 {
 public:
    /// ctor
-   LibsndfileSettingsPage(WizardPageHost& pageHost) throw()
+   LibsndfileSettingsPage(WizardPageHost& pageHost)
       :WizardPage(pageHost, IDD_PAGE_LIBSNDFILE_SETTINGS, WizardPage::typeCancelBackNext),
       m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
    {
    }
    /// dtor
-   ~LibsndfileSettingsPage() throw()
+   ~LibsndfileSettingsPage()
    {
    }
 

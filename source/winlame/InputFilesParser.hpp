@@ -33,7 +33,7 @@ class InputFilesParser
 {
 public:
    /// ctor
-   InputFilesParser() throw()
+   InputFilesParser()
       :m_bRecursive(false)
    {
    }

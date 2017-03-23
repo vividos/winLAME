@@ -54,7 +54,7 @@ namespace Encoder
       /// ctor
       EncoderTask(unsigned int dependentTaskId, const EncoderTaskSettings& settings);
       /// dtor
-      virtual ~EncoderTask() throw() {}
+      virtual ~EncoderTask() {}
 
       /// returns current task info; must return immediately
       virtual TaskInfo GetTaskInfo();
@@ -66,7 +66,7 @@ namespace Encoder
       virtual void Stop();
 
       /// output filename for this task
-      const CString& OutputFilename() const throw() { return EncoderImpl::m_encoderSettings.m_outputFilename; }
+      const CString& OutputFilename() const { return EncoderImpl::m_encoderSettings.m_outputFilename; }
 
       /// generates output filename for this task
       CString GenerateOutputFilename(const CString& inputFilename);

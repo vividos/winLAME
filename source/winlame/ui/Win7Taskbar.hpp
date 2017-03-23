@@ -73,13 +73,13 @@ class Taskbar
 {
 public:
    /// accesses task bar; uses task bar icon associated with given window
-   Taskbar(HWND hwnd) throw();
+   Taskbar(HWND hwnd);
 
    /// returns if task bar is available (Windows 7 and higher)
-   bool IsAvailable() const throw();
+   bool IsAvailable() const;
 
    /// dtor
-   ~Taskbar() throw()
+   ~Taskbar()
    {
    }
 

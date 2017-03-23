@@ -41,13 +41,13 @@ class OggVorbisSettingsPage:
 {
 public:
    /// ctor
-   OggVorbisSettingsPage(WizardPageHost& pageHost) throw()
+   OggVorbisSettingsPage(WizardPageHost& pageHost)
       :WizardPage(pageHost, IDD_PAGE_OGGVORBIS_SETTINGS, WizardPage::typeCancelBackNext),
       m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
    {
    }
    /// dtor
-   ~OggVorbisSettingsPage() throw()
+   ~OggVorbisSettingsPage()
    {
    }
 

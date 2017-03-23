@@ -26,7 +26,7 @@
 struct TaskManagerConfig
 {
    /// ctor
-   TaskManagerConfig() throw()
+   TaskManagerConfig()
       :m_bAutoTasksPerCpu(true),
        m_uiUseNumTasks(2)
    {

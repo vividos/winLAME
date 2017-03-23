@@ -49,7 +49,7 @@ class MainFrame :
 
 public:
    /// ctor
-   MainFrame(TaskManager& taskManager) throw()
+   MainFrame(TaskManager& taskManager)
       :m_taskManager(taskManager),
        m_tasksView(taskManager),
        m_isAppModeChanged(false),
@@ -58,7 +58,7 @@ public:
    }
 
    /// returns if the dialog has been closed to change the app mode to classic mode
-   bool IsAppModeChanged() const throw() { return m_isAppModeChanged; }
+   bool IsAppModeChanged() const { return m_isAppModeChanged; }
 
    DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME)
 

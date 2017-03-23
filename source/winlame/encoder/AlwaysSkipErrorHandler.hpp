@@ -46,7 +46,7 @@ namespace Encoder
       };
 
       /// dtor
-      virtual ~AlwaysSkipErrorHandler() throw() {}
+      virtual ~AlwaysSkipErrorHandler() {}
 
       /// error handler function
       virtual ErrorAction HandleError(LPCTSTR inputFilename,
@@ -64,7 +64,7 @@ namespace Encoder
       }
 
       /// returns list of all errors
-      const std::vector<ErrorInfo>& AllErrors() const throw() { return m_allErrorsList; }
+      const std::vector<ErrorInfo>& AllErrors() const { return m_allErrorsList; }
 
    private:
       /// list of all errors

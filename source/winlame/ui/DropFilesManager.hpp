@@ -37,7 +37,7 @@ namespace UI
       }
 
       /// returns filenames of dropped files
-      const std::vector<CString>& Filenames() const throw() { return m_vecFilenames; }
+      const std::vector<CString>& Filenames() const { return m_vecFilenames; }
 
    private:
       /// reads all filenames

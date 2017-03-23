@@ -43,7 +43,7 @@ namespace Encoder
       /// ctor
       LameOutputModule();
       /// dtor
-      virtual ~LameOutputModule() throw();
+      virtual ~LameOutputModule();
 
       /// returns the module name
       virtual CString GetModuleName() const override { return _T("LAME mp3 Encoder"); }

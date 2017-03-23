@@ -26,19 +26,19 @@ class DynamicLibrary
 {
 public:
    /// ctor; loads module
-   DynamicLibrary(LPCTSTR moduleFilename) throw()
+   DynamicLibrary(LPCTSTR moduleFilename)
       :m_module(LoadLibrary(moduleFilename))
    {
    }
 
    /// dtor; frees module again
-   ~DynamicLibrary() throw()
+   ~DynamicLibrary()
    {
       FreeLibrary(m_module);
    }
 
    /// checks if library is loaded
-   bool IsLoaded() const throw() { return m_module != nullptr; }
+   bool IsLoaded() const { return m_module != nullptr; }
 
    /// checks if function with given name is available
    bool IsFunctionAvail(LPCSTR functionName)

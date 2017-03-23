@@ -50,7 +50,7 @@ namespace Encoder
    {
    public:
       /// ctor
-      explicit EncoderJob(const CString& inputFilename) throw()
+      explicit EncoderJob(const CString& inputFilename)
          :m_inputFilename(inputFilename)
       {
       }
@@ -58,16 +58,16 @@ namespace Encoder
       // getter
 
       /// returns input filename
-      CString InputFilename() const throw() { return m_inputFilename; }
+      CString InputFilename() const { return m_inputFilename; }
 
       /// returns output filename
-      CString OutputFilename() const throw() { return m_outputFilename; }
+      CString OutputFilename() const { return m_outputFilename; }
 
       /// returns track info; const version
-      const TrackInfo& GetTrackInfo() const throw() { return m_trackInfo; }
+      const TrackInfo& GetTrackInfo() const { return m_trackInfo; }
 
       /// returns track info
-      TrackInfo& GetTrackInfo() throw() { return m_trackInfo; }
+      TrackInfo& GetTrackInfo() { return m_trackInfo; }
 
       // setter
 

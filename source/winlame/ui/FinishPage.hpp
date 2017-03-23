@@ -47,9 +47,9 @@ class FinishPage:
 {
 public:
    /// ctor
-   FinishPage(WizardPageHost& pageHost) throw();
+   FinishPage(WizardPageHost& pageHost);
    /// dtor
-   ~FinishPage() throw()
+   ~FinishPage()
    {
    }
 

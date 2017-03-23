@@ -42,7 +42,7 @@ using namespace UI;
 
 const DWORD INVALID_DRIVE_ID = 0xffffffff;
 
-InputCDPage::InputCDPage(WizardPageHost& pageHost) throw()
+InputCDPage::InputCDPage(WizardPageHost& pageHost)
    :WizardPage(pageHost, IDD_PAGE_INPUT_CD, WizardPage::typeCancelNext),
    m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
    m_pageWidth(0),
@@ -52,7 +52,7 @@ InputCDPage::InputCDPage(WizardPageHost& pageHost) throw()
 {
 }
 
-bool InputCDPage::IsCDExtractionAvail() throw()
+bool InputCDPage::IsCDExtractionAvail()
 {
    return DynamicLibrary(_T("basscd.dll")).IsLoaded();
 }

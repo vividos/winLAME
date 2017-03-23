@@ -47,7 +47,7 @@ static void MoveUpWindow(CWindow& window, int deltaY, bool scaleUp)
    window.MoveWindow(rect);
 }
 
-FinishPage::FinishPage(WizardPageHost& pageHost) throw()
+FinishPage::FinishPage(WizardPageHost& pageHost)
    :WizardPage(pageHost, IDD_PAGE_FINISH, WizardPage::typeCancelBackFinish),
    m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
 {

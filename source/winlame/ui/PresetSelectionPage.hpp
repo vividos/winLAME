@@ -41,14 +41,14 @@ class PresetSelectionPage:
 {
 public:
    /// ctor
-   PresetSelectionPage(WizardPageHost& pageHost) throw()
+   PresetSelectionPage(WizardPageHost& pageHost)
       :WizardPage(pageHost, IDD_PAGE_PRESET_SELECTION, WizardPage::typeCancelBackNext),
       m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
       m_presetManager(IoCContainer::Current().Resolve<PresetManagerInterface>())
    {
    }
    /// dtor
-   ~PresetSelectionPage() throw()
+   ~PresetSelectionPage()
    {
    }
 

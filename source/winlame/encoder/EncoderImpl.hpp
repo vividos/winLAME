@@ -41,7 +41,7 @@ namespace Encoder
       EncoderImpl();
 
       /// dtor
-      virtual ~EncoderImpl() throw();
+      virtual ~EncoderImpl();
 
       /// sets encoder settings
       virtual void SetEncoderSettings(const EncoderSettings& encoderSettings) override

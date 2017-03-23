@@ -38,13 +38,13 @@ public:
    ~File(){}
 
    /// returns if file is valid
-   bool IsValid() const throw();
+   bool IsValid() const;
 
    /// returns if a ID3v1 tag is present
-   bool HasID3v1Tag() const throw();
+   bool HasID3v1Tag() const;
 
    /// returns if a ID3v2 tag is present
-   bool HasID3v2Tag() const throw();
+   bool HasID3v2Tag() const;
 
    /// returns primary tag, ID3v2 when present, else ID3v1
    Tag GetTag();

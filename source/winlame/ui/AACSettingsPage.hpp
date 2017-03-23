@@ -41,13 +41,13 @@ class AACSettingsPage:
 {
 public:
    /// ctor
-   AACSettingsPage(WizardPageHost& pageHost) throw()
+   AACSettingsPage(WizardPageHost& pageHost)
       :WizardPage(pageHost, IDD_PAGE_AAC_SETTINGS, WizardPage::typeCancelBackNext),
       m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
    {
    }
    /// dtor
-   ~AACSettingsPage() throw()
+   ~AACSettingsPage()
    {
    }
 

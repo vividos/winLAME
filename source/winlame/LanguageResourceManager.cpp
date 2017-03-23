@@ -44,12 +44,12 @@ LanguageResourceManager::LanguageResourceManager(LPCTSTR pszLangDllSearchPattern
    ScanResourceDlls(pszLangDllSearchPattern);
 }
 
-LanguageResourceManager::~LanguageResourceManager() throw()
+LanguageResourceManager::~LanguageResourceManager()
 {
    UnloadLangResource();
 }
 
-bool LanguageResourceManager::IsLangResourceAvail(UINT uiLanguageId) const throw()
+bool LanguageResourceManager::IsLangResourceAvail(UINT uiLanguageId) const
 {
    for (size_t i=0,iMax=m_vecLangResourceInfo.size(); i<iMax; i++)
    {
@@ -59,7 +59,7 @@ bool LanguageResourceManager::IsLangResourceAvail(UINT uiLanguageId) const throw
    return false;
 }
 
-void LanguageResourceManager::LoadLangResource(UINT uiLanguageId) throw()
+void LanguageResourceManager::LoadLangResource(UINT uiLanguageId)
 {
    ATLASSERT(IsLangResourceAvail(uiLanguageId));
 
@@ -91,7 +91,7 @@ void LanguageResourceManager::LoadLangResource(UINT uiLanguageId) throw()
    }
 }
 
-void LanguageResourceManager::UnloadLangResource() throw()
+void LanguageResourceManager::UnloadLangResource()
 {
    if (m_hLoadedResourceDll != NULL)
    {

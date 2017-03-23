@@ -51,7 +51,7 @@ LameOutputModule::LameOutputModule()
    m_moduleId = ID_OM_LAME;
 }
 
-LameOutputModule::~LameOutputModule() throw()
+LameOutputModule::~LameOutputModule()
 {
 }
 

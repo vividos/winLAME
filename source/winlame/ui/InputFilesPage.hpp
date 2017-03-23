@@ -46,9 +46,9 @@ class InputFilesPage:
 public:
    /// ctor
    InputFilesPage(WizardPageHost& pageHost,
-      const std::vector<CString>& vecInputFiles) throw();
+      const std::vector<CString>& vecInputFiles);
    /// dtor
-   ~InputFilesPage() throw()
+   ~InputFilesPage()
    {
    }
 

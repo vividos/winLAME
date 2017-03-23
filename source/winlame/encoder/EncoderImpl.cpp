@@ -50,7 +50,7 @@ EncoderImpl::EncoderImpl()
 {
 }
 
-EncoderImpl::~EncoderImpl() throw()
+EncoderImpl::~EncoderImpl()
 {
    if (m_workerThread != nullptr)
    {
