@@ -6,4 +6,4 @@
 //
 
 noExplicitConstructor:*
-invalidFunctionArg:source\winlame\encoder\SndFileInputModule.cpp
+invalidFunctionArg:..\winlame\encoder\SndFileInputModule.cpp
