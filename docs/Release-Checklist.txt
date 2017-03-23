@@ -3,14 +3,26 @@ Release checklist
 
 Here's a checklist of what to do before each release:
 
-- Update version number in winlame.rc, winlame.????.rc, config.wxi, doxygen.cfg, source\portable\App\AppInfo\appinfo.ini
-- Update copyright year in about.html, about.????.html, docs\License.winLAME.rtf
+- Update version number in the following files:
+  * winlame.rc
+  * winlame.????.rc
+  * config.wxi
+  * doxygen.cfg,
+  * source\portable\App\AppInfo\appinfo.ini
+  * AppVeyor Settings
+  * SonarQube build script
+- Update copyright year in the following files:
+  * about.html
+  * about.????.html
+  * docs\License.winLAME.rtf,
+  * htmlhelp index page
 - Check all external libraries for updates and update them
 - Check external tools for updates and update them (doxygen, cppcheck)
 - Build all projects in Win32 | Release
 - Fix cppcheck errors and doxygen warnings
 - Compile all project with /analyze and fix all warnings
 - Use Coverity to find even more warnings and fix them
+- Use SonarQube to find even more warnings and fix them
 - Test built .msi setup if it installs properly
 - Do a short smoke test, encoding all test files
 - Test portable zip archive by extracting and starting winLAME
