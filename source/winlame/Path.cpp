@@ -164,3 +164,22 @@ CString Path::TempFolder()
 
    return tempFolder;
 }
+
+bool Path::CreateDirectoryRecursive(LPCTSTR directoryName)
+{
+   CString parentDirectory = directoryName;
+
+   if (parentDirectory.IsEmpty())
+      return false;
+
+   parentDirectory.TrimRight(Path::SeparatorCh);
+   parentDirectory = Path(parentDirectory).FolderName();
+
+   if (parentDirectory == directoryName)
+      return false;
+
+   if (!Path(parentDirectory).FolderExists())
+      CreateDirectoryRecursive(parentDirectory);
+
+   return ::CreateDirectory(directoryName, nullptr) != FALSE;
+}

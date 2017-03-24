@@ -101,6 +101,9 @@ public:
    /// returns the temp folder
    static CString TempFolder();
 
+   /// creates a directory, possibly also creating non-existent parent directories
+   static bool CreateDirectoryRecursive(LPCTSTR directoryName);
+
    // public members
 
    /// path separator string
