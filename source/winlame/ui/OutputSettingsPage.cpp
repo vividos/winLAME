@@ -196,7 +196,7 @@ bool OutputSettingsPage::SaveData(bool bSilent)
             return false;
 
          // create the output directory
-         if (::_tmkdir(m_uiSettings.m_defaultSettings.outputdir) != 0)
+         if (!Path::CreateDirectoryRecursive(m_uiSettings.m_defaultSettings.outputdir))
          {
             AppMessageBox(m_hWnd, IDS_OUT_CREATE_FAILED, MB_OK | MB_ICONEXCLAMATION);
             return false;

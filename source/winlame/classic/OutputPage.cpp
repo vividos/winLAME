@@ -292,7 +292,7 @@ bool OutputPage::OnLeavePage()
             return false;
 
          // create the output directory
-         if (::_tmkdir(settings.m_defaultSettings.outputdir) != 0)
+         if (!Path::CreateDirectoryRecursive(settings.m_defaultSettings.outputdir))
          {
             AppMessageBox(m_hWnd, IDS_OUT_CREATE_FAILED, MB_OK | MB_ICONEXCLAMATION);
             return false;
