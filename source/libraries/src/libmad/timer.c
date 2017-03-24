@@ -1,6 +1,7 @@
 /*
  * libmad - MPEG audio decoder library
  * Copyright (C) 2000-2004 Underbit Technologies, Inc.
+ * Copyright (C) 2017 Michael Fink
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -343,7 +344,7 @@ unsigned long mad_timer_fraction(mad_timer_t timer, unsigned long denom)
  * DESCRIPTION:	write a string representation of a timer using a template
  */
 void mad_timer_string(mad_timer_t timer,
-		      char *dest, char const *format, enum mad_units units,
+		      char *dest, size_t destSize, char const *format, enum mad_units units,
 		      enum mad_units fracunits, unsigned long subparts)
 {
   unsigned long hours, minutes, seconds, sub;
@@ -423,7 +424,7 @@ void mad_timer_string(mad_timer_t timer,
     minutes = seconds / 60;
     hours   = minutes / 60;
 
-    sprintf(dest, format,
+    snprintf(dest, destSize, format,
 	    hours,
 	    (unsigned int) (minutes % 60),
 	    (unsigned int) (seconds % 60),
@@ -433,14 +434,14 @@ void mad_timer_string(mad_timer_t timer,
   case MAD_UNITS_MINUTES:
     minutes = seconds / 60;
 
-    sprintf(dest, format,
+    snprintf(dest, destSize, format,
 	    minutes,
 	    (unsigned int) (seconds % 60),
 	    frac, sub);
     break;
 
   case MAD_UNITS_SECONDS:
-    sprintf(dest, format,
+    snprintf(dest, destSize, format,
 	    seconds,
 	    frac, sub);
     break;
@@ -479,7 +480,7 @@ void mad_timer_string(mad_timer_t timer,
   case MAD_UNITS_50_FPS:
   case MAD_UNITS_60_FPS:
   case MAD_UNITS_75_FPS:
-    sprintf(dest, format, mad_timer_count(timer, units), sub);
+    snprintf(dest, destSize, format, mad_timer_count(timer, units), sub);
     break;
   }
 }
