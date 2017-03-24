@@ -120,14 +120,17 @@ void TasksView::Init()
 
 void TasksView::UpdateTasks()
 {
+   int topIndex = GetTopIndex();
+
    std::set<int> selectedTaskIds;
-
-   int selectedItemIndex = GetNextItem(-1, LVNI_SELECTED);
-   while (selectedItemIndex != -1)
    {
-      selectedTaskIds.insert(static_cast<int>(GetItemData(selectedItemIndex)));
+      int selectedItemIndex = GetNextItem(-1, LVNI_SELECTED);
+      while (selectedItemIndex != -1)
+      {
+         selectedTaskIds.insert(static_cast<int>(GetItemData(selectedItemIndex)));
 
-      selectedItemIndex = GetNextItem(selectedItemIndex, LVNI_SELECTED);
+         selectedItemIndex = GetNextItem(selectedItemIndex, LVNI_SELECTED);
+      }
    }
 
    std::set<int> itemIndicesToSelect;
@@ -171,6 +174,13 @@ void TasksView::UpdateTasks()
    {
       int itemIndex = *iter;
       SetItemState(itemIndex, LVIS_SELECTED, LVIS_SELECTED);
+   }
+
+   if (topIndex > 0 && topIndex < GetItemCount())
+   {
+      // first scroll to the end, then back up to the previous top index
+      EnsureVisible(GetItemCount()-1, false);
+      EnsureVisible(topIndex, false);
    }
 }
 
