@@ -95,7 +95,7 @@ void mad_timer_multiply(mad_timer_t *, signed long);
 
 signed long mad_timer_count(mad_timer_t, enum mad_units);
 unsigned long mad_timer_fraction(mad_timer_t, unsigned long);
-void mad_timer_string(mad_timer_t, char * dest, size_t destSize, char const *,
+void mad_timer_string(mad_timer_t, char *, unsigned int, char const *,
 		      enum mad_units, enum mad_units, unsigned long);
 
 # endif

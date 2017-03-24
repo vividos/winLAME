@@ -344,7 +344,7 @@ unsigned long mad_timer_fraction(mad_timer_t timer, unsigned long denom)
  * DESCRIPTION:	write a string representation of a timer using a template
  */
 void mad_timer_string(mad_timer_t timer,
-		      char *dest, size_t destSize, char const *format, enum mad_units units,
+		      char *dest, unsigned int destSize, char const *format, enum mad_units units,
 		      enum mad_units fracunits, unsigned long subparts)
 {
   unsigned long hours, minutes, seconds, sub;
