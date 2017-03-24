@@ -127,7 +127,7 @@ LRESULT InputCDPage::OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
    return 0;
 }
 
-LRESULT InputCDPage::OnDriveSelEndOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)//(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
+LRESULT InputCDPage::OnDriveSelEndOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    RefreshCDList();
    return 0;

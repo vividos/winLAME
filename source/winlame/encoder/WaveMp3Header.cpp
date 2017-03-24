@@ -24,69 +24,65 @@
 #include <mmreg.h>
 #include <fstream>
 
-/*! \verbatim from mmreg.h:
-//
-// MPEG Layer3 WAVEFORMATEX structure
-// for WAVE_FORMAT_MPEGLAYER3 (0x0055)
-//
-#define MPEGLAYER3_WFX_EXTRA_BYTES   12
-
-// WAVE_FORMAT_MPEGLAYER3 format sructure
-//
-typedef struct mpeglayer3waveformat_tag {
-  WAVEFORMATEX  wfx;
-  WORD          wID;
-  DWORD         fdwFlags;
-  WORD          nBlockSize;
-  WORD          nFramesPerBlock;
-  WORD          nCodecDelay;
-} MPEGLAYER3WAVEFORMAT;
-
-#define MPEGLAYER3_ID_UNKNOWN            0
-#define MPEGLAYER3_ID_MPEG               1
-#define MPEGLAYER3_ID_CONSTANTFRAMESIZE  2
-
-#define MPEGLAYER3_FLAG_PADDING_ISO      0x00000000
-#define MPEGLAYER3_FLAG_PADDING_ON       0x00000001
-#define MPEGLAYER3_FLAG_PADDING_OFF      0x00000002
-
-typedef struct tWAVEFORMATEX
-{
-    WORD    wFormatTag;        // format type
-    WORD    nChannels;         // number of channels (i.e. mono, stereo...)
-    DWORD   nSamplesPerSec;    // sample rate
-    DWORD   nAvgBytesPerSec;   // for buffer estimation
-    WORD    nBlockAlign;       // block size of data
-    WORD    wBitsPerSample;    // Number of bits per sample of mono data
-    WORD    cbSize;            // The count in bytes of the size of
-                                    extra information (after cbSize)
-} WAVEFORMATEX;
-
-\endverbatim
-*/
-
-/*
-typical mp3 file, converted to wave by wavemp3.exe:
-
-RIFF type: WAVE, data 0x0071463d
-chunk fmt , data 0x0000001e
- format:
- type 0055 chan: 2
- nSamplesPerSec: 44100
- nAvgBytesPerSec: 20000 // bitrate / 8
- nBlockAlign: 1
- wBitsPerSample: 0
-
- nExtraBytes: 12
- wID: 1
- fdwFlags: 0x00000002
- nBlockSize: 0x020a   // bitrate * 144 / sample rate
- nFramesPerBlock: 1
- nCodecDelay: 0x0571
-chunk fact, data 0x00000004
-chunk data, data 0x007145f6
-chunk LIST, data 0x00000040
-*/
+/// \verbatim from mmreg.h:
+/// //
+/// // MPEG Layer3 WAVEFORMATEX structure
+/// // for WAVE_FORMAT_MPEGLAYER3 (0x0055)
+/// //
+/// #define MPEGLAYER3_WFX_EXTRA_BYTES   12
+///
+/// // WAVE_FORMAT_MPEGLAYER3 format sructure
+/// //
+/// typedef struct mpeglayer3waveformat_tag {
+///   WAVEFORMATEX  wfx;
+///   WORD          wID;
+///   DWORD         fdwFlags;
+///   WORD          nBlockSize;
+///   WORD          nFramesPerBlock;
+///   WORD          nCodecDelay;
+/// } MPEGLAYER3WAVEFORMAT;
+///
+/// #define MPEGLAYER3_ID_UNKNOWN            0
+/// #define MPEGLAYER3_ID_MPEG               1
+/// #define MPEGLAYER3_ID_CONSTANTFRAMESIZE  2
+///
+/// #define MPEGLAYER3_FLAG_PADDING_ISO      0x00000000
+/// #define MPEGLAYER3_FLAG_PADDING_ON       0x00000001
+/// #define MPEGLAYER3_FLAG_PADDING_OFF      0x00000002
+///
+/// typedef struct tWAVEFORMATEX
+/// {
+///     WORD    wFormatTag;        // format type
+///     WORD    nChannels;         // number of channels (i.e. mono, stereo...)
+///     DWORD   nSamplesPerSec;    // sample rate
+///     DWORD   nAvgBytesPerSec;   // for buffer estimation
+///     WORD    nBlockAlign;       // block size of data
+///     WORD    wBitsPerSample;    // Number of bits per sample of mono data
+///     WORD    cbSize;            // The count in bytes of the size of
+///                                     extra information (after cbSize)
+/// } WAVEFORMATEX;
+///
+/// \endverbatim
+/// typical mp3 file, converted to wave by wavemp3.exe:
+/// 
+/// RIFF type: WAVE, data 0x0071463d
+/// chunk fmt , data 0x0000001e
+///  format:
+///  type 0055 chan: 2
+///  nSamplesPerSec: 44100
+///  nAvgBytesPerSec: 20000 // bitrate / 8
+///  nBlockAlign: 1
+///  wBitsPerSample: 0
+/// 
+///  nExtraBytes: 12
+///  wID: 1
+///  fdwFlags: 0x00000002
+///  nBlockSize: 0x020a   // bitrate * 144 / sample rate
+///  nFramesPerBlock: 1
+///  nCodecDelay: 0x0571
+/// chunk fact, data 0x00000004
+/// chunk data, data 0x007145f6
+/// chunk LIST, data 0x00000040
 
 void Encoder::WriteWaveMp3Header(std::ofstream& outputFile, unsigned int numChannels,
    unsigned int samplerateInHz, unsigned int bitrateInBps, unsigned short codecDelay)

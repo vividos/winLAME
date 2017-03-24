@@ -621,7 +621,7 @@ int MadMpegInputModule::DecodeSamples(SampleContainer& samples)
          m_synth.pcm.samples[ch][i] = sample << (32 - MAD_F_FRACBITS - 1);
       }
 
-   /*
+#if 0
       // use linear dither
       for(int i=0; i<ret; i++)
       {
@@ -638,7 +638,7 @@ int MadMpegInputModule::DecodeSamples(SampleContainer& samples)
          mad_fixed_t sample = m_synth.pcm.samples[1][i];
          m_synth.pcm.samples[1][i] = audio_linear_dither(MadOutputBits,sample,&right_dither,&stats);
       }
-   */
+#endif
 
    // fill sample container
    mad_fixed_t* channel_array[2] = { m_synth.pcm.samples[0], m_synth.pcm.samples[1] };

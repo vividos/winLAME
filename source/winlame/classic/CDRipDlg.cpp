@@ -178,7 +178,7 @@ LRESULT CDRipDlg::OnExit(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandle
    return 0;
 }
 
-LRESULT CDRipDlg::OnDriveSelEndOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)//(int /*idCtrl*/, LPNMHDR /*pnmh*/, BOOL& /*bHandled*/)
+LRESULT CDRipDlg::OnDriveSelEndOk(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    RefreshCDList();
    return 0;
