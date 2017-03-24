@@ -91,7 +91,7 @@ namespace ClassicUI
 
       virtual bool ShouldRemovePage() const { return m_bFinishedAllTracks; }
 
-   protected:
+   private:
       /// thread procedure
       static DWORD CALLBACK ThreadProc(void* pData);
 
@@ -101,7 +101,7 @@ namespace ClassicUI
       /// extracts single track
       bool ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo, const CString& tempFilename);
 
-   protected:
+   private:
       /// bevel line
       BevelLine bevel1;
 

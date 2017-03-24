@@ -53,7 +53,7 @@ public:
       return reinterpret_cast<Signature>(GetProcAddress(m_module, functionName));
    }
 
-protected:
+private:
    /// dynamic library module handle
    HMODULE m_module;
 };

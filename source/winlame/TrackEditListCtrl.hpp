@@ -43,7 +43,7 @@ public:
       MESSAGE_HANDLER(WM_NCDESTROY, OnNcDestroy)
    END_MSG_MAP()
 
-protected:
+private:
    /// called to check if changes are accepted
    bool AcceptChanges()
    {
@@ -125,7 +125,7 @@ protected:
       return 0;
    }
 
-protected:
+private:
    bool m_bFinished; ///< indicates if finished editing
    int m_nItem;      ///< item row
    int m_nColumn;    ///< item column
@@ -137,7 +137,7 @@ class TrackEditListCtrl:
    public CCustomDraw<TrackEditListCtrl>
 {
 public:
-protected:
+private:
    // message map
 BEGIN_MSG_MAP(TrackEditListCtrl)
    MESSAGE_HANDLER(WM_LBUTTONDBLCLK, OnLeftButtonDblClick)

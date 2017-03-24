@@ -56,7 +56,7 @@ namespace UI
          return (int)(short)LOWORD(::SendMessage(m_hWnd, UDM_SETPOS, 0, MAKELPARAM(nPos, 0)));
       }
 
-   protected:
+   private:
       /// vector containing all possible values
       std::vector<int> m_vecValues;
    };

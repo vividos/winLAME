@@ -284,7 +284,7 @@ namespace ClassicUI
          return m_langResourceManager;
       }
 
-   protected:
+   private:
       /// app window icon
       HICON wndicon;
 
@@ -324,7 +324,7 @@ namespace ClassicUI
       /// indicates if the dialog has been closed to change the app mode to modern mode
       bool m_isAppModeChanged;
 
-   protected:
+   private:
       /// draws the caption bar
       void DrawCaptionBar(HDC &hDC, RECT &rc);
 

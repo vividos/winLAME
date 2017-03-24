@@ -78,7 +78,7 @@ namespace ClassicUI
       // called on leaving the page
       virtual bool OnLeavePage();
 
-   protected:
+   private:
       /// bevel lines
       BevelLine bevel1;
 

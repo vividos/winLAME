@@ -112,7 +112,7 @@ namespace ClassicUI
       // called on leaving the page
       virtual bool OnLeavePage();
 
-   protected:
+   private:
       /// plays the file
       void PlayFile(LPCTSTR filename);
 
@@ -141,7 +141,7 @@ namespace ClassicUI
       /// updates time count of audio files
       void UpdateTimeCount();
 
-   protected:
+   private:
       /// icon list for image buttons
       CImageList ilIcons;
 

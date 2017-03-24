@@ -67,7 +67,7 @@ namespace UI
       /// updates audio file infos about one file
       void UpdateAudioFileInfo(const AudioFileEntry& entry);
 
-   protected:
+   private:
       // message map
       BEGIN_MSG_MAP(InputListCtrl)
          MESSAGE_HANDLER(WM_DROPFILES, OnDropFiles)

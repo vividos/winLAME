@@ -169,7 +169,7 @@ namespace ClassicUI
       /// sets front cover art from loaded image
       void SetFrontCoverArt(const ATL::CImage& image);
 
-   protected:
+   private:
       /// drives combobox (hidden when only one drive is present)
       CComboBox m_cbDrives;
 

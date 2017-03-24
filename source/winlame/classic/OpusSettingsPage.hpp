@@ -86,7 +86,7 @@ namespace ClassicUI
       // called on leaving the page
       virtual bool OnLeavePage();
 
-   protected:
+   private:
       /// bitrate spin button control
       UI::FixedValueSpinButtonCtrl m_spinBitrate;
 

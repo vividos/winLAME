@@ -93,7 +93,7 @@ namespace ClassicUI
          return ::Shell_NotifyIcon(NIM_MODIFY, &nid) == TRUE;
       }
 
-   protected:
+   private:
       /// notify icon data
       NOTIFYICONDATA nid;
 

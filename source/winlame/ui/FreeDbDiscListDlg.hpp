@@ -58,7 +58,7 @@ namespace UI
       /// updates list
       void UpdateList();
 
-   protected:
+   private:
       /// search results to choose from
       const std::vector<FreedbInfo>& m_entriesList;
 

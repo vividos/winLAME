@@ -63,9 +63,10 @@ public:
 
    /// dtor
    virtual ~PresetManagerInterface(){}
+
 protected:
    /// ctor
-   PresetManagerInterface(){}
+   PresetManagerInterface() {}
 };
 
 

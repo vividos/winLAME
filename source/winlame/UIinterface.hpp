@@ -39,6 +39,8 @@ namespace ClassicUI
    public:
       /// ctor
       UIinterface() {}
+      /// dtor
+      virtual ~UIinterface() {}
 
       /// returns the currently displayed wizard page
       virtual int getCurrentWizardPage() = 0;

@@ -62,7 +62,7 @@ public:
       m_covertArtImageData = covertArtImageData;
    }
 
-protected:
+private:
    CDRipDiscInfo m_discInfo;
    std::vector<CDRipTrackInfo> m_vecTrackInfo;
 

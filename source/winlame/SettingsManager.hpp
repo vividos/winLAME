@@ -54,7 +54,7 @@ public:
    /// sets new variable value
    void setValue(unsigned short name, int val);
 
-protected:
+private:
    /// map with settings
    SettingsList settings;
 

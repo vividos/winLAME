@@ -35,12 +35,13 @@ const int LEFT_BORDER = 15;
 
 
 /// property manager interface
-
 class PropertyManagerInterface
 {
 public:
    /// ctor
-   PropertyManagerInterface(){}
+   PropertyManagerInterface() {}
+   /// dtor
+   virtual ~PropertyManagerInterface() {}
 
    /// returns number of groups
    virtual int GetGroupCount()=0;
@@ -60,7 +61,6 @@ public:
 
 
 /// property list box class
-
 class PropertyListBox: public CWindowImpl<PropertyListBox, CListBox>
 {
 public:
@@ -83,7 +83,7 @@ public:
    /// called when a group state changes
    void ExpandGroup(int nIndex);
 
-protected:
+private:
    // message map
 BEGIN_MSG_MAP(PropertyListBox)
    MESSAGE_HANDLER(OCM_DRAWITEM, OnDrawItem)
@@ -148,7 +148,7 @@ END_MSG_MAP()
       return 0;
    }
 
-protected:
+private:
    // drawing functions
 
    /// draws grid line around item
@@ -164,7 +164,7 @@ protected:
    /// called when a group state changes
    void ChangeGroupState(int nIndex);
 
-protected:
+private:
    /// property manager
    PropertyManagerInterface *propmanager;
 

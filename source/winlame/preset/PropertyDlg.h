@@ -94,7 +94,7 @@ END_MSG_MAP()
       return 0;
    }
 
-protected:
+private:
    /// the property listbox control
    PropertyListBox listbox;
 };

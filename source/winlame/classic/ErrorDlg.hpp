@@ -102,7 +102,7 @@ namespace ClassicUI
          return 0;
       }
 
-   protected:
+   private:
       /// currently processing filename
       LPCTSTR filename;
 

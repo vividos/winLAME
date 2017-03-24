@@ -115,7 +115,7 @@ namespace ClassicUI
       // called on leaving the page
       virtual bool OnLeavePage();
 
-   protected:
+   private:
       FixedValueSpinButtonCtrl bitrateNominalSpin;  ///< nominal bitrate spin button control
       FixedValueSpinButtonCtrl bitrateMinSpin;      ///< min bitrate spin button control
       FixedValueSpinButtonCtrl bitrateMaxSpin;      ///< max bitrate spin button control

@@ -55,7 +55,7 @@ public:
       ::HtmlHelp(m_parentHandle, m_chmFile, HH_DISPLAY_TOPIC, reinterpret_cast<DWORD>(topic));
    }
 
-protected:
+private:
    /// parent window
    HWND m_parentHandle;
 
