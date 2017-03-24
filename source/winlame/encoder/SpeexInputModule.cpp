@@ -113,9 +113,20 @@ int SpeexInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
       return -1;
    }
 
-   fseek(fd, 0, SEEK_END);
+   err = fseek(fd, 0, SEEK_END);
+   if (err != 0)
+   {
+      m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      return -1;
+   }
+
    m_fileSize = ftell(fd);
-   fseek(fd, 0, SEEK_SET);
+   err = fseek(fd, 0, SEEK_SET);
+   if (err != 0)
+   {
+      m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      return -1;
+   }
 
    m_inputStream.reset(new OggInputStream(fd, false));
 
@@ -150,7 +161,13 @@ int SpeexInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
       m_header->rate, m_header->nb_channels);
 
    // re-init file
-   fseek(fd, 0, SEEK_SET);
+   err = fseek(fd, 0, SEEK_SET);
+   if (err != 0)
+   {
+      m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      return -1;
+   }
+
    m_inputStream.reset(new OggInputStream(fd, true));
 
    m_packetCount = 0;
