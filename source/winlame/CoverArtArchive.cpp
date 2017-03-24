@@ -57,7 +57,7 @@ std::vector<CoverArtResult> CoverArtArchive::Request(const std::string& musicBra
    }
    catch (const std::exception& ex)
    {
-      ex;
+      unused(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
       return std::vector<CoverArtResult>();
    }
@@ -131,7 +131,7 @@ void CoverArtArchive::CollectReleaseIds(rapidxml::xml_document<char>& responseXm
    }
    catch (const std::exception& ex)
    {
-      ex;
+      unused(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 }
