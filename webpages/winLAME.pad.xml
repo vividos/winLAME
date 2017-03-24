@@ -1,12 +1,12 @@
 <?xml version="1.0" ?>
 <XML_DIZ_INFO>
 	<MASTER_PAD_VERSION_INFO>
-		<MASTER_PAD_VERSION>2.01</MASTER_PAD_VERSION>
-		<MASTER_PAD_EDITOR>PADGen 2.0.1.22 http://www.padgen.org</MASTER_PAD_EDITOR>
-		<MASTER_PAD_INFO>Portable Application Description, or PAD for short, is a data set that is used by shareware authors to disseminate information to anyone interested in their software products. To find out more go to http://www.asp-shareware.org/pad</MASTER_PAD_INFO>
+		<MASTER_PAD_VERSION>3.11</MASTER_PAD_VERSION>
+		<MASTER_PAD_EDITOR>PADGen 3.1.1.50 http://www.padgen.org</MASTER_PAD_EDITOR>
+		<MASTER_PAD_INFO>Portable Application Description, or PAD for short, is a data set that is used by shareware authors to disseminate information to anyone interested in their software products. To find out more go to http://pad.asp-software.org</MASTER_PAD_INFO>
 	</MASTER_PAD_VERSION_INFO>
 	<Company_Info>
-		<Company_Name />
+		<Company_Name>no company</Company_Name>
 		<Address_1 />
 		<Address_2 />
 		<City_Town />
@@ -34,34 +34,26 @@
 	</Company_Info>
 	<Program_Info>
 		<Program_Name>winLAME</Program_Name>
-		<Program_Version>2010 beta 2</Program_Version>
-		<Program_Release_Month>6</Program_Release_Month>
-		<Program_Release_Day>28</Program_Release_Day>
-		<Program_Release_Year>2010</Program_Release_Year>
+		<Program_Version>2017 beta 1</Program_Version>
+		<Program_Release_Month>03</Program_Release_Month>
+		<Program_Release_Day>24</Program_Release_Day>
+		<Program_Release_Year>2017</Program_Release_Year>
 		<Program_Cost_Dollars />
 		<Program_Cost_Other_Code />
 		<Program_Cost_Other />
 		<Program_Type>Freeware</Program_Type>
-		<Program_Release_Status>Installer fixed</Program_Release_Status>
+		<Program_Release_Status>Major Update</Program_Release_Status>
 		<Program_Install_Support>Install and Uninstall</Program_Install_Support>
-		<Program_OS_Support>Windows2000,WinXP,Windows2003,Windows2008,Windows7</Program_OS_Support>
+		<Program_OS_Support>Win7 x32,Win7 x64,WinVista,WinVista x64,WinXP</Program_OS_Support>
 		<Program_Language>English,German</Program_Language>
 		<Program_Change_Info />
-		<Program_Specific_Category />
+		<Program_Specific_Category>Audio</Program_Specific_Category>
 		<Program_Category_Class>Audio &amp; Multimedia::Audio Encoders/Decoders</Program_Category_Class>
-		<Program_Categories />
 		<Program_System_Requirements />
-		<Includes_JAVA_VM>N</Includes_JAVA_VM>
-		<Includes_VB_Runtime>N</Includes_VB_Runtime>
-		<Includes_DirectX>N</Includes_DirectX>
 		<File_Info>
-			<Filename_Versioned />
-			<Filename_Previous />
-			<Filename_Generic />
-			<Filename_Long />
 			<File_Size_Bytes>4.337.152</File_Size_Bytes>
-			<File_Size_K />
-			<File_Size_MB />
+			<File_Size_K>4235</File_Size_K>
+			<File_Size_MB>4.14</File_Size_MB>
 		</File_Info>
 		<Expire_Info>
 			<Has_Expire_Info>N</Has_Expire_Info>
@@ -75,27 +67,29 @@
 	</Program_Info>
 	<Program_Descriptions>
 		<English>
-			<Keywords>winLAME LAME mp3 encoding Ogg Vorbis </Keywords>
-			<Char_Desc_45 />
-			<Char_Desc_80 />
-			<Char_Desc_250>winLAME is an encoder for several audio formats, including mp3 (MPEG Layer 3), Ogg Vorbis and more. winLAME lets you set up the encoding process with an easy-to-use wizard-style user interface.</Char_Desc_250>
-			<Char_Desc_450>winLAME is an encoder for several audio formats, including mp3 (MPEG Layer 3), Ogg Vorbis and more. winLAME lets you set up the encoding process with an easy-to-use wizard-style user interface.
+			<Keywords>winLAME encoder audio format MP3  Opus Ogg Vorbis CD track ripping ID3 tag ID3v2 CoverArt Album Art</Keywords>
+			<Char_Desc_45>winLAME is an easy to use encoder for MP3</Char_Desc_45>
+			<Char_Desc_80>winLAME is an easy to use encoder for many audio formats, including MP3 and more</Char_Desc_80>
+			<Char_Desc_250>winLAME is an easy to use encoder for many audio formats, including MP3, Opus, Ogg Vorbis and more. winLAME lets you read in audio tracks from CDs or encode audio files from your hard drive.</Char_Desc_250>
+			<Char_Desc_450>winLAME is an easy to use encoder for many audio formats, including MP3, Opus, Ogg Vorbis and more.
 
-winLAME supports many input audio formats, and uses the LAME mp3 encoding library for encoding and the MAD decoding library for decoding.</Char_Desc_450>
-			<Char_Desc_2000 />
+winLAME lets you read in audio tracks from CDs or encode audio files from your hard drive. The intuitive wizard-style user interface makes it easy to set up encoding settings. Multicore CPUs are used to parallelize encoding tasks.</Char_Desc_450>
+			<Char_Desc_2000>winLAME is an easy to use encoder for many audio formats, including MP3, Opus, Ogg Vorbis and more.
+
+winLAME lets you read in audio tracks from CDs or encode audio files from your hard drive. The intuitive wizard-style user interface makes it easy to set up encoding settings. Multicore CPUs are used to parallelize encoding tasks.</Char_Desc_2000>
 		</English>
 	</Program_Descriptions>
 	<Web_Info>
 		<Application_URLs>
-			<Application_Info_URL>http://winlame.sourceforge.net/</Application_Info_URL>
+			<Application_Info_URL>https://winlame.sourceforge.io/</Application_Info_URL>
 			<Application_Order_URL />
-			<Application_Screenshot_URL>http://winlame.sourceforge.net/screenshots.php</Application_Screenshot_URL>
-			<Application_Icon_URL>http://winlame.sourceforge.net/favicon.ico</Application_Icon_URL>
-			<Application_XML_File_URL>http://winlame.sourceforge.net/winLAME.pad.xml</Application_XML_File_URL>
+			<Application_Screenshot_URL>https://winlame.sourceforge.io/screenshots.html</Application_Screenshot_URL>
+			<Application_Icon_URL>https://winlame.sourceforge.io/favicon.ico</Application_Icon_URL>
+			<Application_XML_File_URL>https://winlame.sourceforge.io/winLAME.pad.xml</Application_XML_File_URL>
 		</Application_URLs>
 		<Download_URLs>
-			<Primary_Download_URL>http://winlame.sourceforge.net/download.php</Primary_Download_URL>
-			<Secondary_Download_URL />
+			<Primary_Download_URL>https://winlame.sourceforge.io/download.html</Primary_Download_URL>
+			<Secondary_Download_URL>https://sourceforge.net/projects/winlame/files/latest/download</Secondary_Download_URL>
 			<Additional_Download_URL_1 />
 			<Additional_Download_URL_2 />
 		</Download_URLs>
@@ -104,9 +98,4 @@ winLAME supports many input audio formats, and uses the LAME mp3 encoding librar
 		<Distribution_Permissions>winLAME is distributed and licensed under the GNU General Public License (GPL). See http://www.gnu.org/copyleft/gpl.html for more information.</Distribution_Permissions>
 		<EULA>Please note that personal and/or commercial use of compiled versions of LAME, the mp3 encoder library contained in winLAME, may require a patent license in some countries. Check before using winLAME!</EULA>
 	</Permissions>
-	<ASP>
-		<ASP_FORM>Y</ASP_FORM>
-		<ASP_Member>N</ASP_Member>
-		<ASP_Member_Number />
-	</ASP>
 </XML_DIZ_INFO>
