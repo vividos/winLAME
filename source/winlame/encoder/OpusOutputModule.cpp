@@ -337,6 +337,12 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
       comment_add(&inopt.comments, &inopt.comments_length, "albumartist", utf8Buffer.data());
    }
 
+   if (trackinfo.TextInfo(TrackInfoComposer, text))
+   {
+      StringToUTF8(text, utf8Buffer);
+      comment_add(&inopt.comments, &inopt.comments_length, "composer", utf8Buffer.data());
+   }
+
    if (trackinfo.TextInfo(TrackInfoComment, text))
    {
       StringToUTF8(text, utf8Buffer);

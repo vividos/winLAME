@@ -36,6 +36,7 @@ namespace Encoder
       TrackInfoAlbum,      ///< album name
       TrackInfoComment,    ///< track comment
       TrackInfoGenre,      ///< track genre
+      TrackInfoComposer,   ///< track composer
    };
 
    /// track number info enum

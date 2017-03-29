@@ -206,6 +206,14 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
       trackInfo.TextInfo(TrackInfoDiscArtist, text);
    }
 
+   if (opus_tags_query_count(tags, "composer") > 0)
+   {
+      utf8text = opus_tags_query(tags, "composer", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoComposer, text);
+   }
+
    if (opus_tags_query_count(tags, "comment") > 0)
    {
       utf8text = opus_tags_query(tags, "comment", 0);

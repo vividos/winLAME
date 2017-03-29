@@ -288,6 +288,14 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
       trackInfo.TextInfo(TrackInfoDiscArtist, text);
    }
 
+   if (vorbis_comment_query_count(comment, "composer") > 0)
+   {
+      utf8text = vorbis_comment_query(comment, "composer", 0);
+      text = UTF8ToString(utf8text);
+
+      trackInfo.TextInfo(TrackInfoComposer, text);
+   }
+
    if (vorbis_comment_query_count(comment, "comment") > 0)
    {
       utf8text = vorbis_comment_query(comment, "comment", 0);

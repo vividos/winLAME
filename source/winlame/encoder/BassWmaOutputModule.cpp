@@ -214,6 +214,13 @@ void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
       BASS_WMA_EncodeSetTag(m_handle, "WM/AlbumArtist", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
+   textValue = trackInfo.TextInfo(TrackInfoComposer, isAvail);
+   if (isAvail && !textValue.IsEmpty())
+   {
+      StringToUTF8(textValue, utf8Buffer);
+      BASS_WMA_EncodeSetTag(m_handle, "WM/Composer", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
+   }
+
    textValue = trackInfo.TextInfo(TrackInfoAlbum, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {

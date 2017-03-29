@@ -439,6 +439,12 @@ bool MadMpegInputModule::GetId3v2TagInfos(const CString& filename, TrackInfo& tr
       trackInfo.TextInfo(TrackInfoDiscArtist, textValue);
    }
 
+   if (tag.IsFrameAvail(ID3::FrameId::Composer))
+   {
+      textValue = tag.FindFrame(ID3::FrameId::Composer).GetString(1);
+      trackInfo.TextInfo(TrackInfoComposer, textValue);
+   }
+
    if (tag.IsFrameAvail(ID3::FrameId::Comment))
    {
       // COMM field is layout differently: 0: ID3_FIELD_TYPE_TEXTENCODING, 1: ID3_FIELD_TYPE_LANGUAGE, 2: ID3_FIELD_TYPE_STRING, 3: ID3_FIELD_TYPE_STRINGFULL

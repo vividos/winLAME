@@ -284,6 +284,13 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
       vorbis_comment_add_tag(&m_vc, "ALBUMARTIST", buffer.data());
    }
 
+   text = trackInfo.TextInfo(TrackInfoComposer, avail);
+   if (avail && !text.IsEmpty())
+   {
+      StringToUTF8(text, buffer);
+      vorbis_comment_add_tag(&m_vc, "COMPOSER", buffer.data());
+   }
+
    text = trackInfo.TextInfo(TrackInfoAlbum, avail);
    if (avail && !text.IsEmpty())
    {
@@ -303,7 +310,7 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
    if (avail && !text.IsEmpty())
    {
       StringToUTF8(text, buffer);
-      vorbis_comment_add_tag(&m_vc, "COMMENT", buffer.data()); // TODO should be DESCRIPTION?
+      vorbis_comment_add_tag(&m_vc, "COMMENT", buffer.data());
    }
 
    int trackNumber = trackInfo.NumberInfo(TrackInfoTrack, avail);

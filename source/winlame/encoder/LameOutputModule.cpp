@@ -518,9 +518,13 @@ void LameOutputModule::AddLameID3v2Tag(const TrackInfo& trackInfo)
    // leave some bytes as padding
    unsigned int lamePaddingSize = 256;
 
-   // LAME (and nlame) can't write Album Artist, so add some bytes for padding
+   // LAME (and nlame) can't write Album Artist and Composer, so add some bytes for padding
    bool isAvail = false;
    CString textValue = trackInfo.TextInfo(TrackInfoDiscArtist, isAvail);
+   if (isAvail)
+      lamePaddingSize += textValue.GetLength() + 4 + 3; // tag ID + tag header + string length
+
+   textValue = trackInfo.TextInfo(TrackInfoComposer, isAvail);
    if (isAvail)
       lamePaddingSize += textValue.GetLength() + 4 + 3; // tag ID + tag header + string length
 
@@ -684,6 +688,17 @@ void LameOutputModule::UpdateId3TagFromTrackInfo(ID3::Tag& tag, const TrackInfo&
       tag.RemoveFrame(ID3::FrameId::AlbumArtist);
 
       ID3::Frame frame(ID3::FrameId::AlbumArtist);
+      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
+      frame.SetString(1, textValue);
+      tag.AttachFrame(frame);
+   }
+
+   textValue = trackInfo.TextInfo(TrackInfoComposer, isAvail);
+   if (isAvail)
+   {
+      tag.RemoveFrame(ID3::FrameId::Composer);
+
+      ID3::Frame frame(ID3::FrameId::Composer);
       frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
       frame.SetString(1, textValue);
       tag.AttachFrame(frame);
