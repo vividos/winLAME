@@ -37,7 +37,7 @@
 
 using boost::asio::ip::tcp;
 
-HttpResponse HttpClient::Request(std::string host, std::string path)
+HttpResponse HttpClient::Request(const std::string& host, const std::string& path)
 {
    // Get a list of endpoints corresponding to the server name.
    tcp::resolver resolver(m_ioService);

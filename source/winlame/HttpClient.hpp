@@ -48,7 +48,7 @@ public:
    }
 
    /// sends a request to host with given path and returns the HTTP response
-   HttpResponse Request(std::string host, std::string path);
+   HttpResponse Request(const std::string& host, const std::string& path);
 
 private:
    /// user agent to use for request

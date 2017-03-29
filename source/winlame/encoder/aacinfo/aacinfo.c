@@ -81,11 +81,10 @@ static int read_ADTS_header(FILE_STREAM *file, faadAACInfo *info,
     /* Get ADTS header data */
     unsigned char buffer[ADTS_MAX_SIZE];
     int frames, framesinsec=0, t_framelength = 0, frame_length, sr_idx = 0, ID = 0;
-    int second = 0, pos;
+    int second = 0;
     int i;
     float frames_per_sec = 0;
-    unsigned long bytes;
-    unsigned long *tmp_seek_table = NULL;
+    unsigned long* tmp_seek_table = NULL;
 
     info->headertype = 2;
 
@@ -95,10 +94,10 @@ static int read_ADTS_header(FILE_STREAM *file, faadAACInfo *info,
         if (no_seek_table && frames >= 43 * 10)
            break;
 
-        pos = tell_filestream(file);
+        int pos = tell_filestream(file);
 
         /* 12 bit SYNCWORD */
-        bytes = read_buffer_filestream(file, buffer, ADTS_MAX_SIZE);
+        unsigned long bytes = read_buffer_filestream(file, buffer, ADTS_MAX_SIZE);
 
         if(bytes != ADTS_MAX_SIZE)
         {
@@ -194,9 +193,7 @@ int get_AAC_format(LPCTSTR filename, faadAACInfo *info,
     unsigned long tagsize;
     FILE_STREAM *file;
     char buffer[10];
-    unsigned long file_len;
     unsigned char adxx_id[5];
-    unsigned long tmp;
 
     memset(info, 0, sizeof(faadAACInfo));
 
@@ -205,10 +202,8 @@ int get_AAC_format(LPCTSTR filename, faadAACInfo *info,
     if(file == NULL)
         return -1;
 
-    file_len = filelength_filestream(file);
-
     /* Skip the tag, if it's there */
-    tmp = read_buffer_filestream(file, buffer, 10);
+    read_buffer_filestream(file, buffer, 10);
 
     if (StringComp(buffer, "ID3", 3) == 0)
     {
@@ -233,10 +228,7 @@ int get_AAC_format(LPCTSTR filename, faadAACInfo *info,
         file->file_offset = 0;
     }
 
-    if(file_len)
-        file_len -= tagsize;
-
-    tmp = read_buffer_filestream(file, adxx_id, 2);
+    read_buffer_filestream(file, adxx_id, 2);
     //seek_filestream(file, tagsize, FILE_BEGIN);
 
     adxx_id[5-1] = 0;
@@ -246,8 +238,8 @@ int get_AAC_format(LPCTSTR filename, faadAACInfo *info,
     if(StringComp((const char*)adxx_id, "AD", 2) == 0)
     {
         /* We think its an ADIF header, but check the rest just to make sure */
-        tmp = read_buffer_filestream(file, adxx_id + 2, 2);
-        
+        read_buffer_filestream(file, adxx_id + 2, 2);
+
         if(StringComp((const char*)adxx_id, "ADIF", 4) == 0)
         {
             read_ADIF_header(file, info);

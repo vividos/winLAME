@@ -85,7 +85,7 @@ private:
    friend class File;
 
    /// ctor
-   Tag(std::shared_ptr<id3_tag> spTag)
+   Tag(const std::shared_ptr<id3_tag>& spTag)
       :m_spTag(spTag)
    {
    }

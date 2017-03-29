@@ -57,7 +57,7 @@ private:
    friend class Taskbar;
 
    /// ctor; can only be called from Taskbar
-   TaskbarProgressBar(std::shared_ptr<TaskbarImpl> impl)
+   TaskbarProgressBar(const std::shared_ptr<TaskbarImpl>& impl)
       :m_impl(impl)
    {
       SetState(TBPF_INDETERMINATE);

@@ -598,7 +598,6 @@ bool OpusOutputModule::WriteHeader()
 
    // Write header
    opus_int64& bytes_written = m_numBytesWritten;
-   opus_int64& pages_out = m_numPagesWritten;
    int ret;
    {
       unsigned char header_data[100];
@@ -621,7 +620,6 @@ bool OpusOutputModule::WriteHeader()
          }
 
          bytes_written += ret;
-         pages_out++;
       }
 
       int comment_padding = 512;
@@ -774,7 +772,6 @@ bool OpusOutputModule::EncodeInputBufferFrame()
 {
    FILE* fout = m_outputFile.get();
    opus_int64& bytes_written = m_numBytesWritten;
-   opus_int64& pages_out = m_numPagesWritten;
    opus_int32& frame_size = m_frameSize;
    const opus_int32 coding_rate = m_codingRate;
    ogg_int32_t& id = m_currentPacketNumber;
@@ -838,7 +835,6 @@ bool OpusOutputModule::EncodeInputBufferFrame()
          return false;
       }
       bytes_written += ret;
-      pages_out++;
    }
 
    // The downside of early reading is if the input is an exact

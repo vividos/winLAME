@@ -102,16 +102,22 @@ public:
 
 private:
    friend class Tag;
+
+   /// returns ID3 frame pointer
    std::shared_ptr<id3_frame> GetFrame(){ return m_spFrame; }
 
-   Frame(std::shared_ptr<id3_frame> spFrame)
+   /// ctor
+   Frame(const std::shared_ptr<id3_frame>& spFrame)
       :m_spFrame(spFrame),
        m_bAttached(true)
    {
    }
 
 private:
+   /// indicates if frame is attached
    bool m_bAttached;
+
+   /// ID3 frame pointer
    std::shared_ptr<id3_frame> m_spFrame;
 };
 

@@ -27,16 +27,18 @@ union id3_field;
 
 namespace ID3
 {
-
+/// ID3 tag field
 class Field
 {
 public:
-   ~Field(){}
+   /// dtor
+   ~Field() {}
 
 private:
    friend class Frame;
 
-   Field(std::shared_ptr<id3_field> spField)
+   /// ctor
+   Field(const std::shared_ptr<id3_field>& spField)
       :m_spField(spField)
    {
    }
@@ -46,6 +48,7 @@ private:
    CString AsString();
 
 private:
+   /// ID3 field pointer
    std::shared_ptr<id3_field> m_spField;
 };
 
