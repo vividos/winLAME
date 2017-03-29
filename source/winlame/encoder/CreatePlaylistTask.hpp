@@ -34,7 +34,7 @@ namespace Encoder
       /// ctor, taking list of EncoderJobs
       CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const EncoderJobList& encoderjoblist);
       /// ctor, taking list of CDReadJobs
-      CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const std::vector<CDReadJob>& cdreadjoblist);
+      CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const std::vector<::Encoder::CDReadJob>& cdreadjoblist);
       /// dtor
       virtual ~CreatePlaylistTask() {}
 

@@ -99,7 +99,8 @@ namespace ClassicUI
       //  LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
       //  LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-         /// initializes the main dialog
+   private:
+      /// initializes the main dialog
       LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
       /// called when the main dialog is about to be destroyed

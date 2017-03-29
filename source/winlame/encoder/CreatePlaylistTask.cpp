@@ -43,7 +43,7 @@ CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CStri
    });
 }
 
-CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const std::vector<Encoder::CDReadJob>& cdReadJobList)
+CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CString& playlistFilename, const std::vector<::Encoder::CDReadJob>& cdReadJobList)
    :Task(dependentTaskId),
    m_extendedPlaylist(true),
    m_playlistFilename(playlistFilename),
