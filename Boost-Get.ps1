@@ -21,6 +21,6 @@ Write-Host "Extracting archive..."
 Write-Host "Building Boost..."
 Set-Location "c:\devel\packages\boost_1_63_0" 
 .\bootstrap.bat
-.\b2 -j4 --with-system --with-thread runtime-link=shared link=static threading=multi stage
+.\b2 -j4 --with-system runtime-link=shared link=static threading=multi stage
 
 subst d: c:\
