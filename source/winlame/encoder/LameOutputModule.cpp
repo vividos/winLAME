@@ -332,7 +332,7 @@ void LameOutputModule::FlushOutputBuffer()
    }
 }
 
-void LameOutputModule::DoneOutput()
+void LameOutputModule::FinishEncoding()
 {
    // encode remaining samples, if any
    EncodeFrame();
@@ -370,7 +370,10 @@ void LameOutputModule::DoneOutput()
    //       info tag when writing a wave header
    if (m_writeInfoTag && !m_writeWaveHeader)
       WriteVBRInfoTag(m_instance, m_mp3Filename);
+}
 
+void LameOutputModule::FreeLameInstance()
+{
    if (m_nogapEncoding)
    {
       if (!m_nogapIsLastFile)
@@ -389,6 +392,15 @@ void LameOutputModule::DoneOutput()
       // free nlame instance
       nlame_delete(m_instance);
    }
+}
+
+void LameOutputModule::DoneOutput()
+{
+   if (m_outputFile.is_open())
+      FinishEncoding();
+
+   if (m_instance != nullptr)
+      FreeLameInstance();
 
    m_instance = nullptr;
 }

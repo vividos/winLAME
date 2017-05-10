@@ -89,6 +89,12 @@ namespace Encoder
       /// flushes LAME output buffer without encoding more samples
       void FlushOutputBuffer();
 
+      /// finishes encoding by flushing buffer and writing out last frames
+      void FinishEncoding();
+
+      /// frees LAME instance (or stores it for next NoGap encoding)
+      void FreeLameInstance();
+
       /// adds id3v2 tag infos to nlame instance
       void AddLameID3v2Tag(const TrackInfo& trackinfo);
 
