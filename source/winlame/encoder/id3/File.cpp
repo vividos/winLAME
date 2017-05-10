@@ -23,15 +23,23 @@
 #include "StdAfx.h"
 #include "File.h"
 #include <id3tag.h>
+#include <io.h>
+#include <fcntl.h>
 
 using ID3::File;
 
-File::File(const CString& cszFilename, bool bReadOnly)
-:m_bReadOnly(bReadOnly)
+File::File(const CString& filename, bool readOnly)
+:m_bReadOnly(readOnly)
 {
-   id3_file* file = id3_file_open(CStringA(cszFilename), bReadOnly ? ID3_FILE_MODE_READONLY : ID3_FILE_MODE_READWRITE);
-   if (file != NULL)
-      m_spFile.reset(file, id3_file_close);
+   // id3_file_open can't handle non-ANSI characters, so we open the file ourselves
+   int fd = _wopen(filename, _O_BINARY | (readOnly ? _O_RDONLY : _O_RDWR));
+
+   if (fd >= 0)
+   {
+      id3_file* file = id3_file_fdopen(fd, readOnly ? ID3_FILE_MODE_READONLY : ID3_FILE_MODE_READWRITE);
+      if (file != NULL)
+         m_spFile.reset(file, id3_file_close);
+   }
 }
 
 // it's pretty ugly, but we repeat the filetag and id3_file structure here, so we have access to its internals
