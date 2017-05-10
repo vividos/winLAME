@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ std::vector<TaskInfo> TaskManager::CurrentTasks()
    std::vector<TaskInfo> vecTaskInfos;
 
    {
-      boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
+      std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
       BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
       {
          auto iter = m_mapCompletedTaskInfos.find(spTask->Id());
@@ -98,14 +98,14 @@ std::vector<TaskInfo> TaskManager::CurrentTasks()
 
 TaskManagerConfig TaskManager::CurrentConfig() const
 {
-   boost::recursive_mutex::scoped_lock lock(const_cast<boost::recursive_mutex&>(m_mutexConfig));
+   std::unique_lock<std::recursive_mutex> lock(m_mutexConfig);
    TaskManagerConfig config = m_config;
    return config;
 }
 
 void TaskManager::SetNewConfig(const TaskManagerConfig& config)
 {
-   boost::recursive_mutex::scoped_lock lock(m_mutexConfig);
+   std::unique_lock<std::recursive_mutex> lock(m_mutexConfig);
 
    m_config = config;
 
@@ -118,7 +118,7 @@ void TaskManager::AddTask(std::shared_ptr<Task> spTask)
    spTask->Id(taskId);
 
    {
-      boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
+      std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
       m_deqTaskQueue.push_back(spTask);
    }
 
@@ -131,7 +131,7 @@ void TaskManager::AddTask(std::shared_ptr<Task> spTask)
 
 void TaskManager::CheckRunnableTasks()
 {
-   boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
+   std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
    std::for_each(m_deqTaskQueue.begin(), m_deqTaskQueue.end(),
       [&](std::shared_ptr<Task>& spTask)
@@ -157,8 +157,7 @@ bool TaskManager::IsQueueEmpty() const
 
    try
    {
-      boost::recursive_mutex::scoped_lock lock(
-         const_cast<boost::recursive_mutex&>(m_mutexQueue));
+      std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
       isEmpty = m_deqTaskQueue.empty();
    }
    catch (...)
@@ -170,24 +169,21 @@ bool TaskManager::IsQueueEmpty() const
 
 bool TaskManager::AreRunningTasksAvail() const
 {
-   boost::recursive_mutex::scoped_lock lock(
-      const_cast<boost::recursive_mutex&>(m_mutexQueue));
+   std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
    return m_mapCompletedTaskInfos.size() < m_deqTaskQueue.size();
 }
 
 bool TaskManager::AreCompletedTasksAvail() const
 {
-   boost::recursive_mutex::scoped_lock lock(
-      const_cast<boost::recursive_mutex&>(m_mutexQueue));
+   std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
    return !m_mapCompletedTaskInfos.empty();
 }
 
 bool TaskManager::AreCDExtractTasksRunning() const
 {
-   boost::recursive_mutex::scoped_lock lock(
-      const_cast<boost::recursive_mutex&>(m_mutexQueue));
+   std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
    bool found = false;
    std::for_each(m_deqTaskQueue.begin(), m_deqTaskQueue.end(),
@@ -213,8 +209,7 @@ bool TaskManager::AreCDExtractTasksRunning() const
 
 void TaskManager::GetTaskListState(bool& hasActiveTasks, bool& hasErrorTasks, unsigned int& percentComplete) const
 {
-   boost::recursive_mutex::scoped_lock lock(
-      const_cast<boost::recursive_mutex&>(m_mutexQueue));
+   std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
    if (m_deqTaskQueue.empty())
    {
@@ -266,7 +261,7 @@ void TaskManager::GetTaskListState(bool& hasActiveTasks, bool& hasErrorTasks, un
 
 void TaskManager::StopAll()
 {
-   boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
+   std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
    BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
    {
@@ -281,7 +276,7 @@ void TaskManager::StopAll()
 
 void TaskManager::RemoveCompletedTasks()
 {
-   boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
+   std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
    std::set<std::shared_ptr<Task>> setTasksToRemove;
    BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
@@ -312,7 +307,7 @@ void TaskManager::RunThread(boost::asio::io_service& ioService)
 
 bool TaskManager::IsTaskRunnable(std::shared_ptr<Task> spTask) const
 {
-   boost::recursive_mutex::scoped_lock lock(const_cast<boost::recursive_mutex&>(m_mutexQueue));
+   std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
    // check dependent task ID
    unsigned int dependentTaskId = spTask->DependentTaskId();
@@ -372,7 +367,7 @@ void TaskManager::StoreCompletedTaskInfo(std::shared_ptr<Task> spTask, CString& 
       info.Progress(100);
 
    {
-      boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
+      std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
       m_mapCompletedTaskInfos.insert(std::make_pair(spTask->Id(), info));
 
@@ -382,7 +377,7 @@ void TaskManager::StoreCompletedTaskInfo(std::shared_ptr<Task> spTask, CString& 
 
 void TaskManager::RemoveTask(std::shared_ptr<Task> spTask)
 {
-   boost::recursive_mutex::scoped_lock lock(m_mutexQueue);
+   std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
    // search for task
    for (T_deqTaskQueue::iterator iterTaskQueue = m_deqTaskQueue.begin(),
@@ -405,7 +400,7 @@ void TaskManager::RemoveTask(std::shared_ptr<Task> spTask)
 
 void TaskManager::SetBusyFlag(DWORD dwThreadId, bool bBusy)
 {
-   boost::recursive_mutex::scoped_lock lock(m_mutexBusyFlagMap);
+   std::unique_lock<std::recursive_mutex> lock(m_mutexBusyFlagMap);
 
    m_mapBusyFlagMap[dwThreadId] = bBusy;
 }

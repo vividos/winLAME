@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 #include <set>
 #include <memory>
 #include <atomic>
-#include <boost/thread/recursive_mutex.hpp>
+#include <mutex>
 #include <thread>
 #include "Boost.hpp"
 #include "TaskInfo.hpp"
@@ -105,7 +105,7 @@ private:
    // config
 
    /// mutex protecting config
-   boost::recursive_mutex m_mutexConfig;
+   mutable std::recursive_mutex m_mutexConfig;
 
    /// task manager config
    TaskManagerConfig m_config;
@@ -117,7 +117,7 @@ private:
    std::atomic<unsigned int> m_nextTaskId;
 
    /// mutex protecting task queue
-   boost::recursive_mutex m_mutexQueue;
+   mutable std::recursive_mutex m_mutexQueue;
 
    /// task queue typedef
    typedef std::deque<std::shared_ptr<Task>> T_deqTaskQueue;
@@ -150,7 +150,7 @@ private:
    // busy flags
 
    /// mutex protecting busy flag map
-   boost::recursive_mutex m_mutexBusyFlagMap;
+   std::recursive_mutex m_mutexBusyFlagMap;
 
    /// busy flag map type
    typedef std::map<DWORD, bool> T_mapBusyFlagMap;
