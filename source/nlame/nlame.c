@@ -160,6 +160,9 @@ nlame_instance_t* nlame_new()
 
 void nlame_delete(nlame_instance_t* inst)
 {
+   if (inst == NULL)
+      return;
+
    lame_close(inst->lgf);
    free(inst);
 }
