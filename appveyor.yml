@@ -21,5 +21,6 @@ build:
   verbosity: minimal
 
 artifacts:
-- path: bin\Release\*.dll
-- path: bin\Release\*.exe
+- path: bin\Release\win*.dll
+- path: bin\Release\win*.exe
+- path: bin\Release\pdb\win*.pdb
