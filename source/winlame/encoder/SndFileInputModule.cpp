@@ -177,7 +177,13 @@ int SndFileInputModule::InitInput(LPCTSTR infilename,
    if (m_numOutputBits == 32)
       m_buffer.resize(sizeof(int) * c_sndfileInputBufferSize * m_sfinfo.channels);
    else
+   if (m_numOutputBits == 16)
       m_buffer.resize(sizeof(short) * c_sndfileInputBufferSize * m_sfinfo.channels);
+   else
+   {
+      m_lastError.LoadString(IDS_ENCODER_INVALID_FILE_FORMAT);
+      return -1;
+   }
 
    // set up input traits
    samples.SetInputModuleTraits(m_numOutputBits, SamplesInterleaved,
