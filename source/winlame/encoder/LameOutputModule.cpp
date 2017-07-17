@@ -635,6 +635,9 @@ unsigned int LameOutputModule::GetID3v2PaddingLength()
    // get primary tag
    ID3::Tag tag = file.GetTag();
 
+   if (!tag.IsValid())
+      return 0;
+
    // set the same flags that mp3tag would use in an ID3v2 tag
    tag.SetOption(ID3::Tag::foUnsynchronisation, 0);
    tag.SetOption(ID3::Tag::foCompression, 0);
@@ -801,7 +804,10 @@ void LameOutputModule::WriteVBRInfoTag(nlame_instance_t* instance, LPCTSTR mp3Fi
 {
    FILE* fp = _wfopen(mp3Filename, _T("r+b"));
 
-   nlame_write_vbr_infotag(instance, fp);
+   if (fp != nullptr)
+   {
+      nlame_write_vbr_infotag(instance, fp);
 
-   fclose(fp);
+      fclose(fp);
+   }
 }
