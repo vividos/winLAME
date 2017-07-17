@@ -31,6 +31,11 @@ Tag::Tag()
 {
 }
 
+bool Tag::IsValid() const
+{
+   return m_spTag != nullptr;
+}
+
 bool Tag::IsFrameAvail(const CString& cszFrameId) const
 {
    id3_frame* frame = id3_tag_findframe(m_spTag.get(), CStringA(cszFrameId), 0);

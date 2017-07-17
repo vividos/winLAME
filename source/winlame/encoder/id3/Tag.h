@@ -49,6 +49,9 @@ public:
 
    // read access to tag
 
+   /// returns if tag is valid
+   bool IsValid() const;
+
    /// returns if frame with id is available
    bool IsFrameAvail(const CString& cszFrameId) const;
 
