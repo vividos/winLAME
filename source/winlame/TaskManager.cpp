@@ -24,6 +24,7 @@
 #include "TaskManager.hpp"
 #include "CDExtractTask.hpp"
 #include "Task.hpp"
+#include "Thread.hpp"
 #include <boost/foreach.hpp>
 #include <boost/bind.hpp>
 #include <algorithm>
@@ -47,7 +48,7 @@ TaskManager::TaskManager()
    {
       std::shared_ptr<std::thread> spThread(
          new std::thread(
-            std::bind(&TaskManager::RunThread, boost::ref(m_ioService))
+            std::bind(&TaskManager::RunThread, boost::ref(m_ioService), i)
       ));
 
       // note: GetThreadId() not available in XP
@@ -291,8 +292,14 @@ void TaskManager::RemoveCompletedTasks()
    }
 }
 
-void TaskManager::RunThread(boost::asio::io_service& ioService)
+void TaskManager::RunThread(boost::asio::io_service& ioService, unsigned int threadNumber)
 {
+   ATLTRACE(_T("starting worker thread #%u\n"), threadNumber);
+
+   CString threadName;
+   threadName.Format(_T("worker thread #%u"), threadNumber);
+   Thread::SetName(threadName);
+
    try
    {
       ioService.run();

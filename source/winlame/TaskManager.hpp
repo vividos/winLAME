@@ -84,7 +84,7 @@ public:
 
 private:
    /// thread function
-   static void RunThread(boost::asio::io_service& ioService);
+   static void RunThread(boost::asio::io_service& ioService, unsigned int threadNumber);
 
    /// returns if a task is runnable
    bool IsTaskRunnable(std::shared_ptr<Task> spTask) const;
