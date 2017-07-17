@@ -392,6 +392,8 @@ void TaskManager::RemoveTask(std::shared_ptr<Task> spTask)
    {
       if (spTask == *iterTaskQueue)
       {
+         spTask->Stop();
+
          m_deqTaskQueue.erase(iterTaskQueue);
 
          auto iterTaskInfos = m_mapCompletedTaskInfos.find(spTask->Id());
