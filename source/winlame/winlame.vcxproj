@@ -275,6 +275,7 @@
     <ClInclude Include="Path.hpp" />
     <ClInclude Include="StdCppLib.hpp" />
     <ClInclude Include="TaskCreationHelper.hpp" />
+    <ClInclude Include="Thread.hpp" />
     <ClInclude Include="TrackEditListCtrl.hpp" />
     <ClInclude Include="AudioFileInfoManager.hpp" />
     <ClInclude Include="ui\AACSettingsPage.hpp" />
