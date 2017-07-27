@@ -24,3 +24,4 @@ artifacts:
 - path: bin\Release\win*.dll
 - path: bin\Release\win*.exe
 - path: bin\Release\pdb\win*.pdb
+- path: bin\Release\*.msi
