@@ -57,3 +57,4 @@ buildtools/SonarQube/build-wrapper-win-x86/
 buildtools/SonarQube/sonar-scanner-msbuild/
 .sonarqube/
 bw-output/
+.vs/
