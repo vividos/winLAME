@@ -110,6 +110,9 @@ void CreatePlaylistTask::Run()
       if (relativeFilename.IsEmpty())
          relativeFilename = entry.m_filename;
 
+      if (relativeFilename.Find(_T(".\\")) == 0)
+         relativeFilename.Delete(0, 2);
+
       _ftprintf(fd, _T("%s\n"), relativeFilename.GetString());
 
       if (m_extendedPlaylist)
