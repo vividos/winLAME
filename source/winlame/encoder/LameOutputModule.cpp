@@ -245,6 +245,9 @@ int LameOutputModule::InitOutput(LPCTSTR outfilename,
 /// to nlame_encode_buffer_*().
 int LameOutputModule::EncodeFrame()
 {
+   if (m_mp3OutputBuffer.empty())
+      return -1;
+
    // encode buffer
    int ret;
    if (m_channels == 1)
@@ -314,6 +317,9 @@ int LameOutputModule::EncodeSamples(SampleContainer& samples)
 
 void LameOutputModule::FlushOutputBuffer()
 {
+   if (m_mp3OutputBuffer.empty())
+      return;
+
    int ret;
 
    if (m_nogapEncoding && !m_nogapIsLastFile)
