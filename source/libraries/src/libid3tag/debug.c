@@ -49,7 +49,7 @@ struct debug {
   long int magic;
 };
 
-static struct debug *allocated;
+static struct debug *allocated = 0;
 static int registered;
 
 static
