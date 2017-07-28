@@ -68,17 +68,14 @@ void InputFilesParser::Insert(LPCTSTR filename)
       return;
    }
 
-   // check if the file is a playlist
-   if (!m_bRecursive)
-   {
-      InsertFilename(filename);
-   }
+   InsertFilename(filename);
 }
 
 void InputFilesParser::InsertFilename(LPCTSTR filename)
 {
    bool bFoundPlaylist = false;
 
+   // check if the file is a playlist
    LPCTSTR pos = _tcsrchr(filename, '.');
    if (pos == NULL)
    {
