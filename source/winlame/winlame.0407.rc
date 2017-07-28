@@ -1033,7 +1033,7 @@ BEGIN
     IDS_ENCODER_ERROR_WRITE_OUTPUT "Fehler beim Schreiben in die Ausgabe-Datei"
     IDS_ENCODER_ERROR_GET_FILE_INFOS "Fehler beim Ermitteln von Dateiinformationen"
     IDS_ENCODER_INTERNAL_DECODE_ERROR "interner Dekodier-Fehler"
-    IDS_ENCODER_ERROR_ERRORINFO_FILENAME_S "Dateiname: "
+    IDS_ENCODER_ERROR_ERRORINFO_FILENAME_S "Dateiname: %s"
     IDS_ENCODER_ERROR_ERRORINFO_SSI "[%s] %s (Fehlercode %i)"
     IDS_PLAYLIST_TASK_ERROR_CREATE_FILE "Fehler beim Erstellen der Playlist-Datei"
     IDS_PLAYLIST_TASK_DESCRIPTION_SU "Schreibe Playlist-Datei %s mit %u Einträgen"

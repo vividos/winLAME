@@ -1033,7 +1033,7 @@ BEGIN
     IDS_ENCODER_ERROR_WRITE_OUTPUT "error writing to output file"
     IDS_ENCODER_ERROR_GET_FILE_INFOS "error getting file information"
     IDS_ENCODER_INTERNAL_DECODE_ERROR "internal decoding error"
-    IDS_ENCODER_ERROR_ERRORINFO_FILENAME_S "Filename: "
+    IDS_ENCODER_ERROR_ERRORINFO_FILENAME_S "Filename: %s"
     IDS_ENCODER_ERROR_ERRORINFO_SSI "[%s] %s (error code %i)"
     IDS_PLAYLIST_TASK_ERROR_CREATE_FILE "Error while creating playlist file"
     IDS_PLAYLIST_TASK_DESCRIPTION_SU "Writing playlist %s with %u entries"
