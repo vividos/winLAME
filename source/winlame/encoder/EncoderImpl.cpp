@@ -246,24 +246,27 @@ void EncoderImpl::Encode()
    m_outputModule.reset();
 
    // rename when we used a temporary filename
-   if (!tempOutputFilename.IsEmpty() &&
-      m_encoderSettings.m_outputFilename != tempOutputFilename)
+   if (!skipFile)
    {
-      if (m_encoderSettings.m_overwriteExisting)
-         DeleteFile(m_encoderSettings.m_outputFilename);
+      if (!tempOutputFilename.IsEmpty() &&
+         m_encoderSettings.m_outputFilename != tempOutputFilename)
+      {
+         if (m_encoderSettings.m_overwriteExisting)
+            DeleteFile(m_encoderSettings.m_outputFilename);
+         else
+            // not overwriting, but "delete after encoding" flag set?
+            if (m_encoderSettings.m_deleteInputAfterEncode)
+               DeleteFile(m_encoderSettings.m_inputFilename);
+
+         MoveFile(tempOutputFilename, m_encoderSettings.m_outputFilename);
+      }
       else
-         // not overwriting, but "delete after encoding" flag set?
+      {
+         // delete the old file, if option is set
+         // as no temp output filename was generated, assume the names are different
          if (m_encoderSettings.m_deleteInputAfterEncode)
             DeleteFile(m_encoderSettings.m_inputFilename);
-
-      MoveFile(tempOutputFilename, m_encoderSettings.m_outputFilename);
-   }
-   else
-   {
-      // delete the old file, if option is set
-      // as no temp output filename was generated, assume the names are different
-      if (m_encoderSettings.m_deleteInputAfterEncode)
-         DeleteFile(m_encoderSettings.m_inputFilename);
+      }
    }
 
    // end thread
