@@ -100,6 +100,8 @@ void LameErrorCallback(const char* format, va_list args)
    ATLTRACE(_T("%hs"), buffer.GetString());
 }
 
+extern CString GetLastErrorString();
+
 int LameOutputModule::InitOutput(LPCTSTR outfilename,
    SettingsManager& mgr, const TrackInfo& trackInfo,
    SampleContainer& samples)
@@ -110,7 +112,11 @@ int LameOutputModule::InitOutput(LPCTSTR outfilename,
    m_outputFile.open(outfilename, std::ios::out | std::ios::binary);
    if (!m_outputFile.is_open())
    {
+      CString lastErrorText = GetLastErrorString();
+
       m_lastError.LoadString(IDS_ENCODER_OUTPUT_FILE_CREATE_ERROR);
+      m_lastError.AppendFormat(_T(" (message \"%s\", filename \"%s\")"), lastErrorText.GetString(), outfilename);
+
       return -1;
    }
 
