@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{AE66A4EB-B54E-4572-9A4E-50C89A0C56C3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>encoder</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140_xp</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\boost.props" />
+    <Import Project="..\..\winlame-Debug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\boost.props" />
+    <Import Project="..\..\winlame-Release.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)lib\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)lib\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..;..\..\libraries\include;..\..\nlame;..\..\libraries\include\wtl;..\..\libraries\src\libid3tag;..\..\libraries\include\speex;..\..\libraries\include\opus;..\..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>..\..\libraries\lib;$(SolutionDir)lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..;..\..\libraries\include;..\..\nlame;..\..\libraries\include\wtl;..\..\libraries\src\libid3tag;..\..\libraries\include\speex;..\..\libraries\include\opus;..\..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>..\..\libraries\lib;$(SolutionDir)lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="AacInputModule.hpp" />
+    <ClInclude Include="AacOutputModule.hpp" />
+    <ClInclude Include="AlwaysSkipErrorHandler.hpp" />
+    <ClInclude Include="BassInputModule.hpp" />
+    <ClInclude Include="BassWmaOutputModule.hpp" />
+    <ClInclude Include="CDExtractTask.hpp" />
+    <ClInclude Include="CDReadJob.hpp" />
+    <ClInclude Include="CDReadoutModule.hpp" />
+    <ClInclude Include="CreatePlaylistTask.hpp" />
+    <ClInclude Include="EncoderErrorHandler.hpp" />
+    <ClInclude Include="EncoderImpl.hpp" />
+    <ClInclude Include="EncoderSettings.hpp" />
+    <ClInclude Include="EncoderState.hpp" />
+    <ClInclude Include="EncoderTask.hpp" />
+    <ClInclude Include="FlacInputModule.hpp" />
+    <ClInclude Include="Id3v1Tag.hpp" />
+    <ClInclude Include="InputModule.hpp" />
+    <ClInclude Include="LameNogapInstanceManager.hpp" />
+    <ClInclude Include="LameOutputModule.hpp" />
+    <ClInclude Include="MadMpegInputModule.hpp" />
+    <ClInclude Include="ModuleBase.hpp" />
+    <ClInclude Include="ModuleInterface.hpp" />
+    <ClInclude Include="ModuleManagerImpl.hpp" />
+    <ClInclude Include="MonkeysAudioInputModule.hpp" />
+    <ClInclude Include="OggInputStream.hpp" />
+    <ClInclude Include="OggVorbisInputModule.hpp" />
+    <ClInclude Include="OggVorbisOutputModule.hpp" />
+    <ClInclude Include="OpusInputModule.hpp" />
+    <ClInclude Include="OpusOutputModule.hpp" />
+    <ClInclude Include="OutputModule.hpp" />
+    <ClInclude Include="SampleContainer.hpp" />
+    <ClInclude Include="SndFileFormats.hpp" />
+    <ClInclude Include="SndFileInputModule.hpp" />
+    <ClInclude Include="SpeexInputModule.hpp" />
+    <ClInclude Include="TrackInfo.hpp" />
+    <ClInclude Include="WaveMp3Header.hpp" />
+    <ClInclude Include="SndFileOutputModule.hpp" />
+    <ClInclude Include="dither\dither.h" />
+    <ClInclude Include="id3\Field.h" />
+    <ClInclude Include="id3\File.h" />
+    <ClInclude Include="id3\Frame.h" />
+    <ClInclude Include="id3\Tag.h" />
+    <ClInclude Include="aacinfo\aacinfo.h" />
+    <ClInclude Include="aacinfo\filestream.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AacInputModule.cpp" />
+    <ClCompile Include="AacOutputModule.cpp" />
+    <ClCompile Include="BassInputModule.cpp" />
+    <ClCompile Include="BassWmaOutputModule.cpp" />
+    <ClCompile Include="CDExtractTask.cpp" />
+    <ClCompile Include="CDReadoutModule.cpp" />
+    <ClCompile Include="CreatePlaylistTask.cpp" />
+    <ClCompile Include="EncoderImpl.cpp" />
+    <ClCompile Include="EncoderTask.cpp" />
+    <ClCompile Include="FlacInputModule.cpp" />
+    <ClCompile Include="Id3v1Tag.cpp" />
+    <ClCompile Include="LameNogapInstanceManager.cpp" />
+    <ClCompile Include="LameOutputModule.cpp" />
+    <ClCompile Include="MadMpegInputModule.cpp" />
+    <ClCompile Include="ModuleManagerImpl.cpp" />
+    <ClCompile Include="MonkeysAudioInputModule.cpp" />
+    <ClCompile Include="OggVorbisInputModule.cpp" />
+    <ClCompile Include="OggVorbisOutputModule.cpp" />
+    <ClCompile Include="OpusInputModule.cpp" />
+    <ClCompile Include="OpusOutputModule.cpp" />
+    <ClCompile Include="SampleContainer.cpp" />
+    <ClCompile Include="SndFileFormats.cpp" />
+    <ClCompile Include="SndFileInputModule.cpp" />
+    <ClCompile Include="SpeexInputModule.cpp" />
+    <ClCompile Include="TrackInfo.cpp" />
+    <ClCompile Include="WaveMp3Header.cpp" />
+    <ClCompile Include="SndFileOutputModule.cpp" />
+    <ClCompile Include="dither\dither.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="id3\Field.cpp" />
+    <ClCompile Include="id3\File.cpp" />
+    <ClCompile Include="id3\Frame.cpp" />
+    <ClCompile Include="id3\Tag.cpp" />
+    <ClCompile Include="aacinfo\aacinfo.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="aacinfo\filestream.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\libraries\src\libid3tag\libid3tag.vcxproj">
+      <Project>{b210dd52-187a-44c2-a93f-20f7a05f1bbb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libraries\src\libmad\libmad.vcxproj">
+      <Project>{b89e54c7-562e-4444-a6b2-63ff8db043d5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\libraries\src\opus-tools\opus-tools.vcxproj">
+      <Project>{67749bc5-f457-478a-9e92-3986654bc068}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\nlame\nlame.vcxproj">
+      <Project>{0b3f6b1a-d78e-47db-a48c-d3daa16e17ce}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
