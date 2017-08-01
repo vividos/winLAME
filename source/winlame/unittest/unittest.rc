@@ -5,5 +5,5 @@
 #include "resource_unittest.h"
 #include "atlres.h"
 
-LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-IDR_SAMPLE_MP3     RT_RCDATA      "Jungle_S-RepaidGa-10582_hifi.mp3"
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+IDR_SAMPLE_MP3     "RT_RCDATA"      "Jungle_S-RepaidGa-10582_hifi.mp3"

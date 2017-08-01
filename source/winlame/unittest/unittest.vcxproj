@@ -95,6 +95,7 @@
     <ClCompile Include="..\UTF8.cpp" />
     <ClCompile Include="..\VariableManager.cpp" />
     <ClCompile Include="AutoCleanupFolder.cpp" />
+    <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="ResourceData.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

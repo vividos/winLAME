@@ -16,25 +16,18 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-/// \file unittest/stdafx.h
-/// \brief include file for include files used for precompiled headers
-/// include file for standard system include files,
-/// or project specific include files that are used frequently, but
-/// are changed infrequently
+/// \file dllmain.cpp
+/// \brief Implementation of DllMain.
 
-#pragma once
+#include "stdafx.h"
 
-#include "..\Win32.hpp"
-#include "..\Atl.hpp"
+HINSTANCE g_hDllInstance = nullptr;
 
-// undefine macros so that std::min and std::max can be used
-#undef min
-#undef max
+/// DLL Entry Point
+extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
+{
+   if (dwReason == DLL_PROCESS_ATTACH)
+      g_hDllInstance = hInstance;
 
-#include "..\StdCppLib.hpp"
-
-// unit test includes
-#include "CppUnitTest.h"
-
-/// this dll's HINSTANCE handle
-extern HINSTANCE g_hDllInstance;
+   return TRUE;
+}
