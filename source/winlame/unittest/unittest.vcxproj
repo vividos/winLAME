@@ -86,6 +86,7 @@
     <ClInclude Include="..\VariableManager.hpp" />
     <ClInclude Include="AutoCleanupFolder.hpp" />
     <ClInclude Include="ResourceData.hpp" />
+    <ClInclude Include="resource_unittest.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +121,12 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\winlame.rc" />
+    <ResourceCompile Include="unittest.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Jungle_S-RepaidGa-10582_hifi.mp3">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
