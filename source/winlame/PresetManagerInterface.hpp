@@ -31,6 +31,7 @@
 
 // needed includes
 #include <string>
+#include <boost/noncopyable.hpp>
 #include "SettingsManager.hpp"
 
 /// encoder interface
