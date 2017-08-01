@@ -65,6 +65,9 @@
     <ClCompile Include="..\Path.cpp">
       <Filter>External Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestEncodeLameMp3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ResourceData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
