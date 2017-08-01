@@ -36,6 +36,12 @@
     <ClInclude Include="..\resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceData.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoCleanupFolder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -55,6 +61,12 @@
     </ClCompile>
     <ClCompile Include="..\Path.cpp">
       <Filter>External Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoCleanupFolder.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
