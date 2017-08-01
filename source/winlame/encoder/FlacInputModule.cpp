@@ -217,6 +217,9 @@ bool FlacInputModule::IsAvailable() const
 
 CString FlacInputModule::GetDescription() const
 {
+   if (m_flacContext == nullptr)
+      return CString();
+
    CString desc;
    desc.Format(IDS_FORMAT_INFO_FLAC_INPUT,
       (m_fileLength << 3 / m_flacContext->totalLengthInMs) / 1000,

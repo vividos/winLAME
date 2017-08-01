@@ -51,6 +51,9 @@ namespace Encoder
       /// returns description of current file
       virtual CString GetDescription() const override;
 
+      /// returns version string; value in special may denote special type of string
+      virtual void GetVersionString(CString& version, int special = 0) const override;
+
       /// returns filter string
       virtual CString GetFilterString() const override;
 

@@ -110,6 +110,9 @@ CString OggVorbisInputModule::GetDescription() const
 {
    const vorbis_info* vi = ov_info(const_cast<OggVorbis_File*>(&m_vf), -1);
 
+   if (vi == nullptr)
+      return CString(); // file not open
+
    CString desc;
    if (vi->bitrate_upper != -1 && vi->bitrate_lower != -1)
    {
@@ -134,6 +137,12 @@ CString OggVorbisInputModule::GetDescription() const
    }
 
    return desc;
+}
+
+void OggVorbisInputModule::GetVersionString(CString& version, int special) const
+{
+   // TODO
+   version = _T("OggVorbis");
 }
 
 CString OggVorbisInputModule::GetFilterString() const

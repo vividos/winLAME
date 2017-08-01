@@ -61,7 +61,8 @@ bool SpeexInputModule::IsAvailable() const
 
 CString SpeexInputModule::GetDescription() const
 {
-   ATLASSERT(m_header != nullptr);
+   if (m_header == nullptr)
+      return CString();
 
    CString desc;
    desc.Format(IDS_FORMAT_INFO_SPEEX_INPUT,

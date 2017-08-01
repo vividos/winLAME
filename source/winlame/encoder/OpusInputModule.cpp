@@ -55,7 +55,8 @@ bool OpusInputModule::IsAvailable() const
 
 CString OpusInputModule::GetDescription() const
 {
-   ATLASSERT(m_inputFile != nullptr);
+   if (m_inputFile == nullptr)
+      return CString();
 
    const OpusHead* header = op_head(m_inputFile.get(), 0);
 
