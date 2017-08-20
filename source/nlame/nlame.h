@@ -1,13 +1,13 @@
 /*
    nlame - an alternative API for libmp3lame
-   copyright (c) 2001-2014 Michael Fink
+   copyright (c) 2001-2017 Michael Fink
    Copyright (c) 2004 DeXT
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
    License as published by the Free Software Foundation; either
    version 2.1 of the License, or (at your option) any later version.
-  
+
    This library is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -43,6 +43,7 @@
       nle_var_find_replay_gain
       nle_var_decode_on_the_fly
       nle_var_framesize
+
     Version 2: introduced on 2006-03-01
       The nlame_encode_buffer_interleaved() function can now also handle the
       nle_buffer_int buffer type.
@@ -65,6 +66,10 @@
       nlame_id3tag_setfield_ucs2
       nlame_id3tag_set_albumart
       nlame_id3tag_get_id3v2_tag
+
+    Version 6: introduced on 2017-08-20
+      The following new variable values were added:
+      nle_var_is_avail_encode_buffer_interleaved_int
 
 */
 /*! \defgroup nlame nlame Documentation
@@ -377,6 +382,10 @@ typedef enum
        be requested using nlame_id3tag_get_id3v2_tag(). */
    nle_var_id3tag_write_automatic = 51,
 
+   /*! when 1, nlame_encode_buffer_interleaved() can be used with the
+       nlame_encode_buffer_type of nle_buffer_int. */
+   nle_var_is_avail_encode_buffer_interleaved_int = 52,
+
 } nlame_var_int_type;
 
 
@@ -671,7 +680,7 @@ int nlame_get_api_version();
     actually using is new enough to support the features you need. See
     the version history at the beginning of this file.
 */
-#define NLAME_CURRENT_API_VERSION 5
+#define NLAME_CURRENT_API_VERSION 6
 
 
 

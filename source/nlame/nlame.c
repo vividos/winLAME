@@ -7,7 +7,7 @@
    modify it under the terms of the GNU Lesser General Public
    License as published by the Free Software Foundation; either
    version 2.1 of the License, or (at your option) any later version.
-  
+
    This library is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -32,6 +32,8 @@
 #include "lame.h"
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
+#include <windows.h>
 
 /*! sets id3 tag text info as UCS-2 value; not declared by lame.h, but exported from the
     library, so we declare it here. */
@@ -49,6 +51,22 @@ typedef enum
 
 } nlame_quality_value;
 
+
+int is_avail_lame_encode_buffer_interleaved_int()
+{
+   static int is_avail = -1;
+
+   if (is_avail == -1)
+   {
+      HMODULE module = GetModuleHandle("libmp3lame.dll");
+
+      is_avail =
+         (module != NULL &&
+         GetProcAddress(module, "lame_encode_buffer_interleaved_int") != NULL) ? 1 : 0;
+   }
+
+   return is_avail;
+}
 
 
 /* nlame API functions */
@@ -370,6 +388,9 @@ int nlame_var_get_int(nlame_instance_t* inst, nlame_var_int_type type)
 
       nlame_var_get_switch_type(nle_var_framesize,framesize);
       nlame_var_get_switch_type(nle_var_id3tag_write_automatic,write_id3tag_automatic);
+      case nle_var_is_avail_encode_buffer_interleaved_int:
+         val = is_avail_lame_encode_buffer_interleaved_int();
+         break;
    }
    return val;
 }
@@ -500,13 +521,11 @@ int nlame_encode_buffer_interleaved( nlame_instance_t* inst,
       break;
 
    case nle_buffer_int:
-      /* Note: The function lame_encode_buffer_interleaved_int doesn't exist
-       * in LAME yet; see patch https://sourceforge.net/p/lame/patches/27/
-       * Once the patch is integrated (which may never happen) and LAME
-       * releases a new version (which may never happen), the lines can
-       * again be used to encode interleaved 32-bit samples.
+      assert(is_avail_lame_encode_buffer_interleaved_int());
+
       ret = lame_encode_buffer_interleaved_int(inst->lgf,
-        (int*)buffer,nsamples,mp3buf,mp3buf_size); */
+         (int*)buffer, nsamples, mp3buf, mp3buf_size);
+
       break;
    }
    return ret;
