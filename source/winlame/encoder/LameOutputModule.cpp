@@ -204,16 +204,14 @@ int LameOutputModule::InitOutput(LPCTSTR outfilename,
    int bitsPerSample = 16;
    m_bufferType = nle_buffer_short;
 
-   // beginning with version 2 of the nLAME API, the encoder can handle 32-bit
+   // beginning with version 6 of the nLAME API, the encoder really can handle 32-bit
    // input samples
-   if (nlame_get_api_version() >= 2 && samples.GetInputModuleBitsPerSample() > 16)
+   if (samples.GetInputModuleBitsPerSample() > 16 &&
+      nlame_get_api_version() >= 6 &&
+      nlame_var_get_int(m_instance, nle_var_is_avail_encode_buffer_interleaved_int) == 1)
    {
-      // Note: This code is currently off, since LAME doesn't export the
-      // function lame_encode_buffer_interleaved_int() that would be needed
-      // for 32-bit sample encoding. See also comment in nlame project, in
-      // function nlame_encode_buffer_interleaved().
-      //bitsPerSample=32;
-      //m_bufferType = nle_buffer_int;
+      bitsPerSample = 32;
+      m_bufferType = nle_buffer_int;
    }
 
    samples.SetOutputModuleTraits(bitsPerSample, SamplesInterleaved);
