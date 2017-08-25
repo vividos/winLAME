@@ -21,12 +21,12 @@
 
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include "IoCContainer.hpp"
+#include <ulib/IoCContainer.hpp>
 #include "LameNogapInstanceManager.hpp"
-#include "Path.hpp"
-#include "AutoCleanupFolder.hpp"
+#include <ulib/Path.hpp>
+#include <ulib/unittest/AutoCleanupFolder.hpp>
 #include "resource_unittest.h"
-#include "ResourceData.hpp"
+#include <ulib/win32/ResourceData.hpp>
 #include "EncoderImpl.hpp"
 #include "ModuleManager.hpp"
 #include "ModuleManagerImpl.hpp"
@@ -66,7 +66,7 @@ namespace unittest
 
          UnitTest::AutoCleanupFolder folder;
 
-         CString filename = Path::Combine(folder.FolderName(), _T("sample.mp3"));
+         CString filename = Path::Combine(folder.FolderName(), _T("sample.mp3")).ToString();
          data.AsFile(filename);
 
          // encode file

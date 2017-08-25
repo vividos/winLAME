@@ -31,9 +31,9 @@
 // switch off some /analyze warnings
 #pragma warning(disable: 6031) // Return value ignored : 'CString::LoadString'
 
-#include "Win32.hpp"
-#include "Atl.hpp"
-#include "Wtl.hpp"
+#include <ulib/config/Win32.hpp>
+#include <ulib/config/Atl.hpp>
+#include <ulib/config/Wtl.hpp>
 
 // undefine macros so that std::min and std::max can be used
 #undef min
@@ -43,8 +43,8 @@
 #include "Boost.hpp"
 
 // winLAME includes
-#include "IoCContainer.hpp"
-#include "Path.hpp"
+#include <ulib/IoCContainer.hpp>
+#include <ulib/Path.hpp>
 #include "ModuleManager.hpp"
 #include "encoder/ModuleInterface.hpp"
 #include "ui/WizardPage.hpp"

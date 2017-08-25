@@ -25,7 +25,7 @@
 #include "resource.h"
 #include "AacOutputModule.hpp"
 #include "neaacdec.h"
-#include "DynamicLibrary.hpp"
+#include <ulib/DynamicLibrary.hpp>
 
 using Encoder::AacOutputModule;
 using Encoder::TrackInfo;

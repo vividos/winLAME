@@ -280,9 +280,6 @@
     <ClCompile Include="ui\FinishPage.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Path.cpp">
-      <Filter>Main Program Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ui\FixedValueSpinButtonCtrl.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
@@ -337,13 +334,7 @@
     <ClCompile Include="encoder\CDReadoutModule.cpp">
       <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UTF8.cpp">
-      <Filter>Main Program Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TaskCreationHelper.cpp">
-      <Filter>Main Program Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CrashReporter.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="encoder\LameNogapInstanceManager.cpp">
@@ -396,9 +387,6 @@
     <ClInclude Include="preset\PropertyListBox.h">
       <Filter>Preset Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IoCContainer.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LangCountryMapper.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
@@ -440,9 +428,6 @@
     </ClInclude>
     <ClInclude Include="ui\AboutDlg.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Path.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\AlternateColorsListCtrl.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
@@ -600,9 +585,6 @@
     <ClInclude Include="encoder\CDReadoutModule.hpp">
       <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UTF8.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="encoder\ModuleBase.hpp">
       <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
@@ -645,28 +627,13 @@
     <ClInclude Include="TaskManagerConfig.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Win32.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Wtl.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Atl.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="App.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CDRipDiscInfo.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DynamicLibrary.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HtmlHelper.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IniFile.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InputFilesParser.hpp">
@@ -753,9 +720,6 @@
     <ClInclude Include="classic\CommonStuff.hpp">
       <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CrashReporter.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="encoder\LameNogapInstanceManager.hpp">
       <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
@@ -773,9 +737,6 @@
     </ClInclude>
     <ClInclude Include="classic\AacSettingsPageClassic.hpp">
       <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Thread.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -805,6 +766,7 @@
     <None Include="res\MainFrameRibbon.bml">
       <Filter>Modern UI Files\Resource Files\Generated Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="winlame.rc">

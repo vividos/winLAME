@@ -23,8 +23,8 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "BassWmaOutputModule.hpp"
-#include "DynamicLibrary.hpp"
-#include "UTF8.hpp"
+#include <ulib/DynamicLibrary.hpp>
+#include <ulib/UTF8.hpp>
 #include "App.hpp"
 #include <wmsdk.h> // for WM_PICTURE
 

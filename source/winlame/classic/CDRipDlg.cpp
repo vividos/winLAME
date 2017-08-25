@@ -27,12 +27,12 @@
 #include "encoder/TrackInfo.hpp"
 #include <shellapi.h>
 #include <atlctrlx.h> // CWaitCursor
-#include "DynamicLibrary.hpp"
-#include "IniFile.hpp"
+#include <ulib/DynamicLibrary.hpp>
+#include <ulib/win32/IniFile.hpp>
 #include "App.hpp"
 #include "FreedbInfo.hpp"
 #include "FreeDbDiscListDlg.hpp"
-#include "UTF8.hpp"
+#include <ulib/UTF8.hpp>
 #include "CoverArtArchive.hpp"
 #include "CoverArtDlg.hpp"
 #include "App.hpp"
@@ -414,7 +414,7 @@ bool CDRipDlg::ReadCachedCDDB(bool& bVarious)
 bool CDRipDlg::ReadCdplayerIni(bool& bVarious)
 {
    // retrieve info from cdplayer.ini
-   CString cszCDPlayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini"));
+   CString cszCDPlayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini")).ToString();
 
    DWORD nDrive = GetCurrentDrive();
 
@@ -658,7 +658,7 @@ void CDRipDlg::StoreInCdplayerIni(unsigned int nDrive)
    if (!m_uiSettings.store_disc_infos_cdplayer_ini)
       return;
 
-   CString cszCDPlayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini"));
+   CString cszCDPlayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini")).ToString();
 
    const char* cdplayer_id_raw = BASS_CD_GetID(nDrive, BASS_CDID_CDPLAYER);
 

@@ -21,7 +21,7 @@
 //
 #include "StdAfx.h"
 #include "CreatePlaylistTask.hpp"
-#include "Path.hpp"
+#include <ulib/Path.hpp>
 
 using Encoder::CreatePlaylistTask;
 

@@ -24,8 +24,8 @@
 
 #pragma once
 
-#include "..\Win32.hpp"
-#include "..\Atl.hpp"
+#include <ulib/config/Win32.hpp>
+#include <ulib/config/Atl.hpp>
 
 // undefine macros so that std::min and std::max can be used
 #undef min

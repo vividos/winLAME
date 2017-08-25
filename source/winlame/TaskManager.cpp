@@ -24,7 +24,7 @@
 #include "TaskManager.hpp"
 #include "CDExtractTask.hpp"
 #include "Task.hpp"
-#include "Thread.hpp"
+#include <ulib/thread/Thread.hpp>
 #include <boost/foreach.hpp>
 #include <boost/bind.hpp>
 #include <algorithm>

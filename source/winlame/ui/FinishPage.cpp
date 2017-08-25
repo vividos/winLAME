@@ -22,7 +22,7 @@
 #include "StdAfx.h"
 #include "FinishPage.hpp"
 #include "WizardPageHost.hpp"
-#include "IoCContainer.hpp"
+#include <ulib/IoCContainer.hpp>
 #include "PresetSelectionPage.hpp"
 #include "OutputSettingsPage.hpp"
 #include "UISettings.hpp"

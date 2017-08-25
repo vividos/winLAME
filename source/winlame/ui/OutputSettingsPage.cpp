@@ -22,7 +22,7 @@
 #include "StdAfx.h"
 #include "OutputSettingsPage.hpp"
 #include "WizardPageHost.hpp"
-#include "IoCContainer.hpp"
+#include <ulib/IoCContainer.hpp>
 #include "UISettings.hpp"
 #include "InputFilesPage.hpp"
 #include "InputCDPage.hpp"

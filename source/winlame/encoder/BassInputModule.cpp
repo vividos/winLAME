@@ -26,8 +26,8 @@
 #include "BassInputModule.hpp"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "DynamicLibrary.hpp"
-#include "UTF8.hpp"
+#include <ulib/DynamicLibrary.hpp>
+#include <ulib/UTF8.hpp>
 
 using Encoder::BassInputModule;
 using Encoder::TrackInfo;

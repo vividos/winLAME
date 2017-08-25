@@ -25,7 +25,7 @@
 #include "stdafx.h"
 #include "PresetManagerImpl.h"
 #include "PropertyDlg.h"
-#include "UTF8.hpp"
+#include <ulib/UTF8.hpp>
 #include <fstream>
 
 std::tstring convertFromUtf8(const std::string& text)

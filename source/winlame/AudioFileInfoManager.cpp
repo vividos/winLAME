@@ -22,6 +22,7 @@
 #include "stdafx.h"
 #include "AudioFileInfoManager.hpp"
 #include "ModuleManager.hpp"
+#include <boost/ref.hpp>
 
 AudioFileInfoManager::AudioFileInfoManager()
    :m_ioService(1), // one thread max.

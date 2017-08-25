@@ -84,7 +84,6 @@
     <ClCompile Include="CDRipTitleFormatManager.cpp" />
     <ClCompile Include="CommandLineParser.cpp" />
     <ClCompile Include="CoverArtArchive.cpp" />
-    <ClCompile Include="CrashReporter.cpp" />
     <ClCompile Include="encoder\AacInputModule.cpp" />
     <ClCompile Include="encoder\AacOutputModule.cpp" />
     <ClCompile Include="encoder\BassInputModule.cpp" />
@@ -150,7 +149,6 @@
     <ClCompile Include="classic\OpusSettingsPage_old.cpp" />
     <ClCompile Include="classic\OutputPage.cpp" />
     <ClCompile Include="classic\PresetsPage.cpp" />
-    <ClCompile Include="Path.cpp" />
     <ClCompile Include="AudioFileInfoManager.cpp" />
     <ClCompile Include="TaskCreationHelper.cpp" />
     <ClCompile Include="ui\AACSettingsPage.cpp" />
@@ -187,7 +185,6 @@
     </ClCompile>
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="UISettings.cpp" />
-    <ClCompile Include="UTF8.cpp" />
     <ClCompile Include="VariableManager.cpp" />
     <ClCompile Include="winlame.cpp" />
     <ClCompile Include="ui\CDReadSettingsPage.cpp" />
@@ -199,14 +196,12 @@
     <ClCompile Include="ui\WizardPageHost.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Atl.hpp" />
     <ClInclude Include="Boost.hpp" />
     <ClInclude Include="CDRipDiscInfo.hpp" />
     <ClInclude Include="CDRipTitleFormatManager.hpp" />
     <ClInclude Include="CDRipTrackInfo.hpp" />
     <ClInclude Include="CommandLineParser.hpp" />
     <ClInclude Include="CoverArtArchive.hpp" />
-    <ClInclude Include="CrashReporter.hpp" />
     <ClInclude Include="encoder\AacInputModule.hpp" />
     <ClInclude Include="encoder\AacOutputModule.hpp" />
     <ClInclude Include="encoder\AlwaysSkipErrorHandler.hpp" />
@@ -253,7 +248,6 @@
     <ClInclude Include="encoder\aacinfo\filestream.h" />
     <ClInclude Include="FreedbInfo.hpp" />
     <ClInclude Include="HttpClient.hpp" />
-    <ClInclude Include="IniFile.hpp" />
     <ClInclude Include="InputFilesParser.hpp" />
     <ClInclude Include="classic\AacSettingsPageClassic.hpp" />
     <ClInclude Include="classic\CDRipDlg.hpp" />
@@ -272,10 +266,8 @@
     <ClInclude Include="classic\PageBase.hpp" />
     <ClInclude Include="classic\PresetsPage.hpp" />
     <ClInclude Include="classic\SystemTrayIcon.hpp" />
-    <ClInclude Include="Path.hpp" />
     <ClInclude Include="StdCppLib.hpp" />
     <ClInclude Include="TaskCreationHelper.hpp" />
-    <ClInclude Include="Thread.hpp" />
     <ClInclude Include="TrackEditListCtrl.hpp" />
     <ClInclude Include="AudioFileInfoManager.hpp" />
     <ClInclude Include="ui\AACSettingsPage.hpp" />
@@ -306,9 +298,7 @@
     <ClInclude Include="preset\PropertyListBox.h" />
     <ClInclude Include="App.hpp" />
     <ClInclude Include="CDRipTrackManager.hpp" />
-    <ClInclude Include="DynamicLibrary.hpp" />
     <ClInclude Include="EncoderInterface.hpp" />
-    <ClInclude Include="IoCContainer.hpp" />
     <ClInclude Include="LangCountryMapper.hpp" />
     <ClInclude Include="LanguageResourceManager.hpp" />
     <ClInclude Include="ModuleManager.hpp" />
@@ -321,7 +311,6 @@
     <ClInclude Include="TaskManagerConfig.hpp" />
     <ClInclude Include="UIinterface.hpp" />
     <ClInclude Include="UISettings.hpp" />
-    <ClInclude Include="UTF8.hpp" />
     <ClInclude Include="VariableManager.hpp" />
     <ClInclude Include="res\MainFrameRibbon.h" />
     <ClInclude Include="resource.h" />
@@ -334,8 +323,6 @@
     <ClInclude Include="ui\TasksView.hpp" />
     <ClInclude Include="ui\WizardPage.hpp" />
     <ClInclude Include="ui\WizardPageHost.hpp" />
-    <ClInclude Include="Win32.hpp" />
-    <ClInclude Include="Wtl.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\btnicons.bmp" />
@@ -346,6 +333,7 @@
     <Image Include="res\winlame.ico" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="res\about.html" />
     <None Include="res\MainFrameRibbon.bml" />
   </ItemGroup>
@@ -394,5 +382,12 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets" Condition="Exists('..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets'))" />
+  </Target>
 </Project>

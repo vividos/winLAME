@@ -79,24 +79,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\Path.hpp" />
     <ClInclude Include="..\resource.h" />
     <ClInclude Include="..\SettingsManager.hpp" />
-    <ClInclude Include="..\UTF8.hpp" />
     <ClInclude Include="..\VariableManager.hpp" />
-    <ClInclude Include="AutoCleanupFolder.hpp" />
-    <ClInclude Include="ResourceData.hpp" />
     <ClInclude Include="resource_unittest.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Path.cpp" />
     <ClCompile Include="..\SettingsManager.cpp" />
-    <ClCompile Include="..\UTF8.cpp" />
     <ClCompile Include="..\VariableManager.cpp" />
-    <ClCompile Include="AutoCleanupFolder.cpp" />
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="ResourceData.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -129,8 +121,16 @@
     <None Include="Jungle_S-RepaidGa-10582_hifi.mp3">
       <FileType>Document</FileType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets" Condition="Exists('..\..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets'))" />
+  </Target>
 </Project>

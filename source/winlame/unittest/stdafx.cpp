@@ -22,6 +22,7 @@
 /// stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
+#include <ulib/config/Wtl.hpp>
 #include "App.hpp"
 #include "CDRipTrackManager.hpp"
 

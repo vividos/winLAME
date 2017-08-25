@@ -26,7 +26,7 @@
 #include "AacInputModule.hpp"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "DynamicLibrary.hpp"
+#include <ulib/DynamicLibrary.hpp>
 
 using Encoder::AacInputModule;
 using Encoder::TrackInfo;

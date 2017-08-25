@@ -27,8 +27,9 @@
 #include "encoder/ModuleManagerImpl.hpp"
 #include "encoder/LameNogapInstanceManager.hpp"
 #include "CommonStuff.hpp"
-#include "CrashReporter.hpp"
+#include <ulib/CrashReporter.hpp>
 #include "CrashSaveResultsDlg.hpp"
+#include <boost/ref.hpp>
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -122,7 +123,7 @@ App::~App()
 void App::InitCrashReporter()
 {
    // local app-data, non-roaming
-   CString folder = Path::Combine(Path::SpecialFolder(CSIDL_LOCAL_APPDATA), _T("winLAME"));
+   CString folder = Path::Combine(Path::SpecialFolder(CSIDL_LOCAL_APPDATA), _T("winLAME")).ToString();
 
    if (!Path(folder).FolderExists())
       CreateDirectory(folder, nullptr);
@@ -300,7 +301,7 @@ void App::LoadPresetFile()
    machineWideAppFolder = Path::Combine(machineWideAppFolder, _T("winLAME")).ToString();
 
    // first, check if user has left a presets.xml around in the .exe folder
-   CString presetFilename = Path::Combine(AppFolder(), _T("presets.xml"));
+   CString presetFilename = Path::Combine(AppFolder(), _T("presets.xml")).ToString();
 
    if (!Path(presetFilename).FileExists())
    {

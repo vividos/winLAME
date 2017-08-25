@@ -24,9 +24,9 @@
 
 #pragma once
 
-#include "..\Win32.hpp"
-#include "..\Atl.hpp"
-#include "..\Wtl.hpp"
+#include <ulib/config/Win32.hpp>
+#include <ulib/config/Atl.hpp>
+#include <ulib/config/Wtl.hpp>
 
 // undefine macros so that std::min and std::max can be used
 #undef min
@@ -36,7 +36,7 @@
 #include "..\Boost.hpp"
 
 // winLAME includes
-#include "IoCContainer.hpp"
-#include "Path.hpp"
+#include <ulib/IoCContainer.hpp>
+#include <ulib/Path.hpp>
 
 #pragma warning(disable: 4100) // unreferenced formal parameter

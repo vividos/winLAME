@@ -24,23 +24,11 @@
     <ClInclude Include="..\SettingsManager.hpp">
       <Filter>External Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\UTF8.hpp">
-      <Filter>External Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\VariableManager.hpp">
-      <Filter>External Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Path.hpp">
       <Filter>External Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\resource.h">
       <Filter>Resource Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceData.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AutoCleanupFolder.hpp">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource_unittest.h">
       <Filter>Resource Files</Filter>
@@ -56,22 +44,10 @@
     <ClCompile Include="..\SettingsManager.cpp">
       <Filter>External Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\UTF8.cpp">
-      <Filter>External Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\VariableManager.cpp">
       <Filter>External Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Path.cpp">
-      <Filter>External Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TestEncodeLameMp3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AutoCleanupFolder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
@@ -90,5 +66,6 @@
     <None Include="Jungle_S-RepaidGa-10582_hifi.mp3">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

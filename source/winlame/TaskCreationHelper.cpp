@@ -264,7 +264,7 @@ void TaskCreationHelper::AddCDExtractTasks()
          CString inputFilenameFromTitle =
             Path::Combine(
                Path(cdReadJob.OutputFilename()).FolderName(),
-               titleFilename + _T(".wav"));
+               titleFilename + _T(".wav")).ToString();
 
          cdReadJob.OutputFilename(spEncoderTask->GenerateOutputFilename(inputFilenameFromTitle));
 
@@ -313,7 +313,7 @@ void TaskCreationHelper::AddPlaylistTask()
    TaskManager& taskMgr = IoCContainer::Current().Resolve<TaskManager>();
 
    CString playlistFilename =
-      Path::Combine(m_uiSettings.m_defaultSettings.outputdir, m_uiSettings.playlist_filename);
+      Path::Combine(m_uiSettings.m_defaultSettings.outputdir, m_uiSettings.playlist_filename).ToString();
 
    std::shared_ptr<Task> spTask;
    if (m_uiSettings.m_bFromInputFilesPage)

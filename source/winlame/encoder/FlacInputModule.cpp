@@ -27,7 +27,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "FLAC/metadata.h"
-#include "DynamicLibrary.hpp"
+#include <ulib/DynamicLibrary.hpp>
 
 using Encoder::FlacInputModule;
 using Encoder::TrackInfo;

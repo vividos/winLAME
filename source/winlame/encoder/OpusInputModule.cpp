@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "OpusInputModule.hpp"
 #include "resource.h"
-#include "UTF8.hpp"
+#include <ulib/UTF8.hpp>
 
 using Encoder::OpusInputModule;
 using Encoder::TrackInfo;

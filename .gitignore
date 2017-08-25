@@ -58,3 +58,4 @@ buildtools/SonarQube/sonar-scanner-msbuild/
 .sonarqube/
 bw-output/
 .vs/
+packages/

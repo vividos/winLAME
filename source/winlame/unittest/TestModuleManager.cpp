@@ -24,7 +24,7 @@
 #include "ModuleInterface.hpp"
 #include "ModuleManager.hpp"
 #include "ModuleManagerImpl.hpp"
-#include "IoCContainer.hpp"
+#include <ulib/IoCContainer.hpp>
 #include "LameNogapInstanceManager.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
