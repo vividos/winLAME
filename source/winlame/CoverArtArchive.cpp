@@ -183,7 +183,10 @@ bool CoverArtArchive::ImageFromJpegByteArray(const std::vector<unsigned char>& d
 
    LPBYTE lpByte = (LPBYTE)::GlobalLock(hGlobal);
    if (lpByte == nullptr)
+   {
+      GlobalFree(hGlobal);
       return false;
+   }
 
    CopyMemory(lpByte, data.data(), data.size());
    ::GlobalUnlock(hGlobal);
