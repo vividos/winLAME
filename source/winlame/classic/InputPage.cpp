@@ -499,9 +499,9 @@ void InputPage::InsertFilename(LPCTSTR filename)
 
       CString cszTemp;
       cszTemp.Format(IDS_INPUT_ERROR_OPEN_INPUT_FILE_SSS,
-         !input_errors.IsEmpty() ? _T("") : cszFirstText,
+         !input_errors.IsEmpty() ? _T("") : cszFirstText.GetString(),
          filename,
-         errormsg);
+         errormsg.GetString());
 
       input_errors += cszTemp;
       return;

@@ -84,7 +84,7 @@ CString BassInputModule::GetDescription() const
       typeBassFileStream.LoadString(IDS_FORMAT_INFO_BASS_FILESTREAM);
 
       desc.Format(IDS_FORMAT_INFO_BASS_INPUT_AUDIO,
-         typeBassFileStream,
+         typeBassFileStream.GetString(),
          m_bitrateInBps,
          m_channelInfo.freq,
          m_channelInfo.chans);

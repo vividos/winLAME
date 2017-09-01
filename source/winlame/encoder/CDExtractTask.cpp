@@ -61,7 +61,7 @@ TaskInfo CDExtractTask::GetTaskInfo()
    CString desc;
    desc.Format(IDS_CDEXTRACT_DESC_US,
       m_trackinfo.m_numTrackOnDisc,
-      m_title);
+      m_title.GetString());
    info.Description(desc);
 
    info.Status(
@@ -159,7 +159,7 @@ bool CDExtractTask::ExtractTrack(const CString& tempFilename)
       if (ret < 0)
       {
          CString text;
-         text.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, tempFilename);
+         text.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, tempFilename.GetString());
          SetTaskError(text);
          return false;
       }

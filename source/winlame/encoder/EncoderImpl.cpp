@@ -500,7 +500,11 @@ void EncoderImpl::FormatEncodingDescription()
       m_sampleContainer.GetOutputModuleBitsPerSample());
 #endif
 
-   m_encoderState.m_encodingDescription.Format(IDS_ENCODER_ENCODE_INFO, inputDescription, containerInfo, outputDescription);
+   m_encoderState.m_encodingDescription.Format(
+      IDS_ENCODER_ENCODE_INFO,
+      inputDescription.GetString(),
+      containerInfo.GetString(),
+      outputDescription.GetString());
 }
 
 CString GetLastErrorString()

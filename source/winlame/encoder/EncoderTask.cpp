@@ -111,7 +111,7 @@ void EncoderTask::AddErrorText()
       if (isFirst)
       {
          errorText.Format(IDS_ENCODER_ERROR_ERRORINFO_FILENAME_S,
-            info.m_inputFilename);
+            info.m_inputFilename.GetString());
 
          isFirst = false;
       }
@@ -119,8 +119,8 @@ void EncoderTask::AddErrorText()
       errorText.Append(_T("\r\n"));
 
       errorText.AppendFormat(IDS_ENCODER_ERROR_ERRORINFO_SSI,
-         info.m_moduleName,
-         info.m_errorMessage,
+         info.m_moduleName.GetString(),
+         info.m_errorMessage.GetString(),
          info.m_errorNumber);
    });
 

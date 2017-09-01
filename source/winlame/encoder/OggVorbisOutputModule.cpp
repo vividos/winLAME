@@ -93,7 +93,7 @@ CString OggVorbisOutputModule::GetDescription() const
          static_cast<unsigned int>((fabs(m_baseQuality*10.0) - static_cast<unsigned int>(fabs(m_baseQuality*10.0)))*100.0));
 
       desc.Format(IDS_FORMAT_INFO_OGGV_OUTPUT_QUALITY,
-         quality, m_vi.rate, m_vi.channels);
+         quality.GetString(), m_vi.rate, m_vi.channels);
    }
    break;
 

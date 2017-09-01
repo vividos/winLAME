@@ -318,7 +318,7 @@ bool CDRipPage::ExtractTrack(CDRipDiscInfo& discinfo, CDRipTrackInfo& trackinfo,
       if (nRet < 0)
       {
          CString cszText;
-         cszText.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, tempFilename);
+         cszText.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, tempFilename.GetString());
          AppMessageBox(m_hWnd, cszText, MB_OK | MB_ICONSTOP);
          return false;
       }
