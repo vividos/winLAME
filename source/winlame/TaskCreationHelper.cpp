@@ -312,8 +312,10 @@ void TaskCreationHelper::AddPlaylistTask()
 {
    TaskManager& taskMgr = IoCContainer::Current().Resolve<TaskManager>();
 
+   CString playlistOutputFolder = m_uiSettings.m_defaultSettings.outputdir;
+
    CString playlistFilename =
-      Path::Combine(m_uiSettings.m_defaultSettings.outputdir, m_uiSettings.playlist_filename).ToString();
+      Path::Combine(playlistOutputFolder, m_uiSettings.playlist_filename).ToString();
 
    std::shared_ptr<Task> spTask;
    if (m_uiSettings.m_bFromInputFilesPage)
