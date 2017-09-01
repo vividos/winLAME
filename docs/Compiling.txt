@@ -1,48 +1,31 @@
 Compiling tips for winlame
 --------------------------
 
-getting source
+Getting source
 --------------
 
-compiling winlame should be fairly easy. Just download the latest source
+Compiling winlame should be fairly easy. Just download the latest source
 package from the developer page at sourceforge, located at
 
   http://sourceforge.net/projects/winlame/
 
-or, if you want the latest source code, download the daily CVS tarball:
+or, if you want the latest source code, clone the Git repository:
 
-  http://cvs.sourceforge.net/cvstarballs/winlame-cvsroot.tar.gz
-
-but note, that compiling this may not work, as the CVS tree is always under
-development.
-
-to successfully run winlame you need some DLL's, which are located in the latest
-binary release. just copy all DLL's in the output/debug or output/release folder.
+  git clone git://git.code.sf.net/p/winlame/code winlame-code
 
 
-extracting
-----------
-
-just extract the winlame source code zip file to any directory you please.
-
-
-compiling
+Compiling
 ---------
 
-start the visual studio and load the workspace file. choose the winlame
-project as the current project, choose a build target, either "Win32 Debug"
-or "Win32 Release" and press F7, select "Build -> Rebuild All" or any other
+Start Visual Studio and load the solution (.sln) file. Choose the winLAME
+project as the start up project, choose a build target, either "Debug"
+or "Release" and press F7, select "Build -> Rebuild All" or any other
 method to compile the current project.
 
-compiling the HTML help file is done via a separate batch file located in the
-sources/htmlhelp folder, called buildhelp.bat.
-note that compiling the HTML help file requires the full HTML help workshop
+Note that compiling the HTML help file requires the full HTML help workshop
 installed, which should be available at
 
   http://msdn.microsoft.com/library/en-us/htmlhelp/html/htmlhelp.exe
 
-misc.
------
-
-all output (object files, intermediate files and so on) will be put into sub
-folders of the output folder.
+All output (object files, intermediate files and so on) will be put into sub
+folders of the main folder.

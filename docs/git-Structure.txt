@@ -1,0 +1,50 @@
+Structure of the winLAME repository
+-----------------------------------
+
+This file describes the folder structure of the Git repository of winLAME.
+
+Folder
+------
+
+The following folders should be there when get winLAME using "git clone":
+
+winlame\docs
+
+  Contains documentation files, such as this file, technical documents or
+  other docs.
+
+winlame\buildtools
+
+  Contains buildtools needed for building winLAME. among them are the HTML
+  help compiler, SonarQube tools and the PortableApps installer.
+
+winlame\bin, winlame\lib, winlame\intermediate
+
+  These folders don't exist in the repository, but will be created in your
+  working copy when you compile.
+
+winlame\source
+
+  Contains the source files used by winLAME. Contains all project files
+  (*.vcxproj) and various scripts to create a build.
+
+Let's take a deeper look at this folder:
+
+winlame\source\htmlhelp
+
+  Contains files for the HTML help file, the project, table of contents and
+  index file. Contains the subfolder "html" in which all html and png's reside.
+
+winlame\source\libraries
+
+   contains include header and lib files for the third-party libraries.
+
+winlame\source\winlame
+
+   Contains the files for the winLAME UI. Has a folder "res" which contains
+   the binary resource files used, a folder "encoder" containing the encoder
+   backend and the folder "preset" for the preset management.
+
+winlame\source\nlame
+
+   Contains code of the nlame API that wraps the normal LAME API.
