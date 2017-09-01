@@ -12,9 +12,6 @@ platform: Win32
 
 configuration: Release
 
-before_build:
-- cmd: powershell .\Boost-Get.ps1
-
 build:
   project: winlame.sln
   parallel: true
