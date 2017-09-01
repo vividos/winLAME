@@ -49,7 +49,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl />
     <ClCompile>
-      <AdditionalIncludeDirectories>.;encoder;ui;classic;res;..\libraries\include;..\nlame;..\libraries\include\wtl;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;encoder;ui;classic;res;..\libraries\include;..\nlame;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalOptions>-Zm140 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -66,7 +66,7 @@
     <Midl />
     <ClCompile>
       <AdditionalOptions>/IGNORE:4049 -Zm140 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalIncludeDirectories>.;encoder;ui;classic;res;..\libraries\include;..\nlame;..\libraries\include\wtl;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;encoder;ui;classic;res;..\libraries\include;..\nlame;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <ResourceCompile />
@@ -382,6 +382,8 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets" Condition="Exists('..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets')" />
     <Import Project="..\..\packages\boost.1.65.0.0\build\native\boost.targets" Condition="Exists('..\..\packages\boost.1.65.0.0\build\native\boost.targets')" />
+    <Import Project="..\..\packages\wtl.9.1.1\build\native\wtl.targets" Condition="Exists('..\..\packages\wtl.9.1.1\build\native\wtl.targets')" />
+    <Import Project="..\..\packages\boost_system-vc140.1.65.0.0\build\native\boost_system-vc140.targets" Condition="Exists('..\..\packages\boost_system-vc140.1.65.0.0\build\native\boost_system-vc140.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -389,5 +391,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets'))" />
     <Error Condition="!Exists('..\..\packages\boost.1.65.0.0\build\native\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\boost.1.65.0.0\build\native\boost.targets'))" />
+    <Error Condition="!Exists('..\..\packages\wtl.9.1.1\build\native\wtl.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\wtl.9.1.1\build\native\wtl.targets'))" />
+    <Error Condition="!Exists('..\..\packages\boost_system-vc140.1.65.0.0\build\native\boost_system-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\boost_system-vc140.1.65.0.0\build\native\boost_system-vc140.targets'))" />
   </Target>
 </Project>

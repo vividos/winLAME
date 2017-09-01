@@ -55,7 +55,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\encoder;..;..\..\libraries\include\wtl;..\..\nlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\encoder;..;..\..\nlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -67,7 +67,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\encoder;..;..\..\libraries\include\wtl;..\..\nlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\encoder;..;..\..\nlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -125,6 +125,8 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets" Condition="Exists('..\..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets')" />
     <Import Project="..\..\..\packages\boost.1.65.0.0\build\native\boost.targets" Condition="Exists('..\..\..\packages\boost.1.65.0.0\build\native\boost.targets')" />
+    <Import Project="..\..\..\packages\wtl.9.1.1\build\native\wtl.targets" Condition="Exists('..\..\..\packages\wtl.9.1.1\build\native\wtl.targets')" />
+    <Import Project="..\..\..\packages\boost_system-vc140.1.65.0.0\build\native\boost_system-vc140.targets" Condition="Exists('..\..\..\packages\boost_system-vc140.1.65.0.0\build\native\boost_system-vc140.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -132,5 +134,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Vividos.UlibCpp.Static.4.0.0\build\native\Vividos.UlibCpp.Static.targets'))" />
     <Error Condition="!Exists('..\..\..\packages\boost.1.65.0.0\build\native\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\boost.1.65.0.0\build\native\boost.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\wtl.9.1.1\build\native\wtl.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\wtl.9.1.1\build\native\wtl.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\boost_system-vc140.1.65.0.0\build\native\boost_system-vc140.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\boost_system-vc140.1.65.0.0\build\native\boost_system-vc140.targets'))" />
   </Target>
 </Project>

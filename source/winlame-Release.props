@@ -37,7 +37,6 @@
       <OutputFile>$(SolutionDir)lib\$(Configuration)\$(ProjectName).lib</OutputFile>
     </Lib>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)source\libraries\include\wtl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>

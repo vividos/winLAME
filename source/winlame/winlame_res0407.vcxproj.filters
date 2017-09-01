@@ -16,6 +16,7 @@
     <None Include="res\MainFrameRibbon.0407.bml">
       <Filter>Resource Files\Generated Files</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
