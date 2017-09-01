@@ -33,6 +33,14 @@
 
 #include <ulib/config/Win32.hpp>
 #include <ulib/config/Atl.hpp>
+
+// include atlribbon.h here, to pick up the version that supports Visual Studio 2017
+// this block can be removed once WTL supports this compiler (WTL version > 9.1).
+#define _WTL_NO_CSTRING ///< don't use WTL CString
+#define _WTL_NO_WTYPES ///< don't use WTL types, such as CSize, CRect, etc.
+#include "atlapp.h"
+#include "atlribbon.h"
+
 #include <ulib/config/Wtl.hpp>
 
 // undefine macros so that std::min and std::max can be used
