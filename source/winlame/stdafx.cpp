@@ -17,7 +17,7 @@
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 */
-/// \file stdafx.cpp
+/// \file winlame\stdafx.cpp
 /// \brief source file that includes just the standard includes
 /// winlame.pch will be the pre-compiled header
 /// stdafx.obj will contain the pre-compiled type information
