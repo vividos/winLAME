@@ -24,7 +24,7 @@
 HINSTANCE g_hDllInstance = nullptr;
 
 /// DLL Entry Point
-extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
+extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID /*lpReserved*/)
 {
    if (dwReason == DLL_PROCESS_ATTACH)
       g_hDllInstance = hInstance;
