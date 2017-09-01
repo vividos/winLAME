@@ -6,6 +6,6 @@
 //
 
 noExplicitConstructor:*
-invalidFunctionArg:..\winlame\encoder\SndFileInputModule.cpp
 *:..\winlame\encoder\replaygain\gain_analysis.c
 unusedStructMember:..\winlame\encoder\id3\File.cpp
+*:..\winlame\atlribbon.h

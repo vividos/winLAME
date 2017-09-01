@@ -28,4 +28,10 @@ REM --std=c++11         Language (syntax)%
 REM --enable=all        Enable warnings
 REM --template vs       Output format for warnings
 REM --check-config
-cppcheck.exe ..\winlame -DWIN32 -D_WINDOWS -DNDEBUG -D_UNICODE -D__cplusplus --suppressions-list=cppcheck-suppress.txt -j 4 --platform=win32W --language=c++ --std=c++11 %FORMAT% --enable=all --template vs 2> %OUTFILE%
+cppcheck.exe ..\winlame ^
+   -DWIN32 -D_WINDOWS -DNDEBUG -D_UNICODE -D__cplusplus -D_MSC_VER=1900 ^
+   -D__ATLAPP_H__ -DNTDDI_WIN7=0x06010000 -DNTDDI_VERSION=0x06010000 ^
+   -i ..\winlame\unittest\ ^
+   --suppressions-list=cppcheck-suppress.txt ^
+   --platform=win32W --language=c++ --std=c++11 %FORMAT% --enable=all ^
+   -j 4 --template vs 2> %OUTFILE%
