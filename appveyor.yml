@@ -12,6 +12,9 @@ platform: Win32
 
 configuration: Release
 
+before_build:
+  - nuget restore
+
 build:
   project: winlame.sln
   parallel: true
