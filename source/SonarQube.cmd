@@ -6,7 +6,7 @@ REM
 REM runs SonarQube analysis build
 REM
 
-call "%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\Common7\Tools\vsvars32.bat"
+call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
 
 REM
 REM Extract SonarQube build tools
@@ -14,7 +14,7 @@ REM
 cd ..\buildtools\SonarQube
 
 "%ProgramFiles%\7-Zip\7z.exe" x -y build-wrapper-win-x86.zip
-"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-2.2.0.24.zip
+"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-3.0.2.656.zip
 cd ..\..\source
 
 PATH=%PATH%;%CD%\..\buildtools\SonarQube\build-wrapper-win-x86;%CD%\..\buildtools\SonarQube\sonar-scanner-msbuild
