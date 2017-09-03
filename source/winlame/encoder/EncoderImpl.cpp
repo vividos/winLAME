@@ -26,6 +26,7 @@
 #include <fstream>
 #include "LameOutputModule.hpp"
 #include <sndfile.h>
+#include <ulib/thread/LightweightMutex.hpp>
 
 using namespace Encoder;
 
@@ -40,6 +41,8 @@ EncoderInterface* EncoderInterface::CreateEncoder()
 
 static bool s_warnedAboutLossyTranscoding = false;
 
+/// mutex to protect threads from generating the same output filenames
+static LightweightMutex s_mutexTempOutputFile;
 
 // EncoderImpl methods
 
@@ -426,6 +429,8 @@ bool EncoderImpl::CheckCDExtractDirectCopy()
 
 void EncoderImpl::GenerateTempOutFilename(const CString& originalFilename, CString& tempFilename)
 {
+   LightweightMutex::LockType lock(s_mutexTempOutputFile);
+
    tempFilename = originalFilename;
 
    Path originalPath(originalFilename);
@@ -454,6 +459,11 @@ void EncoderImpl::GenerateTempOutFilename(const CString& originalFilename, CStri
       fileIndex++;
    }
    while (Path(tempFilename).FileExists());
+
+   // create a dummy file so the next thread can't use this filename anymore
+   FILE* fd = _tfopen(tempFilename, _T("wb"));
+   if (fd != nullptr)
+      fclose(fd);
 }
 
 bool EncoderImpl::InitOutputModule(const CString& tempOutputFilename, TrackInfo& trackInfo)
