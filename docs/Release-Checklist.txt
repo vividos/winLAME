@@ -16,6 +16,7 @@ Here's a checklist of what to do before each release:
   * about.????.html
   * docs\License.winLAME.rtf,
   * htmlhelp index page
+  * readme.txt
 - Check all external libraries for updates and update them
 - Check external tools for updates and update them (doxygen, cppcheck)
 - Build all projects in Win32 | Release
@@ -27,7 +28,6 @@ Here's a checklist of what to do before each release:
 - Do a short smoke test, encoding all test files
 - Test portable zip archive by extracting and starting winLAME
 - create winLAME portable with BuildPortable.cmd
-- Test winLAME by starting on VirtualBox XP machine
 - Fix all errors, check them in and push all changes
 - Tag the git repository with tag "winlame-yyyy-beta-z" and push the tag
 - Add a release and upload result .msi file, to releases on sourceforge.net
