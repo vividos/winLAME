@@ -34,7 +34,6 @@ copy libwinpthread-1.dll %TARGET%
 copy libfaac.dll %TARGET%
 copy libfaad2.dll %TARGET%
 copy MACDll.dll %TARGET%
-copy MrCrash.exe %TARGET%
 
 mkdir %ProgramData%\winLAME 2> nul
 copy ..\presets.xml %ProgramData%\winLAME\presets.xml
