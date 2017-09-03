@@ -42,6 +42,7 @@
 # define _FILE_OFFSET_BITS 64
 #endif
 
+#include <limits.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -75,15 +76,30 @@
 #include "lpc.h"
 #include "opus_header.h"
 
+/* Macros for handling potentially large file offsets */
+#if defined WIN32 || defined _WIN32 || defined WIN64 || defined _WIN64
+# define OFF_T __int64
+# define FSEEK _fseeki64
+# define FTELL _ftelli64
+#elif defined HAVE_FSEEKO
+# define OFF_T off_t
+# define FSEEK fseeko
+# define FTELL ftello
+#else
+# define OFF_T long
+# define FSEEK fseek
+# define FTELL ftell
+#endif
+
 /* Macros to read header data */
 #define READ_U32_LE(buf) \
-    (((buf)[3]<<24)|((buf)[2]<<16)|((buf)[1]<<8)|((buf)[0]&0xff))
+    (((unsigned int)(buf)[3]<<24)|((buf)[2]<<16)|((buf)[1]<<8)|((buf)[0]))
 
 #define READ_U16_LE(buf) \
     (((buf)[1]<<8)|((buf)[0]&0xff))
 
 #define READ_U32_BE(buf) \
-    (((buf)[0]<<24)|((buf)[1]<<16)|((buf)[2]<<8)|((buf)[3]&0xff))
+    (((unsigned int)(buf)[0]<<24)|((buf)[1]<<16)|((buf)[2]<<8)|((buf)[3]))
 
 #define READ_U16_BE(buf) \
     (((buf)[0]<<8)|((buf)[1]&0xff))
@@ -293,15 +309,15 @@ int setup_resample(oe_enc_opt *opt, int complexity, long outfreq) {
     rs->resampler = speex_resampler_init(rs->channels, opt->rate, outfreq, complexity, &err);
     if(err!=0)fprintf(stderr, _("resampler error: %s\n"), speex_resampler_strerror(err));
 
-    opt->skip+=speex_resampler_get_output_latency(rs->resampler);
+    speex_resampler_skip_zeros(rs->resampler);
 
     rs->bufs = malloc(sizeof(float) * rs->bufsize * opt->channels);
 
     opt->read_samples = read_resampled;
     opt->readdata = rs;
     if(opt->total_samples_per_channel)
-        opt->total_samples_per_channel = (int)((float)opt->total_samples_per_channel *
-            ((float)outfreq/(float)opt->rate));
+        opt->total_samples_per_channel = (opus_int64)
+            ((double)opt->total_samples_per_channel * ((double)outfreq/(double)opt->rate));
     opt->rate = outfreq;
 
     return 0;

@@ -60,17 +60,17 @@ typedef struct
 } input_format;
 
 typedef struct {
-    short format;
-    short channels;
-    int samplerate;
-    int bytespersec;
-    short align;
-    short samplesize;
+    unsigned short format;
+    unsigned short channels;
+    unsigned int samplerate;
+    unsigned int bytespersec;
+    unsigned short align;
+    unsigned short samplesize;
     unsigned int mask;
 } wav_fmt;
 
 typedef struct {
-    short channels;
+    unsigned short channels;
     short samplesize;
     opus_int64 totalsamples;
     opus_int64 samplesread;
@@ -82,11 +82,11 @@ typedef struct {
 
 typedef struct {
     short channels;
-    opus_int64 totalframes;
+    unsigned int totalframes;
     short samplesize;
-    int rate;
-    int offset;
-    int blocksize;
+    double rate;
+    unsigned int offset;
+    unsigned int blocksize;
 } aiff_fmt;
 
 typedef wavfile aifffile; /* They're the same */

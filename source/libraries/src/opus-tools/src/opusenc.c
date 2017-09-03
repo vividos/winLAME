@@ -98,7 +98,7 @@ static inline int oe_write_page(ogg_page *page, FILE *fp)
 void opustoolsversion(const char *opusversion)
 {
   printf("opusenc %s %s (using %s)\n",PACKAGE_NAME,PACKAGE_VERSION,opusversion);
-  printf("Copyright (C) 2008-2013 Xiph.Org Foundation\n");
+  printf("Copyright (C) 2008-2017 Xiph.Org Foundation\n");
 }
 
 void opustoolsversion_short(const char *opusversion)
@@ -110,125 +110,121 @@ void usage(void)
 {
   printf("Usage: opusenc [options] input_file output_file.opus\n");
   printf("\n");
-  printf("Encodes input_file using Opus.\n");
+  printf("Encode audio using Opus.\n");
 #if defined(HAVE_LIBFLAC)
-  printf("It can read the WAV, AIFF, FLAC, Ogg/FLAC, or raw files.\n");
+  printf("The input format can be Wave, AIFF, FLAC, Ogg/FLAC, or raw PCM.\n");
 #else
-  printf("It can read the WAV, AIFF, or raw files.\n");
+  printf("The input format can be Wave, AIFF, or raw PCM.\n");
 #endif
-  printf("\nGeneral options:\n");
-  printf(" -h, --help         This help\n");
-  printf(" -V, --version      Version information\n");
-  printf(" --quiet            Quiet mode\n");
-  printf("\n");
-  printf("input_file can be:\n");
+  printf("\ninput_file can be:\n");
   printf("  filename.wav      file\n");
   printf("  -                 stdin\n");
-  printf("\n");
-  printf("output_file can be:\n");
+  printf("\noutput_file can be:\n");
   printf("  filename.opus     compressed file\n");
   printf("  -                 stdout\n");
+  printf("\nGeneral options:\n");
+  printf(" -h, --help         Show this help\n");
+  printf(" -V, --version      Show version information\n");
+  printf(" --help-picture     Show help on attaching album art\n");
+  printf(" --quiet            Enable quiet mode\n");
   printf("\nEncoding options:\n");
-  printf(" --bitrate n.nnn    Target bitrate in kbit/sec (6-256/channel)\n");
+  printf(" --bitrate n.nnn    Set target bitrate in kbit/sec (6-256/channel)\n");
   printf(" --vbr              Use variable bitrate encoding (default)\n");
   printf(" --cvbr             Use constrained variable bitrate encoding\n");
   printf(" --hard-cbr         Use hard constant bitrate encoding\n");
-  printf(" --comp n           Encoding complexity (0-10, default: 10 (slowest))\n");
-  printf(" --framesize n      Maximum frame size in milliseconds\n");
+  printf(" --comp n           Set encoding complexity (0-10, default: 10 (slowest))\n");
+  printf(" --framesize n      Set maximum frame size in milliseconds\n");
   printf("                      (2.5, 5, 10, 20, 40, 60, default: 20)\n");
-  printf(" --expect-loss      Percentage packet loss to expect (default: 0)\n");
+  printf(" --expect-loss      Set expected packet loss in percent (default: 0)\n");
   printf(" --downmix-mono     Downmix to mono\n");
   printf(" --downmix-stereo   Downmix to stereo (if >2 channels)\n");
-  printf(" --max-delay n      Maximum container delay in milliseconds\n");
+  printf(" --max-delay n      Set maximum container delay in milliseconds\n");
   printf("                      (0-1000, default: 1000)\n");
-  printf("\nDiagnostic options:\n");
-  printf(" --serial n         Forces a specific stream serial number\n");
-  printf(" --save-range file  Saves check values for every frame to a file\n");
-  printf(" --set-ctl-int x=y  Pass the encoder control x with value y (advanced)\n");
-  printf("                      Preface with s: to direct the ctl to multistream s\n");
-  printf("                      This may be used multiple times\n");
   printf("\nMetadata options:\n");
-  printf(" --comment          Add the given string as an extra comment\n");
+  printf(" --title title      Set track title\n");
+  printf(" --artist artist    Set artist or author, may be used multiple times\n");
+  printf(" --album album      Set album or collection\n");
+  printf(" --genre genre      Set genre, may be used multiple times\n");
+  printf(" --date YYYY-MM-DD  Set date of track (YYYY, YYYY-MM, or YYYY-MM-DD)\n");
+  printf(" --comment tag=val  Add the given string as an extra comment\n");
   printf("                      This may be used multiple times\n");
-  printf(" --artist           Author of this track\n");
-  printf(" --title            Title for this track\n");
-  printf(" --album            Album or collection this track belongs to\n");
-  printf(" --date             Date for this track\n");
-  printf(" --genre            Genre for this track\n");
-  printf(" --picture          Album art for this track\n");
-  printf("                      More than one --picture option can be specified.\n");
-  printf("                      Either a FILENAME for the picture file or a more\n");
-  printf("                      complete SPECIFICATION form can be used. The\n");
-  printf("                      SPECIFICATION is a string whose parts are\n");
-  printf("                      separated by | (pipe) characters. Some parts may\n");
-  printf("                      be left empty to invoke default values. A\n");
-  printf("                      FILENAME is just shorthand for \"||||FILENAME\".\n");
-  printf("                      The format of SPECIFICATION is\n");
-  printf("\n");
-  printf("                      [TYPE]|[MIME-TYPE]|[DESCRIPTION]|[WIDTHxHEIGHT\n");
-  printf("                      xDEPTH[/COLORS]]|FILENAME\n");
-  printf("\n");
-  printf("                      TYPE is an optional number from one of:\n");
-  printf("                      0: Other\n");
-  printf("                      1: 32x32 pixel 'file icon' (PNG only)\n");
-  printf("                      2: Other file icon\n");
-  printf("                      3: Cover (front)\n");
-  printf("                      4: Cover (back)\n");
-  printf("                      5: Leaflet page\n");
-  printf("                      6: Media (e.g., label side of a CD)\n");
-  printf("                      7: Lead artist/lead performer/soloist\n");
-  printf("                      8: Artist/performer\n");
-  printf("                      9: Conductor\n");
-  printf("                      10: Band/Orchestra\n");
-  printf("                      11: Composer\n");
-  printf("                      12: Lyricist/text writer\n");
-  printf("                      13: Recording location\n");
-  printf("                      14: During recording\n");
-  printf("                      15: During performance\n");
-  printf("                      16: Movie/video screen capture\n");
-  printf("                      17: A bright colored fish\n");
-  printf("                      18: Illustration\n");
-  printf("                      19: Band/artist logotype\n");
-  printf("                      20: Publisher/studio logotype\n");
-  printf("\n");
-  printf("                      The default is 3 (front cover). There may only be\n");
-  printf("                      one picture each of type 1 and 2 in a file.\n");
-  printf("\n");
-  printf("                      MIME-TYPE is optional. If left blank, it will be\n");
-  printf("                      detected from the file. For best compatibility\n");
-  printf("                      with players, use pictures with a MIME-TYPE of\n");
-  printf("                      image/jpeg or image/png. The MIME-TYPE can also\n");
-  printf("                      be --> to mean that FILENAME is actually a URL to\n");
-  printf("                      an image, though this use is discouraged. The\n");
-  printf("                      file at the URL will not be fetched. The URL\n");
-  printf("                      itself is stored in the metadata.\n");
-  printf("\n");
-  printf("                      DESCRIPTION is optional. The default is an empty\n");
-  printf("                      string.\n");
-  printf("\n");
-  printf("                      The next part specifies the resolution and color\n");
-  printf("                      information. If the MIME-TYPE is image/jpeg,\n");
-  printf("                      image/png, or image/gif, you can usually leave\n");
-  printf("                      this empty and they can be detected from the\n");
-  printf("                      file. Otherwise, you must specify the width in\n");
-  printf("                      pixels, height in pixels, and color depth in\n");
-  printf("                      bits-per-pixel. If the image has indexed colors\n");
-  printf("                      you should also specify the number of colors\n");
-  printf("                      used. If possible, these are checked against the\n");
-  printf("                      file for accuracy.\n");
-  printf("\n");
-  printf("                      FILENAME is the path to the picture file to be\n");
-  printf("                      imported, or the URL if the MIME-TYPE is -->.\n");
-  printf(" --padding n        Extra bytes to reserve for metadata (default: 512)\n");
+  printf(" --picture file     Attach album art (see --help-picture)\n");
+  printf("                      This may be used multiple times\n");
+  printf(" --padding n        Reserve n extra bytes for metadata (default: 512)\n");
   printf(" --discard-comments Don't keep metadata when transcoding\n");
   printf(" --discard-pictures Don't keep pictures when transcoding\n");
   printf("\nInput options:\n");
-  printf(" --raw              Raw input\n");
+  printf(" --raw              Interpret input as raw PCM data without headers\n");
   printf(" --raw-bits n       Set bits/sample for raw input (default: 16)\n");
   printf(" --raw-rate n       Set sampling rate for raw input (default: 48000)\n");
   printf(" --raw-chan n       Set number of channels for raw input (default: 2)\n");
-  printf(" --raw-endianness n 1 for bigendian, 0 for little (defaults to 0)\n");
-  printf(" --ignorelength     Always ignore the datalength in Wave headers\n");
+  printf(" --raw-endianness n 1 for big endian, 0 for little (default: 0)\n");
+  printf(" --ignorelength     Ignore the data length in Wave headers\n");
+  printf("\nDiagnostic options:\n");
+  printf(" --serial n         Force use of a specific stream serial number\n");
+  printf(" --save-range file  Save check values for every frame to a file\n");
+  printf(" --set-ctl-int x=y  Pass the encoder control x with value y (advanced)\n");
+  printf("                      Preface with s: to direct the ctl to multistream s\n");
+  printf("                      This may be used multiple times\n");
+}
+
+void help_picture(void)
+{
+  printf("  The --picture option can be used with a FILENAME, naming a JPEG,\n");
+  printf("  PNG, or GIF image file, or a more complete SPECIFICATION. The\n");
+  printf("  SPECIFICATION is a string whose parts are separated by | (pipe)\n");
+  printf("  characters. Some parts may be left empty to invoke default values.\n");
+  printf("  A plain FILENAME is just shorthand for \"||||FILENAME\".\n");
+  printf("\n");
+  printf("  The format of SPECIFICATION is:\n");
+  printf("  [TYPE]|[MEDIA-TYPE]|[DESCRIPTION]|[WIDTHxHEIGHTxDEPTH[/COLORS]]|FILENAME\n");
+  printf("\n");
+  printf("  TYPE is an optional number from one of:\n");
+  printf("     0: Other\n");
+  printf("     1: 32x32 pixel 'file icon' (PNG only)\n");
+  printf("     2: Other file icon\n");
+  printf("     3: Cover (front)\n");
+  printf("     4: Cover (back)\n");
+  printf("     5: Leaflet page\n");
+  printf("     6: Media (e.g., label side of a CD)\n");
+  printf("     7: Lead artist/lead performer/soloist\n");
+  printf("     8: Artist/performer\n");
+  printf("     9: Conductor\n");
+  printf("    10: Band/Orchestra\n");
+  printf("    11: Composer\n");
+  printf("    12: Lyricist/text writer\n");
+  printf("    13: Recording location\n");
+  printf("    14: During recording\n");
+  printf("    15: During performance\n");
+  printf("    16: Movie/video screen capture\n");
+  printf("    17: A bright colored fish\n");
+  printf("    18: Illustration\n");
+  printf("    19: Band/artist logotype\n");
+  printf("    20: Publisher/studio logotype\n");
+  printf("\n");
+  printf("  The default is 3 (front cover). More than one --picture option can\n");
+  printf("  be specified to attach multiple pictures. There may only be one\n");
+  printf("  picture each of type 1 and 2 in a file.\n");
+  printf("\n");
+  printf("  MEDIA-TYPE is optional. If left blank, it will be detected from the\n");
+  printf("  file. For best compatibility with players, use pictures with a\n");
+  printf("  MEDIA-TYPE of image/jpeg or image/png. The MEDIA-TYPE can also be\n");
+  printf("  \"-->\" to mean that FILENAME is actually a URL to an image, though\n");
+  printf("  this use is discouraged. The file at the URL will not be fetched.\n");
+  printf("  The URL itself is stored in the metadata.\n");
+  printf("\n");
+  printf("  DESCRIPTION is optional. The default is an empty string.\n");
+  printf("\n");
+  printf("  The next part specifies the resolution and color information. If\n");
+  printf("  the MEDIA-TYPE is image/jpeg, image/png, or image/gif, this can\n");
+  printf("  usually be left empty and the information will be read from the\n");
+  printf("  file.  Otherwise, you must specify the width in pixels, height in\n");
+  printf("  pixels, and color depth in bits-per-pixel. If the image has indexed\n");
+  printf("  colors you should also specify the number of colors used. If possible,\n");
+  printf("  these are checked against the file for accuracy.\n");
+  printf("\n");
+  printf("  FILENAME is the path to the picture file to be imported, or the URL\n");
+  printf("  if the MEDIA-TYPE is \"-->\".\n");
 }
 
 static inline void print_time(double seconds)
@@ -268,6 +264,7 @@ int main(int argc, char **argv)
     {"save-range", required_argument, NULL, 0},
     {"set-ctl-int", required_argument, NULL, 0},
     {"help", no_argument, NULL, 0},
+    {"help-picture", no_argument, NULL, 0},
     {"raw", no_argument, NULL, 0},
     {"raw-bits", required_argument, NULL, 0},
     {"raw-rate", required_argument, NULL, 0},
@@ -312,7 +309,6 @@ int main(int argc, char **argv)
   ogg_int64_t        original_samples=0;
   ogg_int32_t        id=-1;
   int                last_segments=0;
-  int                eos=0;
   OpusHeader         header;
   char               ENCODER_string[1024];
   /*Counters*/
@@ -420,6 +416,9 @@ int main(int argc, char **argv)
         }else if(strcmp(long_options[option_index].name,"help")==0){
           usage();
           exit(0);
+        }else if(strcmp(long_options[option_index].name,"help-picture")==0){
+          help_picture();
+          exit(0);
         }else if(strcmp(long_options[option_index].name,"version")==0){
           opustoolsversion(opus_version);
           exit(0);
@@ -516,6 +515,11 @@ int main(int argc, char **argv)
           }
           if(opt_ctls==0)opt_ctls_ctlval=malloc(sizeof(int)*3);
           else opt_ctls_ctlval=realloc(opt_ctls_ctlval,sizeof(int)*(opt_ctls+1)*3);
+          if(!opt_ctls_ctlval)
+          {
+            fprintf(stderr, "Memory allocation failure.\n");
+            exit(1);
+          }
           opt_ctls_ctlval[opt_ctls*3]=target;
           opt_ctls_ctlval[opt_ctls*3+1]=atoi(tpos+1);
           opt_ctls_ctlval[opt_ctls*3+2]=atoi(spos+1);
@@ -574,7 +578,7 @@ int main(int argc, char **argv)
         } else if(strcmp(long_options[option_index].name,"discard-pictures")==0){
           inopt.copy_pictures=0;
         }
-        /*Commands whos arguments would leak file paths or just end up as metadata
+        /*Commands whose arguments would leak file paths or just end up as metadata
            should have save_cmd=0; to prevent them from being saved in the
            command-line tag.*/
         break;
@@ -642,6 +646,17 @@ int main(int argc, char **argv)
     exit(1);
   }
 
+  if(inopt.rate<100||inopt.rate>768000){
+    /*Crazy rates excluded to avoid excessive memory usage for padding/resampling.*/
+    fprintf(stderr,"Error parsing input file: %s unhandled sampling rate: %ld Hz\n",inFile,inopt.rate);
+    exit(1);
+  }
+
+  if(inopt.channels>255||inopt.channels<1){
+    fprintf(stderr,"Error parsing input file: %s unhandled number of channels: %d\n",inFile,inopt.channels);
+    exit(1);
+  }
+
   if(downmix==0&&inopt.channels>2&&bitrate>0&&bitrate<(16000*inopt.channels)){
     if(!quiet)fprintf(stderr,"Notice: Surround bitrate less than 16kbit/sec/channel, downmixing.\n");
     downmix=inopt.channels>8?1:2;
@@ -680,9 +695,9 @@ int main(int argc, char **argv)
   header.input_sample_rate=rate;
   header.gain=inopt.gain;
 
-  /*Initialize OPUS encoder*/
-  /*Framesizes <10ms can only use the MDCT modes, so we switch on RESTRICTED_LOWDELAY
-    to save the extra 2.5ms of codec lookahead when we'll be using only small frames.*/
+  /*Initialize Opus encoder*/
+  /*Frame sizes <10ms can only use the MDCT modes, so we switch on RESTRICTED_LOWDELAY
+    to save the extra 4ms of codec lookahead when we'll be using only small frames.*/
   st=opus_multistream_surround_encoder_create(coding_rate, chan, header.channel_mapping, &header.nb_streams, &header.nb_coupled,
      header.stream_map, frame_size<480/(48000/coding_rate)?OPUS_APPLICATION_RESTRICTED_LOWDELAY:OPUS_APPLICATION_AUDIO, &ret);
   if(ret!=OPUS_OK){
@@ -760,7 +775,7 @@ int main(int argc, char **argv)
       }
     }else if(target<header.nb_streams){
       OpusEncoder *oe;
-      opus_multistream_encoder_ctl(st,OPUS_MULTISTREAM_GET_ENCODER_STATE(i,&oe));
+      opus_multistream_encoder_ctl(st,OPUS_MULTISTREAM_GET_ENCODER_STATE(target,&oe));
       ret=opus_encoder_ctl(oe, opt_ctls_ctlval[i*3+1],opt_ctls_ctlval[i*3+2]);
       if(ret!=OPUS_OK){
         fprintf(stderr,"Error opus_encoder_ctl(st[%d],%d,%d) returned: %s\n",target,opt_ctls_ctlval[i*3+1],opt_ctls_ctlval[i*3+2],opus_strerror(ret));
@@ -831,8 +846,12 @@ int main(int argc, char **argv)
 
   /*Write header*/
   {
-    unsigned char header_data[100];
-    int packet_size=opus_header_to_packet(&header, header_data, 100);
+    /*The Identification Header is 19 bytes, plus a Channel Mapping Table for
+      mapping families other than 0. The Channel Mapping Table is 2 bytes +
+      1 byte per channel. Because the maximum number of channels is 255, the
+      maximum size of this header is 19 + 2 + 255 = 276 bytes.*/
+    unsigned char header_data[276];
+    int packet_size=opus_header_to_packet(&header, header_data, sizeof(header_data));
     op.packet=header_data;
     op.bytes=packet_size;
     op.b_o_s=1;
@@ -862,7 +881,7 @@ int main(int argc, char **argv)
     ogg_stream_packetin(&os, &op);
   }
 
-  /* writing the rest of the opus header packets */
+  /* writing the rest of the Opus header packets */
   while((ret=ogg_stream_flush(&os, &og))){
     if(!ret)break;
     ret=oe_write_page(&og, fout);
@@ -883,7 +902,6 @@ int main(int argc, char **argv)
   }
 
   /*Main encoding loop (one frame per iteration)*/
-  eos=0;
   nb_samples=-1;
   while(!op.e_o_s){
     int size_segments,cur_frame_size;
@@ -892,10 +910,7 @@ int main(int argc, char **argv)
     if(nb_samples<0){
       nb_samples = inopt.read_samples(inopt.readdata,input,frame_size);
       total_samples+=nb_samples;
-      if(nb_samples<frame_size)op.e_o_s=1;
-      else op.e_o_s=0;
     }
-    op.e_o_s|=eos;
 
     if(start_time==0){
       start_time = time(NULL);
@@ -903,8 +918,14 @@ int main(int argc, char **argv)
 
     cur_frame_size=frame_size;
 
-    /*No fancy end padding, just fill with zeros for now.*/
-    if(nb_samples<cur_frame_size)for(i=nb_samples*chan;i<cur_frame_size*chan;i++)input[i]=0;
+    if(nb_samples<cur_frame_size){
+      op.e_o_s=1;
+      /*Avoid making the final packet 20ms or more longer than needed.*/
+      cur_frame_size-=((cur_frame_size-(nb_samples>0?nb_samples:1))
+        /(coding_rate/50))*(coding_rate/50);
+      /*No fancy end padding, just fill with zeros for now.*/
+      for(i=nb_samples*chan;i<cur_frame_size*chan;i++)input[i]=0;
+    }
 
     /*Encode current frame*/
     VG_UNDEF(packet,max_frame_bytes);
@@ -962,7 +983,6 @@ int main(int argc, char **argv)
     if((!op.e_o_s)&&max_ogg_delay>5760){
       nb_samples = inopt.read_samples(inopt.readdata,input,frame_size);
       total_samples+=nb_samples;
-      if(nb_samples<frame_size)eos=1;
       if(nb_samples==0)op.e_o_s=1;
     } else nb_samples=-1;
 
@@ -971,9 +991,10 @@ int main(int argc, char **argv)
     op.b_o_s=0;
     op.granulepos=enc_granulepos;
     if(op.e_o_s){
-      /*We compute the final GP as ceil(len*48k/input_rate). When a resampling
-        decoder does the matching floor(len*input/48k) conversion the length will
-        be exactly the same as the input.*/
+      /*We compute the final GP as ceil(len*48k/input_rate)+preskip. When a
+        resampling decoder does the matching floor((len-preskip)*input_rate/48k)
+        conversion, the resulting output length will exactly equal the original
+        input length when 0<input_rate<=48000.*/
       op.granulepos=((original_samples*48000+rate-1)/rate)+header.preskip;
     }
     op.packetno=2+id;
@@ -1020,8 +1041,8 @@ int main(int argc, char **argv)
         }else estbitrate=nbBytes*8*((double)coding_rate/frame_size);
         fprintf(stderr,"\r");
         for(i=0;i<last_spin_len;i++)fprintf(stderr," ");
-        if(inopt.total_samples_per_channel>0 && inopt.total_samples_per_channel<nb_encoded){
-          snprintf(sbuf,54,"\r[%c] %02d%% ",spinner[last_spin&3],
+        if(inopt.total_samples_per_channel>0 && nb_encoded<inopt.total_samples_per_channel){
+          snprintf(sbuf,54,"\r[%c] %2d%% ",spinner[last_spin&3],
           (int)floor(nb_encoded/(double)(inopt.total_samples_per_channel+inopt.skip)*100.));
         }else{
           snprintf(sbuf,54,"\r[%c] ",spinner[last_spin&3]);
@@ -1042,13 +1063,14 @@ int main(int argc, char **argv)
   }
   stop_time = time(NULL);
 
+  if(last_spin_len)fprintf(stderr,"\r");
   for(i=0;i<last_spin_len;i++)fprintf(stderr," ");
   if(last_spin_len)fprintf(stderr,"\r");
 
   if(!quiet){
     double coded_seconds=nb_encoded/(double)coding_rate;
     double wall_time=(stop_time-start_time)+1e-6;
-    fprintf(stderr,"Encoding complete                                    \n");
+    fprintf(stderr,"Encoding complete\n");
     fprintf(stderr,"-----------------------------------------------------\n");
     fprintf(stderr,"       Encoded:");
     print_time(coded_seconds);
@@ -1089,7 +1111,7 @@ int main(int argc, char **argv)
 
 /*
  Comments will be stored in the Vorbis style.
- It is describled in the "Structure" section of
+ It is described in the "Structure" section of
     http://www.xiph.org/ogg/vorbis/doc/v-comment.html
 
  However, Opus and other non-vorbis formats omit the "framing_bit".

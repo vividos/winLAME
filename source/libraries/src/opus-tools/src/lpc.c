@@ -50,7 +50,6 @@ Carsten Bormann
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-#include "stack_alloc.h"
 #include "lpc.h"
 
 /* Autocorrelation LPC coeff generation algorithm invented by
@@ -60,11 +59,13 @@ Carsten Bormann
    Output: m lpc coefficients, excitation energy */
 
 float vorbis_lpc_from_data(float *data,float *lpci,int n,int m,int stride){
-  double *aut=alloca(sizeof(*aut)*(m+1));
-  double *lpc=alloca(sizeof(*lpc)*(m));
+  double *aut=malloc(sizeof(*aut)*(m+1));
+  double *lpc=malloc(sizeof(*lpc)*(m));
   double error;
   double epsilon;
   int i,j;
+
+  if(!aut || !lpc)return 0;
 
   /* autocorrelation, p+1 lag coefficients */
   j=m+1;
@@ -127,7 +128,8 @@ float vorbis_lpc_from_data(float *data,float *lpci,int n,int m,int stride){
 
   /* we need the error value to know how big an impulse to hit the
      filter with later */
-
+  free(aut);
+  free(lpc);
   return error;
 }
 
@@ -140,7 +142,9 @@ void vorbis_lpc_predict(float *coeff,float *prime,int m,
 
   long i,j,o,p;
   float y;
-  float *work=alloca(sizeof(*work)*(m+n));
+  float *work=malloc(sizeof(*work)*(m+n));
+
+  if(!work)return;
 
   if(!prime)
     for(i=0;i<m;i++)
@@ -158,4 +162,5 @@ void vorbis_lpc_predict(float *coeff,float *prime,int m,
 
     data[i*stride]=work[o]=y;
   }
+  free(work);
 }
