@@ -1,25 +1,24 @@
 TODO list for winLAME
 
-winLAME 2017 beta 2, must-do-things:
+winLAME 2017 beta 3, must-do-things:
 - store last settings for output page
 - draw task list progress
-- support writing album-artist on non-various cd's
 - implement Speex input file length reading
 - AAC output tag writing
 - AAC allow quality range from 10..500
+- fix bug: page title disappears when minimizing
 
-winLAME 2017 beta 2, nice-to-have:
+winLAME 2017 beta 3, nice-to-have:
 - Add adjusting number of threads in thread pool to settings
 - remove code TODOs
 - Add translated preset texts
 - check all tooltip texts
 - fix remaining Coverity scan warnings
-- fix remaining /analyze warnings
 - fix remaining SonarQube bugs and vulnerabilities
 - write help pages for general settings and cd read settings
 - setup uninstall: add option to finish page to remove all settings
 
-winLAME 2017 beta 2, tests:
+winLAME 2017 beta 3, tests:
 - fuzz testing using WinAFL and standalone cmdline executable
 - tests running with Wine on Ubuntu Linux
 
