@@ -56,7 +56,7 @@ public:
    void Init();
 
    /// sets "clicked task" handler
-   void SetClickedTaskHandler(T_fnOnClickedTask fnOnClickedTask)
+   void SetClickedTaskHandler(const T_fnOnClickedTask& fnOnClickedTask)
    {
       m_fnOnClickedTask = fnOnClickedTask;
    }

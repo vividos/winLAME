@@ -259,7 +259,7 @@ void InputFilesParser::ImportCueSheet(LPCTSTR filename)
       if (line.empty()) continue;
 
       // file entry?
-      if (line.find(_T("FILE")) == 0)
+      if (line.compare(0, 4, _T("FILE")) == 0)
       {
          // trim
          line.erase(0, 5);

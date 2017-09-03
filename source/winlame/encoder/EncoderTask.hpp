@@ -79,8 +79,8 @@ namespace Encoder
       /// encoder task settings
       EncoderTaskSettings m_settings;
 
-      /// error handler
-      AlwaysSkipErrorHandler m_errorHandler;
+      /// error handler for task
+      AlwaysSkipErrorHandler m_taskErrorHandler;
 
       /// output filename
       CString m_outputFilename;

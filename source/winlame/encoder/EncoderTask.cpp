@@ -35,7 +35,7 @@ EncoderTask::EncoderTask(unsigned int dependentTaskId, const EncoderTaskSettings
    EncoderImpl::SetEncoderSettings(m_settings);
 
    EncoderImpl::SetSettingsManager(&m_settings.m_settingsManager);
-   EncoderImpl::SetErrorHandler(&m_errorHandler);
+   EncoderImpl::SetErrorHandler(&m_taskErrorHandler);
 }
 
 CString EncoderTask::GenerateOutputFilename(const CString& inputFilename)
@@ -87,7 +87,7 @@ void EncoderTask::Run()
 
    EncoderImpl::Encode();
 
-   if (!m_errorHandler.AllErrors().empty())
+   if (!m_taskErrorHandler.AllErrors().empty())
    {
       AddErrorText();
    }
@@ -105,7 +105,7 @@ void EncoderTask::AddErrorText()
 
    bool isFirst = true;
 
-   std::for_each(m_errorHandler.AllErrors().begin(), m_errorHandler.AllErrors().end(),
+   std::for_each(m_taskErrorHandler.AllErrors().begin(), m_taskErrorHandler.AllErrors().end(),
       [&](const AlwaysSkipErrorHandler::ErrorInfo& info)
    {
       if (isFirst)
