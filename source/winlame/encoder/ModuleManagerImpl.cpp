@@ -259,14 +259,18 @@ InputModule* ModuleManagerImpl::ChooseInputModule(LPCTSTR filename)
    if (pos == std::tstring::npos)
       return nullptr; // no extension
    extension.erase(0, pos);
-   std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
+
+   CString lowerExtension(extension.c_str());
+   lowerExtension.MakeLower();
+   extension = lowerExtension.GetString();
 
    // search all filter strings for file extension
    int max = GetInputModuleCount();
    for (int i = 0; i < max && inputModule == nullptr; i++)
    {
-      std::tstring filter(GetInputModuleFilterString(i));
-      std::transform(filter.begin(), filter.end(), filter.begin(), ::tolower);
+      CString lowerFilter = GetInputModuleFilterString(i);
+      lowerFilter.MakeLower();
+      std::tstring filter = lowerFilter.GetString();
 
       do
       {
