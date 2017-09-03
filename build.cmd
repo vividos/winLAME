@@ -20,7 +20,7 @@ call CopyLibraries.cmd Release
 cd ..\..
 
 REM restore NuGet packages
-nuget restore winlame.sln
+buildtools\nuget restore winlame.sln
 
 REM build solution
 msbuild /m winlame.sln /property:Configuration=Release /target:Rebuild
