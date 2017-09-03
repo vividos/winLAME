@@ -182,9 +182,9 @@
            Source="$(var.SolutionDir)source\libraries\libogg-0.dll" />
       </Component>
 
-      <Component Id="LibOpusLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibOpus0Dll" Name="libopus-0.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libopus-0.dll" />
+      <Component Id="OpusLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="OpusDll" Name="opus.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.SolutionDir)source\libraries\opus.dll" />
       </Component>
 
       <Component Id="LibOpusFileLibrary" Guid="*" Directory="INSTALLDIR">
