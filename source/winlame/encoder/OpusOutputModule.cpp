@@ -117,7 +117,6 @@ OpusOutputModule::OpusOutputModule()
    m_numBytesWritten(0),
    m_numPagesWritten(0),
    m_32bitMode(false),
-   eos(0),
    total_samples(0),
    m_currentPacketNumber(0),
    original_samples(0),
@@ -266,7 +265,6 @@ void OpusOutputModule::InitInopt()
 
    m_currentPacketNumber = -1;
 
-   eos = 0;
    total_samples = 0;
    original_samples = 0;
    enc_granulepos = 0;
@@ -391,6 +389,19 @@ bool OpusOutputModule::InitEncoder()
    const int complexity = m_complexity;
    int& downmix = m_downmix;
 
+   if (inopt.rate < 100 || inopt.rate > 768000)
+   {
+      // Crazy rates excluded to avoid excessive memory usage for padding/resampling.
+      m_lastError.Format(_T("Error parsing input file: unhandled sampling rate: %ld Hz"), inopt.rate);
+      return false;
+   }
+
+   if (inopt.channels > 255 || inopt.channels < 1)
+   {
+      m_lastError.Format(_T("Error parsing input file: unhandled number of channels: %d"), inopt.channels);
+      return false;
+   }
+
    if (downmix == 0 && inopt.channels > 2 && bitrate > 0 && bitrate < (16000 * inopt.channels))
    {
       ATLTRACE("Notice: Surround bitrate less than 16kbit/sec/channel, downmixing.\n");
@@ -434,9 +445,9 @@ bool OpusOutputModule::InitEncoder()
    header.input_sample_rate = rate;
    header.gain = inopt.gain;
 
-   // Initialize OPUS encoder
-   // Framesizes <10ms can only use the MDCT modes, so we switch on RESTRICTED_LOWDELAY
-   // to save the extra 2.5ms of codec lookahead when we'll be using only small frames.
+   // Initialize Opus encoder
+   // Frame sizes <10ms can only use the MDCT modes, so we switch on RESTRICTED_LOWDELAY
+   // to save the extra 4ms of codec lookahead when we'll be using only small frames.
    OpusMSEncoder* st;
    int ret = 0;
    st = opus_multistream_surround_encoder_create(coding_rate, header.channels, header.channel_mapping, &header.nb_streams, &header.nb_coupled,
@@ -606,8 +617,12 @@ bool OpusOutputModule::WriteHeader()
    opus_int64& bytes_written = m_numBytesWritten;
    int ret;
    {
-      unsigned char header_data[100];
-      int packet_size = opus_header_to_packet(&header, header_data, 100);
+      // The Identification Header is 19 bytes, plus a Channel Mapping Table for
+      // mapping families other than 0. The Channel Mapping Table is 2 bytes +
+      // 1 byte per channel. Because the maximum number of channels is 255, the
+      // maximum size of this header is 19 + 2 + 255 = 276 bytes.
+      unsigned char header_data[276];
+      int packet_size = opus_header_to_packet(&header, header_data, sizeof(header_data));
       op.packet = header_data;
       op.bytes = packet_size;
       op.b_o_s = 1;
@@ -639,7 +654,7 @@ bool OpusOutputModule::WriteHeader()
       ogg_stream_packetin(&os, &op);
    }
 
-   /* writing the rest of the opus header packets */
+   /* writing the rest of the Opus header packets */
    while ((ret = ogg_stream_flush(&os, &og)))
    {
       ret = oe_write_page(&og, fout);
@@ -792,19 +807,17 @@ bool OpusOutputModule::EncodeInputBufferFrame()
       nb_samples = inopt.read_samples(inopt.readdata, m_inputFloatBuffer.data(), frame_size);
 
       total_samples += nb_samples;
-
-      if (nb_samples < frame_size)
-         op.e_o_s = 1;
-      else
-         op.e_o_s = 0;
    }
-   op.e_o_s |= eos;
 
    cur_frame_size = frame_size;
 
-   // No fancy end padding, just fill with zeros for now.
    if (nb_samples < cur_frame_size)
    {
+      op.e_o_s = 1;
+      // Avoid making the final packet 20ms or more longer than needed.
+      cur_frame_size -= ((cur_frame_size - (nb_samples>0 ? nb_samples : 1))
+         / (coding_rate / 50))*(coding_rate / 50);
+      // No fancy end padding, just fill with zeros for now.
       for (int i = nb_samples*inopt.channels; i < cur_frame_size*inopt.channels; i++)
          m_inputFloatBuffer[i] = 0.f;
    }
@@ -853,7 +866,6 @@ bool OpusOutputModule::EncodeInputBufferFrame()
    {
       nb_samples = PrepareNextInputFrame(frame_size);
       total_samples += nb_samples;
-      if (nb_samples < frame_size)eos = 1;
       if (nb_samples == 0)op.e_o_s = 1;
    }
    else
@@ -866,9 +878,10 @@ bool OpusOutputModule::EncodeInputBufferFrame()
    op.granulepos = enc_granulepos;
    if (op.e_o_s)
    {
-      // We compute the final GP as ceil(len*48k/input_rate). When a resampling
-      // decoder does the matching floor(len*input/48k) conversion the length will
-      // be exactly the same as the input.
+      // We compute the final GP as ceil(len*48k/input_rate)+preskip. When a
+      // resampling decoder does the matching floor((len-preskip)*input_rate/48k)
+      // conversion, the resulting output length will exactly equal the original
+      // input length when 0<input_rate<=48000.
       op.granulepos = ((original_samples * 48000 + rate - 1) / rate) + header.preskip;
    }
    op.packetno = 2 + id;
@@ -989,7 +1002,7 @@ std::string OpusOutputModule::GetMetadataBlockPicture(const std::vector<unsigned
 
 /*
  Comments will be stored in the Vorbis style.
- It is describled in the "Structure" section of
+ It is described in the "Structure" section of
     http://www.xiph.org/ogg/vorbis/doc/v-comment.html
 
  However, Opus and other non-vorbis formats omit the "framing_bit".

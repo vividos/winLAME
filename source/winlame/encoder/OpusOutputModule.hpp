@@ -183,9 +183,6 @@ namespace Encoder
       /// indicates if the input module supports 32-bit samples
       bool m_32bitMode;
 
-      /// end of stream flag
-      int eos;
-
       /// total number of samples processed
       opus_int64 total_samples;
 
