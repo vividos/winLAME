@@ -73,6 +73,10 @@ namespace Encoder
       virtual void DoneInput() override;
 
    private:
+      /// read WMA WM/Picture tag from BASS channel into track info
+      static void ReadWmaPictureTag(DWORD channel, TrackInfo& trackInfo);
+
+   private:
       /// last error occured
       CString m_lastError;
 

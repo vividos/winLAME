@@ -28,12 +28,16 @@
 #include <sys/stat.h>
 #include <ulib/DynamicLibrary.hpp>
 #include <ulib/UTF8.hpp>
+#include <wmsdk.h> // for WM_PICTURE
 
 using Encoder::BassInputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
 // constants
+
+/// name of WMA picture tag
+const TCHAR* WMA_PICTURE_TAG = _T("WM/Picture");
 
 /// buffer size
 const int c_bassInputBufferSize = 4096;
@@ -144,13 +148,10 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    // try streaming the file/url
    CStringA ansiFilename = GetAnsiCompatFilename(infilename);
 
-   m_channel = BASS_StreamCreateFile(FALSE, ansiFilename, 0, 0, BASS_STREAM_DECODE);
+   m_channel = BASS_WMA_StreamCreateFile(FALSE, ansiFilename, 0, 0, BASS_STREAM_DECODE);
 
    if (!m_channel)
-      m_channel = BASS_StreamCreateURL(ansiFilename, 0, BASS_STREAM_DECODE, 0, 0);
-
-   if (!m_channel)
-      m_channel = BASS_WMA_StreamCreateFile(FALSE, ansiFilename, 0, 0, BASS_STREAM_DECODE);
+      m_channel = BASS_StreamCreateFile(FALSE, ansiFilename, 0, 0, BASS_STREAM_DECODE);
 
    if (m_channel)
    {
@@ -265,6 +266,11 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
                                  else
                                     if (cszName == WMA_COMPOSER_TAG)
                                        trackinfo.TextInfo(TrackInfoComposer, cszValue);
+                                    else
+                                       if (cszName == WMA_PICTURE_TAG)
+                                       {
+                                          ReadWmaPictureTag(m_channel, trackinfo);
+                                       }
       }
    }
 
@@ -335,4 +341,44 @@ void BassInputModule::DoneInput()
 {
    BASS_Free();
    delete[] m_buffer;
+}
+
+void BassInputModule::ReadWmaPictureTag(DWORD channel, TrackInfo& trackInfo)
+{
+   IWMReader* wmReader = (IWMReader*)BASS_WMA_GetWMObject(channel);
+   if (wmReader != nullptr)
+   {
+      CComPtr<IWMHeaderInfo3> spHeaderInfo3;
+      HRESULT hr = wmReader->QueryInterface<IWMHeaderInfo3>(&spHeaderInfo3);
+      if (SUCCEEDED(hr))
+      {
+         WORD streamNumber = 0;
+         WMT_ATTR_DATATYPE dataType = WMT_TYPE_DWORD;
+         WORD attributeLength = 0;
+
+         if (SUCCEEDED(spHeaderInfo3->GetAttributeByName(
+            &streamNumber, WMA_PICTURE_TAG, &dataType, nullptr, &attributeLength)) &&
+            dataType == WMT_TYPE_BINARY)
+         {
+            std::vector<BYTE> attributeData(attributeLength);
+
+            if (SUCCEEDED(spHeaderInfo3->GetAttributeByName(
+               &streamNumber, WMA_PICTURE_TAG, &dataType, attributeData.data(), &attributeLength)))
+            {
+               WM_PICTURE* picture = reinterpret_cast<WM_PICTURE*>(attributeData.data());
+
+               if (picture->bPictureType == 3 &&
+                  picture->dwDataLen > 0 &&
+                  picture->pbData != nullptr)
+               {
+                  const std::vector<unsigned char> binaryInfo(
+                     picture->pbData,
+                     picture->pbData + picture->dwDataLen);
+
+                  trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+               }
+            }
+         }
+      }
+   }
 }
