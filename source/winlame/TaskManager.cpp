@@ -141,11 +141,12 @@ void TaskManager::CheckRunnableTasks()
       if (iter != m_mapCompletedTaskInfos.end())
          return; // already completed
 
-      TaskInfo info = spTask->GetTaskInfo();
       if (m_mapCompletedTaskInfos.find(spTask->Id()) == m_mapCompletedTaskInfos.end() &&
-         info.Status() == TaskInfo::statusWaiting &&
+         !spTask->IsStarted() &&
          IsTaskRunnable(spTask))
       {
+         spTask->IsStarted(true);
+
          m_ioService.post(
             std::bind(&TaskManager::RunTask, this, spTask));
       }

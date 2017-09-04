@@ -32,7 +32,8 @@ public:
    /// ctor
    Task(unsigned int dependentTaskId = 0)
       :m_id(0),
-      m_dependentTaskId(dependentTaskId)
+      m_dependentTaskId(dependentTaskId),
+      m_isStarted(false)
    {
    }
    /// dtor
@@ -50,11 +51,17 @@ public:
    /// task should be aborted, e.g. when program is closed
    virtual void Stop() = 0;
 
+   /// returns if task was already started
+   bool IsStarted() const { return m_isStarted; }
+
 protected:
    friend class TaskManager;
 
    /// sets task id
    void Id(unsigned int id) { m_id = id; }
+
+   /// sets the "is started" flag
+   void IsStarted(bool isStarted) { m_isStarted = isStarted; }
 
    /// sets task error text
    void SetTaskError(UINT stringResourceId)
@@ -86,6 +93,9 @@ private:
 
    /// task id this task depends on; may be 0 for no task
    unsigned int m_dependentTaskId;
+
+   /// flag that indicates if the task already has been started
+   std::atomic<bool> m_isStarted;
 
    /// error text, or empty when not set yet
    CString m_errorText;

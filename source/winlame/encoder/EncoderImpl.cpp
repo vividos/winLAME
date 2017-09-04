@@ -123,6 +123,19 @@ void EncoderImpl::Encode()
 
    bool initOutputModule = false;
 
+   ATLASSERT(m_inputModule == nullptr); // must not be set, or else Encode() was called twice!
+   ATLASSERT(m_outputModule == nullptr);
+
+   if (m_inputModule != nullptr || m_outputModule != nullptr)
+   {
+      // end thread
+      m_encoderState.m_running = false;
+      m_encoderState.m_paused = false;
+      m_encoderState.m_finished = true;
+      m_encoderState.m_errorCode = -1;
+      return;
+   }
+
    // get input and output modules
    ModuleManagerImpl* modimpl = reinterpret_cast<ModuleManagerImpl*>(&m_moduleManager);
    m_inputModule = std::unique_ptr<InputModule>(modimpl->ChooseInputModule(m_encoderSettings.m_inputFilename));
