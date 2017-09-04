@@ -61,15 +61,22 @@ TaskManager::TaskManager()
 TaskManager::~TaskManager()
 {
    // stop all tasks
-   StopAll();
+   try
+   {
+      StopAll();
 
-   // stop threads
-   m_upDefaultWork.reset();
+      // stop threads
+      m_upDefaultWork.reset();
 
-   for (unsigned int i=0, iMax=m_vecThreadPool.size(); i<iMax; i++)
-      m_vecThreadPool[i]->join();
+      for (unsigned int i=0, iMax=m_vecThreadPool.size(); i<iMax; i++)
+         m_vecThreadPool[i]->join();
 
-   m_vecThreadPool.clear();
+      m_vecThreadPool.clear();
+   }
+   catch (...)
+   {
+      // ignore errors when stopping
+   }
 }
 
 std::vector<TaskInfo> TaskManager::CurrentTasks()

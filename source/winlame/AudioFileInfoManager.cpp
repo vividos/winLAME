@@ -33,7 +33,15 @@ AudioFileInfoManager::AudioFileInfoManager()
 
 AudioFileInfoManager::~AudioFileInfoManager()
 {
-   Stop();
+   try
+   {
+      Stop();
+   }
+   catch (...)
+   {
+      // ignore errors when stopping
+   }
+
    if (m_upThread != nullptr)
       m_upThread->join();
 }

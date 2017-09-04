@@ -118,6 +118,7 @@ int SpeexInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    if (err != 0)
    {
       m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      fclose(fd);
       return -1;
    }
 
@@ -126,6 +127,7 @@ int SpeexInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    if (err != 0)
    {
       m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      fclose(fd);
       return -1;
    }
 
@@ -152,6 +154,7 @@ int SpeexInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    if (m_header == nullptr)
    {
       m_lastError = _T("Couldn't read Speex header");
+      fclose(fd);
       return -1;
    }
 
@@ -166,6 +169,7 @@ int SpeexInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    if (err != 0)
    {
       m_lastError.LoadString(IDS_ENCODER_INPUT_FILE_OPEN_ERROR);
+      fclose(fd);
       return -1;
    }
 

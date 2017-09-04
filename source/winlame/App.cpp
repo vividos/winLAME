@@ -112,7 +112,14 @@ m_exit(false)
 App::~App()
 {
    // store settings in the registry
-   m_settings.StoreSettings();
+   try
+   {
+      m_settings.StoreSettings();
+   }
+   catch (...)
+   {
+      // ignore errors when storing settings
+   }
 
    s_pApp = NULL;
 
