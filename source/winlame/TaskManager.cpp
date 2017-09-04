@@ -130,8 +130,12 @@ void TaskManager::AddTask(std::shared_ptr<Task> spTask)
       m_deqTaskQueue.push_back(spTask);
    }
 
+   ATLASSERT(spTask->IsStarted() == false); // must not be already started
+
    if (IsTaskRunnable(spTask))
    {
+      spTask->IsStarted(true);
+
       m_ioService.post(
          std::bind(&TaskManager::RunTask, this, spTask));
    }
