@@ -28,7 +28,7 @@ using Encoder::OpusInputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
-#pragma comment(lib, "libopusfile-0.lib")
+#pragma comment(lib, "opusfile.lib")
 #pragma comment(lib, "opus.lib")
 
 OpusInputModule::OpusInputModule()

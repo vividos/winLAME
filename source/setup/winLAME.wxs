@@ -172,11 +172,6 @@
            Source="$(var.SolutionDir)source\libraries\libfaad2.dll" />
       </Component>
 
-      <Component Id="LibGccLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibGccDll" Name="libgcc_s_sjlj-1.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libgcc_s_sjlj-1.dll" />
-      </Component>
-
       <Component Id="LibOggLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibOgg0Dll" Name="libogg-0.dll" DiskId="1" KeyPath="yes"
            Source="$(var.SolutionDir)source\libraries\libogg-0.dll" />
@@ -185,16 +180,6 @@
       <Component Id="OpusLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="OpusDll" Name="opus.dll" DiskId="1" KeyPath="yes"
            Source="$(var.SolutionDir)source\libraries\opus.dll" />
-      </Component>
-
-      <Component Id="LibOpusFileLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibOpusFile0Dll" Name="libopusfile-0.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libopusfile-0.dll" />
-      </Component>
-
-      <Component Id="LibWinPthreadLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibWinPthread1Dll" Name="libwinpthread-1.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libwinpthread-1.dll" />
       </Component>
 
       <Component Id="LibSpeexLibrary" Guid="*" Directory="INSTALLDIR">

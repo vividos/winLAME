@@ -239,7 +239,8 @@ struct OpusHead{
       -32768...32767.
      The <tt>libopusfile</tt> API will automatically apply this gain to the
       decoded output before returning it, scaling it by
-      <code>pow(10,output_gain/(20.0*256))</code>.*/
+      <code>pow(10,output_gain/(20.0*256))</code>.
+     You can adjust this behavior with op_set_gain_offset().*/
   int           output_gain;
   /**The channel mapping family, in the range 0...255.
      Channel mapping family 0 covers mono or stereo in a single stream.
@@ -1154,16 +1155,18 @@ OP_WARN_UNUSED_RESULT OggOpusFile *op_open_url(const char *_url,
  int *_error,...) OP_ARG_NONNULL(1);
 
 /**Open a stream using the given set of callbacks to access it.
-   \param _source        The stream to read from (e.g., a <code>FILE *</code>).
+   \param _stream        The stream to read from (e.g., a <code>FILE *</code>).
+                         This value will be passed verbatim as the first
+                          argument to all of the callbacks.
    \param _cb            The callbacks with which to access the stream.
                          <code><a href="#op_read_func">read()</a></code> must
                           be implemented.
                          <code><a href="#op_seek_func">seek()</a></code> and
                           <code><a href="#op_tell_func">tell()</a></code> may
                           be <code>NULL</code>, or may always return -1 to
-                          indicate a source is unseekable, but if
+                          indicate a stream is unseekable, but if
                           <code><a href="#op_seek_func">seek()</a></code> is
-                          implemented and succeeds on a particular source, then
+                          implemented and succeeds on a particular stream, then
                           <code><a href="#op_tell_func">tell()</a></code> must
                           also.
                          <code><a href="#op_close_func">close()</a></code> may
@@ -1226,11 +1229,11 @@ OP_WARN_UNUSED_RESULT OggOpusFile *op_open_url(const char *_url,
                             basic validity checks.</dd>
                          </dl>
    \return A freshly opened \c OggOpusFile, or <code>NULL</code> on error.
-           <tt>libopusfile</tt> does <em>not</em> take ownership of the source
+           <tt>libopusfile</tt> does <em>not</em> take ownership of the stream
             if the call fails.
-           The calling application is responsible for closing the source if
+           The calling application is responsible for closing the stream if
             this call returns an error.*/
-OP_WARN_UNUSED_RESULT OggOpusFile *op_open_callbacks(void *_source,
+OP_WARN_UNUSED_RESULT OggOpusFile *op_open_callbacks(void *_stream,
  const OpusFileCallbacks *_cb,const unsigned char *_initial_data,
  size_t _initial_bytes,int *_error) OP_ARG_NONNULL(2);
 
@@ -1332,18 +1335,20 @@ OP_WARN_UNUSED_RESULT OggOpusFile *op_test_url(const char *_url,
    For new code, you are likely better off using op_test() instead, which
     is less resource-intensive, requires less data to succeed, and imposes a
     hard limit on the amount of data it examines (important for unseekable
-    sources, where all such data must be buffered until you are sure of the
+    streams, where all such data must be buffered until you are sure of the
     stream type).
-   \param _source        The stream to read from (e.g., a <code>FILE *</code>).
+   \param _stream        The stream to read from (e.g., a <code>FILE *</code>).
+                         This value will be passed verbatim as the first
+                          argument to all of the callbacks.
    \param _cb            The callbacks with which to access the stream.
                          <code><a href="#op_read_func">read()</a></code> must
                           be implemented.
                          <code><a href="#op_seek_func">seek()</a></code> and
                           <code><a href="#op_tell_func">tell()</a></code> may
                           be <code>NULL</code>, or may always return -1 to
-                          indicate a source is unseekable, but if
+                          indicate a stream is unseekable, but if
                           <code><a href="#op_seek_func">seek()</a></code> is
-                          implemented and succeeds on a particular source, then
+                          implemented and succeeds on a particular stream, then
                           <code><a href="#op_tell_func">tell()</a></code> must
                           also.
                          <code><a href="#op_close_func">close()</a></code> may
@@ -1373,11 +1378,11 @@ OP_WARN_UNUSED_RESULT OggOpusFile *op_test_url(const char *_url,
                          See op_open_callbacks() for a full list of failure
                           codes.
    \return A partially opened \c OggOpusFile, or <code>NULL</code> on error.
-           <tt>libopusfile</tt> does <em>not</em> take ownership of the source
+           <tt>libopusfile</tt> does <em>not</em> take ownership of the stream
             if the call fails.
-           The calling application is responsible for closing the source if
+           The calling application is responsible for closing the stream if
             this call returns an error.*/
-OP_WARN_UNUSED_RESULT OggOpusFile *op_test_callbacks(void *_source,
+OP_WARN_UNUSED_RESULT OggOpusFile *op_test_callbacks(void *_stream,
  const OpusFileCallbacks *_cb,const unsigned char *_initial_data,
  size_t _initial_bytes,int *_error) OP_ARG_NONNULL(2);
 
@@ -1434,7 +1439,7 @@ void op_free(OggOpusFile *_of);
    Their documention will indicate so explicitly.*/
 /*@{*/
 
-/**Returns whether or not the data source being read is seekable.
+/**Returns whether or not the stream being read is seekable.
    This is true if
    <ol>
    <li>The <code><a href="#op_seek_func">seek()</a></code> and
@@ -1455,9 +1460,9 @@ int op_seekable(const OggOpusFile *_of) OP_ARG_NONNULL(1);
     return 1.
    The actual number of links is not known until the stream is fully opened.
    \param _of The \c OggOpusFile from which to retrieve the link count.
-   \return For fully-open seekable sources, this returns the total number of
+   \return For fully-open seekable streams, this returns the total number of
             links in the whole stream, which will be at least 1.
-           For partially-open or unseekable sources, this always returns 1.*/
+           For partially-open or unseekable streams, this always returns 1.*/
 int op_link_count(const OggOpusFile *_of) OP_ARG_NONNULL(1);
 
 /**Get the serial number of the given link in a (possibly-chained) Ogg Opus
@@ -1471,7 +1476,7 @@ int op_link_count(const OggOpusFile *_of) OP_ARG_NONNULL(1);
    \return The serial number of the given link.
            If \a _li is greater than the total number of links, this returns
             the serial number of the last link.
-           If the source is not seekable, this always returns the serial number
+           If the stream is not seekable, this always returns the serial number
             of the current link.*/
 opus_uint32 op_serialno(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
 
@@ -1488,7 +1493,7 @@ opus_uint32 op_serialno(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
    \return The channel count of the given link.
            If \a _li is greater than the total number of links, this returns
             the channel count of the last link.
-           If the source is not seekable, this always returns the channel count
+           If the stream is not seekable, this always returns the channel count
             of the current link.*/
 int op_channel_count(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
 
@@ -1507,9 +1512,9 @@ int op_channel_count(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
             compressed size of link \a _li if it is non-negative, or a negative
             value on error.
            The compressed size of the entire stream may be smaller than that
-            of the underlying source if trailing garbage was detected in the
+            of the underlying stream if trailing garbage was detected in the
             file.
-   \retval #OP_EINVAL The source is not seekable (so we can't know the length),
+   \retval #OP_EINVAL The stream is not seekable (so we can't know the length),
                        \a _li wasn't less than the total number of links in
                        the stream, or the stream was only partially open.*/
 opus_int64 op_raw_total(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
@@ -1527,7 +1532,7 @@ opus_int64 op_raw_total(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
    \return The PCM length of the entire stream if \a _li is negative, the PCM
             length of link \a _li if it is non-negative, or a negative value on
             error.
-   \retval #OP_EINVAL The source is not seekable (so we can't know the length),
+   \retval #OP_EINVAL The stream is not seekable (so we can't know the length),
                        \a _li wasn't less than the total number of links in
                        the stream, or the stream was only partially open.*/
 ogg_int64_t op_pcm_total(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
@@ -1575,8 +1580,8 @@ const OpusTags *op_tags(const OggOpusFile *_of,int _li) OP_ARG_NONNULL(1);
    \param _of The \c OggOpusFile from which to retrieve the current link index.
    \return The index of the current link on success, or a negative value on
             failure.
-           For seekable streams, this is a number between 0 and the value
-            returned by op_link_count().
+           For seekable streams, this is a number between 0 (inclusive) and the
+            value returned by op_link_count() (exclusive).
            For unseekable streams, this value starts at 0 and increments by one
             each time a new link is encountered (even though op_link_count()
             always returns 1).
@@ -1640,10 +1645,10 @@ ogg_int64_t op_pcm_tell(const OggOpusFile *_of) OP_ARG_NONNULL(1);
 /*@{*/
 /**\name Functions for seeking in Opus streams
 
-   These functions let you seek in Opus streams, if the underlying source
+   These functions let you seek in Opus streams, if the underlying stream
     support it.
    Seeking is implemented for all built-in stream I/O routines, though some
-    individual sources may not be seekable (pipes, live HTTP streams, or HTTP
+    individual streams may not be seekable (pipes, live HTTP streams, or HTTP
     streams from a server that does not support <code>Range</code> requests).
 
    op_raw_seek() is the fastest: it is guaranteed to perform at most one
@@ -1670,6 +1675,8 @@ ogg_int64_t op_pcm_tell(const OggOpusFile *_of) OP_ARG_NONNULL(1);
     packets out of the tail of the link to which it seeks.
    \param _of          The \c OggOpusFile in which to seek.
    \param _byte_offset The byte position to seek to.
+                       This must be between 0 and #op_raw_total(\a _of,\c -1)
+                        (inclusive).
    \return 0 on success, or a negative error code on failure.
    \retval #OP_EREAD    The underlying seek operation failed.
    \retval #OP_EINVAL   The stream was only partially open, or the target was
@@ -1713,11 +1720,11 @@ int op_pcm_seek(OggOpusFile *_of,ogg_int64_t _pcm_offset) OP_ARG_NONNULL(1);
    These downmix multichannel files to two channels, so they can always return
     samples in the same format for every link in a chained file.
 
-   If the rest of your audio processing chain can handle floating point, those
-    routines should be preferred, as floating point output avoids introducing
-    clipping and other issues which might be avoided entirely if, e.g., you
-    scale down the volume at some other stage.
-   However, if you intend to direct consume 16-bit samples, the conversion in
+   If the rest of your audio processing chain can handle floating point, the
+    floating-point routines should be preferred, as they prevent clipping and
+    other issues which might be avoided entirely if, e.g., you scale down the
+    volume at some other stage.
+   However, if you intend to consume 16-bit samples directly, the conversion in
     <tt>libopusfile</tt> provides noise-shaping dithering and, if compiled
     against <tt>libopus</tt>&nbsp;1.1 or later, soft-clipping prevention.
 
@@ -1770,26 +1777,35 @@ int op_pcm_seek(OggOpusFile *_of,ogg_int64_t _pcm_offset) OP_ARG_NONNULL(1);
                       #OP_DEC_FORMAT_FLOAT.
    \param _li        The index of the link from which this packet was decoded.
    \return A non-negative value on success, or a negative value on error.
-           The error codes should be the same as those returned by
+           Any error codes should be the same as those returned by
             opus_multistream_decode() or opus_multistream_decode_float().
+           Success codes are as follows:
    \retval 0                   Decoding was successful.
                                The application has filled the buffer with
                                 exactly <code>\a _nsamples*\a
                                 _nchannels</code> samples in the requested
                                 format.
    \retval #OP_DEC_USE_DEFAULT No decoding was done.
-                               <tt>libopusfile</tt> should decode normally
-                                instead.*/
+                               <tt>libopusfile</tt> should do the decoding
+                                by itself instead.*/
 typedef int (*op_decode_cb_func)(void *_ctx,OpusMSDecoder *_decoder,void *_pcm,
  const ogg_packet *_op,int _nsamples,int _nchannels,int _format,int _li);
 
 /**Sets the packet decode callback function.
-   This is called once for each packet that needs to be decoded.
+   If set, this is called once for each packet that needs to be decoded.
+   This can be used by advanced applications to do additional processing on the
+    compressed or uncompressed data.
+   For example, an application might save the final entropy coder state for
+    debugging and testing purposes, or it might apply additional filters
+    before the downmixing, dithering, or soft-clipping performed by
+    <tt>libopusfile</tt>, so long as these filters do not introduce any
+    latency.
+
    A call to this function is no guarantee that the audio will eventually be
     delivered to the application.
-   Some or all of the data from the packet may be discarded (i.e., at the
-    beginning or end of a link, or after a seek), however the callback is
-    required to provide all of it.
+   <tt>libopusfile</tt> may discard some or all of the decoded audio data
+    (i.e., at the beginning or end of a link, or after a seek), however the
+    callback is still required to provide all of it.
    \param _of        The \c OggOpusFile on which to set the decode callback.
    \param _decode_cb The callback function to call.
                      This may be <code>NULL</code> to disable calling the
