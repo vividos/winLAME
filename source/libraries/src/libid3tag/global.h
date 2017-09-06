@@ -28,7 +28,9 @@
 #  error "cannot define both DEBUG and NDEBUG"
 # endif
 
-# if defined(DEBUG)
+// disable debug alloc functions, as they are not thread-safe
+//# if defined(DEBUG)
+#if 0
 #  include <stdio.h>
 #  include "debug.h"
 #  define malloc(sz)        id3_debug_malloc(sz,       __FILE__, __LINE__)
