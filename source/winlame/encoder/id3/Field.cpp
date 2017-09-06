@@ -27,4 +27,4 @@
 using ID3::Field;
 
 /// \internal function to not produce LNK4099 error when linking
-static void preventLNK4099error() {}
+void preventLNK4099error() {}
