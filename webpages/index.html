@@ -72,6 +72,58 @@
     <div class="container">
         <h1>winLAME Latest news</h1>
 
+        <h2>2017-09-06 - winLAME 2017 beta 2 released</h2>
+
+        <p>
+            Today I released another beta version of winLAME. This version only contains bug fixes
+            and new encoder and decoder libraries. Note that from this version on, Windows XP is
+            not a supported operating system anymore.
+        </p>
+        <p>
+            The following changes were made to winLAME:
+            <ul>
+                <li>
+                    Fix for bug when encoding many files on a multi-core CPU, where files
+                    couldn't be written properly and winLAME eventually crash. See
+                    <a href="https://sourceforge.net/p/winlame/bugs/67/">bug #67</a>.
+                </li>
+                <li>
+                    Possible fix for writing output files with Cyrillic or other non-ASCII
+                    characters. See
+                    <a href="https://sourceforge.net/p/winlame/bugs/66/">bug #66</a>.
+                </li>
+                <li>
+                    New Opus coded version 1.2.1 (see
+                    <a href="http://www.opus-codec.org/">Opus Codec homepage</a>)
+                </li>
+                <li>
+                    New libsndfile library 1.0.28, a bugfix release (see
+                    <a href="http://www.mega-nerd.com/libsndfile/">libsndfile homepage</a>)
+                </li>
+                <li>
+                    Support for 32-bit sample path when using LAME 3.100 (not released yet) and an
+                    input module that also supports 32-bit samples (FLAC, MAD mp3, Monkey's Audio,
+                    libsndfile).
+                </li>
+                <li>
+                    Fixed bug when encoding reported an error and the output file is overwritten,
+                    even if it doesn't need to be.
+                </li>
+                <li>
+                    Tags: Reading and writing of AlbumArtist and Composer tag info is now
+                    supported for MP3, Opus, Ogg Vorbis and WMA.
+                </li>
+            </ul>
+        </p>
+        <p>
+            For the full list of features supported by winLAME check out the
+            <a href="features.html" title="Features">Features page</a> or look at the
+            <a href="screenshots.html" title="Screenshots">Screenshots</a> from the current version. To download the
+            new version, head over to the <a href="download.html" title="Download">Download page</a>.
+        </p>
+
+        <hr />
+
         <h2>2017-03-24 - winLAME 2017 beta 1 released</h2>
         <p>
             Today I released a new version of winLAME. The new version has an all new user
