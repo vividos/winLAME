@@ -46,8 +46,8 @@ namespace Encoder
       /// dtor; auto-closes stream and file
       ~OggInputStream()
       {
-         ogg_sync_destroy(&m_sync);
-         ogg_stream_destroy(&m_stream);
+         ogg_sync_clear(&m_sync);
+         ogg_stream_clear(&m_stream);
 
          if (m_freeFd)
             fclose(m_fd);
