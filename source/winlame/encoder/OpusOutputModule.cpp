@@ -65,7 +65,7 @@ extern "C"
 
 #pragma comment(lib, "opusfile.lib")
 #pragma comment(lib, "opus.lib")
-#pragma comment(lib, "libogg-0.lib")
+#pragma comment(lib, "libogg.lib")
 
 bool GetRandomNumber(int& randomNumber)
 {

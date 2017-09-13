@@ -172,9 +172,9 @@
            Source="$(var.SolutionDir)source\libraries\libfaad2.dll" />
       </Component>
 
-      <Component Id="LibOggLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibOgg0Dll" Name="libogg-0.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libogg-0.dll" />
+      <Component Id="LibOggLibrary2" Guid="*" Directory="INSTALLDIR">
+        <File Id="LibOggDll" Name="libogg.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.SolutionDir)source\libraries\libogg.dll" />
       </Component>
 
       <Component Id="OpusLibrary" Guid="*" Directory="INSTALLDIR">
