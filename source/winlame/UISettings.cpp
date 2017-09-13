@@ -51,6 +51,8 @@ LPCTSTR g_pszFormatVariousTrack = _T("CDExtractFormatVariousTrack");
 LPCTSTR g_pszFormatAlbumTrack = _T("CDExtractFormatAlbumTrack");
 LPCTSTR g_pszLanguageId = _T("LanguageId");
 LPCTSTR g_pszAppMode = _T("AppMode");
+LPCTSTR g_pszAutoTasksPerCpu = _T("TaskManagerAutoTasksPerCPU");
+LPCTSTR g_pszUseNumTasks = _T("TaskManagerUseNumTasks");
 
 
 // EncodingSettings methods
@@ -213,6 +215,13 @@ void UISettings::ReadSettings()
       }
    }
 
+   // read task manager config
+   ReadBooleanValue(regRoot, g_pszAutoTasksPerCpu, m_taskManagerConfig.m_bAutoTasksPerCpu);
+
+   UINT numCpuCores = 1;
+   ReadUIntValue(regRoot, g_pszUseNumTasks, numCpuCores);
+   m_taskManagerConfig.m_uiUseNumTasks = numCpuCores;
+
    regRoot.Close();
 }
 
@@ -303,6 +312,13 @@ void UISettings::StoreSettings()
       buffer.Format(g_pszOutputPathHistory, i);
       regRoot.DeleteValue(buffer);
    }
+
+   // read task manager config
+   value = m_taskManagerConfig.m_bAutoTasksPerCpu ? 1 : 0;
+   regRoot.SetValue(value, g_pszAutoTasksPerCpu);
+
+   value = m_taskManagerConfig.m_uiUseNumTasks;
+   regRoot.SetValue(value, g_pszUseNumTasks);
 #pragma warning(pop)
 
    regRoot.Close();

@@ -26,6 +26,7 @@
 #include "PresetManagerInterface.hpp"
 #include "EncoderInterface.hpp"
 #include "CDReadJob.hpp"
+#include "TaskManagerConfig.hpp"
 
 namespace Encoder
 {
@@ -147,4 +148,7 @@ struct UISettings
 
    /// settings manager
    SettingsManager settings_manager;
+
+   /// configuration for task manager
+   TaskManagerConfig m_taskManagerConfig;
 };

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 // includes
 #include "WizardPage.hpp"
 #include "ImageListComboBox.hpp"
+#include "FixedValueSpinButtonCtrl.hpp"
+#include "UISettings.hpp"
 #include "resource.h"
 
 // forward references
@@ -57,16 +59,25 @@ namespace UI
 
       BEGIN_DDX_MAP(GeneralSettingsPage)
          DDX_CONTROL(IDC_SETTINGS_COMBO_LANGUAGE, m_cbLanguages)
+         DDX_INT(IDC_SETTINGS_EDIT_CPU_CORES, m_settings.m_taskManagerConfig.m_uiUseNumTasks)
+         DDX_CONTROL_HANDLE(IDC_SETTINGS_EDIT_CPU_CORES, m_editCpuCores)
+         DDX_CONTROL(IDC_SETTINGS_SPIN_CPU_CORES, m_spinCpuCores)
+         DDX_CONTROL_HANDLE(IDC_SETTINGS_STATIC_NOTE_CPU_CORES, m_staticNoteCpuCores)
+         DDX_CHECK(IDC_SETTINGS_CHECK_AUTO_TASKS, m_settings.m_taskManagerConfig.m_bAutoTasksPerCpu)
+         DDX_CONTROL_HANDLE(IDC_SETTINGS_CHECK_AUTO_TASKS, m_checkBoxAutoTasks)
       END_DDX_MAP()
 
       BEGIN_DLGRESIZE_MAP(GeneralSettingsPage)
          DLGRESIZE_CONTROL(IDC_SETTINGS_COMBO_LANGUAGE, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_SETTINGS_CHECK_AUTO_TASKS, DLSZ_SIZE_X)
       END_DLGRESIZE_MAP()
 
       BEGIN_MSG_MAP(GeneralSettingsPage)
          MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
          COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
+         COMMAND_HANDLER(IDC_SETTINGS_CHECK_AUTO_TASKS, BN_CLICKED, OnCheckAutoTasks)
          CHAIN_MSG_MAP(CDialogResize<GeneralSettingsPage>)
+         REFLECT_NOTIFICATIONS()
       END_MSG_MAP()
 
       /// inits the page
@@ -74,6 +85,9 @@ namespace UI
 
       /// called when page is left
       LRESULT OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+      /// called when the "auto tasks" check changes
+      LRESULT OnCheckAutoTasks(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    private:
       /// settings
@@ -89,6 +103,18 @@ namespace UI
 
       /// icons for language flags
       CImageList m_ilIcons;
+
+      /// edit control with number of CPU cores
+      CEdit m_editCpuCores;
+
+      /// CPU cores spin button control
+      FixedValueSpinButtonCtrl m_spinCpuCores;
+
+      /// static control with a note about the changed CPU cores setting
+      CStatic m_staticNoteCpuCores;
+
+      /// checkbox for automatic choosing of number of tasks
+      CButton m_checkBoxAutoTasks;
    };
 
 } // namespace UI

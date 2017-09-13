@@ -231,6 +231,10 @@
 #define IDC_OPUS_RADIO_BRCMODE2                 4505
 #define IDC_OPUS_RADIO_BRCMODE3                 4506
 #define IDC_SETTINGS_COMBO_LANGUAGE             5000
+#define IDC_SETTINGS_EDIT_CPU_CORES             5001
+#define IDC_SETTINGS_SPIN_CPU_CORES             5002
+#define IDC_SETTINGS_STATIC_NOTE_CPU_CORES      5003
+#define IDC_SETTINGS_CHECK_AUTO_TASKS           5004
 #define IDC_STATIC_COVERART                     5100
 #define IDC_CRASH_STATIC_TEXT                   6000
 #define IDC_CRASH_LIST_RESULTS                  6001

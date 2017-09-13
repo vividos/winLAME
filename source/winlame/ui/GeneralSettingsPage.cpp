@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,11 +21,17 @@
 //
 #include "StdAfx.h"
 #include "GeneralSettingsPage.hpp"
-#include "UISettings.hpp"
 #include "LanguageResourceManager.hpp"
 #include "LangCountryMapper.hpp"
+#include <thread>
 
 using UI::GeneralSettingsPage;
+
+/// possible numbers of CPU cores
+static int CpuCores[] =
+{
+   1, 2, 4, 8
+};
 
 LRESULT GeneralSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
@@ -42,7 +48,7 @@ LRESULT GeneralSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
       bmpIcons.Attach(::LoadBitmap(ModuleHelper::GetModuleInstance(), MAKEINTRESOURCE(IDB_BITMAP_FLAGS)));
       ilLangIcons.Add(bmpIcons, RGB(255,255,255));
 
-      m_cbLanguages.SetImageList(ilLangIcons);   
+      m_cbLanguages.SetImageList(ilLangIcons);
    }
 
    // fill language combobox
@@ -68,11 +74,47 @@ LRESULT GeneralSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
       m_cbLanguages.SetCurSel(iSelectedLangIndex);
    }
 
+   {
+      m_spinCpuCores.SetBuddy(m_editCpuCores);
+      m_spinCpuCores.SetFixedValues(CpuCores, sizeof(CpuCores) / sizeof(CpuCores[0]));
+
+      m_staticNoteCpuCores.ShowWindow(SW_HIDE);
+
+      CString checkBoxText;
+      m_checkBoxAutoTasks.GetWindowText(checkBoxText);
+
+      CString numCoresText;
+      numCoresText.Format(_T("%u"), std::thread::hardware_concurrency());
+
+      checkBoxText.Replace(_T("%cores%"), numCoresText);
+
+      m_checkBoxAutoTasks.SetWindowText(checkBoxText);
+
+      if (m_settings.m_taskManagerConfig.m_bAutoTasksPerCpu)
+      {
+         m_spinCpuCores.EnableWindow(FALSE);
+         m_editCpuCores.EnableWindow(FALSE);
+      }
+   }
+
    return 1;
 }
 
 LRESULT GeneralSettingsPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
+   if (!DoDataExchange(DDX_SAVE))
+      return 1;
+
+   if (m_settings.m_taskManagerConfig.m_uiUseNumTasks < 1)
+   {
+      m_settings.m_taskManagerConfig.m_uiUseNumTasks = 1;
+   }
+
+   if (m_settings.m_taskManagerConfig.m_uiUseNumTasks > 64)
+   {
+      m_settings.m_taskManagerConfig.m_uiUseNumTasks = 64;
+   }
+
    int iSelectedLangIndex = m_cbLanguages.GetCurSel();
    if (iSelectedLangIndex != -1)
    {
@@ -82,9 +124,19 @@ LRESULT GeneralSettingsPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND
          m_settings.language_id = uiLangId;
          m_langResourceManager.LoadLangResource(uiLangId);
       }
-
-      m_settings.StoreSettings();
    }
+
+   m_settings.StoreSettings();
+
+   return 0;
+}
+
+LRESULT GeneralSettingsPage::OnCheckAutoTasks(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   bool isChecked = m_checkBoxAutoTasks.GetCheck() == BST_CHECKED;
+
+   m_spinCpuCores.EnableWindow(!isChecked);
+   m_editCpuCores.EnableWindow(!isChecked);
 
    return 0;
 }
