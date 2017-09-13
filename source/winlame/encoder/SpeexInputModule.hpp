@@ -86,6 +86,9 @@ namespace Encoder
       /// decodes packet to 16-bit samples
       int DecodePacket(ogg_packet& packet, std::vector<short>& samples);
 
+      /// calculates sample count
+      void CalcSampleCount() const;
+
    private:
       /// last error text
       CString m_lastError;
@@ -98,6 +101,9 @@ namespace Encoder
 
       /// packet count
       unsigned int m_packetCount;
+
+      /// number of samples (per channel) in the file
+      mutable ogg_int64_t m_sampleCount;
 
       /// speex header
       std::shared_ptr<SpeexHeader> m_header;

@@ -41,6 +41,7 @@ extern "C" void speex_header_free(void* ptr)
 SpeexInputModule::SpeexInputModule()
    :m_fileSize(0),
    m_packetCount(0),
+   m_sampleCount(-1), // -1 means "not calculated yet"
    m_stereo(SPEEX_STEREO_STATE_INIT)
 {
    m_moduleId = ID_IM_SPEEX;
@@ -187,7 +188,13 @@ void SpeexInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthI
    numChannels = m_header->nb_channels;
    bitrateInBps = m_header->bitrate;
    samplerateInHz = m_header->rate;
-   lengthInSeconds = -1; // TODO
+
+   if (m_sampleCount < 0)
+   {
+      CalcSampleCount();
+   }
+
+   lengthInSeconds = m_header->rate == 0 ? 0 : static_cast<int>(m_sampleCount / m_header->rate);
 }
 
 int SpeexInputModule::DecodeSamples(SampleContainer& samples)
@@ -329,4 +336,45 @@ int SpeexInputModule::DecodePacket(ogg_packet& packet, std::vector<short>& sampl
    }
 
    return samples.size();
+}
+
+/// \see http://lists.xiph.org/pipermail/speex-dev/2003-September/001885.html
+void SpeexInputModule::CalcSampleCount() const
+{
+   if (m_inputStream == nullptr)
+      return;
+
+   FILE* fd = m_inputStream->GetFd();
+   long currentPos = ftell(fd);
+
+   ogg_int64_t sampleCount = 0;
+   ogg_int64_t samplesPerPacket = 0;
+
+   while (!m_inputStream->IsEndOfStream())
+   {
+      m_inputStream->ReadInput(2048); // read some more
+
+      ogg_packet header;
+
+      while (m_inputStream->ReadNextPacket(header))
+      {
+         // updated values?
+         SpeexHeader* speexHeader = speex_packet_to_header(reinterpret_cast<char*>(header.packet), header.bytes);
+         if (speexHeader != nullptr)
+         {
+            samplesPerPacket = speexHeader->frames_per_packet * speexHeader->frame_size;
+
+            speex_header_free(speexHeader);
+         }
+
+         if (samplesPerPacket > 0)
+         {
+            sampleCount += samplesPerPacket;
+         }
+      }
+   }
+
+   fseek(fd, currentPos, SEEK_SET);
+
+   m_sampleCount = sampleCount;
 }
