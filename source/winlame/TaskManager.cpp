@@ -30,9 +30,10 @@
 #include <algorithm>
 #include <set>
 
-TaskManager::TaskManager()
-:m_nextTaskId(1),
- m_upDefaultWork(new boost::asio::io_service::work(m_ioService))
+TaskManager::TaskManager(const TaskManagerConfig& config)
+   :m_nextTaskId(1),
+   m_config(config),
+   m_upDefaultWork(new boost::asio::io_service::work(m_ioService))
 {
    // find out number of threads to start
    unsigned int uiNumThreads = m_config.m_uiUseNumTasks;
@@ -44,12 +45,12 @@ TaskManager::TaskManager()
    }
 
    // start up threads
-   for (unsigned int i=0; i<uiNumThreads; i++)
+   for (unsigned int i = 0; i < uiNumThreads; i++)
    {
       std::shared_ptr<std::thread> spThread(
          new std::thread(
             std::bind(&TaskManager::RunThread, boost::ref(m_ioService), i)
-      ));
+         ));
 
       // note: GetThreadId() not available in XP
       //SetBusyFlag(GetThreadId(spThread->native_handle()), false);
@@ -68,7 +69,7 @@ TaskManager::~TaskManager()
       // stop threads
       m_upDefaultWork.reset();
 
-      for (unsigned int i=0, iMax=m_vecThreadPool.size(); i<iMax; i++)
+      for (unsigned int i = 0, iMax = m_vecThreadPool.size(); i < iMax; i++)
          m_vecThreadPool[i]->join();
 
       m_vecThreadPool.clear();
@@ -103,22 +104,6 @@ std::vector<TaskInfo> TaskManager::CurrentTasks()
 
    return vecTaskInfos;
 };
-
-TaskManagerConfig TaskManager::CurrentConfig() const
-{
-   std::unique_lock<std::recursive_mutex> lock(m_mutexConfig);
-   TaskManagerConfig config = m_config;
-   return config;
-}
-
-void TaskManager::SetNewConfig(const TaskManagerConfig& config)
-{
-   std::unique_lock<std::recursive_mutex> lock(m_mutexConfig);
-
-   m_config = config;
-
-   // TODO reduce/start new threads
-}
 
 void TaskManager::AddTask(std::shared_ptr<Task> spTask)
 {
@@ -316,7 +301,7 @@ void TaskManager::RunThread(boost::asio::io_service& ioService, unsigned int thr
    {
       ioService.run();
    }
-   catch(boost::system::system_error& error)
+   catch (boost::system::system_error& error)
    {
       error;
       ATLTRACE(_T("system_error: %hs\n"), error.what());

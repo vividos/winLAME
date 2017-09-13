@@ -26,10 +26,10 @@
 #include "resource.h"
 #include "UISettings.hpp"
 #include "LanguageResourceManager.hpp"
-#include "TaskManager.hpp"
 
 // forward references
 class PresetManagerInterface;
+class TaskManager;
 namespace Encoder
 {
    class ModuleManager;
@@ -111,7 +111,7 @@ private:
    UISettings m_settings;
 
    /// task manager
-   TaskManager m_taskManager;
+   std::shared_ptr<TaskManager> m_spTaskManager;
 
    /// LAME nogap instance manager
    std::shared_ptr<Encoder::LameNogapInstanceManager> m_spLameNogapInstanceManager;

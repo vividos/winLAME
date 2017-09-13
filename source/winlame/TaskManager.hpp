@@ -42,18 +42,12 @@ class TaskManager
 {
 public:
    /// ctor
-   TaskManager();
+   TaskManager(const TaskManagerConfig& config);
    /// dtor
    ~TaskManager();
 
    /// returns a snapshot of current tasks
    std::vector<TaskInfo> CurrentTasks();
-
-   /// returns a copy of the current configuration
-   TaskManagerConfig CurrentConfig() const;
-
-   /// sets new config
-   void SetNewConfig(const TaskManagerConfig& config);
 
    /// adds a task to the queue
    void AddTask(std::shared_ptr<Task> spTask);
@@ -102,12 +96,7 @@ private:
    void SetBusyFlag(DWORD dwThreadId, bool bBusy);
 
 private:
-   // config
-
-   /// mutex protecting config
-   mutable std::recursive_mutex m_mutexConfig;
-
-   /// task manager config
+   /// task manager configuration
    TaskManagerConfig m_config;
 
 

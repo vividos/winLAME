@@ -8,7 +8,6 @@ winLAME 2017 beta 3, must-do-things:
 - fix bug: page title disappears when minimizing
 
 winLAME 2017 beta 3, nice-to-have:
-- Add adjusting number of threads in thread pool to settings
 - remove code TODOs
 - Add translated preset texts
 - check all tooltip texts

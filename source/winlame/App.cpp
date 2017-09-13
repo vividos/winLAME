@@ -26,6 +26,7 @@
 #include "preset/PresetManagerImpl.h"
 #include "encoder/ModuleManagerImpl.hpp"
 #include "encoder/LameNogapInstanceManager.hpp"
+#include "TaskManager.hpp"
 #include "CommonStuff.hpp"
 #include <ulib/CrashReporter.hpp>
 #include "CrashSaveResultsDlg.hpp"
@@ -78,11 +79,16 @@ m_exit(false)
    AtlAxWinInit();
 #endif
 
+   // read settings from registry
+   m_settings.ReadSettings();
+
+   m_spTaskManager.reset(new TaskManager(m_settings.m_taskManagerConfig));
+
    // register objects in IoC container
    IoCContainer& ioc = IoCContainer::Current();
 
    ioc.Register<LanguageResourceManager>(boost::ref(m_langResourceManager));
-   ioc.Register<TaskManager>(boost::ref(m_taskManager));
+   ioc.Register<TaskManager>(boost::ref(*m_spTaskManager.get()));
    ioc.Register<UISettings>(boost::ref(m_settings));
 
    m_spLameNogapInstanceManager.reset(new Encoder::LameNogapInstanceManager);
@@ -95,9 +101,6 @@ m_exit(false)
    ioc.Register<Encoder::ModuleManager>(boost::ref(*m_spModuleManager.get()));
 
    LoadPresetFile();
-
-   // read settings from registry
-   m_settings.ReadSettings();
 
    // set language to use
    if (m_langResourceManager.IsLangResourceAvail(m_settings.language_id))
@@ -195,7 +198,7 @@ int App::RunMainFrame(int nCmdShow)
    CMessageLoop theLoop;
    _Module.AddMessageLoop(&theLoop);
 
-   UI::MainFrame wndMain(m_taskManager);
+   UI::MainFrame wndMain(*m_spTaskManager.get());
 
    if (wndMain.CreateEx() == NULL)
    {
