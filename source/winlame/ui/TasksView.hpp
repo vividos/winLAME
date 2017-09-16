@@ -73,7 +73,6 @@ private:
       MESSAGE_HANDLER(WM_CREATE, OnCreate)
       MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
       MESSAGE_HANDLER(WM_TIMER, OnTimer)
-      MESSAGE_HANDLER(WM_ERASEBKGND, OnEraseBackground)
       REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnItemClick)
       CHAIN_MSG_MAP_ALT(noFlickerClass, 1)
    END_MSG_MAP()
