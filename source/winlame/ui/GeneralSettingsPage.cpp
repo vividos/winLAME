@@ -126,8 +126,6 @@ LRESULT GeneralSettingsPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND
       }
    }
 
-   m_settings.StoreSettings();
-
    return 0;
 }
 

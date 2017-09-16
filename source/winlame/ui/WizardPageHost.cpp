@@ -299,6 +299,13 @@ LRESULT WizardPageHost::OnButtonClicked(WORD /*wNotifyCode*/, WORD wID, HWND /*h
    // send button press to current page
    LRESULT result = spCurrentPage->SendMessage(WM_COMMAND, MAKELONG(wID, BN_CLICKED));
 
+   // save last settings that were modified on the page
+   if (wID != IDCANCEL)
+   {
+      UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
+      settings.StoreSettings();
+   }
+
    if (result == 1)
    {
       m_spCurrentPage = spCurrentPage;

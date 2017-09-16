@@ -68,8 +68,6 @@ LRESULT CDReadSettingsPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND 
          m_settings.freedb_server = m_settings.freedb_server.Left(iPos);
    }
 
-   m_settings.StoreSettings();
-
    return 0;
 }
 

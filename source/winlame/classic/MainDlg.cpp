@@ -377,6 +377,9 @@ bool MainDlg::ActivatePage(int page)
       }
    }
 
+   // save last settings that were modified on the page
+   settings.StoreSettings();
+
    // set current page
    if (currentpage == oldpage_index)
       currentpage = page;
