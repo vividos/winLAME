@@ -250,9 +250,12 @@ LRESULT WizardPageHost::OnDrawItem(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, 
    {
       LPDRAWITEMSTRUCT lpdis = reinterpret_cast<LPDRAWITEMSTRUCT>(lParam);
 
-      // owner-draw caption background
-      ::SetBkColor(lpdis->hDC, RGB(255,255,255));
-      ::ExtTextOut(lpdis->hDC, 0, 0, ETO_OPAQUE, &lpdis->rcItem, NULL, 0, NULL);
+      if (lpdis->itemState != ODS_DISABLED)
+      {
+         // owner-draw caption background
+         ::SetBkColor(lpdis->hDC, RGB(255,255,255));
+         ::ExtTextOut(lpdis->hDC, 0, 0, ETO_OPAQUE, &lpdis->rcItem, NULL, 0, NULL);
+      }
    }
 
    return 0;
