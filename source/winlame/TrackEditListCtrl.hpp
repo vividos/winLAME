@@ -148,10 +148,10 @@ BEGIN_MSG_MAP(TrackEditListCtrl)
 END_MSG_MAP()
 
    /// called before painting
-	DWORD OnPrePaint(int /*idCtrl*/, LPNMCUSTOMDRAW /*lpNMCustomDraw*/)
-	{
-		return CDRF_NOTIFYITEMDRAW;
-	}
+   DWORD OnPrePaint(int /*idCtrl*/, LPNMCUSTOMDRAW /*lpNMCustomDraw*/)
+   {
+      return CDRF_NOTIFYITEMDRAW;
+   }
 
    /// called before painting an item
    DWORD OnItemPrePaint(int /*idCtrl*/, LPNMCUSTOMDRAW lpNMCustomDraw)
