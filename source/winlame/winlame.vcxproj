@@ -52,7 +52,6 @@
     <ClCompile>
       <AdditionalIncludeDirectories>.;encoder;ui;classic;res;..\libraries\include;..\nlame;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalOptions>-Zm140 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ResourceCompile />
     <Link>
@@ -66,7 +65,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl />
     <ClCompile>
-      <AdditionalOptions>/IGNORE:4049 -Zm140 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>.;encoder;ui;classic;res;..\libraries\include;..\nlame;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
