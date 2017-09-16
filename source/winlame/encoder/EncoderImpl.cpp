@@ -83,6 +83,9 @@ void EncoderImpl::StartEncode()
    m_encoderState.m_running = true;
    m_encoderState.m_paused = false;
 
+   // when there's a previous worker thread, it must already have been join()ed
+   ATLASSERT(m_workerThread == nullptr || !m_workerThread->joinable());
+
    m_workerThread.reset(
       new std::thread(
          std::bind(&EncoderImpl::Encode, this)));

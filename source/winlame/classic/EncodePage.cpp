@@ -435,6 +435,9 @@ void EncodePage::OnEnterPage()
 
 bool EncodePage::OnLeavePage()
 {
+   if (encoder != nullptr)
+      encoder->StopEncode();
+
    UISettings& settings = pui->getUISettings();
 
    settings.last_page_was_cdrip_page = false;
