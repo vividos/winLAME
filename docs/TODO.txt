@@ -4,7 +4,6 @@ winLAME 2017 beta 3, must-do-things:
 - store last settings for output page
 - draw task list progress
 - AAC output tag writing
-- AAC allow quality range from 10..500
 
 winLAME 2017 beta 3, nice-to-have:
 - remove code TODOs

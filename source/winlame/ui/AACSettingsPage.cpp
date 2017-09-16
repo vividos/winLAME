@@ -58,8 +58,8 @@ LRESULT AACSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /
    m_spinBandwidth.SetFixedValues(AacBandwidthValues, sizeof(AacBandwidthValues) / sizeof(AacBandwidthValues[0]));
 
    // set up range of slider control
-   m_sliderQuality.SetRangeMin(50);
-   m_sliderQuality.SetRangeMax(250);
+   m_sliderQuality.SetRangeMin(10);
+   m_sliderQuality.SetRangeMax(500);
    m_sliderQuality.SetTicFreq(10);
 
    // combo box with mpeg versions

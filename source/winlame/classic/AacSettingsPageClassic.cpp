@@ -59,8 +59,8 @@ LRESULT AacSettingsPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, B
    bandwidthSpin.SetFixedValues(AacBandwidthValues, sizeof(AacBandwidthValues) / sizeof(AacBandwidthValues[0]));
 
    // set up range of slider control
-   SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY, TBM_SETRANGEMIN, FALSE, 50);
-   SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY, TBM_SETRANGEMAX, FALSE, 250);
+   SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY, TBM_SETRANGEMIN, FALSE, 10);
+   SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY, TBM_SETRANGEMAX, FALSE, 500);
    SendDlgItemMessage(IDC_AAC_SLIDER_QUALITY, TBM_SETTICFREQ, 10);
 
    // combo box with mpeg versions
