@@ -218,7 +218,7 @@ void OggVorbisSettingsPage::UpdateQuality()
    int pos = SendDlgItemMessage(IDC_OGGV_SLIDER_QUALITY, TBM_GETPOS);
 
    CString text;
-   text.Format(IDS_OGGV_QUALITY, pos < 0 ? "-" : "",
+   text.Format(IDS_OGGV_QUALITY, pos < 0 ? _T("-") : _T(""),
       unsigned(fabs(pos / 100.0)), unsigned(fabs(fmod(pos, 100.0))));
    SetDlgItemText(IDC_OGGV_STATIC_QUALITY, text);
 

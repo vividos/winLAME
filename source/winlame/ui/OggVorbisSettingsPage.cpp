@@ -236,7 +236,7 @@ void UI::OggVorbisSettingsPage::UpdateQuality()
    int pos = m_sliderQuality.GetPos();
 
    CString text;
-   text.Format(IDS_OGGV_QUALITY, pos < 0 ? "-" : "",
+   text.Format(IDS_OGGV_QUALITY, pos < 0 ? _T("-") : _T(""),
       unsigned(fabs(pos / 100.0)), unsigned(fabs(fmod(pos, 100.0))));
    SetDlgItemText(IDC_OGGV_STATIC_QUALITY, text);
 
