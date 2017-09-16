@@ -39,8 +39,6 @@ EncoderInterface* EncoderInterface::CreateEncoder()
 
 // globals
 
-static bool s_warnedAboutLossyTranscoding = false;
-
 /// mutex to protect threads from generating the same output filenames
 static LightweightMutex s_mutexTempOutputFile;
 
@@ -223,19 +221,6 @@ void EncoderImpl::Encode()
    }
 
    lock.unlock();
-
-   if (!skipFile)
-   {
-      // check if transcoding
-      // TODO move this to the wizard pages; warning about lossy conversion shouldn't be
-      // done while actually encoding.
-      if (!CheckWarnTranscoding(*m_inputModule, *m_outputModule))
-      {
-         // stop encoding
-         m_encoderState.m_errorCode = -2;
-         skipFile = true;
-      }
-   }
 
    if (!skipFile && !skipMoveFile)
       skipFile = MainLoop();
@@ -573,28 +558,6 @@ bool EncoderImpl::IsLossyOutputModule(int outputModuleID)
       outputModuleID == ID_OM_AAC ||
       outputModuleID == ID_OM_BASSWMA ||
       outputModuleID == ID_OM_OPUS;
-}
-
-bool EncoderImpl::CheckWarnTranscoding(InputModule& inputModule, OutputModule& outputModule)
-{
-   unsigned int inputModuleID = m_inputModule->GetModuleID();
-   unsigned int outputModuleID = m_outputModule->GetModuleID();
-
-   bool inputModuleLossyFormat = IsLossyInputModule(inputModuleID);
-   bool outputModuleLossyFormat = IsLossyOutputModule(outputModuleID);
-
-   if (inputModuleLossyFormat && outputModuleLossyFormat && m_encoderSettings.m_warnLossyTranscoding && !s_warnedAboutLossyTranscoding)
-   {
-      // warn user about transcoding
-      extern bool WarnAboutTranscode();
-
-      if (!WarnAboutTranscode())
-         return false;
-
-      s_warnedAboutLossyTranscoding = true;
-   }
-
-   return true;
 }
 
 bool EncoderImpl::MainLoop()

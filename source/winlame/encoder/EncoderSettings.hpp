@@ -42,17 +42,13 @@ namespace Encoder
       /// the input file
       bool m_useTrackInfo;
 
-      /// indicates if encoder should warn about lossy transcoding
-      bool m_warnLossyTranscoding;
-
       /// default ctor
       EncoderSettings()
          :m_outputSameFolder(false),
          m_outputModuleID(-1),
          m_overwriteExisting(false),
          m_deleteInputAfterEncode(false),
-         m_useTrackInfo(false),
-         m_warnLossyTranscoding(true)
+         m_useTrackInfo(false)
       {
       }
    };

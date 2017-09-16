@@ -85,7 +85,7 @@ struct UISettings
    /// last input files folder
    CString lastinputpath;
 
-   /// warn about lossy transcoding
+   /// warn about lossy transcoding; only in classic mode
    bool warn_lossy_transcoding;
 
    /// indicates if an output playlist should be created

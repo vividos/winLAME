@@ -30,8 +30,6 @@ EncoderTask::EncoderTask(unsigned int dependentTaskId, const EncoderTaskSettings
    m_settings(settings),
    m_stopped(false)
 {
-   m_settings.m_warnLossyTranscoding = false;
-
    EncoderImpl::SetEncoderSettings(m_settings);
 
    EncoderImpl::SetSettingsManager(&m_settings.m_settingsManager);

@@ -35,7 +35,6 @@ namespace Encoder
       /// ctor
       EncoderTaskSettings()
       {
-         m_warnLossyTranscoding = false;
       }
 
       /// title

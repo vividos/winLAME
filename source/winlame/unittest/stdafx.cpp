@@ -47,8 +47,3 @@ CDRipTrackManager* CDRipTrackManager::getCDRipTrackManager()
 {
    throw std::runtime_error("unittest");
 }
-
-bool WarnAboutTranscode()
-{
-   return true;
-}

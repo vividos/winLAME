@@ -117,9 +117,6 @@ namespace Encoder
       /// formats encoding description
       void FormatEncodingDescription();
 
-      /// checks if we should warn about transcoding
-      bool CheckWarnTranscoding(InputModule& inputModule, OutputModule& outputModule);
-
       /// main encoding loop; returns if file should be skipped
       bool MainLoop();
 

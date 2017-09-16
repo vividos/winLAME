@@ -991,6 +991,7 @@ BEGIN
     IDS_MAIN_TASKS_STATUS_UNKNOWN "Unknown"
     IDS_CDEXTRACT_DESC_US         "Track %u: %s"
     IDS_MAIN_TASKS_PANE_CONTAINER "Aufgaben-Details"
+    IDS_WARN_OVERWRITE_ORIGINAL   "Warnung!\n#sie sind dabei, die Original-Eingabedateien mit den enkodierten Dateien zu überschreiben!\n\nWeiter?"
     IDS_AAC_NO_MPEG2_LTP          "Warnung!\nDerzeit ist libfaac nicht in der Lage, MPEG2 zusammen mit LTP zu benutzen.\nBitte wählen Sie einen anderen Objekttyp!"
     IDS_OGGV_QUALITY              "Qualität: %s%u.%02u"
     IDS_OGGV_BITRATE              "Bitrate: %u.%u kbps"

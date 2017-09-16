@@ -26,6 +26,7 @@
 #include "CDRipTrackManager.hpp"
 #include "EncoderSettings.hpp"
 #include "EncoderState.hpp"
+#include "TaskCreationHelper.hpp"
 
 using ClassicUI::EncodePage;
 
@@ -36,11 +37,8 @@ using ClassicUI::EncodePage;
 
 static HWND mainwnd = NULL;
 
-/// warns about transcoding
-bool WarnAboutTranscode()
-{
-   return AppMessageBox(::GetActiveWindow(), IDS_WARN_TRANSCODE, MB_YESNO | MB_ICONEXCLAMATION) == IDYES;
-}
+/// flag indicating if user was already warned about lossy transcoding in this application's run
+static bool s_warnedAboutLossyTranscoding = false;
 
 
 // EncodePage methods
@@ -145,6 +143,31 @@ LRESULT EncodePage::OnClickedStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
    }
    else
    {
+      UISettings& settings = pui->getUISettings();
+
+      TaskCreationHelper helper;
+
+      // check about lossy transcoding
+      if (helper.IsLossyTranscoding() &&
+         settings.warn_lossy_transcoding &&
+         !s_warnedAboutLossyTranscoding)
+      {
+         if (AppMessageBox(m_hWnd, IDS_WARN_TRANSCODE, MB_YESNO | MB_ICONEXCLAMATION) != IDYES)
+         {
+            return 0;
+         }
+
+         s_warnedAboutLossyTranscoding = true;
+      }
+
+      if (helper.IsOverwritingOriginalFiles())
+      {
+         if (AppMessageBox(m_hWnd, IDS_WARN_OVERWRITE_ORIGINAL, MB_YESNO | MB_ICONEXCLAMATION) != IDYES)
+         {
+            return 0;
+         }
+      }
+
       newfile = true;
 
       // lock wizard back button
@@ -159,7 +182,6 @@ LRESULT EncodePage::OnClickedStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
          (LPARAM)ilIcons.ExtractIcon(3));
 
       // set some encoder options
-      UISettings &settings = pui->getUISettings();
 
       // set param if this is the last file
       settings.settings_manager.setValue(GeneralIsLastFile,
@@ -189,8 +211,6 @@ LRESULT EncodePage::OnClickedStart(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOO
 
       encoderSettings.m_overwriteExisting = settings.m_defaultSettings.overwrite_existing;
       encoderSettings.m_deleteInputAfterEncode = settings.m_defaultSettings.delete_after_encode;
-
-      encoderSettings.m_warnLossyTranscoding = settings.warn_lossy_transcoding;
 
       encoder->SetEncoderSettings(encoderSettings);
 
