@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>winLAME Help - CD Read Settings</title>
+    <link href="../css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body style="margin:16px">
+
+    <h1>CD Read Settings</h1>
+
+    <!-- begin of text -->
+
+
+    <h3>
+        <span class="label label-primary">Modern UI only</span>
+    </h3>
+
+    <p>
+        This is the CD read settings page. The page can be shown when clicking on the
+        "CD Read Settings" button in the Modern UI.
+    </p>
+
+    <h3>User Interface</h3>
+    <p>
+        <div class="list-group">
+
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">freedb Server</h4>
+                freedb.org is a service to retrieve CD information such as artist, track titles
+                and so on. This setting configures the freedb server to use. Note that there is
+                only one default entry "freedb.freedb.org (Random freedb server)". The best server
+                is automatically chosen by freedb. You can type a specific server name here, if
+                you want. Server name should be without http:// prefix. and without following
+                slash.
+            </div>
+
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Temporary CD Extraction Folder</h4>
+                When reading CDs to encode, a temporary folder is used to store the raw audio
+                data. The folder is usually the %TEMP% folder of the system. Note that this
+                setting is more relevant in Classic UI mode: The whole CD (about 700 MB) is read
+                to this location before encoding the tracks. In Modern UI mode, only one track
+                is stored here at most.
+            </div>
+
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Store edited disc and track info in cdplayer.ini</h4>
+                In ancient Windows times there were CD player applications that store CD track
+                info in an ini file stored in C:\Windows. When this check is set, winLAME stores
+                the disc and track infos about a CD in this ini file, so that the other
+                applications can re-use the infos.
+            </div>
+
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Format various artists track</h4>
+                This text value determines how track filenames (and displayed track titles) are
+                formatted. This gives you the possibility to adjust the generated filenames to
+                your needs. The text can contain any characters, and the following words, placed
+                between two % characters, are replaced with the track information accordingly.
+                <table class="table table-striped table-bordered table-condensed">
+                    <thead>
+                        <tr><th>Keyword</th><th>Description</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><b>album</b></td><td>Inserts the album or disc name</td></tr>
+                        <tr><td><b>artist</b></td><td>Inserts the artist of the track; may differ to albumartist</td></tr>
+                        <tr><td><b>genre</b></td><td>Inserts the genre as text</td></tr>
+                        <tr><td><b>title</b></td><td>Inserts the track title</td></tr>
+                        <tr><td><b>track</b></td><td>Inserts the track number as digits</td></tr>
+                        <tr><td><b>year</b></td><td>Inserts the year where the album was released</td></tr>
+                        <tr><td><b>albumartist</b></td><td>Inserts the album artist</td></tr>
+                        <tr><td><b>length</b></td><td>Inserts the length of the track, in number of seconds</td></tr>
+                    </tbody>
+                </table>
+                This setting is used when reading a CD with various artists (when the check box
+                "Various Artists" is selected on the <a href="inputcd.html">Input from CD</a>
+                page). The default text for this setting is:
+                <code>%track% - %album% - %artist% - %title%</code>
+            </div>
+
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">Format album track</h4>
+                This setting is used when reading a CD with an album artist (check box
+                "Various Artists" off). The default text for this setting is:
+                <code>%track% - %albumartist% - %album% - %title%</code>
+            </div>
+        </div>
+    </p>
+
+
+    <hr size="1" width="80%" />
+
+    <p><a href="#">back to top</a> - <a href="index.html">back to Wizard Pages</a></p>
+
+    <hr />
+
+    <div>
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">
+            <img alt="Creative Commons License" style="border-width:0" width="88" height="31" src="..\cc-by-sa-logo.png" />
+        </a>
+        This work is licensed under a
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">
+            Creative Commons Attribution-ShareAlike 4.0 International License
+        </a>
+    </div>
+
+    <!-- end of text -->
+</body>
+</html>

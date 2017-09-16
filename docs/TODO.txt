@@ -13,7 +13,6 @@ winLAME 2017 beta 3, nice-to-have:
 - check all tooltip texts
 - fix remaining Coverity scan warnings
 - fix remaining SonarQube bugs and vulnerabilities
-- write help pages for general settings and cd read settings
 - setup uninstall: add option to finish page to remove all settings
 
 winLAME 2017 beta 3, tests:

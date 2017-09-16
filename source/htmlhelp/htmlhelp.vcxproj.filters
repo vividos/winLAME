@@ -82,6 +82,12 @@
     <None Include="html\pages\modernui.html">
       <Filter>html\pages</Filter>
     </None>
+    <None Include="html\pages\settings_cdread.html">
+      <Filter>html\pages</Filter>
+    </None>
+    <None Include="html\pages\settings_general.html">
+      <Filter>html\pages</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="keywords.txt" />

@@ -104,6 +104,14 @@
 			<param name="Name" value="Encode">
 			<param name="Local" value="html\pages\encode.html">
 			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="General Settings">
+			<param name="Local" value="html\pages\settings_general.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="CD Read Settings">
+			<param name="Local" value="html\pages\settings_cdread.html">
+			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Technical Reference">

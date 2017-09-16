@@ -88,6 +88,8 @@ exit 0</NMakeCleanCommandLine>
     <None Include="html\pages\opus.html" />
     <None Include="html\pages\output.html" />
     <None Include="html\pages\presets.html" />
+    <None Include="html\pages\settings_cdread.html" />
+    <None Include="html\pages\settings_general.html" />
     <None Include="html\pages\sndfile.html" />
     <None Include="html\pages\wma.html" />
     <None Include="html\techref\index.html" />
