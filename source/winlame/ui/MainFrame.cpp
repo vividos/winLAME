@@ -206,16 +206,6 @@ void MainFrame::SetupToolbar()
 void MainFrame::SetupStatusBar()
 {
    CreateSimpleStatusBar();
-/* TODO status bar panes
-   m_statusBar.SubclassWindow(m_hWndStatusBar);
-   int arrParts[] =
-   {
-      ID_DEFAULT_PANE,
-      ID_ROW_PANE,
-      ID_COL_PANE
-   };
-   m_statusBar.SetPanes(arrParts, sizeof(arrParts) / sizeof(int), false);
-*/
 }
 
 void MainFrame::SetupView()
@@ -433,7 +423,7 @@ LRESULT MainFrame::OnSettingsFinishActionRange(WORD /*wNotifyCode*/, WORD wID, H
    return 0;
 }
 
-LRESULT MainFrame::OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/) 
+LRESULT MainFrame::OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
     ShowRibbonUI(!IsRibbonUI());
     UISetCheck(ID_VIEW_RIBBON, IsRibbonUI());

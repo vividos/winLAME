@@ -70,19 +70,7 @@ LRESULT ImageListComboBox::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 
    CRect rcClient, rcClip;
    GetClientRect(&rcClient);
-/*
-   if (m_hTheme)
-   {
-      if (IsThemeBackgroundPartiallyTransparent(m_hTheme, CP_DROPDOWNBUTTON, CBB_NORMAL))
-      {
-         DrawThemeParentBackground(m_hWnd, dc, &rcClip);
-      }
 
-      HRESULT hRes = DrawThemeBackground(m_hTheme, dc, CP_BACKGROUND, CBB_NORMAL, &rcClient, &rcClip);
-      ATLASSERT(SUCCEEDED(hRes)); hRes;
-   }
-   else
-*/
    {
       // draw the edit box
       const bool bEnabled = true;
@@ -103,15 +91,15 @@ LRESULT ImageListComboBox::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
       DRAWITEMSTRUCT dis = {0};
       dis.hDC = dc;
       dis.itemID = GetCurSel();
-      dis.itemState = 0/*ODS_SELECTED*/; // TODO
-      dis.itemAction = /*ODA_SELECT |*/ ODA_DRAWENTIRE;
+      dis.itemState = 0;
+      dis.itemAction = ODA_DRAWENTIRE;
       dis.rcItem = rcClient;
       dis.rcItem.right -= 17;
       DrawItem(&dis);
 
       dc.SelectFont(hOldFont);
 
-      // draw the dropdown arrow.
+      // draw the dropdown arrow
       CRect rcArrow(rcClient);
       rcArrow.left = rcArrow.right - 17;
       dc.DrawFrameControl(rcArrow,DFC_SCROLL,DFCS_SCROLLCOMBOBOX);
@@ -137,7 +125,7 @@ void ImageListComboBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
    }
 
    // selected
-   if ((lpDIS->itemState & ODS_SELECTED) 
+   if ((lpDIS->itemState & ODS_SELECTED)
       && (lpDIS->itemAction & (ODA_SELECT | ODA_DRAWENTIRE)))
    {
       CBrush brHighlight; brHighlight.CreateSysColorBrush(COLOR_HIGHLIGHT);
@@ -153,10 +141,10 @@ void ImageListComboBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
    }
 
    // deselected
-   if (!(lpDIS->itemState & ODS_SELECTED) 
+   if (!(lpDIS->itemState & ODS_SELECTED)
       && (lpDIS->itemAction & (ODA_SELECT | ODA_DRAWENTIRE)))
    {
-      CBrush brWindow; brWindow.CreateSysColorBrush(COLOR_WINDOW); 
+      CBrush brWindow; brWindow.CreateSysColorBrush(COLOR_WINDOW);
       BrushChanger brChanger(dc, brWindow);
 
       CPen penHighlight; penHighlight.CreatePen(PS_SOLID, 1, ::GetSysColor(COLOR_WINDOW));
@@ -169,7 +157,7 @@ void ImageListComboBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
    }
 
    // focused
-   if (lpDIS->itemAction & ODA_FOCUS) 
+   if (lpDIS->itemAction & ODA_FOCUS)
       dc.DrawFocusRect(&lpDIS->rcItem);
 }
 
@@ -184,19 +172,19 @@ void ImageListComboBox::OutputBitmap(LPDRAWITEMSTRUCT lpDIS)
    {
       CPoint point;
       point.x = lpDIS->rcItem.left + 2;
-      point.y = lpDIS->rcItem.top + ((lpDIS->rcItem.bottom - lpDIS->rcItem.top) / 2) - (m_uiItemHeight / 2); 
+      point.y = lpDIS->rcItem.top + ((lpDIS->rcItem.bottom - lpDIS->rcItem.top) / 2) - (m_uiItemHeight / 2);
 
       m_ilIcons.Draw(dc, iIconIndex, point.x, point.y, ILD_NORMAL);
    }
 
-   CString cszText; 
-   if (lpDIS->itemID != -1) 
-      GetLBText(lpDIS->itemID, cszText); 
+   CString cszText;
+   if (lpDIS->itemID != -1)
+      GetLBText(lpDIS->itemID, cszText);
 
-   if (!cszText.IsEmpty()) 
+   if (!cszText.IsEmpty())
    {
-      CRect rcText(lpDIS->rcItem); 
+      CRect rcText(lpDIS->rcItem);
       rcText.DeflateRect(m_uiItemWidth + 4, 0, 0, 0);
-      dc.DrawText(cszText, cszText.GetLength(), rcText, DT_SINGLELINE | DT_VCENTER); 
+      dc.DrawText(cszText, cszText.GetLength(), rcText, DT_SINGLELINE | DT_VCENTER);
    }
 }

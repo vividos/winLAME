@@ -158,8 +158,7 @@ CString Frame::GetString(unsigned int fieldIndex) const
    break;
 
    case ID3_FIELD_TYPE_LATIN1LIST:
-      // TODO
-      ATLASSERT(false);
+      ATLASSERT(false); // not implemented
       break;
 
    case ID3_FIELD_TYPE_STRING:
@@ -259,8 +258,7 @@ CString Frame::AsString()
       break;
 
    case ID3_FIELD_TYPE_DATE:
-      ATLASSERT(false);
-      // TODO
+      ATLASSERT(false); // not implemented
       break;
 
    case ID3_FIELD_TYPE_INT8:
@@ -322,8 +320,7 @@ bool Frame::SetString(unsigned int fieldIndex, const CString& cszText)
    break;
 
    case ID3_FIELD_TYPE_LATIN1LIST:
-      // TODO
-      ATLASSERT(false);
+      ATLASSERT(false); // not implemented
       break;
 
    case ID3_FIELD_TYPE_STRING:
@@ -358,8 +355,7 @@ bool Frame::SetString(unsigned int fieldIndex, const CString& cszText)
    break;
 
    default:
-      // TODO
-      ATLASSERT(false);
+      ATLASSERT(false); // not implemented
       break;
    }
 

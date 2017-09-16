@@ -32,6 +32,8 @@ using Encoder::OggVorbisInputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
+extern CString GetOggVorbisVersionString();
+
 // constants
 
 // channel remap stuff
@@ -141,8 +143,10 @@ CString OggVorbisInputModule::GetDescription() const
 
 void OggVorbisInputModule::GetVersionString(CString& version, int special) const
 {
-   // TODO
-   version = _T("OggVorbis");
+   if (!IsAvailable())
+      return;
+
+   version = GetOggVorbisVersionString();
 }
 
 CString OggVorbisInputModule::GetFilterString() const

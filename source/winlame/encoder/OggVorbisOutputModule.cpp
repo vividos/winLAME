@@ -116,11 +116,9 @@ CString OggVorbisOutputModule::GetDescription() const
    return desc;
 }
 
-void OggVorbisOutputModule::GetVersionString(CString& version, int special) const
+/// returns the Ogg Vorbis library version
+CString GetOggVorbisVersionString()
 {
-   if (!IsAvailable())
-      return;
-
    // to get build version, create first 3 ogg packets,
    // take the second and read it back in; the vc.vendor
    // then is filled with build version
@@ -144,12 +142,23 @@ void OggVorbisOutputModule::GetVersionString(CString& version, int special) cons
 
    vorbis_synthesis_headerin(&vi, &vc, &header_comm);
 
+   CString version;
    version.Format(_T("(%hs)"), vc.vendor);
 
    vorbis_block_clear(&vb);
    vorbis_dsp_clear(&vd);
    vorbis_comment_clear(&vc);
    vorbis_info_clear(&vi);
+
+   return version;
+}
+
+void OggVorbisOutputModule::GetVersionString(CString& version, int special) const
+{
+   if (!IsAvailable())
+      return;
+
+   version = GetOggVorbisVersionString();
 }
 
 int OggVorbisOutputModule::InitOutput(LPCTSTR outfilename,

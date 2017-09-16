@@ -41,7 +41,11 @@ Encoder::InputModule* CDReadoutModule::CloneModule()
 
 CString CDReadoutModule::GetDescription() const
 {
-   return SndFileInputModule::GetDescription(); // TODO add track data
+   CString text;
+   text.Format(IDS_CDEXTRACT_DESC_US,
+      m_trackIndex,
+      SndFileInputModule::GetDescription().GetString());
+   return text;
 }
 
 CString CDReadoutModule::GetFilterString() const

@@ -34,8 +34,8 @@ using Encoder::SampleContainer;
 // define some symbols that seem to be missing from the lib file
 extern "C" void speex_header_free(void* ptr)
 {
-   // TODO implement
-   //free(ptr);
+   // note: speex_free isn't exported by the lib as well
+   //speex_free(ptr);
 }
 
 SpeexInputModule::SpeexInputModule()
@@ -217,9 +217,6 @@ int SpeexInputModule::DecodeSamples(SampleContainer& samples)
          }
          else
          {
-            //if (packet.e_o_s)
-            //   return 0;// TODO end of stream
-
             std::vector<short> sampleBuffer;
 
             int iRet = DecodePacket(packet, sampleBuffer);
