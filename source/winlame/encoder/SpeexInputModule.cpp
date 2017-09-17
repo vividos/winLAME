@@ -342,7 +342,12 @@ void SpeexInputModule::CalcSampleCount() const
       return;
 
    FILE* fd = m_inputStream->GetFd();
+   if (fd == nullptr)
+      return;
+
    long currentPos = ftell(fd);
+   if (currentPos < 0)
+      return;
 
    ogg_int64_t sampleCount = 0;
    ogg_int64_t samplesPerPacket = 0;
@@ -359,7 +364,7 @@ void SpeexInputModule::CalcSampleCount() const
          SpeexHeader* speexHeader = speex_packet_to_header(reinterpret_cast<char*>(header.packet), header.bytes);
          if (speexHeader != nullptr)
          {
-            samplesPerPacket = speexHeader->frames_per_packet * speexHeader->frame_size;
+            samplesPerPacket = static_cast<ogg_int64_t>(speexHeader->frames_per_packet) * speexHeader->frame_size;
 
             speex_header_free(speexHeader);
          }
@@ -371,7 +376,9 @@ void SpeexInputModule::CalcSampleCount() const
       }
    }
 
-   fseek(fd, currentPos, SEEK_SET);
+   int ret = fseek(fd, currentPos, SEEK_SET);
+   if (ret != 0)
+      return;
 
    m_sampleCount = sampleCount;
 }
