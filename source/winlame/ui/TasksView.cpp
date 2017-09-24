@@ -82,16 +82,16 @@ LRESULT TasksView::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL
 
 LRESULT TasksView::OnItemClick(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
 {
-   LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE)pnmh;
-
-   if (lpnmitem->iItem >= 0 &&
-      m_fnOnClickedTask != nullptr)
+   if (m_fnOnClickedTask != nullptr)
    {
+      LPNMITEMACTIVATE lpnmitem = (LPNMITEMACTIVATE)pnmh;
+
       unsigned int itemIndex = static_cast<unsigned int>(lpnmitem->iItem);
 
       m_fnOnClickedTask(itemIndex);
 
-      SetItemState(itemIndex, LVIS_SELECTED, LVIS_SELECTED);
+      if (lpnmitem->iItem >= 0)
+         SetItemState(itemIndex, LVIS_SELECTED, LVIS_SELECTED);
    }
 
    return 0;
