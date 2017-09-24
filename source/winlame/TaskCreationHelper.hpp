@@ -58,6 +58,9 @@ private:
       unsigned int cdReadTaskId, const Encoder::CDReadJob& cdReadJob,
       int nogapInstanceId, bool isLastTrack);
 
+   /// finds playlist output folder that is common to all files on the playlist
+   CString FindCommonPlaylistOutputFolder() const;
+
    /// adds task to create a playlist to task manager
    void AddPlaylistTask();
 

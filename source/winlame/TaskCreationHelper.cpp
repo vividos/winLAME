@@ -308,11 +308,66 @@ std::shared_ptr<Encoder::EncoderTask> TaskCreationHelper::CreateEncoderTaskForCD
    return std::make_shared<Encoder::EncoderTask>(cdReadTaskId, taskSettings);
 }
 
+CString Path_GetCommonRootPath(const CString& path1, const CString& path2)
+{
+   Path canonPath1(path1);
+   Path canonPath2(path2);
+   canonPath1.Canonicalize();
+   canonPath2.Canonicalize();
+
+   if (PathIsSameRoot(canonPath1.ToString(), canonPath2.ToString()) != TRUE)
+   {
+      return CString();
+   }
+
+   CString commonRootPath;
+   PathCommonPrefix(canonPath1.ToString(), canonPath2.ToString(), commonRootPath.GetBuffer(MAX_PATH));
+   commonRootPath.ReleaseBuffer();
+
+   Path::AddEndingBackslash(commonRootPath);
+
+   return commonRootPath;
+}
+
+CString TaskCreationHelper::FindCommonPlaylistOutputFolder() const
+{
+   CString playlistOutputFolder = m_uiSettings.m_defaultSettings.outputdir;
+
+   if (!m_uiSettings.out_location_use_input_dir)
+   {
+      return playlistOutputFolder;
+   }
+
+   if (m_uiSettings.m_bFromInputFilesPage)
+   {
+      if (!m_uiSettings.encoderjoblist.empty())
+         playlistOutputFolder = Path(m_uiSettings.encoderjoblist.front().OutputFilename()).FolderName();
+
+      for (auto encoderJob : m_uiSettings.encoderjoblist)
+      {
+         Path outputFilename(encoderJob.OutputFilename());
+
+         CString newCommonRootPath = Path_GetCommonRootPath(playlistOutputFolder, outputFilename.FolderName());
+
+         if (newCommonRootPath.IsEmpty())
+            break;
+         else
+            playlistOutputFolder = newCommonRootPath;
+      }
+   }
+   else
+   {
+      ATLASSERT(false); // must not have "use input folder as output location" option when reading from CD
+   }
+
+   return playlistOutputFolder;
+}
+
 void TaskCreationHelper::AddPlaylistTask()
 {
    TaskManager& taskMgr = IoCContainer::Current().Resolve<TaskManager>();
 
-   CString playlistOutputFolder = m_uiSettings.m_defaultSettings.outputdir;
+   CString playlistOutputFolder = FindCommonPlaylistOutputFolder();
 
    CString playlistFilename =
       Path::Combine(playlistOutputFolder, m_uiSettings.playlist_filename).ToString();
