@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="winLAME is an easy to use encoder for many audio formats, including MP3, Opus, Ogg Vorbis and more. winLAME lets you read in audio tracks from CDs or encode audio files from your hard drive." />
+    <meta name="keywords" content="winLAME encoder audio format MP3  Opus Ogg Vorbis CD track ripping ID3 tag ID3v2 CoverArt Album Art" />
+    <title>winLAME - Survey Results Page</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="canonical" href="https://winlame.sourceforge.io/survey.html">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="navbar-brand" style="height:50px;position:relative">
+                    <a href="index.html">
+                        <img src="images/logo.png" width="32" height="32" style="position:absolute;bottom:8px" alt="winLAME logo" />
+                        <div style="margin-left:40px">winLAME</div>
+                    </a>
+                </div>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="download.html">Download</a></li>
+                    <li><a href="features.html">Features</a></li>
+                    <li><a href="screenshots.html">Screenshots</a></li>
+                    <li><a href="development.html">Development</a></li>
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">More <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="history.html">History</a></li>
+                            <li class="active"><a href="#">Survey Results</a></li>
+                            <li><a href="feedback_positive.html" title="Send a Smile">Send a Smile</a></li>
+                            <li><a href="feedback_negative.html" title="Send a Frown">Send a Frown</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 54px;">
+
+        <h1>winLAME Survey Results</h1>
+
+        <p>
+            In the winLAME 2017 beta versions,the users of winLAME have the opportunity to fill
+            out a small survey to give feedback. This was done using the two "Send a Smile" and
+            "Send a Frown" smiley buttons in the winLAME menu band or the toolbar. The two feedback
+            forms are also available using the website links.
+        </p>
+
+        <p>
+            Note that you can always take the survey using these two links:
+            <ul>
+                <li><a href="feedback_positive.html">Send a Smile</a></li>
+                <li><a href="feedback_negative.html">Send a Frown</a></li>
+            </ul>
+        </p>
+
+        <h1>Survey Results - winLAME 2017 beta 1</h1>
+
+        <p>
+            Here are the collected responses from the feedback survey in the "2017 beta 1" time
+            frame.
+        </p>
+
+
+        <h2>Send a Frown - 37 answers</h2>
+
+        <p>Let's start with the frowns first. The following two questions were asked:</p>
+        <ul>
+            <li>What did you not like about winLAME? What made you frown?</li>
+            <li>What should be fixed so that winLAME would get better?</li>
+        </ul>
+
+        <p>
+            Only the answer to the first question was mandatory. There were 37 answers, which are
+            summarized and abbreviated here. Some answers were double or were variations of other
+            answers and were left out from the list.
+        </p>
+
+        <ul>
+            <li>empty output file</li>
+            <li>crashing all the time</li>
+            <li>unexplainable error</li>
+            <li>converting multiple files laggy UI, CPU</li>
+            <li>crash FLAC to MP3 v0 encoding</li>
+            <li>encoded files too short</li>
+            <li>crash on input files</li>
+            <li>artist and title mixed up</li>
+            <li>repeated encoding infinitely</li>
+            <li>"encoding finished" action doesn't work</li>
+            <li>portable version crashed</li>
+        </ul>
+
+        <p>
+            There were some serious bugs reported using the survey form. Unfortunately this form
+            is not the best way to report bugs, and so in the meantime I added a sentence below
+            the survey to report bugs in other ways. When fixing bugs I often need more
+            information, e.g. a crash dump file, or I let the user try another build of the
+            winLAME.exe if the bug is gone. Nevertheless I tried to reproduce the errors and come
+            up with a fix for these bugs.
+        </p>
+
+        <ul>
+            <li>crop feature wish</li>
+            <li>doesn't save settings</li>
+        </ul>
+
+        <p>
+            There were some feature wishes also. The first, to offer cropping (MP3) files would be
+            an interesting feature, but unfortunately adding audio file editing is outside of the
+            scope of what winLAME should or could do. The "doesn't save settings" is a valid point.
+            Nowadays settings that one has adjusted should be saved immediately - I often stumble
+            over this myself during debugging winLAME.
+        </p>
+
+        <ul>
+            <li>new interface ugly</li>
+            <li>ugly icons</li>
+            <li>UI decals more HD</li>
+        </ul>
+
+        <p>
+            These are some points that deal with the new user interface and with the icons used.
+            The new user interface is different, in that it presents you the list of tasks that
+            are worked on, which is necessary now that winLAME does parallel encoding. The way of
+            setting up encoding with a wizard (which I guess is winLAME's reason for success) is
+            still used, both in Modern UI and in Classic UI mode.
+        </p>
+        <p>
+            I'm using some stock icons
+            (<a href="http://www.famfamfam.com/lab/icons/silk/">famfamfam's silk icon</a>
+            set, in fact) in winLAME. I'm not an artist, so I can't design new icons (that would
+            look even uglier), so if you are a graphics designer and/or you want to provide better
+            icons, <a href="development.html">get in touch with me</a>!
+        </p>
+
+        <h2>Send a Smile - 70 answers</h2>
+
+        <p>Now to the positive feedback. The following two questions were asked:</p>
+        <ul>
+            <li>What do you like about winLAME? What made you smile?</li>
+            <li>What feature would you like in winLAME to make it even better?</li>
+        </ul>
+
+        <p>
+            Only the answer to the first question was mandatory. There were 70 answers, which are
+            summarized here.
+        </p>
+
+        <ul>
+            <li>easy to use interface</li>
+            <li>fast conversion</li>
+        </ul>
+
+        <p>
+            These two points were given often. The easy to use UI was always the strength of
+            winLAME. My guess is because the wizard approach doesn't shove all of the options in
+            your face at once, and still give you the feeling you're in control. The fast
+            conversion is natural nowadays, with CPU's much faster than 17 years ago when winLAME
+            started.
+        </p>
+
+        <ul>
+            <li>modify frequencies</li>
+            <li>audio CD write</li>
+            <li>edit ID3 after encoding</li>
+            <li>m4a support</li>
+            <li>Japanese music db to get album info</li>
+            <li>multiple output modules at once</li>
+            <li>choose internet addresses for files</li>
+            <li>better UI for selecting output audio quality</li>
+            <li>integrate audio editor</li>
+            <li>CD error checking, correction</li>
+            <li>converting of DSD files</li>
+        </ul>
+
+        <p>
+            There were some big feature requests in the answers. These are all great, but they
+            have a downside - someone has to code them. As I'm working on winLAME only from time
+            to time, these features most probably won't get worked on. Remember that coding the
+            new Modern UI together with the multithreaded encoding took me about 7 years, working
+            at it on and off. Nevertheless, winLAME is Open Source, and if you have some C++
+            coding skills, you could tacke one of the features and try to develop them.
+            <a href="development.html">Contact me</a> if you have questions during coding, or
+            hack on your feature right away. Note that winLAME is using the GPL license.
+        </p>
+
+        <ul>
+            <li>all buttons labeled - for screen readers</li>
+            <li>changeable font size</li>
+            <li>shell integration</li>
+            <li>settings how much cores</li>
+            <li>two digit numbering when CDs have &gt; 9 tracks</li>
+            <li>recurse directories</li>
+            <li>folder for artist, then album folder</li>
+            <li>CD eject button</li>
+            <li>ReplayGain for Opus files</li>
+        </ul>
+
+        <p>
+            These are some minor features or things that were requested. They might or might not
+            get into the next "2017 beta 3" version of winLAME. As above, if you are a coder, you
+            may implement these features yourself.
+        </p>
+
+        <ul>
+            <li>preset 320 mp3 high quality</li>
+            <li>FLAC tag reading</li>
+            <li>Linux version</li>
+        </ul>
+
+        <p>
+            There are so many features in winLAME that sometimes a feature is already built into
+            winLAME without the user noticing. I improved the winLAME Help File and updated all
+            pages, so if in doubt about an option or feature in winLAME, press F1 and start
+            reading. About the features mentioned in the survey: The requested LAME preset is
+            already there, it's called "Archiving: Best Quality". FLAC tags also should be read
+            already. If there's anything missing, <a href="development.html">report a bug</a> or
+            <a href="development.html">contact me</a>.
+        </p>
+
+        <p>
+            About the Linux version... there's a package called Wine that emulates Windows on
+            Linux. Starting from Wine-2.0 it can also run winLAME without problems. I used the
+            winLAME setup package on Ubuntu 16.04 to test this. Ubuntu has the package "Play on
+            Linux" which sits on top of Wine which makes installing winLAME possible even for
+            non-hackers. I may post an article in the future about how to install and use winLAME
+            on Linux.
+        </p>
+
+    </div>
+
+    <hr />
+
+    <div class="container">
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+        </a>
+        This work is licensed under a
+        <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+            Creative Commons Attribution-ShareAlike 4.0 International License
+        </a>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Clicky Web Statistics -->
+    <script src="//static.getclicky.com/js" type="text/javascript"></script>
+    <script type="text/javascript">try { clicky.init(101034865); } catch (e) { }</script>
+    <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101034865ns.gif" /></p></noscript>
+</body>
+</html>
