@@ -43,7 +43,8 @@ CString CDRipTitleFormatManager::FormatTitle(const CString& format,
    title.Replace(_T("%title%"), trackInfo.m_trackTitle);
 
    CString trackNumber;
-   trackNumber.Format(_T("%u"), trackInfo.m_numTrackOnDisc + 1);
+   int numDigits = discInfo.m_numTracks < 10 ? 1 : discInfo.m_numTracks < 100 ? 2 : 3;
+   trackNumber.Format(_T("%0*u"), numDigits, trackInfo.m_numTrackOnDisc + 1);
    title.Replace(_T("%track%"), trackNumber);
 
    CString year;

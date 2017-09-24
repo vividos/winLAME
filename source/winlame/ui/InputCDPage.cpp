@@ -728,6 +728,10 @@ CDRipDiscInfo InputCDPage::ReadDiscInfo(DWORD driveIndex)
 
    discInfo.m_CDID = BASS_CD_GetID(driveIndex, BASS_CDID_CDDB);
 
+   discInfo.m_numTracks = BASS_CD_GetTracks(driveIndex);
+   if (discInfo.m_numTracks < 0)
+      discInfo.m_numTracks = 0;
+
    return discInfo;
 }
 

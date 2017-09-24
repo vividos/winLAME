@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,7 +28,8 @@ struct CDRipDiscInfo
    CDRipDiscInfo()
       :m_variousArtists(false),
       m_year(0),
-      m_discDrive(0)
+      m_discDrive(0),
+      m_numTracks(0)
    {
    }
 
@@ -52,4 +53,7 @@ struct CDRipDiscInfo
 
    /// FreeDB's CDID
    CString m_CDID;
+
+   /// number of tracks on the CD
+   unsigned int m_numTracks;
 };

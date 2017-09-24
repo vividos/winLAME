@@ -617,6 +617,10 @@ void CDRipDlg::UpdateTrackManager()
 
    discinfo.m_CDID = BASS_CD_GetID(nDrive, BASS_CDID_CDDB);
 
+   discinfo.m_numTracks = BASS_CD_GetTracks(nDrive);
+   if (discinfo.m_numTracks < 0)
+      discinfo.m_numTracks = 0;
+
    pManager->ResetTrackInfo();
 
    // write all selected items into manager
