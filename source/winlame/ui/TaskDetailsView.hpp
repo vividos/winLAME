@@ -69,6 +69,7 @@ namespace UI
          REFLECT_NOTIFICATIONS() // to make sure superclassed controls get notification messages
       END_MSG_MAP()
 
+   private:
       /// called when dialog view is being shown
       LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
