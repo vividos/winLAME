@@ -87,6 +87,8 @@ private:
    LRESULT OnItemClick(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
 private:
+   friend class TaskDetailsView;
+
    /// returns status text from task status
    static CString StatusTextFromStatus(TaskInfo::TaskStatus status);
 

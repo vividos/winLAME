@@ -221,14 +221,12 @@ void MainFrame::SetupView()
    m_paneTaskDetails.Create(m_splitter, IDS_MAIN_TASKS_PANE_CONTAINER);
    m_paneTaskDetails.SetPaneContainerExtendedStyle(PANECNT_NOCLOSEBUTTON);
 
-   m_taskDetailsView.Create(m_paneTaskDetails, rcDefault, nullptr,
-      WS_CHILD | WS_VISIBLE | ES_READONLY | ES_MULTILINE);
-   m_taskDetailsView.SetFont(AtlGetDefaultGuiFont());
+   m_taskDetailsView.Create(m_paneTaskDetails, rcDefault);
 
    m_paneTaskDetails.SetClient(m_taskDetailsView);
 
    m_splitter.SetSplitterPanes(m_tasksView, m_paneTaskDetails);
-   m_splitter.SetSplitterExtendedStyle(SPLIT_BOTTOMALIGNED | SPLIT_NONINTERACTIVE);
+   m_splitter.SetSplitterExtendedStyle(SPLIT_BOTTOMALIGNED);
    m_splitter.SetActivePane(SPLIT_PANE_TOP);
    m_splitter.SetDefaultActivePane(SPLIT_PANE_TOP);
 
@@ -238,7 +236,7 @@ void MainFrame::SetupView()
    CRect rectFrame;
    m_splitter.GetWindowRect(rectFrame);
 
-   m_splitter.SetSplitterPos(rectFrame.Height() - 85);
+   m_splitter.SetSplitterPos(rectFrame.Height() - 144);
 }
 
 LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
@@ -538,12 +536,11 @@ void MainFrame::OnClickedTaskItem(size_t clickedIndex)
 {
    std::vector<TaskInfo> taskInfoList = m_taskManager.CurrentTasks();
    if (clickedIndex >= taskInfoList.size())
-      return; // index has become invalid between clicking and getting task info list
+   {
+      // index has become invalid between clicking and getting task info list
+      m_taskDetailsView.ResetTaskDetails();
+      return;
+   }
 
-   CString description = taskInfoList[clickedIndex].Description();
-
-   description.Replace(_T("\n"), _T("\r\n"));
-   description += _T("\r\n\r\n");
-
-   m_taskDetailsView.SetWindowText(description);
+   m_taskDetailsView.UpdateTaskDetails(taskInfoList[clickedIndex]);
 }

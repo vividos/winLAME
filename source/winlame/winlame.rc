@@ -857,6 +857,19 @@ BEGIN
     CONTROL         "Album art image", IDC_STATIC_COVERART, WC_STATIC, SS_BITMAP | SS_NOTIFY, 0, 0, 300, 300
 END
 
+LANGUAGE LANG_ENGLISH, SUBLANG_DEFAULT
+IDD_VIEW_TASKDETAILS DIALOGEX 0, 0, 435, 57
+STYLE DS_3DLOOK | DS_SHELLFONT | WS_VISIBLE | WS_CHILDWINDOW
+FONT 8, "Ms Shell Dlg 2", 400, 0, 1
+BEGIN
+    CONTROL         "", IDC_STATIC_ICON_TASK_TYPE, WC_STATIC, SS_BLACKFRAME, 4, 4, 16, 16
+    LTEXT           "Task Type", IDC_STATIC_TEXT_TASK_TYPE, 30, 6, 406, 16
+    LTEXT           "Filename", IDC_STATIC_LABEL_FILENAME_TRACK, 4, 30, 67, 8
+    EDITTEXT        IDC_EDIT_TEXT_FILENAME_TRACK, 73, 26, 357, 12, NOT WS_BORDER | ES_AUTOHSCROLL | ES_READONLY, WS_EX_CLIENTEDGE
+    LTEXT           "Description", IDC_STATIC, 4, 43, 66, 8
+    EDITTEXT        IDC_EDIT_TEXT_TASK_DESCRIPTION, 73, 43, 357, 12, ES_AUTOHSCROLL | ES_MULTILINE | ES_READONLY
+END
+
 
 //
 // String Table resources
@@ -992,6 +1005,13 @@ BEGIN
     IDS_CDEXTRACT_DESC_US         "Track %u: %s"
     IDS_MAIN_TASKS_PANE_CONTAINER "Task Details"
     IDS_WARN_OVERWRITE_ORIGINAL   "Warning!\nYou are about to overwrite the original input files with the encoded output files!\n\nContinue?"
+    IDS_MAIN_TASKS_TASKTYPE_ENCODE   "Encode audio"
+    IDS_MAIN_TASKS_TASKTYPE_CDREAD   "Read from CD"
+    IDS_MAIN_TASKS_TASKTYPE_PLAYLIST "Write playlist"
+    IDS_MAIN_TASKS_FILENAME_OR_TRACK_ENCODE "Filename"
+    IDS_MAIN_TASKS_FILENAME_OR_TRACK_CDREAD "Track"
+    IDS_MAIN_TASKS_FILENAME_OR_TRACK_PLAYLIST "Playlist"
+    IDS_MAIN_TASKS_TASK_DETAILS_SELECT_TASK "<Select a task to show details>"
     IDS_AAC_NO_MPEG2_LTP          "Warning!\nCurrently libfaac isn't capable of using MPEG2 together with LTP.\nPlease select another Object Type!"
     IDS_OGGV_QUALITY              "Quality: %s%u.%02u"
     IDS_OGGV_BITRATE              "Bitrate: %u.%u kbps"

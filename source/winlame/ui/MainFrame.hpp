@@ -25,6 +25,7 @@
 #include "TasksView.hpp"
 #include "Win7Taskbar.hpp"
 #include "HtmlHelper.hpp"
+#include "TaskDetailsView.hpp"
 #include <boost/optional.hpp>
 
 #define WM_CHECK_COMMAND_LINE WM_APP+2
@@ -188,7 +189,7 @@ private:
    CPaneContainer m_paneTaskDetails;
 
    /// task details view
-   CEdit m_taskDetailsView;
+   TaskDetailsView m_taskDetailsView;
 
    // access to task bar
    boost::optional<Win7::Taskbar> m_win7TaskBar;

@@ -355,6 +355,9 @@
     <ClCompile Include="classic\AacSettingsPageClassic.cpp">
       <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ui\TaskDetailsView.cpp">
+      <Filter>Modern UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="encoder\dither\dither.h">
@@ -737,6 +740,9 @@
     </ClInclude>
     <ClInclude Include="classic\AacSettingsPageClassic.hpp">
       <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\TaskDetailsView.hpp">
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

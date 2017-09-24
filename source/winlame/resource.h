@@ -68,6 +68,7 @@
 #define IDD_PAGE_WMA_SETTINGS                   1039
 #define IDD_PAGE_OPUS_SETTINGS                  1040
 #define IDD_PAGE_FINISH                         1041
+#define IDD_VIEW_TASKDETAILS                    1042
 #define IDC_MDLG_NEXT                           3000
 #define IDC_MDLG_BACK                           3001
 #define IDC_MDLG_HELP                           3002
@@ -230,6 +231,11 @@
 #define IDC_OPUS_RADIO_BRCMODE1                 4504
 #define IDC_OPUS_RADIO_BRCMODE2                 4505
 #define IDC_OPUS_RADIO_BRCMODE3                 4506
+#define IDC_STATIC_ICON_TASK_TYPE               4600
+#define IDC_STATIC_TEXT_TASK_TYPE               4601
+#define IDC_STATIC_LABEL_FILENAME_TRACK         4602
+#define IDC_EDIT_TEXT_FILENAME_TRACK            4603
+#define IDC_EDIT_TEXT_TASK_DESCRIPTION          4604
 #define IDC_SETTINGS_COMBO_LANGUAGE             5000
 #define IDC_SETTINGS_EDIT_CPU_CORES             5001
 #define IDC_SETTINGS_SPIN_CPU_CORES             5002
@@ -267,6 +273,13 @@
 #define IDS_CDEXTRACT_DESC_US                   40125
 #define IDS_MAIN_TASKS_PANE_CONTAINER           40126
 #define IDS_WARN_OVERWRITE_ORIGINAL             40127
+#define IDS_MAIN_TASKS_TASKTYPE_ENCODE          40128
+#define IDS_MAIN_TASKS_TASKTYPE_CDREAD          40129
+#define IDS_MAIN_TASKS_TASKTYPE_PLAYLIST        40130
+#define IDS_MAIN_TASKS_FILENAME_OR_TRACK_ENCODE 40131
+#define IDS_MAIN_TASKS_FILENAME_OR_TRACK_CDREAD 40132
+#define IDS_MAIN_TASKS_FILENAME_OR_TRACK_PLAYLIST 40133
+#define IDS_MAIN_TASKS_TASK_DETAILS_SELECT_TASK 40134
 #define IDS_AAC_NO_MPEG2_LTP                    40200
 #define IDS_OGGV_QUALITY                        40201
 #define IDS_OGGV_BITRATE                        40202
