@@ -74,6 +74,7 @@
       <AdditionalLibraryDirectories>..\libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DelayLoadDLLs>libfaad2.dll;libfaac.dll;bass.dll;basscd.dll;basswma.dll;libflac_dynamic.dll;libmad.dll;libsndfile-1.dll;libmp3lame.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <IgnoreSpecificDefaultLibraries>msvcrt</IgnoreSpecificDefaultLibraries>
+      <AdditionalOptions>/IGNORE:4075 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <Bscmake />
   </ItemDefinitionGroup>
