@@ -30,6 +30,7 @@
 #include "EncoderImpl.hpp"
 #include "ModuleManager.hpp"
 #include "ModuleManagerImpl.hpp"
+#include "TestEncoderErrorHandler.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -43,6 +44,9 @@ namespace unittest
 
       /// module manager
       static std::shared_ptr<Encoder::ModuleManager> m_spModuleManager;
+
+      /// encoding error handler
+      static TestEncoderErrorHandler m_encodingErrorHandler;
 
    public:
       /// sets up test; called before each test
@@ -86,7 +90,7 @@ namespace unittest
 
          encoder.SetSettingsManager(&settingsManager);
 
-         //encoder.SetErrorHandler(); // TODO
+         encoder.SetErrorHandler(&m_encodingErrorHandler);
 
          encoder.StartEncode();
 
@@ -109,4 +113,7 @@ namespace unittest
 
    /// instance of static module manager
    std::shared_ptr<Encoder::ModuleManager> TestEncodeLameMp3::m_spModuleManager;
+
+   /// instance of static encoding error handler
+   TestEncoderErrorHandler TestEncodeLameMp3::m_encodingErrorHandler;
 }

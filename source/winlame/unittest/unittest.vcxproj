@@ -80,6 +80,7 @@
     <ClInclude Include="..\resource.h" />
     <ClInclude Include="resource_unittest.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TestEncoderErrorHandler.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
