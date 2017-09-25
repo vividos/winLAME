@@ -461,9 +461,7 @@ bool OpusOutputModule::InitEncoder()
 
    m_encoder.reset(st, opus_multistream_encoder_destroy);
 
-   opus_int32 min_bytes;
-   int max_frame_bytes;
-   min_bytes = max_frame_bytes = (1275 * 3 + 7)*header.nb_streams;
+   int max_frame_bytes = (1275 * 3 + 7)*header.nb_streams;
    m_packetBuffer.resize(max_frame_bytes);
 
    m_frameSize = frame_size;

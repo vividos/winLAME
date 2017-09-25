@@ -317,7 +317,8 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
       if (ret != 0)
       {
          ret = fseek(wav, 0, SEEK_SET);
-         ATLASSERT(ret == 0); ret;
+         ATLASSERT(ret == 0);
+         UNUSED(ret);
          return false;
       }
 
@@ -327,7 +328,8 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
       if (sizeTagRead != 128)
       {
          ret = fseek(wav, 0, SEEK_SET);
-         ATLASSERT(ret == 0); ret;
+         ATLASSERT(ret == 0);
+         UNUSED(ret);
          return false;
       }
 
@@ -335,7 +337,8 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
          id3tag.ToTrackInfo(trackInfo);
 
       ret = fseek(wav, 0, SEEK_SET);
-      ATLASSERT(ret == 0); ret;
+      ATLASSERT(ret == 0);
+      UNUSED(ret);
    }
 
    char buffer[5];

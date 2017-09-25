@@ -41,7 +41,7 @@ namespace Encoder
       virtual CString GetOutputExtension() const = 0;
 
       /// lets the output module fetch some settings, right after module creation
-      virtual void PrepareOutput(SettingsManager& mgr) { mgr; }
+      virtual void PrepareOutput(SettingsManager& mgr) { UNUSED(mgr); }
 
       /// initializes the output module
       virtual int InitOutput(LPCTSTR outfilename, SettingsManager& mgr,

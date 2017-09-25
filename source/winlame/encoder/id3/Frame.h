@@ -108,8 +108,8 @@ private:
 
    /// ctor
    Frame(const std::shared_ptr<id3_frame>& spFrame)
-      :m_spFrame(spFrame),
-       m_bAttached(true)
+      :m_bAttached(true),
+       m_spFrame(spFrame)
    {
    }
 

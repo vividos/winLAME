@@ -274,8 +274,10 @@ int MadMpegInputModule::ReadFileLength(LPCTSTR infilename)
             // seek back, we could miss a sync at the last byte of the input buffer
             m_inputFile.seekg(-1, std::ios::cur);
             syncstart += mad_inbufsize - 1;
+            --synctries;
          }
-      } while (!syncfound && --synctries > 0);
+
+      } while (!syncfound && synctries > 0);
 
       if (!syncfound)
       {
@@ -535,7 +537,7 @@ int MadMpegInputModule::DecodeSamples(SampleContainer& samples)
             fill = m_stream.bufend - m_stream.next_frame;
             if (fill != 0)
                memmove(m_inputBuffer, m_stream.next_frame, fill);
-            // and ...
+            // and ... (fall-through)
 
          case MAD_ERROR_BUFPTR:
             // fill the buffer
@@ -558,12 +560,6 @@ int MadMpegInputModule::DecodeSamples(SampleContainer& samples)
             mad_stream_buffer(&m_stream, m_inputBuffer, static_cast<unsigned long>(read + fill));
             break;
 
-         case MAD_ERROR_BADCRC:
-            // crc error; mute this frame
-            mad_frame_mute(&m_frame);
-            step = 2;
-            break;
-
          case MAD_ERROR_LOSTSYNC:
             if (strncmp(reinterpret_cast<const char*>(m_stream.this_frame), "ID3", 3) == 0)
             {
@@ -578,8 +574,9 @@ int MadMpegInputModule::DecodeSamples(SampleContainer& samples)
                mad_stream_skip(&m_stream, 128);
             }
             break;
-         case MAD_ERROR_BADHUFFDATA:
-            // skip this bad frame
+
+         case MAD_ERROR_BADCRC: // crc error; mute this frame
+         case MAD_ERROR_BADHUFFDATA: // skip this bad frame
             mad_frame_mute(&m_frame);
             step = 2;
             break;

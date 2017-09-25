@@ -62,7 +62,12 @@ EncoderImpl::~EncoderImpl()
       }
       catch (const std::exception& ex)
       {
-         ATLTRACE(_T("Exception while joining worker thread: %hs"), ex.what()); ex;
+         UNUSED(ex);
+         ATLTRACE(_T("Exception while joining worker thread: %hs"), ex.what());
+      }
+      catch (...)
+      {
+         ATLTRACE(_T("Unknown exception while joining worker thread"));
       }
    }
 }

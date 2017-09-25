@@ -61,4 +61,12 @@
 #pragma warning(disable: 4100) // unreferenced formal parameter
 
 /// define that is used to mark unused parameters or parameters only used in ATLASSERTs
-#define unused(x) (void)x;
+#ifndef UNUSED
+#define UNUSED(x) (void)(x);
+#endif
+
+// redefine ATLVERIFY when analyzing using Coverity Scan
+#if !defined(_DEBUG) && defined(__COVERITY__)
+#undef ATLVERIFY
+#define ATLVERIFY(expr) (void)(expr)
+#endif

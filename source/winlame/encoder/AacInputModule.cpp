@@ -215,7 +215,7 @@ int AacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    if (frameInfo.error > 0)
    {
       m_lastError = CString(NeAACDecGetErrorMessage(frameInfo.error));
-      return -frameInfo.error;
+      return -(int)frameInfo.error;
    }
    else
    {
@@ -275,7 +275,7 @@ int AacInputModule::DecodeSamples(SampleContainer& samples)
    if (frameInfo.error > 0)
    {
       m_lastError = NeAACDecGetErrorMessage(frameInfo.error);
-      return -frameInfo.error;
+      return -(int)frameInfo.error;
    }
 
    int numSamples = frameInfo.samples / frameInfo.channels;

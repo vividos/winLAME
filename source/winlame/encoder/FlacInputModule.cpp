@@ -179,6 +179,10 @@ unsigned FLAC__pack_pcm_signed_little_endian(FLAC__byte* data, FLAC__int32* inpu
       case 16:
          data[1] = (FLAC__byte)(sample >> 8);
          data[0] = (FLAC__byte)sample;
+         break;
+      default:
+         ATLASSERT(false); // invalid bits per sample
+         break;
       }
 
       data += bytesPerSample;

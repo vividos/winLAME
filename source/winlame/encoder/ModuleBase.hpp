@@ -54,10 +54,10 @@ namespace Encoder
       virtual CString GetDescription() const { return CString(); }
 
       /// returns version string; value in special may denote special type of string
-      virtual void GetVersionString(CString& version, int special = 0) const { version.Empty(); special; }
+      virtual void GetVersionString(CString& version, int special = 0) const { version.Empty(); UNUSED(special); }
 
       /// resolves possibly encoded filenames
-      virtual void ResolveRealFilename(CString& filename) { filename; }
+      virtual void ResolveRealFilename(CString& filename) { UNUSED(filename); }
 
    protected:
       /// module id
