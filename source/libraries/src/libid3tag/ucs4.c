@@ -43,6 +43,9 @@ id3_length_t id3_ucs4_length(id3_ucs4_t const *ucs4)
 {
   id3_ucs4_t const *ptr = ucs4;
 
+  if (ptr == 0)
+    return 0;
+
   while (*ptr)
     ++ptr;
 
