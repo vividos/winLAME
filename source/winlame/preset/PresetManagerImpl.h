@@ -28,7 +28,7 @@
 // needed includes
 #include "../PresetManagerInterface.hpp"
 #include "PropertyListBox.h"
-#include "../VariableManager.hpp"
+#include "../encoder/VariableManager.hpp"
 #include <string>
 #include "rapidxml/rapidxml.hpp"
 

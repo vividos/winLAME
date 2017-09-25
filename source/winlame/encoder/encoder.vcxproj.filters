@@ -156,6 +156,15 @@
     <ClInclude Include="SndFileFormats.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SettingsManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VariableManager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EncoderInterface.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -261,6 +270,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SpeexInputModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VariableManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

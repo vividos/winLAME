@@ -21,24 +21,6 @@
       <UniqueIdentifier>{aa1984d8-2d06-448b-9d82-b720bbc9e634}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
-    <Filter Include="Encoder Files">
-      <UniqueIdentifier>{79b9d66c-80dc-46bd-967a-0b15f7f93710}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Encoder Files\mad dither files">
-      <UniqueIdentifier>{9cd6b69b-c81a-45f1-a771-0edebeaba09c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Encoder Files\id3 files">
-      <UniqueIdentifier>{58c28a69-abc0-457d-af7b-12fc63ab60f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Encoder Files\aacinfo files">
-      <UniqueIdentifier>{7e4a760b-7c22-4448-8783-de2b85ca67da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Encoder Files\Header Files">
-      <UniqueIdentifier>{a72caebc-f93a-4698-8523-bec6ccb01045}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Encoder Files\Source Files">
-      <UniqueIdentifier>{c3a339cf-6711-4d36-9690-8734c78be610}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Modern UI Files">
       <UniqueIdentifier>{91fdb3c2-3213-46ef-8319-8860047d989f}</UniqueIdentifier>
     </Filter>
@@ -70,81 +52,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="encoder\AacInputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\AacOutputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\BassInputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\BassWmaOutputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\EncoderImpl.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\EncoderTask.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\FlacInputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\Id3v1Tag.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\LameOutputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\MadMpegInputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\ModuleManagerImpl.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\MonkeysAudioInputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\OggVorbisInputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\OggVorbisOutputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\SampleContainer.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\SndFileInputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\TrackInfo.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\WaveMp3Header.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\dither\dither.c">
-      <Filter>Encoder Files\mad dither files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\id3\Field.cpp">
-      <Filter>Encoder Files\id3 files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\id3\File.cpp">
-      <Filter>Encoder Files\id3 files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\id3\Frame.cpp">
-      <Filter>Encoder Files\id3 files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\id3\Tag.cpp">
-      <Filter>Encoder Files\id3 files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\aacinfo\aacinfo.c">
-      <Filter>Encoder Files\aacinfo files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\aacinfo\filestream.c">
-      <Filter>Encoder Files\aacinfo files</Filter>
-    </ClCompile>
     <ClCompile Include="classic\CDRipDlg.cpp">
       <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
@@ -199,9 +106,6 @@
     <ClCompile Include="LanguageResourceManager.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SettingsManager.cpp">
-      <Filter>Main Program Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
@@ -209,9 +113,6 @@
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UISettings.cpp">
-      <Filter>Main Program Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VariableManager.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="winlame.cpp">
@@ -286,20 +187,8 @@
     <ClCompile Include="ui\BevelLine.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="encoder\CreatePlaylistTask.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\CDExtractTask.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ui\FreeDbDiscListDlg.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\SpeexInputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\OpusInputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommandLineParser.cpp">
       <Filter>Main Program Files\Source Files</Filter>
@@ -310,17 +199,11 @@
     <ClCompile Include="CDRipTitleFormatManager.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="encoder\OpusOutputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ui\OpusSettingsPage.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="classic\OpusSettingsPage_old.cpp">
       <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\SndFileFormats.cpp">
-      <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FreedbInfo.cpp">
       <Filter>Main Program Files\Source Files</Filter>
@@ -328,17 +211,8 @@
     <ClCompile Include="ui\Win7Taskbar.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="encoder\SndFileOutputModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\CDReadoutModule.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TaskCreationHelper.cpp">
       <Filter>Main Program Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encoder\LameNogapInstanceManager.cpp">
-      <Filter>Encoder Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\CrashSaveResultsDlg.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
@@ -360,27 +234,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="encoder\dither\dither.h">
-      <Filter>Encoder Files\mad dither files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\id3\Field.h">
-      <Filter>Encoder Files\id3 files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\id3\File.h">
-      <Filter>Encoder Files\id3 files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\id3\Frame.h">
-      <Filter>Encoder Files\id3 files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\id3\Tag.h">
-      <Filter>Encoder Files\id3 files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\aacinfo\aacinfo.h">
-      <Filter>Encoder Files\aacinfo files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\aacinfo\filestream.h">
-      <Filter>Encoder Files\aacinfo files</Filter>
-    </ClInclude>
     <ClInclude Include="preset\PresetManagerImpl.h">
       <Filter>Preset Files\Header Files</Filter>
     </ClInclude>
@@ -474,23 +327,8 @@
     <ClInclude Include="ui\WizardPageHost.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="encoder\CreatePlaylistTask.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\CDExtractTask.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ui\FreeDbDiscListDlg.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\SpeexInputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\OggInputStream.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\OpusInputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="res\MainFrameRibbon.h">
       <Filter>Modern UI Files\Resource Files\Generated Files</Filter>
@@ -507,14 +345,8 @@
     <ClInclude Include="CDRipTitleFormatManager.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="encoder\OpusOutputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ui\OpusSettingsPage.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\SndFileFormats.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FreedbInfo.hpp">
       <Filter>Main Program Files\Header Files</Filter>
@@ -522,95 +354,8 @@
     <ClInclude Include="ui\Win7Taskbar.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="encoder\SndFileOutputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\SndFileInputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\OggVorbisOutputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\OggVorbisInputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\AacInputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\AacOutputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\BassInputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\BassWmaOutputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\FlacInputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\MadMpegInputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\MonkeysAudioInputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\WaveMp3Header.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\LameOutputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\Id3v1Tag.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\TrackInfo.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\ModuleInterface.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\ModuleManagerImpl.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\EncoderTask.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\EncoderImpl.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\SampleContainer.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleManager.hpp">
       <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\CDReadoutModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\ModuleBase.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\OutputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\InputModule.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\EncoderSettings.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\EncoderState.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\CDReadJob.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\EncoderErrorHandler.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\AlwaysSkipErrorHandler.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Boost.hpp">
       <Filter>Main Program Files\Header Files</Filter>
@@ -648,12 +393,6 @@
     <ClInclude Include="CDRipTrackManager.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EncoderInterface.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsManager.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PresetManagerInterface.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
@@ -661,9 +400,6 @@
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UISettings.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VariableManager.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TaskCreationHelper.hpp">
@@ -722,9 +458,6 @@
     </ClInclude>
     <ClInclude Include="classic\CommonStuff.hpp">
       <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encoder\LameNogapInstanceManager.hpp">
-      <Filter>Encoder Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\CrashSaveResultsDlg.hpp">
       <Filter>Modern UI Files\Header Files</Filter>

@@ -82,6 +82,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="EncoderInterface.hpp" />
+    <ClInclude Include="SettingsManager.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="AacInputModule.hpp" />
     <ClInclude Include="AacOutputModule.hpp" />
@@ -118,6 +120,7 @@
     <ClInclude Include="SndFileInputModule.hpp" />
     <ClInclude Include="SpeexInputModule.hpp" />
     <ClInclude Include="TrackInfo.hpp" />
+    <ClInclude Include="VariableManager.hpp" />
     <ClInclude Include="WaveMp3Header.hpp" />
     <ClInclude Include="SndFileOutputModule.hpp" />
     <ClInclude Include="dither\dither.h" />
@@ -150,10 +153,12 @@
     <ClCompile Include="OpusInputModule.cpp" />
     <ClCompile Include="OpusOutputModule.cpp" />
     <ClCompile Include="SampleContainer.cpp" />
+    <ClCompile Include="SettingsManager.cpp" />
     <ClCompile Include="SndFileFormats.cpp" />
     <ClCompile Include="SndFileInputModule.cpp" />
     <ClCompile Include="SpeexInputModule.cpp" />
     <ClCompile Include="TrackInfo.cpp" />
+    <ClCompile Include="VariableManager.cpp" />
     <ClCompile Include="WaveMp3Header.cpp" />
     <ClCompile Include="SndFileOutputModule.cpp" />
     <ClCompile Include="dither\dither.c">

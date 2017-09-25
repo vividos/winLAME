@@ -82,55 +82,6 @@
     <ClCompile Include="CDRipTitleFormatManager.cpp" />
     <ClCompile Include="CommandLineParser.cpp" />
     <ClCompile Include="CoverArtArchive.cpp" />
-    <ClCompile Include="encoder\AacInputModule.cpp" />
-    <ClCompile Include="encoder\AacOutputModule.cpp" />
-    <ClCompile Include="encoder\BassInputModule.cpp" />
-    <ClCompile Include="encoder\BassWmaOutputModule.cpp" />
-    <ClCompile Include="encoder\CDExtractTask.cpp" />
-    <ClCompile Include="encoder\CDReadoutModule.cpp" />
-    <ClCompile Include="encoder\CreatePlaylistTask.cpp" />
-    <ClCompile Include="encoder\EncoderImpl.cpp" />
-    <ClCompile Include="encoder\EncoderTask.cpp" />
-    <ClCompile Include="encoder\FlacInputModule.cpp" />
-    <ClCompile Include="encoder\Id3v1Tag.cpp" />
-    <ClCompile Include="encoder\LameNogapInstanceManager.cpp" />
-    <ClCompile Include="encoder\LameOutputModule.cpp" />
-    <ClCompile Include="encoder\MadMpegInputModule.cpp" />
-    <ClCompile Include="encoder\ModuleManagerImpl.cpp" />
-    <ClCompile Include="encoder\MonkeysAudioInputModule.cpp" />
-    <ClCompile Include="encoder\OggVorbisInputModule.cpp" />
-    <ClCompile Include="encoder\OggVorbisOutputModule.cpp" />
-    <ClCompile Include="encoder\OpusInputModule.cpp" />
-    <ClCompile Include="encoder\OpusOutputModule.cpp" />
-    <ClCompile Include="encoder\SampleContainer.cpp" />
-    <ClCompile Include="encoder\SndFileFormats.cpp" />
-    <ClCompile Include="encoder\SndFileInputModule.cpp" />
-    <ClCompile Include="encoder\SpeexInputModule.cpp" />
-    <ClCompile Include="encoder\TrackInfo.cpp" />
-    <ClCompile Include="encoder\WaveMp3Header.cpp" />
-    <ClCompile Include="encoder\SndFileOutputModule.cpp" />
-    <ClCompile Include="encoder\dither\dither.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="encoder\id3\Field.cpp" />
-    <ClCompile Include="encoder\id3\File.cpp" />
-    <ClCompile Include="encoder\id3\Frame.cpp" />
-    <ClCompile Include="encoder\id3\Tag.cpp" />
-    <ClCompile Include="encoder\aacinfo\aacinfo.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="encoder\aacinfo\filestream.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="FreedbInfo.cpp" />
     <ClCompile Include="HttpClient.cpp" />
     <ClCompile Include="InputFilesParser.cpp" />
@@ -177,14 +128,12 @@
     <ClCompile Include="CDRipTrackManager.cpp" />
     <ClCompile Include="LangCountryMapper.cpp" />
     <ClCompile Include="LanguageResourceManager.cpp" />
-    <ClCompile Include="SettingsManager.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="UISettings.cpp" />
-    <ClCompile Include="VariableManager.cpp" />
     <ClCompile Include="winlame.cpp" />
     <ClCompile Include="ui\CDReadSettingsPage.cpp" />
     <ClCompile Include="ui\DropFilesManager.cpp" />
@@ -201,50 +150,6 @@
     <ClInclude Include="CDRipTrackInfo.hpp" />
     <ClInclude Include="CommandLineParser.hpp" />
     <ClInclude Include="CoverArtArchive.hpp" />
-    <ClInclude Include="encoder\AacInputModule.hpp" />
-    <ClInclude Include="encoder\AacOutputModule.hpp" />
-    <ClInclude Include="encoder\AlwaysSkipErrorHandler.hpp" />
-    <ClInclude Include="encoder\BassInputModule.hpp" />
-    <ClInclude Include="encoder\BassWmaOutputModule.hpp" />
-    <ClInclude Include="encoder\CDExtractTask.hpp" />
-    <ClInclude Include="encoder\CDReadJob.hpp" />
-    <ClInclude Include="encoder\CDReadoutModule.hpp" />
-    <ClInclude Include="encoder\CreatePlaylistTask.hpp" />
-    <ClInclude Include="encoder\EncoderErrorHandler.hpp" />
-    <ClInclude Include="encoder\EncoderImpl.hpp" />
-    <ClInclude Include="encoder\EncoderSettings.hpp" />
-    <ClInclude Include="encoder\EncoderState.hpp" />
-    <ClInclude Include="encoder\EncoderTask.hpp" />
-    <ClInclude Include="encoder\FlacInputModule.hpp" />
-    <ClInclude Include="encoder\Id3v1Tag.hpp" />
-    <ClInclude Include="encoder\InputModule.hpp" />
-    <ClInclude Include="encoder\LameNogapInstanceManager.hpp" />
-    <ClInclude Include="encoder\LameOutputModule.hpp" />
-    <ClInclude Include="encoder\MadMpegInputModule.hpp" />
-    <ClInclude Include="encoder\ModuleBase.hpp" />
-    <ClInclude Include="encoder\ModuleInterface.hpp" />
-    <ClInclude Include="encoder\ModuleManagerImpl.hpp" />
-    <ClInclude Include="encoder\MonkeysAudioInputModule.hpp" />
-    <ClInclude Include="encoder\OggInputStream.hpp" />
-    <ClInclude Include="encoder\OggVorbisInputModule.hpp" />
-    <ClInclude Include="encoder\OggVorbisOutputModule.hpp" />
-    <ClInclude Include="encoder\OpusInputModule.hpp" />
-    <ClInclude Include="encoder\OpusOutputModule.hpp" />
-    <ClInclude Include="encoder\OutputModule.hpp" />
-    <ClInclude Include="encoder\SampleContainer.hpp" />
-    <ClInclude Include="encoder\SndFileFormats.hpp" />
-    <ClInclude Include="encoder\SndFileInputModule.hpp" />
-    <ClInclude Include="encoder\SpeexInputModule.hpp" />
-    <ClInclude Include="encoder\TrackInfo.hpp" />
-    <ClInclude Include="encoder\WaveMp3Header.hpp" />
-    <ClInclude Include="encoder\SndFileOutputModule.hpp" />
-    <ClInclude Include="encoder\dither\dither.h" />
-    <ClInclude Include="encoder\id3\Field.h" />
-    <ClInclude Include="encoder\id3\File.h" />
-    <ClInclude Include="encoder\id3\Frame.h" />
-    <ClInclude Include="encoder\id3\Tag.h" />
-    <ClInclude Include="encoder\aacinfo\aacinfo.h" />
-    <ClInclude Include="encoder\aacinfo\filestream.h" />
     <ClInclude Include="FreedbInfo.hpp" />
     <ClInclude Include="HttpClient.hpp" />
     <ClInclude Include="InputFilesParser.hpp" />
@@ -298,12 +203,10 @@
     <ClInclude Include="preset\PropertyListBox.h" />
     <ClInclude Include="App.hpp" />
     <ClInclude Include="CDRipTrackManager.hpp" />
-    <ClInclude Include="EncoderInterface.hpp" />
     <ClInclude Include="LangCountryMapper.hpp" />
     <ClInclude Include="LanguageResourceManager.hpp" />
     <ClInclude Include="ModuleManager.hpp" />
     <ClInclude Include="PresetManagerInterface.hpp" />
-    <ClInclude Include="SettingsManager.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Task.hpp" />
     <ClInclude Include="TaskInfo.hpp" />
@@ -311,7 +214,6 @@
     <ClInclude Include="TaskManagerConfig.hpp" />
     <ClInclude Include="UIinterface.hpp" />
     <ClInclude Include="UISettings.hpp" />
-    <ClInclude Include="VariableManager.hpp" />
     <ClInclude Include="res\MainFrameRibbon.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ui\CDReadSettingsPage.hpp" />
@@ -375,6 +277,9 @@
     </ProjectReference>
     <ProjectReference Include="..\nlame\nlame.vcxproj">
       <Project>{0b3f6b1a-d78e-47db-a48c-d3daa16e17ce}</Project>
+    </ProjectReference>
+    <ProjectReference Include="encoder\encoder.vcxproj">
+      <Project>{ae66a4eb-b54e-4572-9a4e-50c89a0c56c3}</Project>
     </ProjectReference>
     <ProjectReference Include="winlame_res0407.vcxproj">
       <Project>{e2d89bae-7448-4af4-9ac9-9cc070e178bd}</Project>

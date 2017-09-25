@@ -13,19 +13,10 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;h;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mp3;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="External Source Files">
-      <UniqueIdentifier>{c285abf4-97ed-410e-a582-cbc0593d83e3}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\SettingsManager.hpp">
-      <Filter>External Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\VariableManager.hpp">
-      <Filter>External Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\resource.h">
       <Filter>Resource Files</Filter>
@@ -40,12 +31,6 @@
     </ClCompile>
     <ClCompile Include="TestModuleManager.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\SettingsManager.cpp">
-      <Filter>External Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\VariableManager.cpp">
-      <Filter>External Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestEncodeLameMp3.cpp">
       <Filter>Source Files</Filter>

@@ -78,14 +78,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\resource.h" />
-    <ClInclude Include="..\SettingsManager.hpp" />
-    <ClInclude Include="..\VariableManager.hpp" />
     <ClInclude Include="resource_unittest.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\SettingsManager.cpp" />
-    <ClCompile Include="..\VariableManager.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
