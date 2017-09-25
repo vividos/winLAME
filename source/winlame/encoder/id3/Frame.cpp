@@ -217,9 +217,6 @@ CString Frame::AsString()
 {
    ATLASSERT(m_spFrame != NULL);
 
-   CString cszText;
-   enum id3_field_textencoding encoding = ID3_FIELD_TEXTENCODING_UTF_8;
-
    // read first field
    unsigned int fieldIndex = 0;
    id3_field* field = id3_frame_field(m_spFrame.get(), fieldIndex);
@@ -233,6 +230,8 @@ CString Frame::AsString()
       //encoding = id3_field_gettextencoding(field);
       field = id3_frame_field(m_spFrame.get(), ++fieldIndex);
    }
+
+   CString cszText;
 
    switch (id3_field_type(field))
    {

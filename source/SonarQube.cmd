@@ -25,6 +25,8 @@ REM
 cd ..
 rmdir .\bw-output /s /q 2> nul
 
+msbuild winlame.sln /m /property:Configuration=Release,Platform=Win32 /target:Clean
+
 SonarQube.Scanner.MSBuild.exe begin ^
     /k:"winLAME" ^
     /v:"2.17.2.0" ^
@@ -33,7 +35,7 @@ SonarQube.Scanner.MSBuild.exe begin ^
     /d:"sonar.organization=vividos-github" ^
     /d:"sonar.login=3a12fee6a7d1e60cfbf6a8daa3554cfc6f2bfa29"
 
-build-wrapper-win-x86-64.exe --out-dir bw-output msbuild winlame.sln /property:Configuration=Release /property:Platform=Win32 /target:Rebuild
+build-wrapper-win-x86-64.exe --out-dir bw-output msbuild winlame.sln /property:Configuration=Release,Platform=Win32 /target:Build
 
 SonarQube.Scanner.MSBuild.exe end /d:"sonar.login=3a12fee6a7d1e60cfbf6a8daa3554cfc6f2bfa29"
 

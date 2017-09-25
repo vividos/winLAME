@@ -43,12 +43,6 @@
 #include "../StdCppLib.hpp"
 #include "../Boost.hpp"
 
-// winLAME includes
-#include <ulib/IoCContainer.hpp>
-#include <ulib/Path.hpp>
-
-#pragma warning(disable: 4100) // unreferenced formal parameter
-
 /// define that is used to mark unused parameters or parameters only used in ATLASSERTs
 #ifndef UNUSED
 #define UNUSED(x) (void)(x);
@@ -59,3 +53,9 @@
 #undef ATLVERIFY
 #define ATLVERIFY(expr) (void)(expr)
 #endif
+
+// winLAME includes
+#include <ulib/IoCContainer.hpp>
+#include <ulib/Path.hpp>
+
+#pragma warning(disable: 4100) // unreferenced formal parameter
