@@ -266,6 +266,11 @@ int id3_field_parse(union id3_field *field, id3_byte_t const **ptr,
 
 	field->latin1list.strings = strings;
 	field->latin1list.strings[field->latin1list.nstrings++] = latin1;
+
+	// fix out-of-memory bug in http://seclists.org/fulldisclosure/2017/Jul/85
+	// the ptr pointer is never advanced by the id3_*_deserialize() methods, causing an endless
+	// loop in the caller id3_field_parse().
+	*ptr += length;
       }
     }
     break;
@@ -305,6 +310,11 @@ int id3_field_parse(union id3_field *field, id3_byte_t const **ptr,
 
 	field->stringlist.strings = strings;
 	field->stringlist.strings[field->stringlist.nstrings++] = ucs4;
+
+	// fix out-of-memory bug in http://seclists.org/fulldisclosure/2017/Jul/85
+	// the ptr pointer is never advanced by the id3_*_deserialize() methods, causing an endless
+	// loop in the caller id3_field_parse().
+	*ptr += length;
       }
     }
     break;
