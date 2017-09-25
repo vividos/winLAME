@@ -442,6 +442,8 @@ int id3_compat_fixup(struct id3_tag *tag)
 
     encoding = id3_parse_uint(&data, 1);
     string   = id3_parse_string(&data, end - data, encoding, 0);
+    if (string == 0)
+       goto fail;
 
     if (id3_ucs4_length(string) < 4) {
       free(string);

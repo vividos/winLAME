@@ -165,6 +165,9 @@ id3_ucs4_t *id3_parse_string(id3_byte_t const **ptr, id3_length_t length,
   case ID3_FIELD_TEXTENCODING_UTF_8:
     ucs4 = id3_utf8_deserialize(ptr, length);
     break;
+  default:
+    /* FIXME: Unknown encoding! Print warning? */
+    return 0;
   }
 
   if (ucs4 && !full) {
