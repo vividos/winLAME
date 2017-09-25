@@ -236,7 +236,7 @@ void MainFrame::SetupView()
    CRect rectFrame;
    m_splitter.GetWindowRect(rectFrame);
 
-   m_splitter.SetSplitterPos(rectFrame.Height() - 144);
+   m_splitter.SetSplitterPos(rectFrame.Height() - 146);
 }
 
 LRESULT MainFrame::OnClose(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& bHandled)
