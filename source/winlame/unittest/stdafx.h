@@ -33,6 +33,17 @@
 
 #include "..\StdCppLib.hpp"
 
+/// define that is used to mark unused parameters or parameters only used in ATLASSERTs
+#ifndef UNUSED
+#define UNUSED(x) (void)(x);
+#endif
+
+// redefine ATLVERIFY when analyzing using Coverity Scan
+#if !defined(_DEBUG) && defined(__COVERITY__)
+#undef ATLVERIFY
+#define ATLVERIFY(expr) (void)(expr)
+#endif
+
 // unit test includes
 #include "CppUnitTest.h"
 
