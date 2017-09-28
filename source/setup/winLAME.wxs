@@ -56,9 +56,7 @@
           <Directory Id="INSTALLDIR" Name="." />
         </Directory>
       </Directory>
-      <Directory Id="ProgramMenuFolder">
-        <Directory Id="WinLameShortcutFolder" Name="winLAME" />
-      </Directory>
+      <Directory Id="ProgramMenuFolder" />
       <Directory Id="CommonAppDataFolder">
         <Directory Id="winLameCommonAppData" Name="winLAME" />
       </Directory>
@@ -110,10 +108,9 @@
 
       <Component Id="WinLameShortcut" Guid="*" Directory="INSTALLDIR">
         <RegistryValue Id="RegistryKey1" Root="HKCU" Key="Software\winLAME\Install" Name="winLAMEShortcutPresent" KeyPath="yes" Type="string" Value="" />
-        <Shortcut Id="Shortcut1" Directory="WinLameShortcutFolder" Name="winLAME"
+        <Shortcut Id="Shortcut1" Directory="ProgramMenuFolder" Name="winLAME"
           Target="[INSTALLDIR]winLAME.exe" Icon="WinLameShortcutIcon" IconIndex="0" Show="normal"
           Description="Starts winLAME" Advertise="no" WorkingDirectory="INSTALLDIR" />
-        <RemoveFolder Directory="WinLameShortcutFolder" On="uninstall" Id="Shortcut1" />
       </Component>
 
       <!-- clean up registry when uninstalling, but not when upgrading; at least do this for the currently logged in user -->
