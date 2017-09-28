@@ -116,6 +116,13 @@
         <RemoveFolder Directory="WinLameShortcutFolder" On="uninstall" Id="Shortcut1" />
       </Component>
 
+      <!-- clean up registry when uninstalling, but not when upgrading; at least do this for the currently logged in user -->
+      <Component Id="PerUserRegistryCleanup" Guid="*" Directory="INSTALLDIR">
+        <RegistryValue Id="RegistryKey2" Root="HKCU" Key="Software\winLAME\Install" Name="UserSettingsRemovalPresent" KeyPath="yes" Type="string" Value="" />
+        <Condition>(ACTION="INSTALL") OR ((REMOVE="ALL") AND (NOT UPGRADEGUIDS))</Condition>
+        <RemoveRegistryKey Root="HKCU" Key="Software\winLAME" Action="removeOnUninstall"/>
+      </Component>
+
       <Component Id="Presets" Guid="*" Directory="winLameCommonAppData">
         <File Id="PresetsXml" Name="presets.xml" DiskId="1" KeyPath="yes"
           Source="$(var.SolutionDir)source\presets.xml" />
