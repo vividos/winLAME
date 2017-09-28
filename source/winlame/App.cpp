@@ -155,8 +155,12 @@ void App::ShowCrashErrorDialog(LPCTSTR crashDumpFilename)
    dlg.DoModal();
 }
 
-int App::Run(LPTSTR /*lpstrCmdLine*/, int nCmdShow)
+int App::Run(LPTSTR lpstrCmdLine, int nCmdShow)
 {
+   m_startInputCD = CString(lpstrCmdLine).Find(_T("--input-cd")) != -1;
+   if (m_startInputCD)
+      m_alreadyReadCommandLine = true;
+
    int ret = 0;
 
    m_exit = false;

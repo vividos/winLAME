@@ -63,6 +63,12 @@ public:
    /// sets flag that command line was already read by MainDlg or MainFrame
    void SetAlreadyReadCommandLine() { m_alreadyReadCommandLine = true; }
 
+   /// indicates if main dialog or mainframe should start with Input CD dialog
+   bool StartInputCD() const { return m_startInputCD; }
+
+   /// resets flag to start Input CD dialog
+   void ResetStartInputCD() { m_startInputCD = false; }
+
    /// runs application
    int Run(LPTSTR /*lpstrCmdLine*/ = NULL, int nCmdShow = SW_SHOWDEFAULT);
 
@@ -133,4 +139,7 @@ private:
 
    /// indicates if app should be exited
    bool m_exit;
+
+   /// indicates if app should start Input CD dialog
+   bool m_startInputCD;
 };

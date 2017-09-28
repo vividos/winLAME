@@ -27,6 +27,7 @@
 #include "encoder/ModuleInterface.hpp"
 #include "CDRipDlg.hpp"
 #include "CDRipTrackManager.hpp"
+#include "../App.hpp"
 #include <fstream>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -97,6 +98,12 @@ LRESULT InputPage::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& b
       ::EnableWindow(GetDlgItem(IDC_INPUT_BUTTON_CDRIP), FALSE);
 
    UpdateTimeCount();
+
+   if (App::Current().StartInputCD())
+   {
+      App::Current().ResetStartInputCD();
+      PostMessage(WM_COMMAND, MAKEWPARAM(IDC_INPUT_BUTTON_CDRIP, BN_CLICKED));
+   }
 
    // enable resizing
    DlgResize_Init(false, true);

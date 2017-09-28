@@ -85,6 +85,27 @@
           <RegistryValue Name=".pls" Type="string" Value="" />
           <RegistryValue Name=".cue" Type="string" Value="" />
         </RegistryKey>
+
+        <!-- Audio CD shell extension -->
+        <RegistryValue Root="HKCR" Key="AudioCD\shell\ReadWithWinLAME" Value="Read CD with winLAME" Type="string" />
+        <RegistryValue Root="HKCR" Key="AudioCD\shell\ReadWithWinLAME\command" Value="&quot;[#WinLameExe]&quot; --input-cd" Type="string" />
+
+        <!-- Audio CD Autoplay Handler -->
+        <RegistryValue Root="HKCR" Key="winLAME.AutoPlayHandler" Value="winLAME Read CD" Type="string" />
+        <RegistryValue Root="HKCR" Key="winLAME.AutoPlayHandler\shell" Value="Read CD" Type="string" />
+        <RegistryValue Root="HKCR" Key="winLAME.AutoPlayHandler\shell\ReadCD\command" Value="&quot;[#WinLameExe]&quot; --input-cd" Type="string" />
+        <RegistryValue Root="HKCR" Key="winLAME.AutoPlayHandler\DefaultIcon" Value="[#WinLameExe],0" Type="string" />
+
+        <RegistryKey Root="HKLM" Key="Software\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers">
+          <RegistryValue Key="EventHandlers\PlayCDAudioOnArrival" Name="winLAMEReadCDOnArrival" Value="" Type="string" />
+          <RegistryKey Key="Handlers\winLAMEReadCDOnArrival">
+            <RegistryValue Name="Action" Value="Read CD with winLAME" Type="string" />
+            <RegistryValue Name="DefaultIcon" Value="[#WinLameExe],0" Type="string" />
+            <RegistryValue Name="InvokeProgID" Value="winLAME.AutoPlayHandler" Type="string" />
+            <RegistryValue Name="InvokeVerb" Value="ReadCD" Type="string" />
+            <RegistryValue Name="Provider" Value="$(var.ProductName)" Type="string" />
+          </RegistryKey>
+        </RegistryKey>
       </Component>
 
       <Component Id="WinLameShortcut" Guid="*" Directory="INSTALLDIR">

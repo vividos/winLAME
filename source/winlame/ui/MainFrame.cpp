@@ -311,10 +311,21 @@ LRESULT MainFrame::OnDropFiles(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, 
 
 LRESULT MainFrame::OnCheckCommandLine(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   if (!App::Current().AlreadyReadCommandLine())
+   App& app = App::Current();
+
+   if (app.StartInputCD())
+   {
+      if (app.StartInputCD())
+      {
+         app.ResetStartInputCD();
+         PostMessage(WM_COMMAND, MAKEWPARAM(ID_ENCODE_CD, BN_CLICKED));
+      }
+   }
+
+   if (!app.AlreadyReadCommandLine())
    {
       GetCommandLineFiles();
-      App::Current().SetAlreadyReadCommandLine();
+      app.SetAlreadyReadCommandLine();
    }
 
    return 0;
