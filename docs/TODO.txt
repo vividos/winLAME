@@ -1,27 +1,26 @@
 TODO list for winLAME
 
 winLAME 2017 beta 3, nice-to-have:
-- remove code TODOs
 - check all tooltip texts
-- fix remaining Coverity scan warnings
-- fix remaining SonarQube bugs and vulnerabilities
-- setup uninstall: add option to finish page to remove all settings
-- update to libsndfile-1.0.29 for fixed FLAC support
-- update to LAME-3.100-release once it is released
-- update to latest libfaad/libfaac
 - fix "encoding action" -> does nothing
 - save all settings on custom module settings pages
 - support multiple subfolders in cd title format strings
 - add CD eject button
 
 winLAME 2018 beta 1, feature wishes:
-- add FLAC encoding to 16 bit/8 bit
 - encoding of whole directory structure to another folder
-- CD autoplay to start winLAME
 - integrate mpg123 library instead of MAD
 - use libopusenc instead of opus-tools static library
 
-winLAME 2017 beta 3, tests:
+winLAME 2018 beta 1, nice-to-have:
+- remove code TODOs
+- fix remaining Coverity scan warnings
+- fix remaining SonarQube bugs and vulnerabilities
+- update to libsndfile-1.0.29 for fixed FLAC support
+- update to LAME-3.100-release once it is released
+- update to latest libfaad/libfaac
+
+winLAME 2018 beta 1, tests:
 - fuzz testing using WinAFL and standalone cmdline executable
 - tests running with Wine on Ubuntu Linux
 
