@@ -9,10 +9,15 @@ REM
 rmdir .\cov-int /s /q 2> nul
 del cov-int.zip 2> nul
 
+REM set up build environment
 call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
 
 set PATH=%PATH%;D:\devel\tools\cov-analysis-win64-8.7.0\bin
 
+REM restore NuGet packages
+..\buildtools\nuget restore ..\winlame.sln
+
+REM build solution
 cov-build --dir cov-int ^
    msbuild ..\winlame.sln /property:Configuration=Release /property:Platform=Win32 /target:Rebuild
 
