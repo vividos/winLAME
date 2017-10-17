@@ -21,7 +21,7 @@ copy %ROOT%\bin\Release\*.chm zip\
 copy %ROOT%\source\presets.xml zip\
 copy %ROOT%\readme.txt zip\Readme.txt
 copy %ROOT%\Copying zip\Copying.txt
-copy "%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\VC\redist\1033\vcredist_x86.exe" zip\vcredist_x86_vc14.exe
+copy "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.11.25325\vcredist_x86.exe" zip\vcredist_x86_vc141.exe
 
 set ZIP="%ProgramFiles%\7-Zip\7z.exe"
 
