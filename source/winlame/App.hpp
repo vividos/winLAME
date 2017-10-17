@@ -106,6 +106,9 @@ private:
    /// loads presets file
    void LoadPresetFile();
 
+   /// checks if app is running as UWP app (via Desktop Bridge)
+   static bool IsRunningAsUwpApp();
+
 private:
    /// current app object
    static App* s_pApp;

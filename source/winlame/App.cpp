@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2017 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -318,7 +318,8 @@ void App::LoadPresetFile()
    // first, check if user has left a presets.xml around in the .exe folder
    CString presetFilename = Path::Combine(AppFolder(), _T("presets.xml")).ToString();
 
-   if (!Path(presetFilename).FileExists())
+   if (!Path(presetFilename).FileExists() &&
+      !IsRunningAsUwpApp())
    {
       // next try to check for user-dependend config file
       presetFilename = Path::Combine(userSpecificAppFolder, _T("presets.xml")).ToString();
@@ -338,4 +339,40 @@ void App::LoadPresetFile()
       settings.preset_avail = presetManager.loadPreset(presetFilename);
    else
       settings.preset_avail = false;
+}
+
+/// returns if this application is running as UWP app, using the kernel32.dll function
+/// GetCurrentPackageFullName().
+/// \see https://blogs.msdn.microsoft.com/appconsult/2016/11/03/desktop-bridge-identify-the-applications-context/
+bool App::IsRunningAsUwpApp()
+{
+   HMODULE module = GetModuleHandle(_T("kernel32.dll"));
+
+   typedef
+      LONG(WINAPI *T_fnGetCurrentPackageFullName)
+      (UINT32* packageFullNameLength, PWSTR packageFullName);
+
+   auto fnGetCurrentPackageFullName =
+      (T_fnGetCurrentPackageFullName)GetProcAddress(module, "GetCurrentPackageFullName");
+
+   if (fnGetCurrentPackageFullName == nullptr)
+      return false; // no exported function; Windows 7 or earlier, or on Wine
+
+   UINT32 length = 0;
+   LONG rc = fnGetCurrentPackageFullName(&length, nullptr);
+
+   if (rc == APPMODEL_ERROR_NO_PACKAGE ||
+       rc != ERROR_INSUFFICIENT_BUFFER)
+      return false; // not running as UWP app
+
+   CStringW packageName;
+   rc = fnGetCurrentPackageFullName(&length, packageName.GetBuffer(length));
+   packageName.ReleaseBuffer();
+
+   if (rc != ERROR_SUCCESS)
+      return false; // error retrieving actual package name
+
+   ATLTRACE(_T("UWP package name: %ls"), packageName.GetString());
+
+   return true;
 }
