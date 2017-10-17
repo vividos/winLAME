@@ -23,7 +23,8 @@ REM restore NuGet packages
 buildtools\nuget restore winlame.sln
 
 REM build solution
-msbuild /m winlame.sln /property:Configuration=Release /target:Rebuild
+msbuild /m winlame.sln /property:Configuration=Release,Platform=Win32 /target:Rebuild
+
 
 set ZIP="%ProgramFiles%\7-Zip\7z.exe"
 %ZIP% a bin\winLAME-pdbs.zip bin\Release\pdb\winLAME.pdb
