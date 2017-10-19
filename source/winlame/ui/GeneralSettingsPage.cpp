@@ -136,5 +136,15 @@ LRESULT GeneralSettingsPage::OnCheckAutoTasks(WORD /*wNotifyCode*/, WORD /*wID*/
    m_spinCpuCores.EnableWindow(!isChecked);
    m_editCpuCores.EnableWindow(!isChecked);
 
+   m_staticNoteCpuCores.ShowWindow(SW_SHOW);
+
+   return 0;
+}
+
+LRESULT GeneralSettingsPage::OnChangeEditCpuCores(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   if (m_staticNoteCpuCores.IsWindow())
+      m_staticNoteCpuCores.ShowWindow(SW_SHOW);
+
    return 0;
 }

@@ -76,6 +76,7 @@ namespace UI
          MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
          COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
          COMMAND_HANDLER(IDC_SETTINGS_CHECK_AUTO_TASKS, BN_CLICKED, OnCheckAutoTasks)
+         COMMAND_HANDLER(IDC_SETTINGS_EDIT_CPU_CORES, EN_CHANGE, OnChangeEditCpuCores)
          CHAIN_MSG_MAP(CDialogResize<GeneralSettingsPage>)
          REFLECT_NOTIFICATIONS()
       END_MSG_MAP()
@@ -88,6 +89,9 @@ namespace UI
 
       /// called when the "auto tasks" check changes
       LRESULT OnCheckAutoTasks(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+      /// called when the CPU cores edit field changes
+      LRESULT OnChangeEditCpuCores(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    private:
       /// settings
