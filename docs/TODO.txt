@@ -16,7 +16,6 @@ winLAME 2018 beta 1, nice-to-have:
 - fix remaining Coverity scan warnings
 - fix remaining SonarQube bugs and vulnerabilities
 - update to libsndfile-1.0.29 for fixed FLAC support
-- update to LAME-3.100-release once it is released
 - update to latest libfaad/libfaac
 
 winLAME 2018 beta 1, tests:

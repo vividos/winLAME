@@ -19,7 +19,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/* $Id: lame.h,v 1.191 2017/08/15 14:51:39 aleidinger Exp $ */
+/* $Id: lame.h,v 1.192 2017/08/31 14:14:46 robert Exp $ */
 
 #ifndef LAME_LAME_H
 #define LAME_LAME_H
@@ -622,8 +622,9 @@ int CDECL lame_get_noclipGainChange(const lame_global_flags *);
    not clip or the value cannot be determined */
 float CDECL lame_get_noclipScale(const lame_global_flags *);
 
-
-
+/* returns the limit of PCM samples, which one can pass in an encode call
+   under the constrain of a provided buffer of size buffer_size */
+int CDECL lame_get_maximum_number_of_samples(lame_t gfp, size_t buffer_size);
 
 
 
