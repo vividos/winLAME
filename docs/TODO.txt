@@ -2,7 +2,6 @@ TODO list for winLAME
 
 winLAME 2017 beta 3, nice-to-have:
 - check all tooltip texts
-- fix "encoding action" -> does nothing
 - save all settings on custom module settings pages
 - support multiple subfolders in cd title format strings
 - add CD eject button

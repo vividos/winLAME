@@ -72,6 +72,8 @@ BOOL MainFrame::OnIdle()
 
    UpdateWin7TaskBar();
 
+   CheckAllTasksFinished();
+
    return FALSE;
 }
 
@@ -554,4 +556,33 @@ void MainFrame::OnClickedTaskItem(size_t clickedIndex)
    }
 
    m_taskDetailsView.UpdateTaskDetails(taskInfoList[clickedIndex]);
+}
+
+
+void MainFrame::CheckAllTasksFinished()
+{
+   bool areTasksRunning = m_taskManager.AreRunningTasksAvail();
+
+   if (!areTasksRunning &&
+      m_areTasksRunningPreviously &&
+      m_encodingFinishAction != T_enEncodingFinishAction::doNothing)
+   {
+      switch (m_encodingFinishAction)
+      {
+      case T_enEncodingFinishAction::closeApp:
+         PostMessage(WM_CLOSE);
+         break;
+
+      case T_enEncodingFinishAction::standbyPC:
+         ::SetSystemPowerState(TRUE, FALSE);
+         PostMessage(WM_CLOSE);
+         break;
+
+      default:
+         ATLASSERT(false);
+         break;
+      }
+   }
+
+   m_areTasksRunningPreviously = areTasksRunning;
 }

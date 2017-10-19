@@ -54,7 +54,8 @@ public:
       :m_taskManager(taskManager),
        m_tasksView(taskManager),
        m_isAppModeChanged(false),
-       m_encodingFinishAction(T_enEncodingFinishAction::doNothing)
+       m_encodingFinishAction(T_enEncodingFinishAction::doNothing),
+       m_areTasksRunningPreviously(false)
    {
    }
 
@@ -175,6 +176,9 @@ private:
    /// called when user clicked on a task list view item
    void OnClickedTaskItem(size_t clickedIndex);
 
+   /// checks if all tasks have finished
+   void CheckAllTasksFinished();
+
 private:
    /// ref to task manager
    TaskManager& m_taskManager;
@@ -210,6 +214,9 @@ private:
 
    /// current encoding finish action
    T_enEncodingFinishAction m_encodingFinishAction;
+
+   /// indicates if at the last check time, there were tasks running
+   bool m_areTasksRunningPreviously;
 
    /// html help object
    HtmlHelper m_htmlHelper;
