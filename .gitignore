@@ -59,3 +59,4 @@ buildtools/SonarQube/sonar-scanner-msbuild/
 bw-output/
 .vs/
 packages/
+uwpapp/winlame/
