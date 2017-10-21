@@ -18,7 +18,7 @@ Here's a checklist of what to do before each release:
   * htmlhelp index page
   * readme.txt
 - Check all external libraries for updates and update them
-- Check external tools for updates and update them (doxygen, cppcheck)
+- Check external tools for updates and update them (doxygen, cppcheck, wix)
 - Build all projects in Win32 | Release
 - Fix cppcheck errors and doxygen warnings
 - Compile all project with /analyze and fix all warnings
