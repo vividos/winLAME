@@ -73,11 +73,7 @@ LRESULT ImageListComboBox::OnPaint(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lP
 
    {
       // draw the edit box
-      const bool bEnabled = true;
-      if (bEnabled)
-         dc.FillSolidRect(rcClient, ::GetSysColor(COLOR_WINDOW));
-      else
-         dc.FillSolidRect(rcClient,::GetSysColor(COLOR_BTNFACE));
+      dc.FillSolidRect(rcClient, ::GetSysColor(COLOR_WINDOW));
 
       // draw the border around the edit control
       dc.Draw3dRect(rcClient, ::GetSysColor(COLOR_3DDKSHADOW),

@@ -9,3 +9,4 @@ noExplicitConstructor:*
 *:..\winlame\encoder\replaygain\gain_analysis.c
 unusedStructMember:..\winlame\encoder\id3\File.cpp
 *:..\winlame\atlribbon.h
+knownConditionTrueFalse:winlame\encoder\EncoderTask.cpp:109
