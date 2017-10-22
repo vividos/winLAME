@@ -73,6 +73,77 @@
     <div class="container">
         <h1>winLAME Latest news</h1>
 
+        <h2>2017-10-22 - winLAME 2017 beta 3 released</h2>
+
+        <p>
+            Today I released winLAME beta 3. The following crashes were fixed:
+            <ul>
+                <li>
+                    Reverted back to libsndfile 1.0.27 from 1.0.28, as the newer version crashes when encoding to FLAC format
+                </li>
+                <li>
+                    Fixed crashes in ID3 tag library; reported in CVE-2008-2109, CVE-2017-11550 and CVE-2017-11551, details at http://seclists.org/fulldisclosure/2017/Jul/85
+                </li>
+                <li>
+                    Fixed a crash when opening Ogg based input files, e.g. Ogg Vorbis, Speex and Opus
+                </li>
+                <li>
+                    Fixed a crash in Classic UI mode starting a new encoding batch after returning from a first encoding batch
+                </li>
+            </ul>
+            The following improvements were made:
+            <ul>
+                <li>
+                    Updated LAME to the latest version 3.100, compiled by John33 from <a href="http://www.rarewares.org/">RareWares</a>
+                </li>
+                <li>
+                    The "Encoding finish action" now actually does something (closing winLAME or standby the PC)
+                </li>
+                <li>
+                    Number of CPU cores used in Modern UI can now be configured in "General Settings"
+                </li>
+                <li>
+                    Added a more detailed "Task Details" lower pane to show all encoding infos for a task
+                </li>
+                <li>
+                    Added CD Auto-Play handler to start winLAME when a new CD is inserted into the disc drive
+                </li>
+                <li>
+                    When formatting CD track number using %track%, add leading zeros when there are more than 9 tracks
+                </li>
+                <li>
+                    When writing a playlist file and the option "use input folder as output location" is used, use the folder common to all files to store the playlist
+                </li>
+                <li>
+                    AAC quality range can now be set from 10 to 500, same as faac.exe Version 1.28
+                </li>
+                <li>
+                    Settings are now stored immediately when leaving a wizard page, not when the application exits
+                </li>
+                <li>
+                    In Classic mode, the user is also warned about overwriting input files, as in Modern UI mode
+                </li>
+                <li>
+                    Speex input file length is now shown properly
+                </li>
+                <li>
+                    Fixed bug where page title disappeared when minimizing and restoring winLAME window
+                </li>
+                <li>
+                    Setup: Added checkbox to start winLAME after setup completes
+                </li>
+                <li>
+                    Setup: Registry keys are now properly cleaned up when uninstalling, but are kept when upgrading to a newer version
+                </li>
+                <li>
+                    Setup: winLAME shortcut is now placed in the program menu directly, so it shows in the Windows 10 start menu list directly
+                </li>
+                <li>
+                    Portable: Added vcredist.exe in order to install the Visual C++ Runtime components when missing
+                </li>
+            </ul>
+        </p>
+
         <h2>2017-09-24 - Beta 1 survey results</h2>
 
         <p>
