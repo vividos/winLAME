@@ -20,6 +20,7 @@ Here's a checklist of what to do before each release:
 - Check all external libraries for updates and update them
 - Check external tools for updates and update them (doxygen, cppcheck, wix)
 - Build all projects in Win32 | Release
+- Run all unit tests
 - Fix cppcheck errors and doxygen warnings
 - Compile all project with /analyze and fix all warnings
 - Use Coverity to find even more warnings and fix them
