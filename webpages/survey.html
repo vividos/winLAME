@@ -69,6 +69,189 @@
             </ul>
         </p>
 
+        <h1>Survey Results - winLAME 2017 beta 2 and beta 3</h1>
+
+        <p>
+            Here are the collected responses from the feedback survey in the "2017 beta 2" and
+            "2017 beta 3" time frame.
+        </p>
+
+        <h2>Send a Frown - 12 answers</h2>
+
+        <p>Let's start with the frowns first. The following two questions were asked:</p>
+        <ul>
+            <li>What did you not like about winLAME? What made you frown?</li>
+            <li>What should be fixed so that winLAME would get better?</li>
+        </ul>
+
+        <p>
+            Only the answer to the first question was mandatory. This time, there was a notice
+            below the survey, that bugs shouldn't be reported using this form, but instead the bug
+            tracker or a personal mail sent to me should be used. There were 12 answers, which are
+            summarized and abbreviated here. Some answers were double or were variations of other
+            answers and were left out from the list.
+        </p>
+
+        <p>First, there still were some bugs reported using the form:</p>
+
+        <ul>
+            <li>no audio in output files</li>
+            <li>crashing/crashing during ripping</li>
+            <li>can see through the program window to the desktop</li>
+        </ul>
+
+        <p>
+            Unfortunately I can't do much about these bugs, as I can't reach out to the specific
+            user, as the survey is completely anonymous. Please, write at least an e-mail to me,
+            in order to get these bugs fixed!
+        </p>
+
+        <p>
+            Then there were some missing features reported using the "Frown" feedback form:
+
+        </p>
+
+        <ul>
+            <li>Not removing WAV files after CD reading</li>
+            <li>M4A AAC support - "Channel coupling not yet implemented"</li>
+            <li>specify parameters for LAME</li>
+            <li>not recognizing .aif extension, only .aiff</li>
+        </ul>
+
+        <p>
+            Some of these features can certainly be done easily, and I will consider them for the
+            winLAME 2018 version. The M4A AAC support is a little bit more complicated, since
+            another encoder library has to be integrated into winLAME. The solution may be to
+            integrate ffmpeg, since it supports many audio formats. Ths also would be a possible
+            feature for winLAME 2018.
+        </p>
+
+        <p>
+            One miscellaneous issue was reported that came up twice:
+        </p>
+
+        <ul>
+            <li>output location read-only</li>
+        </ul>
+
+        <p>
+            The output location is only read-only when the check box "Use input file's folder as
+            output location" is checked. It should now be obvious where the files are going to be
+            written.
+        </p>
+
+        <h2>Send a Smile - 29 answers</h2>
+
+        <p>Now to the positive feedback. The following two questions were asked:</p>
+        <ul>
+            <li>What do you like about winLAME? What made you smile?</li>
+            <li>What feature would you like in winLAME to make it even better?</li>
+        </ul>
+
+        <p>
+            Only the answer to the first question was mandatory. There were 29 answers, which are
+            summarized here.
+        </p>
+
+        <p>These answers are given very often and reflect on the maturity of the application:</p>
+
+        <ul>
+            <li>nice user interface</li>
+            <li>easy and fast</li>
+        </ul>
+
+        <p>
+            Most feature requests come from the Smile feedback form, also this time:
+        </p>
+
+        <ul>
+            <li>right-click explorer context menu integration</li>
+            <li>reverse encoding process: First specify settings, then drag-n-drop files</li>
+            <li>saving of window layout / size after restarting the program</li>
+            <li>create custom encoding settings and save a profile</li>
+            <li>edit presets</li>
+            <li>not all options are remembered (e.g. constant bitrate)</li>
+            <li>auto-create directory structure</li>
+            <li>module support comparable with mod, s3m xm or it</li>
+            <li>more expert settings</li>
+            <li>add Opus 512 kbps as preset</li>
+        </ul>
+
+        <p>
+            Some of these requests are also considered for winLAME 2018. Especially the wish for
+            extending the presets stand out. These can already accomplished today, the provided
+            preset.xml file can be extended with new presets, and a detailed explanation is
+            contained in the winLAME F1 help file.
+        </p>
+
+        <p>
+            Then there were some features that are already available in winLAME, but some users
+            couldn't find them:
+        </p>
+
+        <ul>
+            <li>avoid adding album and artist to filename</li>
+            <li>create FLAC files</li>
+            <li>convert FLAC of 24 bits to 16 bits or 8 bits</li>
+        </ul>
+
+        <p>
+            The first item, the filename template for ripped files, can be adjusted in the "CD
+            Read Settings" page. The way to create FLAC files (in sample sizes of 8/16/24 bits)
+            is to select the "libSndFile Audio Output" module and either select the FLAC 16 bit
+            preset, or select "Custom settings" and set the File Format to "FLAC". The Sample
+            Format can be adjusted at will.
+        </p>
+
+        <p>
+            Finally there were some miscellaneous comments:
+        </p>
+
+        <ul>
+            <li>enable / disable joint stereo</li>
+            <li>couldn't figure out how to use it with MusicBee</li>
+        </ul>
+
+        <p>
+            The Joint Stereo / Stereo question is probably as old as the MP3 format itself. On the
+            old winLAME home page there was an
+            <a href="https://web.archive.org/web/20160404222252/http://winlame.sourceforge.net/faq.php">FAQ section</a>
+            with exactly that question. I back then asked one of the LAME team members if the
+            stereo mode should be made available in the UI again. Here's what Gabriel Bouvigne
+            answered:
+        </p>
+
+        <p style="margin-left:2em; margin-right:2em">
+            <cite>
+                I would strongly advise you to NOT provide this kind of choice to the end user.
+                Activating legacy stereo instead of joint stereo will decrease quality in 99% of the
+                cases. Lame is internally able to switch between LR stereo and MS stereo on a frame
+                basis, trying to use the most efficient mode on each frame. On usual signals, using LR
+                instead of MS is quite inneficient, using more bits. When there are not enough
+                available bits to stay at the transparency threshold, we must decrease quality. This
+                situation is more likely to appear in legacy stereo mode.
+            </cite>
+        </p>
+
+        <p style="margin-left:2em; margin-right:2em">
+            <cite>
+                I think that most users only want this because of placebo effect. They feel better if
+                they can change default options, and because of this they are convinced (without blind
+                tests, of course) that the results are better. If we never offered the option, users
+                would probably not mind, but now that we provided the choice in the past, they want
+                it. Most AAC encoders (Apple, Nero) are not offering the choice, and are using MS or
+                LR at their own convenience when the user is encoding a stereo track, and no one is
+                complaining about it, mainly because those encoders never offered any other choice.
+            </cite>
+        </p>
+
+        <p>
+            What the MusicBee user wanted is probably to integrate the LAME encoder into the media
+            player.
+        </p>
+
+        <hr />
+
         <h1>Survey Results - winLAME 2017 beta 1</h1>
 
         <p>
