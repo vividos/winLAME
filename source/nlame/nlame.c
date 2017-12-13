@@ -170,8 +170,11 @@ struct nlame_struct
 
 nlame_instance_t* nlame_new()
 {
-   nlame_instance_t* inst=NULL;
+   nlame_instance_t* inst = NULL;
    inst = malloc(sizeof(struct nlame_struct));
+   if (inst == NULL)
+      return NULL;
+
    inst->lgf = lame_init();
    return inst;
 }
