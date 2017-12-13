@@ -191,6 +191,10 @@ LRESULT MainDlg::OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHa
 
    DlgResize_Init(true, true);
 
+   // remove feedback buttons in release
+   GetDlgItem(ID_FEEDBACK_POSITIVE).ShowWindow(SW_HIDE);
+   GetDlgItem(ID_FEEDBACK_NEGATIVE).ShowWindow(SW_HIDE);
+
    return 1;  // let the system set the focus
 }
 

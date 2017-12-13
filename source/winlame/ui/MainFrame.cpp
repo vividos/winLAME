@@ -148,6 +148,15 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 
 void MainFrame::SetupCmdBar()
 {
+   // remove feedback buttons in release
+   CMenuHandle menu = GetMenu();
+
+   menu.DeleteMenu(ID_FEEDBACK_POSITIVE, MF_BYCOMMAND);
+   menu.DeleteMenu(ID_FEEDBACK_NEGATIVE, MF_BYCOMMAND);
+
+   menu.DeleteMenu(menu.GetMenuItemCount() - 2, MF_BYPOSITION);
+
+   // create the command bar
    m_CmdBar.Create(m_hWnd, rcDefault, nullptr, ATL_SIMPLE_CMDBAR_PANE_STYLE);
 
    m_CmdBar.AttachMenu(GetMenu());
@@ -203,6 +212,13 @@ void MainFrame::SetupToolbar()
    EnableButtonText(tb, ID_FEEDBACK_NEGATIVE);
 
    UIAddToolBar(hWndToolBar);
+
+   // remove feedback buttons in release
+   tb.HideButton(ID_FEEDBACK_POSITIVE);
+   tb.HideButton(ID_FEEDBACK_NEGATIVE);
+
+   int indexSeparator = tb.CommandToIndex(ID_FEEDBACK_NEGATIVE) + 1;
+   tb.DeleteButton(indexSeparator);
 }
 
 void MainFrame::SetupStatusBar()
