@@ -32,7 +32,7 @@
 #include "AboutDlg.hpp"
 #include "OptionsDlg.hpp"
 #include "App.hpp"
-#include "CommandLineParser.hpp"
+#include <ulib/CommandLineParser.hpp>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <shlobj.h>

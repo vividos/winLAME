@@ -190,9 +190,6 @@
     <ClCompile Include="ui\FreeDbDiscListDlg.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CommandLineParser.cpp">
-      <Filter>Main Program Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AudioFileInfoManager.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
@@ -207,9 +204,6 @@
     </ClCompile>
     <ClCompile Include="FreedbInfo.cpp">
       <Filter>Main Program Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ui\Win7Taskbar.cpp">
-      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TaskCreationHelper.cpp">
       <Filter>Main Program Files\Source Files</Filter>
@@ -333,9 +327,6 @@
     <ClInclude Include="res\MainFrameRibbon.h">
       <Filter>Modern UI Files\Resource Files\Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="CommandLineParser.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ui\RedrawLock.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
@@ -351,13 +342,7 @@
     <ClInclude Include="FreedbInfo.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ui\Win7Taskbar.hpp">
-      <Filter>Modern UI Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleManager.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Boost.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StdCppLib.hpp">

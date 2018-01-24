@@ -34,7 +34,7 @@
 #include "InputCDPage.hpp"
 #include "ResourceInstanceSwitcher.hpp"
 #include "DropFilesManager.hpp"
-#include "CommandLineParser.hpp"
+#include <ulib/CommandLineParser.hpp>
 #include <boost/foreach.hpp>
 
 using namespace UI;
@@ -133,7 +133,7 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    // enable dropping files
    DragAcceptFiles(TRUE);
 
-   m_win7TaskBar = Win7::Taskbar(m_hWnd);
+   m_win7TaskBar = Win32::Taskbar(m_hWnd);
 
    PostMessage(WM_CHECK_COMMAND_LINE);
 
@@ -553,7 +553,7 @@ void MainFrame::UpdateWin7TaskBar()
          m_win7TaskBarProgressBar = m_win7TaskBar.get().OpenProgressBar();
 
       m_win7TaskBarProgressBar.get().SetState(
-         hasErrorTasks ? Win7::TaskbarProgressBar::TBPF_ERROR : Win7::TaskbarProgressBar::TBPF_NORMAL);
+         hasErrorTasks ? Win32::TaskbarProgressBar::TBPF_ERROR : Win32::TaskbarProgressBar::TBPF_NORMAL);
 
       m_win7TaskBarProgressBar.get().SetPos(percentComplete, 100);
    }

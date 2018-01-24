@@ -73,7 +73,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CDRipTitleFormatManager.cpp" />
-    <ClCompile Include="CommandLineParser.cpp" />
     <ClCompile Include="CoverArtArchive.cpp" />
     <ClCompile Include="FreedbInfo.cpp" />
     <ClCompile Include="HttpClient.cpp" />
@@ -111,7 +110,6 @@
     <ClCompile Include="ui\OutputSettingsPage.cpp" />
     <ClCompile Include="ui\PresetSelectionPage.cpp" />
     <ClCompile Include="ui\TaskDetailsView.cpp" />
-    <ClCompile Include="ui\Win7Taskbar.cpp" />
     <ClCompile Include="ui\WMASettingsPage.cpp" />
     <ClCompile Include="classic\WaveOutputSettingsPage.cpp" />
     <ClCompile Include="classic\WmaOutputSettingsPage.cpp" />
@@ -137,11 +135,9 @@
     <ClCompile Include="ui\WizardPageHost.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Boost.hpp" />
     <ClInclude Include="CDRipDiscInfo.hpp" />
     <ClInclude Include="CDRipTitleFormatManager.hpp" />
     <ClInclude Include="CDRipTrackInfo.hpp" />
-    <ClInclude Include="CommandLineParser.hpp" />
     <ClInclude Include="CoverArtArchive.hpp" />
     <ClInclude Include="FreedbInfo.hpp" />
     <ClInclude Include="HttpClient.hpp" />
@@ -187,7 +183,6 @@
     <ClInclude Include="ui\PresetSelectionPage.hpp" />
     <ClInclude Include="ui\RedrawLock.hpp" />
     <ClInclude Include="ui\TaskDetailsView.hpp" />
-    <ClInclude Include="ui\Win7Taskbar.hpp" />
     <ClInclude Include="ui\WMASettingsPage.hpp" />
     <ClInclude Include="classic\WaveOutputSettingsPage.hpp" />
     <ClInclude Include="classic\WmaOutputSettingsPage.hpp" />

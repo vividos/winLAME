@@ -23,7 +23,7 @@
 
 // includes
 #include "TasksView.hpp"
-#include "Win7Taskbar.hpp"
+#include <ulib/win32/Win7Taskbar.hpp>
 #include "HtmlHelper.hpp"
 #include "TaskDetailsView.hpp"
 #include <boost/optional.hpp>
@@ -196,10 +196,10 @@ private:
    TaskDetailsView m_taskDetailsView;
 
    // access to task bar
-   boost::optional<Win7::Taskbar> m_win7TaskBar;
+   boost::optional<Win32::Taskbar> m_win7TaskBar;
 
    // access to task bar progress bar
-   boost::optional<Win7::TaskbarProgressBar> m_win7TaskBarProgressBar;
+   boost::optional<Win32::TaskbarProgressBar> m_win7TaskBarProgressBar;
 
    /// indicates if the dialog has been closed to change the app mode to classic mode
    bool m_isAppModeChanged;
