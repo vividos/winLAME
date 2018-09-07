@@ -89,6 +89,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TestEncodeLameMp3.cpp" />
+    <ClCompile Include="TestEncodeWaveToOpus.cpp" />
     <ClCompile Include="TestModuleManager.cpp" />
   </ItemGroup>
   <ItemGroup>

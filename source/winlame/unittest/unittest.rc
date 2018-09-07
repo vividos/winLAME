@@ -7,3 +7,4 @@
 
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 IDR_SAMPLE_MP3     "RT_RCDATA"      "Jungle_S-RepaidGa-10582_hifi.mp3"
+IDR_SAMPLE_WAV     "RT_RCDATA"      "bfxr-randomize.wav"

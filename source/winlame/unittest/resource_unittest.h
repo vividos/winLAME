@@ -3,3 +3,4 @@
 #endif
 
 #define IDR_SAMPLE_MP3                          101
+#define IDR_SAMPLE_WAV                          102
