@@ -64,6 +64,9 @@ bool AacOutputModule::IsAvailable() const
 
 CString AacOutputModule::GetDescription() const
 {
+   if (m_handle == nullptr)
+      return CString();
+
    // get config
    faacEncConfigurationPtr config = faacEncGetCurrentConfiguration(m_handle);
 
