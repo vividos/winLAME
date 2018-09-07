@@ -60,3 +60,5 @@ bw-output/
 .vs/
 packages/
 uwpapp/winlame/
+source/CoverageReport/
+source/winLAME-coverage.xml
