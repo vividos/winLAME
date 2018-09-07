@@ -207,6 +207,11 @@
            Source="$(var.SolutionDir)source\libraries\opus.dll" />
       </Component>
 
+      <Component Id="OpusEncLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="OpusEncDll" Name="opusenc.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.SolutionDir)source\libraries\opusenc.dll" />
+      </Component>
+
       <Component Id="LibSpeexLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibSpeexDll" Name="libspeex.dll" DiskId="1" KeyPath="yes"
            Source="$(var.SolutionDir)source\libraries\libspeex.dll" />
