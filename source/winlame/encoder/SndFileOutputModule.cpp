@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -65,6 +65,17 @@ CString SndFileOutputModule::GetDescription() const
       m_sfinfo.channels);
 
    return desc;
+}
+
+void SndFileOutputModule::GetVersionString(CString& version, int special) const
+{
+   if (IsAvailable())
+   {
+      char buffer[32];
+      sf_command(nullptr, SFC_GET_LIB_VERSION, buffer, sizeof(buffer));
+
+      version = CString(buffer + 11);
+   }
 }
 
 CString SndFileOutputModule::GetOutputExtension() const

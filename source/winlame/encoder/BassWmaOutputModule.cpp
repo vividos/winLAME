@@ -1,7 +1,7 @@
 //
 // winLAME - a frontend for the LAME encoding engine
 // Copyright (c) 2004 DeXT
-// Copyright (c) 2009-2017 Michael Fink
+// Copyright (c) 2009-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -63,6 +63,19 @@ CString BassWmaOutputModule::GetDescription() const
       m_numChannels);
 
    return desc;
+}
+
+void BassWmaOutputModule::GetVersionString(CString& version, int special) const
+{
+   version.Empty();
+
+   DWORD bassVersion = BASS_GetVersion();
+
+   version.Format(_T("%u.%u.%u.%u"),
+      HIBYTE(HIWORD(bassVersion)),
+      LOBYTE(HIWORD(bassVersion)),
+      HIBYTE(LOWORD(bassVersion)),
+      LOBYTE(LOWORD(bassVersion)));
 }
 
 void BassWmaOutputModule::PrepareOutput(SettingsManager& mgr)

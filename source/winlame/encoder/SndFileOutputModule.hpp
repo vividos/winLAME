@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -46,6 +46,9 @@ namespace Encoder
 
       /// returns description of current file
       virtual CString GetDescription() const override;
+
+      /// returns version string
+      virtual void GetVersionString(CString& version, int special = 0) const override;
 
       /// returns the extension the output module produces
       virtual CString GetOutputExtension() const override;
