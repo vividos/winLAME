@@ -11,26 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\audio-in.c" />
-    <ClCompile Include="src\lpc.c" />
-    <ClCompile Include="src\opusenc.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="src\opus_header.c" />
     <ClCompile Include="src\picture.c" />
-    <ClCompile Include="src\resample.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\arch.h" />
-    <ClInclude Include="src\lpc.h" />
-    <ClInclude Include="src\opusenc.h" />
-    <ClInclude Include="src\opus_header.h" />
-    <ClInclude Include="src\os_support.h" />
     <ClInclude Include="src\picture.h" />
-    <ClInclude Include="src\resample_sse.h" />
-    <ClInclude Include="src\speex_resampler.h" />
-    <ClInclude Include="src\stack_alloc.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{67749BC5-F457-478A-9E92-3986654BC068}</ProjectGuid>

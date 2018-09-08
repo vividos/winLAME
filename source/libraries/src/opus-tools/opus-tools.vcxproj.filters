@@ -11,50 +11,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\opusenc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\resample.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\audio-in.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opus_header.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\lpc.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\picture.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\opusenc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\os_support.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\resample_sse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\speex_resampler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\stack_alloc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\arch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\lpc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opus_header.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\picture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
