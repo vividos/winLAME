@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2016-2017 Michael Fink
+// Copyright (c) 2016-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,52 +19,23 @@
 /// \file OpusOutputModule.cpp
 /// \brief Opus output module
 //
-
-// The next copyright and license block appears because this file uses a lot
-// of code from opus-tools code from opusenc.c
-
-/* Copyright (C)2002-2011 Jean-Marc Valin
-   Copyright (C)2007-2013 Xiph.Org Foundation
-   Copyright (C)2008-2013 Gregory Maxwell
-   File: opusenc.c
-
-   Redistribution and use in source and binary forms, with or without
-   modification, are permitted provided that the following conditions
-   are met:
-
-   - Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-
-   - Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-
-   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-   ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-   A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
-   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-
 #include "stdafx.h"
 #include "resource.h"
 #include "OpusOutputModule.hpp"
 #include <ulib/UTF8.hpp>
 #include "App.hpp"
 #include <WinCrypt.h>
+#include <ogg/ogg.h>
+
 extern "C"
 {
-#include "picture.h"
+   #include "picture.h"
 }
 
-#pragma comment(lib, "opusfile.lib")
+using Encoder::OpusEncData;
+
 #pragma comment(lib, "opus.lib")
+#pragma comment(lib, "opusenc.lib")
 #pragma comment(lib, "libogg.lib")
 
 bool GetRandomNumber(int& randomNumber)
@@ -81,26 +52,106 @@ bool GetRandomNumber(int& randomNumber)
    return ret != FALSE;
 }
 
-
-#pragma warning (disable: 4706) // assignment within conditional expression
-
-static inline int oe_write_page(ogg_page *page, FILE *fp);
-static void comment_init(char **comments, int* length, const char *vendor_string);
-void comment_add(char **comments, int* length, char *tag, const char *val);
-static void comment_pad(char **comments, int* length, int amount);
-
-/*Write an Ogg page to a file pointer*/
-static inline int oe_write_page(ogg_page *page, FILE *fp)
+OpusEncData::OpusEncData()
 {
-   int written;
-   written = fwrite(page->header, 1, page->header_len, fp);
-   written += fwrite(page->body, 1, page->body_len, fp);
-   return written;
+   enc = nullptr;
+   total_bytes = 0;
+   bytes_written = 0;
+   nb_encoded = 0;
+   pages_out = 0;
+   packets_out = 0;
+   peak_bytes = 0;
+   min_bytes = 256 * 1275 * 6;
+   last_length = 0;
+   nb_streams = 1;
+   nb_coupled = 0;
 }
 
-#define MAX_FRAME_BYTES 61295
-#define IMIN(a,b) ((a) < (b) ? (a) : (b))   /**< Minimum int value.   */
-#define IMAX(a,b) ((a) > (b) ? (a) : (b))   /**< Maximum int value.   */
+OpusEncData::~OpusEncData()
+{
+   Close();
+}
+
+bool OpusEncData::Create(opus_int32 inputSampleRate, int channels, CString& lastError)
+{
+   OpusEncCallbacks callbacks = { write_callback, close_callback };
+   int ret;
+
+   enc = ope_encoder_create_callbacks(
+      &callbacks,
+      this,
+      m_comments.get(),
+      inputSampleRate,
+      channels,
+      channels > 8 ? 255 : channels > 2,
+      &ret);
+
+   if (enc == nullptr)
+   {
+      lastError.Format(
+         _T("Error: failed to create encoder: %hs"),
+         ope_strerror(ret));
+      return false;
+   }
+
+   ret = ope_encoder_ctl(enc, OPE_SET_PACKET_CALLBACK(packet_callback, this));
+
+   int serialno = 0;
+   if (!GetRandomNumber(serialno))
+      return false;
+
+   ret = ope_encoder_ctl(enc, OPE_SET_SERIALNO(serialno));
+
+   return true;
+}
+
+void OpusEncData::Close()
+{
+   if (enc != nullptr)
+   {
+      ope_encoder_destroy(enc);
+      enc = nullptr;
+   }
+
+   m_comments.reset();
+}
+
+int OpusEncData::write_callback(void* user_data, const unsigned char* ptr, opus_int32 len)
+{
+   OpusEncData* data = (OpusEncData*)user_data;
+   data->bytes_written += len;
+   data->pages_out++;
+   return fwrite(ptr, 1, len, data->m_outputFile.get()) != (size_t)len;
+}
+
+int OpusEncData::close_callback(void* user_data)
+{
+   OpusEncData* data = (OpusEncData*)user_data;
+
+   int ret = fclose(data->m_outputFile.get()) != 0;
+   data->m_outputFile.reset();
+   return ret;
+}
+
+void OpusEncData::packet_callback(void* user_data, const unsigned char* packet_ptr, opus_int32 packet_len, opus_uint32 flags)
+{
+   (void)flags;
+
+   OpusEncData* data = (OpusEncData*)user_data;
+   int nb_samples = opus_packet_get_nb_samples(packet_ptr, packet_len, 48000);
+   if (nb_samples <= 0)
+      return;  /* ignore header packets */
+   data->total_bytes += packet_len;
+   data->peak_bytes = std::max(packet_len, data->peak_bytes);
+   data->min_bytes = std::min(packet_len, data->min_bytes);
+   data->nb_encoded += nb_samples;
+   data->packets_out++;
+   data->last_length = packet_len;
+}
+
+//#pragma warning (disable: 4706) // assignment within conditional expression
+
+//#define MAX_FRAME_BYTES 61295
 
 using Encoder::OpusOutputModule;
 using Encoder::TrackInfo;
@@ -110,28 +161,16 @@ OpusOutputModule::OpusOutputModule()
    :m_bitrateInBps(-1),
    m_complexity(10),
    m_opusBitrateMode(0),
+   m_inputSampleRate(48000),
+   m_inputSampleSize(16),
    m_codingRate(48000),
    m_downmix(0),
-   m_frameSize(0),
+   m_frameSize(960),
    m_numSamplesPerFrame(0),
-   m_numBytesWritten(0),
-   m_numPagesWritten(0),
    m_32bitMode(false),
-   total_samples(0),
-   m_currentPacketNumber(0),
-   original_samples(0),
-   enc_granulepos(0),
-   last_granulepos(0),
-   last_segments(0),
-   max_ogg_delay(0)
+   m_outputStreamAtEnd(false)
 {
    m_moduleId = ID_OM_OPUS;
-
-   memset(&inopt, 0, sizeof(inopt));
-   memset(&header, 0, sizeof(header));
-   memset(&os, 0, sizeof(os));
-   memset(&og, 0, sizeof(og));
-   memset(&op, 0, sizeof(op));
 }
 
 OpusOutputModule::~OpusOutputModule()
@@ -160,8 +199,8 @@ CString OpusOutputModule::GetDescription() const
 
    CString desc;
    desc.Format(IDS_FORMAT_INFO_OPUS_OUTPUT,
-      inopt.channels,
-      inopt.rate,
+      m_channels,
+      m_inputSampleRate,
       m_32bitMode ? 32 : 16,
       bitrateMode,
       m_bitrateInBps / 1000,
@@ -179,8 +218,11 @@ int OpusOutputModule::InitOutput(LPCTSTR outfilename,
    SettingsManager& mgr, const TrackInfo& trackInfo,
    SampleContainer& samples)
 {
-   InitInopt();
-   SetInputStreamInfos(samples);
+   m_inputSampleRate = samples.GetInputModuleSampleRate();
+   m_channels = samples.GetInputModuleChannels();
+   m_inputSampleSize = samples.GetInputModuleBitsPerSample();
+
+   m_32bitMode = samples.GetInputModuleBitsPerSample() == 32;
 
    // set options from UI
    m_bitrateInBps = mgr.QueryValueInt(OpusTargetBitrate) * 1000;
@@ -199,9 +241,6 @@ int OpusOutputModule::InitOutput(LPCTSTR outfilename,
    if (!SetEncoderOptions())
       return -1;
 
-   if (!WriteHeader())
-      return -1;
-
    m_samplerate = m_codingRate;
 
    // set up output traits
@@ -212,10 +251,6 @@ int OpusOutputModule::InitOutput(LPCTSTR outfilename,
 
 int OpusOutputModule::EncodeSamples(SampleContainer& samples)
 {
-   // end of stream?
-   if (op.e_o_s)
-      return 0;
-
    int numSamples = RefillInputSampleBuffer(samples);
 
    if (!EncodeInputBufferUntilEmpty())
@@ -228,72 +263,25 @@ void OpusOutputModule::DoneOutput()
 {
    EncodeRemainingInputBuffer();
 
-   m_encoder.reset();
-
-   ogg_stream_clear(&os);
-
-   const opus_int32 rate = header.input_sample_rate;
-   if (rate != m_codingRate)
-      clear_resample(&inopt);
-
-   clear_padder(&inopt);
-
+#if 0
+   // TODO implement
    if (m_downmix)
       clear_downmix(&inopt);
+#endif
 
-   m_outputFile.reset();
-}
-
-void OpusOutputModule::InitInopt()
-{
-   inopt.channels = 2;
-   inopt.rate = 48000;
-   // 0 dB gain is recommended unless you know what you're doing
-   inopt.gain = 0;
-   inopt.samplesize = 16;
-   inopt.endianness = 0;
-   inopt.rawmode = 0;
-   inopt.ignorelength = 0;
-   inopt.copy_comments = 1;
-   inopt.copy_pictures = 1;
-
-   inopt.read_samples = &OpusOutputModule::ReadFloatSamplesStatic;
-   inopt.readdata = this;
-
-   m_bitrateInBps = -1;
-   m_complexity = 10;
-
-   m_currentPacketNumber = -1;
-
-   total_samples = 0;
-   original_samples = 0;
-   enc_granulepos = 0;
-   last_granulepos = 0;
-   last_segments = 0;
-
-   max_ogg_delay = 48000; // 48kHz samples
-}
-
-void OpusOutputModule::SetInputStreamInfos(SampleContainer& samplecont)
-{
-   inopt.rate = samplecont.GetInputModuleSampleRate();
-   inopt.channels = m_channels = samplecont.GetInputModuleChannels();
-   inopt.samplesize = samplecont.GetInputModuleBitsPerSample();
-   inopt.total_samples_per_channel = 0;
-
-   m_32bitMode = samplecont.GetInputModuleBitsPerSample() == 32;
+   m_encoder.Close();
 }
 
 bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
 {
-   char ENCODER_string[1024];
-   const char* opus_version = opus_get_version_string();
+   OggOpusComments* comments = ope_comments_create();
+   m_encoder.m_comments.reset(comments, ope_comments_destroy);
 
    // Vendor string should just be the encoder library,
    // the ENCODER comment specifies the tool used.
-   comment_init(&inopt.comments, &inopt.comments_length, opus_version);
+   char ENCODER_string[1024];
    snprintf(ENCODER_string, sizeof(ENCODER_string), "winLAME %ls", App::Version().GetString());
-   comment_add(&inopt.comments, &inopt.comments_length, "ENCODER", ENCODER_string);
+   ope_comments_add(comments, "ENCODER", ENCODER_string);
 
    CString encoderOptions;
    if (m_bitrateInBps != -1)
@@ -306,45 +294,44 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
 
    encoderOptions.AppendFormat(_T("--comp %i"), m_complexity);
 
-   comment_add(&inopt.comments, &inopt.comments_length, "ENCODER_OPTIONS",
-      CStringA(encoderOptions).GetString());
+   ope_comments_add(comments, "ENCODER_OPTIONS", CStringA(encoderOptions).GetString());
 
    CString text;
    std::vector<char> utf8Buffer;
    if (trackinfo.TextInfo(TrackInfoArtist, text))
    {
       StringToUTF8(text, utf8Buffer);
-      comment_add(&inopt.comments, &inopt.comments_length, "artist", utf8Buffer.data());
+      ope_comments_add(comments, "artist", utf8Buffer.data());
    }
 
    if (trackinfo.TextInfo(TrackInfoTitle, text))
    {
       StringToUTF8(text, utf8Buffer);
-      comment_add(&inopt.comments, &inopt.comments_length, "title", utf8Buffer.data());
+      ope_comments_add(comments, "title", utf8Buffer.data());
    }
 
    if (trackinfo.TextInfo(TrackInfoAlbum, text))
    {
       StringToUTF8(text, utf8Buffer);
-      comment_add(&inopt.comments, &inopt.comments_length, "album", utf8Buffer.data());
+      ope_comments_add(comments, "album", utf8Buffer.data());
    }
 
    if (trackinfo.TextInfo(TrackInfoDiscArtist, text))
    {
       StringToUTF8(text, utf8Buffer);
-      comment_add(&inopt.comments, &inopt.comments_length, "albumartist", utf8Buffer.data());
+      ope_comments_add(comments, "albumartist", utf8Buffer.data());
    }
 
    if (trackinfo.TextInfo(TrackInfoComposer, text))
    {
       StringToUTF8(text, utf8Buffer);
-      comment_add(&inopt.comments, &inopt.comments_length, "composer", utf8Buffer.data());
+      ope_comments_add(comments, "composer", utf8Buffer.data());
    }
 
    if (trackinfo.TextInfo(TrackInfoComment, text))
    {
       StringToUTF8(text, utf8Buffer);
-      comment_add(&inopt.comments, &inopt.comments_length, "comment", utf8Buffer.data());
+      ope_comments_add(comments, "comment", utf8Buffer.data());
    }
 
    bool avail = false;
@@ -353,7 +340,7 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
    {
       text.Format(_T("%i"), year);
       StringToUTF8(text, utf8Buffer);
-      comment_add(&inopt.comments, &inopt.comments_length, "date", utf8Buffer.data());
+      ope_comments_add(comments, "date", utf8Buffer.data());
    }
 
    int trackNumber = trackinfo.NumberInfo(TrackInfoTrack, avail);
@@ -361,13 +348,13 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
    {
       text.Format(_T("%i"), trackNumber);
       StringToUTF8(text, utf8Buffer);
-      comment_add(&inopt.comments, &inopt.comments_length, "tracknumber", utf8Buffer.data());
+      ope_comments_add(comments, "tracknumber", utf8Buffer.data());
    }
 
    if (trackinfo.TextInfo(TrackInfoGenre, text))
    {
       StringToUTF8(text, utf8Buffer);
-      comment_add(&inopt.comments, &inopt.comments_length, "genre", utf8Buffer.data());
+      ope_comments_add(comments, "genre", utf8Buffer.data());
    }
 
    std::vector<unsigned char> binaryInfo;
@@ -377,7 +364,7 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
       std::string pictureData = GetMetadataBlockPicture(binaryInfo);
 
       if (!pictureData.empty())
-         comment_add(&inopt.comments, &inopt.comments_length, "METADATA_BLOCK_PICTURE", pictureData.c_str());
+         ope_comments_add(comments, "METADATA_BLOCK_PICTURE", pictureData.c_str());
    }
 
    return true;
@@ -385,87 +372,52 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
 
 bool OpusOutputModule::InitEncoder()
 {
-   const opus_int32 bitrate = m_bitrateInBps;
-   const int complexity = m_complexity;
-   int& downmix = m_downmix;
-
-   if (inopt.rate < 100 || inopt.rate > 768000)
+   if (m_inputSampleRate < 100 || m_inputSampleRate > 768000)
    {
       // Crazy rates excluded to avoid excessive memory usage for padding/resampling.
-      m_lastError.Format(_T("Error parsing input file: unhandled sampling rate: %ld Hz"), inopt.rate);
+      m_lastError.Format(_T("Error parsing input file: unsupported  sample rate: %ld Hz"), m_inputSampleRate);
       return false;
    }
 
-   if (inopt.channels > 255 || inopt.channels < 1)
+   if (m_channels > 255 || m_channels < 1)
    {
-      m_lastError.Format(_T("Error parsing input file: unhandled number of channels: %d"), inopt.channels);
+      m_lastError.Format(
+         _T("Error parsing input file: unsupported channel count: %d\nChannel count must be in the range 1 to 255."),
+         m_channels);
       return false;
    }
 
-   if (downmix == 0 && inopt.channels > 2 && bitrate > 0 && bitrate < (16000 * inopt.channels))
+   if (m_downmix == 0 && m_channels > 2 && m_bitrateInBps > 0 && m_bitrateInBps < (16000 * m_channels))
    {
-      ATLTRACE("Notice: Surround bitrate less than 16kbit/sec/channel, downmixing.\n");
-      downmix = inopt.channels > 8 ? 1 : 2;
+      ATLTRACE("Notice: Surround bitrate less than 16kbit/s per channel, downmixing.\n");
+      m_downmix = m_channels > 8 ? 1 : 2;
    }
 
-   if (downmix > 0 && downmix < inopt.channels) downmix = setup_downmix(&inopt, downmix);
-   else downmix = 0;
+#if 0
+   // TODO implement downmix
+   if (m_downmix > 0 && m_downmix < m_channels)
+      m_downmix = setup_downmix(&inopt, m_downmix);
+   else
+      m_downmix = 0;
+#endif
 
-   inopt.skip = 0;
+   // TODO
+   //m_codingRate = 48000;
+   //if (m_inputSampleRate > 24000) m_codingRate = 48000;
+   //else if (m_inputSampleRate > 16000) m_codingRate = 24000;
+   //else if (m_inputSampleRate > 12000) m_codingRate = 16000;
+   //else if (m_inputSampleRate > 8000) m_codingRate = 12000;
+   //else m_codingRate = 8000;
 
-   // In order to code the complete length we'll need to do a little padding
-   setup_padder(&inopt, &original_samples);
-
-   const opus_int32 rate = inopt.rate;
-   opus_int32& coding_rate = m_codingRate;
-
-   coding_rate = 48000;
-   if (rate > 24000)coding_rate = 48000;
-   else if (rate > 16000)coding_rate = 24000;
-   else if (rate > 12000)coding_rate = 16000;
-   else if (rate > 8000)coding_rate = 12000;
-   else coding_rate = 8000;
-
-   opus_int32 frame_size = 960;
-   frame_size = frame_size / (48000 / coding_rate);
-
-   // Scale the resampler complexity, but only for 48000 output because
-   // the near-cutoff behavior matters a lot more at lower rates.
-   if (rate != coding_rate)setup_resample(&inopt, coding_rate == 48000 ? (complexity + 1) / 2 : 5, coding_rate);
-
-   if (rate != coding_rate && complexity != 10)
-   {
-      ATLTRACE("Notice: Using resampling with complexity<10.\n");
-      ATLTRACE("Opusenc is fastest with 48, 24, 16, 12, or 8kHz input.\n\n");
-   }
-
-   // OggOpus headers FIXME: broke forcemono
-   header.channels = inopt.channels;
-   header.channel_mapping = header.channels > 8 ? 255 : header.channels > 2;
-   header.input_sample_rate = rate;
-   header.gain = inopt.gain;
+   m_frameSize = 960;
+   // TODO
+   //m_frameSize = m_frameSize / (48000 / m_codingRate);
 
    // Initialize Opus encoder
-   // Frame sizes <10ms can only use the MDCT modes, so we switch on RESTRICTED_LOWDELAY
-   // to save the extra 4ms of codec lookahead when we'll be using only small frames.
-   OpusMSEncoder* st;
-   int ret = 0;
-   st = opus_multistream_surround_encoder_create(coding_rate, header.channels, header.channel_mapping, &header.nb_streams, &header.nb_coupled,
-      header.stream_map, frame_size < 480 / (48000 / coding_rate) ? OPUS_APPLICATION_RESTRICTED_LOWDELAY : OPUS_APPLICATION_AUDIO, &ret);
-
-   if (ret != OPUS_OK)
-   {
-      m_lastError.Format(_T("Error cannot create encoder: %hs"), opus_strerror(ret));
+   if (!m_encoder.Create(m_inputSampleRate, m_channels, m_lastError))
       return false;
-   }
 
-   m_encoder.reset(st, opus_multistream_encoder_destroy);
-
-   int max_frame_bytes = (1275 * 3 + 7)*header.nb_streams;
-   m_packetBuffer.resize(max_frame_bytes);
-
-   m_frameSize = frame_size;
-   m_numSamplesPerFrame = frame_size * inopt.channels;
+   m_numSamplesPerFrame = m_frameSize * m_channels;
 
    m_inputFloatBuffer.resize(m_numSamplesPerFrame);
 
@@ -474,12 +426,6 @@ bool OpusOutputModule::InitEncoder()
 
 bool OpusOutputModule::SetEncoderOptions()
 {
-   int& bitrate = m_bitrateInBps;
-   const int complexity = m_complexity;
-   const opus_int32 rate = header.input_sample_rate;
-   const opus_int32 coding_rate = m_codingRate;
-   OpusMSEncoder* st = m_encoder.get();
-
    int with_hard_cbr = 0;
    int with_cvbr = 0;
 
@@ -501,84 +447,69 @@ bool OpusOutputModule::SetEncoderOptions()
       break;
    }
 
-   if (bitrate < 0)
+   if (m_bitrateInBps < 0)
    {
       // Lower default rate for sampling rates [8000-44100) by a factor of (rate+16k)/(64k)
-      bitrate = ((64000 * header.nb_streams + 32000 * header.nb_coupled)*
-         (std::min(48, std::max(8, ((rate < 44100 ? rate : 48000) + 1000) / 1000)) + 16) + 32) >> 6;
+      m_bitrateInBps = ((64000 * m_encoder.nb_streams + 32000 * m_encoder.nb_coupled) *
+         (std::min(48, std::max(8, ((m_inputSampleRate < 44100 ? m_inputSampleRate : 48000) + 1000) / 1000)) + 16) + 32) >> 6;
    }
 
-   if (bitrate > (1024000 * inopt.channels) || bitrate < 500) {
-      m_lastError.Format(_T("Error: Bitrate %d bits/sec is insane.\nDid you mistake bits for kilobits?\n"), bitrate);
+   if (m_bitrateInBps > (1024000 * m_channels) || m_bitrateInBps < 500) {
+      m_lastError.Format(_T("Error: Bitrate %d bits/sec is insane.\nDid you mistake bits for kilobits?\n"), m_bitrateInBps);
       m_lastError.Append(_T("--bitrate values from 6-256 kbit/sec per channel are meaningful.\n"));
       return false;
    }
 
-   bitrate = std::min(inopt.channels * 256000, bitrate);
+   m_bitrateInBps = std::min(m_channels * 256000, m_bitrateInBps);
 
-   int ret = opus_multistream_encoder_ctl(st, OPUS_SET_BITRATE(bitrate));
+   int ret = ope_encoder_ctl(m_encoder.enc, OPUS_SET_BITRATE(m_bitrateInBps));
    if (ret != OPUS_OK)
    {
-      m_lastError.Format(_T("Error OPUS_SET_BITRATE returned: %hs\n"), opus_strerror(ret));
+      m_lastError.Format(_T("Error OPUS_SET_BITRATE %d returned: %hs\n"), m_bitrateInBps, ope_strerror(ret));
       return false;
    }
 
-   ret = opus_multistream_encoder_ctl(st, OPUS_SET_VBR(!with_hard_cbr));
+   ret = ope_encoder_ctl(m_encoder.enc, OPUS_SET_VBR(!with_hard_cbr));
    if (ret != OPUS_OK)
    {
-      m_lastError.Format(_T("Error OPUS_SET_VBR returned: %hs\n"), opus_strerror(ret));
-      exit(1);
+      m_lastError.Format(_T("Error OPUS_SET_VBR %d returned: %hs\n"), !with_hard_cbr, ope_strerror(ret));
+      return false;
    }
 
    if (!with_hard_cbr)
    {
-      ret = opus_multistream_encoder_ctl(st, OPUS_SET_VBR_CONSTRAINT(with_cvbr));
+      ret = ope_encoder_ctl(m_encoder.enc, OPUS_SET_VBR_CONSTRAINT(with_cvbr));
       if (ret != OPUS_OK)
       {
-         fprintf(stderr, "Error OPUS_SET_VBR_CONSTRAINT returned: %hs\n", opus_strerror(ret));
-         exit(1);
+         fprintf(stderr, "Error OPUS_SET_VBR_CONSTRAINT %d returned: %hs\n", with_cvbr, ope_strerror(ret));
+         return false;
       }
    }
 
-   ret = opus_multistream_encoder_ctl(st, OPUS_SET_COMPLEXITY(complexity));
+   // note: OPUS_SET_SIGNAL is kept at OPUS_AUTO
+
+   ret = ope_encoder_ctl(m_encoder.enc, OPUS_SET_COMPLEXITY(m_complexity));
    if (ret != OPUS_OK)
    {
-      m_lastError.Format(_T("Error OPUS_SET_COMPLEXITY returned: %hs\n"), opus_strerror(ret));
+      m_lastError.Format(_T("Error OPUS_SET_COMPLEXITY %d returned: %hs\n"), m_complexity, ope_strerror(ret));
       return false;
    }
 
    int expect_loss = 0; // never loss of packets
-   ret = opus_multistream_encoder_ctl(st, OPUS_SET_PACKET_LOSS_PERC(expect_loss));
+   ret = ope_encoder_ctl(m_encoder.enc, OPUS_SET_PACKET_LOSS_PERC(expect_loss));
    if (ret != OPUS_OK)
    {
-      m_lastError.Format(_T("Error OPUS_SET_PACKET_LOSS_PERC returned: %hs\n"), opus_strerror(ret));
+      m_lastError.Format(_T("Error OPUS_SET_PACKET_LOSS_PERC %d returned: %hs\n"), expect_loss, ope_strerror(ret));
       return false;
    }
 
-#ifdef OPUS_SET_LSB_DEPTH
-   ret = opus_multistream_encoder_ctl(st, OPUS_SET_LSB_DEPTH(IMAX(8, IMIN(24, inopt.samplesize))));
+   int lsb_depth = std::max(8, std::min(24, static_cast<int>(m_inputSampleSize)));
+   ret = ope_encoder_ctl(m_encoder.enc, OPUS_SET_LSB_DEPTH(lsb_depth));
    if (ret != OPUS_OK)
    {
-      m_lastError.Format(_T("Warning OPUS_SET_LSB_DEPTH returned: %hs\n"), opus_strerror(ret));
+      m_lastError.Format(_T("Warning OPUS_SET_LSB_DEPTH %d returned: %hs\n"), lsb_depth, ope_strerror(ret));
       return false; // note: original opusenc doesn't have this exit point
    }
-#endif
-
-   int lookahead = 0;
-   ret = opus_multistream_encoder_ctl(st, OPUS_GET_LOOKAHEAD(&lookahead));
-   if (ret != OPUS_OK)
-   {
-      m_lastError.Format(_T("Error OPUS_GET_LOOKAHEAD returned: %hs\n"), opus_strerror(ret));
-      return false;
-   }
-   inopt.skip += lookahead;
-
-   // Regardless of the rate we're coding at the ogg timestamping/skip is
-   // always timed at 48000.
-
-   header.preskip = (int)(inopt.skip*(48000. / coding_rate));
-   // Extra samples that need to be read to compensate for the pre-skip
-   inopt.extraout = (int)(header.preskip*(rate / 48000.));
 
    return true;
 }
@@ -589,101 +520,18 @@ bool OpusOutputModule::OpenOutputFile(LPCTSTR outputFilename)
 
    if (fout != nullptr)
    {
-      m_outputFile.reset(fout, ::fclose);
+      m_encoder.m_outputFile.reset(fout, ::fclose);
       return true;
    }
 
    return false;
 }
 
-bool OpusOutputModule::WriteHeader()
-{
-   FILE* fout = m_outputFile.get();
-
-   // Initialize Ogg stream struct
-   int randomNumber = 0;
-   if (!GetRandomNumber(randomNumber))
-      return false;
-
-   if (ogg_stream_init(&os, randomNumber) == -1)
-   {
-      m_lastError = _T("Error: stream init failed\n");
-      return false;
-   }
-
-   // Write header
-   opus_int64& bytes_written = m_numBytesWritten;
-   int ret;
-   {
-      // The Identification Header is 19 bytes, plus a Channel Mapping Table for
-      // mapping families other than 0. The Channel Mapping Table is 2 bytes +
-      // 1 byte per channel. Because the maximum number of channels is 255, the
-      // maximum size of this header is 19 + 2 + 255 = 276 bytes.
-      unsigned char header_data[276];
-      int packet_size = opus_header_to_packet(&header, header_data, sizeof(header_data));
-      op.packet = header_data;
-      op.bytes = packet_size;
-      op.b_o_s = 1;
-      op.e_o_s = 0;
-      op.granulepos = 0;
-      op.packetno = 0;
-      ogg_stream_packetin(&os, &op);
-
-      while ((ret = ogg_stream_flush(&os, &og)))
-      {
-         ret = oe_write_page(&og, fout);
-         if (ret != og.header_len + og.body_len)
-         {
-            m_lastError = "Error: failed writing header to output stream\n";
-            return false;
-         }
-
-         bytes_written += ret;
-      }
-
-      int comment_padding = 512;
-      comment_pad(&inopt.comments, &inopt.comments_length, comment_padding);
-      op.packet = (unsigned char *)inopt.comments;
-      op.bytes = inopt.comments_length;
-      op.b_o_s = 0;
-      op.e_o_s = 0;
-      op.granulepos = 0;
-      op.packetno = 1;
-      ogg_stream_packetin(&os, &op);
-   }
-
-   /* writing the rest of the Opus header packets */
-   while ((ret = ogg_stream_flush(&os, &og)))
-   {
-      ret = oe_write_page(&og, fout);
-      if (ret != og.header_len + og.body_len)
-      {
-         m_lastError = "Error: failed writing header to output stream\n";
-         return false;
-      }
-      bytes_written += ret;
-   }
-
-   free(inopt.comments);
-
-   return true;
-}
-
-long OpusOutputModule::ReadFloatSamplesStatic(void* src, float* buffer, int samples)
-{
-   OpusOutputModule* pThis = reinterpret_cast<OpusOutputModule*>(src);
-
-   if (pThis->m_32bitMode)
-      return pThis->ReadFloatSamples32(buffer, samples);
-   else
-      return pThis->ReadFloatSamples16(buffer, samples);
-}
-
 long OpusOutputModule::ReadFloatSamples16(float* buffer, int samples)
 {
-   int numSamples = std::min(m_inputInt16Buffer.size(), size_t(samples * inopt.channels));
+   int numSamples = std::min(m_inputInt16Buffer.size(), size_t(samples * m_channels));
 
-   ATLTRACE(_T("ReadFloatSamples16: Requesting %i samples, returning %i samples\n"), samples, numSamples / inopt.channels);
+   ATLTRACE(_T("ReadFloatSamples16: Requesting %i samples, returning %i samples\n"), samples, numSamples / m_channels);
 
    const int16_t scaleFactor = std::numeric_limits<int16_t>::max();
 
@@ -695,14 +543,14 @@ long OpusOutputModule::ReadFloatSamples16(float* buffer, int samples)
    // remove samples from input buffer
    m_inputInt16Buffer.erase(m_inputInt16Buffer.begin(), m_inputInt16Buffer.begin() + numSamples);
 
-   return numSamples / inopt.channels;
+   return numSamples / m_channels;
 }
 
 long OpusOutputModule::ReadFloatSamples32(float* buffer, int samples)
 {
-   int numSamples = std::min(m_inputInt32Buffer.size(), size_t(samples * inopt.channels));
+   int numSamples = std::min(m_inputInt32Buffer.size(), size_t(samples * m_channels));
 
-   ATLTRACE(_T("ReadFloatSamples32: Requesting %i samples, returning %i samples\n"), samples, numSamples / inopt.channels);
+   ATLTRACE(_T("ReadFloatSamples32: Requesting %i samples, returning %i samples\n"), samples, numSamples / m_channels);
 
    const int32_t scaleFactor = std::numeric_limits<int32_t>::max();
 
@@ -714,7 +562,7 @@ long OpusOutputModule::ReadFloatSamples32(float* buffer, int samples)
    // remove samples from input buffer
    m_inputInt32Buffer.erase(m_inputInt32Buffer.begin(), m_inputInt32Buffer.begin() + numSamples);
 
-   return numSamples / inopt.channels;
+   return numSamples / m_channels;
 }
 
 int OpusOutputModule::RefillInputSampleBuffer(SampleContainer& samples)
@@ -731,9 +579,9 @@ int OpusOutputModule::RefillInputSampleBuffer(SampleContainer& samples)
 
       size_t startIndex = m_inputInt32Buffer.size();
 
-      m_inputInt32Buffer.resize(startIndex + numSamples * inopt.channels);
+      m_inputInt32Buffer.resize(startIndex + numSamples * m_channels);
 
-      std::copy_n(inputBuffer, numSamples * inopt.channels, m_inputInt32Buffer.begin() + startIndex);
+      std::copy_n(inputBuffer, numSamples * m_channels, m_inputInt32Buffer.begin() + startIndex);
    }
    else
    {
@@ -743,9 +591,9 @@ int OpusOutputModule::RefillInputSampleBuffer(SampleContainer& samples)
 
       size_t startIndex = m_inputInt16Buffer.size();
 
-      m_inputInt16Buffer.resize(startIndex + numSamples  * inopt.channels);
+      m_inputInt16Buffer.resize(startIndex + numSamples  * m_channels);
 
-      std::copy_n(inputBuffer, numSamples * inopt.channels, m_inputInt16Buffer.begin() + startIndex);
+      std::copy_n(inputBuffer, numSamples * m_channels, m_inputInt16Buffer.begin() + startIndex);
    }
 
    return numSamples;
@@ -781,136 +629,45 @@ void OpusOutputModule::EncodeRemainingInputBuffer()
 
       if (inputBufferSize > 0)
       {
-         while (!op.e_o_s)
-            EncodeInputBufferFrame();
+         while (!m_outputStreamAtEnd)
+         {
+            if (!EncodeInputBufferFrame())
+               return; // there was an error
+         }
+      }
+
+      int ret = ope_encoder_drain(m_encoder.enc);
+      if (ret != OPE_OK)
+      {
+         m_lastError.Format(
+            _T("Error: Encoding aborted: %hs"),
+            ope_strerror(ret));
       }
    }
 }
 
 bool OpusOutputModule::EncodeInputBufferFrame()
 {
-   FILE* fout = m_outputFile.get();
-   opus_int64& bytes_written = m_numBytesWritten;
-   opus_int32& frame_size = m_frameSize;
-   const opus_int32 coding_rate = m_codingRate;
-   ogg_int32_t& id = m_currentPacketNumber;
-   const opus_int32 rate = header.input_sample_rate;
-
-   int size_segments, cur_frame_size;
-   id++;
-
    // read samples
    opus_int32 nb_samples = -1; // number of samples, per channel
+
+   if (m_32bitMode)
+      nb_samples = ReadFloatSamples32(m_inputFloatBuffer.data(), m_frameSize);
+   else
+      nb_samples = ReadFloatSamples16(m_inputFloatBuffer.data(), m_frameSize);
+
+   int ret = ope_encoder_write_float(m_encoder.enc, m_inputFloatBuffer.data(), nb_samples);
+   if (ret != OPE_OK)
    {
-      nb_samples = inopt.read_samples(inopt.readdata, m_inputFloatBuffer.data(), frame_size);
-
-      total_samples += nb_samples;
-   }
-
-   cur_frame_size = frame_size;
-
-   if (nb_samples < cur_frame_size)
-   {
-      op.e_o_s = 1;
-      // Avoid making the final packet 20ms or more longer than needed.
-      cur_frame_size -= ((cur_frame_size - (nb_samples>0 ? nb_samples : 1))
-         / (coding_rate / 50))*(coding_rate / 50);
-      // No fancy end padding, just fill with zeros for now.
-      for (int i = nb_samples*inopt.channels; i < cur_frame_size*inopt.channels; i++)
-         m_inputFloatBuffer[i] = 0.f;
-   }
-
-   // Encode current frame
-   OpusMSEncoder* st = m_encoder.get();
-   opus_int32 nbBytes = opus_multistream_encode_float(st, m_inputFloatBuffer.data(), cur_frame_size, m_packetBuffer.data(), m_packetBuffer.size());
-
-   if (nbBytes < 0)
-   {
-      m_lastError.Format(_T("Encoding failed: %hs. Aborting."), opus_strerror(nbBytes));
+      m_lastError.Format(
+         _T("Error: Encoding failed: %hs"),
+         ope_strerror(ret));
       return false;
    }
 
-   enc_granulepos += cur_frame_size * 48000 / coding_rate;
-   size_segments = (nbBytes + 255) / 255;
-
-   // Flush early if adding this packet would make us end up with a
-   // continued page which we wouldn't have otherwise.
-   while ((((size_segments <= 255) && (last_segments + size_segments > 255)) ||
-      (enc_granulepos - last_granulepos > max_ogg_delay)) &&
-#ifdef OLD_LIBOGG
-      ogg_stream_flush(&os, &og))
-#else
-      ogg_stream_flush_fill(&os, &og, 255 * 255))
-#endif
+   if (nb_samples < m_frameSize)
    {
-      if (ogg_page_packets(&og) != 0)last_granulepos = ogg_page_granulepos(&og);
-      last_segments -= og.header[26];
-      int ret = oe_write_page(&og, fout);
-      if (ret != og.header_len + og.body_len)
-      {
-         m_lastError = _T("Error: failed writing data to output stream");
-         return false;
-      }
-      bytes_written += ret;
-   }
-
-   // The downside of early reading is if the input is an exact
-   // multiple of the frame_size you'll get an extra frame that needs
-   // to get cropped off. The downside of late reading is added delay.
-   // If your ogg_delay is 120ms or less we'll assume you want the
-   // low delay behavior.
-#if 0
-   if ((!op.e_o_s) && max_ogg_delay > 5760)
-   {
-      nb_samples = PrepareNextInputFrame(frame_size);
-      total_samples += nb_samples;
-      if (nb_samples == 0)op.e_o_s = 1;
-   }
-   else
-#endif
-      nb_samples = -1;
-
-   op.packet = (unsigned char *)m_packetBuffer.data();
-   op.bytes = nbBytes;
-   op.b_o_s = 0;
-   op.granulepos = enc_granulepos;
-   if (op.e_o_s)
-   {
-      // We compute the final GP as ceil(len*48k/input_rate)+preskip. When a
-      // resampling decoder does the matching floor((len-preskip)*input_rate/48k)
-      // conversion, the resulting output length will exactly equal the original
-      // input length when 0<input_rate<=48000.
-      op.granulepos = ((original_samples * 48000 + rate - 1) / rate) + header.preskip;
-   }
-   op.packetno = 2 + id;
-   ogg_stream_packetin(&os, &op);
-   last_segments += size_segments;
-
-   // If the stream is over or we're sure that the delayed flush will fire,
-   // go ahead and flush now to avoid adding delay.
-   while ((op.e_o_s || (enc_granulepos + (frame_size * 48000 / coding_rate) - last_granulepos > max_ogg_delay) ||
-      (last_segments >= 255)) ?
-#ifdef OLD_LIBOGG
-      /*Libogg > 1.2.2 allows us to achieve lower overhead by
-      producing larger pages. For 20ms frames this is only relevant
-      above ~32kbit/sec.*/
-      ogg_stream_flush(&os, &og) :
-      ogg_stream_pageout(&os, &og))
-#else
-      ogg_stream_flush_fill(&os, &og, 255 * 255) :
-      ogg_stream_pageout_fill(&os, &og, 255 * 255))
-#endif
-   {
-      if (ogg_page_packets(&og) != 0)last_granulepos = ogg_page_granulepos(&og);
-      last_segments -= og.header[26];
-
-      int ret = oe_write_page(&og, fout);
-      if (ret != og.header_len + og.body_len)
-      {
-         m_lastError = _T("Error: failed writing data to output stream");
-         return false;
-      }
-      bytes_written += ret;
+      m_outputStreamAtEnd = true;
    }
 
    return true; // no errors
@@ -995,100 +752,3 @@ std::string OpusOutputModule::GetMetadataBlockPicture(const std::vector<unsigned
 
    return std::string(base64Buffer.data());
 }
-
-// Note: The following code is from opusenc.c
-
-/*
- Comments will be stored in the Vorbis style.
- It is described in the "Structure" section of
-    http://www.xiph.org/ogg/vorbis/doc/v-comment.html
-
- However, Opus and other non-vorbis formats omit the "framing_bit".
-
-The comment header is decoded as follows:
-  1) [vendor_length] = read an unsigned integer of 32 bits
-  2) [vendor_string] = read a UTF-8 vector as [vendor_length] octets
-  3) [user_comment_list_length] = read an unsigned integer of 32 bits
-  4) iterate [user_comment_list_length] times {
-     5) [length] = read an unsigned integer of 32 bits
-     6) this iteration's user comment = read a UTF-8 vector as [length] octets
-     }
-  7) done.
-*/
-
-#define readint(buf, base) (((buf[base+3]<<24)&0xff000000)| \
-                           ((buf[base+2]<<16)&0xff0000)| \
-                           ((buf[base+1]<<8)&0xff00)| \
-                           (buf[base]&0xff))
-#define writeint(buf, base, val) do{ buf[base+3]=((val)>>24)&0xff; \
-                                     buf[base+2]=((val)>>16)&0xff; \
-                                     buf[base+1]=((val)>>8)&0xff; \
-                                     buf[base]=(val)&0xff; \
-                                 }while(0)
-
-static void comment_init(char **comments, int* length, const char *vendor_string)
-{
-   /*The 'vendor' field should be the actual encoding library used.*/
-   size_t vendor_length = strlen(vendor_string);
-   int user_comment_list_length = 0;
-   size_t len = 8 + 4 + vendor_length + 4;
-   unsigned char* p = (unsigned char*)malloc(len);
-   if (p == NULL) {
-      fprintf(stderr, "malloc failed in comment_init()\n");
-      exit(1);
-   }
-   memcpy(p, "OpusTags", 8);
-   writeint(p, 8, vendor_length);
-   memcpy(p + 12, vendor_string, vendor_length);
-   writeint(p, 12 + vendor_length, user_comment_list_length);
-   *length = len;
-   *comments = reinterpret_cast<char*>(p);
-}
-
-void comment_add(char **comments, int* length, char *tag, const char *val)
-{
-   char* p = *comments;
-   int vendor_length = readint(p, 8);
-   int user_comment_list_length = readint(p, 8 + 4 + vendor_length);
-   int tag_len = (tag ? strlen(tag) + 1 : 0);
-   int val_len = strlen(val);
-   int len = (*length) + 4 + tag_len + val_len;
-
-   p = (char*)realloc(p, len);
-   if (p == NULL) {
-      fprintf(stderr, "realloc failed in comment_add()\n");
-      exit(1);
-   }
-
-   writeint(p, *length, tag_len + val_len);      /* length of comment */
-   if (tag) {
-      memcpy(p + *length + 4, tag, tag_len);        /* comment tag */
-      (p + *length + 4)[tag_len - 1] = '=';           /* separator */
-   }
-   memcpy(p + *length + 4 + tag_len, val, val_len);  /* comment */
-   writeint(p, 8 + 4 + vendor_length, user_comment_list_length + 1);
-   *comments = p;
-   *length = len;
-}
-
-static void comment_pad(char **comments, int* length, int amount)
-{
-   if (amount > 0) {
-      int i;
-      int newlen;
-      char* p = *comments;
-      /*Make sure there is at least amount worth of padding free, and
-         round up to the maximum that fits in the current ogg segments.*/
-      newlen = (*length + amount + 255) / 255 * 255 - 1;
-      p = (char*)realloc(p, newlen);
-      if (p == NULL) {
-         fprintf(stderr, "realloc failed in comment_pad()\n");
-         exit(1);
-      }
-      for (i = *length; i < newlen; i++)p[i] = 0;
-      *comments = p;
-      *length = newlen;
-   }
-}
-#undef readint
-#undef writeint

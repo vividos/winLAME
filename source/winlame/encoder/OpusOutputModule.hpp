@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2016 Michael Fink
+// Copyright (c) 2016-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,63 +22,89 @@
 #pragma once
 
 #include "ModuleInterface.hpp"
-#include <opus/opus.h>
-#include <opus/opus_multistream.h>
-extern "C"
-{
-#include "opusenc.h"
-#include "opus_header.h"
-}
+#include <opus/opusenc.h>
+
 
 namespace Encoder
 {
+   /// Opus encoding data
+   struct OpusEncData
+   {
+      /// ctor
+      OpusEncData();
+      /// dtor; also cleans up OggOpusEnc
+      ~OpusEncData();
+
+      bool Create(opus_int32 inputSampleRate, int channels, CString& lastError);
+
+      void Close();
+
+      /// libopusenc encoding instance
+      OggOpusEnc* enc;
+
+      /// Opus comments
+      std::shared_ptr<OggOpusComments> m_comments;
+
+      /// output file
+      std::shared_ptr<FILE> m_outputFile;
+
+      opus_int64 total_bytes;
+      opus_int64 bytes_written;
+      opus_int64 nb_encoded;
+      opus_int64 pages_out;
+      opus_int64 packets_out;
+      opus_int32 peak_bytes;
+      opus_int32 min_bytes;
+      opus_int32 last_length;
+      opus_int32 nb_streams;
+      opus_int32 nb_coupled;
+
+      static int write_callback(void* user_data, const unsigned char* ptr, opus_int32 len);
+      static int close_callback(void* user_data);
+      static void packet_callback(void* user_data, const unsigned char* packet_ptr, opus_int32 packet_len, opus_uint32 flags);
+   };
+
    /// Opus output module
    class OpusOutputModule : public OutputModule
    {
    public:
-      // ctor
+      /// ctor
       OpusOutputModule();
-      // dtor
+      /// dtor
       virtual ~OpusOutputModule();
 
-      // returns the module name
+      /// returns the module name
       virtual CString GetModuleName() const override { return _T("Opus Encoder"); }
 
-      // returns the last error
+      /// returns the last error
       virtual CString GetLastError() const override { return m_lastError; }
 
-      // returns if the module is available
+      /// returns if the module is available
       virtual bool IsAvailable() const override;
 
-      // returns description of current file
+      /// returns description of current file
       virtual CString GetDescription() const override;
 
-      // returns version string
+      /// returns version string
       virtual void GetVersionString(CString& version, int special = 0) const override;
 
-      // returns the extension the output module produces
+      /// returns the extension the output module produces
       virtual CString GetOutputExtension() const override { return _T("opus"); }
 
-      // initializes the output module
+      /// initializes the output module
       virtual int InitOutput(LPCTSTR outfilename, SettingsManager& mgr,
          const TrackInfo& trackInfo, SampleContainer& samples) override;
 
-      // encodes samples from the sample container
+      /// encodes samples from the sample container
       virtual int EncodeSamples(SampleContainer& samples) override;
 
-      // cleans up the output module
+      /// cleans up the output module
       virtual void DoneOutput() override;
 
       /// generates text for a picture metadata block from an image
       static std::string GetMetadataBlockPicture(const std::vector<unsigned char>& imageData);
 
    private:
-      /// initializes inopt struct
-      void InitInopt();
-
-      // set options from input stream
-      void SetInputStreamInfos(SampleContainer& samples);
-
       /// stores track infos in comments
       bool StoreTrackInfos(const TrackInfo& trackInfo);
 
@@ -90,12 +116,6 @@ namespace Encoder
 
       /// opens output file
       bool OpenOutputFile(LPCTSTR outputFilename);
-
-      /// writes Opus header
-      bool WriteHeader();
-
-      /// reads float samples from 16-bit or 32-bit buffer
-      static long ReadFloatSamplesStatic(void* src, float* buffer, int samples);
 
       /// reads float samples from 16-bit buffer
       long ReadFloatSamples16(float* buffer, int samples);
@@ -119,8 +139,8 @@ namespace Encoder
       /// last error occured
       CString m_lastError;
 
-      /// encoding options, from opusenc
-      oe_enc_opt inopt;
+      /// encoding options and data
+      OpusEncData m_encoder;
 
       /// chosen bitrate, in bps (not Kbps)
       opus_int32 m_bitrateInBps;
@@ -131,30 +151,18 @@ namespace Encoder
       /// bitrate mode: 0 VBR, 1 CVBR, 2 CBR
       int m_opusBitrateMode;
 
+      opus_int32 m_inputSampleRate;
+
+      /// number of bits in input samples
+      unsigned int m_inputSampleSize;
+
       /// output coding rate
       opus_int32 m_codingRate;
 
       /// indicates if input stream is downmixed; contains number of channels
-      // after downmixing, or 0 for no downmixing
+      /// after downmixing, or 0 for no downmixing
+      /// 0: default, off; 1: --downmix-mono; 2: --downmix-stereo; -1: --no-downmix
       int m_downmix;
-
-      /// Opus header written
-      OpusHeader header;
-
-      /// Opus Multichannel Surround encoder instance
-      std::shared_ptr<OpusMSEncoder> m_encoder;
-
-      /// Ogg stream state
-      ogg_stream_state os;
-
-      /// current Ogg page
-      ogg_page og;
-
-      /// current Ogg packet
-      ogg_packet op;
-
-      /// buffer for packets created by encoder
-      std::vector<unsigned char> m_packetBuffer;
 
       /// number of samples for one frame, per channel
       opus_int32 m_frameSize;
@@ -171,38 +179,11 @@ namespace Encoder
       /// input buffer for float samples; contains at most one frame
       std::vector<float> m_inputFloatBuffer;
 
-      /// number of bytes written so far
-      opus_int64 m_numBytesWritten;
-
-      /// number of pages written so far
-      opus_int64 m_numPagesWritten;
-
-      /// output file
-      std::shared_ptr<FILE> m_outputFile;
-
       /// indicates if the input module supports 32-bit samples
       bool m_32bitMode;
 
-      /// total number of samples processed
-      opus_int64 total_samples;
-
-      /// current Ogg packet number, starting with 0
-      ogg_int32_t m_currentPacketNumber;
-
-      /// number of original samples, before padding
-      ogg_int64_t original_samples;
-
-      /// encoder granule pos
-      ogg_int64_t enc_granulepos;
-
-      /// last granule pos
-      ogg_int64_t last_granulepos;
-
-      /// last segments pos (?)
-      int last_segments;
-
-      /// maximum delay in number of samples
-      int max_ogg_delay;
+      /// indicates if the output stream is at the end
+      bool m_outputStreamAtEnd;
    };
 
-} // namespace Encoder
+} /// namespace Encoder
