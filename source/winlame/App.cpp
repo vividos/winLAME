@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 #include <ulib/CrashReporter.hpp>
 #include "CrashSaveResultsDlg.hpp"
 #include <boost/ref.hpp>
+#include <ulib/win32/VersionInfoResource.hpp>
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -242,67 +243,25 @@ CString App::AppDataFolder(bool bMachineWide)
 
 CString App::AppFolder()
 {
-   CString cszModuleFilename;
-   ::GetModuleFileName(NULL, cszModuleFilename.GetBuffer(MAX_PATH), MAX_PATH);
-   cszModuleFilename.ReleaseBuffer();
+   CString moduleFilename = Path::ModuleFilename();
 
-   // remove filename
-   int iPos = cszModuleFilename.ReverseFind(_T('\\'));
-   ATLASSERT(iPos != -1);
-   return cszModuleFilename.Left(iPos+1);
-}
-
-CString App::AppFilename()
-{
-   CString cszFilename;
-
-   GetModuleFileName(NULL, cszFilename.GetBuffer(MAX_PATH), MAX_PATH);
-   cszFilename.ReleaseBuffer();
-
-   return cszFilename;
+   return Path(moduleFilename).FolderName();
 }
 
 CString App::Version()
 {
-   // get exe file name
-   CString cszFilename = AppFilename();
-
-   // allocate memory for the version info struct
-   DWORD nDummy=0;
-   DWORD nVerInfoSize = GetFileVersionInfoSize(const_cast<LPTSTR>(static_cast<LPCTSTR>(cszFilename)), &nDummy);
-   if (nVerInfoSize == 0)
-      return _T("???");
-
-   std::vector<BYTE> vecVerInfo(nVerInfoSize);
-
-   if (0 == GetFileVersionInfo(const_cast<LPTSTR>(static_cast<LPCTSTR>(cszFilename)), 0, nVerInfoSize, &vecVerInfo[0]))
-      return _T("???");
+   Win32::VersionInfoResource versionInfo(Path::ModuleFilename());
 
    // retrieve version language
-   LPVOID pVersion = NULL;
-   UINT nVersionLen;
+   std::vector<Win32::LANGANDCODEPAGE> langAndCodePagesList;
+   versionInfo.GetLangAndCodepages(langAndCodePagesList);
 
-   BOOL bRet = VerQueryValue(&vecVerInfo[0], _T("\\VarFileInfo\\Translation"), &pVersion, &nVersionLen);
-   if (!bRet)
+   if (langAndCodePagesList.empty())
       return _T("???");
 
-   CString cszFileVersion;
-   if (bRet && nVersionLen==4)
-   {
-      DWORD nLang = *(DWORD*)pVersion;
+   CString fileVersion = versionInfo.GetStringValue(langAndCodePagesList[0], _T("FileVersion"));
 
-      cszFileVersion.Format(_T("\\StringFileInfo\\%02lX%02lX%02lX%02lX\\FileVersion"),
-         (nLang & 0xff00)>>8, nLang & 0xff, (nLang & 0xff000000)>>24, (nLang & 0xff0000)>>16);
-   }
-   else
-      cszFileVersion.Format(_T("\\StringFileInfo\\%04X04B0\\FileVersion"),GetUserDefaultLangID());
-
-   CString cszVersion;
-   bRet = VerQueryValue(&vecVerInfo[0], const_cast<LPTSTR>(static_cast<LPCTSTR>(cszFileVersion)), &pVersion, &nVersionLen);
-   if (bRet)
-      cszVersion = (LPTSTR)pVersion;
-
-   return cszVersion;
+   return fileVersion;
 }
 
 void App::LoadPresetFile()
