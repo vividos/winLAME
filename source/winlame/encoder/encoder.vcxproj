@@ -205,7 +205,7 @@
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\..\..\packages\wtl.9.1.1\build\native\wtl.targets" Condition="Exists('..\..\..\packages\wtl.9.1.1\build\native\wtl.targets')" />
     <Import Project="..\..\..\packages\boost.1.68.0.0\build\boost.targets" Condition="Exists('..\..\..\packages\boost.1.68.0.0\build\boost.targets')" />
-    <Import Project="..\..\..\packages\Vividos.UlibCpp.Static.4.1.1\build\native\Vividos.UlibCpp.Static.targets" Condition="Exists('..\..\..\packages\Vividos.UlibCpp.Static.4.1.1\build\native\Vividos.UlibCpp.Static.targets')" />
+    <Import Project="..\..\..\packages\Vividos.UlibCpp.Static.4.1.2\build\native\Vividos.UlibCpp.Static.targets" Condition="Exists('..\..\..\packages\Vividos.UlibCpp.Static.4.1.2\build\native\Vividos.UlibCpp.Static.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -213,6 +213,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\..\..\packages\wtl.9.1.1\build\native\wtl.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\wtl.9.1.1\build\native\wtl.targets'))" />
     <Error Condition="!Exists('..\..\..\packages\boost.1.68.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\boost.1.68.0.0\build\boost.targets'))" />
-    <Error Condition="!Exists('..\..\..\packages\Vividos.UlibCpp.Static.4.1.1\build\native\Vividos.UlibCpp.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Vividos.UlibCpp.Static.4.1.1\build\native\Vividos.UlibCpp.Static.targets'))" />
+    <Error Condition="!Exists('..\..\..\packages\Vividos.UlibCpp.Static.4.1.2\build\native\Vividos.UlibCpp.Static.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\packages\Vividos.UlibCpp.Static.4.1.2\build\native\Vividos.UlibCpp.Static.targets'))" />
   </Target>
 </Project>
