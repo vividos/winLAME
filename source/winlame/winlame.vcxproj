@@ -48,7 +48,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;encoder;ui;classic;res;..\libraries\include;..\nlame;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;encoder;ui;classic;res;..\libraries\include;..\nlame;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -60,7 +60,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.;encoder;ui;classic;res;..\libraries\include;..\nlame;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;..\libraries\src\opus-tools\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;encoder;ui;classic;res;..\libraries\include;..\nlame;..\libraries\src\libid3tag;..\libraries\include\speex;..\libraries\include\opus;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -259,9 +259,6 @@
     </ProjectReference>
     <ProjectReference Include="..\libraries\src\libmad\libmad.vcxproj">
       <Project>{b89e54c7-562e-4444-a6b2-63ff8db043d5}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\libraries\src\opus-tools\opus-tools.vcxproj">
-      <Project>{67749bc5-f457-478a-9e92-3986654bc068}</Project>
     </ProjectReference>
     <ProjectReference Include="..\nlame\nlame.vcxproj">
       <Project>{0b3f6b1a-d78e-47db-a48c-d3daa16e17ce}</Project>
