@@ -3,10 +3,16 @@ REM
 REM winLAME - a frontend for the LAME encoding engine
 REM Copyright (c) 2000-2017 Michael Fink
 REM
-REM runs SonarCloud analysis build
+REM Runs SonarCloud analysis build
 REM
 
-call "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\Common7\Tools\VsDevCmd.bat"
+REM set this to your Visual Studio installation folder
+set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community
+
+REM
+REM Preparations
+REM
+call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
 
 REM
 REM Extract SonarQube build tools
@@ -33,10 +39,13 @@ SonarQube.Scanner.MSBuild.exe begin ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
     /d:"sonar.host.url=https://sonarcloud.io" ^
     /d:"sonar.organization=vividos-github" ^
-    /d:"sonar.login=3a12fee6a7d1e60cfbf6a8daa3554cfc6f2bfa29"
+    /d:"sonar.login=%SONARLOGIN%"
 
+REM
+REM Rebuild Release|Win32
+REM
 build-wrapper-win-x86-64.exe --out-dir bw-output msbuild winlame.sln /property:Configuration=Release,Platform=Win32 /target:Build
 
-SonarQube.Scanner.MSBuild.exe end /d:"sonar.login=3a12fee6a7d1e60cfbf6a8daa3554cfc6f2bfa29"
+SonarQube.Scanner.MSBuild.exe end /d:"sonar.login=%SONARLOGIN%"
 
 pause
