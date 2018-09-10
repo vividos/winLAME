@@ -26,6 +26,7 @@
 #include "Id3v1Tag.hpp"
 #include "SndFileFormats.hpp"
 #include <ulib/DynamicLibrary.hpp>
+#include <ulib/UTF8.hpp>
 
 using Encoder::SndFileInputModule;
 using Encoder::TrackInfo;
@@ -418,19 +419,23 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
 
 void SndFileInputModule::GetTrackInfos(TrackInfo& trackInfo)
 {
-   CString text = sf_get_string(m_sndfile, SF_STR_TITLE);
+   const char* utf8text = sf_get_string(m_sndfile, SF_STR_TITLE);
+   CString text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
       trackInfo.TextInfo(TrackInfoTitle, text);
 
-   text = sf_get_string(m_sndfile, SF_STR_ARTIST);
+   utf8text = sf_get_string(m_sndfile, SF_STR_ARTIST);
+   text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
       trackInfo.TextInfo(TrackInfoArtist, text);
 
-   text = sf_get_string(m_sndfile, SF_STR_ALBUM);
+   utf8text = sf_get_string(m_sndfile, SF_STR_ALBUM);
+   text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
       trackInfo.TextInfo(TrackInfoAlbum, text);
 
-   text = sf_get_string(m_sndfile, SF_STR_DATE);
+   utf8text = sf_get_string(m_sndfile, SF_STR_DATE);
+   text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
    {
       int year = _ttoi(text);
@@ -438,11 +443,13 @@ void SndFileInputModule::GetTrackInfos(TrackInfo& trackInfo)
          trackInfo.NumberInfo(TrackInfoYear, year);
    }
 
-   text = sf_get_string(m_sndfile, SF_STR_COMMENT);
+   utf8text = sf_get_string(m_sndfile, SF_STR_COMMENT);
+   text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
       trackInfo.TextInfo(TrackInfoComment, text);
 
-   text = sf_get_string(m_sndfile, SF_STR_TRACKNUMBER);
+   utf8text = sf_get_string(m_sndfile, SF_STR_TRACKNUMBER);
+   text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
    {
       int trackNumber = _ttoi(text);
@@ -450,10 +457,12 @@ void SndFileInputModule::GetTrackInfos(TrackInfo& trackInfo)
          trackInfo.NumberInfo(TrackInfoTrack, trackNumber);
    }
 
-   text = sf_get_string(m_sndfile, SF_STR_GENRE);
+   utf8text = sf_get_string(m_sndfile, SF_STR_GENRE);
+   text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
       trackInfo.TextInfo(TrackInfoGenre, text);
 
-   text = sf_get_string(m_sndfile, SF_STR_SOFTWARE);
+   utf8text = sf_get_string(m_sndfile, SF_STR_SOFTWARE);
+   text = UTF8ToString(utf8text);
    ATLTRACE(_T("File produced by: %s\n"), text.GetString());
 }
