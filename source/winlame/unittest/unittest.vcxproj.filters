@@ -44,6 +44,9 @@
     <ClCompile Include="TestEncodeWaveToOpus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestDecodeLibMpg123.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\winlame.rc">

@@ -79,6 +79,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="EncoderInterface.hpp" />
+    <ClInclude Include="LibMpg123InputModule.hpp" />
     <ClInclude Include="SettingsManager.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="AacInputModule.hpp" />
@@ -141,6 +142,7 @@
     <ClCompile Include="Id3v1Tag.cpp" />
     <ClCompile Include="LameNogapInstanceManager.cpp" />
     <ClCompile Include="LameOutputModule.cpp" />
+    <ClCompile Include="LibMpg123InputModule.cpp" />
     <ClCompile Include="MadMpegInputModule.cpp" />
     <ClCompile Include="ModuleManagerImpl.cpp" />
     <ClCompile Include="MonkeysAudioInputModule.cpp" />

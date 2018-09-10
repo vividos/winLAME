@@ -555,7 +555,8 @@ bool EncoderImpl::IsLossyInputModule(int inputModuleID)
       inputModuleID == ID_IM_AAC ||
       inputModuleID == ID_IM_BASS ||
       inputModuleID == ID_IM_SPEEX ||
-      inputModuleID == ID_IM_OPUS;
+      inputModuleID == ID_IM_OPUS ||
+      inputModuleID == ID_IM_LIBMPG123;
 }
 
 bool EncoderImpl::IsLossyOutputModule(int outputModuleID)
