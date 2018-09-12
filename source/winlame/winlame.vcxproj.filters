@@ -482,6 +482,63 @@
     <Image Include="res\winlame.ico">
       <Filter>Modern UI Files\Resource Files</Filter>
     </Image>
+    <Image Include="res\Toolbar32.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\open_files.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\read_cd.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\tasks_stop_all.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\tasks_remove_completed.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\settings_general.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\settings_freedb.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\finish_action.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\finish_action_none.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\finish_action_close.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\finish_action_standby.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\view_ribbon.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\switch_classic.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\emoticon_grin.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\emoticon_unhappy.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\app_about.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\app_exit.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\flags.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
+    <Image Include="res\tasks.bmp">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\about.html">

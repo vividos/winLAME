@@ -215,10 +215,29 @@
     <ClInclude Include="ui\WizardPageHost.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\app_about.bmp" />
+    <Image Include="res\app_exit.bmp" />
     <Image Include="res\btnicons.bmp" />
+    <Image Include="res\emoticon_grin.bmp" />
+    <Image Include="res\emoticon_unhappy.bmp" />
+    <Image Include="res\finish_action.bmp" />
+    <Image Include="res\finish_action_close.bmp" />
+    <Image Include="res\finish_action_none.bmp" />
+    <Image Include="res\finish_action_standby.bmp" />
+    <Image Include="res\flags.bmp" />
     <Image Include="res\help.bmp" />
     <Image Include="res\idle.ico" />
     <Image Include="res\logo.bmp" />
+    <Image Include="res\open_files.bmp" />
+    <Image Include="res\read_cd.bmp" />
+    <Image Include="res\settings_freedb.bmp" />
+    <Image Include="res\settings_general.bmp" />
+    <Image Include="res\switch_classic.bmp" />
+    <Image Include="res\tasks.bmp" />
+    <Image Include="res\tasks_remove_completed.bmp" />
+    <Image Include="res\tasks_stop_all.bmp" />
+    <Image Include="res\Toolbar32.bmp" />
+    <Image Include="res\view_ribbon.bmp" />
     <Image Include="res\working.ico" />
     <Image Include="res\winlame.ico" />
   </ItemGroup>
