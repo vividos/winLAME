@@ -27,7 +27,9 @@
 using UI::WizardPageHost;
 using UI::WizardPage;
 
-WizardPageHost::WizardPageHost()
+WizardPageHost::WizardPageHost(bool isClassicMode)
+   :m_isClassicMode(isClassicMode),
+   m_isAppModeChanged(false)
 {
 }
 
@@ -38,10 +40,6 @@ void WizardPageHost::SetWizardPage(std::shared_ptr<WizardPage> spCurrentPage)
 
 int WizardPageHost::Run(HWND hWndParent)
 {
-   // check if help is available
-   if (App::Current().IsHelpAvailable())
-      m_htmlHelper.Init(m_hWnd, App::Current().HelpFilename());
-
    // note: parent must be disabled after creating dialog, and enabled before
    // destroying dialog.
    // see http://blogs.msdn.com/b/oldnewthing/archive/2004/02/27/81155.aspx
@@ -149,11 +147,38 @@ void WizardPageHost::AddTooltips(HWND hWnd)
    }
 }
 
+void WizardPageHost::ShowHelp()
+{
+   if (!App::Current().IsHelpAvailable())
+      return;
+
+   // get help topic path
+   UINT dialogId = m_spCurrentPage->CaptionId();
+   CString helpPath = MapDialogIdToHelpPath(dialogId);
+
+   if (!helpPath.IsEmpty())
+      m_htmlHelper.DisplayTopic(helpPath);
+   else
+      m_htmlHelper.DisplayTopic(_T("/html/pages/modernui.html"));
+}
+
+void WizardPageHost::SwitchToModernMode()
+{
+   m_isAppModeChanged = true;
+
+   UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
+
+   settings.m_appMode = UISettings::modernMode;
+   settings.StoreSettings();
+
+   PostQuitMessage(0);
+}
+
 BOOL WizardPageHost::PreTranslateMessage(MSG* pMsg)
 {
    // handle dialog messages
    if (IsDialogMessage(pMsg))
-      return TRUE; 
+      return TRUE;
 
    return CMessageLoop::PreTranslateMessage(pMsg);
 }
@@ -171,6 +196,43 @@ LRESULT WizardPageHost::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
    HICON hIconSmall = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDI_ICON_WINLAME),
       IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR);
    SetIcon(hIconSmall, FALSE);
+
+   // set the button images
+   m_helpIcon.Create(MAKEINTRESOURCE(IDB_HELP), 14, 0, RGB(192, 192, 192));
+   CButton helpButton(GetDlgItem(IDC_MDLG_HELP));
+   helpButton.SetIcon(m_helpIcon.ExtractIcon(0));
+
+   CImageList feedbackIcons;
+   feedbackIcons.Create(16, 16, ILC_MASK | ILC_COLOR32, 0, 0);
+
+   CBitmap bmpIcons;
+   bmpIcons.LoadBitmap(IDR_MAINFRAME);
+   feedbackIcons.Add(bmpIcons, RGB(0, 0, 0));
+
+   CButton positiveButton(GetDlgItem(ID_FEEDBACK_POSITIVE));
+   positiveButton.SetIcon(feedbackIcons.ExtractIcon(8));
+
+   CButton negativeButton(GetDlgItem(ID_FEEDBACK_NEGATIVE));
+   negativeButton.SetIcon(feedbackIcons.ExtractIcon(9));
+
+   CButton switchModernButton(GetDlgItem(ID_VIEW_SWITCH_MODERN));
+   switchModernButton.SetIcon(feedbackIcons.ExtractIcon(7));
+
+   // set visibility of buttons
+   if (!IsClassicMode())
+   {
+      switchModernButton.ShowWindow(SW_HIDE);
+   }
+
+   // don't show feedback buttons
+   positiveButton.ShowWindow(SW_HIDE);
+   negativeButton.ShowWindow(SW_HIDE);
+
+   // check if help is available
+   if (App::Current().IsHelpAvailable())
+      m_htmlHelper.Init(m_hWnd, App::Current().HelpFilename());
+   else
+      GetDlgItem(IDC_MDLG_HELP).ShowWindow(SW_HIDE);
 
    // create caption font
    CLogFont lf(AtlGetDefaultGuiFont());
@@ -331,7 +393,7 @@ LRESULT WizardPageHost::OnButtonClicked(WORD /*wNotifyCode*/, WORD wID, HWND /*h
 }
 
 /// maps dialog id to help path
-static CString MapDialogIdToHelpPath(UINT dialogId)
+CString WizardPageHost::MapDialogIdToHelpPath(UINT dialogId)
 {
    UINT helpId = 0;
    switch (dialogId)
@@ -362,17 +424,34 @@ static CString MapDialogIdToHelpPath(UINT dialogId)
 
 LRESULT WizardPageHost::OnHelp(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   if (!App::Current().IsHelpAvailable())
-      return 0;
+   ShowHelp();
+   return 0;
+}
 
-   // get help topic path
-   UINT dialogId = m_spCurrentPage->CaptionId();
-   CString helpPath = MapDialogIdToHelpPath(dialogId);
+LRESULT WizardPageHost::OnHelpButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   ShowHelp();
+   return 0;
+}
 
-   if (!helpPath.IsEmpty())
-      m_htmlHelper.DisplayTopic(helpPath);
-   else
-      m_htmlHelper.DisplayTopic(_T("/html/pages/modernui.html"));
+LRESULT WizardPageHost::OnViewSwitchToModern(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   SwitchToModernMode();
+   return 0;
+}
 
+LRESULT WizardPageHost::OnFeedbackPositive(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   extern LPCTSTR c_urlFeedbackPositive;
+
+   ShellExecute(m_hWnd, _T("open"), c_urlFeedbackPositive, nullptr, nullptr, SW_SHOWNORMAL);
+   return 0;
+}
+
+LRESULT WizardPageHost::OnFeedbackNegative(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   extern LPCTSTR c_urlFeedbackNegative;
+
+   ShellExecute(m_hWnd, _T("open"), c_urlFeedbackNegative, nullptr, nullptr, SW_SHOWNORMAL);
    return 0;
 }
