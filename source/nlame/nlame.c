@@ -438,8 +438,8 @@ int nlame_init_params(nlame_instance_t* inst)
 /*! mute callback function; does nothing */
 void nlame_mute_callback_func(const char* msg, va_list list)
 {
-   msg;
-   list;
+   (void)msg;
+   (void)list;
 }
 
 void nlame_callback_set(nlame_instance_t* inst, nlame_callback_type type, nlame_callback_func func)

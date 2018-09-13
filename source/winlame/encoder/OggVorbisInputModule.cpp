@@ -110,7 +110,7 @@ bool OggVorbisInputModule::IsAvailable() const
 
 CString OggVorbisInputModule::GetDescription() const
 {
-   const vorbis_info* vi = ov_info(const_cast<OggVorbis_File*>(&m_vf), -1);
+   const vorbis_info* vi = ov_info(&m_vf, -1);
 
    if (vi == nullptr)
       return CString(); // file not open
@@ -195,7 +195,7 @@ int OggVorbisInputModule::InitInput(LPCTSTR m_inputFilename,
 
 void OggVorbisInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const
 {
-   vorbis_info *vi = ov_info(const_cast<OggVorbis_File*>(&m_vf), -1);
+   vorbis_info *vi = ov_info(&m_vf, -1);
 
    numChannels = vi->channels;
    bitrateInBps = vi->bitrate_nominal;

@@ -175,7 +175,9 @@ unsigned FLAC__pack_pcm_signed_little_endian(FLAC__byte* data, FLAC__int32* inpu
          break;
       case 24:
          data[2] = (FLAC__byte)(sample >> 16);
-         // fall through
+         data[1] = (FLAC__byte)(sample >> 8);
+         data[0] = (FLAC__byte)sample;
+         break;
       case 16:
          data[1] = (FLAC__byte)(sample >> 8);
          data[0] = (FLAC__byte)sample;

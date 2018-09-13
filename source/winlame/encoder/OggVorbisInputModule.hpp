@@ -94,7 +94,7 @@ namespace Encoder
       FILE* m_inputFile;
 
       /// decoding file struct
-      OggVorbis_File m_vf;
+      mutable OggVorbis_File m_vf;
    };
 
 } // namespace Encoder
