@@ -401,7 +401,7 @@ bool LibMpg123InputModule::SetFormat(SampleContainer& samples)
    {
       m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
       m_lastError.AppendFormat(_T(" (%hs)"), mpg123_strerror(m_decoder.get()));
-      return -1;
+      return false;
    }
 
    long sampleRate = 0;
@@ -412,7 +412,7 @@ bool LibMpg123InputModule::SetFormat(SampleContainer& samples)
    {
       m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
       m_lastError.AppendFormat(_T(" (%hs)"), mpg123_plain_strerror(ret));
-      return -1;
+      return false;
    }
 
    m_channels = numChannels;
@@ -421,4 +421,6 @@ bool LibMpg123InputModule::SetFormat(SampleContainer& samples)
    // set up input traits
    //
    samples.SetInputModuleTraits(encoding == MPG123_ENC_SIGNED_16 ? 16 : 32, SamplesInterleaved, m_samplerate, numChannels);
+
+   return true;
 }
