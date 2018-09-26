@@ -35,7 +35,7 @@ msbuild winlame.sln /m /property:Configuration=Release,Platform=Win32 /target:Cl
 
 SonarQube.Scanner.MSBuild.exe begin ^
     /k:"winLAME" ^
-    /v:"2.18.0.0" ^
+    /v:"2.18.1.0" ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
     /d:"sonar.host.url=https://sonarcloud.io" ^
     /d:"sonar.organization=vividos-github" ^
