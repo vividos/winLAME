@@ -62,3 +62,16 @@ packages/
 uwpapp/winlame/
 source/CoverageReport/
 source/winLAME-coverage.xml
+
+buildlibs/libogg-*/
+buildlibs/libopusenc-*/
+buildlibs/opusfile-*/
+buildlibs/opus-*/
+buildlibs/libmad-*/
+buildlibs/libogg-*.tar.gz
+buildlibs/libopusenc-*.tar.gz
+buildlibs/opusfile-*.tar.gz
+buildlibs/opus-*.tar.gz
+buildlibs/libmad-*.tar.gz
+buildlibs/include/
+buildlibs/lib/

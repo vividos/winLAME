@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source files">
+      <UniqueIdentifier>{78cfac3c-899a-4e4d-8226-271fc2c0465e}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="header files">
+      <UniqueIdentifier>{5b990a7b-ee1d-4330-86a5-6c6f860ff14a}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="data files">
+      <UniqueIdentifier>{6d0b7552-d992-437a-8879-82231e5da7e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource files">
+      <UniqueIdentifier>{8c74d0f1-716a-4f0a-9fc9-4f86932c05dc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\bit.c">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\decoder.c">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\fixed.c">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\frame.c">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\huffman.c">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\layer12.c">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\layer3.c">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\stream.c">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\synth.c">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\timer.c">
+      <Filter>source files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\version.c">
+      <Filter>source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="libmad.def">
+      <Filter>source files</Filter>
+    </None>
+    <None Include="..\D.dat">
+      <Filter>data files</Filter>
+    </None>
+    <None Include="..\imdct_s.dat">
+      <Filter>data files</Filter>
+    </None>
+    <None Include="..\qc_table.dat">
+      <Filter>data files</Filter>
+    </None>
+    <None Include="..\rq_table.dat">
+      <Filter>data files</Filter>
+    </None>
+    <None Include="..\sf_table.dat">
+      <Filter>data files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\bit.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\config.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\decoder.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\fixed.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\frame.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\global.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\huffman.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\layer12.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\layer3.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mad.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\stream.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\synth.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\timer.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\version.h">
+      <Filter>header files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="libmad.rc">
+      <Filter>resource files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
