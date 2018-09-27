@@ -27,11 +27,6 @@
 #include <WinCrypt.h>
 #include <ogg/ogg.h>
 
-extern "C"
-{
-   #include "picture.h"
-}
-
 using Encoder::OpusEncData;
 
 #pragma comment(lib, "opus.lib")
