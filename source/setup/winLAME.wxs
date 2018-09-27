@@ -142,7 +142,7 @@
 
       <Component Id="MadLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibMadDll" Name="libmad.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.OutputDir)libmad.dll" />
+           Source="$(var.SolutionDir)source\libraries\libmad.dll" />
       </Component>
 
       <Component Id="ReadmeFiles" Guid="5224ddc3-9b66-4277-9fae-7f0f296e2e28" Directory="INSTALLDIR">

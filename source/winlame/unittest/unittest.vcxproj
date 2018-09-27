@@ -97,9 +97,6 @@
     <ProjectReference Include="..\..\libraries\src\libid3tag\libid3tag.vcxproj">
       <Project>{b210dd52-187a-44c2-a93f-20f7a05f1bbb}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\libraries\src\libmad\libmad.vcxproj">
-      <Project>{b89e54c7-562e-4444-a6b2-63ff8db043d5}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\libraries\src\opus-tools\opus-tools.vcxproj">
       <Project>{67749bc5-f457-478a-9e92-3986654bc068}</Project>
     </ProjectReference>

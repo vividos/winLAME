@@ -34,6 +34,8 @@ using Encoder::MadMpegInputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
+#pragma comment(lib, "libmad.lib")
+
 MadMpegInputModule::MadMpegInputModule()
    :m_endOfStream(false),
    m_numCurrentSamples(0),
