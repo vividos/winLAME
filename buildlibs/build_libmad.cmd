@@ -38,7 +38,7 @@ msbuild libmad.vcxproj /m /property:Configuration=Release,Platform=Win32
 popd
 
 REM copy artifacts
-copy %PREFIX%\msvc++\Release\libmad.dll ..\source\libraries\
-copy %PREFIX%\msvc++\Release\libmad.lib ..\source\libraries\lib\
+copy "%PREFIX%\msvc++\Release\libmad.dll" ..\source\libraries\
+copy "%PREFIX%\msvc++\Release\libmad.lib" ..\source\libraries\lib\
 
 pause
