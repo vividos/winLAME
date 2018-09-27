@@ -61,6 +61,8 @@ CString LibMpg123InputModule::GetDescription() const
 
    mpg123_frameinfo frameInfo;
    int ret = mpg123_info(m_decoder.get(), &frameInfo);
+   if (ret != MPG123_OK)
+      return desc;
 
    LPCTSTR mpegVersion = _T("?");
    switch (frameInfo.version)
@@ -168,9 +170,13 @@ void LibMpg123InputModule::GetInfo(int& numChannels, int& bitrateInBps, int& len
       return;
 
    int ret = mpg123_scan(m_decoder.get());
+   if (ret != MPG123_OK)
+      return;
 
    mpg123_frameinfo frameInfo;
    ret = mpg123_info(m_decoder.get(), &frameInfo);
+   if (ret != MPG123_OK)
+      return;
 
    // TODO is this the average bitrate?
    bitrateInBps = frameInfo.bitrate * 1000;
@@ -188,6 +194,7 @@ int LibMpg123InputModule::DecodeSamples(SampleContainer& samples)
 
    size_t bytesWritten = 0;
    int ret = mpg123_read(m_decoder.get(), sampleBuffer, sizeof(sampleBuffer), &bytesWritten);
+   if (ret != MPG123_OK)
    {
       m_lastError.LoadString(IDS_ENCODER_INTERNAL_DECODE_ERROR);
       m_lastError.AppendFormat(_T(" (%hs)"), mpg123_plain_strerror(ret));
