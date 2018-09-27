@@ -40,6 +40,7 @@ pushd %PREFIX%\win32\VS2015
 
 REM update Toolset to v141, in order to use VS2017
 powershell -Command "& {(Get-Content opusfile.vcxproj) -replace \"v140\",\"v141\" | out-file opusfile.vcxproj}"
+powershell -Command "& {(Get-Content opusfile.vcxproj) -replace \"MultiThreaded\",\"MultiThreadedDLL\" | out-file opusfile.vcxproj}"
 
 REM compile
 msbuild opusfile.vcxproj /m /property:Configuration=Release-NoHTTP,Platform=Win32
