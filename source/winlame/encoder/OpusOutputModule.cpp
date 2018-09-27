@@ -359,12 +359,9 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
 
    std::vector<unsigned char> binaryInfo;
    avail = trackinfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
-   if (avail)
+   if (avail && !binaryInfo.empty())
    {
-      std::string pictureData = GetMetadataBlockPicture(binaryInfo);
-
-      if (!pictureData.empty())
-         ope_comments_add(comments, "METADATA_BLOCK_PICTURE", pictureData.c_str());
+      ope_comments_add_picture_from_memory(comments, reinterpret_cast<const char*>(binaryInfo.data()), binaryInfo.size(), -1, nullptr);
    }
 
    return true;
@@ -673,82 +670,25 @@ bool OpusOutputModule::EncodeInputBufferFrame()
    return true; // no errors
 }
 
-/// adds a 32-bit unsigned int value to buffer, in big-endian format
-static void AddUint32BE(std::vector<unsigned char>& buffer, ogg_uint32_t value)
-{
-   buffer.push_back((unsigned char)((value)>>24));
-   buffer.push_back((unsigned char)((value)>>16));
-   buffer.push_back((unsigned char)((value)>>8));
-   buffer.push_back((unsigned char)(value));
-}
-
 std::string OpusOutputModule::GetMetadataBlockPicture(const std::vector<unsigned char>& imageData)
 {
-   std::string mime_type;
-   std::string description; // not filled at this point
+   OggOpusComments* comments = ope_comments_create();
+   std::shared_ptr<OggOpusComments> spComments(comments, ope_comments_destroy);
 
-   ogg_uint32_t file_width = 0;
-   ogg_uint32_t file_height = 0;
-   ogg_uint32_t file_depth = 0;
-   ogg_uint32_t file_colors = 0;
-   int          has_palette = -1;
+   ope_comments_add_picture_from_memory(comments, reinterpret_cast<const char*>(imageData.data()), imageData.size(), -1, nullptr);
 
-   if (is_jpeg(imageData.data(), imageData.size()))
-   {
-      mime_type = "image/jpeg";
+   const char* data = *reinterpret_cast<const char**>(comments);
+   data += 8; // OpusTags
+   data += 4 + data[0] + 4; // offset + length + number of comments
 
-      extract_jpeg_params(imageData.data(), imageData.size(),
-         &file_width, &file_height, &file_depth, &file_colors, &has_palette);
-   }
-   else if (is_png(imageData.data(), imageData.size()))
-   {
-      mime_type = "image/png";
+   unsigned int length = data[0] +
+      (static_cast<unsigned int>(data[1]) << 8) +
+      (static_cast<unsigned int>(data[2]) << 16) +
+      (static_cast<unsigned int>(data[3]) << 24);
 
-      extract_png_params(imageData.data(), imageData.size(),
-         &file_width, &file_height, &file_depth, &file_colors, &has_palette);
-   }
-   else if (is_gif(imageData.data(), imageData.size()))
-   {
-      mime_type = "image/gif";
+   data += 4 + sizeof("METADATA_BLOCK_PICTURE=") - 1;
 
-      extract_gif_params(imageData.data(), imageData.size(),
-         &file_width, &file_height, &file_depth, &file_colors, &has_palette);
-   }
-   else
-      return std::string(); // unknown data
+   std::string base64image(data, length);
 
-   // These fields MUST be set correctly OR all set to zero.
-   // So if any of them (except colors, for which 0 is a valid value) are still
-   // zero, clear the rest to zero.*/
-   if (file_width == 0 || file_height == 0 || file_depth == 0)
-      file_width = file_height = file_depth = file_colors = 0;
-
-   // Build the METADATA_BLOCK_PICTURE buffer.
-   // see https://xiph.org/flac/format.html#metadata_block_picture
-   std::vector<unsigned char> buffer;
-
-   AddUint32BE(buffer, 0x03); // picture type; 3 = cover (front)
-
-   AddUint32BE(buffer, mime_type.size());
-   buffer.insert(buffer.end(), mime_type.begin(), mime_type.end());
-
-   AddUint32BE(buffer, description.size());
-   buffer.insert(buffer.end(), description.begin(), description.end());
-
-   AddUint32BE(buffer, file_width);
-   AddUint32BE(buffer, file_height);
-   AddUint32BE(buffer, file_depth);
-   AddUint32BE(buffer, file_colors);
-
-   // image data
-   AddUint32BE(buffer, imageData.size());
-   buffer.insert(buffer.end(), imageData.begin(), imageData.end());
-
-   // base64 encode the buffer
-   std::vector<char> base64Buffer;
-
-   base64Buffer.resize(BASE64_LENGTH(buffer.size()) + 1);
-   base64_encode(base64Buffer.data(), reinterpret_cast<char*>(buffer.data()), buffer.size());
-
-   return std::string(base64Buffer.data());
+   return base64image;
 }

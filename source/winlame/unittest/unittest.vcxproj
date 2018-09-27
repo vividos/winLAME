@@ -90,6 +90,7 @@
     </ClCompile>
     <ClCompile Include="TestDecodeLibMpg123.cpp" />
     <ClCompile Include="TestEncodeLameMp3.cpp" />
+    <ClCompile Include="TestEncodeMp3ToOggVorbis.cpp" />
     <ClCompile Include="TestEncodeWaveToOpus.cpp" />
     <ClCompile Include="TestModuleManager.cpp" />
   </ItemGroup>
