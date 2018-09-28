@@ -35,6 +35,11 @@ namespace Encoder
    class ModuleManager;
    class LameNogapInstanceManager;
 }
+namespace UI
+{
+   class WizardPage;
+   class WizardPageHost;
+}
 
 /// main application class
 class App
@@ -96,6 +101,9 @@ public:
 private:
    /// runs "classic" winLAME dialog
    void RunClassicDialog();
+
+   /// returns the start wizard page for classic mode
+   std::shared_ptr<UI::WizardPage> GetClassicModeStartWizardPage(UI::WizardPageHost& host);
 
    /// runs new main frame based winLAME window
    int RunMainFrame(int nCmdShow);

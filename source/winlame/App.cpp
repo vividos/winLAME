@@ -23,6 +23,10 @@
 #include "App.hpp"
 #include "MainDlg.hpp"
 #include "ui/MainFrame.hpp"
+#include "ui/WizardPageHost.hpp"
+#include "classic/ClassicModeStartPage.hpp"
+#include "ui/InputFilesPage.hpp"
+#include "ui/InputCDPage.hpp"
 #include "preset/PresetManagerImpl.h"
 #include "encoder/ModuleManagerImpl.hpp"
 #include "encoder/LameNogapInstanceManager.hpp"
@@ -32,6 +36,7 @@
 #include "CrashSaveResultsDlg.hpp"
 #include <boost/ref.hpp>
 #include <ulib/win32/VersionInfoResource.hpp>
+#include <ulib/CommandLineParser.hpp>
 
 #ifdef _DEBUG
 #include <crtdbg.h>
@@ -197,6 +202,48 @@ void App::RunClassicDialog()
 
    if (!dlg.IsAppModeChanged())
       m_exit = true;
+}
+
+std::shared_ptr<UI::WizardPage> App::GetClassicModeStartWizardPage(UI::WizardPageHost& host)
+{
+   std::shared_ptr<UI::WizardPage> wizardPage;
+
+   if (StartInputCD())
+   {
+      ResetStartInputCD();
+
+      wizardPage = std::make_shared<UI::InputCDPage>(host);
+   }
+
+   if (!AlreadyReadCommandLine())
+   {
+      SetAlreadyReadCommandLine();
+
+      // collect file names from the command line
+      std::vector<CString> filenames;
+
+      CommandLineParser parser(::GetCommandLine());
+
+      // skip first string; it's the program's name
+      CString param;
+      parser.GetNext(param);
+
+      while (parser.GetNext(param))
+      {
+         filenames.push_back(param);
+      }
+
+      // show input files page
+      if (!filenames.empty())
+      {
+         wizardPage = std::make_shared<UI::InputFilesPage>(host, filenames);
+      }
+   }
+
+   if (wizardPage == nullptr)
+      wizardPage = std::make_shared<UI::ClassicModeStartPage>(host);
+
+   return wizardPage;
 }
 
 int App::RunMainFrame(int nCmdShow)
