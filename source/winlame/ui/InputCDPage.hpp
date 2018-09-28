@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -91,6 +91,7 @@ private:
    BEGIN_MSG_MAP(InputCDPage)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
+      COMMAND_HANDLER(ID_WIZBACK, BN_CLICKED, OnButtonBack)
       MESSAGE_HANDLER(WM_TIMER, OnTimer)
       MESSAGE_HANDLER(WM_SIZE, OnSize)
       COMMAND_HANDLER(IDC_CDSELECT_COMBO_DRIVES, CBN_SELENDOK, OnDriveSelEndOk)
@@ -116,6 +117,10 @@ private:
 
    /// called when page is left with Next button
    LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
+   /// called when page is left with Back button; only in classic mode
+   LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
    LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    /// called when resizing the dialog

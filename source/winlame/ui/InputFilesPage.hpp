@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -70,6 +70,7 @@ private:
    BEGIN_MSG_MAP(InputFilesPage)
       MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
       COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
+      COMMAND_HANDLER(ID_WIZBACK, BN_CLICKED, OnButtonBack)
       MESSAGE_HANDLER(WM_DROPFILES, OnDropFiles)
       MESSAGE_HANDLER(WM_KEYDOWN, OnKeyDown)
       MESSAGE_HANDLER(WM_SIZE, OnSize)
@@ -88,6 +89,9 @@ private:
 
    /// called when page is left
    LRESULT OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+
+   /// called when page is left with Back button; only in classic mode
+   LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
    /// called when user dropped files on the list ctrl
    LRESULT OnDropFiles(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

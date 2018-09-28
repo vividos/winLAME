@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include "CommonStuff.hpp"
 #include "WizardPageHost.hpp"
 #include "OutputSettingsPage.hpp"
+#include "ClassicModeStartPage.hpp"
 #include "RedrawLock.hpp"
 
 using namespace UI;
@@ -35,7 +36,8 @@ CString InputFilesPage::m_cszFilterString;
 
 InputFilesPage::InputFilesPage(WizardPageHost& pageHost,
    const std::vector<CString>& vecInputFiles)
-:WizardPage(pageHost, IDD_PAGE_INPUT_FILES, WizardPage::typeCancelNext),
+:WizardPage(pageHost, IDD_PAGE_INPUT_FILES,
+   pageHost.IsClassicMode() ? WizardPage::typeCancelBackNext : WizardPage::typeCancelNext),
 m_pageWidth(0),
 m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
 m_bSetSysImageList(false),
@@ -92,6 +94,14 @@ LRESULT InputFilesPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hW
 
    m_uiSettings.m_bFromInputFilesPage = true;
    m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
+
+   return 0;
+}
+
+LRESULT InputFilesPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   if (m_pageHost.IsClassicMode())
+      m_pageHost.SetWizardPage(std::make_shared<ClassicModeStartPage>(m_pageHost));
 
    return 0;
 }

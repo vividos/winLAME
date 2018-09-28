@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include "WizardPageHost.hpp"
 #include "OutputSettingsPage.hpp"
 #include "CDReadSettingsPage.hpp"
+#include "ClassicModeStartPage.hpp"
 #include <ulib/IoCContainer.hpp>
 #include "UISettings.hpp"
 #include <ulib/DynamicLibrary.hpp>
@@ -43,7 +44,8 @@ using namespace UI;
 const DWORD INVALID_DRIVE_ID = 0xffffffff;
 
 InputCDPage::InputCDPage(WizardPageHost& pageHost)
-   :WizardPage(pageHost, IDD_PAGE_INPUT_CD, WizardPage::typeCancelNext),
+   :WizardPage(pageHost, IDD_PAGE_INPUT_CD,
+      pageHost.IsClassicMode() ? WizardPage::typeCancelBackNext : WizardPage::typeCancelNext),
    m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
    m_pageWidth(0),
    m_bEditedTrack(false),
@@ -99,6 +101,14 @@ LRESULT InputCDPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 
    m_uiSettings.m_bFromInputFilesPage = false;
    m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
+
+   return 0;
+}
+
+LRESULT InputCDPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+   if (m_pageHost.IsClassicMode())
+      m_pageHost.SetWizardPage(std::make_shared<ClassicModeStartPage>(m_pageHost));
 
    return 0;
 }
