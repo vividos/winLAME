@@ -411,6 +411,7 @@ CString WizardPageHost::MapDialogIdToHelpPath(UINT dialogId)
    case IDD_PAGE_FINISH: helpId = IDS_HTML_FINISH; break;
    case IDD_SETTINGS_CDREAD: helpId = IDS_HTML_SETTINGS_CDREAD; break;
    case IDD_SETTINGS_GENERAL: helpId = IDS_HTML_SETTINGS_GENERAL; break;
+   case IDD_PAGE_CLASSIC_START: helpId = IDS_HTML_CLASSIC_START; break;
    }
 
    if (helpId == 0)

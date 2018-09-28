@@ -226,6 +226,9 @@
     <ClCompile Include="ui\TaskDetailsView.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="classic\ClassicModeStartPage.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="preset\PresetManagerImpl.h">
@@ -461,6 +464,9 @@
     </ClInclude>
     <ClInclude Include="ui\TaskDetailsView.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\ClassicModeStartPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

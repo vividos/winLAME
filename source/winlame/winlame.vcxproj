@@ -73,6 +73,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CDRipTitleFormatManager.cpp" />
+    <ClCompile Include="classic\ClassicModeStartPage.cpp" />
     <ClCompile Include="CoverArtArchive.cpp" />
     <ClCompile Include="FreedbInfo.cpp" />
     <ClCompile Include="HttpClient.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="CDRipDiscInfo.hpp" />
     <ClInclude Include="CDRipTitleFormatManager.hpp" />
     <ClInclude Include="CDRipTrackInfo.hpp" />
+    <ClInclude Include="classic\ClassicModeStartPage.hpp" />
     <ClInclude Include="CoverArtArchive.hpp" />
     <ClInclude Include="FreedbInfo.hpp" />
     <ClInclude Include="HttpClient.hpp" />

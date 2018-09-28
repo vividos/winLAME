@@ -47,6 +47,7 @@
 #define IDD_SETTINGS_GENERAL            150
 #define IDD_SETTINGS_CDREAD             151
 #define IDD_CRASHDUMP_SAVE_RESULTS      152
+#define IDD_PAGE_CLASSIC_START          153
 #define ID_SETTINGS_FINISH_ACTION       200
 #define ID_SETTINGS_FINISH_ACTION_NONE  201
 #define ID_SETTINGS_FINISH_ACTION_CLOSE 202
@@ -244,6 +245,8 @@
 #define IDC_STATIC_COVERART             5100
 #define IDC_CRASH_STATIC_TEXT           6000
 #define IDC_CRASH_LIST_RESULTS          6001
+#define IDC_START_BUTTON_INPUT_FILES    6100
+#define IDC_START_BUTTON_INPUT_CD       6101
 #define ID_TRAY_ABOUT                   30000
 #define ID_TRAY_PAUSE                   30001
 #define ID_TRAY_START                   30002
@@ -351,6 +354,7 @@
 #define IDS_HTML_SETTINGS_CDREAD        40813
 #define IDS_HTML_SETTINGS_GENERAL       40814
 #define IDS_HTML_INPUT_CD               40815
+#define IDS_HTML_CLASSIC_START          40816
 #define IDS_CDRIP_RANDOM_FREEDB_SERVER  40900
 #define IDS_CDRIP_COLUMN_NR             40902
 #define IDS_CDRIP_COLUMN_TRACK          40903
@@ -458,12 +462,12 @@
 #define IDS_LANG_NATIVE                 50002
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        101
-#define _APS_NEXT_COMMAND_VALUE         40001
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_RESOURCE_VALUE        154
+#define _APS_NEXT_COMMAND_VALUE         42300
+#define _APS_NEXT_CONTROL_VALUE         6102
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
