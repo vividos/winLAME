@@ -23,9 +23,15 @@
 #include "WizardPageHost.hpp"
 #include "WizardPage.hpp"
 #include "App.hpp"
+#include "AboutDlg.hpp"
+#include "GeneralSettingsPage.hpp"
 
 using UI::WizardPageHost;
 using UI::WizardPage;
+
+#define IDM_ABOUTBOX 16    ///< menu id for about box
+#define IDM_OPTIONS 48     ///< menu id for options
+#define IDM_APPMODE 64     ///< menu id for app mode change
 
 WizardPageHost::WizardPageHost(bool isClassicMode)
    :m_isClassicMode(isClassicMode),
@@ -174,6 +180,50 @@ void WizardPageHost::SwitchToModernMode()
    PostQuitMessage(0);
 }
 
+void WizardPageHost::AddSystemMenuEntries()
+{
+   // IDM_ABOUTBOX and IDM_OPTIONS must be in the system command range.
+   ATLASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
+   ATLASSERT(IDM_ABOUTBOX < 0xF000);
+   ATLASSERT((IDM_OPTIONS & 0xFFF0) == IDM_OPTIONS);
+   ATLASSERT(IDM_OPTIONS < 0xF000);
+   ATLASSERT((IDM_APPMODE & 0xFFF0) == IDM_APPMODE);
+   ATLASSERT(IDM_APPMODE < 0xF000);
+
+   CMenu sysmenu;
+   sysmenu.Attach(GetSystemMenu(FALSE));
+   if (sysmenu != NULL)
+   {
+      sysmenu.AppendMenu(MF_SEPARATOR);
+
+      // add chage app mode menu entry
+      {
+         CString cszMenuEntry;
+
+         cszMenuEntry.LoadString(IDS_COMMON_APPMODE_MODERN);
+         sysmenu.AppendMenu(MF_STRING, IDM_APPMODE, cszMenuEntry);
+      }
+
+      // add options menu entry
+      {
+         CString cszMenuEntry;
+
+         cszMenuEntry.LoadString(IDS_COMMON_OPTIONS);
+         sysmenu.AppendMenu(MF_STRING, IDM_OPTIONS, cszMenuEntry);
+      }
+
+      // add about box menu entry
+      {
+         CString cszMenuEntry;
+
+         cszMenuEntry.LoadString(IDS_COMMON_ABOUTBOX);
+         sysmenu.AppendMenu(MF_STRING, IDM_ABOUTBOX, cszMenuEntry);
+      }
+   }
+
+   sysmenu.Detach();
+}
+
 BOOL WizardPageHost::PreTranslateMessage(MSG* pMsg)
 {
    // handle dialog messages
@@ -246,6 +296,9 @@ LRESULT WizardPageHost::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
    m_tooltipCtrl.Create(m_hWnd);
    AddTooltips(m_hWnd);
    m_tooltipCtrl.Activate(TRUE);
+
+   if (IsClassicMode())
+      AddSystemMenuEntries();
 
    // enable resizing
    CRect rectPage;
@@ -454,5 +507,38 @@ LRESULT WizardPageHost::OnFeedbackNegative(WORD /*wNotifyCode*/, WORD /*wID*/, H
    extern LPCTSTR c_urlFeedbackNegative;
 
    ShellExecute(m_hWnd, _T("open"), c_urlFeedbackNegative, nullptr, nullptr, SW_SHOWNORMAL);
+   return 0;
+}
+
+LRESULT WizardPageHost::OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+   if ((wParam & 0xFFF0) == IDM_ABOUTBOX)
+   {
+      // show about dialog
+      UI::AboutDlg dlg;
+
+      UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
+      dlg.SetPresetsXmlFilename(settings.presets_filename);
+
+      dlg.DoModal();
+   }
+   else
+      if ((wParam & 0xFFF0) == IDM_OPTIONS)
+      {
+         WizardPageHost host;
+         host.SetWizardPage(std::shared_ptr<WizardPage>(
+            new GeneralSettingsPage(host,
+               IoCContainer::Current().Resolve<UISettings>(),
+               IoCContainer::Current().Resolve<LanguageResourceManager>())));
+         host.Run(m_hWnd);
+      }
+      else
+         if ((wParam & 0xFFF0) == IDM_APPMODE)
+         {
+            SwitchToModernMode();
+         }
+         else
+            bHandled = false;
+
    return 0;
 }

@@ -96,6 +96,7 @@ public:
       COMMAND_ID_HANDLER(ID_VIEW_SWITCH_MODERN, OnViewSwitchToModern)
       COMMAND_HANDLER(ID_FEEDBACK_POSITIVE, BN_CLICKED, OnFeedbackPositive)
       COMMAND_HANDLER(ID_FEEDBACK_NEGATIVE, BN_CLICKED, OnFeedbackNegative)
+      MESSAGE_HANDLER(WM_SYSCOMMAND, OnSysCommand)
       CHAIN_MSG_MAP(CDialogResize<WizardPageHost>)
    END_MSG_MAP()
 
@@ -120,6 +121,9 @@ public:
    /// called when the negative feedback button has been pressed
    LRESULT OnFeedbackNegative(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
+   /// called for every system command; used for the about box system menu entry; only used in classic mode
+   LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+
 private:
    void InitPage();
 
@@ -129,6 +133,9 @@ private:
 
    /// switches to Modern UI mode; only used if in classic mode
    void SwitchToModernMode();
+
+   /// adds system menu entries; only in classic mode
+   void AddSystemMenuEntries();
 
    /// maps dialog resource ID to help path in html help file
    static CString MapDialogIdToHelpPath(UINT dialogId);
