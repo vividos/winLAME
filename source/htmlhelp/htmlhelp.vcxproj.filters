@@ -88,6 +88,9 @@
     <None Include="html\pages\settings_general.html">
       <Filter>html\pages</Filter>
     </None>
+    <None Include="html\pages\classic_start.html">
+      <Filter>html\pages</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="keywords.txt" />

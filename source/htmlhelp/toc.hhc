@@ -53,6 +53,10 @@
 			<param name="Local" value="html\pages\classicui.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Classic Start Page">
+			<param name="Local" value="html\pages\classic_start.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Input Files">
 			<param name="Local" value="html\pages\input.html">
 			</OBJECT>
