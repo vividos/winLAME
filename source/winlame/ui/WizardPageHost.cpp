@@ -80,12 +80,13 @@ void WizardPageHost::InitPage()
    m_spCurrentPage->ShowWindow(SW_SHOW);
 
    // set new caption
-   CString cszCaption;
-   cszCaption.LoadString(m_spCurrentPage->CaptionId());
-   m_staticCaption.SetWindowText(cszCaption);
+   CString caption;
+   caption.LoadString(m_spCurrentPage->CaptionId());
+   m_staticCaption.SetWindowText(caption);
 
    // set new window name
-   SetWindowText(cszCaption);
+   CString title = _T("winLAME ") + App::Version() + " - " + caption;
+   SetWindowText(title);
 
    AddTooltips(hWndPage);
 
