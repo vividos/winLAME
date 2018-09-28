@@ -432,9 +432,6 @@
     <ClInclude Include="classic\WaveOutputSettingsPage.hpp">
       <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TrackEditListCtrl.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="classic\SystemTrayIcon.hpp">
       <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
@@ -467,6 +464,9 @@
     </ClInclude>
     <ClInclude Include="classic\ClassicModeStartPage.hpp">
       <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackEditListCtrl.hpp">
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
