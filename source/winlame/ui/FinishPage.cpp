@@ -25,6 +25,7 @@
 #include <ulib/IoCContainer.hpp>
 #include "PresetSelectionPage.hpp"
 #include "OutputSettingsPage.hpp"
+#include "ClassicModeEncoderPage.hpp"
 #include "UISettings.hpp"
 #include "CDReadJob.hpp"
 #include "CDRipTitleFormatManager.hpp"
@@ -48,7 +49,8 @@ static void MoveUpWindow(CWindow& window, int deltaY, bool scaleUp)
 }
 
 FinishPage::FinishPage(WizardPageHost& pageHost)
-   :WizardPage(pageHost, IDD_PAGE_FINISH, WizardPage::typeCancelBackFinish),
+   :WizardPage(pageHost, IDD_PAGE_FINISH,
+      pageHost.IsClassicMode() ? WizardPage::typeCancelBackNext : WizardPage::typeCancelBackFinish),
    m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
 {
 }
@@ -76,7 +78,10 @@ LRESULT FinishPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPar
 
 LRESULT FinishPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   m_helper.AddTasks();
+   if (m_pageHost.IsClassicMode())
+      m_pageHost.SetWizardPage(std::make_shared<ClassicModeEncoderPage>(m_pageHost));
+   else
+      m_helper.AddTasks();
 
    return 0;
 }
