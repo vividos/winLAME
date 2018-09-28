@@ -229,6 +229,9 @@
     <ClCompile Include="classic\ClassicModeStartPage.cpp">
       <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="classic\ClassicModeEncoderPage.cpp">
+      <Filter>Classic UI Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="preset\PresetManagerImpl.h">
@@ -467,6 +470,9 @@
     </ClInclude>
     <ClInclude Include="TrackEditListCtrl.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="classic\ClassicModeEncoderPage.hpp">
+      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
