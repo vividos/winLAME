@@ -508,8 +508,8 @@ void EncoderImpl::FormatEncodingDescription()
    // get sample container description
    containerInfo.Format(
       _T("Sample Container: ")
-      _T("Input: %u bit, %u channels, sample rate %u Hz, ")
-      _T("Output: %u bit\r\n"),
+      _T("Input: %i bit, %i channels, sample rate %i Hz, ")
+      _T("Output: %i bit\r\n"),
       m_sampleContainer.GetInputModuleBitsPerSample(),
       m_sampleContainer.GetInputModuleChannels(),
       m_sampleContainer.GetInputModuleSampleRate(),

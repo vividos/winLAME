@@ -10,3 +10,6 @@ noExplicitConstructor:*
 unusedStructMember:..\winlame\encoder\id3\File.cpp
 *:..\winlame\atlribbon.h
 knownConditionTrueFalse:winlame\encoder\EncoderTask.cpp:109
+mismatchAllocDealloc:..\winlame\encoder\CreatePlaylistTask.cpp:95
+mismatchAllocDealloc:..\winlame\encoder\SndFileInputModule.cpp:313
+deallocuse:..\winlame\encoder\OpusOutputModule.cpp:675
