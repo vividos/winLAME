@@ -85,7 +85,7 @@ Defines
 #define MAC_FORMAT_FLAG_CREATE_WAV_HEADER    32    // create the wave header on decompression (not stored)
 
 #define CREATE_WAV_HEADER_ON_DECOMPRESSION    -1
-#define MAX_AUDIO_BYTES_UNKNOWN 0
+#define MAX_AUDIO_BYTES_UNKNOWN -1
 
 /*****************************************************************************************
 Progress callbacks
@@ -261,7 +261,7 @@ public:
     //    int * pBlocksRetrieved
     //        the number of blocks actually retrieved (could be less at end of file or on critical failure)
     //////////////////////////////////////////////////////////////////////////////////////////////
-    virtual int GetData(char * pBuffer, int nBlocks, int * pBlocksRetrieved) = 0;
+    virtual int GetData(char * pBuffer, intn nBlocks, intn * pBlocksRetrieved) = 0;
 
     //////////////////////////////////////////////////////////////////////////////////////////////
     // Seek(...) - seeks
@@ -270,7 +270,7 @@ public:
     //    int nBlockOffset
     //        the block to seek to (see note at intro about blocks vs. samples)
     //////////////////////////////////////////////////////////////////////////////////////////////
-    virtual int Seek(int nBlockOffset) = 0;
+    virtual int Seek(intn nBlockOffset) = 0;
 
     /*********************************************************************************************
     * Get Information
@@ -334,12 +334,12 @@ public:
     //////////////////////////////////////////////////////////////////////////////////////////////
 
     virtual int Start(const str_utfn * pOutputFilename, const WAVEFORMATEX * pwfeInput, 
-        unsigned int nMaxAudioBytes = MAX_AUDIO_BYTES_UNKNOWN, int nCompressionLevel = COMPRESSION_LEVEL_NORMAL, 
-        const void * pHeaderData = NULL, int nHeaderBytes = CREATE_WAV_HEADER_ON_DECOMPRESSION) = 0;
+        unsigned int nMaxAudioBytes = MAX_AUDIO_BYTES_UNKNOWN, intn nCompressionLevel = COMPRESSION_LEVEL_NORMAL, 
+        const void * pHeaderData = NULL, intn nHeaderBytes = CREATE_WAV_HEADER_ON_DECOMPRESSION) = 0;
 
     virtual int StartEx(CIO * pioOutput, const WAVEFORMATEX * pwfeInput, 
-        unsigned int nMaxAudioBytes = MAX_AUDIO_BYTES_UNKNOWN, int nCompressionLevel = COMPRESSION_LEVEL_NORMAL, 
-        const void * pHeaderData = NULL, int nHeaderBytes = CREATE_WAV_HEADER_ON_DECOMPRESSION) = 0;
+        unsigned int nMaxAudioBytes = MAX_AUDIO_BYTES_UNKNOWN, intn nCompressionLevel = COMPRESSION_LEVEL_NORMAL,
+        const void * pHeaderData = NULL, intn nHeaderBytes = CREATE_WAV_HEADER_ON_DECOMPRESSION) = 0;
     
     /*********************************************************************************************
     * Add / Compress Data
@@ -358,13 +358,13 @@ public:
     //    int nBytes
     //        the number of bytes in the buffer
     //////////////////////////////////////////////////////////////////////////////////////////////
-    virtual int AddData(unsigned char * pData, int nBytes) = 0;
+    virtual int AddData(unsigned char * pData, intn nBytes) = 0;
     
     //////////////////////////////////////////////////////////////////////////////////////////////
     // GetBufferBytesAvailable(...) - returns the number of bytes available in the buffer
     //    (helpful when locking)
     //////////////////////////////////////////////////////////////////////////////////////////////
-    virtual int GetBufferBytesAvailable() = 0;
+    virtual intn GetBufferBytesAvailable() = 0;
 
     //////////////////////////////////////////////////////////////////////////////////////////////
     // LockBuffer(...) - locks MAC's buffer so we can copy into it
@@ -376,7 +376,7 @@ public:
     // Return:
     //    pointer to the buffer (add at that location)
     //////////////////////////////////////////////////////////////////////////////////////////////
-    virtual unsigned char * LockBuffer(int * pBytesAvailable) = 0;
+    virtual unsigned char * LockBuffer(intn * pBytesAvailable) = 0;
 
     //////////////////////////////////////////////////////////////////////////////////////////////
     // UnlockBuffer(...) - releases the buffer
@@ -464,7 +464,7 @@ extern "C"
     DLLEXPORT int __stdcall CompressFile(const APE::str_ansi * pInputFilename, const APE::str_ansi * pOutputFilename, int nCompressionLevel = COMPRESSION_LEVEL_NORMAL, int * pPercentageDone = NULL, APE::APE_PROGRESS_CALLBACK ProgressCallback = 0, int * pKillFlag = NULL);
     DLLEXPORT int __stdcall DecompressFile(const APE::str_ansi * pInputFilename, const APE::str_ansi * pOutputFilename, int * pPercentageDone, APE::APE_PROGRESS_CALLBACK ProgressCallback, int * pKillFlag);
     DLLEXPORT int __stdcall ConvertFile(const APE::str_ansi * pInputFilename, const APE::str_ansi * pOutputFilename, int nCompressionLevel, int * pPercentageDone, APE::APE_PROGRESS_CALLBACK ProgressCallback, int * pKillFlag);
-    DLLEXPORT int __stdcall VerifyFile(const APE::str_ansi * pInputFilename, int * pPercentageDone, APE::APE_PROGRESS_CALLBACK ProgressCallback, int * pKillFlag); 
+    DLLEXPORT int __stdcall VerifyFile(const APE::str_ansi * pInputFilename, int * pPercentageDone, APE::APE_PROGRESS_CALLBACK ProgressCallback, int * pKillFlag, bool bQuickVerifyIfPossible = false);
 
     DLLEXPORT int __stdcall CompressFileW(const APE::str_utfn * pInputFilename, const APE::str_utfn * pOutputFilename, int nCompressionLevel = COMPRESSION_LEVEL_NORMAL, int * pPercentageDone = NULL, APE::APE_PROGRESS_CALLBACK ProgressCallback = 0, int * pKillFlag = NULL);
     DLLEXPORT int __stdcall DecompressFileW(const APE::str_utfn * pInputFilename, const APE::str_utfn * pOutputFilename, int * pPercentageDone, APE::APE_PROGRESS_CALLBACK ProgressCallback, int * pKillFlag);
@@ -478,5 +478,5 @@ extern "C"
 
     // helper functions
     DLLEXPORT int __stdcall FillWaveFormatEx(APE::WAVEFORMATEX * pWaveFormatEx, int nSampleRate = 44100, int nBitsPerSample = 16, int nChannels = 2);
-    DLLEXPORT int __stdcall FillWaveHeader(APE::WAVE_HEADER * pWAVHeader, int nAudioBytes, APE::WAVEFORMATEX * pWaveFormatEx, int nTerminatingBytes = 0);
+    DLLEXPORT int __stdcall FillWaveHeader(APE::WAVE_HEADER * pWAVHeader, APE::intn nAudioBytes, APE::WAVEFORMATEX * pWaveFormatEx, APE::intn nTerminatingBytes = 0);
 }

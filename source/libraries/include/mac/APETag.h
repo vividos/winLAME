@@ -228,7 +228,7 @@ public:
     // note: using NULL or "" for a string type will remove the field
     int SetFieldString(const str_utfn * pFieldName, const str_utfn * pFieldValue, const str_utfn * pListDelimiter = NULL);
     int SetFieldString(const str_utfn * pFieldName, const char * pFieldValue, bool bAlreadyUTF8Encoded, const str_utfn * pListDelimiter = NULL);
-    int SetFieldBinary(const str_utfn * pFieldName, const void * pFieldValue, int nFieldBytes, int nFieldFlags);
+    int SetFieldBinary(const str_utfn * pFieldName, const void * pFieldValue, intn nFieldBytes, int nFieldFlags);
 
     // gets the value of a field (returns -1 and an empty buffer if the field doesn't exist)
     int GetFieldBinary(const str_utfn * pFieldName, void * pBuffer, int * pBufferBytes);

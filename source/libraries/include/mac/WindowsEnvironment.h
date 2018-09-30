@@ -4,10 +4,10 @@
 Windows version
 *****************************************************************************************/
 #ifndef WINVER
-    #define WINVER         0x0400
-    #define _WIN32_WINNT   0x0400
-    #define _WIN32_WINDOWS 0x0400
-    #define _WIN32_IE      0x0400
+    #define WINVER         0x0501
+    #define _WIN32_WINNT   0x0501
+    #define _WIN32_WINDOWS 0x0501
+    #define _WIN32_IE      0x0501
 #endif
 
 /*****************************************************************************************
@@ -23,5 +23,5 @@ Unicode
 /*****************************************************************************************
 Visual Studio defines
 *****************************************************************************************/
-#define _CRT_SECURE_NO_WARNINGS
 #define _CRT_NON_CONFORMING_SWPRINTFS
+#define _AFX_NO_MFC_CONTROLS_IN_DIALOGS

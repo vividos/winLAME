@@ -1,6 +1,3 @@
-#ifdef PLATFORM_LINUX
-#include "SharedFiles/MPLinux.h"
-#endif
 #pragma once
 
 namespace APE

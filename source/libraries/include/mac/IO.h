@@ -31,7 +31,7 @@ public:
     virtual int Write(const void * pBuffer, unsigned int nBytesToWrite, unsigned int * pBytesWritten) = 0;
     
     // seek
-    virtual int Seek(int nDistance, unsigned int nMoveMode) = 0;
+    virtual int Seek(intn nDistance, unsigned int nMoveMode) = 0;
     
     // creation / destruction
     virtual int Create(const wchar_t * pName) = 0;
