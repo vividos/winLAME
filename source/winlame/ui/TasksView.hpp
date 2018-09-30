@@ -53,7 +53,7 @@ public:
    }
 
    /// initialize tasks view list
-   void Init();
+   void Init(bool useLargeNameColumn = true);
 
    /// sets "clicked task" handler
    void SetClickedTaskHandler(const T_fnOnClickedTask& fnOnClickedTask)

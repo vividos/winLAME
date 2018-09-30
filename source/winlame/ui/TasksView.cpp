@@ -97,9 +97,9 @@ LRESULT TasksView::OnItemClick(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHandled*/)
    return 0;
 }
 
-void TasksView::Init()
+void TasksView::Init(bool useLargeNameColumn)
 {
-   InsertColumn(c_nameColumn, CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_VIEW_COLUMN_TRACK)), LVCFMT_LEFT, 500);
+   InsertColumn(c_nameColumn, CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_VIEW_COLUMN_TRACK)), LVCFMT_LEFT, useLargeNameColumn ? 500 : 350);
    InsertColumn(c_progressColumn, CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_VIEW_COLUMN_PROGRESS)), LVCFMT_LEFT, 100);
    InsertColumn(c_statusColumn, CString(MAKEINTRESOURCE(IDS_MAIN_TASKS_VIEW_COLUMN_STATUS)), LVCFMT_LEFT, 100);
 
