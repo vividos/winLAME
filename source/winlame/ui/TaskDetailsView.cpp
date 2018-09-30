@@ -30,7 +30,7 @@ LRESULT TaskDetailsView::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /
 {
    DoDataExchange(DDX_LOAD);
 
-   DlgResize_Init(false);
+   DlgResize_Init(false, false);
 
    // task images
    m_taskImages.Create(16, 16, ILC_MASK | ILC_COLOR32, 0, 0);
