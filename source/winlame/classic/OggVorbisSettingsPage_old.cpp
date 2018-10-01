@@ -35,35 +35,8 @@ static int OggVorbisBitrates[] =
 
 
 // global functions
+extern float OggVorbisCalculateBitrate(float quality);
 
-/// \brief calculates approximate bitrate for given quality value
-/// \details this function is Copyright (c) 2002 John Edwards
-/// see source code for OggDropXPd.
-/// input: quality value, range 0.f ... 10.f
-/// output: estimated bitrate in kbps
-float OggVorbisCalculateBitrate(float quality)
-{
-   float bitrate;
-
-   if (quality < 4.10)
-   {
-      bitrate = quality * 16 + 64;
-   }
-   else if (quality < 8.10)
-   {
-      bitrate = quality * 32;
-   }
-   else if (quality < 9.10)
-   {
-      bitrate = quality * 32 + (quality - 8.f) * 32;
-   }
-   else
-   {
-      bitrate = quality * 32 + (quality - 8.f) * 32 + (quality - 9.f) * 116;
-   }
-
-   return bitrate;
-}
 
 
 // OggVorbisSettingsPage methods
