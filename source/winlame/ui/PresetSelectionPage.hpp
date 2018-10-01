@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,107 +21,104 @@
 //
 #pragma once
 
-// includes
 #include "WizardPage.hpp"
 #include "resource.h"
 #include "CommonStuff.hpp"
 #include "PresetManagerInterface.hpp"
 
-// forward references
 struct UISettings;
 
 namespace UI
 {
-
-/// \brief Preset selection page
-class PresetSelectionPage:
-   public WizardPage,
-   public CWinDataExchange<PresetSelectionPage>,
-   public CDialogResize<PresetSelectionPage>
-{
-public:
-   /// ctor
-   PresetSelectionPage(WizardPageHost& pageHost)
-      :WizardPage(pageHost, IDD_PAGE_PRESET_SELECTION, WizardPage::typeCancelBackNext),
-      m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
-      m_presetManager(IoCContainer::Current().Resolve<PresetManagerInterface>())
+   /// \brief Preset selection page
+   class PresetSelectionPage :
+      public WizardPage,
+      public CWinDataExchange<PresetSelectionPage>,
+      public CDialogResize<PresetSelectionPage>
    {
-   }
-   /// dtor
-   ~PresetSelectionPage()
-   {
-   }
+   public:
+      /// ctor
+      PresetSelectionPage(WizardPageHost& pageHost)
+         :WizardPage(pageHost, IDD_PAGE_PRESET_SELECTION, WizardPage::typeCancelBackNext),
+         m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
+         m_presetManager(IoCContainer::Current().Resolve<PresetManagerInterface>())
+      {
+      }
+      /// dtor
+      ~PresetSelectionPage()
+      {
+      }
 
-private:
-   friend CDialogResize<PresetSelectionPage>;
+   private:
+      friend CDialogResize<PresetSelectionPage>;
 
-   BEGIN_DDX_MAP(PresetSelectionPage)
-      DDX_CONTROL(IDC_PRE_BEVEL1, m_bevel1)
-      DDX_CONTROL_HANDLE(IDC_PRE_LIST_PRESET, m_lbPresets)
-   END_DDX_MAP()
+      BEGIN_DDX_MAP(PresetSelectionPage)
+         DDX_CONTROL(IDC_PRE_BEVEL1, m_bevel1)
+         DDX_CONTROL_HANDLE(IDC_PRE_LIST_PRESET, m_listBoxPresets)
+      END_DDX_MAP()
 
-   BEGIN_DLGRESIZE_MAP(PresetSelectionPage)
-      DLGRESIZE_CONTROL(IDC_PRE_BEVEL1, DLSZ_SIZE_X)
-      DLGRESIZE_CONTROL(IDC_PRE_LIST_PRESET, DLSZ_SIZE_X | DLSZ_SIZE_Y)
-      DLGRESIZE_CONTROL(IDC_PRE_DESC, DLSZ_MOVE_Y | DLSZ_SIZE_X)
-   END_DLGRESIZE_MAP()
+      BEGIN_DLGRESIZE_MAP(PresetSelectionPage)
+         DLGRESIZE_CONTROL(IDC_PRE_BEVEL1, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_PRE_LIST_PRESET, DLSZ_SIZE_X | DLSZ_SIZE_Y)
+         DLGRESIZE_CONTROL(IDC_PRE_DESC, DLSZ_MOVE_Y | DLSZ_SIZE_X)
+      END_DLGRESIZE_MAP()
 
-   BEGIN_MSG_MAP(PresetSelectionPage)
-      MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
-      COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnButtonCancel)
-      COMMAND_HANDLER(ID_WIZBACK, BN_CLICKED, OnButtonBack)
-      COMMAND_HANDLER(IDC_PRE_LIST_PRESET, LBN_SELCHANGE, OnSelItemChanged)
-      COMMAND_HANDLER(IDC_PRE_LIST_PRESET, LBN_DBLCLK, OnLButtonDblClk)
-      CHAIN_MSG_MAP(CDialogResize<PresetSelectionPage>)
-      REFLECT_NOTIFICATIONS()
-   END_MSG_MAP()
+      BEGIN_MSG_MAP(PresetSelectionPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
+         COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnButtonCancel)
+         COMMAND_HANDLER(ID_WIZBACK, BN_CLICKED, OnButtonBack)
+         COMMAND_HANDLER(IDC_PRE_LIST_PRESET, LBN_SELCHANGE, OnSelItemChanged)
+         COMMAND_HANDLER(IDC_PRE_LIST_PRESET, LBN_DBLCLK, OnLButtonDblClk)
+         CHAIN_MSG_MAP(CDialogResize<PresetSelectionPage>)
+         REFLECT_NOTIFICATIONS()
+      END_MSG_MAP()
 
-   // Handler prototypes:
-   // LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
-   // LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-   // LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+      // Handler prototypes:
+      // LRESULT MessageHandler(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      // LRESULT CommandHandler(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      // LRESULT NotifyHandler(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   /// inits the page
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      /// inits the page
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when page is left with Next button
-   LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when page is left with Next button
+      LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when page is left with Cancel button
-   LRESULT OnButtonCancel(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when page is left with Cancel button
+      LRESULT OnButtonCancel(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when page is left with Back button
-   LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when page is left with Back button
+      LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when a presets listbox item selection changes
-   LRESULT OnSelItemChanged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when a presets listbox item selection changes
+      LRESULT OnSelItemChanged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when the user double-clicks on a preset item
-   LRESULT OnLButtonDblClk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when the user double-clicks on a preset item
+      LRESULT OnLButtonDblClk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// loads settings data into controls
-   void LoadData();
+      /// loads settings data into controls
+      void LoadData();
 
-   /// saves settings data from controls
-   void SaveData();
+      /// saves settings data from controls
+      void SaveData();
 
-private:
-   // controls
+   private:
+      // controls
 
-   /// bevel lines
-   BevelLine m_bevel1;
+      /// bevel lines
+      BevelLine m_bevel1;
 
-   /// presets list
-   CListBox m_lbPresets;
+      /// presets list
+      CListBox m_listBoxPresets;
 
-   // model
+      // model
 
-   /// settings
-   UISettings& m_uiSettings;
+      /// settings
+      UISettings& m_uiSettings;
 
-   /// preset manager
-   PresetManagerInterface& m_presetManager;
-};
+      /// preset manager
+      PresetManagerInterface& m_presetManager;
+   };
 
 } // namespace UI

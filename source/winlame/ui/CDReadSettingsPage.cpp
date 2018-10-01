@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -38,19 +38,19 @@ LRESULT CDReadSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARA
 
    // fill freedb server combobox
    {
-      CString cszRandomServer;
-      cszRandomServer.LoadString(IDS_CDRIP_RANDOM_FREEDB_SERVER);
+      CString randomServer;
+      randomServer.LoadString(IDS_CDRIP_RANDOM_FREEDB_SERVER);
 
-      m_cbFreedbServer.AddString(_T("freedb.freedb.org (") + cszRandomServer + _T(")"));
-      m_cbFreedbServer.SelectString(-1, m_settings.freedb_server);
+      m_comboFreedbServer.AddString(_T("freedb.freedb.org (") + randomServer + _T(")"));
+      m_comboFreedbServer.SelectString(-1, m_settings.freedb_server);
    }
 
    // set button icons
    {
-      m_ilIcons.Create(MAKEINTRESOURCE(IDB_BITMAP_BTNICONS),16,0,RGB(192,192,192));
+      m_imageListIcons.Create(MAKEINTRESOURCE(IDB_BITMAP_BTNICONS), 16, 0, RGB(192, 192, 192));
 
-      m_btnSelectPath.ModifyStyle(0, BS_ICON);
-      m_btnSelectPath.SetIcon(m_ilIcons.ExtractIcon(0));
+      m_buttonSelectPath.ModifyStyle(0, BS_ICON);
+      m_buttonSelectPath.SetIcon(m_imageListIcons.ExtractIcon(0));
    }
 
    return 1;
@@ -63,9 +63,9 @@ LRESULT CDReadSettingsPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND 
    else
    {
       // cut off after first spaces
-      int iPos = m_settings.freedb_server.Find(_T(' '));
-      if (iPos > 0)
-         m_settings.freedb_server = m_settings.freedb_server.Left(iPos);
+      int pos = m_settings.freedb_server.Find(_T(' '));
+      if (pos > 0)
+         m_settings.freedb_server = m_settings.freedb_server.Left(pos);
    }
 
    return 0;
@@ -75,10 +75,10 @@ LRESULT CDReadSettingsPage::OnButtonSelectPath(WORD /*wNotifyCode*/, WORD /*wID*
 {
    DoDataExchange(DDX_SAVE, IDC_CDRIP_OPT_EDIT_TEMP_FOLDER);
 
-   CString cszPathname(m_settings.cdrip_temp_folder);
-   if (BrowseForFolder(m_hWnd, cszPathname))
+   CString pathname(m_settings.cdrip_temp_folder);
+   if (BrowseForFolder(m_hWnd, pathname))
    {
-      m_settings.cdrip_temp_folder = cszPathname;
+      m_settings.cdrip_temp_folder = pathname;
       DoDataExchange(DDX_LOAD, IDC_CDRIP_OPT_EDIT_TEMP_FOLDER);
    }
    return 0;
@@ -112,7 +112,6 @@ void CDReadSettingsPage::ShowTagsContextMenu(CButton& button, CEdit& edit)
    BOOL retCreate = contextMenu.CreatePopupMenu();
    ATLASSERT(retCreate == TRUE); retCreate;
 
-   //std::for_each(allTags.begin(), allTags.end(), [&](const CString& singleTag) {
    for (size_t tagIndex = 0; tagIndex < allTags.size(); tagIndex++)
    {
       contextMenu.AppendMenu(MF_STRING, tagIndex + 1, allTags[tagIndex]);

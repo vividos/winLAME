@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2016 Michael Fink
+// Copyright (c) 2016-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -136,7 +136,7 @@ bool OpusSettingsPage::SaveData()
    int value = (int)GetDlgItemInt(IDC_OPUS_EDIT_BITRATE, NULL, FALSE);
    if (value < 6 || value > 256)
    {
-      AppMessageBox(m_hWnd, IDS_OPUS_INVALID_BITRATE, MB_OK | MB_ICONEXCLAMATION);
+      AtlMessageBox(m_hWnd, IDS_OPUS_INVALID_BITRATE, IDS_APP_CAPTION, MB_OK | MB_ICONEXCLAMATION);
       return false;
    }
 

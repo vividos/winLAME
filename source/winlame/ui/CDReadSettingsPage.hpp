@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,108 +21,105 @@
 //
 #pragma once
 
-// includes
 #include "WizardPage.hpp"
 #include "ImageListComboBox.hpp"
 #include "UISettings.hpp"
 #include "resource.h"
 
-// forward references
 struct UISettings;
 class LanguageResourceManager;
 
 namespace UI
 {
-
-/// general settings page
-class CDReadSettingsPage:
-   public WizardPage,
-   public CWinDataExchange<CDReadSettingsPage>,
-   public CDialogResize<CDReadSettingsPage>
-{
-public:
-   /// ctor
-   CDReadSettingsPage(WizardPageHost& pageHost, UISettings& settings)
-      :WizardPage(pageHost, IDD_SETTINGS_CDREAD, WizardPage::typeCancelOk),
-       m_settings(settings)
+   /// CD read settings page
+   class CDReadSettingsPage :
+      public WizardPage,
+      public CWinDataExchange<CDReadSettingsPage>,
+      public CDialogResize<CDReadSettingsPage>
    {
-   }
-   /// dtor
-   ~CDReadSettingsPage()
-   {
-   }
+   public:
+      /// ctor
+      CDReadSettingsPage(WizardPageHost& pageHost, UISettings& settings)
+         :WizardPage(pageHost, IDD_SETTINGS_CDREAD, WizardPage::typeCancelOk),
+         m_settings(settings)
+      {
+      }
+      /// dtor
+      ~CDReadSettingsPage()
+      {
+      }
 
-private:
-   friend CDialogResize<CDReadSettingsPage>;
+   private:
+      friend CDialogResize<CDReadSettingsPage>;
 
-   BEGIN_DDX_MAP(CDReadSettingsPage)
-      DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, m_cbFreedbServer);
-      DDX_TEXT(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, m_settings.freedb_server);
-      DDX_TEXT(IDC_CDRIP_OPT_EDIT_TEMP_FOLDER, m_settings.cdrip_temp_folder);
-      DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, m_btnSelectPath);
-      DDX_CHECK(IDC_CDRIP_OPT_CHECK_CDPLAYER_INI, m_settings.store_disc_infos_cdplayer_ini);
-      DDX_TEXT(IDC_CDRIP_OPT_EDIT_FORMAT_VARIOUS_TRACK, m_settings.cdrip_format_various_track);
-      DDX_TEXT(IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK, m_settings.cdrip_format_album_track);
-      DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, m_btnVariousTrackTags);
-      DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, m_btnAlbumTrackTags);
-   END_DDX_MAP()
+      BEGIN_DDX_MAP(CDReadSettingsPage)
+         DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, m_comboFreedbServer)
+         DDX_TEXT(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, m_settings.freedb_server)
+         DDX_TEXT(IDC_CDRIP_OPT_EDIT_TEMP_FOLDER, m_settings.cdrip_temp_folder)
+         DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, m_buttonSelectPath)
+         DDX_CHECK(IDC_CDRIP_OPT_CHECK_CDPLAYER_INI, m_settings.store_disc_infos_cdplayer_ini)
+         DDX_TEXT(IDC_CDRIP_OPT_EDIT_FORMAT_VARIOUS_TRACK, m_settings.cdrip_format_various_track)
+         DDX_TEXT(IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK, m_settings.cdrip_format_album_track)
+         DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, m_buttonVariousTrackTags)
+         DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, m_buttonAlbumTrackTags)
+      END_DDX_MAP()
 
-   BEGIN_DLGRESIZE_MAP(CDReadSettingsPage)
-      DLGRESIZE_CONTROL(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, DLSZ_SIZE_X)
-      DLGRESIZE_CONTROL(IDC_CDRIP_OPT_EDIT_FORMAT_VARIOUS_TRACK, DLSZ_SIZE_X)
-      DLGRESIZE_CONTROL(IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK, DLSZ_SIZE_X)
-      DLGRESIZE_CONTROL(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, DLSZ_MOVE_X)
-      DLGRESIZE_CONTROL(IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, DLSZ_MOVE_X)
-   END_DLGRESIZE_MAP()
+      BEGIN_DLGRESIZE_MAP(CDReadSettingsPage)
+         DLGRESIZE_CONTROL(IDC_CDRIP_OPT_COMBO_FREEDB_SERVER, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_CDRIP_OPT_EDIT_FORMAT_VARIOUS_TRACK, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, DLSZ_MOVE_X)
+         DLGRESIZE_CONTROL(IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, DLSZ_MOVE_X)
+      END_DLGRESIZE_MAP()
 
-   BEGIN_MSG_MAP(CDReadSettingsPage)
-      MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
-      COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, OnButtonSelectPath)
-      COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, OnButtonVariousTrackTags)
-      COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, OnButtonAlbumTrackTags)
-      CHAIN_MSG_MAP(CDialogResize<CDReadSettingsPage>)
-   END_MSG_MAP()
+      BEGIN_MSG_MAP(CDReadSettingsPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
+         COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH, OnButtonSelectPath)
+         COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, OnButtonVariousTrackTags)
+         COMMAND_ID_HANDLER(IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, OnButtonAlbumTrackTags)
+         CHAIN_MSG_MAP(CDialogResize<CDReadSettingsPage>)
+      END_MSG_MAP()
 
-   /// inits the page
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      /// inits the page
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when page is left
-   LRESULT OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+      /// called when page is left
+      LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when user clicks on select path button
-   LRESULT OnButtonSelectPath(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+      /// called when user clicks on select path button
+      LRESULT OnButtonSelectPath(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when user clicks on various track tags button
-   LRESULT OnButtonVariousTrackTags(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when user clicks on various track tags button
+      LRESULT OnButtonVariousTrackTags(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when user clicks on album track tags button
-   LRESULT OnButtonAlbumTrackTags(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when user clicks on album track tags button
+      LRESULT OnButtonAlbumTrackTags(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-private:
-   /// shows a tags context menu besides the given button, and inserts selected tag into edit control
-   void ShowTagsContextMenu(CButton& button, CEdit& edit);
+   private:
+      /// shows a tags context menu besides the given button, and inserts selected tag into edit control
+      void ShowTagsContextMenu(CButton& button, CEdit& edit);
 
-private:
-   /// settings
-   UISettings& m_settings;
+   private:
+      /// settings
+      UISettings& m_settings;
 
-   // controls
+      // controls
 
-   /// freedb server combobox
-   CComboBox m_cbFreedbServer;
+      /// freedb server combobox
+      CComboBox m_comboFreedbServer;
 
-   /// icons image list
-   CImageList m_ilIcons;
+      /// icons image list
+      CImageList m_imageListIcons;
 
-   /// button to select path
-   CButton m_btnSelectPath;
+      /// button to select path
+      CButton m_buttonSelectPath;
 
-   /// various track tags select button
-   CButton m_btnVariousTrackTags;
+      /// various track tags select button
+      CButton m_buttonVariousTrackTags;
 
-   /// albun track tags select button
-   CButton m_btnAlbumTrackTags;
-};
+      /// albun track tags select button
+      CButton m_buttonAlbumTrackTags;
+   };
 
 } // namespace UI

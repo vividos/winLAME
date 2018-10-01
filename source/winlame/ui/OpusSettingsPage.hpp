@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2016 Michael Fink
+// Copyright (c) 2016-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,99 +21,96 @@
 //
 #pragma once
 
-// includes
 #include "WizardPage.hpp"
 #include "resource.h"
 #include "FixedValueSpinButtonCtrl.hpp"
 
-// forward references
 struct UISettings;
 
 namespace UI
 {
-
-/// \brief Opus settings page
-class OpusSettingsPage:
-   public WizardPage,
-   public CWinDataExchange<OpusSettingsPage>,
-   public CDialogResize<OpusSettingsPage>
-{
-public:
-   /// ctor
-   OpusSettingsPage(WizardPageHost& pageHost)
-      :WizardPage(pageHost, IDD_PAGE_OPUS_SETTINGS, WizardPage::typeCancelBackNext),
-      m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
+   /// \brief Opus settings page
+   class OpusSettingsPage :
+      public WizardPage,
+      public CWinDataExchange<OpusSettingsPage>,
+      public CDialogResize<OpusSettingsPage>
    {
-   }
-   /// dtor
-   ~OpusSettingsPage()
-   {
-   }
+   public:
+      /// ctor
+      OpusSettingsPage(WizardPageHost& pageHost)
+         :WizardPage(pageHost, IDD_PAGE_OPUS_SETTINGS, WizardPage::typeCancelBackNext),
+         m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
+      {
+      }
+      /// dtor
+      ~OpusSettingsPage()
+      {
+      }
 
-private:
-   friend CDialogResize<OpusSettingsPage>;
+   private:
+      friend CDialogResize<OpusSettingsPage>;
 
-   BEGIN_DDX_MAP(OpusSettingsPage)
-      DDX_CONTROL(IDC_OPUS_SPIN_BITRATE, m_spinBitrate)
-      DDX_CONTROL_HANDLE(IDC_OPUS_SLIDER_COMPLEXITY, m_sliderComplexity)
-   END_DDX_MAP()
+      BEGIN_DDX_MAP(OpusSettingsPage)
+         DDX_CONTROL(IDC_OPUS_SPIN_BITRATE, m_spinBitrate)
+         DDX_CONTROL_HANDLE(IDC_OPUS_SLIDER_COMPLEXITY, m_sliderComplexity)
+      END_DDX_MAP()
 
-   BEGIN_DLGRESIZE_MAP(OpusSettingsPage)
-   END_DLGRESIZE_MAP()
+      BEGIN_DLGRESIZE_MAP(OpusSettingsPage)
+      END_DLGRESIZE_MAP()
 
-   BEGIN_MSG_MAP(OpusSettingsPage)
-      MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
-      COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnButtonCancel)
-      COMMAND_HANDLER(ID_WIZBACK, BN_CLICKED, OnButtonBack)
-      MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
-      CHAIN_MSG_MAP(CDialogResize<OpusSettingsPage>)
-      REFLECT_NOTIFICATIONS()
-   END_MSG_MAP()
+      BEGIN_MSG_MAP(OpusSettingsPage)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonOK)
+         COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnButtonCancel)
+         COMMAND_HANDLER(ID_WIZBACK, BN_CLICKED, OnButtonBack)
+         MESSAGE_HANDLER(WM_HSCROLL, OnHScroll)
+         CHAIN_MSG_MAP(CDialogResize<OpusSettingsPage>)
+         REFLECT_NOTIFICATIONS()
+      END_MSG_MAP()
 
-   /// inits the page
-   LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      /// inits the page
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when page is left with Next button
-   LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when page is left with Next button
+      LRESULT OnButtonOK(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when page is left with Cancel button
-   LRESULT OnButtonCancel(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when page is left with Cancel button
+      LRESULT OnButtonCancel(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when page is left with Back button
-   LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when page is left with Back button
+      LRESULT OnButtonBack(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when slider is moved
-   LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
-   {
-      // check if the vbr quality slider was moved
-      if ((HWND)lParam == GetDlgItem(IDC_OPUS_SLIDER_COMPLEXITY))
-         UpdateComplexity();
-      return 0;
-   }
+      /// called when slider is moved
+      LRESULT OnHScroll(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+      {
+         // check if the vbr quality slider was moved
+         if ((HWND)lParam == GetDlgItem(IDC_OPUS_SLIDER_COMPLEXITY))
+            UpdateComplexity();
+         return 0;
+      }
 
-   /// updates complexity value
-   void UpdateComplexity();
+      /// updates complexity value
+      void UpdateComplexity();
 
-   /// loads settings data into controls
-   void LoadData();
+      /// loads settings data into controls
+      void LoadData();
 
-   /// saves settings data from controls
-   bool SaveData();
+      /// saves settings data from controls
+      bool SaveData();
 
-private:
-   // controls
+   private:
+      // controls
 
-   /// bitrate spin button control
-   FixedValueSpinButtonCtrl m_spinBitrate;
+      /// bitrate spin button control
+      FixedValueSpinButtonCtrl m_spinBitrate;
 
-   /// complexity slider
-   CTrackBarCtrl m_sliderComplexity;
+      /// complexity slider
+      CTrackBarCtrl m_sliderComplexity;
 
-   // model
+      // model
 
-   /// settings
-   UISettings& m_uiSettings;
-};
+      /// settings
+      UISettings& m_uiSettings;
+   };
 
 } // namespace UI

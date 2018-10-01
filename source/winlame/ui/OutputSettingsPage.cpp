@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -39,8 +39,8 @@
 using namespace UI;
 
 OutputSettingsPage::OutputSettingsPage(WizardPageHost& pageHost)
-:WizardPage(pageHost, IDD_PAGE_OUTPUT_SETTINGS, WizardPage::typeCancelBackNext),
-m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
+   :WizardPage(pageHost, IDD_PAGE_OUTPUT_SETTINGS, WizardPage::typeCancelBackNext),
+   m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
 {
 }
 
@@ -49,10 +49,10 @@ LRESULT OutputSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARA
    DoDataExchange(DDX_LOAD);
    DlgResize_Init(false, false);
 
-   m_ilIcons.Create(MAKEINTRESOURCE(IDB_BITMAP_BTNICONS), 16, 0, RGB(192, 192, 192));
+   m_imageListIcons.Create(MAKEINTRESOURCE(IDB_BITMAP_BTNICONS), 16, 0, RGB(192, 192, 192));
 
    // set icons on buttons
-   m_btnSelectPath.SetIcon(m_ilIcons.ExtractIcon(0));
+   m_buttonSelectPath.SetIcon(m_imageListIcons.ExtractIcon(0));
 
    SetupOutputModulesList();
 
@@ -87,16 +87,16 @@ LRESULT OutputSettingsPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWN
 
    if (m_uiSettings.m_bFromInputFilesPage)
    {
-      std::vector<CString> vecInputFiles;
+      std::vector<CString> inputFilesList;
 
       std::for_each(m_uiSettings.encoderjoblist.begin(), m_uiSettings.encoderjoblist.end(), [&](const Encoder::EncoderJob& job)
       {
-         vecInputFiles.push_back(job.InputFilename());
+         inputFilesList.push_back(job.InputFilename());
       });
 
       m_uiSettings.encoderjoblist.clear();
 
-      m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new InputFilesPage(m_pageHost, vecInputFiles)));
+      m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new InputFilesPage(m_pageHost, inputFilesList)));
    }
    else
       m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new InputCDPage(m_pageHost)));
@@ -109,18 +109,14 @@ void OutputSettingsPage::LoadData()
    // initially set output dir when not set
    if (m_uiSettings.m_defaultSettings.outputdir.IsEmpty())
    {
-      LPITEMIDLIST ppidl;
-      ::SHGetSpecialFolderLocation(m_hWnd, CSIDL_PERSONAL, &ppidl);
-      TCHAR buffer[MAX_PATH];
-      ::SHGetPathFromIDList(ppidl, buffer);
-      m_uiSettings.m_defaultSettings.outputdir = buffer;
+      m_uiSettings.m_defaultSettings.outputdir = Path::SpecialFolder(CSIDL_PERSONAL);
    }
 
    // "delete after encoding" check
    m_checkDeleteAfter.SetCheck(m_uiSettings.m_defaultSettings.delete_after_encode ? BST_CHECKED : BST_UNCHECKED);
 
    // output module combo box
-   m_cbOutputModule.SetCurSel(m_uiSettings.output_module);
+   m_comboOutputModule.SetCurSel(m_uiSettings.output_module);
 
    // "use input folder as output location" check
    m_checkUseInputDir.SetCheck(m_uiSettings.out_location_use_input_dir ? BST_CHECKED : BST_UNCHECKED);
@@ -143,21 +139,21 @@ void OutputSettingsPage::LoadData()
    m_checkCreatePlaylist.SetCheck(m_uiSettings.create_playlist ? BST_CHECKED : BST_UNCHECKED);
 
    // playlist filename
-   m_ecPlaylistName.SetWindowText(m_uiSettings.playlist_filename);
-   m_ecPlaylistName.EnableWindow(m_uiSettings.create_playlist ? TRUE : FALSE);
+   m_editPlaylistName.SetWindowText(m_uiSettings.playlist_filename);
+   m_editPlaylistName.EnableWindow(m_uiSettings.create_playlist ? TRUE : FALSE);
 }
 
 bool OutputSettingsPage::SaveData(bool bSilent)
 {
    // get control values
-   m_cbOutputPath.GetWindowText(m_uiSettings.m_defaultSettings.outputdir);
+   m_comboOutputPath.GetWindowText(m_uiSettings.m_defaultSettings.outputdir);
 
    // "delete after encoding" check
    m_uiSettings.m_defaultSettings.delete_after_encode =
       BST_CHECKED == m_checkDeleteAfter.GetCheck();
 
    // output module combo box
-   m_uiSettings.output_module = m_cbOutputModule.GetCurSel();
+   m_uiSettings.output_module = m_comboOutputModule.GetCurSel();
 
    // "use input folder as output location" check
    m_uiSettings.out_location_use_input_dir =
@@ -171,7 +167,7 @@ bool OutputSettingsPage::SaveData(bool bSilent)
    m_uiSettings.create_playlist = BST_CHECKED == m_checkCreatePlaylist.GetCheck();
 
    // playlist filename
-   m_ecPlaylistName.GetWindowText(m_uiSettings.playlist_filename);
+   m_editPlaylistName.GetWindowText(m_uiSettings.playlist_filename);
 
    // do we have to check the output location string?
    if (!m_uiSettings.out_location_use_input_dir && !bSilent)
@@ -179,7 +175,7 @@ bool OutputSettingsPage::SaveData(bool bSilent)
       // check for empty outputdir string
       if (m_uiSettings.m_defaultSettings.outputdir.IsEmpty())
       {
-         AppMessageBox(m_hWnd, IDS_OUT_OUTDIR_EMPTY, MB_OK | MB_ICONEXCLAMATION);
+         AtlMessageBox(m_hWnd, IDS_OUT_OUTDIR_EMPTY, IDS_APP_CAPTION, MB_OK | MB_ICONEXCLAMATION);
          return false;
       }
 
@@ -190,15 +186,16 @@ bool OutputSettingsPage::SaveData(bool bSilent)
       path.TrimRight(_T('\\'));
 
       struct _stat filestat;
-      if (-1 == ::_tstat(path, &filestat) && !(path.GetLength() == 2 && path[1] == ':'))
+      if (-1 == ::_tstat(path, &filestat) &&
+         !(path.GetLength() == 2 && path[1] == ':'))
       {
-         if (IDNO == AppMessageBox(m_hWnd, IDS_OUT_CREATE, MB_YESNO | MB_ICONQUESTION))
+         if (IDNO == AtlMessageBox(m_hWnd, IDS_OUT_CREATE, IDS_APP_CAPTION, MB_YESNO | MB_ICONQUESTION))
             return false;
 
          // create the output directory
          if (!Path::CreateDirectoryRecursive(m_uiSettings.m_defaultSettings.outputdir))
          {
-            AppMessageBox(m_hWnd, IDS_OUT_CREATE_FAILED, MB_OK | MB_ICONEXCLAMATION);
+            AtlMessageBox(m_hWnd, IDS_OUT_CREATE_FAILED, IDS_APP_CAPTION, MB_OK | MB_ICONEXCLAMATION);
             return false;
          }
       }
@@ -212,7 +209,7 @@ void OutputSettingsPage::SetWizardPage()
    // find out output module id
    Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
 
-   int modid = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
+   int outputModuleId = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
    // check if presets page should be inserted
    if (m_uiSettings.preset_avail)
@@ -222,7 +219,7 @@ void OutputSettingsPage::SetWizardPage()
 
       // set facility name, which is looked up by module id
       VarMgrFacilitiesToModules fac;
-      presetManager.setFacility(fac.lookupName(modid));
+      presetManager.setFacility(fac.lookupName(outputModuleId));
 
       // do we have more than the default preset?
       if (presetManager.getPresetCount() > 0)
@@ -232,19 +229,19 @@ void OutputSettingsPage::SetWizardPage()
       }
    }
 
-   SetWizardPageByOutputModule(m_pageHost, modid);
+   SetWizardPageByOutputModule(m_pageHost, outputModuleId);
 }
 
-void OutputSettingsPage::SetWizardPageByOutputModule(WizardPageHost& pageHost, int modid)
+void OutputSettingsPage::SetWizardPageByOutputModule(WizardPageHost& pageHost, int outputModuleId)
 {
-   switch (modid)
+   switch (outputModuleId)
    {
    case ID_OM_LAME:
       pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new LAMESettingsPage(pageHost)));
       break;
 
    case ID_OM_OGGV:
-      pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new UI::OggVorbisSettingsPage(pageHost)));
+      pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new OggVorbisSettingsPage(pageHost)));
       break;
 
    case ID_OM_WAVE:
@@ -281,7 +278,6 @@ LRESULT OutputSettingsPage::OnButtonSelectOutputPath(WORD /*wNotifyCode*/, WORD 
          m_uiSettings.m_defaultSettings.outputdir);
       m_uiSettings.m_defaultSettings.outputdir = path;
 
-      // update combobox
       RefreshHistory();
    }
 
@@ -291,7 +287,7 @@ LRESULT OutputSettingsPage::OnButtonSelectOutputPath(WORD /*wNotifyCode*/, WORD 
 LRESULT OutputSettingsPage::OnCheckCreatePlaylist(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    BOOL check = m_checkCreatePlaylist.GetCheck() == BST_CHECKED ? TRUE : FALSE;
-   m_ecPlaylistName.EnableWindow(check);
+   m_editPlaylistName.EnableWindow(check);
 
    return 0;
 }
@@ -299,8 +295,8 @@ LRESULT OutputSettingsPage::OnCheckCreatePlaylist(WORD /*wNotifyCode*/, WORD /*w
 LRESULT OutputSettingsPage::OnCheckUseInputFolder(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    BOOL check = m_checkUseInputDir.GetCheck() == BST_CHECKED ? FALSE : TRUE;
-   m_cbOutputPath.EnableWindow(check);
-   m_btnSelectPath.EnableWindow(check);
+   m_comboOutputPath.EnableWindow(check);
+   m_buttonSelectPath.EnableWindow(check);
 
    return 0;
 }
@@ -308,12 +304,12 @@ LRESULT OutputSettingsPage::OnCheckUseInputFolder(WORD /*wNotifyCode*/, WORD /*w
 LRESULT OutputSettingsPage::OnOutPathSelEndOk(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    // on selection, remove selected item from history
-   int sel = m_cbOutputPath.GetCurSel();
+   int sel = m_comboOutputPath.GetCurSel();
    if (sel > 0 && unsigned(sel) <= m_uiSettings.outputhistory.size())
    {
       m_uiSettings.outputhistory.insert(m_uiSettings.outputhistory.begin(), m_uiSettings.m_defaultSettings.outputdir);
       m_uiSettings.m_defaultSettings.outputdir = m_uiSettings.outputhistory[sel];
-      m_uiSettings.outputhistory.erase(m_uiSettings.outputhistory.begin()+sel);
+      m_uiSettings.outputhistory.erase(m_uiSettings.outputhistory.begin() + sel);
    }
 
    RefreshHistory();
@@ -326,20 +322,20 @@ void OutputSettingsPage::SetupOutputModulesList()
    Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
    int max = moduleManager.GetOutputModuleCount();
    for (int i = 0; i < max; i++)
-      m_cbOutputModule.AddString(moduleManager.GetOutputModuleName(i));
+      m_comboOutputModule.AddString(moduleManager.GetOutputModuleName(i));
 }
 
 void OutputSettingsPage::RefreshHistory()
 {
-   m_cbOutputPath.ResetContent();
+   m_comboOutputPath.ResetContent();
 
    // set output path as the first in list
-   m_cbOutputPath.AddString(m_uiSettings.m_defaultSettings.outputdir);
+   m_comboOutputPath.AddString(m_uiSettings.m_defaultSettings.outputdir);
 
    // output directory history
    int max = m_uiSettings.outputhistory.size();
-   for (int i = 0; i<max; i++)
-      m_cbOutputPath.AddString(m_uiSettings.outputhistory[i]);
+   for (int i = 0; i < max; i++)
+      m_comboOutputPath.AddString(m_uiSettings.outputhistory[i]);
 
-   m_cbOutputPath.SetCurSel(0);
+   m_comboOutputPath.SetCurSel(0);
 }

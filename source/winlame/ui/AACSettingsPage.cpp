@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -63,13 +63,13 @@ LRESULT AACSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /
    m_sliderQuality.SetTicFreq(10);
 
    // combo box with mpeg versions
-   m_cbMpegVersion.AddString(_T("MPEG2"));
-   m_cbMpegVersion.AddString(_T("MPEG4"));
+   m_comboMpegVersion.AddString(_T("MPEG2"));
+   m_comboMpegVersion.AddString(_T("MPEG4"));
 
    // combo box with aac object type
-   m_cbObjectType.AddString(_T("Main"));
-   m_cbObjectType.AddString(_T("Low Complexity"));
-   m_cbObjectType.AddString(_T("LTP"));
+   m_comboObjectType.AddString(_T("Main"));
+   m_comboObjectType.AddString(_T("Low Complexity"));
+   m_comboObjectType.AddString(_T("LTP"));
 
    LoadData();
 
@@ -125,10 +125,11 @@ void AACSettingsPage::UpdateQuality()
 void AACSettingsPage::UpdateBandwidth()
 {
    // check if bandwidth button is checked
-   bool bEnabled = BST_CHECKED != SendDlgItemMessage(IDC_AAC_CHECK_BANDWIDTH, BM_GETCHECK);
+   CButton checkBandwidth(GetDlgItem(IDC_AAC_CHECK_BANDWIDTH));
+   bool enabled = BST_CHECKED != checkBandwidth.GetCheck();
 
-   GetDlgItem(IDC_AAC_EDIT_BANDWIDTH).EnableWindow(bEnabled);
-   m_spinBandwidth.EnableWindow(bEnabled);
+   GetDlgItem(IDC_AAC_EDIT_BANDWIDTH).EnableWindow(enabled);
+   m_spinBandwidth.EnableWindow(enabled);
 }
 
 void AACSettingsPage::LoadData()
@@ -140,22 +141,16 @@ void AACSettingsPage::LoadData()
    SetDlgItemInt(IDC_AAC_EDIT_BANDWIDTH, mgr.queryValueInt(AacBandwidth), FALSE);
 
    // set combo box selections
-   m_cbMpegVersion.SetCurSel(mgr.queryValueInt(AacMpegVersion) == 2 ? 0 : 1);
+   m_comboMpegVersion.SetCurSel(mgr.queryValueInt(AacMpegVersion) == 2 ? 0 : 1);
 
-   m_cbObjectType.SetCurSel(mgr.queryValueInt(AacObjectType));
+   m_comboObjectType.SetCurSel(mgr.queryValueInt(AacObjectType));
 
    // set checks
-   SendDlgItemMessage(IDC_AAC_CHECK_MIDSIDE, BM_SETCHECK,
-      mgr.queryValueInt(AacAllowMS) == 0 ? BST_UNCHECKED : BST_CHECKED);
+   m_checkMidSide.SetCheck(mgr.queryValueInt(AacAllowMS) == 0 ? BST_UNCHECKED : BST_CHECKED);
+   m_checkUseTNS.SetCheck(mgr.queryValueInt(AacUseTNS) == 0 ? BST_UNCHECKED : BST_CHECKED);
+   m_checkUseLFE.SetCheck(mgr.queryValueInt(AacUseLFEChan) == 0 ? BST_UNCHECKED : BST_CHECKED);
+   m_checkBandwidth.SetCheck(mgr.queryValueInt(AacAutoBandwidth) == 0 ? BST_UNCHECKED : BST_CHECKED);
 
-   SendDlgItemMessage(IDC_AAC_CHECK_USETNS, BM_SETCHECK,
-      mgr.queryValueInt(AacUseTNS) == 0 ? BST_UNCHECKED : BST_CHECKED);
-
-   SendDlgItemMessage(IDC_AAC_CHECK_USELFE, BM_SETCHECK,
-      mgr.queryValueInt(AacUseLFEChan) == 0 ? BST_UNCHECKED : BST_CHECKED);
-
-   SendDlgItemMessage(IDC_AAC_CHECK_BANDWIDTH, BM_SETCHECK,
-      mgr.queryValueInt(AacAutoBandwidth) == 0 ? BST_UNCHECKED : BST_CHECKED);
    UpdateBandwidth();
 
    // bitrate control
@@ -179,31 +174,31 @@ bool AACSettingsPage::SaveData()
    mgr.setValue(AacBandwidth, (int)GetDlgItemInt(IDC_AAC_EDIT_BANDWIDTH, NULL, FALSE));
 
    // get combo box selections
-   int mpeg = m_cbMpegVersion.GetCurSel();
+   int mpeg = m_comboMpegVersion.GetCurSel();
    mgr.setValue(AacMpegVersion, mpeg == 0 ? 2 : 4);
 
-   int value = m_cbObjectType.GetCurSel();
+   int value = m_comboObjectType.GetCurSel();
    mgr.setValue(AacObjectType, value);
 
    // currently it is not possible to use LTP together with MPEG2
    if (mpeg == 0 && value == 2)
    {
       // give user a message explaining that fact
-      AppMessageBox(m_hWnd, IDS_AAC_NO_MPEG2_LTP, MB_OK | MB_ICONEXCLAMATION);
+      AtlMessageBox(m_hWnd, IDS_AAC_NO_MPEG2_LTP, IDS_APP_CAPTION, MB_OK | MB_ICONEXCLAMATION);
       return false;
    }
 
    // get checks
-   value = SendDlgItemMessage(IDC_AAC_CHECK_MIDSIDE, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   value = m_checkMidSide.GetCheck() == BST_CHECKED ? 1 : 0;
    mgr.setValue(AacAllowMS, value);
 
-   value = SendDlgItemMessage(IDC_AAC_CHECK_USETNS, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   value = m_checkUseTNS.GetCheck() == BST_CHECKED ? 1 : 0;
    mgr.setValue(AacUseTNS, value);
 
-   value = SendDlgItemMessage(IDC_AAC_CHECK_USELFE, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   value = m_checkUseLFE.GetCheck() == BST_CHECKED ? 1 : 0;
    mgr.setValue(AacUseLFEChan, value);
 
-   value = SendDlgItemMessage(IDC_AAC_CHECK_BANDWIDTH, BM_GETCHECK) == BST_CHECKED ? 1 : 0;
+   value = m_checkBandwidth.GetCheck() == BST_CHECKED ? 1 : 0;
    mgr.setValue(AacAutoBandwidth, value);
 
    // bitrate control

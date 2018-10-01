@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -40,15 +40,15 @@ LRESULT GeneralSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
 
    // set language combobox icons
    {
-      CImageList ilLangIcons;
+      CImageList languageIcons;
 
-      ilLangIcons.Create(16, 11, ILC_MASK | ILC_COLOR32, 0, 0);
+      languageIcons.Create(16, 11, ILC_MASK | ILC_COLOR32, 0, 0);
       CBitmap bmpIcons;
       // load bitmap, but always from main module (bmp not in translation dlls)
       bmpIcons.Attach(::LoadBitmap(ModuleHelper::GetModuleInstance(), MAKEINTRESOURCE(IDB_BITMAP_FLAGS)));
-      ilLangIcons.Add(bmpIcons, RGB(255,255,255));
+      languageIcons.Add(bmpIcons, RGB(255, 255, 255));
 
-      m_cbLanguages.SetImageList(ilLangIcons);
+      m_comboLanguages.SetImageList(languageIcons);
    }
 
    // fill language combobox
@@ -57,7 +57,7 @@ LRESULT GeneralSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
 
       const std::vector<LanguageResourceInfo>& vecLangResourceList = m_langResourceManager.LanguageResourceList();
       int iSelectedLangIndex = -1;
-      for (size_t i=0,iMax=vecLangResourceList.size(); i<iMax; i++)
+      for (size_t i = 0, iMax = vecLangResourceList.size(); i < iMax; i++)
       {
          const LanguageResourceInfo& info = vecLangResourceList[i];
 
@@ -65,13 +65,14 @@ LRESULT GeneralSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
          int iIconIndex = langCountryMapper.IndexFromLanguageCode(info.LanguageId());
          iIconIndex;
 
-         int iItem = m_cbLanguages.AddString(info.LanguageName(), iIconIndex);
-         m_cbLanguages.SetItemData(iItem, info.LanguageId());
+         int iItem = m_comboLanguages.AddString(info.LanguageName(), iIconIndex);
+         m_comboLanguages.SetItemData(iItem, info.LanguageId());
 
          if (m_settings.language_id == info.LanguageId())
             iSelectedLangIndex = iItem;
       }
-      m_cbLanguages.SetCurSel(iSelectedLangIndex);
+
+      m_comboLanguages.SetCurSel(iSelectedLangIndex);
    }
 
    {
@@ -115,14 +116,14 @@ LRESULT GeneralSettingsPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND
       m_settings.m_taskManagerConfig.m_uiUseNumTasks = 64;
    }
 
-   int iSelectedLangIndex = m_cbLanguages.GetCurSel();
-   if (iSelectedLangIndex != -1)
+   int selectedLangIndex = m_comboLanguages.GetCurSel();
+   if (selectedLangIndex != -1)
    {
-      UINT uiLangId = static_cast<UINT>(m_cbLanguages.GetItemData(iSelectedLangIndex));
-      if (m_langResourceManager.IsLangResourceAvail(uiLangId))
+      UINT languageId = static_cast<UINT>(m_comboLanguages.GetItemData(selectedLangIndex));
+      if (m_langResourceManager.IsLangResourceAvail(languageId))
       {
-         m_settings.language_id = uiLangId;
-         m_langResourceManager.LoadLangResource(uiLangId);
+         m_settings.language_id = languageId;
+         m_langResourceManager.LoadLangResource(languageId);
       }
    }
 

@@ -32,16 +32,16 @@
 
 using namespace UI;
 
-CString InputFilesPage::m_cszFilterString;
+CString InputFilesPage::m_filterString;
 
 InputFilesPage::InputFilesPage(WizardPageHost& pageHost,
-   const std::vector<CString>& vecInputFiles)
-:WizardPage(pageHost, IDD_PAGE_INPUT_FILES,
-   pageHost.IsClassicMode() ? WizardPage::typeCancelBackNext : WizardPage::typeCancelNext),
-m_pageWidth(0),
-m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
-m_bSetSysImageList(false),
-m_vecInputFiles(vecInputFiles)
+   const std::vector<CString>& inputFilesList)
+   :WizardPage(pageHost, IDD_PAGE_INPUT_FILES,
+      pageHost.IsClassicMode() ? WizardPage::typeCancelBackNext : WizardPage::typeCancelNext),
+   m_pageWidth(0),
+   m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
+   m_setSysImageList(false),
+   m_inputFilesList(inputFilesList)
 {
 }
 
@@ -61,8 +61,8 @@ LRESULT InputFilesPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
 
    SetupListCtrl();
 
-   AddFiles(m_vecInputFiles);
-   m_vecInputFiles.clear();
+   AddFiles(m_inputFilesList);
+   m_inputFilesList.clear();
 
    GetDlgItem(IDC_INPUT_BUTTON_PLAY).EnableWindow(false);
    GetDlgItem(IDC_INPUT_BUTTON_DELETE).EnableWindow(false);
@@ -76,19 +76,19 @@ LRESULT InputFilesPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hW
 {
    m_audioFileInfoManager.Stop();
 
-   int max = m_inputFilesList.GetItemCount();
+   int max = m_listViewInputFiles.GetItemCount();
 
    // when no input files are chosen, refuse to leave the page
    if (max == 0)
    {
-      AppMessageBox(m_hWnd, IDS_INPUT_NOINFILES, MB_OK | MB_ICONEXCLAMATION);
+      AtlMessageBox(m_hWnd, IDS_INPUT_NOINFILES, IDS_APP_CAPTION, MB_OK | MB_ICONEXCLAMATION);
       return 1; // prevent leaving dialog
    }
 
    // add encoder job for every file in list
    for (int i = 0; i < max; i++)
    {
-      CString filename = m_inputFilesList.GetFileName(i);
+      CString filename = m_listViewInputFiles.GetFileName(i);
       m_uiSettings.encoderjoblist.push_back(Encoder::EncoderJob(filename));
    }
 
@@ -123,18 +123,18 @@ LRESULT InputFilesPage::OnKeyDown(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL&
    // delete key from list ctrl?
    if (VK_DELETE == (int)wParam)
    {
-      int pos = m_inputFilesList.GetNextItem(-1, LVIS_SELECTED);
+      int pos = m_listViewInputFiles.GetNextItem(-1, LVIS_SELECTED);
 
       // delete all files
-      m_inputFilesList.DeleteSelectedListItems();
+      m_listViewInputFiles.DeleteSelectedListItems();
 
       // set selection on next item
-      m_inputFilesList.SetItemState(pos,
+      m_listViewInputFiles.SetItemState(pos,
          LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 
       UpdateTimeCount();
 
-      m_inputFilesList.Invalidate();
+      m_listViewInputFiles.Invalidate();
    }
 
    // insert key? fake button press
@@ -169,7 +169,7 @@ LRESULT InputFilesPage::OnUpdateAudioInfo(UINT uMsg, WPARAM wParam, LPARAM lPara
 {
    AudioFileEntry* entry = reinterpret_cast<AudioFileEntry*>(lParam);
 
-   m_inputFilesList.UpdateAudioFileInfo(*entry);
+   m_listViewInputFiles.UpdateAudioFileInfo(*entry);
 
    delete entry;
 
@@ -183,7 +183,7 @@ LRESULT InputFilesPage::OnListItemChanged(int idCtrl, LPNMHDR pnmh, BOOL& bHandl
    // called when the selected item in the list changes
 
    // look if we have to disable the play and delete button
-   BOOL enable = (0 != m_inputFilesList.GetSelectedCount());
+   BOOL enable = (0 != m_listViewInputFiles.GetSelectedCount());
 
    GetDlgItem(IDC_INPUT_BUTTON_PLAY).EnableWindow(enable);
    GetDlgItem(IDC_INPUT_BUTTON_DELETE).EnableWindow(enable);
@@ -198,7 +198,7 @@ LRESULT InputFilesPage::OnDoubleClickedList(int idCtrl, LPNMHDR pnmh, BOOL& bHan
 
    if (lpnmlv->iItem != -1)
    {
-      CString filename = m_inputFilesList.GetFileName(lpnmlv->iItem);
+      CString filename = m_listViewInputFiles.GetFileName(lpnmlv->iItem);
 
       // play file
       PlayFile(filename);
@@ -210,9 +210,9 @@ LRESULT InputFilesPage::OnDoubleClickedList(int idCtrl, LPNMHDR pnmh, BOOL& bHan
 LRESULT InputFilesPage::OnButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
    // find out which file had the focus
-   int index = m_inputFilesList.GetNextItem(-1, LVNI_ALL | LVNI_FOCUSED | LVNI_SELECTED);
+   int index = m_listViewInputFiles.GetNextItem(-1, LVNI_ALL | LVNI_FOCUSED | LVNI_SELECTED);
 
-   CString filename = m_inputFilesList.GetFileName(index);
+   CString filename = m_listViewInputFiles.GetFileName(index);
    PlayFile(filename);
 
    return 0;
@@ -221,11 +221,11 @@ LRESULT InputFilesPage::OnButtonPlay(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 LRESULT InputFilesPage::OnButtonInputFileSel(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
    // open files
-   if (!InputFilesPage::OpenFileDialog(m_hWnd, m_vecInputFiles))
+   if (!InputFilesPage::OpenFileDialog(m_hWnd, m_inputFilesList))
       return 0;
 
-   AddFiles(m_vecInputFiles);
-   m_vecInputFiles.clear();
+   AddFiles(m_inputFilesList);
+   m_inputFilesList.clear();
 
    return 0;
 }
@@ -233,11 +233,11 @@ LRESULT InputFilesPage::OnButtonInputFileSel(WORD /*wNotifyCode*/, WORD /*wID*/,
 LRESULT InputFilesPage::OnButtonDeleteAll(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
    // delete all list items
-   m_inputFilesList.DeleteSelectedListItems();
+   m_listViewInputFiles.DeleteSelectedListItems();
 
    UpdateTimeCount();
 
-   m_inputFilesList.Invalidate();
+   m_listViewInputFiles.Invalidate();
 
    return 0;
 }
@@ -246,83 +246,83 @@ void InputFilesPage::SetupListCtrl()
 {
    // find out width of the list ctrl
    CRect rc;
-   m_inputFilesList.GetWindowRect(&rc);
+   m_listViewInputFiles.GetWindowRect(&rc);
    int width = rc.right - rc.left - 4;
 
    // load strings
-   CString asColumnNames[4];
-   asColumnNames[0].LoadString(IDS_INPUT_LIST_COLNAME1);
-   asColumnNames[1].LoadString(IDS_INPUT_LIST_COLNAME2);
-   asColumnNames[2].LoadString(IDS_INPUT_LIST_COLNAME3);
-   asColumnNames[3].LoadString(IDS_INPUT_LIST_COLNAME4);
+   CString columnNames[4];
+   columnNames[0].LoadString(IDS_INPUT_LIST_COLNAME1);
+   columnNames[1].LoadString(IDS_INPUT_LIST_COLNAME2);
+   columnNames[2].LoadString(IDS_INPUT_LIST_COLNAME3);
+   columnNames[3].LoadString(IDS_INPUT_LIST_COLNAME4);
 
    // insert list ctrl columns
    double aSizes[4] = { 0.57, 0.17, 0.15, 0.11 };
 
    LVCOLUMN lvColumn = { LVCF_TEXT | LVCF_WIDTH, 0, 0, NULL, 0, 0 };
 
-   for (int i = 0; i<4; i++)
+   for (int i = 0; i < 4; i++)
    {
       lvColumn.cx = int(width * aSizes[i]);
-      lvColumn.pszText = const_cast<LPTSTR>(asColumnNames[i].GetString());
-      m_inputFilesList.InsertColumn(i, &lvColumn);
+      lvColumn.pszText = const_cast<LPTSTR>(columnNames[i].GetString());
+      m_listViewInputFiles.InsertColumn(i, &lvColumn);
    }
 
    // set extended list ctrl styles
-   m_inputFilesList.SetExtendedListViewStyle(
+   m_listViewInputFiles.SetExtendedListViewStyle(
       LVS_EX_FULLROWSELECT | LVS_EX_ONECLICKACTIVATE | LVS_EX_UNDERLINEHOT);
 }
 
 void InputFilesPage::ResizeListCtrlColumns(int dx)
 {
-   int column0Width = m_inputFilesList.GetColumnWidth(0);
+   int column0Width = m_listViewInputFiles.GetColumnWidth(0);
    column0Width += dx;
 
-   m_inputFilesList.SetColumnWidth(0, column0Width);
+   m_listViewInputFiles.SetColumnWidth(0, column0Width);
 }
 
-void InputFilesPage::AddFiles(const std::vector<CString>& vecInputFiles)
+void InputFilesPage::AddFiles(const std::vector<CString>& inputFilesList)
 {
    InputFilesParser parser;
-   parser.Parse(vecInputFiles);
+   parser.Parse(inputFilesList);
 
    InsertFilenames(parser.FileList());
 
    if (!parser.PlaylistName().IsEmpty())
    {
-      CString cszName = Path(parser.PlaylistName()).FilenameOnly();
-      m_uiSettings.playlist_filename = cszName + _T(".m3u");
+      CString name = Path(parser.PlaylistName()).FilenameOnly();
+      m_uiSettings.playlist_filename = name + _T(".m3u");
    }
 }
 
-void InputFilesPage::InsertFilenames(const std::vector<CString>& vecInputFiles)
+void InputFilesPage::InsertFilenames(const std::vector<CString>& inputFilesList)
 {
-   RedrawLock lock(m_inputFilesList);
+   RedrawLock lock(m_listViewInputFiles);
 
-   for (size_t i = 0, iMax = vecInputFiles.size(); i < iMax; i++)
-      InsertFilenameWithIcon(vecInputFiles[i]);
+   for (size_t i = 0, iMax = inputFilesList.size(); i < iMax; i++)
+      InsertFilenameWithIcon(inputFilesList[i]);
 }
 
-void InputFilesPage::InsertFilenameWithIcon(const CString& cszFilename)
+void InputFilesPage::InsertFilenameWithIcon(const CString& filename)
 {
    // find out icon image
-   SHFILEINFO sfi = {0};
-   HIMAGELIST hImageList = (HIMAGELIST)SHGetFileInfo(
-      cszFilename, 0, &sfi, sizeof(SHFILEINFO),
+   SHFILEINFO sfi = { 0 };
+   HIMAGELIST imageList = (HIMAGELIST)SHGetFileInfo(
+      filename, 0, &sfi, sizeof(SHFILEINFO),
       SHGFI_SYSICONINDEX | SHGFI_SMALLICON);
 
-   if (!m_bSetSysImageList)
+   if (!m_setSysImageList)
    {
       // set system wide image list
-      m_inputFilesList.SetImageList(hImageList, LVSIL_SMALL);
-      m_bSetSysImageList = true;
+      m_listViewInputFiles.SetImageList(imageList, LVSIL_SMALL);
+      m_setSysImageList = true;
    }
 
-   m_inputFilesList.InsertFile(cszFilename, sfi.iIcon, -1, -1, -1);
+   m_listViewInputFiles.InsertFile(filename, sfi.iIcon, -1, -1, -1);
 
-   m_audioFileInfoManager.AsyncGetAudioFileInfo(cszFilename,
+   m_audioFileInfoManager.AsyncGetAudioFileInfo(filename,
       std::bind(&InputFilesPage::OnRetrievedAudioFileInfo, this,
-         cszFilename,
+         filename,
          std::placeholders::_1,
          std::placeholders::_2,
          std::placeholders::_3,
@@ -357,37 +357,37 @@ void InputFilesPage::PlayFile(LPCTSTR filename)
 
 void InputFilesPage::UpdateTimeCount()
 {
-   unsigned int nTime = m_inputFilesList.GetTotalLength();
+   unsigned int lengthInSeconds = m_listViewInputFiles.GetTotalLength();
 
-   CString cszText;
-   cszText.Format(IDS_INPUT_TIME_UU, nTime / 60, nTime % 60);
+   CString text;
+   text.Format(IDS_INPUT_TIME_UU, lengthInSeconds / 60, lengthInSeconds % 60);
 
-   SetDlgItemText(IDC_STATIC_TIMECOUNT, cszText);
+   SetDlgItemText(IDC_STATIC_TIMECOUNT, text);
 }
 
 CString InputFilesPage::GetFilterString()
 {
-   if (!m_cszFilterString.IsEmpty())
-      return m_cszFilterString;
+   if (!m_filterString.IsEmpty())
+      return m_filterString;
 
    Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
-   moduleManager.GetFilterString(m_cszFilterString);
+   moduleManager.GetFilterString(m_filterString);
 
-   CString cszText;
-   cszText.LoadString(IDS_INPUT_FILTER_PLAYLISTS);
-   m_cszFilterString += cszText;
+   CString text;
+   text.LoadString(IDS_INPUT_FILTER_PLAYLISTS);
+   m_filterString += text;
 
-   cszText.LoadString(IDS_INPUT_FILTER_CUESHEETS);
-   m_cszFilterString += cszText;
-   m_cszFilterString.Insert(m_cszFilterString.Find('|') + 1, _T("*.m3u;*.pls;*.cue;"));
+   text.LoadString(IDS_INPUT_FILTER_CUESHEETS);
+   m_filterString += text;
+   m_filterString.Insert(m_filterString.Find('|') + 1, _T("*.m3u;*.pls;*.cue;"));
 
-   cszText.LoadString(IDS_INPUT_FILTER_ALLFILES);
-   m_cszFilterString += cszText + _T("|"); // add extra pipe char for end of filter
+   text.LoadString(IDS_INPUT_FILTER_ALLFILES);
+   m_filterString += text + _T("|"); // add extra pipe char for end of filter
 
-   return m_cszFilterString;
+   return m_filterString;
 }
 
-bool InputFilesPage::OpenFileDialog(HWND hWndParent, std::vector<CString>& vecFilenames)
+bool InputFilesPage::OpenFileDialog(HWND hwndParent, std::vector<CString>& filenamesList)
 {
    // get filter string
    CString filterString = GetFilterString();
@@ -398,26 +398,26 @@ bool InputFilesPage::OpenFileDialog(HWND hWndParent, std::vector<CString>& vecFi
          filterString.SetAt(pos, 0);
 
    // load title
-   CString cszTitle;
-   cszTitle.LoadString(IDS_INPUT_INFILES_SELECT);
+   CString title;
+   title.LoadString(IDS_INPUT_INFILES_SELECT);
 
    // file dialog setup
    CFileDialog dlg(TRUE, NULL, NULL,
       OFN_ALLOWMULTISELECT | OFN_ENABLESIZING | OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_EXPLORER,
       filterString,
-      hWndParent);
+      hwndParent);
 
    // fill file buffer
    TCHAR szBuffer[MAX_PATH * 1024] = { 0 };
    const UINT uiBufferLenCch = sizeof(szBuffer) / sizeof(*szBuffer);
 
    UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
-   CString& lastinputpath = settings.lastinputpath;
+   CString& lastInputPath = settings.lastinputpath;
 
    // copy last input path to buffer, as init
    _tcsncpy_s(
       szBuffer, uiBufferLenCch,
-      lastinputpath, lastinputpath.GetLength());
+      lastInputPath, lastInputPath.GetLength());
 
    dlg.m_ofn.lpstrFile = szBuffer;
    dlg.m_ofn.nMaxFile = uiBufferLenCch;
@@ -428,47 +428,47 @@ bool InputFilesPage::OpenFileDialog(HWND hWndParent, std::vector<CString>& vecFi
 
    if (dlg.m_ofn.nFileExtension == 0)
    {
-      ParseMultiSelectionFiles(szBuffer, vecFilenames);
+      ParseMultiSelectionFiles(szBuffer, filenamesList);
    }
    else
    {
       // single file selection
-      vecFilenames.push_back(szBuffer);
+      filenamesList.push_back(szBuffer);
 
       // get the used directory
-      lastinputpath = szBuffer;
+      lastInputPath = szBuffer;
    }
 
    return true;
 }
 
-void InputFilesPage::ParseMultiSelectionFiles(LPCTSTR pszBuffer, std::vector<CString>& vecFilenames)
+void InputFilesPage::ParseMultiSelectionFiles(LPCTSTR buffer, std::vector<CString>& filenamesList)
 {
    UISettings& settings = IoCContainer::Current().Resolve<UISettings>();
-   CString& lastinputpath = settings.lastinputpath;
+   CString& lastInputPath = settings.lastinputpath;
 
    // multiple file selection
-   LPCTSTR pszStart = pszBuffer;
+   LPCTSTR start = buffer;
 
-   lastinputpath = pszStart;
-   Path::AddEndingBackslash(lastinputpath);
+   lastInputPath = start;
+   Path::AddEndingBackslash(lastInputPath);
 
    // go to the first file
-   while (*pszStart++ != 0);
+   while (*start++ != 0);
 
    // while not at end of the list
-   while (*pszStart != 0)
+   while (*start != 0)
    {
       // construct pathname
-      CString cszFilename = lastinputpath + pszStart;
+      CString filename = lastInputPath + start;
 
-      vecFilenames.push_back(cszFilename);
+      filenamesList.push_back(filename);
 
       // go to the next entry
-      while (*pszStart++ != 0);
+      while (*start++ != 0);
    }
 
    // set last selected file
-   if (!vecFilenames.empty())
-      lastinputpath = vecFilenames.back();
+   if (!filenamesList.empty())
+      lastInputPath = filenamesList.back();
 }

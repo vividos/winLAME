@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -48,28 +48,8 @@ static int OggVorbisBitrates[] =
 /// output: estimated bitrate in kbps
 float OggVorbisCalculateBitrate(float quality)
 {
-   float bitrate;
-
-   if (quality < 4.10)
-   {
-      bitrate = quality * 16 + 64;
-   }
-   else if (quality < 8.10)
-   {
-      bitrate = quality * 32;
-   }
-   else if (quality < 9.10)
-   {
-      bitrate = quality * 32 + (quality - 8.f) * 32;
-   }
-   else
-   {
-      bitrate = quality * 32 + (quality - 8.f) * 32 + (quality - 9.f) * 116;
-   }
-
-   return bitrate;
+   return UI::OggVorbisSettingsPage::CalculateBitrate(quality);
 }
-
 
 LRESULT UI::OggVorbisSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
@@ -150,9 +130,9 @@ LRESULT UI::OggVorbisSettingsPage::OnChangeEditNominalBitrate(WORD wNotifyCode, 
    {
       // for constant bitrate, we "mirror" the nominal bitrate value to the
       // min and max field, too
-      int nombr = GetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE, NULL, FALSE);
-      SetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE, nombr, FALSE);
-      SetDlgItemInt(IDC_OGGV_EDIT_MAX_BITRATE, nombr, FALSE);
+      int nominalBitrate = GetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE, NULL, FALSE);
+      SetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE, nominalBitrate, FALSE);
+      SetDlgItemInt(IDC_OGGV_EDIT_MAX_BITRATE, nominalBitrate, FALSE);
    }
    return 0;
 }
@@ -162,9 +142,8 @@ LRESULT UI::OggVorbisSettingsPage::OnHScroll(UINT /*uMsg*/, WPARAM wParam, LPARA
    // check if the vbr quality slider was moved
    if ((HWND)lParam == GetDlgItem(IDC_OGGV_SLIDER_QUALITY))
       UpdateQuality();
-   else
-      if ((HWND)lParam == GetDlgItem(IDC_OGGV_SPIN_QUICK_QUALITY))
-         OnQuickQualitySpin(HIWORD(wParam), LOWORD(wParam));
+   else if ((HWND)lParam == GetDlgItem(IDC_OGGV_SPIN_QUICK_QUALITY))
+      OnQuickQualitySpin(HIWORD(wParam), LOWORD(wParam));
 
    return 0;
 }
@@ -173,25 +152,30 @@ void UI::OggVorbisSettingsPage::UpdateBitrateMode(int pos, bool init)
 {
    SettingsManager& mgr = m_uiSettings.settings_manager;
 
-   int minbr, nombr, maxbr;
-   minbr = GetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE, NULL, FALSE);
-   nombr = GetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE, NULL, FALSE);
-   maxbr = GetDlgItemInt(IDC_OGGV_EDIT_MAX_BITRATE, NULL, FALSE);
+   int minBitrate, nominalBitrate, maxBitrate;
+   minBitrate = GetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE, NULL, FALSE);
+   nominalBitrate = GetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE, NULL, FALSE);
+   maxBitrate = GetDlgItemInt(IDC_OGGV_EDIT_MAX_BITRATE, NULL, FALSE);
 
    // store old values
    if (!init)
-      switch (mgr.queryValueInt(OggBitrateMode))
    {
+      switch (mgr.queryValueInt(OggBitrateMode))
+      {
       case 1: // variable bitrate
-         mgr.setValue(OggVarMinBitrate, minbr);
-         mgr.setValue(OggVarMaxBitrate, maxbr);
+         mgr.setValue(OggVarMinBitrate, minBitrate);
+         mgr.setValue(OggVarMaxBitrate, maxBitrate);
          break;
       case 2: // average bitrate
-         mgr.setValue(OggVarNominalBitrate, nombr);
+         mgr.setValue(OggVarNominalBitrate, nominalBitrate);
          break;
       case 3: // constant bitrate
-         mgr.setValue(OggVarNominalBitrate, nombr);
+         mgr.setValue(OggVarNominalBitrate, nominalBitrate);
          break;
+      default:
+         ATLASSERT(false);
+         break;
+      }
    }
 
    // enable or disable controls
@@ -206,14 +190,14 @@ void UI::OggVorbisSettingsPage::UpdateBitrateMode(int pos, bool init)
    switch (pos)
    {
    case 0: // quality settings
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MIN_BITRATE), _T(""));
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_NOM_BITRATE), _T(""));
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MAX_BITRATE), _T(""));
+      SetDlgItemText(IDC_OGGV_EDIT_MIN_BITRATE, _T(""));
+      SetDlgItemText(IDC_OGGV_EDIT_NOM_BITRATE, _T(""));
+      SetDlgItemText(IDC_OGGV_EDIT_MAX_BITRATE, _T(""));
       break;
 
    case 1: // variable bitrate
       SetDlgItemInt(IDC_OGGV_EDIT_MIN_BITRATE, mgr.queryValueInt(OggVarMinBitrate), FALSE);
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_NOM_BITRATE), _T(""));
+      SetDlgItemText(IDC_OGGV_EDIT_NOM_BITRATE, _T(""));
       SetDlgItemInt(IDC_OGGV_EDIT_MAX_BITRATE, mgr.queryValueInt(OggVarMaxBitrate), FALSE);
 
       enableMin = TRUE;
@@ -221,9 +205,9 @@ void UI::OggVorbisSettingsPage::UpdateBitrateMode(int pos, bool init)
       break;
 
    case 2: // average bitrate
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MIN_BITRATE), _T(""));
+      SetDlgItemText(IDC_OGGV_EDIT_MIN_BITRATE, _T(""));
       SetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE, mgr.queryValueInt(OggVarNominalBitrate), FALSE);
-      ::SetWindowText(GetDlgItem(IDC_OGGV_EDIT_MAX_BITRATE), _T(""));
+      SetDlgItemText(IDC_OGGV_EDIT_MAX_BITRATE, _T(""));
 
       enableNom = TRUE;
       break;
@@ -232,6 +216,10 @@ void UI::OggVorbisSettingsPage::UpdateBitrateMode(int pos, bool init)
       SetDlgItemInt(IDC_OGGV_EDIT_NOM_BITRATE, mgr.queryValueInt(OggVarNominalBitrate), FALSE);
 
       enableNom = TRUE;
+      break;
+
+   default:
+      ATLASSERT(false);
       break;
    }
 
@@ -268,10 +256,38 @@ void UI::OggVorbisSettingsPage::UpdateQuality()
       unsigned(fabs(pos / 100.0)), unsigned(fabs(fmod(pos, 100.0))));
    SetDlgItemText(IDC_OGGV_STATIC_QUALITY, text);
 
-   float brate = OggVorbisCalculateBitrate(pos / 100.f);
+   float brate = CalculateBitrate(pos / 100.f);
 
    text.Format(IDS_OGGV_BITRATE, int(brate), int(brate*10.f) % 10);
    SetDlgItemText(IDC_OGGV_STATIC_BITRATE, text);
+}
+
+/// \details this function is Copyright (c) 2002 John Edwards
+/// see source code for OggDropXPd.
+/// input: quality value, range 0.f ... 10.f
+/// output: estimated bitrate in kbps
+float UI::OggVorbisSettingsPage::CalculateBitrate(float quality)
+{
+   float bitrate;
+
+   if (quality < 4.10)
+   {
+      bitrate = quality * 16 + 64;
+   }
+   else if (quality < 8.10)
+   {
+      bitrate = quality * 32;
+   }
+   else if (quality < 9.10)
+   {
+      bitrate = quality * 32 + (quality - 8.f) * 32;
+   }
+   else
+   {
+      bitrate = quality * 32 + (quality - 8.f) * 32 + (quality - 9.f) * 116;
+   }
+
+   return bitrate;
 }
 
 void UI::OggVorbisSettingsPage::OnQuickQualitySpin(WORD wCount, WORD wType)

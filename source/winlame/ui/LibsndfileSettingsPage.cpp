@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -38,8 +38,8 @@ LRESULT LibsndfileSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
 
    UpdateFileFormatList();
 
-   int itemToSelect = m_cbFormat.FindString(0, _T("WAV (Microsoft) (wav)"));
-   m_cbFormat.SetCurSel(itemToSelect != -1 ? itemToSelect : 0);
+   int itemToSelect = m_comboFormat.FindString(0, _T("WAV (Microsoft) (wav)"));
+   m_comboFormat.SetCurSel(itemToSelect != -1 ? itemToSelect : 0);
 
    UpdateSubTypeCombobox();
 
@@ -102,8 +102,8 @@ void LibsndfileSettingsPage::UpdateFileFormatList()
       CString text;
       text.Format(_T("%s (%s)"), formatName.GetString(), outputExtension.GetString());
 
-      int formatItem = m_cbFormat.AddString(text);
-      m_cbFormat.SetItemData(formatItem, format);
+      int formatItem = m_comboFormat.AddString(text);
+      m_comboFormat.SetItemData(formatItem, format);
    }
 }
 
@@ -111,17 +111,17 @@ void LibsndfileSettingsPage::UpdateSubTypeCombobox()
 {
    int selectedSubType = -1;
 
-   int selectedItem = m_cbSubType.GetCurSel();
+   int selectedItem = m_comboSubType.GetCurSel();
    if (selectedItem != CB_ERR)
-      selectedSubType = static_cast<int>(m_cbSubType.GetItemData(selectedItem));
+      selectedSubType = static_cast<int>(m_comboSubType.GetItemData(selectedItem));
 
-   m_cbSubType.ResetContent();
+   m_comboSubType.ResetContent();
 
-   int formatIndex = m_cbFormat.GetCurSel();
+   int formatIndex = m_comboFormat.GetCurSel();
    if (formatIndex == CB_ERR)
       return;
 
-   int format = static_cast<int>(m_cbFormat.GetItemData(formatIndex));
+   int format = static_cast<int>(m_comboFormat.GetItemData(formatIndex));
 
    CString formatName, outputExtension;
    SndFileFormats::GetFormatInfo(format, formatName, outputExtension);
@@ -156,8 +156,8 @@ void LibsndfileSettingsPage::UpdateSubTypeCombobox()
          if (!stereoValid && monoValid)
             subTypeName += _T(" (Mono)");
 
-         int subTypeItem = m_cbSubType.AddString(subTypeName);
-         m_cbSubType.SetItemData(subTypeItem, subType);
+         int subTypeItem = m_comboSubType.AddString(subTypeName);
+         m_comboSubType.SetItemData(subTypeItem, subType);
 
          if (selectedSubType != -1 &&
             subType == selectedSubType)
@@ -169,10 +169,10 @@ void LibsndfileSettingsPage::UpdateSubTypeCombobox()
 
    if (itemToSelect == -1)
    {
-      itemToSelect = m_cbSubType.FindString(0, _T("Signed 16 bit PCM"));
+      itemToSelect = m_comboSubType.FindString(0, _T("Signed 16 bit PCM"));
    }
 
-   m_cbSubType.SetCurSel(itemToSelect != -1 ? itemToSelect : 0);
+   m_comboSubType.SetCurSel(itemToSelect != -1 ? itemToSelect : 0);
 }
 
 void LibsndfileSettingsPage::LoadData()
@@ -182,12 +182,12 @@ void LibsndfileSettingsPage::LoadData()
    // format
    int format = mgr.queryValueInt(SndFileFormat);
 
-   for (int itemIndex = 0, maxItemIndex = m_cbFormat.GetCount(); itemIndex < maxItemIndex; itemIndex++)
+   for (int itemIndex = 0, maxItemIndex = m_comboFormat.GetCount(); itemIndex < maxItemIndex; itemIndex++)
    {
-      int itemFormat = static_cast<int>(m_cbFormat.GetItemData(itemIndex));
+      int itemFormat = static_cast<int>(m_comboFormat.GetItemData(itemIndex));
       if (itemFormat == format)
       {
-         m_cbFormat.SetCurSel(itemIndex);
+         m_comboFormat.SetCurSel(itemIndex);
          break;
       }
    }
@@ -195,12 +195,12 @@ void LibsndfileSettingsPage::LoadData()
    // sub type
    int subType = mgr.queryValueInt(SndFileSubType);
 
-   for (int itemIndex = 0, maxItemIndex = m_cbSubType.GetCount(); itemIndex < maxItemIndex; itemIndex++)
+   for (int itemIndex = 0, maxItemIndex = m_comboSubType.GetCount(); itemIndex < maxItemIndex; itemIndex++)
    {
-      int itemSubType = static_cast<int>(m_cbSubType.GetItemData(itemIndex));
+      int itemSubType = static_cast<int>(m_comboSubType.GetItemData(itemIndex));
       if (itemSubType == subType)
       {
-         m_cbSubType.SetCurSel(itemIndex);
+         m_comboSubType.SetCurSel(itemIndex);
          break;
       }
    }
@@ -211,12 +211,12 @@ void LibsndfileSettingsPage::SaveData()
    SettingsManager& mgr = m_uiSettings.settings_manager;
 
    // format
-   int itemIndex = m_cbFormat.GetCurSel();
-   int value = static_cast<int>(m_cbFormat.GetItemData(itemIndex));
+   int itemIndex = m_comboFormat.GetCurSel();
+   int value = static_cast<int>(m_comboFormat.GetItemData(itemIndex));
    mgr.setValue(SndFileFormat, value);
 
    // sub type
-   itemIndex = m_cbSubType.GetCurSel();
-   value = static_cast<int>(m_cbSubType.GetItemData(itemIndex));
+   itemIndex = m_comboSubType.GetCurSel();
+   value = static_cast<int>(m_comboSubType.GetItemData(itemIndex));
    mgr.setValue(SndFileSubType, value);
 }

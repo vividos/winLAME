@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -44,9 +44,9 @@ static const int LameQualities[] =
 
 
 LAMESettingsPage::LAMESettingsPage(WizardPageHost& pageHost)
-:WizardPage(pageHost, IDD_PAGE_LAME_SETTINGS, WizardPage::typeCancelBackNext),
-m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
-m_iRadioType(0)
+   :WizardPage(pageHost, IDD_PAGE_LAME_SETTINGS, WizardPage::typeCancelBackNext),
+   m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
+   m_radioType(0)
 {
 }
 
@@ -61,17 +61,17 @@ LRESULT LAMESettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM 
    m_qualitySpin.SetBuddy(GetDlgItem(IDC_LAME_EDIT_QUALITY));
    m_qualitySpin.SetFixedValues(LameQualities, sizeof(LameQualities) / sizeof(LameQualities[0]));
 
-   CString cszText(MAKEINTRESOURCE(IDS_LAME_QUALITY_FAST));
-   m_cbEncodingQuality.AddString(cszText);
-   cszText.LoadString(IDS_LAME_QUALITY_STANDARD);
-   m_cbEncodingQuality.AddString(cszText);
-   cszText.LoadString(IDS_LAME_QUALITY_HIGH);
-   m_cbEncodingQuality.AddString(cszText);
+   CString text(MAKEINTRESOURCE(IDS_LAME_QUALITY_FAST));
+   m_comboEncodingQuality.AddString(text);
+   text.LoadString(IDS_LAME_QUALITY_STANDARD);
+   m_comboEncodingQuality.AddString(text);
+   text.LoadString(IDS_LAME_QUALITY_HIGH);
+   m_comboEncodingQuality.AddString(text);
 
-   cszText.LoadString(IDS_LAME_BITRATE_MODE_STANDARD);
-   m_cbVariableBitrateMode.AddString(cszText);
-   cszText.LoadString(IDS_LAME_BITRATE_MODE_FAST);
-   m_cbVariableBitrateMode.AddString(cszText);
+   text.LoadString(IDS_LAME_BITRATE_MODE_STANDARD);
+   m_comboVariableBitrateMode.AddString(text);
+   text.LoadString(IDS_LAME_BITRATE_MODE_FAST);
+   m_comboVariableBitrateMode.AddString(text);
 
    LoadData();
 
@@ -110,23 +110,23 @@ LRESULT LAMESettingsPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND 
 
 LRESULT LAMESettingsPage::OnRadioEncodeType(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-   BOOL bEnableBitrate = TRUE;
-   BOOL bEnableQuality = FALSE;
+   BOOL enableBitrate = TRUE;
+   BOOL enableQuality = FALSE;
 
    if (wID == IDC_LAME_RADIO_TYPE2)
    {
-      bEnableBitrate = FALSE;
-      bEnableQuality = TRUE;
+      enableBitrate = FALSE;
+      enableQuality = TRUE;
    }
 
-   m_checkCBR.EnableWindow(bEnableBitrate);
-   GetDlgItem(IDC_LAME_EDIT_BITRATE).EnableWindow(bEnableBitrate);
-   GetDlgItem(IDC_LAME_SPIN_BITRATE).EnableWindow(bEnableBitrate);
+   m_checkCBR.EnableWindow(enableBitrate);
+   GetDlgItem(IDC_LAME_EDIT_BITRATE).EnableWindow(enableBitrate);
+   GetDlgItem(IDC_LAME_SPIN_BITRATE).EnableWindow(enableBitrate);
 
-   GetDlgItem(IDC_LAME_EDIT_QUALITY).EnableWindow(bEnableQuality);
-   GetDlgItem(IDC_LAME_SPIN_QUALITY).EnableWindow(bEnableQuality);
-   GetDlgItem(IDC_LAME_COMBO_VBR_MODE).EnableWindow(bEnableQuality);
-   GetDlgItem(IDC_LAME_STATIC_VBR_MODE).EnableWindow(bEnableQuality);
+   GetDlgItem(IDC_LAME_EDIT_QUALITY).EnableWindow(enableQuality);
+   GetDlgItem(IDC_LAME_SPIN_QUALITY).EnableWindow(enableQuality);
+   GetDlgItem(IDC_LAME_COMBO_VBR_MODE).EnableWindow(enableQuality);
+   GetDlgItem(IDC_LAME_STATIC_VBR_MODE).EnableWindow(enableQuality);
 
    return 0;
 }
@@ -137,13 +137,13 @@ void LAMESettingsPage::LoadData()
 
    // encode quality
    int value = mgr.queryValueInt(LameSimpleEncodeQuality);
-   m_cbEncodingQuality.SetCurSel(value);
+   m_comboEncodingQuality.SetCurSel(value);
 
    // radio buttons for quality or bitrate
-   m_iRadioType = mgr.queryValueInt(LameSimpleQualityOrBitrate);
-   DDX_Radio(IDC_LAME_RADIO_TYPE1, m_iRadioType, DDX_LOAD);
-   BOOL bDummy = true;
-   OnRadioEncodeType(0, m_iRadioType == 0 ? IDC_LAME_RADIO_TYPE1 : IDC_LAME_RADIO_TYPE2, NULL, bDummy);
+   m_radioType = mgr.queryValueInt(LameSimpleQualityOrBitrate);
+   DDX_Radio(IDC_LAME_RADIO_TYPE1, m_radioType, DDX_LOAD);
+   BOOL dummy = true;
+   OnRadioEncodeType(0, m_radioType == 0 ? IDC_LAME_RADIO_TYPE1 : IDC_LAME_RADIO_TYPE2, NULL, dummy);
 
    // mono check
    m_checkMono.SetCheck(mgr.queryValueInt(LameSimpleMono) == 0 ? BST_UNCHECKED : BST_CHECKED);
@@ -161,7 +161,7 @@ void LAMESettingsPage::LoadData()
 
    // VBR mode
    value = mgr.queryValueInt(LameSimpleVBRMode);
-   m_cbVariableBitrateMode.SetCurSel(value);
+   m_comboVariableBitrateMode.SetCurSel(value);
 
    // "nogap" check
    m_checkNogap.SetCheck(mgr.queryValueInt(LameOptNoGap) == 0 ? BST_UNCHECKED : BST_CHECKED);
@@ -177,7 +177,7 @@ void LAMESettingsPage::SaveData()
    SettingsManager& mgr = m_uiSettings.settings_manager;
 
    // encode quality
-   mgr.setValue(LameSimpleEncodeQuality, m_cbEncodingQuality.GetCurSel());
+   mgr.setValue(LameSimpleEncodeQuality, m_comboEncodingQuality.GetCurSel());
 
    // radio buttons for quality or bitrate
    int value = 0;
@@ -199,7 +199,7 @@ void LAMESettingsPage::SaveData()
    mgr.setValue(LameSimpleCBR, value);
 
    // VBR mode
-   mgr.setValue(LameSimpleVBRMode, m_cbVariableBitrateMode.GetCurSel());
+   mgr.setValue(LameSimpleVBRMode, m_comboVariableBitrateMode.GetCurSel());
 
    // "nogap" check
    value = m_checkNogap.GetCheck() == BST_CHECKED ? 1 : 0;

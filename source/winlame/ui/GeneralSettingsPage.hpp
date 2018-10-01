@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,14 +21,12 @@
 //
 #pragma once
 
-// includes
 #include "WizardPage.hpp"
 #include "ImageListComboBox.hpp"
 #include "FixedValueSpinButtonCtrl.hpp"
 #include "UISettings.hpp"
 #include "resource.h"
 
-// forward references
 struct UISettings;
 class LanguageResourceManager;
 
@@ -58,7 +56,7 @@ namespace UI
       friend CDialogResize<GeneralSettingsPage>;
 
       BEGIN_DDX_MAP(GeneralSettingsPage)
-         DDX_CONTROL(IDC_SETTINGS_COMBO_LANGUAGE, m_cbLanguages)
+         DDX_CONTROL(IDC_SETTINGS_COMBO_LANGUAGE, m_comboLanguages)
          DDX_INT(IDC_SETTINGS_EDIT_CPU_CORES, m_settings.m_taskManagerConfig.m_uiUseNumTasks)
          DDX_CONTROL_HANDLE(IDC_SETTINGS_EDIT_CPU_CORES, m_editCpuCores)
          DDX_CONTROL(IDC_SETTINGS_SPIN_CPU_CORES, m_spinCpuCores)
@@ -97,16 +95,16 @@ namespace UI
       /// settings
       UISettings& m_settings;
 
-      /// lang resource manager
+      /// language resource manager
       LanguageResourceManager& m_langResourceManager;
 
       // controls
 
       /// languages combobox
-      ImageListComboBox m_cbLanguages;
+      ImageListComboBox m_comboLanguages;
 
       /// icons for language flags
-      CImageList m_ilIcons;
+      CImageList m_imageListIcons;
 
       /// edit control with number of CPU cores
       CEdit m_editCpuCores;

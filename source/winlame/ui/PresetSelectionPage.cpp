@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -76,7 +76,7 @@ LRESULT PresetSelectionPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HW
 LRESULT PresetSelectionPage::OnSelItemChanged(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
    // set new description
-   int index = m_lbPresets.GetCurSel();
+   int index = m_listBoxPresets.GetCurSel();
    if (index == LB_ERR)
       return 0;
 
@@ -96,7 +96,7 @@ LRESULT PresetSelectionPage::OnSelItemChanged(WORD wNotifyCode, WORD wID, HWND h
 LRESULT PresetSelectionPage::OnLButtonDblClk(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
 #ifdef _DEBUG // only in debug mode
-   int index = m_lbPresets.GetCurSel();
+   int index = m_listBoxPresets.GetCurSel();
 
    // edit doubleclicked item
    if (index != 0)
@@ -109,17 +109,17 @@ LRESULT PresetSelectionPage::OnLButtonDblClk(WORD wNotifyCode, WORD wID, HWND hW
 void PresetSelectionPage::LoadData()
 {
    // fill listbox
-   CString cszText(MAKEINTRESOURCE(IDS_PRESETS_CUSTOM_SETTINGS));
-   m_lbPresets.AddString(cszText);
+   CString text(MAKEINTRESOURCE(IDS_PRESETS_CUSTOM_SETTINGS));
+   m_listBoxPresets.AddString(text);
 
    size_t max = m_presetManager.getPresetCount();
-   for (size_t i = 0; i<max; i++)
-      m_lbPresets.AddString(m_presetManager.getPresetName(i).c_str());
+   for (size_t i = 0; i < max; i++)
+      m_listBoxPresets.AddString(m_presetManager.getPresetName(i).c_str());
 
-   if (m_uiSettings.m_iLastSelectedPresetIndex >= m_lbPresets.GetCount())
+   if (m_uiSettings.m_iLastSelectedPresetIndex >= m_listBoxPresets.GetCount())
       m_uiSettings.m_iLastSelectedPresetIndex = 1; // preset 1 is the "best practice" preset
 
-   m_lbPresets.SetCurSel(m_uiSettings.m_iLastSelectedPresetIndex);
+   m_listBoxPresets.SetCurSel(m_uiSettings.m_iLastSelectedPresetIndex);
 
    BOOL dummy;
    OnSelItemChanged(0, 0, GetDlgItem(IDC_PRE_LIST_PRESET), dummy);
@@ -130,7 +130,7 @@ void PresetSelectionPage::SaveData()
    // set default values
    m_presetManager.setDefaultSettings(m_uiSettings.settings_manager);
 
-   m_uiSettings.m_iLastSelectedPresetIndex = m_lbPresets.GetCurSel();
+   m_uiSettings.m_iLastSelectedPresetIndex = m_listBoxPresets.GetCurSel();
 
    // set selected preset
    if (m_uiSettings.m_iLastSelectedPresetIndex != 0)

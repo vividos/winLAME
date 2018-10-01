@@ -48,9 +48,9 @@ InputCDPage::InputCDPage(WizardPageHost& pageHost)
       pageHost.IsClassicMode() ? WizardPage::typeCancelBackNext : WizardPage::typeCancelNext),
    m_uiSettings(IoCContainer::Current().Resolve<UISettings>()),
    m_pageWidth(0),
-   m_bEditedTrack(false),
-   m_bDriveActive(false),
-   m_bAcquiredDiscInfo(false)
+   m_editedTrack(false),
+   m_driveActive(false),
+   m_acquiredDiscInfo(false)
 {
 }
 
@@ -79,12 +79,12 @@ LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
    // genre combobox
    LPCTSTR* apszGenre = Encoder::TrackInfo::GetGenreList();
    for (unsigned int i = 0, iMax = Encoder::TrackInfo::GetGenreListLength(); i < iMax; i++)
-      m_cbGenre.AddString(apszGenre[i]);
+      m_comboGenre.AddString(apszGenre[i]);
 
    m_buttonPlay.EnableWindow(false);
    m_buttonStop.EnableWindow(false);
 
-   m_bEditedTrack = false;
+   m_editedTrack = false;
 
    PostMessage(WM_TIMER, IDT_CDRIP_CHECK);
 
@@ -107,6 +107,10 @@ LRESULT InputCDPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndC
 
 LRESULT InputCDPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
+   KillTimer(IDT_CDRIP_CHECK);
+
+   StoreSettings();
+
    if (m_pageHost.IsClassicMode())
       m_pageHost.SetWizardPage(std::make_shared<ClassicModeStartPage>(m_pageHost));
 
@@ -173,18 +177,18 @@ LRESULT InputCDPage::OnListItemChanged(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHa
 
    // when a check was changed of a selected item, change the check boxes of
    // the selected items, too
-   if (m_lcTracks.GetItemState(nmListView.iItem, LVIS_SELECTED) != 0)
+   if (m_listTracks.GetItemState(nmListView.iItem, LVIS_SELECTED) != 0)
    {
       s_ignoreChangedMessage = true;
 
-      for (int itemIndex = 0; itemIndex < m_lcTracks.GetItemCount(); itemIndex++)
+      for (int itemIndex = 0; itemIndex < m_listTracks.GetItemCount(); itemIndex++)
       {
          if (nmListView.iItem == itemIndex)
             continue; // ignore currently changed list item
 
          // only change selected lines
-         if (m_lcTracks.GetItemState(itemIndex, LVIS_SELECTED) != 0)
-            m_lcTracks.SetCheckState(itemIndex, isChecked);
+         if (m_listTracks.GetItemState(itemIndex, LVIS_SELECTED) != 0)
+            m_listTracks.SetCheckState(itemIndex, isChecked);
       }
 
       s_ignoreChangedMessage = false;
@@ -195,17 +199,17 @@ LRESULT InputCDPage::OnListItemChanged(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHa
 
 LRESULT InputCDPage::OnClickedButtonPlay(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-   DWORD nDrive = GetCurrentDrive();
-   if (nDrive == INVALID_DRIVE_ID)
+   DWORD driveIndex = GetCurrentDrive();
+   if (driveIndex == INVALID_DRIVE_ID)
       return 0;
 
-   int nItem = m_lcTracks.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
+   int itemIndex = m_listTracks.GetNextItem(-1, LVNI_ALL | LVNI_SELECTED);
 
-   if (nItem < 0) nItem = 0; // no track selected? play first one
+   if (itemIndex < 0) itemIndex = 0; // no track selected? play first one
 
-   DWORD nTrack = m_lcTracks.GetItemData(nItem);
+   DWORD trackIndex = m_listTracks.GetItemData(itemIndex);
 
-   BASS_CD_Analog_Play(nDrive, nTrack, 0);
+   BASS_CD_Analog_Play(driveIndex, trackIndex, 0);
 
    m_buttonStop.EnableWindow(true);
 
@@ -214,11 +218,11 @@ LRESULT InputCDPage::OnClickedButtonPlay(WORD /*wNotifyCode*/, WORD /*wID*/, HWN
 
 LRESULT InputCDPage::OnClickedButtonStop(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-   DWORD nDrive = GetCurrentDrive();
-   if (nDrive == INVALID_DRIVE_ID)
+   DWORD driveIndex = GetCurrentDrive();
+   if (driveIndex == INVALID_DRIVE_ID)
       return 0;
 
-   BASS_CD_Analog_Stop(nDrive);
+   BASS_CD_Analog_Stop(driveIndex);
 
    m_buttonStop.EnableWindow(false);
 
@@ -270,7 +274,7 @@ LRESULT InputCDPage::OnClickedCheckVariousArtists(WORD wNotifyCode, WORD wID, HW
 
 LRESULT InputCDPage::OnChangedEditCtrl(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
-   m_bEditedTrack = true;
+   m_editedTrack = true;
 
    return 0;
 }
@@ -281,138 +285,138 @@ LRESULT InputCDPage::OnEndLabelEdit(int idCtrl, LPNMHDR pnmh, BOOL& bHandled)
    if (pLvDispInfo->item.iItem == -1)
       return 0;
 
-   m_bEditedTrack = true;
+   m_editedTrack = true;
 
    return 1;
 }
+
 void InputCDPage::SetupDriveCombobox()
 {
-   unsigned int nDriveCount = 0;
+   unsigned int driveCount = 0;
 
-   for (DWORD n = 0; n < 26; n++)
+   for (DWORD drive = 0; drive < 26; drive++)
    {
       BASS_CD_INFO info = { 0 };
-      BOOL bRet = BASS_CD_GetInfo(n, &info);
-      if (bRet == FALSE)
+      BOOL ret = BASS_CD_GetInfo(drive, &info);
+      if (ret == FALSE)
          break;
 
-      CString cszDriveDescription(info.product);
-      DWORD nLetter = info.letter;
+      CString driveDescription(info.product);
+      DWORD letter = info.letter;
 
-      if (!cszDriveDescription.IsEmpty())
+      if (!driveDescription.IsEmpty())
       {
-         CString cszText;
+         CString text;
 
-         if (nLetter == -1)
-            cszText = cszDriveDescription; // couldn't get drive letter; restricted user account
+         if (letter == -1)
+            text = driveDescription; // couldn't get drive letter; restricted user account
          else
-            cszText.Format(_T("[%c:] %s"), static_cast<char>(_T('A') + nLetter), cszDriveDescription.GetString());
+            text.Format(_T("[%c:] %s"), static_cast<char>(_T('A') + letter), driveDescription.GetString());
 
-         int nItem = m_cbDrives.AddString(cszText);
-         m_cbDrives.SetItemData(nItem, n);
+         int itemIndex = m_comboDrives.AddString(text);
+         m_comboDrives.SetItemData(itemIndex, drive);
 
-         nDriveCount++;
+         driveCount++;
       }
    }
 
-   m_cbDrives.SetCurSel(0);
+   m_comboDrives.SetCurSel(0);
 
    // hide drive combobox when only one drive present
-   if (nDriveCount <= 1)
+   if (driveCount <= 1)
       HideDriveCombobox();
 }
 
 void InputCDPage::HideDriveCombobox()
 {
    CRect rcCombo, rcList;
-   m_cbDrives.GetWindowRect(rcCombo);
-   m_lcTracks.GetWindowRect(rcList);
+   m_comboDrives.GetWindowRect(rcCombo);
+   m_listTracks.GetWindowRect(rcList);
    rcList.top = rcCombo.top;
    ScreenToClient(rcList);
-   m_lcTracks.MoveWindow(rcList);
+   m_listTracks.MoveWindow(rcList);
 
-   m_cbDrives.ShowWindow(SW_HIDE);
-   m_lcTracks.SetFocus();
+   m_comboDrives.ShowWindow(SW_HIDE);
+   m_listTracks.SetFocus();
 }
 
 void InputCDPage::SetupTracksList()
 {
-   // tracks list
-   m_lcTracks.SetExtendedListViewStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT, 0);
+   m_listTracks.SetExtendedListViewStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT, 0);
 
-   CString cszText(MAKEINTRESOURCE(IDS_CDRIP_COLUMN_NR));
-   m_lcTracks.InsertColumn(0, cszText, LVCFMT_LEFT, 40, 0);
-   cszText.LoadString(IDS_CDRIP_COLUMN_TRACK);
-   m_lcTracks.InsertColumn(1, cszText, LVCFMT_LEFT, 240, 0);
-   cszText.LoadString(IDS_CDRIP_COLUMN_LENGTH);
-   m_lcTracks.InsertColumn(2, cszText, LVCFMT_LEFT, 60, 0);
+   CString text(MAKEINTRESOURCE(IDS_CDRIP_COLUMN_NR));
+   m_listTracks.InsertColumn(0, text, LVCFMT_LEFT, 40, 0);
+   text.LoadString(IDS_CDRIP_COLUMN_TRACK);
+   m_listTracks.InsertColumn(1, text, LVCFMT_LEFT, 240, 0);
+   text.LoadString(IDS_CDRIP_COLUMN_LENGTH);
+   m_listTracks.InsertColumn(2, text, LVCFMT_LEFT, 60, 0);
 
-   cszText.LoadString(IDS_CDRIP_UNKNOWN_ARTIST);
-   SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, cszText);
-   cszText.LoadString(IDS_CDRIP_UNKNOWN_TITLE);
-   SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, cszText);
+   text.LoadString(IDS_CDRIP_UNKNOWN_ARTIST);
+   SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, text);
+   text.LoadString(IDS_CDRIP_UNKNOWN_TITLE);
+   SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, text);
 }
 
 void InputCDPage::ResizeListCtrlColumns(int dx)
 {
-   int column1Width = m_lcTracks.GetColumnWidth(1);
+   int column1Width = m_listTracks.GetColumnWidth(1);
    column1Width += dx;
 
-   m_lcTracks.SetColumnWidth(1, column1Width);
+   m_listTracks.SetColumnWidth(1, column1Width);
 }
 
 DWORD InputCDPage::GetCurrentDrive()
 {
-   int nSel = m_cbDrives.GetCurSel();
+   int nSel = m_comboDrives.GetCurSel();
    if (nSel == -1)
       return INVALID_DRIVE_ID;
 
-   return m_cbDrives.GetItemData(nSel);
+   return m_comboDrives.GetItemData(nSel);
 }
 
 void InputCDPage::RefreshCDList()
 {
    CWaitCursor waitCursor;
 
-   RedrawLock lock(m_lcTracks);
-   m_lcTracks.DeleteAllItems();
+   RedrawLock lock(m_listTracks);
+   m_listTracks.DeleteAllItems();
 
    m_buttonPlay.EnableWindow(false);
 
-   DWORD nDrive = GetCurrentDrive();
-   if (nDrive == INVALID_DRIVE_ID)
+   DWORD driveIndex = GetCurrentDrive();
+   if (driveIndex == INVALID_DRIVE_ID)
       return;
 
-   m_bEditedTrack = false;
+   m_editedTrack = false;
 
-   if (FALSE == BASS_CD_IsReady(nDrive))
+   if (FALSE == BASS_CD_IsReady(driveIndex))
    {
-      m_bDriveActive = false;
-      return;
-   }
-
-   m_bDriveActive = true;
-
-   DWORD uMaxCDTracks = BASS_CD_GetTracks(nDrive);
-   if (uMaxCDTracks == DWORD(-1))
-   {
+      m_driveActive = false;
       return;
    }
 
-   for (DWORD n = 0; n < uMaxCDTracks; n++)
-   {
-      CString cszText;
-      cszText.Format(_T("%lu"), n + 1);
+   m_driveActive = true;
 
-      DWORD nLength = BASS_CD_GetTrackLength(nDrive, n);
+   DWORD maxCDTracks = BASS_CD_GetTracks(driveIndex);
+   if (maxCDTracks == DWORD(-1))
+   {
+      return;
+   }
+
+   for (DWORD n = 0; n < maxCDTracks; n++)
+   {
+      CString text;
+      text.Format(_T("%lu"), n + 1);
+
+      DWORD nLength = BASS_CD_GetTrackLength(driveIndex, n);
       bool bDataTrack = (nLength == 0xFFFFFFFF && BASS_ERROR_NOTAUDIO == BASS_ErrorGetCode());
 
-      int nItem = m_lcTracks.InsertItem(m_lcTracks.GetItemCount(), cszText);
-      m_lcTracks.SetItemData(nItem, n);
-      m_lcTracks.SetCheckState(nItem, true);
+      int nItem = m_listTracks.InsertItem(m_listTracks.GetItemCount(), text);
+      m_listTracks.SetItemData(nItem, n);
+      m_listTracks.SetCheckState(nItem, true);
 
-      cszText.Format(IDS_CDRIP_TRACK_U, n + 1);
-      m_lcTracks.SetItemText(nItem, 1, cszText);
+      text.Format(IDS_CDRIP_TRACK_U, n + 1);
+      m_listTracks.SetItemText(nItem, 1, text);
 
       if (!bDataTrack)
       {
@@ -420,38 +424,38 @@ void InputCDPage::RefreshCDList()
          {
             nLength /= 176400;
 
-            cszText.Format(_T("%lu:%02lu"), nLength / 60, nLength % 60);
-            m_lcTracks.SetItemText(nItem, 2, cszText);
+            text.Format(_T("%lu:%02lu"), nLength / 60, nLength % 60);
+            m_listTracks.SetItemText(nItem, 2, text);
          }
          else
          {
-            cszText.LoadString(IDS_CDRIP_TRACKTYPE_UNKNOWN);
-            m_lcTracks.SetItemText(nItem, 2, cszText);
+            text.LoadString(IDS_CDRIP_TRACKTYPE_UNKNOWN);
+            m_listTracks.SetItemText(nItem, 2, text);
          }
       }
       else
       {
-         cszText.LoadString(IDS_CDRIP_TRACKTYPE_DATA);
-         m_lcTracks.SetItemText(nItem, 2, cszText);
+         text.LoadString(IDS_CDRIP_TRACKTYPE_DATA);
+         m_listTracks.SetItemText(nItem, 2, text);
       }
    }
 
-   if (uMaxCDTracks > 0)
+   if (maxCDTracks > 0)
       m_buttonPlay.EnableWindow(true);
 
-   bool bVarious = false;
-   if (!ReadCachedCDDB(bVarious))
-      if (!ReadCdplayerIni(bVarious))
-         ReadCDText(bVarious);
+   bool variousArtists = false;
+   if (!ReadCachedCDDB(variousArtists))
+      if (!ReadCdplayerIni(variousArtists))
+         ReadCDText(variousArtists);
 
    // check or uncheck "various artists"
-   m_checkVariousArtists.SetCheck(bVarious ? BST_CHECKED : BST_UNCHECKED);
+   m_checkVariousArtists.SetCheck(variousArtists ? BST_CHECKED : BST_UNCHECKED);
    UpdateVariousArtistsCheck();
 
-   m_bEditedTrack = false;
+   m_editedTrack = false;
 }
 
-bool InputCDPage::ReadCachedCDDB(bool& bVarious)
+bool InputCDPage::ReadCachedCDDB(bool& variousArtists)
 {
    DWORD driveIndex = GetCurrentDrive();
 
@@ -460,90 +464,90 @@ bool InputCDPage::ReadCachedCDDB(bool& bVarious)
       return false;
 
    FreedbInfo info(UTF8ToString(entry));
-   FillListFreedbInfo(info, bVarious);
+   FillListFreedbInfo(info, variousArtists);
 
-   m_bAcquiredDiscInfo = true;
+   m_acquiredDiscInfo = true;
 
    return true;
 }
 
-bool InputCDPage::ReadCdplayerIni(bool& bVarious)
+bool InputCDPage::ReadCdplayerIni(bool& variousArtists)
 {
    // retrieve info from cdplayer.ini
-   CString cszCDPlayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini")).ToString();
+   CString cdplayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini")).ToString();
 
-   DWORD nDrive = GetCurrentDrive();
+   DWORD driveIndex = GetCurrentDrive();
 
-   DWORD uMaxCDTracks = BASS_CD_GetTracks(nDrive);
+   DWORD maxCDTracks = BASS_CD_GetTracks(driveIndex);
 
-   const char* cdplayer_id_raw = BASS_CD_GetID(nDrive, BASS_CDID_CDPLAYER);
+   const char* cdplayer_id_raw = BASS_CD_GetID(driveIndex, BASS_CDID_CDPLAYER);
 
    CString cdplayer_id(cdplayer_id_raw);
 
-   IniFile ini(cszCDPlayerIniFilename);
+   IniFile ini(cdplayerIniFilename);
 
-   unsigned int nNumTracks = 0;
-   if (cdplayer_id_raw != NULL &&
-      0 != (nNumTracks = ini.GetInt(cdplayer_id, _T("numtracks"), 0)))
+   unsigned int numTracks = 0;
+   if (cdplayer_id_raw != nullptr &&
+      0 != (numTracks = ini.GetInt(cdplayer_id, _T("numtracks"), 0)))
    {
-      CString cszText;
+      CString text;
       // title
-      cszText = ini.GetString(cdplayer_id, _T("title"), _T("[]#"));
+      text = ini.GetString(cdplayer_id, _T("title"), _T("[]#"));
 
-      if (cszText != _T("[]#"))
-         SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, cszText);
+      if (text != _T("[]#"))
+         SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, text);
 
       // artist
-      cszText = ini.GetString(cdplayer_id, _T("artist"), _T("[]#"));
+      text = ini.GetString(cdplayer_id, _T("artist"), _T("[]#"));
 
-      if (cszText != _T("[]#"))
-         SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, cszText);
+      if (text != _T("[]#"))
+         SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, text);
 
-      CString textLower(cszText);
+      CString textLower(text);
       textLower.MakeLower();
       if (-1 != textLower.Find(_T("various")))
-         bVarious = true;
+         variousArtists = true;
 
       // year
-      cszText = ini.GetString(cdplayer_id, _T("year"), _T("[]#"));
+      text = ini.GetString(cdplayer_id, _T("year"), _T("[]#"));
 
-      if (cszText != _T("[]#"))
-         SetDlgItemText(IDC_CDSELECT_EDIT_YEAR, cszText);
+      if (text != _T("[]#"))
+         SetDlgItemText(IDC_CDSELECT_EDIT_YEAR, text);
 
       // genre
-      cszText = ini.GetString(cdplayer_id, _T("genre"), _T("[]#"));
+      text = ini.GetString(cdplayer_id, _T("genre"), _T("[]#"));
 
-      if (cszText != _T("[]#"))
+      if (text != _T("[]#"))
       {
-         int nItem = m_cbGenre.FindStringExact(-1, cszText);
+         int nItem = m_comboGenre.FindStringExact(-1, text);
          if (nItem == CB_ERR)
-            nItem = m_cbGenre.AddString(cszText);
+            nItem = m_comboGenre.AddString(text);
 
-         m_cbGenre.SetCurSel(nItem);
+         m_comboGenre.SetCurSel(nItem);
       }
 
       // limit to actual number of tracks in list
-      if (nNumTracks > uMaxCDTracks)
-         nNumTracks = uMaxCDTracks;
+      if (numTracks > maxCDTracks)
+         numTracks = maxCDTracks;
 
       // tracks
-      CString cszNumTrack;
-      for (unsigned int n = 0; n < nNumTracks; n++)
+      CString numTrackText;
+      for (unsigned int n = 0; n < numTracks; n++)
       {
-         cszNumTrack.Format(_T("%u"), n);
+         numTrackText.Format(_T("%u"), n);
 
-         cszText = ini.GetString(cdplayer_id, cszNumTrack, _T("[]#"));
+         text = ini.GetString(cdplayer_id, numTrackText, _T("[]#"));
 
-         if (cszText != _T("[]#"))
+         if (text != _T("[]#"))
          {
-            m_lcTracks.SetItemText(n, 1, cszText);
+            m_listTracks.SetItemText(n, 1, text);
 
-            if (!bVarious && cszText.Find(_T(" / ")) != -1)
-               bVarious = true;
+            if (!variousArtists && text.Find(_T(" / ")) != -1)
+               variousArtists = true;
          }
       }
 
-      m_bAcquiredDiscInfo = true;
+      m_acquiredDiscInfo = true;
 
       return true;
    }
@@ -551,50 +555,49 @@ bool InputCDPage::ReadCdplayerIni(bool& bVarious)
    return false;
 }
 
-void InputCDPage::ReadCDText(bool& bVarious)
+void InputCDPage::ReadCDText(bool& variousArtists)
 {
-   DWORD nDrive = GetCurrentDrive();
+   DWORD driveIndex = GetCurrentDrive();
 
-   DWORD uMaxCDTracks = BASS_CD_GetTracks(nDrive);
+   DWORD maxCDTracks = BASS_CD_GetTracks(driveIndex);
 
-   const CHAR* cdtext = BASS_CD_GetID(nDrive, BASS_CDID_TEXT);
-   if (cdtext != NULL)
+   const CHAR* cdtext = BASS_CD_GetID(driveIndex, BASS_CDID_TEXT);
+   if (cdtext != nullptr)
    {
-      std::vector<CString> vecTitles(uMaxCDTracks + 1);
-      std::vector<CString> vecPerformer(uMaxCDTracks + 1);
+      std::vector<CString> titlesList(maxCDTracks + 1);
+      std::vector<CString> performerList(maxCDTracks + 1);
 
-      CString cszOutput;
       const CHAR* endpos = cdtext;
       do
       {
          while (*endpos++ != 0);
 
-         CString cszText(cdtext);
+         CString text(cdtext);
          if (cdtext == strstr(cdtext, "TITLE"))
          {
-            LPSTR pNext = NULL;
+            LPSTR pNext = nullptr;
             unsigned long uTrack = strtoul(cdtext + 5, &pNext, 10);
-            if (uTrack < uMaxCDTracks + 1)
+            if (uTrack < maxCDTracks + 1)
             {
-               vecTitles[uTrack] = pNext + 1;
-               vecTitles[uTrack].Trim();
+               titlesList[uTrack] = pNext + 1;
+               titlesList[uTrack].Trim();
             }
          }
          if (cdtext == strstr(cdtext, "PERFORMER"))
          {
-            LPSTR pNext = NULL;
+            LPSTR pNext = nullptr;
             unsigned long uPerf = strtoul(cdtext + 9, &pNext, 10);
-            if (uPerf < uMaxCDTracks + 1)
+            if (uPerf < maxCDTracks + 1)
             {
-               vecPerformer[uPerf] = pNext + 1;
-               vecPerformer[uPerf].Trim();
+               performerList[uPerf] = pNext + 1;
+               performerList[uPerf].Trim();
             }
 
             if (uPerf > 0 &&
-               !vecPerformer[uPerf].IsEmpty() &&
-               vecPerformer[0] != vecPerformer[uPerf])
+               !performerList[uPerf].IsEmpty() &&
+               performerList[0] != performerList[uPerf])
             {
-               bVarious = true;
+               variousArtists = true;
             }
          }
 
@@ -602,38 +605,38 @@ void InputCDPage::ReadCDText(bool& bVarious)
       } while (*endpos != 0);
 
       // set title and artist
-      SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, vecTitles[0]);
-      SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, vecPerformer[0]);
+      SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, titlesList[0]);
+      SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, performerList[0]);
 
-      CString cszFormat;
-      for (DWORD n = 1; n < uMaxCDTracks + 1; n++)
+      CString format;
+      for (DWORD n = 1; n < maxCDTracks + 1; n++)
       {
-         if (vecPerformer[n].IsEmpty() ||
-            vecPerformer[n] == vecPerformer[0])
-            cszFormat = vecTitles[n];
+         if (performerList[n].IsEmpty() ||
+            performerList[n] == performerList[0])
+            format = titlesList[n];
          else
-            cszFormat.Format(_T("%s / %s"), vecPerformer[n].GetString(), vecTitles[n].GetString());
+            format.Format(_T("%s / %s"), performerList[n].GetString(), titlesList[n].GetString());
 
-         m_lcTracks.SetItemText(n - 1, 1, cszFormat);
+         m_listTracks.SetItemText(n - 1, 1, format);
       }
 
-      m_bAcquiredDiscInfo = true;
+      m_acquiredDiscInfo = true;
    }
 }
 
 void InputCDPage::CheckCD()
 {
-   DWORD dwDrive = GetCurrentDrive();
-   if (dwDrive == INVALID_DRIVE_ID)
+   DWORD driveIndex = GetCurrentDrive();
+   if (driveIndex == INVALID_DRIVE_ID)
       return;
 
    // check if current track still plays
-   bool bPlaying = BASS_ACTIVE_PLAYING == BASS_CD_Analog_IsActive(dwDrive);
+   bool bPlaying = BASS_ACTIVE_PLAYING == BASS_CD_Analog_IsActive(driveIndex);
    m_buttonStop.EnableWindow(bPlaying);
 
    // check for new cd in drive
-   bool bIsReady = BASS_CD_IsReady(dwDrive) == TRUE;
-   if (m_bDriveActive != bIsReady)
+   bool isReady = BASS_CD_IsReady(driveIndex) == TRUE;
+   if (m_driveActive != isReady)
    {
       RefreshCDList();
    }
@@ -641,16 +644,16 @@ void InputCDPage::CheckCD()
 
 void InputCDPage::StoreSettings()
 {
-   DWORD dwDrive = GetCurrentDrive();
-   if (dwDrive == INVALID_DRIVE_ID)
+   DWORD driveIndex = GetCurrentDrive();
+   if (driveIndex == INVALID_DRIVE_ID)
       return;
 
-   if (m_bEditedTrack)
-      StoreInCdplayerIni(dwDrive);
+   if (m_editedTrack)
+      StoreInCdplayerIni(driveIndex);
 
-   UpdateCDReadJobList(dwDrive);
+   UpdateCDReadJobList(driveIndex);
 
-   UpdatePlaylistFilename(dwDrive);
+   UpdatePlaylistFilename(driveIndex);
 }
 
 void InputCDPage::UpdateVariousArtistsCheck()
@@ -661,33 +664,33 @@ void InputCDPage::UpdateVariousArtistsCheck()
    GetDlgItem(IDC_CDSELECT_STATIC_ARTIST).EnableWindow(isChecked);
 }
 
-void InputCDPage::UpdateCDReadJobList(unsigned int dwDrive)
+void InputCDPage::UpdateCDReadJobList(unsigned int driveIndex)
 {
-   CDRipDiscInfo discInfo = ReadDiscInfo(dwDrive);
+   CDRipDiscInfo discInfo = ReadDiscInfo(driveIndex);
 
    // get all track infos
-   std::vector<DWORD> vecTracks;
+   std::vector<DWORD> tracksList;
 
-   for (int itemIndex = 0; itemIndex < m_lcTracks.GetItemCount(); itemIndex++)
+   for (int itemIndex = 0; itemIndex < m_listTracks.GetItemCount(); itemIndex++)
    {
-      if (!m_lcTracks.GetCheckState(itemIndex))
+      if (!m_listTracks.GetCheckState(itemIndex))
          continue;
 
-      vecTracks.push_back(m_lcTracks.GetItemData(itemIndex));
+      tracksList.push_back(m_listTracks.GetItemData(itemIndex));
    }
 
-   unsigned int nMax = vecTracks.size();
+   unsigned int maxTrack = tracksList.size();
 
-   for (unsigned int n = 0; n < nMax; n++)
+   for (unsigned int n = 0; n < maxTrack; n++)
    {
-      unsigned int nTrack = vecTracks[n];
+      unsigned int numTrack = tracksList[n];
 
-      DWORD nLength = BASS_CD_GetTrackLength(dwDrive, nTrack);
+      DWORD nLength = BASS_CD_GetTrackLength(driveIndex, numTrack);
       bool isDataTrack = (nLength == 0xFFFFFFFF && BASS_ERROR_NOTAUDIO == BASS_ErrorGetCode());
       if (isDataTrack)
          continue;
 
-      CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, nTrack, discInfo);
+      CDRipTrackInfo trackInfo = ReadTrackInfo(driveIndex, numTrack, discInfo);
 
       Encoder::CDReadJob cdReadJob(discInfo, trackInfo);
       cdReadJob.FrontCoverArtImage(m_covertArtImageData);
@@ -726,13 +729,13 @@ CDRipDiscInfo InputCDPage::ReadDiscInfo(DWORD driveIndex)
 
    discInfo.m_year = GetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, NULL, FALSE);
 
-   int nItem = m_cbGenre.GetCurSel();
+   int nItem = m_comboGenre.GetCurSel();
    if (nItem == CB_ERR)
    {
-      m_cbGenre.GetWindowText(discInfo.m_genre);
+      m_comboGenre.GetWindowText(discInfo.m_genre);
    }
    else
-      m_cbGenre.GetLBText(nItem, discInfo.m_genre);
+      m_comboGenre.GetLBText(nItem, discInfo.m_genre);
 
    discInfo.m_variousArtists = BST_CHECKED == m_checkVariousArtists.GetCheck();
 
@@ -752,7 +755,7 @@ CDRipTrackInfo InputCDPage::ReadTrackInfo(DWORD driveIndex, unsigned int trackNu
    trackInfo.m_numTrackOnDisc = trackNum;
 
    CString entry;
-   m_lcTracks.GetItemText(trackNum, 1, entry);
+   m_listTracks.GetItemText(trackNum, 1, entry);
 
    // try to split text by "/" or "-"
    int pos = entry.Find(_T('/'));
@@ -775,31 +778,26 @@ CDRipTrackInfo InputCDPage::ReadTrackInfo(DWORD driveIndex, unsigned int trackNu
    return trackInfo;
 }
 
-void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
+void InputCDPage::StoreInCdplayerIni(unsigned int driveIndex)
 {
    if (!m_uiSettings.store_disc_infos_cdplayer_ini)
       return;
 
-   DWORD dwDrive = GetCurrentDrive();
-   if (dwDrive == INVALID_DRIVE_ID)
-      return;
+   CString cdplayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini")).ToString();
 
-   CString cszCDPlayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini")).ToString();
-
-   const char* cdplayer_id_raw = BASS_CD_GetID(nDrive, BASS_CDID_CDPLAYER);
+   const char* cdplayer_id_raw = BASS_CD_GetID(driveIndex, BASS_CDID_CDPLAYER);
 
    CString cdplayer_id(cdplayer_id_raw);
 
-   CDRipDiscInfo discinfo = ReadDiscInfo(dwDrive);
+   CDRipDiscInfo discinfo = ReadDiscInfo(driveIndex);
 
-   CString cszFormat;
-
-   IniFile ini(cszCDPlayerIniFilename);
+   IniFile ini(cdplayerIniFilename);
 
    // numtracks
-   unsigned int nNumTracks = m_lcTracks.GetItemCount();
-   cszFormat.Format(_T("%u"), nNumTracks);
-   ini.WriteString(cdplayer_id, _T("numtracks"), cszFormat);
+   unsigned int numTracks = m_listTracks.GetItemCount();
+   CString format;
+   format.Format(_T("%u"), numTracks);
+   ini.WriteString(cdplayer_id, _T("numtracks"), format);
 
    // artist
    ini.WriteString(cdplayer_id, _T("artist"), discinfo.m_discArtist);
@@ -810,22 +808,21 @@ void InputCDPage::StoreInCdplayerIni(unsigned int nDrive)
    // year
    if (discinfo.m_year > 0)
    {
-      cszFormat.Format(_T("%u"), discinfo.m_year);
-      ini.WriteString(cdplayer_id, _T("year"), cszFormat);
+      format.Format(_T("%u"), discinfo.m_year);
+      ini.WriteString(cdplayer_id, _T("year"), format);
    }
 
    // genre
    ini.WriteString(cdplayer_id, _T("genre"), discinfo.m_genre);
 
    // tracks
-   CString cszTrackText;
-   for (unsigned int n = 0; n < nNumTracks; n++)
+   for (unsigned int trackIndex = 0; trackIndex < numTracks; trackIndex++)
    {
-      cszFormat.Format(_T("%u"), n);
+      format.Format(_T("%u"), trackIndex);
 
-      CDRipTrackInfo trackInfo = ReadTrackInfo(dwDrive, n, discinfo);
+      CDRipTrackInfo trackInfo = ReadTrackInfo(driveIndex, trackIndex, discinfo);
 
-      ini.WriteString(cdplayer_id, cszFormat, trackInfo.m_trackTitle);
+      ini.WriteString(cdplayer_id, format, trackInfo.m_trackTitle);
    }
 }
 
@@ -887,18 +884,18 @@ void InputCDPage::FreedbLookup()
       m_checkVariousArtists.SetCheck(variousArtists ? BST_CHECKED : BST_UNCHECKED);
       UpdateVariousArtistsCheck();
 
-      m_bAcquiredDiscInfo = true;
+      m_acquiredDiscInfo = true;
    }
 }
 
 void InputCDPage::FillListFreedbInfo(const FreedbInfo& info, bool& variousArtists)
 {
-   CString cszText;
-   unsigned int nMax = info.TrackTitles().size();
-   for (unsigned int n = 0; n < nMax; n++)
+   CString text;
+   unsigned int maxIndex = info.TrackTitles().size();
+   for (unsigned int index = 0; index < maxIndex; index++)
    {
-      cszText = info.TrackTitles()[n];
-      m_lcTracks.SetItemText(n, 1, cszText);
+      text = info.TrackTitles()[index];
+      m_listTracks.SetItemText(index, 1, text);
    }
 
    SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, info.DiscArtist());
@@ -908,14 +905,14 @@ void InputCDPage::FillListFreedbInfo(const FreedbInfo& info, bool& variousArtist
    if (!info.Year().IsEmpty())
       SetDlgItemInt(IDC_CDSELECT_EDIT_YEAR, _ttoi(info.Year()), FALSE);
 
-   CString cszGenre = info.Genre();
-   if (!cszGenre.IsEmpty())
+   CString genre = info.Genre();
+   if (!genre.IsEmpty())
    {
-      int nItem = m_cbGenre.FindStringExact(-1, cszGenre);
+      int nItem = m_comboGenre.FindStringExact(-1, genre);
       if (nItem == CB_ERR)
-         nItem = m_cbGenre.AddString(cszGenre);
+         nItem = m_comboGenre.AddString(genre);
 
-      m_cbGenre.SetCurSel(nItem);
+      m_comboGenre.SetCurSel(nItem);
    }
 
    CString discArtistLower = info.DiscArtist();
