@@ -195,10 +195,10 @@ private:
    /// task details view
    TaskDetailsView m_taskDetailsView;
 
-   // access to task bar
+   /// access to task bar
    boost::optional<Win32::Taskbar> m_win7TaskBar;
 
-   // access to task bar progress bar
+   /// access to task bar progress bar
    boost::optional<Win32::TaskbarProgressBar> m_win7TaskBarProgressBar;
 
    /// indicates if the dialog has been closed to change the app mode to classic mode
