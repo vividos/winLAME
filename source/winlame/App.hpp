@@ -89,8 +89,8 @@ public:
       return AtlMessageBox(hWndOwner, uiMessageId, IDS_APP_CAPTION, uiType);
    }
 
-   /// returns user or machine wide app data folder; ends with backslash
-   static CString AppDataFolder(bool bMachineWide);
+   /// returns user or machine wide app data folder
+   static CString AppDataFolder(bool machineWide);
 
    /// returns app folder; ends with backslash
    static CString AppFolder();

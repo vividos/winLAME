@@ -271,21 +271,14 @@ int App::RunMainFrame(int nCmdShow)
    return nRet;
 }
 
-CString App::AppDataFolder(bool bMachineWide)
+CString App::AppDataFolder(bool machineWide)
 {
-   CString cszAppData;
-
    // CSIDL_APPDATA - user-dependent app data folder
    // CSIDL_COMMON_APPDATA - machine-wide app data folder
-   SHGetFolderPath(NULL,
-      bMachineWide ? CSIDL_COMMON_APPDATA : CSIDL_APPDATA,
-      NULL, SHGFP_TYPE_CURRENT,
-      cszAppData.GetBuffer(MAX_PATH));
-   cszAppData.ReleaseBuffer();
+   CString appDataPath =
+      Path::SpecialFolder(machineWide ? CSIDL_COMMON_APPDATA : CSIDL_APPDATA);
 
-   cszAppData += _T("\\winLAME\\");
-
-   return cszAppData;
+   return Path::Combine(appDataPath, _T("winLAME")).ToString();
 }
 
 CString App::AppFolder()
@@ -313,13 +306,8 @@ CString App::Version()
 
 void App::LoadPresetFile()
 {
-   // CSIDL_APPDATA - user-dependent app data folder
-   // CSIDL_COMMON_APPDATA - machine-wide app data folder
-   CString userSpecificAppFolder = Path::SpecialFolder(CSIDL_APPDATA);
-   CString machineWideAppFolder = Path::SpecialFolder(CSIDL_COMMON_APPDATA);
-
-   userSpecificAppFolder = Path::Combine(userSpecificAppFolder, _T("winLAME")).ToString();
-   machineWideAppFolder = Path::Combine(machineWideAppFolder, _T("winLAME")).ToString();
+   CString userSpecificAppFolder = AppDataFolder(false);
+   CString machineWideAppFolder = AppDataFolder(true);
 
    // first, check if user has left a presets.xml around in the .exe folder
    CString presetFilename = Path::Combine(AppFolder(), _T("presets.xml")).ToString();
