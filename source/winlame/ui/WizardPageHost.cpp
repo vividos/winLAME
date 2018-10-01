@@ -46,6 +46,8 @@ void WizardPageHost::SetWizardPage(std::shared_ptr<WizardPage> spCurrentPage)
 
 int WizardPageHost::Run(HWND hWndParent)
 {
+   _Module.AddMessageLoop(this);
+
    // note: parent must be disabled after creating dialog, and enabled before
    // destroying dialog.
    // see http://blogs.msdn.com/b/oldnewthing/archive/2004/02/27/81155.aspx
@@ -62,6 +64,8 @@ int WizardPageHost::Run(HWND hWndParent)
    ::EnableWindow(hWndParent, TRUE);
 
    DestroyWindow();
+
+   _Module.RemoveMessageLoop();
 
    return iRet;
 }
