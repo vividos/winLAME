@@ -52,40 +52,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="classic\CDRipDlg.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classic\CDRipPage.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="classic\CommonStuff.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classic\EncodePage.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classic\InputPage.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classic\LameSimpleSettingsPage.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classic\MainDlg.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classic\OptionsDlg.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classic\OutputPage.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classic\PresetsPage.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classic\WaveOutputSettingsPage.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classic\WmaOutputSettingsPage.cpp">
       <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="preset\PresetManagerImpl.cpp">
@@ -163,9 +130,6 @@
     <ClCompile Include="ui\LibsndfileSettingsPage.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="classic\OggVorbisSettingsPage_old.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ui\AboutDlg.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
@@ -199,9 +163,6 @@
     <ClCompile Include="ui\OpusSettingsPage.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="classic\OpusSettingsPage_old.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FreedbInfo.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
@@ -219,9 +180,6 @@
     </ClCompile>
     <ClCompile Include="UI\CoverArtDlg.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classic\AacSettingsPageClassic.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ui\TaskDetailsView.cpp">
       <Filter>Modern UI Files\Source Files</Filter>
@@ -396,54 +354,6 @@
     <ClInclude Include="TaskCreationHelper.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="classic\CDRipDlg.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\CDRipPage.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\EncodePage.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\ErrorDlg.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\InputPage.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\LameSimpleSettingsPage.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\MainDlg.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\OggVorbisSettingsPage.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\OptionsDlg.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\OpusSettingsPage.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\OutputPage.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\WmaOutputSettingsPage.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\WaveOutputSettingsPage.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\SystemTrayIcon.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\PresetsPage.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\PageBase.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="classic\CommonStuff.hpp">
       <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
@@ -458,9 +368,6 @@
     </ClInclude>
     <ClInclude Include="CoverArtArchive.hpp">
       <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classic\AacSettingsPageClassic.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ui\TaskDetailsView.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
