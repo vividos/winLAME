@@ -80,8 +80,8 @@ LRESULT FinishPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCt
 {
    if (m_pageHost.IsClassicMode())
       m_pageHost.SetWizardPage(std::make_shared<ClassicModeEncoderPage>(m_pageHost));
-   else
-      m_helper.AddTasks();
+
+   m_helper.AddTasks();
 
    return 0;
 }
