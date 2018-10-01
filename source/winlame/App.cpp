@@ -21,7 +21,6 @@
 
 #include "StdAfx.h"
 #include "App.hpp"
-#include "MainDlg.hpp"
 #include "ui/MainFrame.hpp"
 #include "ui/WizardPageHost.hpp"
 #include "classic/ClassicModeStartPage.hpp"
@@ -196,11 +195,14 @@ int App::Run(LPTSTR lpstrCmdLine, int nCmdShow)
 
 void App::RunClassicDialog()
 {
-   // start dialog
-   ClassicUI::MainDlg dlg(m_settings, m_langResourceManager);
-   dlg.RunDialog();
+   UI::WizardPageHost host(true);
 
-   if (!dlg.IsAppModeChanged())
+   std::shared_ptr<UI::WizardPage> wizardPage = GetClassicModeStartWizardPage(host);
+
+   host.SetWizardPage(wizardPage);
+   host.Run(nullptr);
+
+   if (!host.IsAppModeChanged())
       m_exit = true;
 }
 
