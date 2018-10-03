@@ -3,7 +3,6 @@ TODO list for winLAME
 winLAME 2018 beta 1, feature wishes:
 - encoding of whole directory structure to another folder
 - integrate mpg123 library instead of MAD
-- use libopusenc instead of opus-tools static library
 
 winLAME 2018 beta 1, nice-to-have:
 - remove code TODOs
@@ -11,7 +10,6 @@ winLAME 2018 beta 1, nice-to-have:
 - fix remaining SonarQube bugs and vulnerabilities
 - update to latest libfaad/libfaac
 - update to libsndfile-1.0.29 for fixed FLAC support, once released
-- check all tooltip texts
 - save all settings on custom module settings pages
 - support multiple subfolders in cd title format strings
 - add CD eject button
@@ -20,8 +18,10 @@ winLAME 2018 beta 1, tests:
 - fuzz testing using WinAFL and standalone cmdline executable
 - tests running with Wine on Ubuntu Linux
 
+winLAME 2019:
+- remove Classic UI mode
+- remove toolbar mode
+- remove unused resources
+
 future versions:
-- do "processing" page to resample, normalize, etc.
-- mp3 libmad dither
 - ID3 tag editor
-- ReplayGain
