@@ -60,6 +60,7 @@ EncoderImpl::~EncoderImpl()
          m_workerThread->join();
          m_workerThread.reset();
       }
+      // NOSONAR
       catch (const std::exception& ex)
       {
          UNUSED(ex);

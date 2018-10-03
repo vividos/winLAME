@@ -88,6 +88,8 @@ HttpResponse HttpClient::Request(const std::string& host, const std::string& pat
    {
       std::stringstream message;
       message << "Response returned with status code " << httpResponse.status_code;
+
+      // NOSONAR
       throw std::runtime_error(message.str());
    }
 

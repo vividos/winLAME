@@ -31,7 +31,7 @@
 #undef min
 #undef max
 
-#include "..\StdCppLib.hpp"
+#include "../StdCppLib.hpp"
 
 /// define that is used to mark unused parameters or parameters only used in ATLASSERTs
 #ifndef UNUSED

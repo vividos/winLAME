@@ -61,9 +61,10 @@ bool PresetManagerImpl::loadPreset(LPCTSTR filename)
    {
       m_presetsDocument.parse<0>(m_presetsXmlFileContents.data());
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
-      ex;
+      UNUSED(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
       return false;
    }
@@ -113,9 +114,10 @@ void PresetManagerImpl::setFacility(LPCTSTR facilityName)
          facilityNode = facilityNode->next_sibling("facility");
       }
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
-      ex;
+      UNUSED(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 }
@@ -138,9 +140,10 @@ std::tstring PresetManagerImpl::getPresetName(size_t index)
 
       ret = convertFromUtf8(name);
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
-      ex;
+      UNUSED(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
@@ -159,9 +162,10 @@ std::tstring PresetManagerImpl::getPresetDescription(size_t index)
 
       ret = convertFromUtf8(desc);
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
-      ex;
+      UNUSED(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
@@ -174,7 +178,10 @@ std::tstring PresetManagerImpl::getPresetDescription(size_t index)
       int dist = 0;
       while (pos < len && (ret.at(pos) == ' ' || ret.at(pos) == '\t' ||
          (first && ret.at(pos) == '\n')))
-         dist++, pos++;
+      {
+         dist++;
+         pos++;
+      }
 
       first = false;
 
@@ -208,7 +215,9 @@ std::tstring PresetManagerImpl::getPresetDescription(size_t index)
       }
 
       // insert \r before \n
-      ret.insert((len++, pos++), 1, '\r');
+      ret.insert(pos, 1, '\r');
+      len++;
+      pos++;
    }
 
    // trim last \r\n
@@ -250,9 +259,10 @@ void PresetManagerImpl::setSettings(size_t index, SettingsManager& settingsManag
          settingsManager.setValue(static_cast<unsigned short>(valueID), atoi(value.c_str()));
       }
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
-      ex;
+      UNUSED(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 }
@@ -315,9 +325,10 @@ int PresetManagerImpl::GetItemCount(int group)
          presetValueCount++;
       }
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
-      ex;
+      UNUSED(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
@@ -340,9 +351,10 @@ std::tstring PresetManagerImpl::GetItemName(int group, int index)
       if (id != -1)
          ret = mgr_variables.lookupDescription(id);
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
-      ex;
+      UNUSED(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
@@ -365,9 +377,10 @@ std::tstring PresetManagerImpl::GetItemValue(int group, int index)
 
       ret = CString(value.c_str());
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
-      ex;
+      UNUSED(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 
@@ -406,9 +419,10 @@ rapidxml::xml_node<char>* PresetManagerImpl::getPresetValueNode(int group, int i
          presetValueIndex++;
       }
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
-      ex;
+      UNUSED(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
    }
 

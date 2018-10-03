@@ -302,7 +302,7 @@ void TaskManager::RunThread(boost::asio::io_service& ioService, unsigned int thr
    }
    catch (boost::system::system_error& error)
    {
-      error;
+      UNUSED(error);
       ATLTRACE(_T("system_error: %hs\n"), error.what());
       ATLASSERT(false);
    }
@@ -336,6 +336,7 @@ void TaskManager::RunTask(std::shared_ptr<Task> spTask)
    {
       spTask->Run();
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
       errorText.Format(_T("Exception: %hs"), ex.what());

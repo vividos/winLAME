@@ -257,15 +257,15 @@ void InputFilesPage::SetupListCtrl()
    columnNames[3].LoadString(IDS_INPUT_LIST_COLNAME4);
 
    // insert list ctrl columns
-   double aSizes[4] = { 0.57, 0.17, 0.15, 0.11 };
-
-   LVCOLUMN lvColumn = { LVCF_TEXT | LVCF_WIDTH, 0, 0, NULL, 0, 0 };
+   double columnSizes[4] = { 0.57, 0.17, 0.15, 0.11 };
 
    for (int i = 0; i < 4; i++)
    {
-      lvColumn.cx = int(width * aSizes[i]);
-      lvColumn.pszText = const_cast<LPTSTR>(columnNames[i].GetString());
-      m_listViewInputFiles.InsertColumn(i, &lvColumn);
+      m_listViewInputFiles.InsertColumn(
+         i,
+         columnNames[i],
+         LVCFMT_LEFT,
+         int(width * columnSizes[i]));
    }
 
    // set extended list ctrl styles
@@ -338,7 +338,7 @@ void InputFilesPage::OnRetrievedAudioFileInfo(const CString& filename, bool erro
       m_audioFileInfoManager.Stop();
 
       // TODO output message
-      errorMessage;
+      UNUSED(errorMessage);
    }
 
    AudioFileEntry* entry = new AudioFileEntry;

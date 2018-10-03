@@ -482,77 +482,77 @@ bool InputCDPage::ReadCdplayerIni(bool& variousArtists)
 
    const char* cdplayer_id_raw = BASS_CD_GetID(driveIndex, BASS_CDID_CDPLAYER);
 
+   if (cdplayer_id_raw == nullptr)
+      return false;
+
    CString cdplayer_id(cdplayer_id_raw);
 
    IniFile ini(cdplayerIniFilename);
 
-   unsigned int numTracks = 0;
-   if (cdplayer_id_raw != nullptr &&
-      0 != (numTracks = ini.GetInt(cdplayer_id, _T("numtracks"), 0)))
+   unsigned int numTracks = ini.GetInt(cdplayer_id, _T("numtracks"), 0);
+   if (numTracks == 0)
+      return false;
+
+   CString text;
+   // title
+   text = ini.GetString(cdplayer_id, _T("title"), _T("[]#"));
+
+   if (text != _T("[]#"))
+      SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, text);
+
+   // artist
+   text = ini.GetString(cdplayer_id, _T("artist"), _T("[]#"));
+
+   if (text != _T("[]#"))
+      SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, text);
+
+   CString textLower(text);
+   textLower.MakeLower();
+   if (-1 != textLower.Find(_T("various")))
+      variousArtists = true;
+
+   // year
+   text = ini.GetString(cdplayer_id, _T("year"), _T("[]#"));
+
+   if (text != _T("[]#"))
+      SetDlgItemText(IDC_CDSELECT_EDIT_YEAR, text);
+
+   // genre
+   text = ini.GetString(cdplayer_id, _T("genre"), _T("[]#"));
+
+   if (text != _T("[]#"))
    {
-      CString text;
-      // title
-      text = ini.GetString(cdplayer_id, _T("title"), _T("[]#"));
+      int nItem = m_comboGenre.FindStringExact(-1, text);
+      if (nItem == CB_ERR)
+         nItem = m_comboGenre.AddString(text);
 
-      if (text != _T("[]#"))
-         SetDlgItemText(IDC_CDSELECT_EDIT_TITLE, text);
-
-      // artist
-      text = ini.GetString(cdplayer_id, _T("artist"), _T("[]#"));
-
-      if (text != _T("[]#"))
-         SetDlgItemText(IDC_CDSELECT_EDIT_ARTIST, text);
-
-      CString textLower(text);
-      textLower.MakeLower();
-      if (-1 != textLower.Find(_T("various")))
-         variousArtists = true;
-
-      // year
-      text = ini.GetString(cdplayer_id, _T("year"), _T("[]#"));
-
-      if (text != _T("[]#"))
-         SetDlgItemText(IDC_CDSELECT_EDIT_YEAR, text);
-
-      // genre
-      text = ini.GetString(cdplayer_id, _T("genre"), _T("[]#"));
-
-      if (text != _T("[]#"))
-      {
-         int nItem = m_comboGenre.FindStringExact(-1, text);
-         if (nItem == CB_ERR)
-            nItem = m_comboGenre.AddString(text);
-
-         m_comboGenre.SetCurSel(nItem);
-      }
-
-      // limit to actual number of tracks in list
-      if (numTracks > maxCDTracks)
-         numTracks = maxCDTracks;
-
-      // tracks
-      CString numTrackText;
-      for (unsigned int n = 0; n < numTracks; n++)
-      {
-         numTrackText.Format(_T("%u"), n);
-
-         text = ini.GetString(cdplayer_id, numTrackText, _T("[]#"));
-
-         if (text != _T("[]#"))
-         {
-            m_listTracks.SetItemText(n, 1, text);
-
-            if (!variousArtists && text.Find(_T(" / ")) != -1)
-               variousArtists = true;
-         }
-      }
-
-      m_acquiredDiscInfo = true;
-
-      return true;
+      m_comboGenre.SetCurSel(nItem);
    }
 
-   return false;
+   // limit to actual number of tracks in list
+   if (numTracks > maxCDTracks)
+      numTracks = maxCDTracks;
+
+   // tracks
+   CString numTrackText;
+   for (unsigned int n = 0; n < numTracks; n++)
+   {
+      numTrackText.Format(_T("%u"), n);
+
+      text = ini.GetString(cdplayer_id, numTrackText, _T("[]#"));
+
+      if (text != _T("[]#"))
+      {
+         m_listTracks.SetItemText(n, 1, text);
+
+         if (!variousArtists && text.Find(_T(" / ")) != -1)
+            variousArtists = true;
+      }
+   }
+
+   m_acquiredDiscInfo = true;
+
+   return true;
 }
 
 void InputCDPage::ReadCDText(bool& variousArtists)
@@ -833,7 +833,8 @@ void InputCDPage::FreedbLookup()
    BOOL retConfig = BASS_SetConfigPtr(
       BASS_CONFIG_CD_CDDB_SERVER,
       CStringA(serverAddress).GetString());
-   ATLASSERT(TRUE == retConfig); retConfig;
+   ATLASSERT(TRUE == retConfig);
+   UNUSED(retConfig);
 
    CWaitCursor waitCursor;
 
@@ -951,6 +952,7 @@ void InputCDPage::RetrieveAlbumCoverArt(const std::string& discId)
          AppMessageBox(m_hWnd, IDS_CDRIP_COVERART_ERROR_NOART, MB_OK | MB_ICONSTOP);
       }
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
       errorText = ex.what();

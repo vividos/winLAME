@@ -62,14 +62,13 @@ LRESULT GeneralSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
          const LanguageResourceInfo& info = vecLangResourceList[i];
 
          // map language id to image list index
-         int iIconIndex = langCountryMapper.IndexFromLanguageCode(info.LanguageId());
-         iIconIndex;
+         int iconIndex = langCountryMapper.IndexFromLanguageCode(info.LanguageId());
 
-         int iItem = m_comboLanguages.AddString(info.LanguageName(), iIconIndex);
-         m_comboLanguages.SetItemData(iItem, info.LanguageId());
+         int itemIndex = m_comboLanguages.AddString(info.LanguageName(), iconIndex);
+         m_comboLanguages.SetItemData(itemIndex, info.LanguageId());
 
          if (m_settings.language_id == info.LanguageId())
-            iSelectedLangIndex = iItem;
+            iSelectedLangIndex = itemIndex;
       }
 
       m_comboLanguages.SetCurSel(iSelectedLangIndex);

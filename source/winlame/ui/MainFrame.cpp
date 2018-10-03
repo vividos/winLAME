@@ -97,7 +97,7 @@ void EnableButtonText(CToolBarCtrl& tb, UINT uiId)
    // set new infos
    tbbi.dwMask |= TBIF_TEXT;
    tbbi.fsStyle |= BTNS_SHOWTEXT;
-   tbbi.pszText = const_cast<LPTSTR>(static_cast<LPCTSTR>(cszText));
+   tbbi.pszText = (LPTSTR)static_cast<LPCTSTR>(cszText);
    tbbi.cchText = cszText.GetLength();
 
    tb.SetButtonInfo(uiId, &tbbi);

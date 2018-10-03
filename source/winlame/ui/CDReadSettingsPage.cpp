@@ -110,7 +110,8 @@ void CDReadSettingsPage::ShowTagsContextMenu(CButton& button, CEdit& edit)
 
    CMenu contextMenu;
    BOOL retCreate = contextMenu.CreatePopupMenu();
-   ATLASSERT(retCreate == TRUE); retCreate;
+   ATLASSERT(retCreate == TRUE);
+   UNUSED(retCreate);
 
    for (size_t tagIndex = 0; tagIndex < allTags.size(); tagIndex++)
    {

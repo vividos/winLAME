@@ -93,6 +93,8 @@ private:
             bHandled = true;
             break;
          }
+         Finish();
+         break;
 
       case VK_ESCAPE:
          Finish();

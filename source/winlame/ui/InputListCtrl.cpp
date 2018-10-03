@@ -82,15 +82,18 @@ void InputListCtrl::InsertFile(LPCTSTR filename, int icon, int samplerate,
    else
       pos++;
 
-   // insert the filename
-   LVITEM lvItem = {
-      LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM, GetItemCount(), 0,
-         0, 0, const_cast<LPTSTR>(pos), 0, icon, reinterpret_cast<LPARAM>(entry)
-   };
-   int iItem = InsertItem(&lvItem);
-   SetItemData(iItem, reinterpret_cast<DWORD_PTR>(entry));
+   int itemIndex = InsertItem(
+      LVIF_TEXT | LVIF_IMAGE | LVIF_PARAM,
+      GetItemCount(),
+      pos,
+      0, // state
+      0, // stateMask
+      icon,
+      reinterpret_cast<LPARAM>(entry));
 
-   SetItemAudioInfos(iItem, length, bitrate, samplerate);
+   SetItemData(itemIndex, reinterpret_cast<DWORD_PTR>(entry));
+
+   SetItemAudioInfos(itemIndex, length, bitrate, samplerate);
 }
 
 void InputListCtrl::SetItemAudioInfos(int iItem, int length, int bitrate, int samplerate)

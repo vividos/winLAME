@@ -23,7 +23,7 @@
 #include "ClassicModeEncoderPage.hpp"
 #include "WizardPageHost.hpp"
 #include "ClassicModeStartPage.hpp"
-#include <ulib\IoCContainer.hpp>
+#include <ulib/IoCContainer.hpp>
 #include "TaskManager.hpp"
 
 using namespace UI;

@@ -65,7 +65,8 @@ m_startInputCD(false)
    // Microsoft Security Advisory (2269637):
    // http://www.microsoft.com/technet/security/advisory/2269637.mspx
    BOOL ret = SetDllDirectory(_T(""));
-   ATLASSERT(ret == TRUE); ret;
+   ATLASSERT(ret == TRUE);
+   UNUSED(ret);
 
 #ifdef _DEBUG
    // turn on leak-checking

@@ -55,6 +55,7 @@ std::vector<CoverArtResult> CoverArtArchive::Request(const std::string& musicBra
    {
       responseXml.parse<0>(responseTextBuffer.data());
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
       UNUSED(ex);
@@ -129,6 +130,7 @@ void CoverArtArchive::CollectReleaseIds(rapidxml::xml_document<char>& responseXm
          releaseNode = releaseNode->next_sibling("release");
       }
    }
+   // NOSONAR
    catch (const std::exception& ex)
    {
       UNUSED(ex);
