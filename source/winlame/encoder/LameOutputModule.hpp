@@ -104,9 +104,6 @@ namespace Encoder
       /// writes out ID3v2 tag
       void WriteID3v2Tag();
 
-      /// updates ID3 tag from data in track info
-      void UpdateId3TagFromTrackInfo(ID3::Tag& tag, const TrackInfo& trackInfo);
-
       /// Writes VBR Info tag
       static void WriteVBRInfoTag(nlame_instance_t* inst, LPCTSTR mp3filename);
 

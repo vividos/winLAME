@@ -24,10 +24,9 @@
 #include "resource.h"
 #include <fstream>
 #include "MadMpegInputModule.hpp"
-#include "Id3v1Tag.hpp"
 #include <sys/types.h>
 #include <sys/stat.h>
-#include "id3/File.h"
+#include "AudioFileTag.hpp"
 #include <ulib/DynamicLibrary.hpp>
 
 using Encoder::MadMpegInputModule;
@@ -158,23 +157,7 @@ int MadMpegInputModule::InitInput(LPCTSTR infilename,
    }
 
    // search for id3v2 tag
-   bool found = GetId3v2TagInfos(infilename, trackInfo);
-
-   // search for id3v1 tag
-   if (!found)
-   {
-      m_inputFile.seekg(-128, std::ios::end);
-
-      Id3v1Tag id3tag;
-      m_inputFile.read(reinterpret_cast<char*>(id3tag.GetData()), 128);
-      if (m_inputFile.gcount() == 128 && id3tag.IsValidTag())
-      {
-         // store found id3 tag infos
-         id3tag.ToTrackInfo(trackInfo);
-      }
-
-      m_inputFile.seekg(0, std::ios::beg);
-   }
+   GetId3v2TagInfos(infilename, trackInfo);
 
    memset(&m_initHeader, 0, sizeof(m_initHeader));
 
@@ -415,82 +398,8 @@ bool MadMpegInputModule::CheckVBRInfoTag(unsigned char* buffer)
 
 bool MadMpegInputModule::GetId3v2TagInfos(const CString& filename, TrackInfo& trackInfo)
 {
-   ID3::File file(filename, true);
-
-   if (!file.HasID3v2Tag())
-      return false;
-
-   // get primary tag
-   ID3::Tag tag = file.GetTag();
-
-   // retrieve field values
-   CString textValue;
-   if (tag.IsFrameAvail(ID3::FrameId::Title))
-   {
-      textValue = tag.FindFrame(ID3::FrameId::Title).GetString(1);
-      trackInfo.TextInfo(TrackInfoTitle, textValue);
-   }
-
-   if (tag.IsFrameAvail(ID3::FrameId::Artist))
-   {
-      textValue = tag.FindFrame(ID3::FrameId::Artist).GetString(1);
-      trackInfo.TextInfo(TrackInfoArtist, textValue);
-   }
-
-   if (tag.IsFrameAvail(ID3::FrameId::AlbumArtist))
-   {
-      textValue = tag.FindFrame(ID3::FrameId::AlbumArtist).GetString(1);
-      trackInfo.TextInfo(TrackInfoDiscArtist, textValue);
-   }
-
-   if (tag.IsFrameAvail(ID3::FrameId::Composer))
-   {
-      textValue = tag.FindFrame(ID3::FrameId::Composer).GetString(1);
-      trackInfo.TextInfo(TrackInfoComposer, textValue);
-   }
-
-   if (tag.IsFrameAvail(ID3::FrameId::Comment))
-   {
-      // COMM field is layout differently: 0: ID3_FIELD_TYPE_TEXTENCODING, 1: ID3_FIELD_TYPE_LANGUAGE, 2: ID3_FIELD_TYPE_STRING, 3: ID3_FIELD_TYPE_STRINGFULL
-      textValue = tag.FindFrame(ID3::FrameId::Comment).GetString(3);
-      trackInfo.TextInfo(TrackInfoComment, textValue);
-   }
-
-   if (tag.IsFrameAvail(ID3::FrameId::AlbumTitle))
-   {
-      textValue = tag.FindFrame(ID3::FrameId::AlbumTitle).GetString(1);
-      trackInfo.TextInfo(TrackInfoAlbum, textValue);
-   }
-
-   if (tag.IsFrameAvail(ID3::FrameId::RecordingTime))
-   {
-      textValue = tag.FindFrame(ID3::FrameId::RecordingTime).GetString(1);
-      trackInfo.NumberInfo(TrackInfoYear, _ttoi(textValue));
-   }
-
-   if (tag.IsFrameAvail(ID3::FrameId::TrackNumber))
-   {
-      textValue = tag.FindFrame(ID3::FrameId::TrackNumber).GetString(1);
-      trackInfo.NumberInfo(TrackInfoTrack, _ttoi(textValue));
-   }
-
-   if (tag.IsFrameAvail(ID3::FrameId::Genre))
-   {
-      textValue = tag.FindFrame(ID3::FrameId::Genre).GetString(1);
-      if (!textValue.IsEmpty())
-         trackInfo.TextInfo(TrackInfoGenre, textValue);
-   }
-
-   if (tag.IsFrameAvail(ID3::FrameId::AttachedPicture))
-   {
-      const std::vector<unsigned char> binaryData =
-         tag.FindFrame(ID3::FrameId::AttachedPicture).GetBinaryData(4);
-
-      if (!binaryData.empty())
-         trackInfo.BinaryInfo(TrackInfoFrontCover, binaryData);
-   }
-
-   return true;
+   AudioFileTag tag(trackInfo);
+   return tag.ReadFromFile(filename);
 }
 
 void MadMpegInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const

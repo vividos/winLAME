@@ -27,8 +27,7 @@
 #include "LameNogapInstanceManager.hpp"
 #include "WaveMp3Header.hpp"
 #include "Id3v1Tag.hpp"
-#include "id3/file.h"
-#include <id3tag.h>
+#include "AudioFileTag.hpp"
 
 using Encoder::LameOutputModule;
 using Encoder::TrackInfo;
@@ -637,178 +636,14 @@ void LameOutputModule::AddLameID3v2Tag(const TrackInfo& trackInfo)
 
 unsigned int LameOutputModule::GetID3v2PaddingLength()
 {
-   ID3::File file(m_mp3Filename, false); // read-write
-
-   ATLASSERT(file.IsValid());
-   if (!file.IsValid())
-      return 0;
-
-   // get primary tag
-   ID3::Tag tag = file.GetTag();
-
-   if (!tag.IsValid())
-      return 0;
-
-   // set the same flags that mp3tag would use in an ID3v2 tag
-   tag.SetOption(ID3::Tag::foUnsynchronisation, 0);
-   tag.SetOption(ID3::Tag::foCompression, 0);
-   tag.SetOption(ID3::Tag::foCRC, 0);
-   tag.SetOption(ID3::Tag::foID3v1, 0);
-
-   UpdateId3TagFromTrackInfo(tag, m_trackInfoID3v2);
-
-   return tag.ID3v2TagLength();
+   AudioFileTag tag(m_trackInfoID3v2);
+   return tag.GetTagLength();
 }
 
 void LameOutputModule::WriteID3v2Tag()
 {
-   ID3::File file(m_mp3Filename, false); // read-write
-
-   ATLASSERT(file.IsValid());
-   if (!file.IsValid())
-      return;
-
-   // get primary tag
-   ID3::Tag tag = file.GetTag();
-
-   // set the same flags that mp3tag would use in an ID3v2 tag
-   tag.SetOption(ID3::Tag::foUnsynchronisation, 0);
-   tag.SetOption(ID3::Tag::foCompression, 0);
-   tag.SetOption(ID3::Tag::foCRC, 0);
-   tag.SetOption(ID3::Tag::foID3v1, 0);
-
-   UpdateId3TagFromTrackInfo(tag, m_trackInfoID3v2);
-
-   file.Update();
-}
-
-void LameOutputModule::UpdateId3TagFromTrackInfo(ID3::Tag& tag, const TrackInfo& trackInfo)
-{
-   // add all frames
-   bool isAvail = false;
-   CString textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
-   if (isAvail)
-   {
-      tag.RemoveFrame(ID3::FrameId::Title);
-
-      ID3::Frame frame(ID3::FrameId::Title);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
-   }
-
-   textValue = trackInfo.TextInfo(TrackInfoArtist, isAvail);
-   if (isAvail)
-   {
-      tag.RemoveFrame(ID3::FrameId::Artist);
-
-      ID3::Frame frame(ID3::FrameId::Artist);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
-   }
-
-   textValue = trackInfo.TextInfo(TrackInfoDiscArtist, isAvail);
-   if (isAvail)
-   {
-      tag.RemoveFrame(ID3::FrameId::AlbumArtist);
-
-      ID3::Frame frame(ID3::FrameId::AlbumArtist);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
-   }
-
-   textValue = trackInfo.TextInfo(TrackInfoComposer, isAvail);
-   if (isAvail)
-   {
-      tag.RemoveFrame(ID3::FrameId::Composer);
-
-      ID3::Frame frame(ID3::FrameId::Composer);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
-   }
-
-   textValue = trackInfo.TextInfo(TrackInfoComment, isAvail);
-   if (isAvail)
-   {
-      tag.RemoveFrame(ID3::FrameId::Comment);
-
-      ID3::Frame frame(ID3::FrameId::Comment);
-      // COMM field is layout differently: 0: ID3_FIELD_TYPE_TEXTENCODING, 1: ID3_FIELD_TYPE_LANGUAGE, 2: ID3_FIELD_TYPE_STRING, 3: ID3_FIELD_TYPE_STRINGFULL
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, _T("eng")); // it's what Mp3tag writes
-      frame.SetString(3, textValue);
-      tag.AttachFrame(frame);
-   }
-
-   textValue = trackInfo.TextInfo(TrackInfoAlbum, isAvail);
-   if (isAvail)
-   {
-      tag.RemoveFrame(ID3::FrameId::AlbumTitle);
-
-      ID3::Frame frame(ID3::FrameId::AlbumTitle);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
-   }
-
-   // numeric
-
-   int intValue = trackInfo.NumberInfo(TrackInfoYear, isAvail);
-   if (isAvail)
-   {
-      textValue.Format(_T("%i"), intValue);
-
-      tag.RemoveFrame(ID3::FrameId::RecordingTime);
-
-      ID3::Frame frame(ID3::FrameId::RecordingTime);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
-   }
-
-   intValue = trackInfo.NumberInfo(TrackInfoTrack, isAvail);
-   if (isAvail)
-   {
-      textValue.Format(_T("%i"), intValue);
-
-      tag.RemoveFrame(ID3::FrameId::TrackNumber);
-
-      ID3::Frame frame(ID3::FrameId::TrackNumber);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
-   }
-
-   textValue = trackInfo.TextInfo(TrackInfoGenre, isAvail);
-   if (isAvail)
-   {
-      tag.RemoveFrame(ID3::FrameId::Genre);
-
-      ID3::Frame frame(ID3::FrameId::Genre);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
-   }
-
-   // binary
-
-   std::vector<unsigned char> binaryInfo;
-
-   isAvail = trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
-   if (isAvail)
-   {
-      tag.RemoveFrame(ID3::FrameId::AttachedPicture);
-
-      ID3::Frame frame(ID3::FrameId::AttachedPicture);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, "image/jpeg");
-      frame.SetInt8(2, 0x03); // 0x03 = Front Cover
-      frame.SetBinaryData(4, binaryInfo);
-      tag.AttachFrame(frame);
-   }
+   AudioFileTag tag(m_trackInfoID3v2);
+   tag.WriteToFile(m_mp3Filename);
 }
 
 void LameOutputModule::WriteVBRInfoTag(nlame_instance_t* instance, LPCTSTR mp3Filename)
