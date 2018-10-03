@@ -35,7 +35,6 @@
 #include "BassInputModule.hpp"
 #include "BassWmaOutputModule.hpp"
 #include "MonkeysAudioInputModule.hpp"
-#include "CDReadoutModule.hpp"
 #include "SpeexInputModule.hpp"
 #include "OpusInputModule.hpp"
 #include "OpusOutputModule.hpp"
@@ -46,7 +45,7 @@ using namespace Encoder;
 // global functions
 
 /// max number of input modules GetNewInputModule can return
-const int c_maxInputModule = 10;
+const int c_maxInputModule = 9;
 
 /// returns a new input module by index
 InputModule* GetNewInputModule(int index)
@@ -76,12 +75,9 @@ InputModule* GetNewInputModule(int index)
       inputModule = new BassInputModule;
       break;
    case 7:
-      inputModule = new CDReadoutModule;
-      break;
-   case 8:
       inputModule = new SpeexInputModule;
       break;
-   case 9:
+   case 8:
       inputModule = new OpusInputModule;
       break;
    }
@@ -245,13 +241,6 @@ ModuleManagerImpl::~ModuleManagerImpl()
 InputModule* ModuleManagerImpl::ChooseInputModule(LPCTSTR filename)
 {
    InputModule* inputModule = nullptr;
-
-   // shortcut: when starting with cdrip://, return CDReadoutModule
-   extern LPCTSTR g_pszCDRipPrefix;
-   if (filename == _tcsstr(filename, g_pszCDRipPrefix))
-   {
-      return new CDReadoutModule;
-   }
 
    // get file extension
    std::tstring extension(filename);

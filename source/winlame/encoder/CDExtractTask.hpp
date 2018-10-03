@@ -22,7 +22,8 @@
 #pragma once
 
 #include "Task.hpp"
-#include "CDRipTrackManager.hpp"
+#include "CDRipDiscInfo.hpp"
+#include "CDRipTrackInfo.hpp"
 #include <atomic>
 
 // forward references

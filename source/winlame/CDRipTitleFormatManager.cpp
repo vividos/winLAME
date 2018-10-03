@@ -21,7 +21,6 @@
 //
 #include "stdafx.h"
 #include "CDRipTitleFormatManager.hpp"
-#include "CDRipTrackManager.hpp"
 #include "UISettings.hpp"
 
 CString CDRipTitleFormatManager::FormatTitle(UISettings& settings,

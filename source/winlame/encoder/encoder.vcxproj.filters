@@ -123,9 +123,6 @@
     <ClInclude Include="SampleContainer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CDReadoutModule.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -252,9 +249,6 @@
       <Filter>aacinfo files</Filter>
     </ClCompile>
     <ClCompile Include="CDExtractTask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CDReadoutModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CreatePlaylistTask.cpp">

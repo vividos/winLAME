@@ -105,9 +105,6 @@ namespace Encoder
       bool CheckSameInputOutputFilenames(const CString& inputFilename,
          CString& outputFilename, OutputModule& outputModule);
 
-      /// checks if a direct copy of the cd extracted wave file is possible
-      bool CheckCDExtractDirectCopy();
-
       /// generates temporary output filename
       void GenerateTempOutFilename(const CString& originalFilename, CString& tempFilename);
 

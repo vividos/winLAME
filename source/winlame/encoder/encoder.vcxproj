@@ -90,7 +90,6 @@
     <ClInclude Include="BassWmaOutputModule.hpp" />
     <ClInclude Include="CDExtractTask.hpp" />
     <ClInclude Include="CDReadJob.hpp" />
-    <ClInclude Include="CDReadoutModule.hpp" />
     <ClInclude Include="CreatePlaylistTask.hpp" />
     <ClInclude Include="EncoderErrorHandler.hpp" />
     <ClInclude Include="EncoderImpl.hpp" />
@@ -136,7 +135,6 @@
     <ClCompile Include="BassInputModule.cpp" />
     <ClCompile Include="BassWmaOutputModule.cpp" />
     <ClCompile Include="CDExtractTask.cpp" />
-    <ClCompile Include="CDReadoutModule.cpp" />
     <ClCompile Include="CreatePlaylistTask.cpp" />
     <ClCompile Include="EncoderImpl.cpp" />
     <ClCompile Include="EncoderTask.cpp" />

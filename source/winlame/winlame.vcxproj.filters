@@ -64,9 +64,6 @@
     <ClCompile Include="App.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CDRipTrackManager.cpp">
-      <Filter>Main Program Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LangCountryMapper.cpp">
       <Filter>Main Program Files\Source Files</Filter>
     </ClCompile>
@@ -337,9 +334,6 @@
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CDRipTrackInfo.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CDRipTrackManager.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PresetManagerInterface.hpp">

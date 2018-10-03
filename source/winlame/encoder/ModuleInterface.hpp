@@ -44,7 +44,7 @@ namespace Encoder
 #define ID_IM_FLAC                      10
 #define ID_IM_BASS                      11
 #define ID_OM_BASSWMA                   12
-#define ID_IM_CDRIP                     13
+// 13 was ID_IM_CDRIP
 #define ID_IM_SPEEX                     14
 #define ID_IM_OPUS                      15
 #define ID_OM_OPUS                      16

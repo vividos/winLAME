@@ -181,33 +181,6 @@ void EncoderImpl::Encode()
             break;
          }
 
-         // check if we only need copying a cd ripped file to another filename
-         if (CheckCDExtractDirectCopy())
-         {
-            m_inputModule->DoneInput(false);
-            m_inputModule.reset();
-
-            BOOL fRet = MoveFile(m_encoderSettings.m_inputFilename, m_encoderSettings.m_outputFilename);
-            if (fRet == FALSE)
-            {
-               extern CString GetLastErrorString();
-               DWORD lastError = GetLastError();
-               CString errorMessage = GetLastErrorString();
-
-               CString caption;
-               caption.LoadString(IDS_CDRIP_ERROR_CAPTION);
-               EncoderErrorHandler::ErrorAction action = m_errorHandler->HandleError(m_encoderSettings.m_outputFilename, caption, lastError, errorMessage, true);
-               if (action == EncoderErrorHandler::StopEncode)
-               {
-                  m_encoderState.m_errorCode = -2;
-                  skipFile = true;
-                  break;
-               }
-            }
-            skipMoveFile = true;
-            break;
-         }
-
          // use the provided track info
          if (m_encoderSettings.m_useTrackInfo)
             trackInfo = m_encoderSettings.m_trackInfo;
@@ -326,15 +299,6 @@ bool EncoderImpl::PrepareOutputModule()
    if (m_encoderSettings.m_outputFilename.IsEmpty())
       m_encoderSettings.m_outputFilename = GetOutputFilename(m_encoderSettings.m_outputFolder, m_encoderSettings.m_inputFilename, *m_outputModule);
 
-   // ugly hack: when input module is cd extraction, remove guid from output filename
-   if (m_inputModule->GetModuleID() == ID_IM_CDRIP)
-   {
-      int pos1 = m_encoderSettings.m_outputFilename.ReverseFind(_T('{'));
-      int pos2 = m_encoderSettings.m_outputFilename.ReverseFind(_T('}'));
-
-      m_encoderSettings.m_outputFilename.Delete(pos1, pos2 - pos1 + 1);
-   }
-
    // test if input and output file name is the same file
    if (!CheckSameInputOutputFilenames(m_encoderSettings.m_inputFilename, m_encoderSettings.m_outputFilename, *m_outputModule))
    {
@@ -413,25 +377,6 @@ bool EncoderImpl::CheckSameInputOutputFilenames(const CString& inputFilename,
    }
 
    return true;
-}
-
-bool EncoderImpl::CheckCDExtractDirectCopy()
-{
-   unsigned int inputModuleID = m_inputModule->GetModuleID();
-   unsigned int outputModuleID = m_outputModule->GetModuleID();
-
-   if (inputModuleID == ID_IM_CDRIP && outputModuleID == ID_OM_WAVE)
-   {
-      // we have the correct input and output modules; now check if output
-      // parameters are 44100 Hz, 16 bit, stereo
-      if (m_settingsManager->QueryValueInt(SndFileFormat) == SF_FORMAT_WAV &&
-         m_settingsManager->QueryValueInt(SndFileSubType) == SF_FORMAT_PCM_16)
-      {
-         return true;
-      }
-   }
-
-   return false;
 }
 
 void EncoderImpl::GenerateTempOutFilename(const CString& originalFilename, CString& tempFilename)

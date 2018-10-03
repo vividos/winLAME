@@ -104,7 +104,6 @@
     <ClCompile Include="preset\PresetManagerImpl.cpp" />
     <ClCompile Include="preset\PropertyListBox.cpp" />
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="CDRipTrackManager.cpp" />
     <ClCompile Include="LangCountryMapper.cpp" />
     <ClCompile Include="LanguageResourceManager.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -163,7 +162,6 @@
     <ClInclude Include="preset\PropertyDlg.h" />
     <ClInclude Include="preset\PropertyListBox.h" />
     <ClInclude Include="App.hpp" />
-    <ClInclude Include="CDRipTrackManager.hpp" />
     <ClInclude Include="LangCountryMapper.hpp" />
     <ClInclude Include="LanguageResourceManager.hpp" />
     <ClInclude Include="ModuleManager.hpp" />

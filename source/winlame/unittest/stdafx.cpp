@@ -25,18 +25,10 @@
 
 #include <ulib/config/Wtl.hpp>
 #include "App.hpp"
-#include "CDRipTrackManager.hpp"
 
 // some functions missing from the encoder.lib static library
-
-LPCTSTR g_pszCDRipPrefix = _T("cdrip://");
 
 CString App::Version()
 {
    return _T("winLAME UnitTest");
-}
-
-CDRipTrackManager* CDRipTrackManager::getCDRipTrackManager()
-{
-   throw std::runtime_error("unittest");
 }
