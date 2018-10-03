@@ -78,6 +78,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AudioFileTag.hpp" />
     <ClInclude Include="EncoderInterface.hpp" />
     <ClInclude Include="LibMpg123InputModule.hpp" />
     <ClInclude Include="SettingsManager.hpp" />
@@ -131,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="AacInputModule.cpp" />
     <ClCompile Include="AacOutputModule.cpp" />
+    <ClCompile Include="AudioFileTag.cpp" />
     <ClCompile Include="BassInputModule.cpp" />
     <ClCompile Include="BassWmaOutputModule.cpp" />
     <ClCompile Include="CDExtractTask.cpp" />

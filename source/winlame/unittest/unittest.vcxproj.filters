@@ -50,6 +50,9 @@
     <ClCompile Include="TestEncodeMp3ToOggVorbis.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestAudioFileTag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\winlame.rc">
