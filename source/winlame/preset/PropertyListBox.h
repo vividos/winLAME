@@ -66,11 +66,11 @@ class PropertyListBox: public CWindowImpl<PropertyListBox, CListBox>
 public:
    /// ctor
    PropertyListBox()
-      :inplaceCtrl(NULL),
+      :propmanager(NULL),
+       inplaceCtrl(NULL),
        inplaceIndex(-1),
        inplaceGroup(-1),
-       readonly(true),
-       propmanager(NULL)
+       readonly(true)
    {
    }
 

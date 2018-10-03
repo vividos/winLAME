@@ -35,6 +35,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE /*hPrevInstance*/,
       App app(hInstance);
       return app.Run(lpCmdLine, nCmdShow);
    }
+   /// NOSONAR
    catch (...)
    {
       ATLTRACE(_T("Exception while running winLAME\n"));

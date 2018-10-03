@@ -81,6 +81,7 @@ HttpResponse HttpClient::Request(const std::string& host, const std::string& pat
    std::getline(response_stream, status_message);
    if (!response_stream || http_version.substr(0, 5) != "HTTP/")
    {
+      // NOSONAR
       throw std::runtime_error("Invalid response");
    }
 

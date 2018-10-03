@@ -444,13 +444,15 @@ int MadMpegInputModule::DecodeSamples(SampleContainer& samples)
          switch (m_stream.error)
          {
          case MAD_ERROR_BUFLEN:
-            // copy the remaining bytes of the buffer to the front
-            fill = m_stream.bufend - m_stream.next_frame;
-            if (fill != 0)
-               memmove(m_inputBuffer, m_stream.next_frame, fill);
-            // and ... (fall-through)
-
          case MAD_ERROR_BUFPTR:
+            if (m_stream.error == MAD_ERROR_BUFLEN)
+            {
+               // copy the remaining bytes of the buffer to the front
+               fill = m_stream.bufend - m_stream.next_frame;
+               if (fill != 0)
+                  memmove(m_inputBuffer, m_stream.next_frame, fill);
+            }
+
             // fill the buffer
             m_inputFile.read(reinterpret_cast<char*>(m_inputBuffer + fill), mad_inbufsize - fill);
             read = m_inputFile.gcount();

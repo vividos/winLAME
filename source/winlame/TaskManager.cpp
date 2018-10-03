@@ -73,9 +73,11 @@ TaskManager::~TaskManager()
 
       m_vecThreadPool.clear();
    }
+   // NOSONAR
    catch (...)
    {
       // ignore errors when stopping
+      ATLTRACE(_T("Exception while stopping tasks\n"));
    }
 }
 
@@ -157,8 +159,10 @@ bool TaskManager::IsQueueEmpty() const
       std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
       isEmpty = m_deqTaskQueue.empty();
    }
+   // NOSONAR
    catch (...)
    {
+      ATLTRACE(_T("Exception while checking for empty queue\n"));
    }
 
    return isEmpty;
