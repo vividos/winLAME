@@ -71,7 +71,6 @@ UISettings::UISettings()
    out_location_use_input_dir(false),
    preset_avail(false),
    m_bFromInputFilesPage(true),
-   warn_lossy_transcoding(true),
    after_encoding_action(-1),
    create_playlist(false),
    playlist_filename(MAKEINTRESOURCE(IDS_GENERAL_PLAYLIST_FILENAME)),
@@ -152,9 +151,6 @@ void UISettings::ReadSettings()
 
    // read "overwrite existing" value
    ReadBooleanValue(regRoot, g_pszOverwriteExisting, m_defaultSettings.overwrite_existing);
-
-   // read "warn about lossy transcoding" value
-   ReadBooleanValue(regRoot, g_pszWarnLossyTrans, warn_lossy_transcoding);
 
    // read "action after encoding" value
    ReadIntValue(regRoot, g_pszActionAfterEncoding, after_encoding_action);
@@ -259,10 +255,6 @@ void UISettings::StoreSettings()
    // write "overwrite existing" value
    value = m_defaultSettings.overwrite_existing ? 1 : 0;
    regRoot.SetValue(value, g_pszOverwriteExisting);
-
-   // write "warn about lossy transcoding" value
-   value = warn_lossy_transcoding ? 1 : 0;
-   regRoot.SetValue(value, g_pszWarnLossyTrans);
 
    // write "action after encoding" value
    value = after_encoding_action;
