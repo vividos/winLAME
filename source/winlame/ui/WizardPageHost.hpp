@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,156 +28,175 @@
 
 namespace UI
 {
+   /// host window for wizard page
+   class WizardPageHost :
+      public CDialogImpl<WizardPageHost>,
+      public CWinDataExchange<WizardPageHost>,
+      public CDialogResize<WizardPageHost>,
+      private CMessageLoop
+   {
+   public:
+      /// ctor
+      WizardPageHost(bool isClassicMode = false);
+      /// dtor
+      ~WizardPageHost() {}
 
-/// host window for wizard page
-class WizardPageHost:
-   public CDialogImpl<WizardPageHost>,
-   public CWinDataExchange<WizardPageHost>,
-   public CDialogResize<WizardPageHost>,
-   private CMessageLoop
-{
-public:
-   /// ctor
-   WizardPageHost(bool isClassicMode = false);
-   /// dtor
-   ~WizardPageHost() {}
+      /// sets wizard page
+      void SetWizardPage(std::shared_ptr<WizardPage> spCurrentPage);
 
-   /// sets wizard page
-   void SetWizardPage(std::shared_ptr<WizardPage> spCurrentPage);
+      /// \brief runs the wizard pages until the pages return
+      /// \retval IDOK ok or finish button was pressed
+      /// \retval IDCANCEL cancel button was pressed or window was closed with X
+      /// \retval ID_WIZBACK back button was pressed
+      int Run(HWND hWndParent);
 
-   /// \brief runs the wizard pages until the pages return
-   /// \retval IDOK ok or finish button was pressed
-   /// \retval IDCANCEL cancel button was pressed or window was closed with X
-   /// \retval ID_WIZBACK back button was pressed
-   int Run(HWND hWndParent);
+      /// returns if wizard page host is currently operating in classic mode
+      bool IsClassicMode() const { return m_isClassicMode; }
 
-   /// returns if wizard page host is currently operating in classic mode
-   bool IsClassicMode() const { return m_isClassicMode; }
+      /// returns if the dialog has been closed to change the app mode to modern mode
+      bool IsAppModeChanged() const { return m_isAppModeChanged; }
 
-   /// returns if the dialog has been closed to change the app mode to modern mode
-   bool IsAppModeChanged() const { return m_isAppModeChanged; }
+      /// dialog id
+      enum { IDD = IDD_WIZARDPAGE_HOST };
 
-   // dialog id
-   enum { IDD = IDD_WIZARDPAGE_HOST };
+      // resize map
+      BEGIN_DLGRESIZE_MAP(WizardPageHost)
+         DLGRESIZE_CONTROL(IDOK, DLSZ_MOVE_X | DLSZ_MOVE_Y)
+         DLGRESIZE_CONTROL(IDC_WIZARDPAGE_BUTTON_ACTION1, DLSZ_MOVE_X | DLSZ_MOVE_Y)
+         DLGRESIZE_CONTROL(IDC_WIZARDPAGE_BUTTON_ACTION2, DLSZ_MOVE_X | DLSZ_MOVE_Y)
+         DLGRESIZE_CONTROL(IDC_WIZARDPAGE_HELP, DLSZ_MOVE_Y)
+         DLGRESIZE_CONTROL(ID_VIEW_SWITCH_MODERN, DLSZ_MOVE_Y)
+         DLGRESIZE_CONTROL(ID_FEEDBACK_POSITIVE, DLSZ_MOVE_Y)
+         DLGRESIZE_CONTROL(ID_FEEDBACK_NEGATIVE, DLSZ_MOVE_Y)
+         DLGRESIZE_CONTROL(IDC_WIZARDPAGE_STATIC_CAPTION, DLSZ_SIZE_X)
+         DLGRESIZE_CONTROL(IDC_WIZARDPAGE_STATIC_BACKGROUND, DLSZ_SIZE_X)
+      END_DLGRESIZE_MAP()
 
-   // resize map
-   BEGIN_DLGRESIZE_MAP(WizardPageHost)
-      DLGRESIZE_CONTROL(IDOK, DLSZ_MOVE_X | DLSZ_MOVE_Y)
-      DLGRESIZE_CONTROL(IDC_WIZARDPAGE_BUTTON_ACTION1, DLSZ_MOVE_X | DLSZ_MOVE_Y)
-      DLGRESIZE_CONTROL(IDC_WIZARDPAGE_BUTTON_ACTION2, DLSZ_MOVE_X | DLSZ_MOVE_Y)
-      DLGRESIZE_CONTROL(IDC_WIZARDPAGE_HELP, DLSZ_MOVE_Y)
-      DLGRESIZE_CONTROL(ID_VIEW_SWITCH_MODERN, DLSZ_MOVE_Y)
-      DLGRESIZE_CONTROL(ID_FEEDBACK_POSITIVE, DLSZ_MOVE_Y)
-      DLGRESIZE_CONTROL(ID_FEEDBACK_NEGATIVE, DLSZ_MOVE_Y)
-      DLGRESIZE_CONTROL(IDC_WIZARDPAGE_STATIC_CAPTION, DLSZ_SIZE_X)
-      DLGRESIZE_CONTROL(IDC_WIZARDPAGE_STATIC_BACKGROUND, DLSZ_SIZE_X)
-   END_DLGRESIZE_MAP()
+      // ddx map
+      BEGIN_DDX_MAP(WizardPageHost)
+         DDX_CONTROL_HANDLE(IDC_WIZARDPAGE_STATIC_CAPTION, m_staticCaption)
+         DDX_CONTROL_HANDLE(IDC_WIZARDPAGE_BUTTON_ACTION1, m_buttonAction1)
+         DDX_CONTROL_HANDLE(IDC_WIZARDPAGE_BUTTON_ACTION2, m_buttonAction2)
+         DDX_CONTROL_HANDLE(IDOK, m_buttonActionOK)
+      END_DDX_MAP()
 
-   // ddx map
-   BEGIN_DDX_MAP(WizardPageHost)
-      DDX_CONTROL_HANDLE(IDC_WIZARDPAGE_STATIC_CAPTION, m_staticCaption)
-      DDX_CONTROL_HANDLE(IDC_WIZARDPAGE_BUTTON_ACTION1, m_buttonAction1)
-      DDX_CONTROL_HANDLE(IDC_WIZARDPAGE_BUTTON_ACTION2, m_buttonAction2)
-      DDX_CONTROL_HANDLE(IDOK, m_buttonActionOK)
-   END_DDX_MAP()
+      // message map
+      BEGIN_MSG_MAP(WizardPageHost)
+         MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
+         MESSAGE_HANDLER(WM_SIZE, OnSize)
+         MESSAGE_HANDLER(WM_CTLCOLORSTATIC, OnStaticColor)
+         MESSAGE_HANDLER(WM_DRAWITEM, OnDrawItem)
+         MESSAGE_HANDLER(WM_HELP, OnHelp)
+         COMMAND_HANDLER(IDC_WIZARDPAGE_BUTTON_ACTION1, BN_CLICKED, OnButtonClicked)
+         COMMAND_HANDLER(IDC_WIZARDPAGE_BUTTON_ACTION2, BN_CLICKED, OnButtonClicked)
+         COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnButtonClicked)
+         COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonClicked)
+         COMMAND_HANDLER(IDC_WIZARDPAGE_HELP, BN_CLICKED, OnHelpButton)
+         COMMAND_ID_HANDLER(ID_VIEW_SWITCH_MODERN, OnViewSwitchToModern)
+         COMMAND_HANDLER(ID_FEEDBACK_POSITIVE, BN_CLICKED, OnFeedbackPositive)
+         COMMAND_HANDLER(ID_FEEDBACK_NEGATIVE, BN_CLICKED, OnFeedbackNegative)
+         MESSAGE_HANDLER(WM_SYSCOMMAND, OnSysCommand)
+         CHAIN_MSG_MAP(CDialogResize<WizardPageHost>)
+      END_MSG_MAP()
 
-   // message map
-   BEGIN_MSG_MAP(WizardPageHost)
-      MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
-      MESSAGE_HANDLER(WM_SIZE, OnSize)
-      MESSAGE_HANDLER(WM_CTLCOLORSTATIC, OnStaticColor)
-      MESSAGE_HANDLER(WM_DRAWITEM, OnDrawItem)
-      MESSAGE_HANDLER(WM_HELP, OnHelp)
-      COMMAND_HANDLER(IDC_WIZARDPAGE_BUTTON_ACTION1, BN_CLICKED, OnButtonClicked)
-      COMMAND_HANDLER(IDC_WIZARDPAGE_BUTTON_ACTION2, BN_CLICKED, OnButtonClicked)
-      COMMAND_HANDLER(IDCANCEL, BN_CLICKED, OnButtonClicked)
-      COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonClicked)
-      COMMAND_HANDLER(IDC_WIZARDPAGE_HELP, BN_CLICKED, OnHelpButton)
-      COMMAND_ID_HANDLER(ID_VIEW_SWITCH_MODERN, OnViewSwitchToModern)
-      COMMAND_HANDLER(ID_FEEDBACK_POSITIVE, BN_CLICKED, OnFeedbackPositive)
-      COMMAND_HANDLER(ID_FEEDBACK_NEGATIVE, BN_CLICKED, OnFeedbackNegative)
-      MESSAGE_HANDLER(WM_SYSCOMMAND, OnSysCommand)
-      CHAIN_MSG_MAP(CDialogResize<WizardPageHost>)
-   END_MSG_MAP()
+      /// called when dialog is initialized
+      LRESULT OnInitDialog(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   LRESULT OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-   LRESULT OnSize(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-   LRESULT OnStaticColor(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-   LRESULT OnDrawItem(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
-   LRESULT OnButtonClicked(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+      /// called when dialog is resized
+      LRESULT OnSize(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when pressing F1
-   LRESULT OnHelp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      /// called when a static control background color should be set
+      LRESULT OnStaticColor(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called on clicking on the help button
-   LRESULT OnHelpButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when an item should be drawn
+      LRESULT OnDrawItem(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when clicking the "switch to Modern UI" button
-   LRESULT OnViewSwitchToModern(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when any of the wizard buttons have been clicked
+      LRESULT OnButtonClicked(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called when the positive feedback button has been pressed
-   LRESULT OnFeedbackPositive(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called when pressing F1
+      LRESULT OnHelp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when the negative feedback button has been pressed
-   LRESULT OnFeedbackNegative(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+      /// called on clicking on the help button
+      LRESULT OnHelpButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   /// called for every system command; used for the about box system menu entry; only used in classic mode
-   LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      /// called when clicking the "switch to Modern UI" button
+      LRESULT OnViewSwitchToModern(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-private:
-   void InitPage();
+      /// called when the positive feedback button has been pressed
+      LRESULT OnFeedbackPositive(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   void ConfigWizardButtons(WizardPage::T_enWizardPageType enWizardPageType);
+      /// called when the negative feedback button has been pressed
+      LRESULT OnFeedbackNegative(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-   void AddTooltips(HWND hWnd);
+      /// called for every system command; used for the about box system menu entry; only used in classic mode
+      LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// switches to Modern UI mode; only used if in classic mode
-   void SwitchToModernMode();
+   private:
+      /// initializes current page
+      void InitPage();
 
-   /// adds system menu entries; only in classic mode
-   void AddSystemMenuEntries();
+      /// configure wizard buttons based on wizard page type
+      void ConfigWizardButtons(WizardPage::T_enWizardPageType enWizardPageType);
 
-   /// maps dialog resource ID to help path in html help file
-   static CString MapDialogIdToHelpPath(UINT dialogId);
+      /// adds tooltips for all controls under given window handle
+      void AddTooltips(HWND hWnd);
 
-   /// shows html help page for current page
-   void ShowHelp();
+      /// switches to Modern UI mode; only used if in classic mode
+      void SwitchToModernMode();
 
-   virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+      /// adds system menu entries; only in classic mode
+      void AddSystemMenuEntries();
 
-private:
-   // controls
+      /// maps dialog resource ID to help path in html help file
+      static CString MapDialogIdToHelpPath(UINT dialogId);
 
-   /// caption
-   CStatic m_staticCaption;
+      /// shows html help page for current page
+      void ShowHelp();
 
-   CFont m_fontCaption;
+      /// called before messages are processed by the message loop
+      virtual BOOL PreTranslateMessage(MSG* pMsg) override;
 
-   CButton m_buttonAction1;
-   CButton m_buttonAction2;
-   CButton m_buttonActionOK;
+   private:
+      // controls
 
-   CToolTipCtrl m_tooltipCtrl;
+      /// caption
+      CStatic m_staticCaption;
 
-   /// help icon
-   CImageList m_helpIcon;
+      /// font for drawing caption
+      CFont m_fontCaption;
 
-   // model
+      /// cancel button, if visible
+      CButton m_buttonAction1;
 
-   /// indicates if host is currently in classic mode
-   bool m_isClassicMode;
+      /// cancel or back button
+      CButton m_buttonAction2;
 
-   /// page size; used for resizing
-   CSize m_sizePage;
+      /// next or finish button
+      CButton m_buttonActionOK;
 
-   /// current wizard page
-   std::shared_ptr<WizardPage> m_spCurrentPage;
+      /// tooltip control showing tool tips of controls
+      CToolTipCtrl m_tooltipCtrl;
 
-   /// html help object
-   HtmlHelper m_htmlHelper;
+      /// help icon
+      CImageList m_helpIcon;
 
-   /// indicates if the dialog has been closed to change the app mode to modern mode
-   bool m_isAppModeChanged;
-};
+      // model
+
+      /// indicates if host is currently in classic mode
+      bool m_isClassicMode;
+
+      /// page size; used for resizing
+      CSize m_sizePage;
+
+      /// current wizard page
+      std::shared_ptr<WizardPage> m_spCurrentPage;
+
+      /// html help object
+      HtmlHelper m_htmlHelper;
+
+      /// indicates if the dialog has been closed to change the app mode to modern mode
+      bool m_isAppModeChanged;
+   };
 
 } // namespace UI
