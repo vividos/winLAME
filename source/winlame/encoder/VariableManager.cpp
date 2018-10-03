@@ -150,7 +150,6 @@ WL_VARMAP_START(varMapVariables)
    // persistent encoder variables
    WL_VARMAP_ENTRY(LameOptNoGap,              _T("lameNoGap"),          _T("nogap Encoding"), 0)
    WL_VARMAP_ENTRY(LameWriteWaveHeader,       _T("lameWriteWaveHeader"),_T("write Wave Header"), 0)
-   WL_VARMAP_ENTRY(LameHideSettings,          _T("lameHideSettings"), _T("hide LAME Settings Page"), 0)
 
    WL_VARMAP_ENTRY(LameSimpleEncodeQuality,   _T("lameEncodeQuality"),    _T("LAME encode quality"), 1)
    WL_VARMAP_ENTRY(LameSimpleMono,            _T("lameMono"),             _T("LAME mono"), 0)

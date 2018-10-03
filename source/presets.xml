@@ -12,7 +12,6 @@
       <value name="lameQualityOrBitrate">1</value>
       <value name="lameQuality">2</value>
       <value name="lameVBRMode">1</value>
-      <value name="lameHideSettings">1</value>
     </preset>
 
     <preset name="High Quality: Continuous album encoding (nogap encoding)">
@@ -28,7 +27,6 @@
       <value name="lameQualityOrBitrate">1</value>
       <value name="lameQuality">2</value>
       <value name="lameVBRMode">1</value>
-      <value name="lameHideSettings">1</value>
       <value name="lameNoGap">1</value>
     </preset>
 
@@ -42,7 +40,6 @@
       <value name="lameQualityOrBitrate">0</value>
       <value name="lameBitrate">320</value>
       <value name="lameCBR">1</value>
-      <value name="lameHideSettings">1</value>
     </preset>
 
     <preset name="Podcast: Mono, CBR, 64kbps">
@@ -57,7 +54,6 @@
       <value name="lameQualityOrBitrate">0</value>
       <value name="lameBitrate">64</value>
       <value name="lameCBR">1</value>
-      <value name="lameHideSettings">1</value>
     </preset>
 
     <preset name="Portable: background noise and low bitrate requirement, small sizes">
@@ -69,7 +65,6 @@
       <value name="lameQualityOrBitrate">1</value>
       <value name="lameQuality">6</value>
       <value name="lameVBRMode">1</value>
-      <value name="lameHideSettings">1</value>
     </preset>
 
     <preset name="VirtualDub: audio track compression, CBR at 128 kbps">
@@ -86,7 +81,6 @@
       <value name="lameQualityOrBitrate">0</value>
       <value name="lameBitrate">128</value>
       <value name="lameCBR">1</value>
-      <value name="lameHideSettings">1</value>
       <value name="lameWriteWaveHeader">1</value>
     </preset>
   </facility>

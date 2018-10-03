@@ -80,10 +80,8 @@ enum
    VarFirst = 0,
    LameOptNoGap,
    LameNoGapInstanceId,
-   LameHideSettings,
    LameWriteWaveHeader,
 
-   LameSimpleMode,
    LameSimpleEncodeQuality,
    LameSimpleMono,
    LameSimpleQualityOrBitrate,
