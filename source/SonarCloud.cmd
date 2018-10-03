@@ -20,7 +20,7 @@ REM
 cd ..\buildtools\SonarQube
 
 "%ProgramFiles%\7-Zip\7z.exe" x -y build-wrapper-win-x86.zip
-"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-3.0.2.656.zip
+"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-4.3.1.1372-net46.zip
 cd ..\..\source
 
 PATH=%PATH%;%CD%\..\buildtools\SonarQube\build-wrapper-win-x86;%CD%\..\buildtools\SonarQube\sonar-scanner-msbuild
@@ -33,7 +33,7 @@ rmdir .\bw-output /s /q 2> nul
 
 msbuild winlame.sln /m /property:Configuration=Release,Platform=Win32 /target:Clean
 
-SonarQube.Scanner.MSBuild.exe begin ^
+SonarScanner.MSBuild.exe begin ^
     /k:"winLAME" ^
     /v:"2.18.1.0" ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
@@ -46,6 +46,6 @@ REM Rebuild Release|Win32
 REM
 build-wrapper-win-x86-64.exe --out-dir bw-output msbuild winlame.sln /property:Configuration=Release,Platform=Win32 /target:Build
 
-SonarQube.Scanner.MSBuild.exe end /d:"sonar.login=%SONARLOGIN%"
+SonarScanner.MSBuild.exe end /d:"sonar.login=%SONARLOGIN%"
 
 pause
