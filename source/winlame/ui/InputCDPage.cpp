@@ -77,9 +77,9 @@ LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
    SetupTracksList();
 
    // genre combobox
-   LPCTSTR* apszGenre = Encoder::TrackInfo::GetGenreList();
-   for (unsigned int i = 0, iMax = Encoder::TrackInfo::GetGenreListLength(); i < iMax; i++)
-      m_comboGenre.AddString(apszGenre[i]);
+   std::vector<CString> genreList = Encoder::TrackInfo::GetGenreList();
+   for (const CString& genre : genreList)
+      m_comboGenre.AddString(genre);
 
    m_buttonPlay.EnableWindow(false);
    m_buttonStop.EnableWindow(false);

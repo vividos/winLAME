@@ -143,11 +143,8 @@ namespace Encoder
       /// converts genre text to id
       static unsigned int TextToGenreID(const CString& text);
 
-      /// returns genre list array
-      static LPCTSTR* GetGenreList();
-
-      /// returns length of genre list array
-      static unsigned int GetGenreListLength();
+      /// returns genre list
+      static std::vector<CString> GetGenreList();
 
    private:
       /// text infos map

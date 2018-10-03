@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 using Encoder::TrackInfo;
 
 /// genre ID to string mapping
-const TCHAR* g_ID3GenreIDtoText[] =
+std::vector<CString> g_ID3GenreIDtoText =
 {
    // 0..19
    _T("Blues"), _T("Classic Rock"), _T("Country"), _T("Dance"), _T("Disco"), _T("Funk"), _T("Grunge"), _T("Hip-Hop"),
@@ -64,25 +64,20 @@ CString TrackInfo::GenreIDToText(unsigned int genreID)
    if (genreID == (unsigned int)-1)
       return CString();
 
-   ATLASSERT(genreID < sizeof(g_ID3GenreIDtoText) / sizeof(*g_ID3GenreIDtoText));
+   ATLASSERT(genreID < g_ID3GenreIDtoText.size());
    return g_ID3GenreIDtoText[genreID];
 }
 
 unsigned int TrackInfo::TextToGenreID(const CString& text)
 {
-   for (unsigned int i = 0; i < sizeof(g_ID3GenreIDtoText) / sizeof(*g_ID3GenreIDtoText); i++)
+   for (unsigned int i = 0; i < g_ID3GenreIDtoText.size(); i++)
       if (g_ID3GenreIDtoText[i] == text)
          return i;
 
    return (unsigned int)-1;
 }
 
-LPCTSTR* TrackInfo::GetGenreList()
+std::vector<CString> TrackInfo::GetGenreList()
 {
    return g_ID3GenreIDtoText;
-}
-
-unsigned int TrackInfo::GetGenreListLength()
-{
-   return sizeof(g_ID3GenreIDtoText) / sizeof(*g_ID3GenreIDtoText);
 }
