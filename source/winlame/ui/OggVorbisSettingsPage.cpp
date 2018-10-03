@@ -162,16 +162,22 @@ void UI::OggVorbisSettingsPage::UpdateBitrateMode(int pos, bool init)
    {
       switch (mgr.queryValueInt(OggBitrateMode))
       {
+      case 0: // quality settings
+         break;
+
       case 1: // variable bitrate
          mgr.setValue(OggVarMinBitrate, minBitrate);
          mgr.setValue(OggVarMaxBitrate, maxBitrate);
          break;
+
       case 2: // average bitrate
          mgr.setValue(OggVarNominalBitrate, nominalBitrate);
          break;
+
       case 3: // constant bitrate
          mgr.setValue(OggVarNominalBitrate, nominalBitrate);
          break;
+
       default:
          ATLASSERT(false);
          break;
@@ -189,6 +195,9 @@ void UI::OggVorbisSettingsPage::UpdateBitrateMode(int pos, bool init)
 
    switch (pos)
    {
+   case -1: // don't store old value
+      break;
+
    case 0: // quality settings
       SetDlgItemText(IDC_OGGV_EDIT_MIN_BITRATE, _T(""));
       SetDlgItemText(IDC_OGGV_EDIT_NOM_BITRATE, _T(""));
