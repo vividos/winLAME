@@ -23,6 +23,7 @@
 
 // needed includes
 #include "stdafx.h"
+#include "UISettings.hpp"
 #include <stdio.h>
 #include <sys/stat.h>
 
