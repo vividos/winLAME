@@ -339,9 +339,6 @@
     <ClInclude Include="PresetManagerInterface.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UIinterface.hpp">
-      <Filter>Main Program Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UISettings.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>

@@ -171,7 +171,6 @@
     <ClInclude Include="TaskInfo.hpp" />
     <ClInclude Include="TaskManager.hpp" />
     <ClInclude Include="TaskManagerConfig.hpp" />
-    <ClInclude Include="UIinterface.hpp" />
     <ClInclude Include="UISettings.hpp" />
     <ClInclude Include="res\MainFrameRibbon.h" />
     <ClInclude Include="resource.h" />
