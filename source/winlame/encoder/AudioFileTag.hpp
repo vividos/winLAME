@@ -22,9 +22,14 @@
 //
 #pragma once
 
-namespace ID3
+namespace TagLib
 {
    class Tag;
+   class File;
+   namespace ID3v2
+   {
+      class Tag;
+   }
 }
 
 namespace Encoder
@@ -35,6 +40,13 @@ namespace Encoder
    class AudioFileTag
    {
    public:
+      /// specifies the audio file type to use when reading or writing to a file
+      enum AudioFileType
+      {
+         FromExtension = 0,   ///< guess audio file type from extension
+         MPEG = 1,            ///< treat audio file as MPEG Layer 1/2/3 file
+      };
+
       /// creates tag instance using track info
       AudioFileTag(TrackInfo& trackInfo)
          :m_trackInfo(trackInfo)
@@ -42,20 +54,26 @@ namespace Encoder
       }
 
       /// reads tag infos from audio file and stores it in TrackInfo
-      bool ReadFromFile(const CString& filename);
+      bool ReadFromFile(const CString& filename, AudioFileType audioFileType = AudioFileType::FromExtension);
 
       /// determines the length of the (ID3v2) tag that would be written from the track infos
       unsigned int GetTagLength() const;
 
       /// stores TrackInfo data to tag infos in audio file
-      bool WriteToFile(const CString& filename) const;
+      bool WriteToFile(const CString& filename, AudioFileType audioFileType = AudioFileType::FromExtension) const;
 
    private:
+      /// opens taglib file
+      static std::shared_ptr<TagLib::File> OpenFile(const CString& filename, AudioFileType audioFileType);
+
+      /// finds ID3v2 tag in given file, if available
+      static TagLib::ID3v2::Tag* FindId3v2Tag(std::shared_ptr<TagLib::File> spFile);
+
       /// reads all track infos from tag
-      bool ReadTrackInfoFromTag(ID3::Tag& tag);
+      bool ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag);
 
       /// stores all track infos in given tag
-      void StoreTrackInfoInTag(ID3::Tag& tag) const;
+      void StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag) const;
 
    private:
       /// track info to read or store

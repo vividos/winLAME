@@ -23,92 +23,156 @@
 #include "stdafx.h"
 #include "AudioFileTag.hpp"
 #include "TrackInfo.hpp"
-#include "ID3/File.h"
-#include <id3tag.h>
+#pragma warning(push)
+#pragma warning(disable: 4251) // class 'T' needs to have dll-interface to be used by clients of class 'C'
+#include <taglib\fileref.h>
+#include <taglib\toolkit\tpropertymap.h>
+#include <taglib\mpeg\id3v2\id3v2tag.h>
+#include <taglib\mpeg\mpegfile.h>
+#include <taglib\mpeg\id3v2\frames\attachedpictureframe.h>
+#pragma warning(pop)
+
+#ifdef _DEBUG
+   #pragma comment(lib, "taglib_debug.lib")
+#else
+   #pragma comment(lib, "taglib.lib")
+#endif
 
 using Encoder::AudioFileTag;
 using Encoder::TrackInfo;
 
-bool AudioFileTag::ReadFromFile(const CString& filename)
+bool AudioFileTag::ReadFromFile(const CString& filename, AudioFileType audioFileType)
 {
-   ID3::File file(filename, true);
+   std::shared_ptr<TagLib::File> spFile = OpenFile(filename, audioFileType);
 
-   if (!file.HasID3v2Tag())
+   if (spFile == nullptr)
       return false;
 
-   // get primary tag
-   ID3::Tag tag = file.GetTag();
+   TagLib::Tag* tag = spFile->tag();
+   if (tag == nullptr)
+      return false;
 
-   return ReadTrackInfoFromTag(tag);
+   TagLib::ID3v2::Tag* id3v2tag = FindId3v2Tag(spFile);
+
+   return ReadTrackInfoFromTag(tag, id3v2tag);
 }
 
-bool AudioFileTag::ReadTrackInfoFromTag(ID3::Tag& tag)
+std::shared_ptr<TagLib::File> AudioFileTag::OpenFile(const CString& filename, AudioFileType audioFileType)
+{
+   std::shared_ptr<TagLib::File> spFile;
+
+   if (audioFileType == AudioFileType::FromExtension)
+   {
+      spFile.reset(TagLib::FileRef::create(
+         TagLib::FileName(filename),
+         true,
+         TagLib::AudioProperties::ReadStyle::Accurate));
+   }
+   else if (audioFileType == AudioFileType::MPEG)
+   {
+      spFile = std::make_shared<TagLib::MPEG::File>(
+         TagLib::FileName(filename),
+         true,
+         TagLib::AudioProperties::ReadStyle::Accurate);
+   }
+
+   return spFile;
+}
+
+TagLib::ID3v2::Tag* AudioFileTag::FindId3v2Tag(std::shared_ptr<TagLib::File> spFile)
+{
+   TagLib::ID3v2::Tag* id3v2tag = dynamic_cast<TagLib::ID3v2::Tag*>(spFile->tag());
+   if (id3v2tag != nullptr)
+      return id3v2tag;
+
+   std::shared_ptr<TagLib::MPEG::File> mpegFile = std::dynamic_pointer_cast<TagLib::MPEG::File>(spFile);
+   if (mpegFile != nullptr)
+   {
+      return mpegFile->ID3v2Tag(true); // create when it's not there yet
+   }
+
+   return nullptr;
+}
+
+bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag)
 {
    // retrieve field values
    CString textValue;
-   if (tag.IsFrameAvail(ID3::FrameId::Title))
+   if (tag->title() != TagLib::String::null)
    {
-      textValue = tag.FindFrame(ID3::FrameId::Title).GetString(1);
+      textValue = tag->title().toCWString();
       m_trackInfo.TextInfo(TrackInfoTitle, textValue);
    }
 
-   if (tag.IsFrameAvail(ID3::FrameId::Artist))
+   if (tag->artist() != TagLib::String::null)
    {
-      textValue = tag.FindFrame(ID3::FrameId::Artist).GetString(1);
+      textValue = tag->artist().toCWString();
       m_trackInfo.TextInfo(TrackInfoArtist, textValue);
    }
 
-   if (tag.IsFrameAvail(ID3::FrameId::AlbumArtist))
+   if (tag->comment() != TagLib::String::null)
    {
-      textValue = tag.FindFrame(ID3::FrameId::AlbumArtist).GetString(1);
-      m_trackInfo.TextInfo(TrackInfoDiscArtist, textValue);
-   }
-
-   if (tag.IsFrameAvail(ID3::FrameId::Composer))
-   {
-      textValue = tag.FindFrame(ID3::FrameId::Composer).GetString(1);
-      m_trackInfo.TextInfo(TrackInfoComposer, textValue);
-   }
-
-   if (tag.IsFrameAvail(ID3::FrameId::Comment))
-   {
-      // COMM field is layout differently: 0: ID3_FIELD_TYPE_TEXTENCODING, 1: ID3_FIELD_TYPE_LANGUAGE, 2: ID3_FIELD_TYPE_STRING, 3: ID3_FIELD_TYPE_STRINGFULL
-      textValue = tag.FindFrame(ID3::FrameId::Comment).GetString(3);
+      textValue = tag->comment().toCWString();
       m_trackInfo.TextInfo(TrackInfoComment, textValue);
    }
 
-   if (tag.IsFrameAvail(ID3::FrameId::AlbumTitle))
+   if (tag->album() != TagLib::String::null)
    {
-      textValue = tag.FindFrame(ID3::FrameId::AlbumTitle).GetString(1);
+      textValue = tag->album().toCWString();
       m_trackInfo.TextInfo(TrackInfoAlbum, textValue);
    }
 
-   if (tag.IsFrameAvail(ID3::FrameId::RecordingTime))
+   if (tag->year() != 0)
    {
-      textValue = tag.FindFrame(ID3::FrameId::RecordingTime).GetString(1);
-      m_trackInfo.NumberInfo(TrackInfoYear, _ttoi(textValue));
+      m_trackInfo.NumberInfo(TrackInfoYear, static_cast<int>(tag->year()));
    }
 
-   if (tag.IsFrameAvail(ID3::FrameId::TrackNumber))
+   if (tag->track() != 0)
    {
-      textValue = tag.FindFrame(ID3::FrameId::TrackNumber).GetString(1);
-      m_trackInfo.NumberInfo(TrackInfoTrack, _ttoi(textValue));
+      m_trackInfo.NumberInfo(TrackInfoTrack, static_cast<int>(tag->track()));
    }
 
-   if (tag.IsFrameAvail(ID3::FrameId::Genre))
+   if (tag->genre() != TagLib::String::null)
    {
-      textValue = tag.FindFrame(ID3::FrameId::Genre).GetString(1);
+      textValue = tag->genre().toCWString();
       if (!textValue.IsEmpty())
          m_trackInfo.TextInfo(TrackInfoGenre, textValue);
    }
 
-   if (tag.IsFrameAvail(ID3::FrameId::AttachedPicture))
+   if (id3v2tag != nullptr)
    {
-      const std::vector<unsigned char> binaryData =
-         tag.FindFrame(ID3::FrameId::AttachedPicture).GetBinaryData(4);
+      TagLib::PropertyMap propertyMap = id3v2tag->properties();
 
-      if (!binaryData.empty())
-         m_trackInfo.BinaryInfo(TrackInfoFrontCover, binaryData);
+      if (propertyMap.contains(TagLib::String("ALBUMARTIST")))
+      {
+         textValue = propertyMap[TagLib::String("ALBUMARTIST")].toString().toCWString();
+         m_trackInfo.TextInfo(TrackInfoDiscArtist, textValue);
+      }
+
+      if (propertyMap.contains(TagLib::String("COMPOSER")))
+      {
+         textValue = propertyMap[TagLib::String("COMPOSER")].toString().toCWString();
+         m_trackInfo.TextInfo(TrackInfoComposer, textValue);
+      }
+
+      for (auto frame : id3v2tag->frameList())
+      {
+         auto pictureFrame = dynamic_cast<TagLib::ID3v2::AttachedPictureFrame*>(frame);
+         if (pictureFrame != nullptr &&
+            pictureFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
+         {
+            const auto pictureData = pictureFrame->picture();
+            const unsigned char* data =
+               reinterpret_cast<const unsigned char*>(pictureData.data());
+
+            const std::vector<unsigned char> binaryData(
+               data,
+               data + pictureFrame->picture().size());
+
+            if (!binaryData.empty())
+               m_trackInfo.BinaryInfo(TrackInfoFrontCover, binaryData);
+         }
+      }
    }
 
    return true;
@@ -116,113 +180,91 @@ bool AudioFileTag::ReadTrackInfoFromTag(ID3::Tag& tag)
 
 unsigned int AudioFileTag::GetTagLength() const
 {
-   ID3::Tag tag;
+   // create an in-memory ID3v2 tag, fill and render it
+   TagLib::ID3v2::Tag tag;
 
-   // set the same flags that mp3tag would use in an ID3v2 tag
-   tag.SetOption(ID3::Tag::foUnsynchronisation, 0);
-   tag.SetOption(ID3::Tag::foCompression, 0);
-   tag.SetOption(ID3::Tag::foCRC, 0);
-   tag.SetOption(ID3::Tag::foID3v1, 0);
+   StoreTrackInfoInTag(&tag, &tag);
 
-   StoreTrackInfoInTag(tag);
-
-   return tag.ID3v2TagLength();
+   unsigned int size = tag.render().size();
+   return size;
 }
 
-bool AudioFileTag::WriteToFile(const CString& filename) const
+bool AudioFileTag::WriteToFile(const CString& filename, AudioFileType audioFileType) const
 {
-   ID3::File file(filename, false); // read-write
+   std::shared_ptr<TagLib::File> spFile = OpenFile(filename, audioFileType);
 
-   ATLASSERT(file.IsValid());
-   if (!file.IsValid())
+   if (spFile == nullptr)
       return false;
 
-   // get primary tag
-   ID3::Tag tag = file.GetTag();
+   TagLib::Tag* tag = spFile->tag();
+   if (tag == nullptr)
+      return false;
 
-   // set the same flags that mp3tag would use in an ID3v2 tag
-   tag.SetOption(ID3::Tag::foUnsynchronisation, 0);
-   tag.SetOption(ID3::Tag::foCompression, 0);
-   tag.SetOption(ID3::Tag::foCRC, 0);
-   tag.SetOption(ID3::Tag::foID3v1, 0);
+   TagLib::ID3v2::Tag* id3v2tag = FindId3v2Tag(spFile);
 
-   StoreTrackInfoInTag(tag);
+   StoreTrackInfoInTag(tag, id3v2tag);
 
-   return file.Update();
+   return spFile->save();
 }
 
-void AudioFileTag::StoreTrackInfoInTag(ID3::Tag& tag) const
+void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag) const
 {
-   const TrackInfo& trackInfo = m_trackInfo;
-
    // add all frames
    bool isAvail = false;
-   CString textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
+   CString textValue = m_trackInfo.TextInfo(TrackInfoTitle, isAvail);
    if (isAvail)
-   {
-      tag.RemoveFrame(ID3::FrameId::Title);
+      tag->setTitle(TagLib::String(textValue));
 
-      ID3::Frame frame(ID3::FrameId::Title);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
-   }
+   const TrackInfo& trackInfo = m_trackInfo;
 
    textValue = trackInfo.TextInfo(TrackInfoArtist, isAvail);
    if (isAvail)
    {
-      tag.RemoveFrame(ID3::FrameId::Artist);
-
-      ID3::Frame frame(ID3::FrameId::Artist);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
+      tag->setArtist(TagLib::String(textValue));
    }
 
    textValue = trackInfo.TextInfo(TrackInfoDiscArtist, isAvail);
    if (isAvail)
    {
-      tag.RemoveFrame(ID3::FrameId::AlbumArtist);
+      if (id3v2tag != nullptr)
+      {
+         TagLib::PropertyMap propertyMap = id3v2tag->properties();
 
-      ID3::Frame frame(ID3::FrameId::AlbumArtist);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
+         propertyMap.replace(TagLib::String("ALBUMARTIST"), TagLib::StringList(TagLib::String(textValue)));
+
+         id3v2tag->setProperties(propertyMap);
+      }
    }
 
    textValue = trackInfo.TextInfo(TrackInfoComposer, isAvail);
    if (isAvail)
    {
-      tag.RemoveFrame(ID3::FrameId::Composer);
+      if (id3v2tag != nullptr)
+      {
+         TagLib::PropertyMap propertyMap = id3v2tag->properties();
 
-      ID3::Frame frame(ID3::FrameId::Composer);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
+         propertyMap.replace(TagLib::String("COMPOSER"), TagLib::StringList(TagLib::String(textValue)));
+
+         id3v2tag->setProperties(propertyMap);
+      }
    }
 
    textValue = trackInfo.TextInfo(TrackInfoComment, isAvail);
    if (isAvail)
    {
-      tag.RemoveFrame(ID3::FrameId::Comment);
-
-      ID3::Frame frame(ID3::FrameId::Comment);
-      // COMM field is layout differently: 0: ID3_FIELD_TYPE_TEXTENCODING, 1: ID3_FIELD_TYPE_LANGUAGE, 2: ID3_FIELD_TYPE_STRING, 3: ID3_FIELD_TYPE_STRINGFULL
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, _T("eng")); // it's what Mp3tag writes
-      frame.SetString(3, textValue);
-      tag.AttachFrame(frame);
+      tag->setComment(TagLib::String(textValue));
    }
 
    textValue = trackInfo.TextInfo(TrackInfoAlbum, isAvail);
    if (isAvail)
    {
-      tag.RemoveFrame(ID3::FrameId::AlbumTitle);
+      tag->setAlbum(TagLib::String(textValue));
+   }
 
-      ID3::Frame frame(ID3::FrameId::AlbumTitle);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
+   textValue = trackInfo.TextInfo(TrackInfoGenre, isAvail);
+   if (isAvail)
+   {
+      tag->setGenre(TagLib::String(textValue));
    }
 
    // numeric
@@ -230,38 +272,13 @@ void AudioFileTag::StoreTrackInfoInTag(ID3::Tag& tag) const
    int intValue = trackInfo.NumberInfo(TrackInfoYear, isAvail);
    if (isAvail)
    {
-      textValue.Format(_T("%i"), intValue);
-
-      tag.RemoveFrame(ID3::FrameId::RecordingTime);
-
-      ID3::Frame frame(ID3::FrameId::RecordingTime);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
+      tag->setYear(static_cast<unsigned int>(intValue));
    }
 
    intValue = trackInfo.NumberInfo(TrackInfoTrack, isAvail);
    if (isAvail)
    {
-      textValue.Format(_T("%i"), intValue);
-
-      tag.RemoveFrame(ID3::FrameId::TrackNumber);
-
-      ID3::Frame frame(ID3::FrameId::TrackNumber);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
-   }
-
-   textValue = trackInfo.TextInfo(TrackInfoGenre, isAvail);
-   if (isAvail)
-   {
-      tag.RemoveFrame(ID3::FrameId::Genre);
-
-      ID3::Frame frame(ID3::FrameId::Genre);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, textValue);
-      tag.AttachFrame(frame);
+      tag->setTrack(static_cast<unsigned int>(intValue));
    }
 
    // binary
@@ -271,13 +288,27 @@ void AudioFileTag::StoreTrackInfoInTag(ID3::Tag& tag) const
    isAvail = trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
    if (isAvail)
    {
-      tag.RemoveFrame(ID3::FrameId::AttachedPicture);
+      if (id3v2tag != nullptr)
+      {
+         for (auto frame : id3v2tag->frameList())
+         {
+            auto pictureFrame = dynamic_cast<TagLib::ID3v2::AttachedPictureFrame*>(frame);
+            if (pictureFrame != nullptr &&
+               (pictureFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover ||
+                  pictureFrame->type() == TagLib::ID3v2::AttachedPictureFrame::Other))
+            {
+               id3v2tag->removeFrame(pictureFrame);
+               break;
+            }
+         }
 
-      ID3::Frame frame(ID3::FrameId::AttachedPicture);
-      frame.SetTextEncoding(0, ID3_FIELD_TEXTENCODING_ISO_8859_1);
-      frame.SetString(1, "image/jpeg");
-      frame.SetInt8(2, 0x03); // 0x03 = Front Cover
-      frame.SetBinaryData(4, binaryInfo);
-      tag.AttachFrame(frame);
+         auto pictureFrame = new TagLib::ID3v2::AttachedPictureFrame;
+
+         pictureFrame->setPicture(TagLib::ByteVector(reinterpret_cast<const char*>(binaryInfo.data()), binaryInfo.size()));
+         pictureFrame->setType(TagLib::ID3v2::AttachedPictureFrame::FrontCover);
+         pictureFrame->setMimeType(TagLib::String("image/jpeg"));
+
+         id3v2tag->addFrame(pictureFrame);
+      }
    }
 }
