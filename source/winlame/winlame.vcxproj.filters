@@ -389,15 +389,6 @@
     <Image Include="res\help.bmp">
       <Filter>Classic UI Files\Resource Files</Filter>
     </Image>
-    <Image Include="res\idle.ico">
-      <Filter>Classic UI Files\Resource Files</Filter>
-    </Image>
-    <Image Include="res\logo.bmp">
-      <Filter>Classic UI Files\Resource Files</Filter>
-    </Image>
-    <Image Include="res\working.ico">
-      <Filter>Classic UI Files\Resource Files</Filter>
-    </Image>
     <Image Include="res\winlame.ico">
       <Filter>Modern UI Files\Resource Files</Filter>
     </Image>

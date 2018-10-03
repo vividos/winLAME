@@ -199,8 +199,6 @@
     <Image Include="res\finish_action_standby.bmp" />
     <Image Include="res\flags.bmp" />
     <Image Include="res\help.bmp" />
-    <Image Include="res\idle.ico" />
-    <Image Include="res\logo.bmp" />
     <Image Include="res\open_files.bmp" />
     <Image Include="res\read_cd.bmp" />
     <Image Include="res\settings_freedb.bmp" />
@@ -211,7 +209,6 @@
     <Image Include="res\tasks_stop_all.bmp" />
     <Image Include="res\Toolbar32.bmp" />
     <Image Include="res\view_ribbon.bmp" />
-    <Image Include="res\working.ico" />
     <Image Include="res\winlame.ico" />
   </ItemGroup>
   <ItemGroup>

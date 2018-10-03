@@ -127,8 +127,6 @@ IDB_BITMAP_BTNICONS     BITMAP                  "res\\btnicons.bmp"
 
 IDB_HELP                BITMAP                  "res\\help.bmp"
 
-IDB_BITMAP_LOGO         BITMAP                  "res\\logo.bmp"
-
 IDB_BITMAP_FLAGS        BITMAP                  "res\\flags.bmp"
 
 IDB_BITMAP_TASKS        BITMAP                  "res\\tasks.bmp"
@@ -179,20 +177,6 @@ BEGIN
     BEGIN
         MENUITEM "Show &help",                  ID_HELP
         MENUITEM "About &winLAME...",           ID_APP_ABOUT
-    END
-END
-
-IDM_TRAY_CONTEXTMENU MENU
-BEGIN
-    POPUP "tray icon context menu"
-    BEGIN
-        MENUITEM "&About winLAME",              ID_TRAY_ABOUT
-        MENUITEM SEPARATOR
-        MENUITEM "&Pause encoding",             ID_TRAY_PAUSE
-        MENUITEM "&Start encoding",             ID_TRAY_START
-        MENUITEM SEPARATOR
-        MENUITEM "S&how winLAME",               ID_TRAY_SHOW
-        MENUITEM "&Quit winLAME",               ID_TRAY_QUIT
     END
 END
 
@@ -266,112 +250,6 @@ BEGIN
     PUSHBUTTON      ">",IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS,237,92,16,13,BS_ICON
 END
 
-IDD_MAINDLG DIALOGEX 0, 0, 300, 207
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "winLAME"
-FONT 8, "MS Shell Dlg", 400, 0, 0x0
-BEGIN
-    PUSHBUTTON      "<< &Back",IDC_MDLG_BACK,133,188,50,14
-    DEFPUSHBUTTON   "&Next >>",IDC_MDLG_NEXT,189,188,50,14
-    PUSHBUTTON      "E&xit",IDC_MDLG_EXIT,245,188,50,14
-    PUSHBUTTON      "help",IDC_MDLG_HELP,4,188,16,14,BS_ICON
-    PUSHBUTTON      "Modern UI",ID_VIEW_SWITCH_MODERN,25,188,16,14,BS_ICON
-    PUSHBUTTON      "smile",ID_FEEDBACK_POSITIVE,46,188,16,14,BS_ICON
-    PUSHBUTTON      "frown",ID_FEEDBACK_NEGATIVE,67,188,16,14,BS_ICON
-    CONTROL         "",IDC_MDLG_CAPTIONBAR,"Button",BS_OWNERDRAW | BS_FLAT,0,0,217,30
-    CONTROL         "",IDC_STATIC_MAIN_BEVEL,"Static",SS_ETCHEDHORZ,0,182,299,1
-    CONTROL         "",IDC_MDLG_FRAME,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,4,35,291,143
-    CONTROL         "",IDC_STATIC_MAIN_BEVEL2,"Static",SS_ETCHEDHORZ,0,30,300,1
-    CONTROL         IDB_BITMAP_LOGO,IDC_STATIC_WINLAME_LOGO,"Static",SS_BITMAP,217,0,83,30
-END
-
-IDD_DLG_INPUT DIALOGEX 0, 0, 291, 142
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    PUSHBUTTON      "input",IDC_INPUT_BUTTON_INFILESEL,0,0,16,14,BS_ICON
-    PUSHBUTTON      "del",IDC_INPUT_BUTTON_DELETE,20,0,16,14,BS_ICON
-    PUSHBUTTON      "play",IDC_INPUT_BUTTON_PLAY,40,0,16,14,BS_ICON
-    CONTROL         "",IDC_INPUT_LIST_INPUTFILES,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_SHAREIMAGELISTS | WS_TABSTOP,0,19,291,123,WS_EX_STATICEDGE
-    PUSHBUTTON      "play",IDC_INPUT_BUTTON_CDRIP,60,0,16,14,BS_ICON
-    RTEXT           "Time: %02u:%02u",IDC_STATIC_TIMECOUNT,146,7,141,8
-END
-
-IDD_ERRORDLG DIALOGEX 0, 0, 261, 122
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "winLAME Alert!"
-FONT 8, "MS Shell Dlg", 400, 0, 0x0
-BEGIN
-    ICON            "",IDC_ERR_STATIC_ICON,4,4,20,21
-    LTEXT           "Filename:",IDC_STATIC,40,5,221,8
-    LTEXT           "<filename>",IDC_ERR_STATIC_FILENAME,40,15,217,16,SS_NOPREFIX
-    LTEXT           "The following error occured:",IDC_STATIC,40,31,221,8
-    LTEXT           "Error Description",IDC_ERR_BEVEL1,32,44,229,8
-    LTEXT           "Reporting Module: %s",IDC_ERR_STATIC_MODULE,40,56,217,8,SS_NOPREFIX
-    LTEXT           "Error code: %u",IDC_ERR_STATIC_ERRCODE,40,66,217,8,SS_NOPREFIX
-    LTEXT           "Error Message: %s",IDC_ERR_STATIC_ERRMSG,40,76,217,19,SS_NOPREFIX
-    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,3,98,256,1
-    DEFPUSHBUTTON   "&Continue",IDC_ERR_BUTTON_CONTINUE,54,103,47,14
-    PUSHBUTTON      "&Skip File",IDC_ERR_BUTTON_SKIPFILE,107,103,47,14
-    PUSHBUTTON      "Sto&p",IDC_ERR_BUTTON_STOP,160,102,47,14
-END
-
-IDD_DLG_OUTPUT DIALOGEX 0, 0, 291, 142
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    LTEXT           "&Output Module",IDC_OUT_BEVEL1,0,0,291,8
-    COMBOBOX        IDC_OUT_COMBO_OUTMODULE,6,11,162,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "&Warn about lossy transcoding",IDC_OUT_CHECK_WARN,
-                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,177,9,109,18
-    LTEXT           "Output &Location",IDC_OUT_BEVEL2,0,31,291,8
-    COMBOBOX        IDC_OUT_OUTPATH,6,43,258,86,CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      "output",IDC_OUT_SELECTPATH,270,42,16,14,BS_ICON
-    CONTROL         "&Use input file's folder as output location",IDC_OUT_USE_INDIR,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,59,139,10
-    LTEXT           "Other Output Settings",IDC_OUT_BEVEL3,0,75,291,8
-    CONTROL         "&Delete after encoding",IDC_OUT_DELAFTER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,86,139,10
-    CONTROL         "O&verwrite existing files",IDC_OUT_CHECK_OVERWRITE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,100,139,10
-    CONTROL         "&After encoding, do this:",IDC_OUT_CHECK_FINISHED_ACTION,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,114,106,10
-    COMBOBOX        IDC_OUT_COMBO_FINISHED_ACTION,113,112,140,57,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "&Create output playlist",IDC_OUT_CREATEPLAYLIST,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,128,106,10
-    EDITTEXT        IDC_OUT_PLAYLISTNAME,113,126,140,12,ES_AUTOHSCROLL
-END
-
-IDD_DLG_PRESETS DIALOGEX 0, 0, 291, 142
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    LTEXT           "Preset List",IDC_PRE_BEVEL1,0,0,291,8
-    LISTBOX         IDC_PRE_LIST_PRESET,6,10,279,84,LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
-    EDITTEXT        IDC_PRE_DESC,6,98,279,44,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | NOT WS_BORDER | WS_VSCROLL,WS_EX_STATICEDGE
-END
-
-IDD_DLG_ENCODE DIALOGEX 0, 0, 291, 142
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    LTEXT           "Encode Control",IDC_ENC_BEVEL1,0,0,291,8
-    PUSHBUTTON      "start",IDC_ENC_START,6,11,16,14,BS_ICON
-    PUSHBUTTON      "stop",IDC_ENC_STOP,22,11,16,14,BS_ICON
-    PUSHBUTTON      "totray",IDC_ENC_TOTRAY,42,11,16,14,BS_ICON
-    LTEXT           "Progress Information",IDC_ENC_BEVEL2,0,26,291,8
-    LTEXT           "Processing File %u of %u",IDC_ENC_INFO1,6,35,279,8,SS_NOPREFIX
-    CONTROL         "",IDC_ENC_PROGRESS_FILES,"msctls_progress32",PBS_SMOOTH | WS_BORDER,6,46,279,11
-    CONTROL         "Processing File: %s",IDC_ENC_INFO2,"Static",SS_LEFTNOWORDWRAP | SS_NOPREFIX,6,60,279,8
-    CONTROL         "",IDC_ENC_PROGRESS_CURRFILE,"msctls_progress32",PBS_SMOOTH | WS_BORDER,6,72,279,11
-    LTEXT           "Percent done: %f %%",IDC_ENC_INFO3,6,87,139,8,SS_NOPREFIX
-    LTEXT           "Remaining time: %u:%u:%u",IDC_ENC_INFO4,145,87,140,8,SS_NOPREFIX
-    LTEXT           "Encoding Setup Information",IDC_ENC_BEVEL3,0,97,291,8
-    EDITTEXT        IDC_ENC_ENCINFO,6,108,279,34,ES_MULTILINE | ES_READONLY | NOT WS_BORDER,WS_EX_STATICEDGE
-END
-
 IDD_ABOUTDLG DIALOGEX 0, 0, 356, 236
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_MAXIMIZEBOX | WS_VISIBLE | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 CAPTION "About winLAME"
@@ -379,96 +257,6 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,152,219,50,14
     CONTROL         "",IDC_ABOUT_FRAME,"Static",SS_ETCHEDFRAME | NOT WS_VISIBLE,0,0,356,217
-END
-
-IDD_DLG_OGGVORBIS DIALOGEX 0, 0, 291, 142
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    LTEXT           "Quality Management (recommended)",IDC_OGGV_BEVEL1,0,0,291,8
-    CONTROL         "&Quality Settings:",IDC_OGGV_RADIO_BRMODE1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,6,11,67,10
-    CONTROL         "&Variable Bitrate",IDC_OGGV_RADIO_BRMODE2,"Button",BS_AUTORADIOBUTTON,6,54,71,10
-    CONTROL         "&Average Bitrate",IDC_OGGV_RADIO_BRMODE3,"Button",BS_AUTORADIOBUTTON,6,65,71,10
-    CONTROL         "&Constant Bitrate",IDC_OGGV_RADIO_BRMODE4,"Button",BS_AUTORADIOBUTTON,6,77,71,10
-    CONTROL         "",IDC_OGGV_SLIDER_QUALITY,"msctls_trackbar32",TBS_AUTOTICKS | WS_GROUP | WS_TABSTOP,80,12,132,12
-    LTEXT           "worst",IDC_OGGV_STATIC1,80,26,18,8
-    LTEXT           "best",IDC_OGGV_STATIC2,198,26,14,8
-    LTEXT           "Quality: %u.%02u",IDC_OGGV_STATIC_QUALITY,220,13,71,8,SS_NOPREFIX | NOT WS_GROUP
-    LTEXT           "Bitrate: %u.%u kbps",IDC_OGGV_STATIC_BITRATE,220,24,71,8,SS_NOPREFIX
-    CONTROL         "",IDC_OGGV_SPIN_QUICK_QUALITY,"msctls_updown32",UDS_ARROWKEYS | UDS_HORZ,128,28,36,10
-    LTEXT           "Bitrate Settings",IDC_OGGV_BEVEL2,0,43,291,8
-    CTEXT           "minimum\nBitrate",IDC_OGGV_STATIC3,90,50,39,17
-    EDITTEXT        IDC_OGGV_EDIT_MIN_BITRATE,88,70,31,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_OGGV_SPIN_MIN_BITRATE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS | WS_TABSTOP,119,68,11,15
-    CTEXT           "nominal\nBitrate",IDC_OGGV_STATIC4,152,50,39,17
-    EDITTEXT        IDC_OGGV_EDIT_NOM_BITRATE,150,70,31,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_OGGV_SPIN_NOM_BITRATE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS | WS_TABSTOP,181,68,11,15
-    CTEXT           "maximum\nBitrate",IDC_OGGV_STATIC5,207,50,39,17
-    EDITTEXT        IDC_OGGV_EDIT_MAX_BITRATE,205,70,31,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_OGGV_SPIN_MAX_BITRATE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS | WS_TABSTOP,236,68,11,15
-END
-
-IDD_DLG_CDRIP DIALOGEX 0, 0, 291, 142
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    LTEXT           "CD Audio Extraction",IDC_CDRIP_BEVEL1,0,0,291,8
-    PUSHBUTTON      "&Start",IDC_CDRIP_START,6,12,50,14
-    CONTROL         "",IDC_CDRIP_LIST_TRACKS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_TABSTOP,6,33,285,94,WS_EX_STATICEDGE
-    CONTROL         "&Autostart encoding after finished extraction",IDC_CDRIP_CHECK_AUTOSTART_ENC,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,132,285,10
-    CONTROL         "",IDC_CDRIP_PROGRESS,"msctls_progress32",PBS_SMOOTH,63,12,228,14,WS_EX_STATICEDGE
-END
-
-IDD_DLG_WAVE DIALOGEX 0, 0, 291, 142
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    LTEXT           "Audio Output Settings",IDC_WAVE_BEVEL1,0,0,291,8
-    LTEXT           "&File Format",IDC_STATIC,6,14,91,8
-    COMBOBOX        IDC_WAVE_COMBO_FORMAT,99,14,187,69,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "&Sample Format",IDC_STATIC,6,31,91,8
-    COMBOBOX        IDC_WAVE_COMBO_SUBTYPE,99,31,187,69,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-END
-
-IDD_DLG_WMA DIALOGEX 0, 0, 291, 142
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    LTEXT           "WMA Output Settings",IDC_WMA_BEVEL1,0,0,291,8
-    GROUPBOX        "Bitrate control",IDC_STATIC,6,12,154,46
-    CONTROL         "&Constant Bitrate",IDC_WMA_RADIO_BRMODE1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,17,25,66,10
-    CONTROL         "&Quality (VBR)",IDC_WMA_RADIO_BRMODE2,"Button",BS_AUTORADIOBUTTON,17,42,58,10
-    EDITTEXT        IDC_WMA_EDIT_BITRATE,86,23,38,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | WS_GROUP
-    CONTROL         "",IDC_WMA_SPIN_BITRATE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS | WS_TABSTOP,124,21,11,16
-    EDITTEXT        IDC_WMA_EDIT_QUALITY,86,40,38,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_WMA_SPIN_QUALITY,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS | WS_TABSTOP,124,38,11,16
-    LTEXT           "Kbps",IDC_STATIC,137,26,17,8
-    LTEXT           "%",IDC_STATIC,138,42,8,8
-END
-
-IDD_DLG_OPUS DIALOGEX 0, 0, 291, 142
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    LTEXT           "&Bitrate",IDC_STATIC,2,5,61,9
-    EDITTEXT        IDC_OPUS_EDIT_BITRATE,65,2,37,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_OPUS_SPIN_BITRATE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,102,0,11,15
-    LTEXT           "Kbps per channel",IDC_STATIC,118,5,169,8
-    LTEXT           "&Complexity",IDC_STATIC,2,23,56,9
-    CONTROL         "",IDC_OPUS_SLIDER_COMPLEXITY,"msctls_trackbar32",TBS_AUTOTICKS | WS_GROUP | WS_TABSTOP,63,19,166,13
-    RTEXT           "slowest",IDC_STATIC,183,37,46,9
-    CTEXT           "%u",IDC_OPUS_STATIC_COMPLEXITY,111,37,70,9
-    LTEXT           "fastest",IDC_STATIC,63,37,46,9
-    LTEXT           "Bitrate control &mode",IDC_STATIC,2,53,285,9
-    CONTROL         "VBR (recommended)",IDC_OPUS_RADIO_BRCMODE1,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,8,66,279,10
-    CONTROL         "Constrained VBR",IDC_OPUS_RADIO_BRCMODE2,"Button",BS_AUTORADIOBUTTON,8,81,279,10
-    CONTROL         "Hard CBR",IDC_OPUS_RADIO_BRCMODE3,"Button",BS_AUTORADIOBUTTON,8,96,279,10
 END
 
 IDD_DLG_PRESET_PROPERTY DIALOGEX 0, 0, 180, 177
@@ -480,84 +268,6 @@ BEGIN
     LISTBOX         IDC_PROP_LISTBOX,0,0,180,177,LBS_OWNERDRAWFIXED | LBS_NOINTEGRALHEIGHT | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
 END
 
-IDD_DLG_AAC DIALOGEX 0, 0, 291, 142
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    LTEXT           "Output Format",IDC_AAC_BEVEL1,0,0,291,8
-    GROUPBOX        "Bitrate control method",IDC_AAC_BEVEL2,6,13,269,9
-    CONTROL         "Quality",IDC_AAC_RADIO_BRCMODE1,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,14,26,37,10
-    CONTROL         "Average Bitrate",IDC_AAC_RADIO_BRCMODE2,"Button",BS_AUTORADIOBUTTON,14,48,65,10
-    CONTROL         "",IDC_AAC_SLIDER_QUALITY,"msctls_trackbar32",TBS_AUTOTICKS | WS_GROUP | WS_TABSTOP,50,26,166,13
-    LTEXT           "Quality: %u",IDC_AAC_STATIC_QUALITY,218,26,55,8
-    LTEXT           "(~%u Kbps/ch)",IDC_AAC_STATIC_KBPS,218,41,71,8
-    EDITTEXT        IDC_AAC_EDIT_BITRATE,82,47,37,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_AAC_SPIN_BITRATE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,119,45,11,15
-    LTEXT           "Kbps",IDC_STATIC,137,49,17,8
-    CONTROL         "Allow Mid/Side",IDC_AAC_CHECK_MIDSIDE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,77,129,10
-    CONTROL         "Use TNS",IDC_AAC_CHECK_USETNS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,91,129,10
-    CONTROL         "Use LFE channel",IDC_AAC_CHECK_USELFE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,104,71,10
-    LTEXT           "MPEG Version",IDC_STATIC,140,77,61,8
-    COMBOBOX        IDC_AAC_COMBO_MPEGVER,206,73,69,41,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "AAC Object Type",IDC_STATIC,140,95,61,8
-    COMBOBOX        IDC_AAC_COMBO_OBJTYPE,206,92,69,41,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Cutoff",IDC_STATIC,6,122,24,8
-    EDITTEXT        IDC_AAC_EDIT_BANDWIDTH,32,120,37,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_AAC_SPIN_BANDWIDTH,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,69,118,11,15
-    LTEXT           "Hz",IDC_STATIC,84,122,10,8
-    CONTROL         "Auto",IDC_AAC_CHECK_BANDWIDTH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,101,122,42,10
-END
-
-IDD_CDSELECT DIALOGEX 0, 0, 310, 210
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-EXSTYLE WS_EX_CONTROLPARENT
-CAPTION "winLAME: CD Audio Selection"
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    PUSHBUTTON      "&Close",IDOK,253,6,50,14
-    PUSHBUTTON      "&Play",IDC_CDSELECT_BUTTON_PLAY,253,24,50,14
-    PUSHBUTTON      "&Stop",IDC_CDSELECT_BUTTON_STOP,253,42,50,14
-    PUSHBUTTON      "&freedb.org",IDC_CDSELECT_BUTTON_FREEDB,253,60,50,14
-    PUSHBUTTON      "&Album Art",IDC_CDSELECT_BUTTON_ALBUMART,253,78,50,14
-    PUSHBUTTON      "&Options",IDC_CDSELECT_BUTTON_OPTIONS,253,96,50,14
-    CONTROL         "Album art image",IDC_CDSELECT_STATIC_ALBUMART,"Static",SS_BLACKFRAME | SS_NOTIFY | NOT WS_VISIBLE,253,115,40,40
-    COMBOBOX        IDC_CDSELECT_COMBO_DRIVES,6,6,240,114,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "",IDC_CDSELECT_LIST_TRACKS,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_TABSTOP,6,23,240,131,WS_EX_STATICEDGE
-    LTEXT           "CD &Title",IDC_CDSELECT_STATIC_TITLE,6,164,45,8
-    EDITTEXT        IDC_CDSELECT_EDIT_TITLE,52,160,157,12,ES_AUTOHSCROLL
-    LTEXT           "&Year",IDC_CDSELECT_STATIC_YEAR,215,164,16,8
-    EDITTEXT        IDC_CDSELECT_EDIT_YEAR,246,160,57,12,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "CD &Artist",IDC_CDSELECT_STATIC_ARTIST,6,181,45,8
-    EDITTEXT        IDC_CDSELECT_EDIT_ARTIST,52,177,157,12,ES_AUTOHSCROLL
-    LTEXT           "&Genre",IDC_CDSELECT_STATIC_GENRE,215,181,20,8
-    COMBOBOX        IDC_CDSELECT_COMBO_GENRE,245,177,58,167,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "&Various Artists",IDC_CDSELECT_CHECK_VARIOUS_ARTISTS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,195,120,10
-END
-
-IDD_DLG_LAME_SIMPLE DIALOGEX 0, 0, 291, 142
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD
-EXSTYLE WS_EX_CONTROLPARENT
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    LTEXT           "Encoding &Quality",IDC_LAME_BEVEL1,0,0,291,8
-    COMBOBOX        IDC_LAME_COMBO_ENCODING_QUALITY,6,11,69,74,CBS_DROPDOWNLIST | WS_TABSTOP
-    CONTROL         "&Mono Encoding",IDC_LAME_CHECK_MONO,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,89,14,202,10
-    CONTROL         "&Bitrate",IDC_LAME_RADIO_TYPE1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,0,29,291,10
-    CONTROL         "&Quality",IDC_LAME_RADIO_TYPE2,"Button",BS_AUTORADIOBUTTON,0,63,291,10
-    EDITTEXT        IDC_LAME_EDIT_BITRATE,6,43,31,12,ES_AUTOHSCROLL | ES_NUMBER | WS_GROUP
-    CONTROL         "",IDC_LAME_SPIN_BITRATE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS | WS_TABSTOP,37,42,11,15
-    CONTROL         "&Constant Bitrate",IDC_LAME_CHECK_CBR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,89,45,202,10
-    EDITTEXT        IDC_LAME_EDIT_QUALITY,6,77,31,12,ES_AUTOHSCROLL | ES_NUMBER
-    CONTROL         "",IDC_LAME_SPIN_QUALITY,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS | WS_TABSTOP,37,76,11,15
-    LTEXT           "&Variable Bitrate Mode",IDC_LAME_STATIC_VBR_MODE,6,101,83,8
-    COMBOBOX        IDC_LAME_COMBO_VBR_MODE,89,97,66,48,CBS_DROPDOWNLIST | WS_TABSTOP
-    CONTROL         "&Nogap encoding",IDC_LAME_CHECK_NOGAP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,114,291,10
-    CONTROL         "&Prepend RIFF WAVE Header (used for video track encoding)",IDC_LAME_CHECK_WRITE_WAVEMP3,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,0,128,291,10
-END
-
 IDD_FREEDB_LIST DIALOGEX 0, 0, 282, 161
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "winLAME: freedb.org Selection"
@@ -565,26 +275,6 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,225,7,50,14
     CONTROL         "",IDC_FREEDB_LIST_TRACKS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,7,7,211,147
-END
-
-IDD_CDRIP_OPTIONS DIALOGEX 0, 0, 260, 150
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "winLAME: Options"
-FONT 8, "MS Shell Dlg", 400, 0, 0x0
-BEGIN
-    LTEXT           "General Settings",IDC_CDRIP_OPT_BEVEL1,7,6,246,8
-    LTEXT           "&Language",IDC_STATIC,14,21,86,8
-    COMBOBOX        IDC_CDRIP_OPT_COMBO_LANGUAGE,101,16,153,99,CBS_DROPDOWNLIST | CBS_OWNERDRAWVARIABLE | CBS_HASSTRINGS | WS_TABSTOP
-    LTEXT           "CD Extraction Settings",IDC_CDRIP_OPT_BEVEL2,7,35,246,8
-    LTEXT           "&freedb Server",IDC_STATIC,14,51,86,8
-    COMBOBOX        IDC_CDRIP_OPT_COMBO_FREEDB_SERVER,101,47,152,109,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "&Temporary CD Extraction Folder",IDC_STATIC,14,69,239,8
-    EDITTEXT        IDC_CDRIP_OPT_EDIT_TEMP_FOLDER,14,81,218,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH,237,81,16,13,BS_ICON
-    CONTROL         "&Store edited disc and track info in cdplayer.ini",IDC_CDRIP_OPT_CHECK_CDPLAYER_INI,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,98,239,10
-    PUSHBUTTON      "Cancel",IDCANCEL,146,131,50,14
-    DEFPUSHBUTTON   "OK",IDOK,203,131,50,14
 END
 
 IDD_CRASHDUMP_SAVE_RESULTS DIALOGEX 0, 0, 281, 92
@@ -861,10 +551,6 @@ IDI_ICON_WINLAME        ICON                    "res\\winlame.ico"
 
 IDR_MAINFRAME           ICON                    "res\\winlame.ico"
 
-IDI_ICON_WORKING        ICON                    "res\\working.ico"
-
-IDI_ICON_IDLE           ICON                    "res\\idle.ico"
-
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -911,19 +597,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Accelerator
-//
-
-IDR_ACTABLE ACCELERATORS
-BEGIN
-    VK_INSERT,      IDC_INPUT_BUTTON_INFILESEL, VIRTKEY 
-    VK_LEFT,        IDC_MDLG_BACK,          VIRTKEY, ALT
-    VK_RIGHT,       IDC_MDLG_NEXT,          VIRTKEY, ALT
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // HTML
 //
 
@@ -938,14 +611,6 @@ IDR_HTML_ABOUT          HTML                    "res\\about.html"
 #ifdef APSTUDIO_INVOKED
 GUIDELINES DESIGNINFO
 BEGIN
-    IDD_MAINDLG, DIALOG
-    BEGIN
-    END
-
-    IDD_DLG_ENCODE, DIALOG
-    BEGIN
-    END
-
     IDD_PAGE_CLASSIC_START, DIALOG
     BEGIN
     END
@@ -1026,11 +691,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_ERR_MODULE          "Reporting Module: %s"
-    IDS_ERR_ERRCODE         "Error code: %u"
-    IDS_ERR_ERRMSG          "Error Message: %s"
-    IDS_ERR_NOMODULES       "There are no input or output modules available! Please reinstall winLAME!"
-    IDS_WARN_TRANSCODE      "Warning!\nYou are about to transcode audio file(s) from a lossy format to another. This may severely degrade sound quality!\n\nContinue?"
     IDS_PRE_DESC_DEFAULT    "Choose this to customize winLAME settings for yourself; only recommended for experienced users!"
     IDS_MAIN_TASKS_STILL_RUNNING 
                             "There are still tasks to be processed; Really quit?"
@@ -1045,40 +705,6 @@ BEGIN
     IDS_AAC_NO_MPEG2_LTP    "Warning!\nCurrently libfaac isn't capable of using MPEG2 together with LTP.\nPlease select another Object Type!"
     IDS_OGGV_QUALITY        "Quality: %s%u.%02u"
     IDS_OGGV_BITRATE        "Bitrate: %u.%u kbps"
-    IDS_DLG_CAP_INPUT       "Input Files"
-    IDS_DLG_CAP_OUTPUT      "Output Settings"
-    IDS_DLG_CAP_PRESETS     "Presets"
-    IDS_DLG_CAP_LAME_SIMPLE "LAME Settings"
-    IDS_DLG_CAP_OGGVORBIS   "Ogg Vorbis Settings"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_DLG_CAP_WAVE        "LibSndfile Settings"
-    IDS_DLG_CAP_AAC         "AAC Settings"
-    IDS_DLG_CAP_ENCODE      "Encoding"
-    IDS_DLG_CAP_WMA         "WMA Output Settings"
-    IDS_DLG_CAP_CDRIP       "CD Audio Extraction"
-    IDS_DLG_CAP_OPUS        "Opus Settings"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_DLG_DESC_INPUT      "Choose files that winLAME should encode"
-    IDS_DLG_DESC_OUTPUT     "Set various output file settings"
-    IDS_DLG_DESC_PRESETS    "Select settings from predefined presets"
-    IDS_DLG_DESC_LAME_SIMPLE "Settings for the LAME encoder"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_DLG_DESC_OGGVORBIS  "Modify Ogg Vorbis settings"
-    IDS_DLG_DESC_WAVE       "LibSndfile specific settings"
-    IDS_DLG_DESC_AAC        "Settings for AAC encoding"
-    IDS_DLG_DESC_ENCODE     "Start encoding and watch the progress"
-    IDS_DLG_DESC_WMA        "WMA encoding settings"
-    IDS_DLG_DESC_CDRIP      "Extracts audio data from CDs"
-    IDS_DLG_DESC_OPUS       "Settings for the Opus encoder"
 END
 
 STRINGTABLE
@@ -1092,8 +718,6 @@ BEGIN
     IDS_INPUT_FILTER_PLAYLISTS "Playlists [*.m3u, *.pls]|*.m3u;*.pls|"
     IDS_INPUT_FILTER_CUESHEETS "Cue Sheets [*.cue]|*.cue|"
     IDS_INPUT_FILTER_ALLFILES "All Files [*.*]|*.*|"
-    IDS_INPUT_ERROR_OPEN_INPUT_FILE_SSS 
-                            "%s\n\nerror opening input file: %s\nerror message: %s"
     IDS_INPUT_ERRORS_OCCURED_ADDING 
                             "Errors occured during adding input files:"
     IDS_INPUT_TIME_UU       "Time: %02u:%02u"
@@ -1113,22 +737,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_ENC_STOPPED         "Stopped. Press play to start encoding."
-    IDS_ENC_FINISHED        "Finished encoding all files."
-    IDS_ENC_U_OF_U          "Processing File %u of %u"
-    IDS_ENC_FILE_S          "Processing File: %s"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_ENC_PERCENT_F       "Percent done: %3u.%1u %%"
-    IDS_ENC_REMAINING_UUU   "Remaining time: %02u:%02u:%02u"
-    IDS_ENC_TRAY_TOOLTIP    "winLAME: File %u/%u; %u.%1u %% done."
-    IDS_ENC_TRAY_FINISHED   "winLAME: Finished encoding all files"
-END
-
-STRINGTABLE
-BEGIN
     IDC_INPUT_BUTTON_PLAY   "Plays the selected file with the program associated with that file type"
     IDC_INPUT_LIST_INPUTFILES "The list of input files"
     IDC_INPUT_BUTTON_INFILESEL "Adds files to the list of input files"
@@ -1137,20 +745,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDC_ENC_ENCINFO         "Encoding information for the current file"
-    IDC_ENC_PROGRESS_FILES  "Shows the progress of all files"
-    IDC_ENC_PROGRESS_CURRFILE "Shows the progress of the current file"
-    IDC_ENC_START           "Starts or pauses the encoding process"
-    IDC_ENC_STOP            "Stops the encoding process"
-    IDC_ENC_TOTRAY          "Sends winLAME to the taskbar notification area"
-END
-
-STRINGTABLE
-BEGIN
-    IDC_MDLG_NEXT           "Proceeds to the next wizard page"
-    IDC_MDLG_BACK           "Goes back to the last wizard page"
-    IDC_MDLG_HELP           "Shows help for the current wizard page"
-    IDC_MDLG_EXIT           "Exits winLAME"
 END
 
 STRINGTABLE
@@ -1159,15 +753,10 @@ BEGIN
     IDC_OUT_DELAFTER        "Enables deleting of processed input files after encoding"
     IDC_OUT_OUTPATH         "The folder where the output files are placed"
     IDC_OUT_SELECTPATH      "Lets you select a folder where all output files are placed"
-    IDC_OUT_CHECK_FINISHED_ACTION 
-                            "When checked, enables the selected action after the last file is encoded"
-    IDC_OUT_COMBO_FINISHED_ACTION 
-                            "Lets you select between different actions to perform when encoding finishes"
     IDC_OUT_CHECK_OVERWRITE "When checked, existing files will be overwritten"
     IDC_OUT_CREATEPLAYLIST  "When checked, winLAME creates an m3u playlist with all output files"
     IDC_OUT_PLAYLISTNAME    "Filename of the m3u playlist; path is automatically added"
     IDC_OUT_USE_INDIR       "Lets you use the folder of each input file as it's output folder (allows multi-folder encodes)"
-    IDC_OUT_CHECK_WARN      "When checked, warns about possible loss of quality when transcoding from one lossy format to another."
 END
 
 STRINGTABLE
@@ -1205,8 +794,6 @@ BEGIN
     IDS_MAIN_TASKS_STATUS_UNKNOWN "Unbekannt"
     IDS_CDEXTRACT_DESC_US   "Track %u: %s"
     IDS_MAIN_TASKS_PANE_CONTAINER "Task Details"
-    IDS_WARN_OVERWRITE_ORIGINAL 
-                            "Warning!\nYou are about to overwrite the original input files with the encoded output files!\n\nContinue?"
 END
 
 STRINGTABLE
@@ -1244,12 +831,6 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_CDRIP_PAGE_COLUMN_TRACK "Track"
-    IDS_CDRIP_PAGE_COLUMN_TITLE "Title"
-    IDS_CDRIP_PAGE_COLUMN_STATUS "Status"
-    IDS_CDRIP_PAGE_STATUS_NOT_PROCESSED "not processed"
-    IDS_CDRIP_PAGE_STATUS_PROCESSING "processing..."
-    IDS_CDRIP_PAGE_STATUS_FINISHED "finished"
     IDS_CDRIP_PAGE_ERROR_NO_CD_IN_DRIVE "No CD in disc drive!"
     IDS_CDRIP_PAGE_ERROR_WRONG_CD "Wrong CD in disc drive!"
 END
@@ -1441,16 +1022,6 @@ END
 STRINGTABLE
 BEGIN
     IDC_INPUT_MENU_SELALL   "Selects all files in the input files list"
-    IDC_INPUT_BUTTON_CDRIP  "Lets you select CD audio tracks"
-END
-
-STRINGTABLE
-BEGIN
-    ID_TRAY_ABOUT           "Shows the winLAME about dialog"
-    ID_TRAY_PAUSE           "Pauses or continues encoding"
-    ID_TRAY_START           "Starts encoding"
-    ID_TRAY_SHOW            "Shows the winLAME main window"
-    ID_TRAY_QUIT            "Quits winLAME"
 END
 
 STRINGTABLE
