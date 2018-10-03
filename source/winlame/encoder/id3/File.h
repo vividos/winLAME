@@ -29,7 +29,7 @@ struct id3_file;
 /// ID3 tag classes
 namespace ID3
 {
-
+/// ID3 file
 class File
 {
 public:

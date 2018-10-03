@@ -52,7 +52,7 @@ namespace ID3
       //static TCHAR Xxx[] = _T("");
    }
 
-
+/// ID3 frame
 class Frame
 {
 public:

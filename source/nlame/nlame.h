@@ -140,7 +140,7 @@ const char* nlame_lame_string_get(nlame_lame_string_type type);
 
 /* init and deinit functions */
 
-/*! nlame internal settings struct */
+/*! \brief nlame internal settings struct */
 struct nlame_struct;
 /*! nlame encoder instance */
 typedef struct nlame_struct nlame_instance_t;

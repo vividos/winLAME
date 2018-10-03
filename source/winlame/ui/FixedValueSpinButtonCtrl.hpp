@@ -23,7 +23,7 @@
 
 namespace UI
 {
-   /// wrapper for a spin button control that "snaps" to fixed values when the
+   /// \brief wrapper for a spin button control that "snaps" to fixed values when the
    /// up or down button is pressed
    class FixedValueSpinButtonCtrl : public CWindowImpl<FixedValueSpinButtonCtrl>
    {

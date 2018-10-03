@@ -33,7 +33,7 @@ class TaskManager;
 namespace UI
 {
    /// \brief Encoder page for classic mode
-   /// Lets the user encode the files or CD tracks that were selected. Tasks were already added in
+   /// \details Lets the user encode the files or CD tracks that were selected. Tasks were already added in
    /// the FinishPage. The page shows a tasks list and a task details view, separated by a
    /// splitter. Also a toolbar is shown with the two commands "stop all" and "remove completed".
    /// When exiting the page and there are still tasks running, a message box is shown, asking if
