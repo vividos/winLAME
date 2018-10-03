@@ -99,9 +99,6 @@
     <ClCompile Include="TestTransportMetadata.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\libraries\src\libid3tag\libid3tag.vcxproj">
-      <Project>{b210dd52-187a-44c2-a93f-20f7a05f1bbb}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\nlame\nlame.vcxproj">
       <Project>{0b3f6b1a-d78e-47db-a48c-d3daa16e17ce}</Project>
     </ProjectReference>

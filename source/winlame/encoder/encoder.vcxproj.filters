@@ -4,9 +4,6 @@
     <Filter Include="aacinfo files">
       <UniqueIdentifier>{a0973a5f-1f6b-4fc1-9f96-92242a06351b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="id3 files">
-      <UniqueIdentifier>{44425b6e-65b3-441a-be07-808feac6f9c6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{5ec8e7f3-2ed1-48fb-af31-3b46b9da79a0}</UniqueIdentifier>
     </Filter>
@@ -17,18 +14,6 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="id3\Field.h">
-      <Filter>id3 files</Filter>
-    </ClInclude>
-    <ClInclude Include="id3\File.h">
-      <Filter>id3 files</Filter>
-    </ClInclude>
-    <ClInclude Include="id3\Frame.h">
-      <Filter>id3 files</Filter>
-    </ClInclude>
-    <ClInclude Include="id3\Tag.h">
-      <Filter>id3 files</Filter>
     </ClInclude>
     <ClInclude Include="aacinfo\aacinfo.h">
       <Filter>aacinfo files</Filter>
@@ -221,17 +206,6 @@
     <ClCompile Include="WaveMp3Header.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="id3\Field.cpp">
-      <Filter>id3 files</Filter>
-    </ClCompile>
-    <ClCompile Include="id3\File.cpp">
-      <Filter>id3 files</Filter>
-    </ClCompile>
-    <ClCompile Include="id3\Frame.cpp">
-      <Filter>id3 files</Filter>
-    </ClCompile>
-    <ClCompile Include="id3\Tag.cpp">
-      <Filter>id3 files</Filter>
     </ClCompile>
     <ClCompile Include="aacinfo\aacinfo.c">
       <Filter>aacinfo files</Filter>

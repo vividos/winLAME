@@ -54,7 +54,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..;..\..\libraries\include;..\..\nlame;..\..\libraries\src\libid3tag;..\..\libraries\include\speex;..\..\libraries\include\opus;..\..\libraries\include\taglib;..\..\libraries\include\taglib\toolkit;..\..\libraries\include\taglib\mpeg\id3v2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\..\libraries\include;..\..\nlame;..\..\libraries\include\speex;..\..\libraries\include\opus;..\..\libraries\include\taglib;..\..\libraries\include\taglib\toolkit;..\..\libraries\include\taglib\mpeg\id3v2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -66,7 +66,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..;..\..\libraries\include;..\..\nlame;..\..\libraries\src\libid3tag;..\..\libraries\include\speex;..\..\libraries\include\opus;..\..\libraries\include\taglib;..\..\libraries\include\taglib\toolkit;..\..\libraries\include\taglib\mpeg\id3v2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..;..\..\libraries\include;..\..\nlame;..\..\libraries\include\speex;..\..\libraries\include\opus;..\..\libraries\include\taglib;..\..\libraries\include\taglib\toolkit;..\..\libraries\include\taglib\mpeg\id3v2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -120,10 +120,6 @@
     <ClInclude Include="VariableManager.hpp" />
     <ClInclude Include="WaveMp3Header.hpp" />
     <ClInclude Include="SndFileOutputModule.hpp" />
-    <ClInclude Include="id3\Field.h" />
-    <ClInclude Include="id3\File.h" />
-    <ClInclude Include="id3\Frame.h" />
-    <ClInclude Include="id3\Tag.h" />
     <ClInclude Include="aacinfo\aacinfo.h" />
     <ClInclude Include="aacinfo\filestream.h" />
   </ItemGroup>
@@ -158,10 +154,6 @@
     <ClCompile Include="VariableManager.cpp" />
     <ClCompile Include="WaveMp3Header.cpp" />
     <ClCompile Include="SndFileOutputModule.cpp" />
-    <ClCompile Include="id3\Field.cpp" />
-    <ClCompile Include="id3\File.cpp" />
-    <ClCompile Include="id3\Frame.cpp" />
-    <ClCompile Include="id3\Tag.cpp" />
     <ClCompile Include="aacinfo\aacinfo.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
@@ -180,9 +172,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\libraries\src\libid3tag\libid3tag.vcxproj">
-      <Project>{b210dd52-187a-44c2-a93f-20f7a05f1bbb}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\nlame\nlame.vcxproj">
       <Project>{0b3f6b1a-d78e-47db-a48c-d3daa16e17ce}</Project>
     </ProjectReference>
