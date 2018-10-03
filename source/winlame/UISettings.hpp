@@ -109,9 +109,6 @@ struct UISettings
    /// last selected preset index
    int m_iLastSelectedPresetIndex;
 
-   /// autostart encoding after cd ripping?
-   bool cdrip_autostart_encoding;
-
    /// indicates that last page was cdrip page
    bool last_page_was_cdrip_page;
 

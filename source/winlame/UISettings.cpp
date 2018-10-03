@@ -37,12 +37,9 @@ LPCTSTR g_pszOutputModule = _T("OutputModule");
 LPCTSTR g_pszInputOutputSameFolder = _T("InputOutputSameFolder");
 LPCTSTR g_pszLastInputPath = _T("LastInputPath");
 LPCTSTR g_pszDeleteAfterEncode = _T("DeleteAfterEncode");
-LPCTSTR g_pszHideAdvancedLAME = _T("HideAdvancedLAME");
 LPCTSTR g_pszOverwriteExisting = _T("OverwriteExisting");
-LPCTSTR g_pszWarnLossyTrans = _T("WarnLossyTranscoding");
 LPCTSTR g_pszActionAfterEncoding = _T("ActionAfterEncoding");
 LPCTSTR g_pszLastSelectedPresetIndex = _T("LastSelectedPresetIndex");
-LPCTSTR g_pszCdripAutostartEncoding = _T("CDExtractAutostartEncoding");
 LPCTSTR g_pszCdripTempFolder = _T("CDExtractTempFolder");
 LPCTSTR g_pszOutputPathHistory = _T("OutputPathHistory%02u");
 LPCTSTR g_pszFreedbServer = _T("FreedbServer");
@@ -74,7 +71,6 @@ UISettings::UISettings()
    after_encoding_action(-1),
    create_playlist(false),
    playlist_filename(MAKEINTRESOURCE(IDS_GENERAL_PLAYLIST_FILENAME)),
-   cdrip_autostart_encoding(true),
    m_iLastSelectedPresetIndex(1), // first preset is the "best practice" preset
    last_page_was_cdrip_page(false),
    freedb_server(_T("freedb.freedb.org")),
@@ -157,9 +153,6 @@ void UISettings::ReadSettings()
 
    // read last selected preset index
    ReadIntValue(regRoot, g_pszLastSelectedPresetIndex, m_iLastSelectedPresetIndex);
-
-   // read "autostart after encoding" value
-   ReadBooleanValue(regRoot, g_pszCdripAutostartEncoding, cdrip_autostart_encoding);
 
    // read "cd extraction temp folder"
    ReadStringValue(regRoot, g_pszCdripTempFolder, MAX_PATH, cdrip_temp_folder);
@@ -259,10 +252,6 @@ void UISettings::StoreSettings()
    // write "action after encoding" value
    value = after_encoding_action;
    regRoot.SetValue(value, g_pszActionAfterEncoding);
-
-   // write "autostart after encoding" value
-   value = cdrip_autostart_encoding ? 1 : 0;
-   regRoot.SetValue(value, g_pszCdripAutostartEncoding);
 
    // write last selected preset index
    regRoot.SetValue(m_iLastSelectedPresetIndex, g_pszLastSelectedPresetIndex);
