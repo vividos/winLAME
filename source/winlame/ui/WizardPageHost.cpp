@@ -231,6 +231,10 @@ void WizardPageHost::AddSystemMenuEntries()
 
 BOOL WizardPageHost::PreTranslateMessage(MSG* pMsg)
 {
+   // relay mouse move messages to the tooltip ctrl
+   if (pMsg->message == WM_MOUSEMOVE)
+      m_tooltipCtrl.RelayEvent(pMsg);
+
    // handle dialog messages
    if (IsDialogMessage(pMsg))
       return TRUE;
@@ -254,7 +258,7 @@ LRESULT WizardPageHost::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
 
    // set the button images
    m_helpIcon.Create(MAKEINTRESOURCE(IDB_HELP), 14, 0, RGB(192, 192, 192));
-   CButton helpButton(GetDlgItem(IDC_MDLG_HELP));
+   CButton helpButton(GetDlgItem(IDC_WIZARDPAGE_HELP));
    helpButton.SetIcon(m_helpIcon.ExtractIcon(0));
 
    CImageList feedbackIcons;
@@ -287,7 +291,7 @@ LRESULT WizardPageHost::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
    if (App::Current().IsHelpAvailable())
       m_htmlHelper.Init(m_hWnd, App::Current().HelpFilename());
    else
-      GetDlgItem(IDC_MDLG_HELP).ShowWindow(SW_HIDE);
+      GetDlgItem(IDC_WIZARDPAGE_HELP).ShowWindow(SW_HIDE);
 
    // create caption font
    CLogFont lf(AtlGetDefaultGuiFont());

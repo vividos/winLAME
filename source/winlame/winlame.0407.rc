@@ -206,7 +206,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,338,229,50,14
     PUSHBUTTON      "Zurück",IDC_WIZARDPAGE_BUTTON_ACTION2,283,229,50,14
     PUSHBUTTON      "Abbrechen",IDC_WIZARDPAGE_BUTTON_ACTION1,228,229,50,14
-    PUSHBUTTON      "Hilfe",IDC_MDLG_HELP,5,229,16,14,BS_ICON
+    PUSHBUTTON      "Hilfe",IDC_WIZARDPAGE_HELP,5,229,16,14,BS_ICON
     PUSHBUTTON      "Modernes UI",ID_VIEW_SWITCH_MODERN,26,229,16,14,BS_ICON
     PUSHBUTTON      "Positiv",ID_FEEDBACK_POSITIVE,47,229,16,14,BS_ICON
     PUSHBUTTON      "Negativ",ID_FEEDBACK_NEGATIVE,68,229,16,14,BS_ICON
@@ -749,6 +749,7 @@ END
 
 STRINGTABLE
 BEGIN
+    IDC_WIZARDPAGE_HELP     "Zeigt die Hilfe für die aktuelle Assistenten-Seite"
 END
 
 STRINGTABLE
@@ -1009,6 +1010,21 @@ END
 
 STRINGTABLE
 BEGIN
+    IDC_OGGV_SPIN_QUICK_QUALITY 
+                            "Ändern Sie den Qualitäts-Wert in kleinen Schritten"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_AAC_SPIN_BANDWIDTH  "Ändern Sie die Bandbreite"
+    IDC_AAC_CHECK_BANDWIDTH "Cutoff-Frequenz wird automatisch verwaltet"
+    IDC_AAC_SLIDER_QUALITY  "Wählt den Qualitäts-Wert; höhere Werte resultieren in besserer Qualität"
+    IDC_AAC_RADIO_BRCMODE1  "Verwenden des Qualitäts-Bitraten-Modus"
+    IDC_AAC_RADIO_BRCMODE2  "Verwenden des Durchschnitts-Bitraten-Modus"
+END
+
+STRINGTABLE
+BEGIN
     IDC_AAC_EDIT_BITRATE    "Bitrate in kbps, pro Kanal"
     IDC_AAC_EDIT_BANDWIDTH  "Ausgabestrom-Bandbreite in Hz"
     IDC_AAC_COMBO_MPEGVER   "Die MPEG Version, die in der Ausgabe verwendet wird"
@@ -1017,11 +1033,6 @@ BEGIN
     IDC_AAC_CHECK_USETNS    "Wenn angehakt, wird Temporal Noise Shaping benutzt"
     IDC_AAC_CHECK_USELFE    "Wenn angehakt, wird der Low Frequency Enhancement-Kanal benutzt"
     IDC_AAC_SPIN_BITRATE    "Ändern Sie die Bitrate"
-END
-
-STRINGTABLE
-BEGIN
-    IDC_AAC_SPIN_BANDWIDTH  "Ändern Sie die Bandbreite"
 END
 
 STRINGTABLE
@@ -1070,6 +1081,138 @@ BEGIN
     ID_APP_ABOUT            "Zeit Anwendungs-Informationen\nÜber"
     ID_APP_EXIT             "Beendet die Anwendung\nBeenden"
     ID_HELP                 "Zeigt die Hilfe\nHilfe"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_WIZARDPAGE_BUTTON_ACTION1 "Bricht den Assistenten ab"
+    IDC_WIZARDPAGE_BUTTON_ACTION2 
+                            "Geht eine Assistenten-Seite zurück oder bricht den Assistenten ab"
+END
+
+STRINGTABLE
+BEGIN
+    IDOK                    "Geht zur nächsten Assisstenten-Seite oder beendet Assistenten"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_SETTINGS_COMBO_LANGUAGE 
+                            "Wählt die Sprache für die Bedienoberfläche aus"
+    IDC_SETTINGS_EDIT_CPU_CORES 
+                            "Geben Sie die Anzahl der CPU-Kerne ein, die gleichzeitig für die Encodier-Aufgaben verwendet werden sollen"
+    IDC_SETTINGS_SPIN_CPU_CORES 
+                            "Wählt vordefinierte Werte für die CPU-Kerne aus, die für die Encodier-Aufgaben verwendet werden"
+    IDC_SETTINGS_CHECK_AUTO_TASKS 
+                            "Die Anzahl der CPU-Kerne wird automatisch von den vorhandenen CPU-Kernen bestimmt"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_CDRIP_OPT_CHECK_CDPLAYER_INI 
+                            "Wenn CD-Tracks gelesen und Disk- und Track-Infos editiert werden, werden die Informationen auch in der systemweiten cdplayer.ini gespeichert"
+    IDC_CDRIP_OPT_COMBO_FREEDB_SERVER 
+                            "Wählen oder geben Sie einen freedb-Server ein"
+    IDC_CDRIP_OPT_EDIT_TEMP_FOLDER 
+                            "Geben Sie den temporären Ordner ein, der für CD-Extraktion verwendet wird"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_CDRIP_OPT_BUTTON_TEMP_SELECTPATH 
+                            "Wählen Sie einen neuen teporären Ordner für die CD-Extraktion aus"
+    IDC_CDRIP_OPT_EDIT_FORMAT_VARIOUS_TRACK 
+                            "Format-Text mit Platzhalter-Tags für Tracks von CDs mit verschiedenen Künstlern"
+    IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK 
+                            "Format-Text mit Platzhalter-Tags für Tracks von Album-CDs"
+    IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS 
+                            "Fügt einen neuen Platzhalter-Tag an der aktuellen Editier-Position ein"
+    IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS 
+                            "Fügt einen neuen Platzhalter-Tag an der aktuellen Editier-Position ein"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_CDSELECT_LIST_TRACKS 
+                            "Listet alle Tracks der aktuell eingelegten CD an; ändern Sie Track-Text mit Doppel-Klick auf Einträge"
+    IDC_CDSELECT_EDIT_TITLE "Ändern Sie den CD-Titel, der in den Track-Metadaten verwendet wird"
+    IDC_CDSELECT_EDIT_ARTIST 
+                            "Ändern Sie den CD-Künstler, der in den Track-Metadaten verwendet wird"
+    IDC_CDSELECT_EDIT_YEAR  "Ändern Sie das Erscheinungsjahr der CD, das in den Track-Metadaten verwendet wird"
+    IDC_CDSELECT_CHECK_VARIOUS_ARTISTS 
+                            "Wenn angehakt, enthält die CD Tracks von verschiedenen Künstlern"
+    IDC_CDSELECT_COMBO_GENRE 
+                            "Wäheln Sie ein Musik-Genre der CD, das in den Track-Metadaten verwendet wird"
+    IDC_CDSELECT_COMBO_DRIVES 
+                            "Wählen Sie ein anderes CD-Laufwerk aus, das verwendet wird"
+    IDC_CDSELECT_BUTTON_FREEDB 
+                            "Startet eine freedb-Abfrage für CD Disk- und Track-Metadaten"
+    IDC_CDSELECT_BUTTON_PLAY "Spielt den aktuell selektierten Track ab"
+    IDC_CDSELECT_BUTTON_STOP 
+                            "Stoppt das Abspielen des aktuell spielenden Tracks"
+    IDC_CDSELECT_BUTTON_OPTIONS "Öffnet die CD-Auslese-Einstellungen-Seite"
+    IDC_CDSELECT_BUTTON_ALBUMART 
+                            "Startet eine Abfrage für das Album-Cover für die aktuelle CD, das in den Track-Metadaten verwendet wird"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_CDSELECT_STATIC_ALBUMART "Zeigt das Album-Cover für diese CD an"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_LAME_EDIT_QUALITY   "Geben Sie einen Qualitäts-Wert für das VBR-Encoding an"
+    IDC_LAME_SPIN_QUALITY   "Wählen Sie einen Qualitäts-Wert aus vordefinierten Werten aus"
+    IDC_LAME_RADIO_TYPE2    "Wählen Sie die Qualitäts-Einstellungen für das Kodieren (VBR)"
+    IDC_LAME_COMBO_VBR_MODE "Wählen Sie einen VBR-Modus (variable Bitrate) für die Qualitäts-Einstellungen aus"
+    IDC_LAME_RADIO_TYPE1    "Wählen Sie das Angeben von Bitrate-Werten für das Kodieren aus (ABR oder CBR)"
+    IDC_LAME_CHECK_MONO     "Wenn angehakt,, werden die Kanäle des Tracks in einen Mono-Kanal gemischt"
+    IDC_LAME_CHECK_CBR      "Wenn angehakt, verwendet LAME CBR (konstante Bitrate) statt ABR (adaptive Bitrate)"
+    IDC_LAME_COMBO_ENCODING_QUALITY "Wählt die LAME Kodier-Qualität"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_LAME_EDIT_BITRATE   "Geben Sie die Bitrate in Kbps ein, die für ABR- oder CBR-Modi verwendet werden"
+    IDC_LAME_SPIN_BITRATE   "Wählt die Bitrate aus vordefinierten Werten aus"
+    IDC_LAME_CHECK_NOGAP    "Wenn angehakt, wird das no-gap-Kodieren von continuous-mix-CDs aktiviert"
+    IDC_LAME_CHECK_WRITE_WAVEMP3 
+                            "Wenn angehakt, bekommt die Ausgabedatei einen RIFF WAVE-Header und die Ausgabe-Dateierweiterung wird .wav sein"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_FINISH_LIST_INPUT_TRACKS 
+                            "Listet alle Eingabe-Tracks auf, die kodiert werden"
+    IDC_FINISH_EDIT_OUTPUT_MODULE "Zeigt das ausgewählte Ausgabe-Modul"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_OPUS_EDIT_BITRATE   "Geben Sie eine gewünschte Bitrate ein, in Kbps pro Audio-Kanal in der Eingabe-Datei"
+    IDC_OPUS_SPIN_BITRATE   "Wählt von vordefinierten Ziel-Bitraten aus"
+    IDC_OPUS_SLIDER_COMPLEXITY 
+                            "Wählt einen Wert für die Berechnungs-Komplexität des Opus-Kodierens; je langsamer desto besser"
+    IDC_OPUS_RADIO_BRCMODE1 "Wählt den VBR-Modus (variable Bitrate) für die Bitraten-Steuerung aus"
+    IDC_OPUS_RADIO_BRCMODE2 "Wählt den Constrained VBR-Modus  für die Bitraten-Steuerung aus"
+    IDC_OPUS_RADIO_BRCMODE3 "Wählt den Hard CBR-Modus (konstante Bitrate) für die Bitraten-Steuerung aus"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_WAVE_COMBO_FORMAT   "Wählt das Dateiformat aus, das verwendet wird"
+    IDC_WAVE_COMBO_SUBTYPE  "Wählt zum selektierten Dateiformat oben ein Sample-Format aus"
+END
+
+STRINGTABLE
+BEGIN
+    IDC_WMA_EDIT_BITRATE    "Geben Sie die Bitrate ein, die im CBR-Modus verwendet wird"
+    IDC_WMA_SPIN_BITRATE    "Wählt eine vordefinierte Bitrate aus"
+    IDC_WMA_RADIO_BRMODE1   "Wählt den CBR-Modus (konstante Bitrate)"
+    IDC_WMA_RADIO_BRMODE2   "Wählt den Qualitäts-Moduls aus, der den VBR-Modus (variable Bitrate) verwendet"
+    IDC_WMA_EDIT_QUALITY    "Geben Sie den Prozentwert für die Qualität ein"
+    IDC_WMA_SPIN_QUALITY    "Wählt einen vordefinierten Prozentwert für die Qualität aus"
 END
 
 #endif    // German (Germany) resources
