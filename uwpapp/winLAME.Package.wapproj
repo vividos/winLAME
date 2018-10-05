@@ -22,7 +22,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Configuration">
-    <PreBuildEvent>copy "$(SolutionDir)source\libraries\*.dll" "$(ProjectDir)winlame\"</PreBuildEvent>
+    <PreBuildEvent>copy "$(SolutionDir)bin\$(Configuration)\*.dll" "winlame\"
+copy "$(SolutionDir)bin\$(Configuration)\*.exe" "winlame\"
+copy "$(SolutionDir)bin\$(Configuration)\*.chm" "winlame\"</PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <WapProjPath Condition="'$(WapProjPath)'==''">$(MSBuildExtensionsPath)\Microsoft\DesktopBridge\</WapProjPath>
@@ -30,8 +32,8 @@
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.props" />
   <PropertyGroup>
     <ProjectGuid>f99cbcb3-04d6-4b00-8fa7-d78f2659d501</ProjectGuid>
-    <TargetPlatformVersion>10.0.15063.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
+    <TargetPlatformVersion>10.0.16299.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.16299.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
     <PackageCertificateKeyFile>winapp_TemporaryKey.pfx</PackageCertificateKeyFile>
     <EntryPointProjectUniqueName>..\source\winlame\winlame.vcxproj</EntryPointProjectUniqueName>
@@ -87,15 +89,14 @@
     <Content Include="winlame\libFLAC_dynamic.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="winlame\libmad.dll" />
     <Content Include="winlame\libmmd.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="winlame\libmp3lame.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="winlame\libmp3lame_3.99.5_rarewares.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="winlame\libmpg123-0.dll" />
     <Content Include="winlame\libogg.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -114,6 +115,10 @@
     <Content Include="winlame\opus.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="winlame\opusenc.dll" />
+    <Content Include="winlame\winLAME.0407.dll" />
+    <Content Include="winlame\winLAME.chm" />
+    <Content Include="winlame\winLAME.exe" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\source\winlame\winlame.vcxproj" />
