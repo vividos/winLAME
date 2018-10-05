@@ -7,9 +7,6 @@
     <Filter Include="id3 files">
       <UniqueIdentifier>{44425b6e-65b3-441a-be07-808feac6f9c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="mad dither files">
-      <UniqueIdentifier>{79898457-811b-49d6-8d9a-b859e51f1b46}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{5ec8e7f3-2ed1-48fb-af31-3b46b9da79a0}</UniqueIdentifier>
     </Filter>
@@ -20,9 +17,6 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dither\dither.h">
-      <Filter>mad dither files</Filter>
     </ClInclude>
     <ClInclude Include="id3\Field.h">
       <Filter>id3 files</Filter>
@@ -226,9 +220,6 @@
     </ClCompile>
     <ClCompile Include="WaveMp3Header.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dither\dither.c">
-      <Filter>mad dither files</Filter>
     </ClCompile>
     <ClCompile Include="id3\Field.cpp">
       <Filter>id3 files</Filter>

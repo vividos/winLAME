@@ -24,7 +24,6 @@
 #include "ModuleInterface.hpp"
 #include <iosfwd>
 #include "mad.h"
-//#include "dither/dither.h"
 
 namespace Encoder
 {

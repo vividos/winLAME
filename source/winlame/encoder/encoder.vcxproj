@@ -120,7 +120,6 @@
     <ClInclude Include="VariableManager.hpp" />
     <ClInclude Include="WaveMp3Header.hpp" />
     <ClInclude Include="SndFileOutputModule.hpp" />
-    <ClInclude Include="dither\dither.h" />
     <ClInclude Include="id3\Field.h" />
     <ClInclude Include="id3\File.h" />
     <ClInclude Include="id3\Frame.h" />
@@ -159,12 +158,6 @@
     <ClCompile Include="VariableManager.cpp" />
     <ClCompile Include="WaveMp3Header.cpp" />
     <ClCompile Include="SndFileOutputModule.cpp" />
-    <ClCompile Include="dither\dither.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="id3\Field.cpp" />
     <ClCompile Include="id3\File.cpp" />
     <ClCompile Include="id3\Frame.cpp" />
