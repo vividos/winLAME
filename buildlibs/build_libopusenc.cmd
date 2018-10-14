@@ -11,7 +11,7 @@ cmd /c "build_ogg.cmd"
 cmd /c "build_opus.cmd"
 
 REM set this to the filename of the file to download
-set PREFIX=libopusenc-0.2
+set PREFIX=libopusenc-0.2.1
 
 REM set this to your Visual Studio installation folder
 set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community
