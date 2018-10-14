@@ -68,10 +68,12 @@ buildlibs/libopusenc-*/
 buildlibs/opusfile-*/
 buildlibs/opus-*/
 buildlibs/libmad-*/
+buildlibs/taglib-*/
 buildlibs/libogg-*.tar.gz
 buildlibs/libopusenc-*.tar.gz
 buildlibs/opusfile-*.tar.gz
 buildlibs/opus-*.tar.gz
 buildlibs/libmad-*.tar.gz
+buildlibs/taglib-*.tar.gz
 buildlibs/include/
 buildlibs/lib/
