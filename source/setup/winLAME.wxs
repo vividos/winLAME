@@ -222,6 +222,11 @@
            Source="$(var.SolutionDir)source\libraries\libmpg123-0.dll" />
       </Component>
 
+      <Component Id="TagLibLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="TagLibDll" Name="taglib.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.SolutionDir)source\libraries\taglib.dll" />
+      </Component>
+
       <Component Id="WinLameHelp" Guid="*" Directory="INSTALLDIR">
         <File Id="WinLameChm" Name="winLAME.chm" DiskId="1" KeyPath="yes"
            Source="$(var.OutputDir)winLAME.chm" />
