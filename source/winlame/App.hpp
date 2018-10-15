@@ -83,12 +83,6 @@ public:
    /// returns current app object
    static App& Current() { ATLASSERT(s_pApp != NULL); return *s_pApp; }
 
-   /// shows app message box
-   static int MessageBox(HWND hWndOwner, UINT uiMessageId, UINT uiType)
-   {
-      return AtlMessageBox(hWndOwner, uiMessageId, IDS_APP_CAPTION, uiType);
-   }
-
    /// returns user or machine wide app data folder
    static CString AppDataFolder(bool machineWide);
 

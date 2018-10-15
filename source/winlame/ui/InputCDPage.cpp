@@ -855,7 +855,7 @@ void InputCDPage::FreedbLookup()
 
    if (entriesList.empty())
    {
-      AppMessageBox(m_hWnd, IDS_CDRIP_ERROR_NOCDINFO, MB_OK | MB_ICONSTOP);
+      AtlMessageBox(m_hWnd, IDS_CDRIP_ERROR_NOCDINFO, IDS_APP_CAPTION, MB_OK | MB_ICONSTOP);
       return;
    }
 
@@ -949,7 +949,7 @@ void InputCDPage::RetrieveAlbumCoverArt(const std::string& discId)
       }
       else
       {
-         AppMessageBox(m_hWnd, IDS_CDRIP_COVERART_ERROR_NOART, MB_OK | MB_ICONSTOP);
+         AtlMessageBox(m_hWnd, IDS_CDRIP_COVERART_ERROR_NOART, IDS_APP_CAPTION, MB_OK | MB_ICONSTOP);
       }
    }
    // NOSONAR
@@ -958,7 +958,7 @@ void InputCDPage::RetrieveAlbumCoverArt(const std::string& discId)
       errorText = ex.what();
       ATLTRACE(_T("Error retrieving cover art: %hs"), errorText.c_str());
 
-      AppMessageBox(m_hWnd, IDS_CDRIP_COVERART_ERROR_NOART, MB_OK | MB_ICONSTOP);
+      AtlMessageBox(m_hWnd, IDS_CDRIP_COVERART_ERROR_NOART, IDS_APP_CAPTION, MB_OK | MB_ICONSTOP);
    }
 }
 

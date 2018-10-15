@@ -40,14 +40,3 @@ void AddTooltips(HWND hWnd, CToolTipCtrl &ctrl);
 
 /// lets the user browse for a folder
 bool BrowseForFolder(HWND hParentWnd, CString &dirname,UINT captionid=0);
-
-
-inline int AppMessageBox(HWND hWnd, LPCTSTR pszText, UINT nFlags)
-{
-   return AtlMessageBox(hWnd, pszText, IDS_APP_CAPTION, nFlags);
-}
-
-inline int AppMessageBox(HWND hWnd, UINT nResourceId, UINT nFlags)
-{
-   return AtlMessageBox(hWnd, nResourceId, IDS_APP_CAPTION, nFlags);
-}
