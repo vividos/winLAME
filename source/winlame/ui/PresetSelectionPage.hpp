@@ -23,7 +23,7 @@
 
 #include "WizardPage.hpp"
 #include "resource.h"
-#include "CommonStuff.hpp"
+#include "BevelLine.hpp"
 #include "PresetManagerInterface.hpp"
 
 struct UISettings;

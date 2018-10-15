@@ -22,8 +22,8 @@
 #pragma once
 
 #include "WizardPage.hpp"
+#include "BevelLine.hpp"
 #include "resource.h"
-#include "CommonStuff.hpp"
 
 struct UISettings;
 
@@ -52,8 +52,8 @@ namespace UI
 
       BEGIN_DDX_MAP(LibsndfileSettingsPage)
          DDX_CONTROL(IDC_WAVE_BEVEL1, m_bevel1);
-      DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_FORMAT, m_comboFormat);
-      DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_SUBTYPE, m_comboSubType);
+         DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_FORMAT, m_comboFormat);
+         DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_SUBTYPE, m_comboSubType);
       END_DDX_MAP()
 
       BEGIN_DLGRESIZE_MAP(LibsndfileSettingsPage)

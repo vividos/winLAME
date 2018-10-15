@@ -30,7 +30,6 @@
 #include "encoder/ModuleManagerImpl.hpp"
 #include "encoder/LameNogapInstanceManager.hpp"
 #include "TaskManager.hpp"
-#include "CommonStuff.hpp"
 #include <ulib/CrashReporter.hpp>
 #include "CrashSaveResultsDlg.hpp"
 #include <boost/ref.hpp>
