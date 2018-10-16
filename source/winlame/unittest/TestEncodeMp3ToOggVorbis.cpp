@@ -21,57 +21,35 @@
 
 #include "stdafx.h"
 #include "CppUnitTest.h"
-#include <ulib/IoCContainer.hpp>
-#include "LameNogapInstanceManager.hpp"
+#include "EncoderTestFixture.hpp"
 #include <ulib/Path.hpp>
 #include <ulib/unittest/AutoCleanupFolder.hpp>
 #include "resource_unittest.h"
-#include <ulib/win32/ResourceData.hpp>
 #include "EncoderImpl.hpp"
 #include "ModuleManager.hpp"
 #include "ModuleManagerImpl.hpp"
-#include "TestEncoderErrorHandler.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace unittest
 {
    /// tests for encoding to Ogg Vorbis format
-   TEST_CLASS(TestEncodeMp3ToOggVorbis)
+   TEST_CLASS(TestEncodeMp3ToOggVorbis), public EncoderTestFixture
    {
-      /// LAME nogap instance manager
-      static std::shared_ptr<Encoder::LameNogapInstanceManager> m_spLameNogapInstanceManager;
-
-      /// module manager
-      static std::shared_ptr<Encoder::ModuleManager> m_spModuleManager;
-
-      /// encoding error handler
-      static TestEncoderErrorHandler m_encodingErrorHandler;
-
    public:
       /// sets up test; called before each test
       TEST_CLASS_INITIALIZE(SetUp)
       {
-         // register objects in IoC container
-         IoCContainer& ioc = IoCContainer::Current();
-
-         m_spLameNogapInstanceManager.reset(new Encoder::LameNogapInstanceManager);
-         ioc.Register<Encoder::LameNogapInstanceManager>(boost::ref(*m_spLameNogapInstanceManager.get()));
-
-         m_spModuleManager.reset(new Encoder::ModuleManagerImpl);
-         ioc.Register<Encoder::ModuleManager>(boost::ref(*m_spModuleManager.get()));
+         EncoderTestFixture::SetUp();
       }
 
       /// tests encoding wave file to Opus
       TEST_METHOD(TestEncode)
       {
-         HINSTANCE hInstance = g_hDllInstance;
-         Win32::ResourceData data(MAKEINTRESOURCE(IDR_SAMPLE_MP3), _T("\"RT_RCDATA\""), hInstance);
-
          UnitTest::AutoCleanupFolder folder;
 
          CString filename = Path::Combine(folder.FolderName(), _T("sample.mp3")).ToString();
-         data.AsFile(filename);
+         ExtractFromResource(IDR_SAMPLE_MP3, filename);
 
          // encode file
          Encoder::EncoderImpl encoder;
@@ -88,30 +66,10 @@ namespace unittest
          settingsManager.setValue(OggBaseQuality, 400);
          encoder.SetSettingsManager(&settingsManager);
 
-         encoder.SetErrorHandler(&m_encodingErrorHandler);
-
-         encoder.StartEncode();
-
-         // wait for encoding to finish
-         bool isRunning = false;
-         do
-         {
-            Encoder::EncoderState state = encoder.GetEncoderState();
-            isRunning = state.m_running;
-
-         } while (isRunning);
+         StartEncodeAndWaitForFinish(encoder);
 
          // output file must exist
          Assert::IsTrue(Path(encoderSettings.m_outputFilename).FileExists(), _T("output file must exist"));
       }
    };
-
-   /// instance of static LAME NoGap instance manager
-   std::shared_ptr<Encoder::LameNogapInstanceManager> TestEncodeMp3ToOggVorbis::m_spLameNogapInstanceManager;
-
-   /// instance of static module manager
-   std::shared_ptr<Encoder::ModuleManager> TestEncodeMp3ToOggVorbis::m_spModuleManager;
-
-   /// instance of static encoding error handler
-   TestEncoderErrorHandler TestEncodeMp3ToOggVorbis::m_encodingErrorHandler;
 }

@@ -27,6 +27,9 @@
     <ClInclude Include="TestEncoderErrorHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EncoderTestFixture.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestAudioFileTag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EncoderTestFixture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
