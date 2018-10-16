@@ -96,6 +96,7 @@
     <ClCompile Include="TestEncodeMp3ToOggVorbis.cpp" />
     <ClCompile Include="TestEncodeWaveToOpus.cpp" />
     <ClCompile Include="TestModuleManager.cpp" />
+    <ClCompile Include="TestTransportMetadata.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libraries\src\libid3tag\libid3tag.vcxproj">
