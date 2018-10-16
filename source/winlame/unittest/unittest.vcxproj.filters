@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;h;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mp3;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\res">
+      <UniqueIdentifier>{0485b355-0a03-45b8-9eee-5496427d236c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -72,9 +75,27 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Jungle_S-RepaidGa-10582_hifi.mp3">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="packages.config" />
+    <None Include="res\Jungle_S-RepaidGa-10582_hifi.aac">
+      <Filter>Resource Files\res</Filter>
+    </None>
+    <None Include="res\Jungle_S-RepaidGa-10582_hifi.aiff">
+      <Filter>Resource Files\res</Filter>
+    </None>
+    <None Include="res\Jungle_S-RepaidGa-10582_hifi.flac">
+      <Filter>Resource Files\res</Filter>
+    </None>
+    <None Include="Jungle_S-RepaidGa-10582_hifi.mp3">
+      <Filter>Resource Files\res</Filter>
+    </None>
+    <None Include="res\Jungle_S-RepaidGa-10582_hifi.ogg">
+      <Filter>Resource Files\res</Filter>
+    </None>
+    <None Include="res\Jungle_S-RepaidGa-10582_hifi.opus">
+      <Filter>Resource Files\res</Filter>
+    </None>
+    <None Include="res\Jungle_S-RepaidGa-10582_hifi.wma">
+      <Filter>Resource Files\res</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -6,5 +6,11 @@
 #include "atlres.h"
 
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-IDR_SAMPLE_MP3     "RT_RCDATA"      "Jungle_S-RepaidGa-10582_hifi.mp3"
-IDR_SAMPLE_WAV     "RT_RCDATA"      "bfxr-randomize.wav"
+IDR_SAMPLE_MP3     "RT_RCDATA"      "res\Jungle_S-RepaidGa-10582_hifi.mp3"
+IDR_SAMPLE_WAV     "RT_RCDATA"      "res\bfxr-randomize.wav"
+IDR_SAMPLE_OPUS    "RT_RCDATA"      "res\Jungle_S-RepaidGa-10582_hifi.opus"
+IDR_SAMPLE_OGGV    "RT_RCDATA"      "res\Jungle_S-RepaidGa-10582_hifi.ogg"
+IDR_SAMPLE_AAC     "RT_RCDATA"      "res\Jungle_S-RepaidGa-10582_hifi.aac"
+IDR_SAMPLE_WMA     "RT_RCDATA"      "res\Jungle_S-RepaidGa-10582_hifi.wma"
+IDR_SAMPLE_FLAC    "RT_RCDATA"      "res\Jungle_S-RepaidGa-10582_hifi.flac"
+IDR_SAMPLE_AIFF    "RT_RCDATA"      "res\Jungle_S-RepaidGa-10582_hifi.aiff"
