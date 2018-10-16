@@ -54,7 +54,7 @@ namespace unittest
       {
          std::make_tuple(ID_OM_LAME, _T("output.mp3")),
          std::make_tuple(ID_OM_OGGV, _T("output.ogg")),
-         //std::make_tuple(ID_OM_WAVE, _T("output.wav")),
+         std::make_tuple(ID_OM_WAVE, _T("output.wav")),
          std::make_tuple(ID_OM_AAC, _T("output.aac")),
          std::make_tuple(ID_OM_BASSWMA, _T("output.wma")),
          std::make_tuple(ID_OM_OPUS, _T("output.opus")),

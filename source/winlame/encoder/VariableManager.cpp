@@ -26,6 +26,7 @@
 #include "VariableManager.hpp"
 #include "ModuleInterface.hpp"
 #include "resource.h"
+#include <sndfile.h>
 
 /// variable mapping struct
 struct SettingsVarMap
@@ -180,8 +181,8 @@ WL_VARMAP_START(varMapVariables)
    WL_VARMAP_ENTRY(WmaQuality,          _T("wmaQuality"),     _T("WMA VBR Quality"),   50)
    WL_VARMAP_ENTRY(WmaBitrateMode,      _T("wmaBitrateMode"), _T("Bitrate Control Mode"),0)
 
-   WL_VARMAP_ENTRY(SndFileFormat,       _T("sndFileFormat"),  _T("LibSndFile format"), 0)
-   WL_VARMAP_ENTRY(SndFileSubType,      _T("sndFileSubType"), _T("LibSndFile sub type"), 0)
+   WL_VARMAP_ENTRY(SndFileFormat,       _T("sndFileFormat"),  _T("LibSndFile format"), SF_FORMAT_WAV)
+   WL_VARMAP_ENTRY(SndFileSubType,      _T("sndFileSubType"), _T("LibSndFile sub type"), SF_FORMAT_PCM_16)
 
    WL_VARMAP_ENTRY(OpusTargetBitrate,   _T("opusTargetBitrate"), _T("Opus Target Bitrate"), 256)
    WL_VARMAP_ENTRY(OpusComplexity,      _T("opusComplexity"),    _T("Opus Complexity"), 10)
