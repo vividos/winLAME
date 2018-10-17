@@ -672,18 +672,19 @@ std::string OpusOutputModule::GetMetadataBlockPicture(const std::vector<unsigned
 
    ope_comments_add_picture_from_memory(comments, reinterpret_cast<const char*>(imageData.data()), imageData.size(), -1, nullptr);
 
-   const char* data = *reinterpret_cast<const char**>(comments);
+   const unsigned char* data = *reinterpret_cast<const unsigned char**>(comments);
    data += 8; // OpusTags
    data += 4 + data[0] + 4; // offset + length + number of comments
 
-   unsigned int length = data[0] +
-      (static_cast<unsigned int>(data[1]) << 8) +
-      (static_cast<unsigned int>(data[2]) << 16) +
+   unsigned int length = data[0] |
+      (static_cast<unsigned int>(data[1]) << 8) |
+      (static_cast<unsigned int>(data[2]) << 16) |
       (static_cast<unsigned int>(data[3]) << 24);
 
-   data += 4 + sizeof("METADATA_BLOCK_PICTURE=") - 1;
+   const unsigned int prefixLength = sizeof("METADATA_BLOCK_PICTURE=") - 1;
+   data += 4 + prefixLength;
 
-   std::string base64image(data, length);
+   std::string base64image(reinterpret_cast<const char*>(data), length - prefixLength);
 
    return base64image;
 }
