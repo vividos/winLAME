@@ -523,7 +523,7 @@ long OpusOutputModule::ReadFloatSamples16(float* buffer, int samples)
 {
    int numSamples = std::min(m_inputInt16Buffer.size(), size_t(samples * m_channels));
 
-   ATLTRACE(_T("ReadFloatSamples16: Requesting %i samples, returning %i samples\n"), samples, numSamples / m_channels);
+   //ATLTRACE(_T("ReadFloatSamples16: Requesting %i samples, returning %i samples\n"), samples, numSamples / m_channels);
 
    const int16_t scaleFactor = std::numeric_limits<int16_t>::max();
 
@@ -542,7 +542,7 @@ long OpusOutputModule::ReadFloatSamples32(float* buffer, int samples)
 {
    int numSamples = std::min(m_inputInt32Buffer.size(), size_t(samples * m_channels));
 
-   ATLTRACE(_T("ReadFloatSamples32: Requesting %i samples, returning %i samples\n"), samples, numSamples / m_channels);
+   //ATLTRACE(_T("ReadFloatSamples32: Requesting %i samples, returning %i samples\n"), samples, numSamples / m_channels);
 
    const int32_t scaleFactor = std::numeric_limits<int32_t>::max();
 
