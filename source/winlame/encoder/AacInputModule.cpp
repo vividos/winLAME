@@ -27,6 +27,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <ulib/DynamicLibrary.hpp>
+#include "AudioFileTag.hpp"
 
 using Encoder::AacInputModule;
 using Encoder::TrackInfo;
@@ -173,8 +174,9 @@ int AacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    // search for begin of aac stream, skipping id3v2 tags; modifies m_currentFilePos
    // ...
 
-   // retrieve id3 tag
-   // ...
+   // retrieve id3v2 tag
+   AudioFileTag tag(trackInfo);
+   tag.ReadFromFile(infilename);
 
    // seek to begin
    m_inputFile.seekg(m_currentFilePos, std::ios::beg);
