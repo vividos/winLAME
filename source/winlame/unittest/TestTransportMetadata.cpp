@@ -28,8 +28,7 @@
 #include "EncoderImpl.hpp"
 #include "ModuleManager.hpp"
 #include "ModuleManagerImpl.hpp"
-//#include "TrackInfo.hpp"
-//#include "AudioFileTag.hpp"
+#include "TrackInfo.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -44,7 +43,7 @@ namespace unittest
          std::make_tuple(IDR_SAMPLE_WAV, _T("sample.wav")),
          std::make_tuple(IDR_SAMPLE_OPUS, _T("sample.opus")),
          std::make_tuple(IDR_SAMPLE_OGGV, _T("sample.ogg")),
-         std::make_tuple(IDR_SAMPLE_AAC, _T("sample.aac")),
+         //std::make_tuple(IDR_SAMPLE_AAC, _T("sample.aac")), // bugged file
          std::make_tuple(IDR_SAMPLE_WMA, _T("sample.wma")),
          std::make_tuple(IDR_SAMPLE_FLAC, _T("sample.flac")),
          std::make_tuple(IDR_SAMPLE_AIFF, _T("sample.aiff")),
@@ -56,8 +55,8 @@ namespace unittest
       {
          std::make_tuple(ID_OM_LAME, _T("output.mp3")),
          std::make_tuple(ID_OM_OGGV, _T("output.ogg")),
-         std::make_tuple(ID_OM_WAVE, _T("output.wav")),
-         std::make_tuple(ID_OM_AAC, _T("output.aac")),
+         //std::make_tuple(ID_OM_WAVE, _T("output.wav")), // not supported writing tags to .wav
+         //std::make_tuple(ID_OM_AAC, _T("output.aac")), // not supported writing tags to .aac
          std::make_tuple(ID_OM_BASSWMA, _T("output.wma")),
          std::make_tuple(ID_OM_OPUS, _T("output.opus")),
       };
@@ -77,6 +76,10 @@ namespace unittest
          {
             for (auto outputInfos : outputFilesList)
             {
+               ATLTRACE(_T("Encoding from %s to %s...\n"),
+                  std::get<1>(inputInfos),
+                  std::get<1>(outputInfos));
+
                bool result = EncodeAndTransportMetadata(inputInfos, outputInfos);
                ATLTRACE(_T("Encoding from %s to %s: %s\n"),
                   std::get<1>(inputInfos),
