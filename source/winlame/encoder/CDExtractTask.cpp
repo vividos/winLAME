@@ -30,6 +30,8 @@
 using Encoder::CDExtractTask;
 using Encoder::TrackInfo;
 
+extern std::atomic<unsigned int> s_bassApiusageCount;
+
 CDExtractTask::CDExtractTask(unsigned int dependentTaskId, const CDRipDiscInfo& discinfo, const CDRipTrackInfo& trackinfo)
    :Task(dependentTaskId),
    m_discinfo(discinfo),
@@ -124,7 +126,10 @@ bool CDExtractTask::ExtractTrack(const CString& tempFilename)
    DWORD trackLength = BASS_CD_GetTrackLength(m_discinfo.m_discDrive, m_trackinfo.m_numTrackOnDisc);
    DWORD currentLength = 0;
 
-   BASS_Init(0, 44100, 0, nullptr, nullptr);
+   if (s_bassApiusageCount++ == 0)
+   {
+      BASS_Init(0, 44100, 0, nullptr, nullptr);
+   }
 
    HSTREAM hStream = BASS_CD_StreamCreate(m_discinfo.m_discDrive, m_trackinfo.m_numTrackOnDisc,
       BASS_STREAM_DECODE);
@@ -196,7 +201,11 @@ bool CDExtractTask::ExtractTrack(const CString& tempFilename)
    }
 
    BASS_StreamFree(hStream);
-   BASS_Free();
+
+   if (--s_bassApiusageCount == 0)
+   {
+      BASS_Free();
+   }
 
    outputModule.DoneOutput();
 

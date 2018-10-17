@@ -34,6 +34,9 @@ using Encoder::BassInputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
+/// BASS API usage count
+std::atomic<unsigned int> s_bassApiusageCount = 0;
+
 // constants
 
 /// name of WMA picture tag
@@ -139,10 +142,13 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    BASS_SetConfig(BASS_CONFIG_UPDATEPERIOD, 0);
 
    // setup output - "no sound" device, 44100hz, stereo, 16 bits
-   if (!BASS_Init(0, 44100, 0, 0, nullptr))
+   if (s_bassApiusageCount++ == 0)
    {
-      m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
-      return -1;
+      if (!BASS_Init(0, 44100, 0, 0, nullptr))
+      {
+         m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
+         return -1;
+      }
    }
 
    // try streaming the file/url
@@ -339,7 +345,11 @@ float BassInputModule::PercentDone() const
 
 void BassInputModule::DoneInput()
 {
-   BASS_Free();
+   if (--s_bassApiusageCount == 0)
+   {
+      BASS_Free();
+   }
+
    delete[] m_buffer;
 }
 

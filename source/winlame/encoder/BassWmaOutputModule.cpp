@@ -32,6 +32,8 @@ using Encoder::BassWmaOutputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
+extern std::atomic<unsigned int> s_bassApiusageCount;
+
 BassWmaOutputModule::BassWmaOutputModule()
    :m_handle(0),
    m_samplerateInHz(0),
@@ -112,10 +114,13 @@ int BassWmaOutputModule::InitOutput(LPCTSTR outfilename,
    BASS_SetConfig(BASS_CONFIG_UPDATEPERIOD, 0);
 
    // setup output - "no sound" device, 44100hz, stereo, 16 bits
-   if (!BASS_Init(0, m_samplerateInHz, 0, 0, NULL))
+   if (s_bassApiusageCount++ == 0)
    {
-      m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_ENCODER);
-      return -1;
+      if (!BASS_Init(0, m_samplerateInHz, 0, 0, NULL))
+      {
+         m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_ENCODER);
+         return -1;
+      }
    }
 
    // find nearest valid bitrate
@@ -197,7 +202,11 @@ int BassWmaOutputModule::EncodeSamples(SampleContainer& samples)
 void BassWmaOutputModule::DoneOutput()
 {
    BASS_WMA_EncodeClose(m_handle);
-   BASS_Free();
+
+   if (--s_bassApiusageCount == 0)
+   {
+      BASS_Free();
+   }
 }
 
 void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
