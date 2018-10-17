@@ -120,9 +120,11 @@
     <None Include="packages.config" />
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.aac" />
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.aiff" />
+    <None Include="res\Jungle_S-RepaidGa-10582_hifi.ape" />
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.flac" />
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.ogg" />
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.opus" />
+    <None Include="res\Jungle_S-RepaidGa-10582_hifi.spx" />
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.wma" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

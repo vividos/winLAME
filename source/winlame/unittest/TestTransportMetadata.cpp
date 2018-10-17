@@ -48,6 +48,8 @@ namespace unittest
          std::make_tuple(IDR_SAMPLE_WMA, _T("sample.wma")),
          std::make_tuple(IDR_SAMPLE_FLAC, _T("sample.flac")),
          std::make_tuple(IDR_SAMPLE_AIFF, _T("sample.aiff")),
+         std::make_tuple(IDR_SAMPLE_SPEEX, _T("sample.spx")),
+         std::make_tuple(IDR_SAMPLE_MONKEYS_AUDIO, _T("sample.ape")),
       };
 
       std::vector<std::tuple<int, LPCTSTR>> outputFilesList =

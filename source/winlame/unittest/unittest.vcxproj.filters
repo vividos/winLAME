@@ -97,5 +97,11 @@
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.wma">
       <Filter>Resource Files\res</Filter>
     </None>
+    <None Include="res\Jungle_S-RepaidGa-10582_hifi.spx">
+      <Filter>Resource Files\res</Filter>
+    </None>
+    <None Include="res\Jungle_S-RepaidGa-10582_hifi.ape">
+      <Filter>Resource Files\res</Filter>
+    </None>
   </ItemGroup>
 </Project>

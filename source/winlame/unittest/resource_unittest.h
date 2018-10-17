@@ -10,3 +10,5 @@
 #define IDR_SAMPLE_WMA                          106
 #define IDR_SAMPLE_FLAC                         107
 #define IDR_SAMPLE_AIFF                         108
+#define IDR_SAMPLE_SPEEX                        109
+#define IDR_SAMPLE_MONKEYS_AUDIO                110
