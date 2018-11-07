@@ -49,6 +49,7 @@ popd
 
 REM copy artifacts
 copy %PREFIX%\win32\VS2015\Win32\Release-NoHTTP\opusfile.lib ..\source\libraries\lib\
+copy %PREFIX%\win32\VS2015\Win32\Release-NoHTTP\opusfile\opusfile.pdb ..\source\libraries\lib\
 copy %PREFIX%\include\opusfile.h ..\source\libraries\include\opus\
 
 pause
