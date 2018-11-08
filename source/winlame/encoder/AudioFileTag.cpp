@@ -33,9 +33,9 @@
 #pragma warning(pop)
 
 #ifdef _DEBUG
-   #pragma comment(lib, "taglib_debug.lib")
+#pragma comment(lib, "taglib_debug.lib")
 #else
-   #pragma comment(lib, "taglib.lib")
+#pragma comment(lib, "taglib.lib")
 #endif
 
 using Encoder::AudioFileTag;
@@ -96,6 +96,20 @@ TagLib::ID3v2::Tag* AudioFileTag::FindId3v2Tag(std::shared_ptr<TagLib::File> spF
 
 bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag)
 {
+   if (id3v2tag != nullptr)
+   {
+      for (auto frame : id3v2tag->frameList())
+      {
+         auto frameId = frame->frameID();
+         ATLTRACE(_T("Frame: %c%c%c%c: %hs\n"),
+            frameId[0],
+            frameId[1],
+            frameId[2],
+            frameId[3],
+            frame->toString().toCString());
+      }
+   }
+
    // retrieve field values
    CString textValue;
    if (tag->title() != TagLib::String::null)
