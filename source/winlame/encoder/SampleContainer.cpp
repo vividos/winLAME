@@ -226,7 +226,7 @@ void SampleContainer::InterleaveChannel(unsigned char* samples, int numSamples, 
 
    for (int i = 0; i < numSamples; i++)
    {
-      register signed int sample;
+      signed int sample;
 
       sample = *((unsigned int*)samples);
 
@@ -275,7 +275,7 @@ void SampleContainer::DeinterleaveChannel(unsigned char*samples, int numSamples,
 
    for (int i = 0; i < numSamples; i++)
    {
-      register signed int sample;
+      signed int sample;
 
       sample = *((unsigned int*)samples);
 
