@@ -49,6 +49,7 @@ namespace Encoder
 #define ID_IM_OPUS                      15
 #define ID_OM_OPUS                      16
 #define ID_IM_LIBMPG123                 17
+#define ID_IM_MONKEYSAUDIO              18
 
    /// returns a filename compatible for ansi APIs such as fopen()
    CString GetAnsiCompatFilename(LPCTSTR pszFilename);

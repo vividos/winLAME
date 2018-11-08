@@ -229,6 +229,7 @@ MonkeysAudioInputModule::MonkeysAudioInputModule()
    m_numCurrentSamples(0),
    m_numTotalSamples(0)
 {
+   m_moduleId = ID_IM_MONKEYSAUDIO;
 }
 
 MonkeysAudioInputModule::~MonkeysAudioInputModule()
