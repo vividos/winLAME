@@ -179,6 +179,8 @@ CString AboutDlg::GetAboutHtmlText()
       }
       else if (varname == _T("taglibversion"))
          varname = GetTagLibVersion();
+      else if (varname == _T("monkeysaudioversion"))
+         moduleManager.GetModuleVersionString(varname, ID_IM_MONKEYSAUDIO);
       else if (varname == _T("presetsxml"))
       {
          varname = m_cszPresetsXmlFilename;
