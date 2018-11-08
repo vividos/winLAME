@@ -42,40 +42,40 @@ public:
    PresetManagerImpl();
 
    /// loads preset from an xml file
-   virtual bool loadPreset(LPCTSTR filename);
+   virtual bool loadPreset(LPCTSTR filename) override;
 
    /// sets currently used facility
-   void setFacility(LPCTSTR facname);
+   virtual void setFacility(LPCTSTR facname) override;
 
    /// returns number of presets
-   virtual size_t getPresetCount();
+   virtual size_t getPresetCount() override;
 
    /// returns name of preset
-   virtual std::tstring getPresetName(size_t index);
+   virtual std::tstring getPresetName(size_t index) override;
 
    /// returns preset description
-   virtual std::tstring getPresetDescription(size_t index);
+   virtual std::tstring getPresetDescription(size_t index) override;
 
    /// loads the specified settings into the settings manager
-   virtual void setSettings(size_t index, SettingsManager& settingsManager);
+   virtual void setSettings(size_t index, SettingsManager& settingsManager) override;
 
    /// sets the default settings for all variables
-   virtual void setDefaultSettings(SettingsManager& settingsManager);
+   virtual void setDefaultSettings(SettingsManager& settingsManager) override;
 
    /// shows the edit settings dialog for a specific preset
-   virtual void showPropertyDialog(size_t index);
+   virtual void showPropertyDialog(size_t index) override;
 
 
    // interface implementation for the PropertyManagerInterface
 
-   virtual int GetGroupCount();
-   virtual std::tstring GetGroupName(int group);
+   virtual int GetGroupCount() override;
+   virtual std::tstring GetGroupName(int group) override;
 
-   virtual int GetItemCount(int group);
-   virtual std::tstring GetItemName(int group, int index);
+   virtual int GetItemCount(int group) override;
+   virtual std::tstring GetItemName(int group, int index) override;
 
-   virtual std::tstring GetItemValue(int group, int index);
-   virtual void SetItemValue(int group, int index, std::tstring val);
+   virtual std::tstring GetItemValue(int group, int index) override;
+   virtual void SetItemValue(int group, int index, std::tstring val) override;
 
 private:
    /// retrieves xml node pointer for preset value
