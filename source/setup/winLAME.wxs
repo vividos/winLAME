@@ -177,11 +177,6 @@
            Source="$(var.SolutionDir)source\libraries\libvorbis.dll" />
       </Component>
 
-      <Component Id="IclMathLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibMmdDll" Name="libmmd.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libmmd.dll" />
-      </Component>
-
       <Component Id="MonkeysAudioLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="MacDllDll" Name="MACDll.dll" DiskId="1" KeyPath="yes"
            Source="$(var.SolutionDir)source\libraries\MACDll.dll" />
