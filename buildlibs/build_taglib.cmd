@@ -35,12 +35,15 @@ pushd %PREFIX%\taglib
 
 REM compile
 msbuild taglib.sln /m /property:Configuration=Release
+msbuild taglib.sln /m /property:Configuration=Debug
 
 popd
 
 REM copy artifacts
 copy %PREFIX%\taglib\Release\taglib.dll ..\source\libraries\
 copy %PREFIX%\taglib\Release\taglib.lib ..\source\libraries\lib\
+copy %PREFIX%\taglib\Debug\taglib.dll ..\source\libraries\taglib_debug.dll
+copy %PREFIX%\taglib\Debug\taglib.lib ..\source\libraries\lib\taglib_debug.lib
 copy %PREFIX%\taglib\*.h ..\source\libraries\include\taglib\
 xcopy /S /Y %PREFIX%\taglib\toolkit\*.h ..\source\libraries\include\taglib\toolkit\
 xcopy /S /Y %PREFIX%\taglib\toolkit\*.tcc ..\source\libraries\include\taglib\toolkit\
