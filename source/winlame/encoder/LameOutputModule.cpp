@@ -643,7 +643,7 @@ unsigned int LameOutputModule::GetID3v2PaddingLength()
 void LameOutputModule::WriteID3v2Tag()
 {
    AudioFileTag tag(m_trackInfoID3v2);
-   tag.WriteToFile(m_mp3Filename);
+   tag.WriteToFile(m_mp3Filename, AudioFileTag::AudioFileType::MPEG);
 }
 
 void LameOutputModule::WriteVBRInfoTag(nlame_instance_t* instance, LPCTSTR mp3Filename)
