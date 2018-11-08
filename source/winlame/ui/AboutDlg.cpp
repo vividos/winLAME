@@ -1,6 +1,6 @@
 ///
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include "AboutDlg.hpp"
 #include "ModuleInterface.hpp"
 #include "App.hpp"
+#include <ulib/win32/VersionInfoResource.hpp>
 
 using UI::AboutDlg;
 
@@ -176,6 +177,8 @@ CString AboutDlg::GetAboutHtmlText()
             BOOST_VERSION / 100 % 1000,
             BOOST_VERSION % 100);
       }
+      else if (varname == _T("taglibversion"))
+         varname = GetTagLibVersion();
       else if (varname == _T("presetsxml"))
       {
          varname = m_cszPresetsXmlFilename;
@@ -187,4 +190,21 @@ CString AboutDlg::GetAboutHtmlText()
    }
 
    return cszHtml;
+}
+
+CString AboutDlg::GetTagLibVersion()
+{
+   CString filename = Path::Combine(Path(Path::ModuleFilename()).FolderName(), _T("taglib.dll"));
+   Win32::VersionInfoResource versionInfo(filename);
+
+   // retrieve version language
+   std::vector<Win32::LANGANDCODEPAGE> langAndCodePagesList;
+   versionInfo.GetLangAndCodepages(langAndCodePagesList);
+
+   if (langAndCodePagesList.empty())
+      return _T("???");
+
+   CString fileVersion = versionInfo.GetStringValue(langAndCodePagesList[0], _T("FileVersion"));
+
+   return fileVersion;
 }
