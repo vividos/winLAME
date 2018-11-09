@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace UI
    {
    public:
       /// locks window to prevent redraws
-      RedrawLock(CWindow& window)
+      explicit RedrawLock(CWindow& window)
          :m_window(window)
       {
          window.SetRedraw(false);

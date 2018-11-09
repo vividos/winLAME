@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ namespace UI
    {
    public:
       /// ctor
-      ResourceInstanceSwitcher(HINSTANCE hNewInstance)
+      explicit ResourceInstanceSwitcher(HINSTANCE hNewInstance)
          :m_hPreviousResourceInstance(_Module.GetResourceInstance())
       {
          _Module.SetResourceInstance(hNewInstance);

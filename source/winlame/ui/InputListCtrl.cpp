@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2014 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,23 +23,23 @@
 #include "InputListCtrl.hpp"
 
 /// darker color for alternate lines list control
-COLORREF g_clrAlternateListColor = RGB(232,232,232);
+COLORREF g_clrAlternateListColor = RGB(232, 232, 232);
 
 using UI::InputListCtrl;
 using UI::AudioFileEntry;
 
 InputListCtrl::InputListCtrl()
-:dragging(false),
- dragFrom(-1),
- sortcolumn(0),
- sortreverse(false),
- lastsortcolumn(-1)
+   :dragging(false),
+   dragFrom(-1),
+   sortcolumn(0),
+   sortreverse(false),
+   lastsortcolumn(-1)
 {
 }
 
 InputListCtrl::~InputListCtrl()
 {
-   for(unsigned int i=0; i<allentries.size(); i++)
+   for (unsigned int i = 0; i < allentries.size(); i++)
       delete allentries[i];
 
    allentries.clear();
@@ -51,16 +51,16 @@ void InputListCtrl::DeleteSelectedListItems()
    std::vector<int> vItems;
 
    // first, collect all item indices
-   int pos = GetNextItem(-1,LVIS_SELECTED);
+   int pos = GetNextItem(-1, LVIS_SELECTED);
 
    while (pos != -1)
    {
       vItems.push_back(pos);
-      pos = GetNextItem(pos,LVIS_SELECTED);
+      pos = GetNextItem(pos, LVIS_SELECTED);
    }
 
    // then delete them in the reverse order
-   for(int i=vItems.size()-1;i>=0;i--)
+   for (int i = vItems.size() - 1; i >= 0; i--)
       DeleteItem(vItems[i]);
 }
 
@@ -101,21 +101,21 @@ void InputListCtrl::SetItemAudioInfos(int iItem, int length, int bitrate, int sa
    // set the subitems
    CString buffer;
 
-   if (samplerate!=-1)
+   if (samplerate != -1)
    {
       buffer.Format(_T("%u Hz"), samplerate);
       SetItemText(iItem, 1, buffer);
    }
 
-   if (bitrate!=-1)
+   if (bitrate != -1)
    {
-      buffer.Format(_T("%u kbps"), bitrate/1000);
+      buffer.Format(_T("%u kbps"), bitrate / 1000);
       SetItemText(iItem, 2, buffer);
    }
 
-   if (length!=-1)
+   if (length != -1)
    {
-      buffer.Format(_T("%u:%02u"), length/60,length%60);
+      buffer.Format(_T("%u:%02u"), length / 60, length % 60);
       SetItemText(iItem, 3, buffer);
    }
 }
@@ -132,7 +132,7 @@ unsigned int InputListCtrl::GetTotalLength()
 {
    unsigned int nLength = 0;
    unsigned int nMax = allentries.size();
-   for(unsigned int n=0; n<nMax; n++)
+   for (unsigned int n = 0; n < nMax; n++)
       nLength += static_cast<unsigned int>(allentries[n]->length);
    return nLength;
 }
@@ -177,10 +177,10 @@ int InputListCtrl::SortCompare(LPARAM lParam1, LPARAM lParam2,
    bool result = true;
 
    // compare, according to column
-   switch(This->sortcolumn)
+   switch (This->sortcolumn)
    {
    case 0:
-      result = _tcsicmp(entry1->filename, entry2->filename)>0;
+      result = _tcsicmp(entry1->filename, entry2->filename) > 0;
       break;
 
    case 1:
@@ -194,99 +194,111 @@ int InputListCtrl::SortCompare(LPARAM lParam1, LPARAM lParam2,
    case 3:
       result = entry1->length > entry2->length;
       break;
+
+   default:
+      ATLASSERT(false);
+      break;
    }
 
    // reverse when needed
    if (This->sortreverse)
       result = !result;
 
-   return result? 1 : -1;
+   return result ? 1 : -1;
 }
 
 LRESULT InputListCtrl::OnReflectedNotify(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    LPNMHDR pnmh = (LPNMHDR)lParam;
-   switch(pnmh->code)
+   switch (pnmh->code)
    {
    case LVN_BEGINDRAG:
-      {
-         // user begins to drag
-         LPNMLISTVIEW pnmv = (LPNMLISTVIEW)pnmh;
-         dragFrom = pnmv->iItem;
+   {
+      // user begins to drag
+      LPNMLISTVIEW pnmv = (LPNMLISTVIEW)pnmh;
+      dragFrom = pnmv->iItem;
 
-         // set focus and selection to item to drag
-         SetFocus();
+      // set focus and selection to item to drag
+      SetFocus();
 
-         SetItemState(-1,0,LVIS_SELECTED|LVIS_FOCUSED);
-         SetItemState(dragFrom,LVIS_SELECTED|LVIS_FOCUSED,LVIS_SELECTED|LVIS_FOCUSED);
+      SetItemState(-1, 0, LVIS_SELECTED | LVIS_FOCUSED);
+      SetItemState(dragFrom, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 
-         dragging = true;
-         SetCapture();
-      }
-      break;
+      dragging = true;
+      SetCapture();
+   }
+   break;
 
    case NM_CUSTOMDRAW:
+   {
+      // called when list items are drawn
+      LPNMLVCUSTOMDRAW lpnmcd = (LPNMLVCUSTOMDRAW)pnmh;
+      switch (lpnmcd->nmcd.dwDrawStage)
       {
-         // called when list items are drawn
-         LPNMLVCUSTOMDRAW lpnmcd = (LPNMLVCUSTOMDRAW)pnmh;
-         switch(lpnmcd->nmcd.dwDrawStage)
-         {
-         case CDDS_PREPAINT:
-            // request notification for every item
-            return CDRF_NOTIFYITEMDRAW;
-            break;
+      case CDDS_PREPAINT:
+         // request notification for every item
+         return CDRF_NOTIFYITEMDRAW;
+         break;
 
-         case CDDS_ITEMPREPAINT:
-            {
-               // change the color of every other item
-               if ((lpnmcd->nmcd.dwItemSpec&1) == 1)
-                  lpnmcd->clrTextBk = g_clrAlternateListColor;
-               return CDRF_DODEFAULT;
-            }
-            break;
-         }
+      case CDDS_ITEMPREPAINT:
+      {
+         // change the color of every other item
+         if ((lpnmcd->nmcd.dwItemSpec & 1) == 1)
+            lpnmcd->clrTextBk = g_clrAlternateListColor;
+         return CDRF_DODEFAULT;
       }
       break;
+
+      default:
+         ATLASSERT(false);
+         break;
+      }
+   }
+   break;
 
    case LVN_COLUMNCLICK:
-      {
-         // called when clicked on a column header
-         LPNMLISTVIEW pnmv = (LPNMLISTVIEW)pnmh;
-         sortcolumn = pnmv->iSubItem;
+   {
+      // called when clicked on a column header
+      LPNMLISTVIEW pnmv = (LPNMLISTVIEW)pnmh;
+      sortcolumn = pnmv->iSubItem;
 
-         // sort reverse if clicked again
-         sortreverse = sortcolumn == lastsortcolumn;
+      // sort reverse if clicked again
+      sortreverse = sortcolumn == lastsortcolumn;
 
-         // sort
-         SortItems(InputListCtrl::SortCompare,
-            reinterpret_cast<DWORD>(this));
+      // sort
+      SortItems(InputListCtrl::SortCompare,
+         reinterpret_cast<DWORD>(this));
 
-         // remember column
-         lastsortcolumn = sortreverse ? -1 : sortcolumn;
-      }
-      break;
+      // remember column
+      lastsortcolumn = sortreverse ? -1 : sortcolumn;
+   }
+   break;
 
    case LVN_DELETEITEM:
+   {
+      LPNMLISTVIEW lpnmListView = reinterpret_cast<LPNMLISTVIEW>(pnmh);
+
+      AudioFileEntry* pEntry = reinterpret_cast<AudioFileEntry*>(lpnmListView->lParam);
+
+      if (pEntry != NULL)
       {
-         LPNMLISTVIEW lpnmListView = reinterpret_cast<LPNMLISTVIEW>(pnmh);
-
-         AudioFileEntry* pEntry = reinterpret_cast<AudioFileEntry*>(lpnmListView->lParam);
-
-         if (pEntry != NULL)
+         unsigned int nMax = allentries.size();
+         for (unsigned int n = 0; n < nMax; n++)
          {
-            unsigned int nMax = allentries.size();
-            for(unsigned int n=0; n<nMax; n++)
+            if (allentries[n] == pEntry)
             {
-               if (allentries[n] == pEntry)
-               {
-                  allentries.erase(allentries.begin()+n);
-                  break;
-               }
+               allentries.erase(allentries.begin() + n);
+               break;
             }
-
-            delete pEntry;
          }
+
+         delete pEntry;
       }
+   }
+   break;
+
+   default:
+      ATLASSERT(false);
       break;
    }
    return 0;
@@ -303,20 +315,20 @@ LRESULT InputListCtrl::OnMouseMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL
       ClientToScreen(&dropPoint);
       HWND dropWnd = WindowFromPoint(dropPoint);
 
-      if (dropWnd==m_hWnd)
+      if (dropWnd == m_hWnd)
       {
          // when moved to another item row, instantly move item to this row
          UINT flags;
-         int hit = HitTest(currPoint,&flags);
+         int hit = HitTest(currPoint, &flags);
          if (dragFrom != hit && hit != -1)
          {
             // ensure visibility
-            if (hit<dragFrom)
-               EnsureVisible(hit-1,FALSE);
+            if (hit < dragFrom)
+               EnsureVisible(hit - 1, FALSE);
             else
-               EnsureVisible(hit+1,FALSE);
+               EnsureVisible(hit + 1, FALSE);
 
-            if (GetSelectedCount()==1)
+            if (GetSelectedCount() == 1)
             {
                // move single item to new pos
                MoveItem(hit);
@@ -327,31 +339,32 @@ LRESULT InputListCtrl::OnMouseMove(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL
                std::vector<int> selitems;
 
                // collect selected items
-               int item = GetNextItem(-1,LVIS_SELECTED);
+               int item = GetNextItem(-1, LVIS_SELECTED);
                while (item != -1)
                {
                   selitems.push_back(item);
-                  item = GetNextItem(item,LVIS_SELECTED);
+                  item = GetNextItem(item, LVIS_SELECTED);
                }
 
                // move all selected items to new pos
                if (!selitems.empty())
                {
                   // move items up
-                  if (hit<selitems[0])
-                     for(unsigned int i=0; i<selitems.size(); i++)
+                  if (hit < selitems[0])
+                  {
+                     for (unsigned int i = 0; i < selitems.size(); i++)
                      {
                         dragFrom = selitems[i];
-                        MoveItem(hit+i);
+                        MoveItem(hit + i);
                      }
-                  else
-                  if (hit>selitems[selitems.size()-1])
+                  }
+                  else if (hit > selitems[selitems.size() - 1])
                   {
                      // move items down
-                     for(int i=selitems.size()-1; i>=0; i--)
+                     for (int i = selitems.size() - 1; i >= 0; i--)
                      {
                         dragFrom = selitems[i];
-                        MoveItem(hit+i-1);
+                        MoveItem(hit + i - 1);
                      }
                   }
                }
@@ -368,7 +381,7 @@ LRESULT InputListCtrl::OnLButtonUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL
    {
       // end dragging
       ReleaseCapture();
-      dragging=false;
+      dragging = false;
 
       // redraw list ctrl
       Invalidate();
@@ -379,8 +392,8 @@ LRESULT InputListCtrl::OnLButtonUp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL
 LRESULT InputListCtrl::OnListContextMenu(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
 {
    // load popup menu
-   HMENU menu = ::LoadMenu(_Module.GetResourceInstance(),MAKEINTRESOURCE(IDM_INPUT_LIST_MENU));
-   HMENU submenu = ::GetSubMenu(menu,0);
+   HMENU menu = ::LoadMenu(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDM_INPUT_LIST_MENU));
+   HMENU submenu = ::GetSubMenu(menu, 0);
 
    // track popup menu
    int ret = TrackPopupMenu(submenu,
@@ -390,19 +403,23 @@ LRESULT InputListCtrl::OnListContextMenu(UINT uMsg, WPARAM wParam, LPARAM lParam
    switch (ret)
    {
    case IDC_INPUT_MENU_SELALL:
-      {
-         // select all by simulating ctrl+a
-         BOOL dummy;
-         OnChar(0,1,0,dummy);
-      }
-      break;
+   {
+      // select all by simulating ctrl+a
+      BOOL dummy;
+      OnChar(0, 1, 0, dummy);
+   }
+   break;
 
    case IDC_INPUT_BUTTON_PLAY:
    case IDC_INPUT_BUTTON_INFILESEL:
    case IDC_INPUT_BUTTON_DELETE:
       // simulate button press
       ::SendMessage(::GetParent(m_hWnd), WM_COMMAND,
-         ret | (BN_CLICKED<<16), (LPARAM)::GetDlgItem(::GetParent(m_hWnd),ret));
+         ret | (BN_CLICKED << 16), (LPARAM)::GetDlgItem(::GetParent(m_hWnd), ret));
+      break;
+
+   default:
+      ATLASSERT(false);
       break;
    }
 
@@ -413,11 +430,11 @@ LRESULT InputListCtrl::OnListContextMenu(UINT uMsg, WPARAM wParam, LPARAM lParam
 
 void InputListCtrl::MoveItem(int moveTo)
 {
-   if(moveTo<0)
+   if (moveTo < 0)
       moveTo = GetItemCount();
 
    // do nothing when dropping on the same item
-   if (dragFrom==moveTo)
+   if (dragFrom == moveTo)
       return;
 
    // get info of dragged item
@@ -454,7 +471,7 @@ void InputListCtrl::MoveItem(int moveTo)
    lvi.iItem = moveTo;
 
    // copy subitems
-   for(int n=1; n<columns; n++)
+   for (int n = 1; n < columns; n++)
    {
       GetItemText(dragFrom, n, lvi.pszText, MAX_PATH);
       lvi.iSubItem = n;

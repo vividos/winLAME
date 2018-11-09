@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -101,6 +101,9 @@ CString AacInputModule::GetDescription() const
    case 26:
       object = _T("DRM_ER_LC");
       break;
+   default:
+      ATLASSERT(false);
+      break;
    }
 
    // determine header type
@@ -118,6 +121,9 @@ CString AacInputModule::GetDescription() const
       break;
    case 3:
       header = _T("LATM");
+      break;
+   default:
+      ATLASSERT(false);
       break;
    }
 
@@ -162,6 +168,7 @@ int AacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
       int seekTableLength = 0;
 
       get_AAC_format(infilename, &m_info, &seekTable, &seekTableLength, 1);
+      // NOSONAR
       free(seekTable);
    }
 

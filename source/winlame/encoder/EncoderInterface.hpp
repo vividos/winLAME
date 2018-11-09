@@ -35,7 +35,6 @@
 #include "TrackInfo.hpp"
 #include "EncoderState.hpp"
 
-// forward references
 class SettingsManager;
 class ModuleManager;
 

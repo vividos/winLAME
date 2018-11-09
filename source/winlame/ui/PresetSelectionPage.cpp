@@ -19,7 +19,7 @@
 /// \file PresetSelectionPage.cpp
 /// \brief Preset selection
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "PresetSelectionPage.hpp"
 #include "WizardPageHost.hpp"
 #include <ulib/IoCContainer.hpp>

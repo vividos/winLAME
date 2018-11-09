@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -110,6 +110,10 @@ CString OggVorbisOutputModule::GetDescription() const
    case 3: // constant bitrate
       desc.Format(IDS_FORMAT_INFO_OGGV_OUTPUT_CBR,
          m_vi.bitrate_nominal / 1000, m_vi.rate, m_vi.channels);
+      break;
+
+   default:
+      ATLASSERT(false);
       break;
    }
 
@@ -232,6 +236,10 @@ int OggVorbisOutputModule::InitVorbisInfo(SettingsManager& mgr)
          const_bitrate * 1000, const_bitrate * 1000, const_bitrate * 1000);
    }
    break;
+
+   default:
+      ATLASSERT(false);
+      break;
    }
 
    if (ret < 0)
@@ -251,6 +259,10 @@ int OggVorbisOutputModule::InitVorbisInfo(SettingsManager& mgr)
 
       case OV_EFAULT:
          m_lastError += _T("Internal logic fault; indicates a bug or heap/stack corruption.");
+         break;
+
+      default:
+         ATLASSERT(false);
          break;
       }
 

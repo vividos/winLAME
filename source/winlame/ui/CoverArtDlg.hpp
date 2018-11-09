@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ namespace UI
    {
    public:
       /// ctor
-      CoverArtDlg(const ATL::CImage& image);
+      explicit CoverArtDlg(const ATL::CImage& image);
 
       /// dialog id
       enum { IDD = IDD_DLG_COVERART };

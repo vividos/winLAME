@@ -38,7 +38,8 @@ namespace UI
    {
    public:
       /// ctor
-      LAMESettingsPage(WizardPageHost& pageHost);
+      explicit LAMESettingsPage(WizardPageHost& pageHost);
+
       /// dtor
       ~LAMESettingsPage()
       {

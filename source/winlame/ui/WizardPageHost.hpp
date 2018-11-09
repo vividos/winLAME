@@ -21,7 +21,6 @@
 //
 #pragma once
 
-// includes
 #include "resource.h"
 #include "WizardPage.hpp"
 #include "HtmlHelper.hpp"
@@ -37,7 +36,7 @@ namespace UI
    {
    public:
       /// ctor
-      WizardPageHost(bool isClassicMode = false);
+      explicit WizardPageHost(bool isClassicMode = false);
       /// dtor
       ~WizardPageHost() {}
 

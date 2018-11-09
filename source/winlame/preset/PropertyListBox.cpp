@@ -1,27 +1,24 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2005 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2018 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file PropertyListBox.cpp
 /// \brief contains implementation of the preset selection page
-/// \ingroup preset
-
-// needed includes
+//
 #include "stdafx.h"
 #include "PropertyListBox.h"
 
@@ -37,12 +34,12 @@ const UINT P_GROUPMASK = 0x0fff0000L;  ///< mask for group id
 
 void PropertyListBox::InitListBox(bool read_only)
 {
-   ATLASSERT(propmanager!=NULL);
+   ATLASSERT(propmanager != NULL);
 
    // for every group, insert a group string
    int groups = propmanager->GetGroupCount();
 
-   for(int i=0; i<groups; i++)
+   for (int i = 0; i < groups; i++)
    {
       int nIndex = AddString(propmanager->GetGroupName(i).c_str());
       SetItemData(nIndex, P_GROUP | P_COLLAPSED | i);
@@ -76,21 +73,21 @@ LRESULT PropertyListBox::OnReflectedCommand(UINT uMsg, WPARAM wParam, LPARAM lPa
       int nIndex = GetCurSel();
       RECT rc;
 
-      if (!readonly && nIndex!=LB_ERR && GetItemRect(nIndex,&rc)!=LB_ERR)
+      if (!readonly && nIndex != LB_ERR && GetItemRect(nIndex, &rc) != LB_ERR)
       {
          // adjust for value field
          rc.left = (rc.right + rc.left + LEFT_BORDER) / 2 + 1;
          rc.top++; rc.bottom--;
 
          // read old value, store it
-         if (inplaceCtrl!=NULL)
+         if (inplaceCtrl != NULL)
          {
             TCHAR buffer[256];
-            inplaceCtrl->GetWindowText(buffer,256);
+            inplaceCtrl->GetWindowText(buffer, 256);
 
             // update value
             std::tstring value(buffer);
-            propmanager->SetItemValue(inplaceGroup,inplaceIndex,value);
+            propmanager->SetItemValue(inplaceGroup, inplaceIndex, value);
 
             // delete old inplace control
             if (inplaceCtrl->IsWindow())
@@ -107,20 +104,20 @@ LRESULT PropertyListBox::OnReflectedCommand(UINT uMsg, WPARAM wParam, LPARAM lPa
          {
             DWORD data = GetItemData(nIndex);
             inplaceIndex = data & P_ITEMMASK;
-            inplaceGroup = (data & P_GROUPMASK)>>16;
+            inplaceGroup = (data & P_GROUPMASK) >> 16;
 
             // create new inplace control
             CEdit *editCtrl = new CEdit;
             inplaceCtrl = editCtrl;
 
             editCtrl->Create(m_hWnd, &rc, NULL,
-               WS_CHILD|WS_VISIBLE|ES_AUTOHSCROLL|ES_LEFT|ES_NOHIDESEL,
+               WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL | ES_LEFT | ES_NOHIDESEL,
                0, 0U/*ID*/);
 
             // set value for inplace control
-            editCtrl->SetWindowText(propmanager->GetItemValue(inplaceGroup,inplaceIndex).c_str());
+            editCtrl->SetWindowText(propmanager->GetItemValue(inplaceGroup, inplaceIndex).c_str());
             editCtrl->SetFont(GetFont());
-            editCtrl->SetSel(0,-1);
+            editCtrl->SetSel(0, -1);
 
             // show control
             inplaceCtrl->ShowWindow(SW_SHOW);
@@ -142,7 +139,7 @@ LRESULT PropertyListBox::OnDrawItem(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
    bool isgroup = (data & P_GROUP) == P_GROUP;
    bool iscollapsed = isgroup && (data & P_COLLAPSED) == P_COLLAPSED;
    int index = data & P_ITEMMASK;
-   int group = (data & P_GROUPMASK)>>16;
+   int group = (data & P_GROUPMASK) >> 16;
 
    // calculate rects
    RECT rcItem = lpDrawItemStruct->rcItem;
@@ -162,10 +159,10 @@ LRESULT PropertyListBox::OnDrawItem(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
    RECT rcGrid = rcItem;
    rcGrid.left += LEFT_BORDER - 1;
 
-   UINT nPropWidth   = (rcGrid.right - rcGrid.left) / 2;
+   UINT nPropWidth = (rcGrid.right - rcGrid.left) / 2;
 
    // create new pen
-   HPEN hPen = ::CreatePen(PS_SOLID, 1, RGB(192,192,192));
+   HPEN hPen = ::CreatePen(PS_SOLID, 1, RGB(192, 192, 192));
    HGDIOBJ hOldGDIObj = ::SelectObject(hDC, hPen);
 
    if (isgroup)
@@ -179,7 +176,7 @@ LRESULT PropertyListBox::OnDrawItem(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
    // draw the grid lines
    DrawGridLine(hDC, rcGrid, nPropWidth);
 
-   std::tstring name,value;
+   std::tstring name, value;
    if (isgroup)
    {
       name = propmanager->GetGroupName(index);
@@ -187,8 +184,8 @@ LRESULT PropertyListBox::OnDrawItem(UINT uMsg, WPARAM wParam, LPARAM lParam, BOO
    }
    else
    {
-      name = propmanager->GetItemName(group,index);
-      value = propmanager->GetItemValue(group,index);
+      name = propmanager->GetItemName(group, index);
+      value = propmanager->GetItemValue(group, index);
    }
 
    DrawPropText(hDC, name.c_str(), rcName, value.c_str(), rcValue,
@@ -220,8 +217,8 @@ void PropertyListBox::DrawGridLine(HDC hDC, RECT &rcGrid, UINT nPropWidth)
 }
 
 void PropertyListBox::DrawPropText(HDC hDC, LPCTSTR name, RECT &rcName,
-      LPCTSTR value, RECT &rcValue, UINT nItemState, UINT nItemAction,
-      bool thin)
+   LPCTSTR value, RECT &rcValue, UINT nItemState, UINT nItemAction,
+   bool thin)
 {
    COLORREF clrBackground, clrText;
    COLORREF clrOldBackground, clrOldText;
@@ -229,16 +226,16 @@ void PropertyListBox::DrawPropText(HDC hDC, LPCTSTR name, RECT &rcName,
    HFONT hOldFont;
    bool bIsDisabled = (nItemState & ODS_DISABLED) == ODS_DISABLED;
    bool bDrawCtrl = (nItemState & ODS_SELECTED) == ODS_SELECTED && !bIsDisabled;
-   
+
    if ((nItemState & ODS_SELECTED) == ODS_SELECTED)
    {
-      clrBackground   = ::GetSysColor(COLOR_HIGHLIGHT);
-      clrText         = ::GetSysColor(bIsDisabled? COLOR_GRAYTEXT : COLOR_HIGHLIGHTTEXT);
+      clrBackground = ::GetSysColor(COLOR_HIGHLIGHT);
+      clrText = ::GetSysColor(bIsDisabled ? COLOR_GRAYTEXT : COLOR_HIGHLIGHTTEXT);
    }
    else
    {
-      clrBackground   = ::GetSysColor(COLOR_WINDOW);
-      clrText         = ::GetSysColor(bIsDisabled? COLOR_GRAYTEXT : COLOR_WINDOWTEXT);
+      clrBackground = ::GetSysColor(COLOR_WINDOW);
+      clrText = ::GetSysColor(bIsDisabled ? COLOR_GRAYTEXT : COLOR_WINDOWTEXT);
    }
 
    if ((hBGBrush = CreateSolidBrush(clrBackground)) != NULL)
@@ -264,7 +261,7 @@ void PropertyListBox::DrawPropText(HDC hDC, LPCTSTR name, RECT &rcName,
    {
       bigfont = (HFONT)::GetStockObject(DEFAULT_GUI_FONT);
       LOGFONT lf;
-      ::GetObject(bigfont,sizeof(LOGFONT), &lf);
+      ::GetObject(bigfont, sizeof(LOGFONT), &lf);
       lf.lfWeight = 400;
       bigfont = ::CreateFontIndirect(&lf);
       hOldFont = (HFONT)::SelectObject(hDC, bigfont);
@@ -282,8 +279,8 @@ void PropertyListBox::DrawPropText(HDC hDC, LPCTSTR name, RECT &rcName,
       ::DeleteObject(bigfont);
 
    // restore coordinates
-   rcName.left      -= 2;
-   rcName.right     += 2;
+   rcName.left -= 2;
+   rcName.right += 2;
 
    // restore GDI
    ::SetBkColor(hDC, clrOldBackground);
@@ -294,13 +291,13 @@ void PropertyListBox::DrawCross(HDC hDC, RECT& rc, LONG nSize, bool bPlus)
 {
    HBRUSH   hWhiteBrush = (HBRUSH)GetStockObject(WHITE_BRUSH);
    HBRUSH   hBlackBrush = (HBRUSH)GetStockObject(BLACK_BRUSH);
-   HPEN      hPen         = ::CreatePen(PS_SOLID, 1, RGB(0x00, 0x00, 0x00));
-   LONG      nTop         = (rc.top + rc.bottom) / 2 - nSize - 1;
-   RECT      rect         = { rc.left, nTop, rc.left + 2 * nSize + 1, nTop + 2 * nSize + 1 };
+   HPEN      hPen = ::CreatePen(PS_SOLID, 1, RGB(0x00, 0x00, 0x00));
+   LONG      nTop = (rc.top + rc.bottom) / 2 - nSize - 1;
+   RECT      rect = { rc.left, nTop, rc.left + 2 * nSize + 1, nTop + 2 * nSize + 1 };
    POINT      point;
-   UINT      nXCenter      = rect.left + nSize;
-   UINT      nYCenter      = rect.top + nSize;
-   HGDIOBJ   hOldGDIObj   = ::SelectObject(hDC, hPen);
+   UINT      nXCenter = rect.left + nSize;
+   UINT      nYCenter = rect.top + nSize;
+   HGDIOBJ   hOldGDIObj = ::SelectObject(hDC, hPen);
 
    ::FillRect(hDC, &rect, hWhiteBrush);
    ::FrameRect(hDC, &rect, hBlackBrush);
@@ -308,7 +305,7 @@ void PropertyListBox::DrawCross(HDC hDC, RECT& rc, LONG nSize, bool bPlus)
    ::MoveToEx(hDC, rect.left + 2, nYCenter, &point);
    ::LineTo(hDC, rect.right - 2, nYCenter);
 
-   if(bPlus)
+   if (bPlus)
    {
       ::MoveToEx(hDC, nXCenter, rect.top + 2, &point);
       ::LineTo(hDC, nXCenter, rect.bottom - 2);
@@ -340,10 +337,10 @@ void PropertyListBox::ChangeGroupState(int nIndex)
 
       int max = propmanager->GetItemCount(group);
 
-      for(int i=0; i<max; i++)
+      for (int i = 0; i < max; i++)
       {
-         int nIndex2 = InsertString(++nIndex,propmanager->GetItemName(group,i).c_str());
-         SetItemData(nIndex2,((unsigned int)(group)<<16)|i);
+         int nIndex2 = InsertString(++nIndex, propmanager->GetItemName(group, i).c_str());
+         SetItemData(nIndex2, ((unsigned int)(group) << 16) | i);
       }
 
       data &= ~P_COLLAPSED; // expanded
@@ -361,11 +358,10 @@ void PropertyListBox::ChangeGroupState(int nIndex)
 
          DeleteString(nIndex);
          max--;
-      }
-      while(nIndex<max);
+      } while (nIndex < max);
 
       data |= P_COLLAPSED; // collapsed
    }
 
-   SetItemData(nGroupIndex,data);
+   SetItemData(nGroupIndex, data);
 }

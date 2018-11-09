@@ -38,7 +38,7 @@ namespace UI
    {
    public:
       /// ctor
-      OggVorbisSettingsPage(WizardPageHost& pageHost)
+      explicit OggVorbisSettingsPage(WizardPageHost& pageHost)
          :WizardPage(pageHost, IDD_PAGE_OGGVORBIS_SETTINGS, WizardPage::typeCancelBackNext),
          m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
       {

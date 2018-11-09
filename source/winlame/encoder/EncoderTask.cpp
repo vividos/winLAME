@@ -19,7 +19,7 @@
 /// \file EncoderTask.cpp
 /// \brief encoder task class
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "EncoderTask.hpp"
 
 using Encoder::EncoderTask;
@@ -38,7 +38,7 @@ EncoderTask::EncoderTask(unsigned int dependentTaskId, const EncoderTaskSettings
 
 CString EncoderTask::GenerateOutputFilename(const CString& inputFilename)
 {
-   if (EncoderImpl::m_encoderSettings.m_outputFilename.IsEmpty())
+   if (EncoderImpl::GetEncoderSettings().m_outputFilename.IsEmpty())
    {
       Encoder::ModuleManager& moduleManager = IoCContainer::Current().Resolve<Encoder::ModuleManager>();
       Encoder::ModuleManagerImpl& modImpl = reinterpret_cast<Encoder::ModuleManagerImpl&>(moduleManager);
@@ -48,10 +48,10 @@ CString EncoderTask::GenerateOutputFilename(const CString& inputFilename)
 
       outputModule->PrepareOutput(m_settings.m_settingsManager);
 
-      EncoderImpl::m_encoderSettings.m_outputFilename = EncoderImpl::GetOutputFilename(m_settings.m_outputFolder, inputFilename, *outputModule.get());
+      EncoderImpl::GetEncoderSettings().m_outputFilename = EncoderImpl::GetOutputFilename(m_settings.m_outputFolder, inputFilename, *outputModule.get());
    }
 
-   return EncoderImpl::m_encoderSettings.m_outputFilename;
+   return EncoderImpl::GetEncoderSettings().m_outputFilename;
 }
 
 TaskInfo EncoderTask::GetTaskInfo()
@@ -66,7 +66,7 @@ TaskInfo EncoderTask::GetTaskInfo()
 
    info.Status(
       encoderState.m_finished || m_stopped ? TaskInfo::statusCompleted :
-      m_encoderState.m_errorCode != 0 ? TaskInfo::statusError :
+      EncoderImpl::GetEncoderState().m_errorCode != 0 ? TaskInfo::statusError :
       encoderState.m_running ? TaskInfo::statusRunning :
       TaskInfo::statusWaiting);
 

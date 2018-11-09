@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,93 +21,91 @@
 //
 #pragma once
 
-// includes
 #include "TaskInfo.hpp"
 #include <atlgdix.h>
 #include "ListViewNoFlicker.h"
 
-// forward references
 class TaskManager;
 
 namespace UI
 {
-/// win traits for tasks view
-typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER, LVS_EX_DOUBLEBUFFER, CControlWinTraits>
-   TasksViewWinTraits;
+   /// win traits for tasks view
+   typedef CWinTraitsOR<LVS_REPORT | LVS_SHOWSELALWAYS | LVS_NOSORTHEADER, LVS_EX_DOUBLEBUFFER, CControlWinTraits>
+      TasksViewWinTraits;
 
-/// tasks view; shows all currently running tasks
-class TasksView :
-   public CWindowImpl<TasksView, CListViewCtrl, TasksViewWinTraits>,
-   public CListViewNoFlickerT<TasksView>
-{
-   typedef CListViewNoFlickerT<TasksView> noFlickerClass;
-
-public:
-   /// function type of handler called when a task item was clicked
-   typedef std::function<void(size_t clickedIndex)> T_fnOnClickedTask;
-
-   /// ctor
-   TasksView(TaskManager& taskManager)
-      :m_taskManager(taskManager)
+   /// tasks view; shows all currently running tasks
+   class TasksView :
+      public CWindowImpl<TasksView, CListViewCtrl, TasksViewWinTraits>,
+      public CListViewNoFlickerT<TasksView>
    {
-   }
+      typedef CListViewNoFlickerT<TasksView> noFlickerClass;
 
-   /// initialize tasks view list
-   void Init(bool useLargeNameColumn = true);
+   public:
+      /// function type of handler called when a task item was clicked
+      typedef std::function<void(size_t clickedIndex)> T_fnOnClickedTask;
 
-   /// sets "clicked task" handler
-   void SetClickedTaskHandler(const T_fnOnClickedTask& fnOnClickedTask)
-   {
-      m_fnOnClickedTask = fnOnClickedTask;
-   }
+      /// ctor
+      explicit TasksView(TaskManager& taskManager)
+         :m_taskManager(taskManager)
+      {
+      }
 
-   /// update tasks list
-   void UpdateTasks();
+      /// initialize tasks view list
+      void Init(bool useLargeNameColumn = true);
 
-   DECLARE_WND_SUPERCLASS(NULL, CListViewCtrl::GetWndClassName())
+      /// sets "clicked task" handler
+      void SetClickedTaskHandler(const T_fnOnClickedTask& fnOnClickedTask)
+      {
+         m_fnOnClickedTask = fnOnClickedTask;
+      }
 
-   BOOL PreTranslateMessage(MSG* pMsg);
+      /// update tasks list
+      void UpdateTasks();
 
-private:
-   BEGIN_MSG_MAP(TasksView)
-      MESSAGE_HANDLER(WM_CREATE, OnCreate)
-      MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
-      MESSAGE_HANDLER(WM_TIMER, OnTimer)
-      REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnItemClick)
-      CHAIN_MSG_MAP_ALT(noFlickerClass, 1)
-   END_MSG_MAP()
+      DECLARE_WND_SUPERCLASS(NULL, CListViewCtrl::GetWndClassName())
 
-   LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      BOOL PreTranslateMessage(MSG* pMsg);
 
-   LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+   private:
+      BEGIN_MSG_MAP(TasksView)
+         MESSAGE_HANDLER(WM_CREATE, OnCreate)
+         MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
+         MESSAGE_HANDLER(WM_TIMER, OnTimer)
+         REFLECTED_NOTIFY_CODE_HANDLER(NM_CLICK, OnItemClick)
+         CHAIN_MSG_MAP_ALT(noFlickerClass, 1)
+      END_MSG_MAP()
 
-   LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
+      LRESULT OnCreate(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// called when a task item has been clicked
-   LRESULT OnItemClick(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
+      LRESULT OnDestroy(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-private:
-   friend class TaskDetailsView;
+      LRESULT OnTimer(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
-   /// returns status text from task status
-   static CString StatusTextFromStatus(TaskInfo::TaskStatus status);
+      /// called when a task item has been clicked
+      LRESULT OnItemClick(int idCtrl, LPNMHDR pnmh, BOOL& bHandled);
 
-   /// determines icon from task type
-   static int IconFromTaskType(const TaskInfo& info);
+   private:
+      friend class TaskDetailsView;
 
-private:
-   // model
+      /// returns status text from task status
+      static CString StatusTextFromStatus(TaskInfo::TaskStatus status);
 
-   /// ref to task manager
-   TaskManager& m_taskManager;
+      /// determines icon from task type
+      static int IconFromTaskType(const TaskInfo& info);
 
-   /// "clicked task" handler
-   T_fnOnClickedTask m_fnOnClickedTask;
+   private:
+      // model
 
-   // UI
+      /// ref to task manager
+      TaskManager& m_taskManager;
 
-   /// task list images
-   CImageList m_taskImages;
-};
+      /// "clicked task" handler
+      T_fnOnClickedTask m_fnOnClickedTask;
+
+      // UI
+
+      /// task list images
+      CImageList m_taskImages;
+   };
 
 } // namespace UI

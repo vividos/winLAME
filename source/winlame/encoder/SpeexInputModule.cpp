@@ -297,6 +297,9 @@ bool SpeexInputModule::ReadNextPacket(ogg_packet& packet)
    return true;
 }
 
+/// max. frame size for output buffer
+#define MAX_FRAME_SIZE 2000
+
 int SpeexInputModule::DecodePacket(ogg_packet& packet, std::vector<short>& samples)
 {
    spx_int32_t frameSize = 0;
@@ -310,7 +313,6 @@ int SpeexInputModule::DecodePacket(ogg_packet& packet, std::vector<short>& sampl
 
    for (int i = 0; i < iMaxFrames; i++)
    {
-#define MAX_FRAME_SIZE 2000
       short outputBuffer[MAX_FRAME_SIZE];
 
       int iRet = speex_decode_int(m_decoderState.get(), &m_bits, outputBuffer);

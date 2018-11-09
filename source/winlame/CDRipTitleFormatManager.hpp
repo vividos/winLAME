@@ -21,9 +21,6 @@
 //
 #pragma once
 
-// includes
-
-// forward references
 struct CDRipDiscInfo;
 struct CDRipTrackInfo;
 struct UISettings;

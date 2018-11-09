@@ -21,7 +21,6 @@
 //
 #pragma once
 
-// forward references
 struct UISettings;
 
 namespace Encoder

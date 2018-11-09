@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,11 +18,9 @@
 //
 /// \file TaskManager.hpp
 /// \brief Task manager
-
-// include guard
+//
 #pragma once
 
-// includes
 #include <vector>
 #include <deque>
 #include <set>
@@ -34,7 +32,6 @@
 #include "TaskInfo.hpp"
 #include "TaskManagerConfig.hpp"
 
-// forward references
 class Task;
 
 /// manages all background tasks
@@ -42,7 +39,7 @@ class TaskManager
 {
 public:
    /// ctor
-   TaskManager(const TaskManagerConfig& config);
+   explicit TaskManager(const TaskManagerConfig& config);
    /// dtor
    ~TaskManager();
 

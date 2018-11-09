@@ -21,7 +21,6 @@
 //
 #pragma once
 
-// includes
 #include "WizardPage.hpp"
 #include "resource.h"
 
@@ -36,7 +35,7 @@ namespace UI
    {
    public:
       /// ctor
-      ClassicModeStartPage(WizardPageHost& pageHost)
+      explicit ClassicModeStartPage(WizardPageHost& pageHost)
          :WizardPage(pageHost, IDD_PAGE_CLASSIC_START, WizardPage::typeCancelNext),
          m_encodeFiles(true)
       {

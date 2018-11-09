@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,7 +19,7 @@
 /// \file WizardPageHost.cpp
 /// \brief Wizard page host window
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "WizardPageHost.hpp"
 #include "WizardPage.hpp"
 #include "App.hpp"
@@ -106,29 +106,36 @@ void WizardPageHost::InitPage()
 void WizardPageHost::ConfigWizardButtons(WizardPage::T_enWizardPageType enWizardPageType)
 {
    bool bEnableAction1 = true;
-   switch(enWizardPageType)
+   switch (enWizardPageType)
    {
    case WizardPage::typeCancelNext:
       m_buttonAction2.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_CANCEL)));
       m_buttonActionOK.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_NEXT)));
       bEnableAction1 = false;
       break;
+
    case WizardPage::typeCancelBackNext:
       m_buttonAction1.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_CANCEL)));
       m_buttonAction2.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_BACK)));
       m_buttonActionOK.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_NEXT)));
       bEnableAction1 = true;
       break;
+
    case WizardPage::typeCancelBackFinish:
       m_buttonAction1.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_CANCEL)));
       m_buttonAction2.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_BACK)));
       m_buttonActionOK.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_FINISH)));
       bEnableAction1 = true;
       break;
+
    case WizardPage::typeCancelOk:
       m_buttonAction2.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_CANCEL)));
       m_buttonActionOK.SetWindowText(CString(MAKEINTRESOURCE(IDS_WIZARDPAGE_OK)));
       bEnableAction1 = false;
+      break;
+
+   default:
+      ATLASSERT(false);
       break;
    }
 
@@ -379,7 +386,7 @@ LRESULT WizardPageHost::OnDrawItem(UINT /*uMsg*/, WPARAM wParam, LPARAM lParam, 
       if (lpdis->itemState != ODS_DISABLED)
       {
          // owner-draw caption background
-         ::SetBkColor(lpdis->hDC, RGB(255,255,255));
+         ::SetBkColor(lpdis->hDC, RGB(255, 255, 255));
          ::ExtTextOut(lpdis->hDC, 0, 0, ETO_OPAQUE, &lpdis->rcItem, NULL, 0, NULL);
       }
    }
@@ -415,6 +422,10 @@ LRESULT WizardPageHost::OnButtonClicked(WORD /*wNotifyCode*/, WORD wID, HWND /*h
    case WizardPage::typeCancelOk:
       if (wID != IDOK)
          wID = IDCANCEL;
+      break;
+
+   default:
+      ATLASSERT(false);
       break;
    }
 
@@ -477,6 +488,9 @@ CString WizardPageHost::MapDialogIdToHelpPath(UINT dialogId)
    case IDD_SETTINGS_GENERAL: helpId = IDS_HTML_SETTINGS_GENERAL; break;
    case IDD_PAGE_CLASSIC_START: helpId = IDS_HTML_CLASSIC_START; break;
    case IDD_PAGE_CLASSIC_ENCODE: helpId = IDS_HTML_CLASSIC_ENCODE; break;
+   default:
+      ATLASSERT(false);
+      break;
    }
 
    if (helpId == 0)

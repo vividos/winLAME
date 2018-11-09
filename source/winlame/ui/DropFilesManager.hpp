@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 //
 #pragma once
 
-// includes
 #include <vector>
 
 namespace UI
@@ -31,7 +30,7 @@ namespace UI
    {
    public:
       /// ctor
-      DropFilesManager(HDROP hDropInfo)
+      explicit DropFilesManager(HDROP hDropInfo)
       {
          Read(hDropInfo);
       }

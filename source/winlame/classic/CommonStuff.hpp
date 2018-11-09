@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2005 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,20 +23,5 @@
 //
 #pragma once
 
-#include "Resource.h"
-#include "BevelLine.hpp"
-#include "AlternateColorsListCtrl.hpp"
-#include "FixedValueSpinButtonCtrl.hpp"
-
-using UI::BevelLine;
-using UI::AlternateColorsListCtrl;
-using UI::FixedValueSpinButtonCtrl;
-
-/// \brief adds tool tips for every child dlg item found for hWnd
-/// \details the tooltip text is the string resource that has the same ID value as
-/// the control
-void AddTooltips(HWND hWnd, CToolTipCtrl &ctrl);
-
-
 /// lets the user browse for a folder
-bool BrowseForFolder(HWND hParentWnd, CString &dirname,UINT captionid=0);
+bool BrowseForFolder(HWND hParentWnd, CString& dirname, UINT captionid = 0);

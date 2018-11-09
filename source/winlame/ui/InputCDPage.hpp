@@ -43,7 +43,7 @@ namespace UI
    {
    public:
       /// ctor
-      InputCDPage(WizardPageHost& pageHost);
+      explicit InputCDPage(WizardPageHost& pageHost);
       /// dtor
       ~InputCDPage()
       {

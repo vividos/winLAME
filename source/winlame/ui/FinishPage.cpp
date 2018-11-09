@@ -19,7 +19,7 @@
 /// \file FinishPage.cpp
 /// \brief Finish page
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "FinishPage.hpp"
 #include "WizardPageHost.hpp"
 #include <ulib/IoCContainer.hpp>

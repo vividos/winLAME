@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -75,6 +75,9 @@ void LameOutputModule::GetVersionString(CString& version, int special) const
          break;
       case 2:
          version = CString(::nlame_lame_string_get(nle_lame_string_cpu_features));
+         break;
+      default:
+         ATLASSERT(false);
          break;
       }
    }

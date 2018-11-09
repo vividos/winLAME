@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -59,10 +59,7 @@ namespace Encoder
       virtual float PercentDone() const { return 0.f; }
 
       /// called when done with decoding
-      virtual void DoneInput() {}
-
-      /// called when done with decoding
-      virtual void DoneInput(bool /*completedTrack*/) { DoneInput(); }
+      virtual void DoneInput() = 0;
    };
 
 } // namespace Encoder

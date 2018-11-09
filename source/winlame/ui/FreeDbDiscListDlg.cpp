@@ -20,7 +20,6 @@
 /// \brief FreeDB disc list dialog
 //
 
-// includes
 #include "stdafx.h"
 #include "resource.h"
 #include "FreeDbDiscListDlg.hpp"

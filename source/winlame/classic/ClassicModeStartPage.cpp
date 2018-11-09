@@ -19,7 +19,7 @@
 /// \file ClassicModeStartPage.cpp
 /// \brief Start page for Classic UI
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "ClassicModeStartPage.hpp"
 #include "WizardPageHost.hpp"
 #include "InputFilesPage.hpp"

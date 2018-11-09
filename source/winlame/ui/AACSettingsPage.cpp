@@ -19,7 +19,7 @@
 /// \file AACSettingsPage.cpp
 /// \brief AAC settings page
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "AACSettingsPage.hpp"
 #include "WizardPageHost.hpp"
 #include <ulib/IoCContainer.hpp>

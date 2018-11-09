@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@
 #pragma warning(push)
 #pragma warning(disable: 4002) // too many actual parameters for macro 'throw'
 #include <atlimage.h>
+// NOSONAR
 #undef throw
 #pragma warning(pop)
 
@@ -38,7 +39,7 @@ class CoverArtResult
 {
 public:
    /// creates a new cover art result object with given data for front cover
-   CoverArtResult(const std::vector<unsigned char>& frontCover)
+   explicit CoverArtResult(const std::vector<unsigned char>& frontCover)
       :m_frontCover(frontCover)
    {
    }
@@ -56,7 +57,7 @@ class CoverArtArchive
 {
 public:
    /// ctor; specifies user agent
-   CoverArtArchive(const std::string& userAgent);
+   explicit CoverArtArchive(const std::string& userAgent);
    /// dtor
    ~CoverArtArchive();
 

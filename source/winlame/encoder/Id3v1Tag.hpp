@@ -23,7 +23,6 @@
 
 namespace Encoder
 {
-   // forward references
    class TrackInfo;
 
 #pragma pack(push, 1)

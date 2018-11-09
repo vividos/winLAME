@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -92,13 +92,16 @@ CString MadMpegInputModule::GetDescription() const
       {
          if (m_initHeader.mode_extension & (MAD_FLAG_I_STEREO | MAD_FLAG_MS_STEREO))
             stereo = _T("Joint Stereo (Mixed)");
-         else
-            if (m_initHeader.mode_extension & MAD_FLAG_I_STEREO)
-               stereo = _T("Joint Stereo (Intensity)");
-            else
-               if (m_initHeader.mode_extension & MAD_FLAG_MS_STEREO)
-                  stereo = _T("Joint Stereo (Mid/Side)");
+         else if (m_initHeader.mode_extension & MAD_FLAG_I_STEREO)
+            stereo = _T("Joint Stereo (Intensity)");
+         else if (m_initHeader.mode_extension & MAD_FLAG_MS_STEREO)
+            stereo = _T("Joint Stereo (Mid/Side)");
       }
+      break;
+
+   default:
+      ATLASSERT(false);
+      break;
    }
 
    CString desc;
@@ -126,6 +129,9 @@ void MadMpegInputModule::GetVersionString(CString& version, int special) const
    case 1: functionName = "mad_copyright"; break;
    case 2: functionName = "mad_author"; break;
    case 3: functionName = "mad_build"; break;
+   default:
+      ATLASSERT(false);
+      break;
    }
 
    // version has to be retrieved that way, because mad_version isn't
@@ -434,6 +440,10 @@ int MadMpegInputModule::DecodeSamples(SampleContainer& samples)
          if (ret != -1)
             step++;
          break;
+
+      default:
+         ATLASSERT(false);
+         break;
       }
 
       // do error checking/handling
@@ -538,21 +548,21 @@ int MadMpegInputModule::DecodeSamples(SampleContainer& samples)
       }
 
 #if 0
-      // use linear dither
-      for(int i=0; i<ret; i++)
-      {
-         // dither left
-         mad_fixed_t sample = m_synth.pcm.samples[0][i];
-         m_synth.pcm.samples[0][i] = audio_linear_dither(MadOutputBits,sample,&left_dither,&stats);
-      }
+   // use linear dither
+   for (int i = 0; i < ret; i++)
+   {
+      // dither left
+      mad_fixed_t sample = m_synth.pcm.samples[0][i];
+      m_synth.pcm.samples[0][i] = audio_linear_dither(MadOutputBits, sample, &left_dither, &stats);
+   }
 
-      // second channel?
-      if (m_frame.header.mode != MAD_MODE_SINGLE_CHANNEL)
-      for(int i=0; i<ret; i++)
+   // second channel?
+   if (m_frame.header.mode != MAD_MODE_SINGLE_CHANNEL)
+      for (int i = 0; i < ret; i++)
       {
          // dither right
          mad_fixed_t sample = m_synth.pcm.samples[1][i];
-         m_synth.pcm.samples[1][i] = audio_linear_dither(MadOutputBits,sample,&right_dither,&stats);
+         m_synth.pcm.samples[1][i] = audio_linear_dither(MadOutputBits, sample, &right_dither, &stats);
       }
 #endif
 
@@ -564,7 +574,7 @@ int MadMpegInputModule::DecodeSamples(SampleContainer& samples)
    m_numCurrentSamples += ret;
 
    return ret;
-}
+      }
 
 void MadMpegInputModule::DoneInput()
 {

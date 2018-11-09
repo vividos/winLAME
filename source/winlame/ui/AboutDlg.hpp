@@ -21,7 +21,6 @@
 //
 #pragma once
 
-// includes
 #include "resource.h"
 
 namespace UI
@@ -42,14 +41,14 @@ namespace UI
       }
 
       /// sets filename of presets.xml file
-      void SetPresetsXmlFilename(const CString& cszFilename){ m_cszPresetsXmlFilename = cszFilename; }
+      void SetPresetsXmlFilename(const CString& cszFilename) { m_cszPresetsXmlFilename = cszFilename; }
 
    private:
       /// dialog id
       enum { IDD = IDD_ABOUTDLG };
 
-      friend CAxDialogImpl < AboutDlg > ;
-      friend CDialogResize < AboutDlg > ;
+      friend CAxDialogImpl<AboutDlg>;
+      friend CDialogResize<AboutDlg>;
 
       BEGIN_DLGRESIZE_MAP(AboutDlg)
          DLGRESIZE_CONTROL(IDOK, DLSZ_MOVE_Y)

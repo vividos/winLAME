@@ -53,7 +53,7 @@ namespace Encoder
       virtual int EncodeSamples(SampleContainer& samples) = 0;
 
       /// cleans up the output module
-      virtual void DoneOutput() {}
+      virtual void DoneOutput() = 0;
    };
 
 } // namespace Encoder

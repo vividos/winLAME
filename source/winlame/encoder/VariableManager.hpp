@@ -1,46 +1,40 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2005 Michael Fink
-   Copyright (c) 2004 DeXT
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2004 DeXT
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+//
 /// \file VariableManager.hpp
 /// \brief manager for variables and their properties
 /// \details
 /// manager for variables, their string names, descriptions and default values
 /// also, herein are defined the enum values for the variable ID's to use in
 /// the settings manager
-
-/// \ingroup settings
-/// @{
-
-// include guard
+//
 #pragma once
 
-// forward declaration
 struct SettingsVarMap;
-
 
 /// class for managing settings variables
 class VariableManager
 {
 public:
    // ctor
-   VariableManager(){ m_varmap = nullptr; }
+   VariableManager() { m_varmap = nullptr; }
 
    /// looks up variable ID per name
    int lookupID(LPCTSTR name);
@@ -125,7 +119,7 @@ enum
 
 
 /// manager class for the facilities
-class VarMgrFacilities: public VariableManager
+class VarMgrFacilities : public VariableManager
 {
 public:
    VarMgrFacilities();
@@ -141,11 +135,8 @@ public:
 
 
 /// manager class for the variables
-class VarMgrVariables: public VariableManager
+class VarMgrVariables : public VariableManager
 {
 public:
    VarMgrVariables();
 };
-
-
-/// @}

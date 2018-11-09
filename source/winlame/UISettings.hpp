@@ -21,7 +21,6 @@
 //
 #pragma once
 
-// needed includes
 #include "SettingsManager.hpp"
 #include "PresetManagerInterface.hpp"
 #include "EncoderInterface.hpp"

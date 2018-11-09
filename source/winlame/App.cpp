@@ -19,7 +19,7 @@
 /// \file App.cpp
 /// \brief App class
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "App.hpp"
 #include "ui/MainFrame.hpp"
 #include "ui/WizardPageHost.hpp"
@@ -157,7 +157,7 @@ void App::ShowCrashErrorDialog(LPCTSTR crashDumpFilename)
    std::vector<CString> resultFilenamesList;
    resultFilenamesList.push_back(crashDumpFilename);
 
-   CrashSaveResultsDlg dlg(resultFilenamesList);
+   UI::CrashSaveResultsDlg dlg(resultFilenamesList);
    dlg.DoModal();
 }
 

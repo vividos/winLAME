@@ -1,27 +1,25 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2000-2007 Michael Fink
-   Copyright (c) 2004 DeXT
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2004 DeXT
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file UISettings.cpp
 /// \brief contains functions to read and store the general UI settings in the registry
-
-// needed includes
+//
 #include "stdafx.h"
 #include "UISettings.hpp"
 #include <stdio.h>
@@ -55,8 +53,8 @@ LPCTSTR g_pszUseNumTasks = _T("TaskManagerUseNumTasks");
 // EncodingSettings methods
 
 EncodingSettings::EncodingSettings()
-:delete_after_encode(false),
-overwrite_existing(true)
+   :delete_after_encode(false),
+   overwrite_existing(true)
 {
 }
 
@@ -64,7 +62,7 @@ overwrite_existing(true)
 // UISettings methods
 
 UISettings::UISettings()
-:output_module(0),
+   :output_module(0),
    out_location_use_input_dir(false),
    preset_avail(false),
    m_bFromInputFilesPage(true),
@@ -91,7 +89,7 @@ void ReadStringValue(CRegKey& regKey, LPCTSTR pszName, UINT uiMaxLength, CString
 {
    std::vector<TCHAR> buffer(uiMaxLength, 0);
    DWORD count = uiMaxLength;
-   if (ERROR_SUCCESS==regKey.QueryValue(&buffer[0], pszName, &count))
+   if (ERROR_SUCCESS == regKey.QueryValue(&buffer[0], pszName, &count))
       cszValue = &buffer[0];
 }
 
@@ -99,7 +97,7 @@ void ReadStringValue(CRegKey& regKey, LPCTSTR pszName, UINT uiMaxLength, CString
 void ReadIntValue(CRegKey& regKey, LPCTSTR pszName, int& iValue)
 {
    DWORD value = 0;
-   if (ERROR_SUCCESS==regKey.QueryValue(value, pszName))
+   if (ERROR_SUCCESS == regKey.QueryValue(value, pszName))
       iValue = static_cast<int>(value);
 }
 
@@ -107,7 +105,7 @@ void ReadIntValue(CRegKey& regKey, LPCTSTR pszName, int& iValue)
 void ReadUIntValue(CRegKey& regKey, LPCTSTR pszName, UINT& uiValue)
 {
    DWORD value = 0;
-   if (ERROR_SUCCESS==regKey.QueryValue(value, pszName))
+   if (ERROR_SUCCESS == regKey.QueryValue(value, pszName))
       uiValue = value;
 }
 
@@ -115,8 +113,8 @@ void ReadUIntValue(CRegKey& regKey, LPCTSTR pszName, UINT& uiValue)
 void ReadBooleanValue(CRegKey& regKey, LPCTSTR pszName, bool& bValue)
 {
    DWORD value;
-   if (ERROR_SUCCESS==regKey.QueryValue(value, pszName))
-      bValue = value==1;
+   if (ERROR_SUCCESS == regKey.QueryValue(value, pszName))
+      bValue = value == 1;
 }
 #pragma warning(pop)
 
@@ -124,7 +122,7 @@ void UISettings::ReadSettings()
 {
    // open root key
    CRegKey regRoot;
-   if (ERROR_SUCCESS!=regRoot.Open(HKEY_CURRENT_USER, g_pszRegistryRoot, KEY_READ))
+   if (ERROR_SUCCESS != regRoot.Open(HKEY_CURRENT_USER, g_pszRegistryRoot, KEY_READ))
       return;
 
    // read output path
@@ -185,7 +183,7 @@ void UISettings::ReadSettings()
    outputhistory.clear();
 
    CString histkey, histentry;
-   for(int i=0; i<10; i++)
+   for (int i = 0; i < 10; i++)
    {
       histkey.Format(g_pszOutputPathHistory, i);
 
@@ -218,10 +216,10 @@ void UISettings::StoreSettings()
 {
    // open root key
    CRegKey regRoot;
-   if (ERROR_SUCCESS!=regRoot.Open(HKEY_CURRENT_USER,g_pszRegistryRoot))
+   if (ERROR_SUCCESS != regRoot.Open(HKEY_CURRENT_USER, g_pszRegistryRoot))
    {
       // try to create key
-      if (ERROR_SUCCESS!=regRoot.Create(HKEY_CURRENT_USER,g_pszRegistryRoot))
+      if (ERROR_SUCCESS != regRoot.Create(HKEY_CURRENT_USER, g_pszRegistryRoot))
          return;
    }
 
@@ -280,15 +278,15 @@ void UISettings::StoreSettings()
 
    // store "output path history" entries
    CString buffer;
-   int i,max = outputhistory.size() > 10 ? 10 : outputhistory.size();
-   for(i=0; i<max; i++)
+   int i, max = outputhistory.size() > 10 ? 10 : outputhistory.size();
+   for (i = 0; i < max; i++)
    {
       buffer.Format(g_pszOutputPathHistory, i);
       regRoot.SetValue(outputhistory[i], buffer);
    }
 
    // delete the rest of the entries
-   for(i=max; i<10; i++)
+   for (i = max; i < 10; i++)
    {
       buffer.Format(g_pszOutputPathHistory, i);
       regRoot.DeleteValue(buffer);

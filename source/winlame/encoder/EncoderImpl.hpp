@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -120,7 +120,15 @@ namespace Encoder
       /// writes playlist entry
       void WritePlaylistEntry(const CString& outputFilename);
 
-   protected:
+      /// returns encoder settings; const version
+      const EncoderSettings& GetEncoderSettings() const { return m_encoderSettings; }
+
+      /// returns encoder settings; non-const version
+      EncoderSettings& GetEncoderSettings() { return m_encoderSettings; }
+
+   private:
+      friend class EncoderTask; // needed to set m_encoderState
+
       /// encoder settings
       EncoderSettings m_encoderSettings;
 

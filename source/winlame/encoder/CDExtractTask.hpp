@@ -26,7 +26,6 @@
 #include "CDRipTrackInfo.hpp"
 #include <atomic>
 
-// forward references
 struct UISettings;
 
 namespace Encoder

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2009-2014 Michael Fink
+// Copyright (c) 2009-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,7 +21,6 @@
 //
 #pragma once
 
-// includes
 #include <map>
 
 namespace UI
@@ -75,7 +74,7 @@ namespace UI
          CHAIN_MSG_MAP(COwnerDraw<ImageListComboBox>)
          CHAIN_MSG_MAP_ALT(COwnerDraw<ImageListComboBox>, 1)
          DEFAULT_REFLECTION_HANDLER()
-      END_MSG_MAP()
+         END_MSG_MAP()
 
       LRESULT OnSelEndOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
       {

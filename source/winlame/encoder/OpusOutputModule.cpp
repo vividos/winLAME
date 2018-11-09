@@ -24,7 +24,7 @@
 #include "OpusOutputModule.hpp"
 #include <ulib/UTF8.hpp>
 #include "App.hpp"
-#include <WinCrypt.h>
+#include <wincrypt.h>
 #include <ogg/ogg.h>
 
 using Encoder::OpusEncData;
@@ -436,6 +436,10 @@ bool OpusOutputModule::SetEncoderOptions()
    case 2: // --hard-cbr
       with_hard_cbr = 1;
       with_cvbr = 0;
+      break;
+
+   default:
+      ATLASSERT(false);
       break;
    }
 

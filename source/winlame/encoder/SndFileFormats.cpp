@@ -19,7 +19,6 @@
 /// \file SndFileFormats.cpp
 /// \brief libSndFile formats and subtypes
 
-// includes
 #include "stdafx.h"
 #include "SndFileFormats.hpp"
 #include <sndfile.h>

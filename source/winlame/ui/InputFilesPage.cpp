@@ -19,7 +19,7 @@
 /// \file InputFilesPage.cpp
 /// \brief Input files page
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "InputFilesPage.hpp"
 #include "UISettings.hpp"
 #include "InputFilesParser.hpp"

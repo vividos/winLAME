@@ -18,16 +18,13 @@
 //
 /// \file App.hpp
 /// \brief App class
-
-// include guard
+//
 #pragma once
 
-// includes
 #include "resource.h"
 #include "UISettings.hpp"
 #include "LanguageResourceManager.hpp"
 
-// forward references
 class PresetManagerInterface;
 class TaskManager;
 namespace Encoder
@@ -46,7 +43,7 @@ class App
 {
 public:
    /// ctor
-   App(HINSTANCE hInstance);
+   explicit App(HINSTANCE hInstance);
    /// dtor
    ~App();
 

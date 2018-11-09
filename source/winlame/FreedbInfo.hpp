@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,14 +26,14 @@ class FreedbInfo
 {
 public:
    /// ctor; parses http response entry
-   FreedbInfo(const CString& entry);
+   explicit FreedbInfo(const CString& entry);
 
    /// returns disc artist
    CString DiscArtist() const { return EntryOrDefault(_T("DARTIST")); }
 
    /// returns disc title
    CString DiscTitle() const { return EntryOrDefault(_T("DTITLE")); }
-   
+
    /// returns disc genre
    CString Genre() const { return EntryOrDefault(_T("DGENRE")); }
 

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2012 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,11 +18,9 @@
 //
 /// \file Task.hpp
 /// \brief Task class
-
-// include guard
+//
 #pragma once
 
-// includes
 #include "TaskInfo.hpp"
 
 /// task interface
@@ -30,7 +28,7 @@ class Task
 {
 public:
    /// ctor
-   Task(unsigned int dependentTaskId = 0)
+   explicit Task(unsigned int dependentTaskId = 0)
       :m_id(0),
       m_dependentTaskId(dependentTaskId),
       m_isStarted(false)

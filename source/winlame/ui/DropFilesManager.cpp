@@ -19,7 +19,7 @@
 /// \file DropFilesManager.cpp
 /// \brief Drag&Drop files manager
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "DropFilesManager.hpp"
 
 void UI::DropFilesManager::Read(HDROP hDropInfo)

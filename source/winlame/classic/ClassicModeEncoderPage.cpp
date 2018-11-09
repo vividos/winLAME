@@ -19,7 +19,7 @@
 /// \file ClassicModeEncoderPage.cpp
 /// \brief Encoder page for Classic UI
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "ClassicModeEncoderPage.hpp"
 #include "WizardPageHost.hpp"
 #include "ClassicModeStartPage.hpp"

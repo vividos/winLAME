@@ -32,7 +32,6 @@ namespace ID3
 
 namespace Encoder
 {
-   // forward references
    struct Id3v1Tag;
    class LameNogapInstanceManager;
 

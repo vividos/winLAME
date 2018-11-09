@@ -37,7 +37,7 @@ namespace UI
    {
    public:
       /// ctor
-      OutputSettingsPage(WizardPageHost& pageHost);
+      explicit OutputSettingsPage(WizardPageHost& pageHost);
       /// dtor
       ~OutputSettingsPage()
       {

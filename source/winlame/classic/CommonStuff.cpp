@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2005 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,43 +25,13 @@
 #include "CommonStuff.hpp"
 #include "resource.h"
 
-// functions
-
-void AddTooltips(HWND hWnd, CToolTipCtrl &ctrl)
-{
-   // get first child window
-   hWnd = ::GetWindow(hWnd,GW_CHILD);
-
-   CString tooltext;
-
-   // go through all child windows
-   while (hWnd!=NULL)
-   {
-      // get ctrl id
-      int id = ::GetDlgCtrlID(hWnd);
-
-      if (id!=-1 && id !=0)
-      {
-         // try to load a text
-         tooltext.LoadString(id);
-
-         // when successful, add text as tooltip text
-         if (tooltext.GetLength()!=0)
-            ctrl.AddTool(hWnd,(LPCTSTR)tooltext);
-      }
-
-      // get next window
-      hWnd = GetWindow(hWnd,GW_HWNDNEXT);
-   }
-}
-
 #ifndef BIF_USENEWUI
 #define BIF_USENEWUI 0x0050   ///< constant to use new UI when selecting folders
 #endif
 
 bool BrowseForFolder(HWND hParentWnd, CString& cszPathname, UINT nCaptionID)
 {
-   if (nCaptionID==0)
+   if (nCaptionID == 0)
       nCaptionID = IDS_COMMON_SELECTDIR;
 
    // get caption string

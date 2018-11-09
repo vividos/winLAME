@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -92,6 +92,7 @@ static void FLAC_MetadataCallback(const FLAC__StreamDecoder* decoder,
    case FLAC__METADATA_TYPE_STREAMINFO:
       context->streamInfo = metadata->data.stream_info;
       break;
+
    case FLAC__METADATA_TYPE_VORBIS_COMMENT:
       for (unsigned i = 0; i < metadata->data.vorbis_comment.num_comments; i++)
       {
@@ -141,6 +142,10 @@ static void FLAC_MetadataCallback(const FLAC__StreamDecoder* decoder,
             }
          }
       }
+      break;
+
+   default:
+      ATLASSERT(false);
       break;
    }
 }

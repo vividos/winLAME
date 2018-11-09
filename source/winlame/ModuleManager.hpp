@@ -23,7 +23,6 @@
 
 namespace Encoder
 {
-   // forward references
    class InputModule;
 
    /// module manager interface

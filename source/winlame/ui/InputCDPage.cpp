@@ -19,7 +19,7 @@
 /// \file InputCDPage.cpp
 /// \brief Input CD page
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "InputCDPage.hpp"
 #include "WizardPageHost.hpp"
 #include "OutputSettingsPage.hpp"

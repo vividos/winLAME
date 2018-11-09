@@ -19,7 +19,7 @@
 /// \file LibsndfileSettingsPage.cpp
 /// \brief Libsndfile settings page
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "LibsndfileSettingsPage.hpp"
 #include "WizardPageHost.hpp"
 #include <ulib/IoCContainer.hpp>

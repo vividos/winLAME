@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -177,8 +177,7 @@ int SndFileInputModule::InitInput(LPCTSTR infilename,
    // prepare input buffer
    if (m_numOutputBits == 32)
       m_buffer.resize(sizeof(int) * c_sndfileInputBufferSize * m_sfinfo.channels);
-   else
-   if (m_numOutputBits == 16)
+   else if (m_numOutputBits == 16)
       m_buffer.resize(sizeof(short) * c_sndfileInputBufferSize * m_sfinfo.channels);
    else
    {
@@ -251,6 +250,10 @@ void SndFileInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengt
    case SF_FORMAT_MS_ADPCM:
    case SF_FORMAT_GSM610:
    case SF_FORMAT_DWVW_N:
+      break;
+
+   default:
+      ATLASSERT(false);
       break;
    }
 

@@ -21,7 +21,6 @@
 //
 #pragma once
 
-// includes
 #include "resource.h"
 
 namespace UI

@@ -37,7 +37,7 @@ namespace UI
    {
    public:
       /// ctor
-      LibsndfileSettingsPage(WizardPageHost& pageHost)
+      explicit LibsndfileSettingsPage(WizardPageHost& pageHost)
          :WizardPage(pageHost, IDD_PAGE_LIBSNDFILE_SETTINGS, WizardPage::typeCancelBackNext),
          m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
       {
@@ -51,9 +51,9 @@ namespace UI
       friend CDialogResize<LibsndfileSettingsPage>;
 
       BEGIN_DDX_MAP(LibsndfileSettingsPage)
-         DDX_CONTROL(IDC_WAVE_BEVEL1, m_bevel1);
-         DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_FORMAT, m_comboFormat);
-         DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_SUBTYPE, m_comboSubType);
+         DDX_CONTROL(IDC_WAVE_BEVEL1, m_bevel1)
+         DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_FORMAT, m_comboFormat)
+         DDX_CONTROL_HANDLE(IDC_WAVE_COMBO_SUBTYPE, m_comboSubType)
       END_DDX_MAP()
 
       BEGIN_DLGRESIZE_MAP(LibsndfileSettingsPage)

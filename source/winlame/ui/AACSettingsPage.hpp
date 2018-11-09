@@ -38,7 +38,7 @@ namespace UI
    {
    public:
       /// ctor
-      AACSettingsPage(WizardPageHost& pageHost)
+      explicit AACSettingsPage(WizardPageHost& pageHost)
          :WizardPage(pageHost, IDD_PAGE_AAC_SETTINGS, WizardPage::typeCancelBackNext),
          m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
       {

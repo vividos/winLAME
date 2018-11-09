@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 /// \brief mapping from language code to country code
 //
 
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "LangCountryMapper.hpp"
 
 LangCountryMapper::LangCountryMapper()
@@ -277,141 +277,144 @@ LangCountryMapper::LangCountryMapper()
 LPCTSTR LangCountryMapper::CountryCodeFromLanguageCode(UINT uiLanguageCode) const
 {
    // map country codes, according to http://msdn.microsoft.com/en-us/library/0h88fahh(VS.85).aspx
-   switch(uiLanguageCode)
+   switch (uiLanguageCode)
    {
-   case 0x0436: return _T("af"); // Afrikaans 
-   case 0x041C: return _T("sq"); // Albanian 
-   case 0x3801: return _T("ar-ae"); // Arabic - United Arab Emirates 
-   case 0x3C01: return _T("ar-bh"); // Arabic - Bahrain 
-   case 0x1401: return _T("ar-dz"); // Arabic - Algeria 
-   case 0x0C01: return _T("ar-eg"); // Arabic - Egypt 
-   case 0x0801: return _T("ar-iq"); // Arabic - Iraq 
-   case 0x2C01: return _T("ar-jo"); // Arabic - Jordan 
-   case 0x3401: return _T("ar-kw"); // Arabic - Kuwait 
-   case 0x3001: return _T("ar-lb"); // Arabic - Lebanon 
-   case 0x1001: return _T("ar-ly"); // Arabic - Libya 
-   case 0x1801: return _T("ar-ma"); // Arabic - Morocco 
-   case 0x2001: return _T("ar-om"); // Arabic - Oman 
-   case 0x4001: return _T("ar-qa"); // Arabic - Qatar 
-   case 0x0401: return _T("ar-sa"); // Arabic - Saudi Arabia 
-   case 0x2801: return _T("ar-sy"); // Arabic - Syria 
-   case 0x1C01: return _T("ar-tn"); // Arabic - Tunisia 
-   case 0x2401: return _T("ar-ye"); // Arabic - Yemen 
-   case 0x042B: return _T("hy"); // Armenian 
-   case 0x042C: return _T("az-az"); // Azeri - Latin 
-   case 0x082C: return _T("az-az"); // Azeri - Cyrillic 
-   case 0x042D: return _T("eu"); // Basque 
-   case 0x0423: return _T("be"); // Belarusian 
-   case 0x0402: return _T("bg"); // Bulgarian 
-   case 0x0403: return _T("ca"); // Catalan 
-   case 0x0804: return _T("zh-cn"); // Chinese - China 
-   case 0x0C04: return _T("zh-hk"); // Chinese - Hong Kong SAR 
-   case 0x1404: return _T("zh-mo"); // Chinese - Macau SAR 
-   case 0x1004: return _T("zh-sg"); // Chinese - Singapore 
-   case 0x0404: return _T("zh-tw"); // Chinese - Taiwan 
-   case 0x041A: return _T("hr"); // Croatian 
-   case 0x0405: return _T("cs"); // Czech 
-   case 0x0406: return _T("da"); // Danish 
-   case 0x0413: return _T("nl-nl"); // Dutch - Netherlands 
-   case 0x0813: return _T("nl-be"); // Dutch - Belgium 
-   case 0x0C09: return _T("en-au"); // English - Australia 
-   case 0x2809: return _T("en-bz"); // English - Belize 
-   case 0x1009: return _T("en-ca"); // English - Canada 
-   case 0x2409: return _T("en-cb"); // English - Caribbean 
-   case 0x1809: return _T("en-ie"); // English - Ireland 
-   case 0x2009: return _T("en-jm"); // English - Jamaica 
-   case 0x1409: return _T("en-nz"); // English - New Zealand 
-   case 0x3409: return _T("en-ph"); // English - Phillippines 
-   case 0x1C09: return _T("en-za"); // English - Southern Africa 
-   case 0x2C09: return _T("en-tt"); // English - Trinidad 
-   case 0x0809: return _T("en-gb"); // English - Great Britain 
-   case 0x0409: return _T("en-us"); // English - United States 
-   case 0x0425: return _T("et"); // Estonian 
-   case 0x0429: return _T("fa"); // Farsi 
-   case 0x040B: return _T("fi"); // Finnish 
-   case 0x0438: return _T("fo"); // Faroese 
-   case 0x040C: return _T("fr-fr"); // French - France 
-   case 0x080C: return _T("fr-be"); // French - Belgium 
-   case 0x0C0C: return _T("fr-ca"); // French - Canada 
-   case 0x140C: return _T("fr-lu"); // French - Luxembourg 
-   case 0x100C: return _T("fr-ch"); // French - Switzerland 
-   case 0x083C: return _T("gd-ie"); // Gaelic - Ireland 
-   case 0x043C: return _T("gd"); // Gaelic - Scotland 
-   case 0x0407: return _T("de-de"); // German - Germany 
-   case 0x0C07: return _T("de-at"); // German - Austria 
-   case 0x1407: return _T("de-li"); // German - Liechtenstein 
-   case 0x1007: return _T("de-lu"); // German - Luxembourg 
-   case 0x0807: return _T("de-ch"); // German - Switzerland 
-   case 0x0408: return _T("el"); // Greek 
-   case 0x040D: return _T("he"); // Hebrew 
-   case 0x0439: return _T("hi"); // Hindi 
-   case 0x040E: return _T("hu"); // Hungarian 
-   case 0x040F: return _T("is"); // Icelandic 
-   case 0x0421: return _T("id"); // Indonesian 
-   case 0x0410: return _T("it-it"); // Italian - Italy 
-   case 0x0810: return _T("it-ch"); // Italian - Switzerland 
-   case 0x0411: return _T("ja"); // Japanese 
-   case 0x0412: return _T("ko"); // Korean 
-   case 0x0426: return _T("lv"); // Latvian 
-   case 0x0427: return _T("lt"); // Lithuanian 
-   case 0x042F: return _T("mk"); // F.Y.R.O. Macedonia 
-   case 0x043E: return _T("ms-my"); // Malay - Malaysia 
-   case 0x083E: return _T("ms-bn"); // Malay – Brunei 
-   case 0x043A: return _T("mt"); // Maltese 
-   case 0x044E: return _T("mr"); // Marathi 
-   case 0x0414: return _T("no-no"); // Norwegian - Bokml 
-   case 0x0814: return _T("no-no"); // Norwegian - Nynorsk 
-   case 0x0415: return _T("pl"); // Polish 
-   case 0x0816: return _T("pt-pt"); // Portuguese - Portugal 
-   case 0x0416: return _T("pt-br"); // Portuguese - Brazil 
-   case 0x0417: return _T("rm"); // Raeto-Romance 
-   case 0x0418: return _T("ro"); // Romanian - Romania 
-   case 0x0818: return _T("ro-mo"); // Romanian - Republic of Moldova 
-   case 0x0419: return _T("ru"); // Russian 
-   case 0x0819: return _T("ru-mo"); // Russian - Republic of Moldova 
-   case 0x044F: return _T("sa"); // Sanskrit 
-   case 0x0C1A: return _T("sr-sp"); // Serbian - Cyrillic 
-   case 0x081A: return _T("sr-sp"); // Serbian - Latin 
-   case 0x0432: return _T("tn"); // Setsuana 
-   case 0x0424: return _T("sl"); // Slovenian 
-   case 0x041B: return _T("sk"); // Slovak 
-   case 0x042E: return _T("sb"); // Sorbian 
-   case 0x040A: return _T("es-es"); // Spanish - Spain (Traditional) 
-   case 0x2C0A: return _T("es-ar"); // Spanish - Argentina 
-   case 0x400A: return _T("es-bo"); // Spanish - Bolivia 
-   case 0x340A: return _T("es-cl"); // Spanish - Chile 
-   case 0x240A: return _T("es-co"); // Spanish - Colombia 
-   case 0x140A: return _T("es-cr"); // Spanish - Costa Rica 
-   case 0x1C0A: return _T("es-do"); // Spanish - Dominican Republic 
-   case 0x300A: return _T("es-ec"); // Spanish - Ecuador 
-   case 0x100A: return _T("es-gt"); // Spanish - Guatemala 
-   case 0x480A: return _T("es-hn"); // Spanish - Honduras 
-   case 0x080A: return _T("es-mx"); // Spanish - Mexico 
-   case 0x4C0A: return _T("es-ni"); // Spanish - Nicaragua 
-   case 0x180A: return _T("es-pa"); // Spanish - Panama 
-   case 0x280A: return _T("es-pe"); // Spanish - Peru 
-   case 0x500A: return _T("es-pr"); // Spanish - Puerto Rico 
-   case 0x3C0A: return _T("es-py"); // Spanish - Paraguay 
-   case 0x440A: return _T("es-sv"); // Spanish - El Salvador 
-   case 0x380A: return _T("es-uy"); // Spanish - Uruguay 
-   case 0x200A: return _T("es-ve"); // Spanish - Venezuela 
-   case 0x0430: return _T("st"); // Southern Sotho 
-   case 0x0441: return _T("sw"); // Swahili 
-   case 0x041D: return _T("sv-se"); // Swedish - Sweden 
-   case 0x081D: return _T("sv-fi"); // Swedish - Finland 
-   case 0x0449: return _T("ta"); // Tamil 
-   case 0x0444: return _T("tt"); // Tatar 
-   case 0x041E: return _T("th"); // Thai 
-   case 0x041F: return _T("tr"); // Turkish 
-   case 0x0431: return _T("ts"); // Tsonga 
-   case 0x0422: return _T("uk"); // Ukrainian 
-   case 0x0420: return _T("ur"); // Urdu 
-   case 0x0843: return _T("uz-uz"); // Uzbek - Cyrillic 
-   case 0x0443: return _T("uz-uz"); // Uzbek – Latin 
-   case 0x042A: return _T("vi"); // Vietnamese 
-   case 0x0434: return _T("xh"); // Xhosa 
-   case 0x043D: return _T("yi"); // Yiddish 
-   case 0x0435: return _T("zu"); // Zulu 
+   case 0x0436: return _T("af"); // Afrikaans
+   case 0x041C: return _T("sq"); // Albanian
+   case 0x3801: return _T("ar-ae"); // Arabic - United Arab Emirates
+   case 0x3C01: return _T("ar-bh"); // Arabic - Bahrain
+   case 0x1401: return _T("ar-dz"); // Arabic - Algeria
+   case 0x0C01: return _T("ar-eg"); // Arabic - Egypt
+   case 0x0801: return _T("ar-iq"); // Arabic - Iraq
+   case 0x2C01: return _T("ar-jo"); // Arabic - Jordan
+   case 0x3401: return _T("ar-kw"); // Arabic - Kuwait
+   case 0x3001: return _T("ar-lb"); // Arabic - Lebanon
+   case 0x1001: return _T("ar-ly"); // Arabic - Libya
+   case 0x1801: return _T("ar-ma"); // Arabic - Morocco
+   case 0x2001: return _T("ar-om"); // Arabic - Oman
+   case 0x4001: return _T("ar-qa"); // Arabic - Qatar
+   case 0x0401: return _T("ar-sa"); // Arabic - Saudi Arabia
+   case 0x2801: return _T("ar-sy"); // Arabic - Syria
+   case 0x1C01: return _T("ar-tn"); // Arabic - Tunisia
+   case 0x2401: return _T("ar-ye"); // Arabic - Yemen
+   case 0x042B: return _T("hy"); // Armenian
+   case 0x042C: return _T("az-az"); // Azeri - Latin
+   case 0x082C: return _T("az-az"); // Azeri - Cyrillic
+   case 0x042D: return _T("eu"); // Basque
+   case 0x0423: return _T("be"); // Belarusian
+   case 0x0402: return _T("bg"); // Bulgarian
+   case 0x0403: return _T("ca"); // Catalan
+   case 0x0804: return _T("zh-cn"); // Chinese - China
+   case 0x0C04: return _T("zh-hk"); // Chinese - Hong Kong SAR
+   case 0x1404: return _T("zh-mo"); // Chinese - Macau SAR
+   case 0x1004: return _T("zh-sg"); // Chinese - Singapore
+   case 0x0404: return _T("zh-tw"); // Chinese - Taiwan
+   case 0x041A: return _T("hr"); // Croatian
+   case 0x0405: return _T("cs"); // Czech
+   case 0x0406: return _T("da"); // Danish
+   case 0x0413: return _T("nl-nl"); // Dutch - Netherlands
+   case 0x0813: return _T("nl-be"); // Dutch - Belgium
+   case 0x0C09: return _T("en-au"); // English - Australia
+   case 0x2809: return _T("en-bz"); // English - Belize
+   case 0x1009: return _T("en-ca"); // English - Canada
+   case 0x2409: return _T("en-cb"); // English - Caribbean
+   case 0x1809: return _T("en-ie"); // English - Ireland
+   case 0x2009: return _T("en-jm"); // English - Jamaica
+   case 0x1409: return _T("en-nz"); // English - New Zealand
+   case 0x3409: return _T("en-ph"); // English - Phillippines
+   case 0x1C09: return _T("en-za"); // English - Southern Africa
+   case 0x2C09: return _T("en-tt"); // English - Trinidad
+   case 0x0809: return _T("en-gb"); // English - Great Britain
+   case 0x0409: return _T("en-us"); // English - United States
+   case 0x0425: return _T("et"); // Estonian
+   case 0x0429: return _T("fa"); // Farsi
+   case 0x040B: return _T("fi"); // Finnish
+   case 0x0438: return _T("fo"); // Faroese
+   case 0x040C: return _T("fr-fr"); // French - France
+   case 0x080C: return _T("fr-be"); // French - Belgium
+   case 0x0C0C: return _T("fr-ca"); // French - Canada
+   case 0x140C: return _T("fr-lu"); // French - Luxembourg
+   case 0x100C: return _T("fr-ch"); // French - Switzerland
+   case 0x083C: return _T("gd-ie"); // Gaelic - Ireland
+   case 0x043C: return _T("gd"); // Gaelic - Scotland
+   case 0x0407: return _T("de-de"); // German - Germany
+   case 0x0C07: return _T("de-at"); // German - Austria
+   case 0x1407: return _T("de-li"); // German - Liechtenstein
+   case 0x1007: return _T("de-lu"); // German - Luxembourg
+   case 0x0807: return _T("de-ch"); // German - Switzerland
+   case 0x0408: return _T("el"); // Greek
+   case 0x040D: return _T("he"); // Hebrew
+   case 0x0439: return _T("hi"); // Hindi
+   case 0x040E: return _T("hu"); // Hungarian
+   case 0x040F: return _T("is"); // Icelandic
+   case 0x0421: return _T("id"); // Indonesian
+   case 0x0410: return _T("it-it"); // Italian - Italy
+   case 0x0810: return _T("it-ch"); // Italian - Switzerland
+   case 0x0411: return _T("ja"); // Japanese
+   case 0x0412: return _T("ko"); // Korean
+   case 0x0426: return _T("lv"); // Latvian
+   case 0x0427: return _T("lt"); // Lithuanian
+   case 0x042F: return _T("mk"); // F.Y.R.O. Macedonia
+   case 0x043E: return _T("ms-my"); // Malay - Malaysia
+   case 0x083E: return _T("ms-bn"); // Malay – Brunei
+   case 0x043A: return _T("mt"); // Maltese
+   case 0x044E: return _T("mr"); // Marathi
+   case 0x0414: return _T("no-no"); // Norwegian - Bokml
+   case 0x0814: return _T("no-no"); // Norwegian - Nynorsk
+   case 0x0415: return _T("pl"); // Polish
+   case 0x0816: return _T("pt-pt"); // Portuguese - Portugal
+   case 0x0416: return _T("pt-br"); // Portuguese - Brazil
+   case 0x0417: return _T("rm"); // Raeto-Romance
+   case 0x0418: return _T("ro"); // Romanian - Romania
+   case 0x0818: return _T("ro-mo"); // Romanian - Republic of Moldova
+   case 0x0419: return _T("ru"); // Russian
+   case 0x0819: return _T("ru-mo"); // Russian - Republic of Moldova
+   case 0x044F: return _T("sa"); // Sanskrit
+   case 0x0C1A: return _T("sr-sp"); // Serbian - Cyrillic
+   case 0x081A: return _T("sr-sp"); // Serbian - Latin
+   case 0x0432: return _T("tn"); // Setsuana
+   case 0x0424: return _T("sl"); // Slovenian
+   case 0x041B: return _T("sk"); // Slovak
+   case 0x042E: return _T("sb"); // Sorbian
+   case 0x040A: return _T("es-es"); // Spanish - Spain (Traditional)
+   case 0x2C0A: return _T("es-ar"); // Spanish - Argentina
+   case 0x400A: return _T("es-bo"); // Spanish - Bolivia
+   case 0x340A: return _T("es-cl"); // Spanish - Chile
+   case 0x240A: return _T("es-co"); // Spanish - Colombia
+   case 0x140A: return _T("es-cr"); // Spanish - Costa Rica
+   case 0x1C0A: return _T("es-do"); // Spanish - Dominican Republic
+   case 0x300A: return _T("es-ec"); // Spanish - Ecuador
+   case 0x100A: return _T("es-gt"); // Spanish - Guatemala
+   case 0x480A: return _T("es-hn"); // Spanish - Honduras
+   case 0x080A: return _T("es-mx"); // Spanish - Mexico
+   case 0x4C0A: return _T("es-ni"); // Spanish - Nicaragua
+   case 0x180A: return _T("es-pa"); // Spanish - Panama
+   case 0x280A: return _T("es-pe"); // Spanish - Peru
+   case 0x500A: return _T("es-pr"); // Spanish - Puerto Rico
+   case 0x3C0A: return _T("es-py"); // Spanish - Paraguay
+   case 0x440A: return _T("es-sv"); // Spanish - El Salvador
+   case 0x380A: return _T("es-uy"); // Spanish - Uruguay
+   case 0x200A: return _T("es-ve"); // Spanish - Venezuela
+   case 0x0430: return _T("st"); // Southern Sotho
+   case 0x0441: return _T("sw"); // Swahili
+   case 0x041D: return _T("sv-se"); // Swedish - Sweden
+   case 0x081D: return _T("sv-fi"); // Swedish - Finland
+   case 0x0449: return _T("ta"); // Tamil
+   case 0x0444: return _T("tt"); // Tatar
+   case 0x041E: return _T("th"); // Thai
+   case 0x041F: return _T("tr"); // Turkish
+   case 0x0431: return _T("ts"); // Tsonga
+   case 0x0422: return _T("uk"); // Ukrainian
+   case 0x0420: return _T("ur"); // Urdu
+   case 0x0843: return _T("uz-uz"); // Uzbek - Cyrillic
+   case 0x0443: return _T("uz-uz"); // Uzbek – Latin
+   case 0x042A: return _T("vi"); // Vietnamese
+   case 0x0434: return _T("xh"); // Xhosa
+   case 0x043D: return _T("yi"); // Yiddish
+   case 0x0435: return _T("zu"); // Zulu
+   default:
+      ATLASSERT(false);
+      break;
    }
 
    return NULL;

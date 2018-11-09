@@ -19,7 +19,7 @@
 /// \file OutputSettingsPage.cpp
 /// \brief Output settings page
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "OutputSettingsPage.hpp"
 #include "WizardPageHost.hpp"
 #include <ulib/IoCContainer.hpp>

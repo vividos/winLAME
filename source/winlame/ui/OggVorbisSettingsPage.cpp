@@ -19,7 +19,7 @@
 /// \file OggVorbisSettingsPage.cpp
 /// \brief Ogg Vorbis settings page
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "OggVorbisSettingsPage.hpp"
 #include "WizardPageHost.hpp"
 #include <ulib/IoCContainer.hpp>

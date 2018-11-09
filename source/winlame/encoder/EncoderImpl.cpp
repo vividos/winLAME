@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -60,8 +60,7 @@ EncoderImpl::~EncoderImpl()
          m_workerThread->join();
          m_workerThread.reset();
       }
-      // NOSONAR
-      catch (const std::exception& ex)
+      catch (const std::exception& ex) // NOSONAR
       {
          UNUSED(ex);
          ATLTRACE(_T("Exception while joining worker thread: %hs"), ex.what());
@@ -219,7 +218,7 @@ void EncoderImpl::Encode()
 
    // done with modules
    if (m_inputModule != nullptr)
-      m_inputModule->DoneInput(completedTrack);
+      m_inputModule->DoneInput();
 
    if (initOutputModule && m_outputModule != nullptr)
       m_outputModule->DoneOutput();
@@ -284,6 +283,9 @@ bool EncoderImpl::PrepareInputModule(TrackInfo& trackInfo)
       case EncoderErrorHandler::StopEncode:
          m_encoderState.m_errorCode = -1;
          return false;
+      default:
+         ATLASSERT(false);
+         break;
       }
    }
 
@@ -438,6 +440,9 @@ bool EncoderImpl::InitOutputModule(const CString& tempOutputFilename, TrackInfo&
       case EncoderErrorHandler::StopEncode:
          m_encoderState.m_errorCode = -2;
          return false;
+      default:
+         ATLASSERT(false);
+         break;
       }
    }
 
@@ -543,6 +548,9 @@ bool EncoderImpl::MainLoop()
             m_encoderState.m_errorCode = -3;
             skipFile = true;
             break;
+         default:
+            ATLASSERT(false);
+            break;
          }
       }
 
@@ -567,6 +575,9 @@ bool EncoderImpl::MainLoop()
          case EncoderErrorHandler::StopEncode:
             m_encoderState.m_errorCode = -4;
             skipFile = true;
+            break;
+         default:
+            ATLASSERT(false);
             break;
          }
       }

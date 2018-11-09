@@ -19,7 +19,7 @@
 /// \file OpusSettingsPage.cpp
 /// \brief Opus encoder settings page
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "OpusSettingsPage.hpp"
 #include "WizardPageHost.hpp"
 #include <ulib/IoCContainer.hpp>

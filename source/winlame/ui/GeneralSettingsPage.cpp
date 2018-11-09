@@ -19,7 +19,7 @@
 /// \file GeneralSettingsPage.cpp
 /// \brief General settings page
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "GeneralSettingsPage.hpp"
 #include "LanguageResourceManager.hpp"
 #include "LangCountryMapper.hpp"

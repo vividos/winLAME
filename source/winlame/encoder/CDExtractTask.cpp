@@ -19,7 +19,7 @@
 /// \file CDExtractTask.cpp
 /// \brief CD extract task class
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "CDExtractTask.hpp"
 #include "SndFileOutputModule.hpp"
 #include "UISettings.hpp"

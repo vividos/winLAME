@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,8 +18,7 @@
 //
 /// \file TaskManager.cpp
 /// \brief Task manager
-
-// includes
+//
 #include "stdafx.h"
 #include "TaskManager.hpp"
 #include "CDExtractTask.hpp"

@@ -37,7 +37,7 @@ namespace UI
    {
    public:
       /// ctor
-      OpusSettingsPage(WizardPageHost& pageHost)
+      explicit OpusSettingsPage(WizardPageHost& pageHost)
          :WizardPage(pageHost, IDD_PAGE_OPUS_SETTINGS, WizardPage::typeCancelBackNext),
          m_uiSettings(IoCContainer::Current().Resolve<UISettings>())
       {

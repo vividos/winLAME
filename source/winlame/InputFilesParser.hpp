@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014 Michael Fink
+// Copyright (c) 2014-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,11 +18,9 @@
 //
 /// \file InputFilesParser.hpp
 /// \brief Input files parser
-
-// include guard
+//
 #pragma once
 
-/// includes
 #include <vector>
 
 /// \brief parses input files
@@ -41,7 +39,7 @@ public:
    /// returns file list; const version
    const std::vector<CString>& FileList() const { return m_vecFileList; }
    /// returns file list
-         std::vector<CString>& FileList()       { return m_vecFileList; }
+   std::vector<CString>& FileList() { return m_vecFileList; }
 
    /// returns playlist name; when a playlist was added, this is the same name (else it is empty)
    CString PlaylistName() { return m_cszPlaylistName; }

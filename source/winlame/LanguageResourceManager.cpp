@@ -1,32 +1,31 @@
-/*
-   winLAME - a frontend for the LAME encoding engine
-   Copyright (c) 2009 Michael Fink
-
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
-*/
+//
+// winLAME - a frontend for the LAME encoding engine
+// Copyright (c) 2009-2018 Michael Fink
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; either version 2 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
 /// \file LanguageResourceManager.cpp
 /// \brief language resource manager
-
-#include "StdAfx.h"
+//
+#include "stdafx.h"
 #include "LanguageResourceManager.hpp"
 
 LanguageResourceManager::LanguageResourceManager(LPCTSTR pszLangDllSearchPattern, UINT uiLangNameId, UINT uiLangNameNativeId)
-:m_hLoadedResourceDll(NULL),
- m_uiLangNameId(uiLangNameId),
- m_uiLangNameNativeId(uiLangNameNativeId)
+   :m_hLoadedResourceDll(NULL),
+   m_uiLangNameId(uiLangNameId),
+   m_uiLangNameNativeId(uiLangNameNativeId)
 {
    // search pattern must contain one asterisk
    ATLASSERT(CString(pszLangDllSearchPattern).Find(_T('*')) != -1);
@@ -51,7 +50,7 @@ LanguageResourceManager::~LanguageResourceManager()
 
 bool LanguageResourceManager::IsLangResourceAvail(UINT uiLanguageId) const
 {
-   for (size_t i=0,iMax=m_vecLangResourceInfo.size(); i<iMax; i++)
+   for (size_t i = 0, iMax = m_vecLangResourceInfo.size(); i < iMax; i++)
    {
       if (m_vecLangResourceInfo[i].LanguageId() == uiLanguageId)
          return true;
@@ -63,7 +62,7 @@ void LanguageResourceManager::LoadLangResource(UINT uiLanguageId)
 {
    ATLASSERT(IsLangResourceAvail(uiLanguageId));
 
-   for (size_t i=0,iMax=m_vecLangResourceInfo.size(); i<iMax; i++)
+   for (size_t i = 0, iMax = m_vecLangResourceInfo.size(); i < iMax; i++)
    {
       const LanguageResourceInfo& info = m_vecLangResourceInfo[i];
 
@@ -117,10 +116,10 @@ void LanguageResourceManager::ScanResourceDlls(LPCTSTR pszLangDllSearchPattern)
    if (iPos == -1)
       cszApplicationPath = _T(".\\");
    else
-      cszApplicationPath = cszApplicationPath.Left(iPos+1);
+      cszApplicationPath = cszApplicationPath.Left(iPos + 1);
 
    // find resource hMods
-   WIN32_FIND_DATA findData = {0};
+   WIN32_FIND_DATA findData = { 0 };
    HANDLE hFind = ::FindFirstFile(cszApplicationPath + pszLangDllSearchPattern, &findData);
    if (INVALID_HANDLE_VALUE == hFind)
       return;
@@ -138,8 +137,7 @@ void LanguageResourceManager::ScanResourceDlls(LPCTSTR pszLangDllSearchPattern)
 
          ::FreeLibrary(hMod);
       }
-   }
-   while (TRUE == ::FindNextFile(hFind, &findData));
+   } while (TRUE == ::FindNextFile(hFind, &findData));
 
    ::FindClose(hFind);
 }
@@ -160,7 +158,7 @@ void LanguageResourceManager::AddLanguageResourceInfo(
       CString cszFilename(cszResourceFilenameWithoutPath.Mid(iPosAsterisk));
       cszFilename.MakeLower();
 
-      int iPosRemaining = cszFilename.Find(cszSearchPattern.Mid(iPosAsterisk+1));
+      int iPosRemaining = cszFilename.Find(cszSearchPattern.Mid(iPosAsterisk + 1));
       cszFilename = cszFilename.Left(iPosRemaining);
 
       uiLanguageId = static_cast<UINT>(_tcstoul(cszFilename, NULL, 16)); // in hex

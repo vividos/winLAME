@@ -47,7 +47,7 @@ namespace UI
    {
    public:
       /// ctor
-      ClassicModeEncoderPage(WizardPageHost& pageHost);
+      explicit ClassicModeEncoderPage(WizardPageHost& pageHost);
       /// dtor
       ~ClassicModeEncoderPage()
       {

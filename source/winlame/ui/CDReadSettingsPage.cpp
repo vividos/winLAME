@@ -19,7 +19,7 @@
 /// \file CDReadSettingsPage.cpp
 /// \brief CD read settings page
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "CDReadSettingsPage.hpp"
 #include "UISettings.hpp"
 #include "LanguageResourceManager.hpp"

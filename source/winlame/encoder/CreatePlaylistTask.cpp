@@ -19,7 +19,7 @@
 /// \file CreatePlaylistTask.cpp
 /// \brief encoder task class
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "CreatePlaylistTask.hpp"
 #include <ulib/Path.hpp>
 

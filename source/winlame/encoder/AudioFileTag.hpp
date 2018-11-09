@@ -48,7 +48,7 @@ namespace Encoder
       };
 
       /// creates tag instance using track info
-      AudioFileTag(TrackInfo& trackInfo)
+      explicit AudioFileTag(TrackInfo& trackInfo)
          :m_trackInfo(trackInfo)
       {
       }

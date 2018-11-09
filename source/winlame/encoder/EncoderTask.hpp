@@ -65,7 +65,7 @@ namespace Encoder
       virtual void Stop();
 
       /// output filename for this task
-      const CString& OutputFilename() const { return EncoderImpl::m_encoderSettings.m_outputFilename; }
+      const CString& OutputFilename() const { return EncoderImpl::GetEncoderSettings().m_outputFilename; }
 
       /// generates output filename for this task
       CString GenerateOutputFilename(const CString& inputFilename);

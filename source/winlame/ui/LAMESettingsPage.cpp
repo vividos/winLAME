@@ -19,7 +19,7 @@
 /// \file LAMESettingsPage.cpp
 /// \brief LAME settings page
 //
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "LAMESettingsPage.hpp"
 #include "WizardPageHost.hpp"
 #include <ulib/IoCContainer.hpp>
