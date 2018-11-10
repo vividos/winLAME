@@ -333,12 +333,7 @@ void InputFilesPage::OnRetrievedAudioFileInfo(const CString& filename, bool erro
    int lengthInSeconds, int bitrateInBps, int sampleFrequencyInHz)
 {
    if (error)
-   {
-      m_audioFileInfoManager.Stop();
-
-      // TODO output message
-      UNUSED(errorMessage);
-   }
+      return;
 
    AudioFileEntry* entry = new AudioFileEntry;
    entry->filename = filename;
