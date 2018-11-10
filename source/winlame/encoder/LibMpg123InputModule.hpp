@@ -85,6 +85,9 @@ namespace Encoder
       /// reads ID3v2 tag infos, if available
       bool GetId3v2TagInfos(const CString& filename, TrackInfo& trackInfo);
 
+      /// sets up decoder
+      bool SetupDecoder();
+
       /// sets sample container format
       bool SetFormat(SampleContainer& samples);
 

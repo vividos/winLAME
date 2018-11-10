@@ -35,6 +35,7 @@ static std::once_flag s_libmpg123init;
 #pragma comment(lib, "libmpg123-0.lib")
 
 LibMpg123InputModule::LibMpg123InputModule()
+:m_isAtEndOfFile(false)
 {
    std::call_once(s_libmpg123init, []() { mpg123_init(); });
 
@@ -115,7 +116,10 @@ CString LibMpg123InputModule::GetDescription() const
 
 void LibMpg123InputModule::GetVersionString(CString& version, int special) const
 {
-   // TODO there is no API to get version
+   UNUSED(special);
+
+   // there is no API to get version, so just return fixed value
+   version = _T("mpg123-1.25.10");
 }
 
 CString LibMpg123InputModule::GetFilterString() const
@@ -158,6 +162,9 @@ int LibMpg123InputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    if (!OpenStream())
       return -1;
 
+   if (!SetupDecoder())
+      return -1;
+
    if (!SetFormat(samples))
       return -1;
 
@@ -169,16 +176,11 @@ void LibMpg123InputModule::GetInfo(int& numChannels, int& bitrateInBps, int& len
    if (m_decoder == nullptr)
       return;
 
-   int ret = mpg123_scan(m_decoder.get());
-   if (ret != MPG123_OK)
-      return;
-
    mpg123_frameinfo frameInfo;
-   ret = mpg123_info(m_decoder.get(), &frameInfo);
+   int ret = mpg123_info(m_decoder.get(), &frameInfo);
    if (ret != MPG123_OK)
       return;
 
-   // TODO is this the average bitrate?
    bitrateInBps = frameInfo.bitrate * 1000;
    samplerateInHz = frameInfo.rate;
    numChannels = frameInfo.mode == MPG123_M_MONO ? 1 : 2;
@@ -194,21 +196,22 @@ int LibMpg123InputModule::DecodeSamples(SampleContainer& samples)
 
    size_t bytesWritten = 0;
    int ret = mpg123_read(m_decoder.get(), sampleBuffer, sizeof(sampleBuffer), &bytesWritten);
-   if (ret != MPG123_OK)
+   if (ret != MPG123_OK &&
+      ret != MPG123_DONE)
    {
       m_lastError.LoadString(IDS_ENCODER_INTERNAL_DECODE_ERROR);
       m_lastError.AppendFormat(_T(" (%hs)"), mpg123_plain_strerror(ret));
       return -1;
    }
 
+   m_isAtEndOfFile = bytesWritten == 0 ||
+      ret == MPG123_DONE;
+
    if (bytesWritten == 0)
-   {
-      m_isAtEndOfFile = true;
       return 0;
-   }
 
    int sampleSize = samples.GetInputModuleBitsPerSample();
-   int numSamplesPerChannel = bytesWritten / m_channels / sampleSize;
+   int numSamplesPerChannel = bytesWritten / m_channels / (sampleSize / 8);
 
    samples.PutSamplesInterleaved(sampleBuffer, numSamplesPerChannel);
 
@@ -262,7 +265,7 @@ bool LibMpg123InputModule::GetFileSize()
 
 static ssize_t ReadFromFile(void* handle, void* buffer, size_t size)
 {
-   return fread(buffer, size, 1, (FILE*)handle);
+   return fread(buffer, 1, size, (FILE*)handle);
 }
 
 static off_t SeekInFile(void* handle, off_t offset, int direction)
@@ -286,6 +289,8 @@ bool LibMpg123InputModule::OpenStream()
       m_lastError.AppendFormat(_T(" (%hs)"), mpg123_plain_strerror(ret));
       return false;
    }
+
+   m_isAtEndOfFile = false;
 
    return true;
 }
@@ -325,22 +330,36 @@ bool LibMpg123InputModule::GetId3v2TagInfos(const CString& filename, TrackInfo& 
    return tag.ReadFromFile(filename);
 }
 
-bool LibMpg123InputModule::SetFormat(SampleContainer& samples)
+bool LibMpg123InputModule::SetupDecoder()
 {
    mpg123_format_none(m_decoder.get());
 
-   int ret = mpg123_format(m_decoder.get(), 0, MPG123_STEREO | MPG123_MONO, MPG123_ENC_SIGNED_32 | MPG123_ENC_SIGNED_16);
-   if (ret != MPG123_OK)
+   const long* ratesList = nullptr;
+   size_t ratesListSize = 0;
+   mpg123_rates(&ratesList, &ratesListSize);
+
+   for (long rate : std::vector<long>(ratesList, ratesList + ratesListSize))
    {
-      m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
-      m_lastError.AppendFormat(_T(" (%hs)"), mpg123_strerror(m_decoder.get()));
-      return false;
+      // only request 32-bit samples
+      int ret = mpg123_format(m_decoder.get(), rate, MPG123_STEREO | MPG123_MONO, MPG123_ENC_SIGNED_32);
+
+      if (ret != MPG123_OK)
+      {
+         m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
+         m_lastError.AppendFormat(_T(" (%hs)"), mpg123_strerror(m_decoder.get()));
+         return false;
+      }
    }
 
+   return true;
+}
+
+bool LibMpg123InputModule::SetFormat(SampleContainer& samples)
+{
    long sampleRate = 0;
    int numChannels = 0;
    int encoding = 0;
-   ret = mpg123_getformat2(m_decoder.get(), &sampleRate, &numChannels, &encoding, 0);
+   int ret = mpg123_getformat(m_decoder.get(), &sampleRate, &numChannels, &encoding);
    if (ret != MPG123_OK)
    {
       m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
@@ -351,9 +370,7 @@ bool LibMpg123InputModule::SetFormat(SampleContainer& samples)
    m_channels = numChannels;
    m_samplerate = sampleRate;
 
-   // set up input traits
-   //
-   samples.SetInputModuleTraits(encoding == MPG123_ENC_SIGNED_16 ? 16 : 32, SamplesInterleaved, m_samplerate, numChannels);
+   samples.SetInputModuleTraits(encoding == MPG123_ENC_SIGNED_32 ? 32 : 16, SamplesInterleaved, m_samplerate, numChannels);
 
    return true;
 }
