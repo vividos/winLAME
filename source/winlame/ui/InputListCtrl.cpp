@@ -298,7 +298,7 @@ LRESULT InputListCtrl::OnReflectedNotify(UINT uMsg, WPARAM wParam, LPARAM lParam
    break;
 
    default:
-      ATLASSERT(false);
+      // ignore message
       break;
    }
    return 0;
