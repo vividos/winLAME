@@ -25,11 +25,6 @@
 #include <iosfwd>
 #include "nlame.h"
 
-namespace ID3
-{
-   class Tag;
-}
-
 namespace Encoder
 {
    struct Id3v1Tag;

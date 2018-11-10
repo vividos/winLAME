@@ -170,7 +170,7 @@ const char* nlame_lame_string_get(nlame_lame_string_type type)
    return str;
 }
 
-/*! contains the global flags struct */
+/*! \brief contains the global flags struct */
 struct nlame_struct
 {
    lame_global_flags* lgf; /*!< global flags instance */

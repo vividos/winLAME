@@ -32,9 +32,7 @@
 // Monkey's Audio header files have some incompatibilities; working around that
 #pragma warning(push)
 #pragma warning(disable: 4005)
-/// \brief Monkey's Audio APE tag namespace
-namespace APE {}
-using namespace APE;
+
 #define PLATFORM_WINDOWS
 #include "mac/MACDll.h"
 #include "mac/APETag.h"

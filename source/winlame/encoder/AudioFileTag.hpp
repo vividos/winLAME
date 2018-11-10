@@ -22,6 +22,7 @@
 //
 #pragma once
 
+/// \cond false
 namespace TagLib
 {
    class Tag;
@@ -31,6 +32,7 @@ namespace TagLib
       class Tag;
    }
 }
+/// \endcond
 
 namespace Encoder
 {
