@@ -62,7 +62,7 @@
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>ws2_32.lib;mswsock.lib;msvcrt</IgnoreSpecificDefaultLibraries>
       <AdditionalLibraryDirectories>..\..\libraries\lib;$(SolutionDir)lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsndfile-1.lib;libfaac.lib;libfaad2.lib;bass.lib;basswma.lib;basscd.lib;libFLAC_dynamic.lib;delayimp.lib;zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libsndfile-1.lib;libfaac.lib;libfaad2.lib;bass.lib;basswma.lib;basscd.lib;libFLAC_dynamic.lib;delayimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -74,7 +74,7 @@
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>ws2_32.lib;mswsock.lib</IgnoreSpecificDefaultLibraries>
       <AdditionalLibraryDirectories>..\..\libraries\lib;$(SolutionDir)lib\$(Configuration)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libsndfile-1.lib;libfaac.lib;libfaad2.lib;bass.lib;basswma.lib;basscd.lib;libFLAC_dynamic.lib;delayimp.lib;zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libsndfile-1.lib;libfaac.lib;libfaad2.lib;bass.lib;basswma.lib;basscd.lib;libFLAC_dynamic.lib;delayimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
