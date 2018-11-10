@@ -27,7 +27,6 @@
 #include "OggVorbisOutputModule.hpp"
 #include "SndFileOutputModule.hpp"
 #include "SndFileInputModule.hpp"
-#include "MadMpegInputModule.hpp"
 #include "OggVorbisInputModule.hpp"
 #include "AacInputModule.hpp"
 #include "AacOutputModule.hpp"
@@ -38,6 +37,7 @@
 #include "SpeexInputModule.hpp"
 #include "OpusInputModule.hpp"
 #include "OpusOutputModule.hpp"
+#include "LibMpg123InputModule.hpp"
 #include "resource.h"
 
 using namespace Encoder;
@@ -57,7 +57,7 @@ InputModule* GetNewInputModule(int index)
       inputModule = new SndFileInputModule;
       break;
    case 1:
-      inputModule = new MadMpegInputModule;
+      inputModule = new LibMpg123InputModule;
       break;
    case 2:
       inputModule = new OggVorbisInputModule;
