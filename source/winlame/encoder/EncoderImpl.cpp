@@ -157,8 +157,6 @@ void EncoderImpl::Encode()
       return;
    }
 
-   bool completedTrack = false;
-
    // init input module
    TrackInfo trackInfo;
 
@@ -211,9 +209,6 @@ void EncoderImpl::Encode()
       // write playlist entry, when enabled
       if (m_encoderState.m_running && !m_encoderSettings.m_playlistFilename.IsEmpty())
          WritePlaylistEntry(m_encoderSettings.m_outputFilename);
-
-      if (m_encoderState.m_running)
-         completedTrack = true;
    }
 
    // done with modules

@@ -38,7 +38,7 @@ FILE_STREAM *open_filestream(LPCTSTR filename)
    FILE_STREAM *fs;
 
    {
-      fs = (FILE_STREAM*)LocalAlloc(LPTR, sizeof(FILE_STREAM) + m_local_buffer_size * 1024);
+      fs = (FILE_STREAM*)malloc(sizeof(FILE_STREAM) + m_local_buffer_size * 1024);
 
       if (fs == NULL)
          return NULL;
@@ -145,6 +145,6 @@ void close_filestream(FILE_STREAM* fs)
       if (fs->stream)
          CloseHandle(fs->stream);
 
-      LocalFree(fs);
+      free(fs);
    }
 }
