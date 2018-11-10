@@ -85,9 +85,6 @@
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.flac">
       <Filter>Resource Files\res</Filter>
     </None>
-    <None Include="Jungle_S-RepaidGa-10582_hifi.mp3">
-      <Filter>Resource Files\res</Filter>
-    </None>
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.ogg">
       <Filter>Resource Files\res</Filter>
     </None>
@@ -103,10 +100,8 @@
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.ape">
       <Filter>Resource Files\res</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="res\Jungle_S-RepaidGa-10582_hifi.mp3">
-      <Filter>Resource Files\res</Filter>
-    </Media>
+    <None Include="res\Jungle_S-RepaidGa-10582_hifi.mp3">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
