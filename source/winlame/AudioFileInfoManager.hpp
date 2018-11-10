@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ private:
    static void RunThread(boost::asio::io_service& ioService);
 
    /// worker thread function to get audio file infos and to call callback
-   static void WorkerGetAudioFileInfo(const std::atomic<bool>& stopping, const CString& filename, AudioFileInfoManager::T_fnCallback fnCallback);
+   static void WorkerGetAudioFileInfo(std::atomic<bool>& stopping, const CString& filename, AudioFileInfoManager::T_fnCallback fnCallback);
 
 private:
    /// worker thread

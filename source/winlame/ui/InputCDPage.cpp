@@ -37,6 +37,7 @@
 #include "CoverArtArchive.hpp"
 #include "CoverArtDlg.hpp"
 #include "App.hpp"
+#include <ulib/Exception.hpp>
 
 using namespace UI;
 
@@ -951,8 +952,7 @@ void InputCDPage::RetrieveAlbumCoverArt(const std::string& discId)
          AtlMessageBox(m_hWnd, IDS_CDRIP_COVERART_ERROR_NOART, IDS_APP_CAPTION, MB_OK | MB_ICONSTOP);
       }
    }
-   // NOSONAR
-   catch (const std::exception& ex)
+   catch (const Exception& ex)
    {
       errorText = ex.what();
       ATLTRACE(_T("Error retrieving cover art: %hs"), errorText.c_str());

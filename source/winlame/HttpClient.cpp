@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@
 //
 #include "stdafx.h"
 #include "HttpClient.hpp"
+#include <ulib/Exception.hpp>
 #include <istream>
 
 using boost::asio::ip::tcp;
@@ -81,8 +82,7 @@ HttpResponse HttpClient::Request(const std::string& host, const std::string& pat
    std::getline(response_stream, status_message);
    if (!response_stream || http_version.substr(0, 5) != "HTTP/")
    {
-      // NOSONAR
-      throw std::runtime_error("Invalid response");
+      throw Exception(_T("Invalid response"), __FILE__, __LINE__);
    }
 
    if (httpResponse.status_code >= 400 && httpResponse.status_code <= 599)
@@ -90,8 +90,7 @@ HttpResponse HttpClient::Request(const std::string& host, const std::string& pat
       std::stringstream message;
       message << "Response returned with status code " << httpResponse.status_code;
 
-      // NOSONAR
-      throw std::runtime_error(message.str());
+      throw Exception(CString(message.str().c_str()), __FILE__, __LINE__);
    }
 
    // Read the response headers, which are terminated by a blank line.
@@ -120,7 +119,7 @@ HttpResponse HttpClient::Request(const std::string& host, const std::string& pat
    }
 
    if (error != boost::asio::error::eof)
-      throw boost::system::system_error(error);
+      throw Exception(CString(_T("System error: ")) + error.message().c_str(), __FILE__, __LINE__);
 
    return httpResponse;
 }

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #include "stdafx.h"
 #include "CoverArtArchive.hpp"
 #include "HttpClient.hpp"
+#include <ulib/Exception.hpp>
 
 CoverArtArchive::CoverArtArchive(const std::string& userAgent)
    :m_userAgent(userAgent)
@@ -36,6 +37,7 @@ CoverArtArchive::~CoverArtArchive()
 /// \param[in] musicBrainzDiscId is a SHA-1 hash of the disc TOC, e.g. like
 /// h1RuRzDGd48cHYnfOVN6e6wGr3o-
 /// \param[in] onlyLoadFirst indicates if only the first entry should be loaded
+/// \throw Exception when downloading cover art failed
 std::vector<CoverArtResult> CoverArtArchive::Request(const std::string& musicBrainzDiscId, bool onlyLoadFirst)
 {
    //http:// 9712d52a-4509-3d4b-a1a2-67c88c643e31
@@ -55,8 +57,7 @@ std::vector<CoverArtResult> CoverArtArchive::Request(const std::string& musicBra
    {
       responseXml.parse<0>(responseTextBuffer.data());
    }
-   // NOSONAR
-   catch (const std::exception& ex)
+   catch (const rapidxml::parse_error& ex)
    {
       UNUSED(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
@@ -82,6 +83,7 @@ std::vector<CoverArtResult> CoverArtArchive::Request(const std::string& musicBra
    return resultList;
 }
 
+/// \throw Exception when a HTTP request fails
 std::string CoverArtArchive::GetMusicBrainzDiscIdInfo(const std::string& musicBrainzDiscId)
 {
    HttpClient client(m_userAgent);
@@ -130,8 +132,7 @@ void CoverArtArchive::CollectReleaseIds(rapidxml::xml_document<char>& responseXm
          releaseNode = releaseNode->next_sibling("release");
       }
    }
-   // NOSONAR
-   catch (const std::exception& ex)
+   catch (const rapidxml::parse_error& ex)
    {
       UNUSED(ex);
       ATLTRACE(_T("xml exception: %hs\n"), ex.what());
@@ -141,6 +142,7 @@ void CoverArtArchive::CollectReleaseIds(rapidxml::xml_document<char>& responseXm
 /// param[in] coverArtReleaseId is a release ID that is used by MusicBrainz
 /// and CoverArt to describe a unique artist or release, written as a UUID,
 /// e.g. like 9712d52a-4509-3d4b-a1a2-67c88c643e31
+/// \throw Exception when downloading cover art failed
 void CoverArtArchive::DownloadCoverArt(const std::string& coverArtReleaseId, std::vector<CoverArtResult>& resultList)
 {
    std::string urlPath = "/release/" + coverArtReleaseId + "/front-500";

@@ -274,7 +274,7 @@ int AacInputModule::DecodeSamples(SampleContainer& samples)
    }
 
    // decode buffer
-   short* sampleBuffer = (short *)NeAACDecDecode(m_decoder, &frameInfo, m_inputBuffer, m_inputBufferHigh); //sizeof(m_inputBuffer));
+   short* sampleBuffer = (short *)NeAACDecDecode(m_decoder, &frameInfo, m_inputBuffer, m_inputBufferHigh);
 
    m_inputBufferHigh -= frameInfo.bytesconsumed;
    memmove(m_inputBuffer, m_inputBuffer + frameInfo.bytesconsumed,

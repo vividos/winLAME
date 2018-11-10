@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -67,7 +67,7 @@ void AudioFileInfoManager::AsyncGetAudioFileInfo(LPCTSTR filename, AudioFileInfo
    }
 
    m_ioService.post(
-      std::bind(&AudioFileInfoManager::WorkerGetAudioFileInfo, std::cref(m_stopping), CString(filename), fnCallback));
+      std::bind(&AudioFileInfoManager::WorkerGetAudioFileInfo, std::ref(m_stopping), CString(filename), fnCallback));
 }
 
 void AudioFileInfoManager::Stop()
@@ -91,7 +91,7 @@ void AudioFileInfoManager::RunThread(boost::asio::io_service& ioService)
    }
 }
 
-void AudioFileInfoManager::WorkerGetAudioFileInfo(const std::atomic<bool>& stopping,
+void AudioFileInfoManager::WorkerGetAudioFileInfo(std::atomic<bool>& stopping,
    const CString& filename, AudioFileInfoManager::T_fnCallback fnCallback)
 {
    if (stopping)
@@ -104,7 +104,6 @@ void AudioFileInfoManager::WorkerGetAudioFileInfo(const std::atomic<bool>& stopp
 
    bool ret = GetAudioFileInfo(filename, lengthInSeconds, bitrateInBps, sampleFrequencyInHz, errorMessage);
 
-   // NOSONAR
    if (stopping)
       return;
 
