@@ -119,7 +119,8 @@ void OutputSettingsPage::LoadData()
    m_comboOutputModule.SetCurSel(m_uiSettings.output_module);
 
    // "use input folder as output location" check
-   m_checkUseInputDir.SetCheck(m_uiSettings.out_location_use_input_dir ? BST_CHECKED : BST_UNCHECKED);
+   bool useInputDir = m_uiSettings.out_location_use_input_dir && m_uiSettings.m_bFromInputFilesPage;
+   m_checkUseInputDir.SetCheck(useInputDir ? BST_CHECKED : BST_UNCHECKED);
 
    if (!m_uiSettings.m_bFromInputFilesPage)
    {
