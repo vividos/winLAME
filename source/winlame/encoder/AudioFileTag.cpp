@@ -101,6 +101,9 @@ bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id
       for (auto frame : id3v2tag->frameList())
       {
          auto frameId = frame->frameID();
+         if (frameId.size() != 4)
+            continue;
+
          ATLTRACE(_T("Frame: %c%c%c%c: %hs\n"),
             frameId[0],
             frameId[1],
