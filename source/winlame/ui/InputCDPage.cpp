@@ -70,11 +70,21 @@ LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
 
    DlgResize_Init(false, false);
 
-   m_uiSettings.cdreadjoblist.clear();
-
    SetupDriveCombobox();
 
    SetupTracksList();
+
+   if (!m_uiSettings.cdreadjoblist.empty())
+   {
+      const std::vector<unsigned char>& imageData = m_uiSettings.cdreadjoblist.front().FrontCoverArtImage();
+
+      if (CoverArtArchive::ImageFromJpegByteArray(imageData, m_coverArtImage))
+      {
+         SetFrontCoverArt(m_coverArtImage);
+
+         m_covertArtImageData = imageData;
+      }
+   }
 
    // genre combobox
    std::vector<CString> genreList = Encoder::TrackInfo::GetGenreList();
@@ -85,6 +95,8 @@ LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
    m_buttonStop.EnableWindow(false);
 
    m_editedTrack = false;
+
+   m_uiSettings.cdreadjoblist.clear();
 
    PostMessage(WM_TIMER, IDT_CDRIP_CHECK);
 
