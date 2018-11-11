@@ -22,7 +22,7 @@
 
       <Command Name="wtl_FEEDBACK_POSITIVE" Symbol="ID_FEEDBACK_POSITIVE" Id="97"/>
       <Command Name="wtl_FEEDBACK_NEGATIVE" Symbol="ID_FEEDBACK_NEGATIVE" Id="98"/>
-     
+
       <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
       <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141"/>
 

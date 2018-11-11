@@ -93,7 +93,7 @@
                         <Scale Group="GroupTasks" Size="Large"/>
                         <Scale Group="GroupSettings" Size="Large"/>
                         <Scale Group="GroupView" Size="Large"/>
-                        <!-- Scale Group="GroupFeedback" Size="Large"/ -->
+                        <Scale Group="GroupFeedback" Size="Large"/>
                      </ScalingPolicy.IdealSizes>
                   </ScalingPolicy>
                </Tab.ScalingPolicy>
@@ -127,10 +127,10 @@
                 <Button CommandName="winlame_VIEW_SWITCH_CLASSIC"/>
               </Group>
 
-              <!-->Group CommandName="GroupFeedback" SizeDefinition="TwoButtons">
+              <Group CommandName="GroupFeedback" SizeDefinition="TwoButtons">
                 <Button CommandName="wtl_FEEDBACK_POSITIVE"/>
                 <Button CommandName="wtl_FEEDBACK_NEGATIVE"/>
-              </Group -->
+              </Group>
 
             </Tab>
          </Ribbon.Tabs>

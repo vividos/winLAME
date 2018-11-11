@@ -292,9 +292,12 @@ LRESULT WizardPageHost::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
       switchModernButton.ShowWindow(SW_HIDE);
    }
 
-   // don't show feedback buttons
-   positiveButton.ShowWindow(SW_HIDE);
-   negativeButton.ShowWindow(SW_HIDE);
+   // remove feedback buttons in release
+   if (App::Version().Find(_T("release")) != -1)
+   {
+      positiveButton.ShowWindow(SW_HIDE);
+      negativeButton.ShowWindow(SW_HIDE);
+   }
 
    // check if help is available
    if (App::Current().IsHelpAvailable())
