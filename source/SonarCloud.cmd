@@ -31,7 +31,7 @@ REM
 cd ..
 rmdir .\bw-output /s /q 2> nul
 
-msbuild winlame.sln /m /property:Configuration=Release,Platform=Win32 /target:Clean
+msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Clean
 
 SonarScanner.MSBuild.exe begin ^
     /k:"winLAME" ^
@@ -44,7 +44,7 @@ SonarScanner.MSBuild.exe begin ^
 REM
 REM Rebuild Release|Win32
 REM
-build-wrapper-win-x86-64.exe --out-dir bw-output msbuild winlame.sln /property:Configuration=Release,Platform=Win32 /target:Build
+build-wrapper-win-x86-64.exe --out-dir bw-output msbuild winlame.sln /property:Configuration=SonarCloud,Platform=Win32 /target:Build
 
 SonarScanner.MSBuild.exe end /d:"sonar.login=%SONARLOGIN%"
 
