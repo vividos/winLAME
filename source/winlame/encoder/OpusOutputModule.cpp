@@ -393,17 +393,7 @@ bool OpusOutputModule::InitEncoder()
       m_downmix = 0;
 #endif
 
-   // TODO
-   //m_codingRate = 48000;
-   //if (m_inputSampleRate > 24000) m_codingRate = 48000;
-   //else if (m_inputSampleRate > 16000) m_codingRate = 24000;
-   //else if (m_inputSampleRate > 12000) m_codingRate = 16000;
-   //else if (m_inputSampleRate > 8000) m_codingRate = 12000;
-   //else m_codingRate = 8000;
-
-   m_frameSize = 960;
-   // TODO
-   //m_frameSize = m_frameSize / (48000 / m_codingRate);
+   m_frameSize = 960; // 20 ms frames
 
    // Initialize Opus encoder
    if (!m_encoder.Create(m_inputSampleRate, m_channels, m_lastError))
