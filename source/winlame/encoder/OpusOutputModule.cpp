@@ -201,6 +201,9 @@ CString OpusOutputModule::GetDescription() const
       m_bitrateInBps / 1000,
       m_complexity);
 
+   if (m_downmix != 0)
+      desc.AppendFormat(IDS_FORMAT_INFO_OPUS_OUTPUT_DOWNMIX, m_downmix);
+
    return desc;
 }
 
@@ -257,12 +260,6 @@ int OpusOutputModule::EncodeSamples(SampleContainer& samples)
 void OpusOutputModule::DoneOutput()
 {
    EncodeRemainingInputBuffer();
-
-#if 0
-   // TODO implement
-   if (m_downmix)
-      clear_downmix(&inopt);
-#endif
 
    m_encoder.Close();
 }
@@ -385,23 +382,27 @@ bool OpusOutputModule::InitEncoder()
       m_downmix = m_channels > 8 ? 1 : 2;
    }
 
-#if 0
-   // TODO implement downmix
    if (m_downmix > 0 && m_downmix < m_channels)
-      m_downmix = setup_downmix(&inopt, m_downmix);
+   {
+      if (!SetupDownmix(static_cast<size_t>(m_channels), static_cast<size_t>(m_downmix)))
+         return false;
+   }
    else
       m_downmix = 0;
-#endif
 
    m_frameSize = 960; // 20 ms frames
 
    // Initialize Opus encoder
-   if (!m_encoder.Create(m_inputSampleRate, m_channels, m_lastError))
+   int outputChannels = m_downmix != 0 ? m_downmix : m_channels;
+   if (!m_encoder.Create(m_inputSampleRate, outputChannels, m_lastError))
       return false;
 
    m_numSamplesPerFrame = m_frameSize * m_channels;
 
    m_inputFloatBuffer.resize(m_numSamplesPerFrame);
+
+   if (m_downmix != 0)
+      m_downmixFloatBuffer.resize(m_numSamplesPerFrame);
 
    return true;
 }
@@ -577,7 +578,7 @@ int OpusOutputModule::RefillInputSampleBuffer(SampleContainer& samples)
 
       size_t startIndex = m_inputInt16Buffer.size();
 
-      m_inputInt16Buffer.resize(startIndex + numSamples  * m_channels);
+      m_inputInt16Buffer.resize(startIndex + numSamples * m_channels);
 
       std::copy_n(inputBuffer, numSamples * m_channels, m_inputInt16Buffer.begin() + startIndex);
    }
@@ -642,6 +643,14 @@ bool OpusOutputModule::EncodeInputBufferFrame()
    else
       nb_samples = ReadFloatSamples16(m_inputFloatBuffer.data(), m_frameSize);
 
+   if (nb_samples < m_frameSize)
+   {
+      m_outputStreamAtEnd = true;
+   }
+
+   if (!m_downmixMatrix.empty())
+      DownmixSamples(nb_samples);
+
    int ret = ope_encoder_write_float(m_encoder.enc, m_inputFloatBuffer.data(), nb_samples);
    if (ret != OPE_OK)
    {
@@ -649,11 +658,6 @@ bool OpusOutputModule::EncodeInputBufferFrame()
          _T("Error: Encoding failed: %hs"),
          ope_strerror(ret));
       return false;
-   }
-
-   if (nb_samples < m_frameSize)
-   {
-      m_outputStreamAtEnd = true;
    }
 
    return true; // no errors
@@ -681,4 +685,117 @@ std::string OpusOutputModule::GetMetadataBlockPicture(const std::vector<unsigned
    std::string base64image(reinterpret_cast<const char*>(data), length - prefixLength);
 
    return base64image;
+}
+
+// Note: The stupid_matrix table and the code in SetupDownmix() and
+// DownmixSamples() is taken from opus-tools' audio-in.c file:
+// https://github.com/xiph/opus-tools/blob/master/src/audio-in.c
+// The following copyright header appears in the file
+//
+/* Copyright 2000-2002, Michael Smith <msmith@xiph.org>
+             2010, Monty <monty@xiph.org>
+   AIFF/AIFC support from OggSquish, (c) 1994-1996 Monty <xiphmont@xiph.org>
+   (From GPL code in oggenc relicensed by permission from Monty and Msmith)
+   File: audio-in.c
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions
+   are met:
+   - Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+   - Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE FOUNDATION OR
+   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+/// \brief matrix for downsampling from N channels to 2 channels
+static const float stupid_matrix[7][8][2] =
+{
+   /*2*/  {{1,0}, {0,1}},
+   /*3*/  {{1,0}, {0.7071f,0.7071f}, {0,1}},
+   /*4*/  {{1,0}, {0,1},{0.866f,0.5f}, {0.5f,0.866f}},
+   /*5*/  {{1,0}, {0.7071f,0.7071f}, {0,1}, {0.866f,0.5f}, {0.5f,0.866f}},
+   /*6*/  {{1,0}, {0.7071f,0.7071f}, {0,1}, {0.866f,0.5f}, {0.5f,0.866f}, {0.7071f,0.7071f}},
+   /*7*/  {{1,0}, {0.7071f,0.7071f}, {0,1}, {0.866f,0.5f}, {0.5f,0.866f}, {0.6123f,0.6123f}, {0.7071f,0.7071f}},
+   /*8*/  {{1,0}, {0.7071f,0.7071f}, {0,1}, {0.866f,0.5f}, {0.5f,0.866f}, {0.866f,0.5f}, {0.5f,0.866f}, {0.7071f,0.7071f}},
+};
+
+bool OpusOutputModule::SetupDownmix(size_t inputNumChannels, size_t outputNumChannels)
+{
+   if (inputNumChannels <= outputNumChannels || outputNumChannels > 2 || inputNumChannels <= 0 || outputNumChannels <= 0)
+   {
+      m_lastError = _T("Downmix must actually downmix and only knows mono/stereo out.");
+      return false;
+   }
+
+   if (outputNumChannels == 2 && inputNumChannels > 8)
+   {
+      m_lastError = _T("Downmix only knows how to mix >8ch to mono.");
+      return false;
+   }
+
+   m_downmixMatrix.resize(inputNumChannels * outputNumChannels);
+
+   if (outputNumChannels == 1 && inputNumChannels > 8)
+   {
+      for (size_t i = 0; i < inputNumChannels; i++)
+         m_downmixMatrix[i] = 1.0f / inputNumChannels;
+   }
+   else if (outputNumChannels == 2)
+   {
+      for (size_t j = 0; j < outputNumChannels; j++)
+         for (size_t i = 0; i < inputNumChannels; i++)
+            m_downmixMatrix[inputNumChannels * j + i] = stupid_matrix[inputNumChannels - 2][i][j];
+   }
+   else
+   {
+      for (size_t i = 0; i < inputNumChannels; i++)
+         m_downmixMatrix[i] = stupid_matrix[inputNumChannels - 2][i][0] + stupid_matrix[inputNumChannels - 2][i][1];
+   }
+
+   float sum = 0.f;
+   for (size_t i = 0; i < inputNumChannels * outputNumChannels; i++)
+      sum += m_downmixMatrix[i];
+
+   sum = (float)outputNumChannels / sum;
+   for (size_t i = 0; i < inputNumChannels * outputNumChannels; i++)
+      m_downmixMatrix[i] *= sum;
+
+   return true;
+}
+
+void OpusOutputModule::DownmixSamples(opus_int32& numSamplesPerChannel)
+{
+   ATLASSERT(m_downmix == 1 || m_downmix == 2); // downmix value must be 1 or 2
+
+   size_t inputNumChannels = m_channels;
+   size_t outputNumChannels = m_downmix;
+
+   for (opus_int32 i = 0; i < numSamplesPerChannel; i++)
+   {
+      for (size_t j = 0; j < outputNumChannels; j++)
+      {
+         float* sample = &m_downmixFloatBuffer[i * outputNumChannels + j];
+         *sample = 0.f;
+
+         for (size_t k = 0; k < inputNumChannels; k++)
+         {
+            *sample += m_inputFloatBuffer[i * inputNumChannels + k] * m_downmixMatrix[inputNumChannels * j + k];
+         }
+      }
+   }
+
+   numSamplesPerChannel = numSamplesPerChannel * m_downmix / m_channels;
+
+   std::swap(m_downmixFloatBuffer, m_inputFloatBuffer);
 }

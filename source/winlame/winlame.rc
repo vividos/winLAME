@@ -955,6 +955,7 @@ BEGIN
     IDS_FORMAT_INFO_OPUS_OUTPUT 
                             "Opus, %i channels, %i Hz, %i bit, %s, %i Kbps, complexity %i"
     IDS_FORMAT_INFO_MPG123_INPUT "MPEG-%s Layer %u, %u kbps, %u Hz, %s%s"
+    IDS_FORMAT_INFO_OPUS_OUTPUT_DOWNMIX "; downmixing to %u channels"
 END
 
 STRINGTABLE

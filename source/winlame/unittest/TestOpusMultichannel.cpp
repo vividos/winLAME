@@ -82,5 +82,43 @@ namespace unittest
          Assert::AreEqual(6, outputNumChannels, _T("output file must have 6 channels"));
          Assert::AreEqual(inputNumChannels, outputNumChannels, _T("output file must have same number of channels as input file"));
       }
+
+      /// tests transcoding Opus multichannel file to Opus, forcing it to use downmix by using a
+      /// very low bitrate value
+      TEST_METHOD(TestTranscodeOpusMultichannelWithDownmix)
+      {
+         UnitTest::AutoCleanupFolder folder;
+
+         CString filename = Path::Combine(folder.FolderName(), _T("sample.opus")).ToString();
+         ExtractFromResource(IDR_SAMPLE_OPUS_MULTICHANNEL, filename);
+
+         // transcode file
+         Encoder::EncoderImpl encoder;
+
+         Encoder::EncoderSettings encoderSettings;
+         encoderSettings.m_inputFilename = filename;
+         encoderSettings.m_outputFilename = Path::Combine(folder.FolderName(), _T("output.opus")).ToString();
+         encoderSettings.m_outputModuleID = ID_OM_OPUS;
+
+         encoder.SetEncoderSettings(encoderSettings);
+
+         SettingsManager settingsManager;
+         settingsManager.setValue(OpusTargetBitrate, 15 * 6); // use low bitrate of 15 kbps/channel to force downmix
+         settingsManager.setValue(OpusComplexity, 10);
+         settingsManager.setValue(OpusBitrateMode, 0); // --vbr
+
+         encoder.SetSettingsManager(&settingsManager);
+
+         StartEncodeAndWaitForFinish(encoder);
+
+         // output file must exist
+         Assert::IsTrue(Path(encoderSettings.m_outputFilename).FileExists(), _T("output file must exist"));
+
+         int outputNumChannels = 0;
+         int dummy = 0;
+         GetAudioFileInfos(encoderSettings.m_outputFilename, outputNumChannels, dummy, dummy, dummy);
+
+         Assert::AreEqual(2, outputNumChannels, _T("output file must have been downmixed to 2 channels"));
+      }
    };
 }

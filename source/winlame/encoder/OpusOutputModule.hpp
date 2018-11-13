@@ -111,6 +111,9 @@ namespace Encoder
       /// initializes encoder
       bool InitEncoder();
 
+      /// sets up downmixing to stereo or mono
+      bool SetupDownmix(size_t inputNumChannels, size_t outputNumChannels);
+
       /// sets encoder options
       bool SetEncoderOptions();
 
@@ -122,6 +125,9 @@ namespace Encoder
 
       /// reads float samples from 32-bit buffer
       long ReadFloatSamples32(float* buffer, int samples);
+
+      /// downmix samples in input float sample buffer
+      void DownmixSamples(opus_int32& numSamplesPerChannel);
 
       /// refills input sample buffer from sample container
       int RefillInputSampleBuffer(SampleContainer& samples);
@@ -178,6 +184,12 @@ namespace Encoder
 
       /// input buffer for float samples; contains at most one frame
       std::vector<float> m_inputFloatBuffer;
+
+      /// matrix for factors for downmixing channels
+      std::vector<float> m_downmixMatrix;
+
+      /// buffer for downmixed float samples
+      std::vector<float> m_downmixFloatBuffer;
 
       /// indicates if the input module supports 32-bit samples
       bool m_32bitMode;
