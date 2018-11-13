@@ -22,6 +22,7 @@
 #pragma once
 
 #include "TestEncoderErrorHandler.hpp"
+#include "TrackInfo.hpp"
 
 namespace Encoder
 {
@@ -32,17 +33,27 @@ namespace Encoder
 
 namespace unittest
 {
-
+   /// Test fixture for tests with winLAME's Encoder
    class EncoderTestFixture
    {
    public:
+      /// ctor
       EncoderTestFixture() {}
 
+      /// sets up test for using Encoder
       static void SetUp();
 
+      /// extracts a resource file and stores it in filename
       static void ExtractFromResource(UINT resourceId, LPCTSTR filename);
 
+      /// starts encoding thread and waits that encoding finishes
       static void StartEncodeAndWaitForFinish(Encoder::EncoderImpl& encoder);
+
+      /// returns audio file infos for given file, retrieved by input module
+      void GetAudioFileInfos(LPCTSTR filename, int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz);
+
+      /// returns track info for given file, retrieved by input module
+      static Encoder::TrackInfo GetTrackInfo(LPCTSTR filename);
 
    private:
       /// instance of static LAME NoGap instance manager

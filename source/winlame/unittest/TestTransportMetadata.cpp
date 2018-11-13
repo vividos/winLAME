@@ -28,7 +28,6 @@
 #include "EncoderImpl.hpp"
 #include "ModuleManager.hpp"
 #include "ModuleManagerImpl.hpp"
-#include "TrackInfo.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -115,25 +114,6 @@ namespace unittest
          Encoder::TrackInfo outputTrackInfo = GetTrackInfo(outputFilename);
 
          return CheckSameTrackInfos(inputTrackInfo, outputTrackInfo);
-      }
-
-      /// returns track info for given file, retrieved by input module
-      Encoder::TrackInfo GetTrackInfo(LPCTSTR filename)
-      {
-         Encoder::ModuleManagerImpl moduleManager;
-
-         std::unique_ptr<Encoder::InputModule> inputModule(moduleManager.ChooseInputModule(filename));
-         if (inputModule == nullptr)
-            throw std::runtime_error("couldn't find input module for filename");
-
-         Encoder::TrackInfo trackInfo;
-         Encoder::SampleContainer samples;
-         SettingsManager dummy;
-         inputModule->InitInput(filename, dummy, trackInfo, samples);
-
-         inputModule->DoneInput();
-
-         return trackInfo;
       }
 
       /// encodes a file with default settings, using specified output module

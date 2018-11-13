@@ -83,3 +83,39 @@ void EncoderTestFixture::StartEncodeAndWaitForFinish(Encoder::EncoderImpl& encod
 
    encoder.StopEncode();
 }
+
+void EncoderTestFixture::GetAudioFileInfos(LPCTSTR filename, int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz)
+{
+   Encoder::ModuleManagerImpl moduleManager;
+
+   std::unique_ptr<Encoder::InputModule> inputModule(moduleManager.ChooseInputModule(filename));
+   if (inputModule == nullptr)
+      throw std::runtime_error("couldn't find input module for filename");
+
+   Encoder::TrackInfo trackInfo;
+   Encoder::SampleContainer samples;
+   SettingsManager dummy;
+   inputModule->InitInput(filename, dummy, trackInfo, samples);
+
+   inputModule->GetInfo(numChannels, bitrateInBps, lengthInSeconds, samplerateInHz);
+
+   inputModule->DoneInput();
+}
+
+Encoder::TrackInfo EncoderTestFixture::GetTrackInfo(LPCTSTR filename)
+{
+   Encoder::ModuleManagerImpl moduleManager;
+
+   std::unique_ptr<Encoder::InputModule> inputModule(moduleManager.ChooseInputModule(filename));
+   if (inputModule == nullptr)
+      throw std::runtime_error("couldn't find input module for filename");
+
+   Encoder::TrackInfo trackInfo;
+   Encoder::SampleContainer samples;
+   SettingsManager dummy;
+   inputModule->InitInput(filename, dummy, trackInfo, samples);
+
+   inputModule->DoneInput();
+
+   return trackInfo;
+}
