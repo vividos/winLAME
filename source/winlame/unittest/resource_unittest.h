@@ -12,3 +12,4 @@
 #define IDR_SAMPLE_AIFF                         108
 #define IDR_SAMPLE_SPEEX                        109
 #define IDR_SAMPLE_MONKEYS_AUDIO                110
+#define IDR_SAMPLE_OPUS_MULTICHANNEL            111

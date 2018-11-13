@@ -97,6 +97,7 @@
     <ClCompile Include="TestEncodeMp3ToOggVorbis.cpp" />
     <ClCompile Include="TestEncodeWaveToOpus.cpp" />
     <ClCompile Include="TestModuleManager.cpp" />
+    <ClCompile Include="TestOpusMultichannel.cpp" />
     <ClCompile Include="TestTransportMetadata.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="res\alsa-6ch.opus" />
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.mp3" />
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.aac" />
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.aiff" />

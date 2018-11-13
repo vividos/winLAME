@@ -65,6 +65,9 @@
     <ClCompile Include="TestTransportMetadata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestOpusMultichannel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\winlame.rc">
@@ -101,7 +104,10 @@
       <Filter>Resource Files\res</Filter>
     </None>
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.mp3">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\res</Filter>
+    </None>
+    <None Include="res\alsa-6ch.opus">
+      <Filter>Resource Files\res</Filter>
     </None>
   </ItemGroup>
 </Project>
