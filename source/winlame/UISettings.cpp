@@ -71,6 +71,7 @@ UISettings::UISettings()
    playlist_filename(MAKEINTRESOURCE(IDS_GENERAL_PLAYLIST_FILENAME)),
    m_iLastSelectedPresetIndex(1), // first preset is the "best practice" preset
    last_page_was_cdrip_page(false),
+   cdrip_temp_folder(Path::TempFolder()),
    freedb_server(_T("freedb.freedb.org")),
    store_disc_infos_cdplayer_ini(true),
    cdrip_format_various_track(_T("%track% - %album% - %artist% - %title%")),
@@ -78,7 +79,6 @@ UISettings::UISettings()
    language_id(MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)),
    m_appMode(modernMode)
 {
-   cdrip_temp_folder = Path::TempFolder();
 }
 
 #pragma warning(push)
