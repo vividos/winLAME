@@ -111,9 +111,6 @@
     <ClInclude Include="AacOutputModule.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AlwaysSkipErrorHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AudioFileTag.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -130,9 +127,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CreatePlaylistTask.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EncoderErrorHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EncoderImpl.hpp">

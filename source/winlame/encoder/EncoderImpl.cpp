@@ -22,7 +22,6 @@
 //
 #include "stdafx.h"
 #include "EncoderImpl.hpp"
-#include "EncoderErrorHandler.hpp"
 #include <fstream>
 #include "LameOutputModule.hpp"
 #include <sndfile.h>
@@ -46,8 +45,7 @@ static LightweightMutex s_mutexTempOutputFile;
 
 EncoderImpl::EncoderImpl()
    :m_settingsManager(nullptr),
-   m_moduleManager(IoCContainer::Current().Resolve<Encoder::ModuleManager>()),
-   m_errorHandler(nullptr)
+   m_moduleManager(IoCContainer::Current().Resolve<Encoder::ModuleManager>())
 {
 }
 
@@ -263,25 +261,15 @@ bool EncoderImpl::PrepareInputModule(TrackInfo& trackInfo)
    m_inputModule->ResolveRealFilename(m_encoderSettings.m_inputFilename);
 
    // catch errors
-   if (m_errorHandler != nullptr && res < 0)
+   if (res < 0)
    {
-      switch (m_errorHandler->HandleError(m_encoderSettings.m_inputFilename, m_inputModule->GetModuleName(),
-         -res, m_inputModule->GetLastError()))
-      {
-      case EncoderErrorHandler::Continue:
-         break;
+      HandleError(m_encoderSettings.m_inputFilename,
+         m_inputModule->GetModuleName(),
+         -res,
+         m_inputModule->GetLastError());
 
-      case EncoderErrorHandler::SkipFile:
-         m_encoderState.m_errorCode = 1;
-         return false;
-
-      case EncoderErrorHandler::StopEncode:
-         m_encoderState.m_errorCode = -1;
-         return false;
-      default:
-         ATLASSERT(false);
-         break;
-      }
+      m_encoderState.m_errorCode = 1;
+      return false;
    }
 
    return true;
@@ -304,18 +292,11 @@ bool EncoderImpl::PrepareOutputModule()
    }
 
    // check if outputFilename already exists
-   if (!m_encoderSettings.m_overwriteExisting)
+   if (!m_encoderSettings.m_overwriteExisting &&
+      Path(m_encoderSettings.m_outputFilename).FileExists())
    {
-      // test if file exists
-      if (Path(m_encoderSettings.m_outputFilename).FileExists())
-      {
-         // note: could do a message box here, but we really want the encoding progress
-         // without any message boxes waiting.
-
-         // skip this file
-         m_encoderState.m_errorCode = 2;
-         return false;
-      }
+      m_encoderState.m_errorCode = 2;
+      return false;
    }
 
    return true;
@@ -422,23 +403,13 @@ bool EncoderImpl::InitOutputModule(const CString& tempOutputFilename, TrackInfo&
       trackInfo, m_sampleContainer);
 
    // catch errors
-   if (m_errorHandler != nullptr && res < 0)
+   if (res < 0)
    {
-      switch (m_errorHandler->HandleError(m_encoderSettings.m_inputFilename, m_outputModule->GetModuleName(),
-         -res, m_outputModule->GetLastError()))
-      {
-      case EncoderErrorHandler::Continue:
-         break;
-      case EncoderErrorHandler::SkipFile:
-         m_encoderState.m_errorCode = 2;
-         return false;
-      case EncoderErrorHandler::StopEncode:
-         m_encoderState.m_errorCode = -2;
-         return false;
-      default:
-         ATLASSERT(false);
-         break;
-      }
+      HandleError(m_encoderSettings.m_inputFilename, m_outputModule->GetModuleName(),
+         -res, m_outputModule->GetLastError());
+
+      m_encoderState.m_errorCode = 2;
+      return false;
    }
 
    return true;
@@ -528,25 +499,15 @@ bool EncoderImpl::MainLoop()
          break;
 
       // catch errors
-      if (m_errorHandler != nullptr && ret < 0)
+      if (ret < 0)
       {
-         switch (m_errorHandler->HandleError(m_encoderSettings.m_inputFilename, m_inputModule->GetModuleName(),
-            -ret, m_inputModule->GetLastError()))
-         {
-         case EncoderErrorHandler::Continue:
-            break;
-         case EncoderErrorHandler::SkipFile:
-            m_encoderState.m_errorCode = 3;
-            skipFile = true;
-            break;
-         case EncoderErrorHandler::StopEncode:
-            m_encoderState.m_errorCode = -3;
-            skipFile = true;
-            break;
-         default:
-            ATLASSERT(false);
-            break;
-         }
+         HandleError(m_encoderSettings.m_inputFilename,
+            m_inputModule->GetModuleName(),
+            -ret,
+            m_inputModule->GetLastError());
+
+         m_encoderState.m_errorCode = 3;
+         skipFile = true;
       }
 
       // get percent done
@@ -556,25 +517,13 @@ bool EncoderImpl::MainLoop()
       ret = m_outputModule->EncodeSamples(m_sampleContainer);
 
       // catch errors
-      if (m_errorHandler != nullptr && ret < 0)
+      if (ret < 0)
       {
-         switch (m_errorHandler->HandleError(m_encoderSettings.m_inputFilename, m_outputModule->GetModuleName(),
-            -ret, m_outputModule->GetLastError()))
-         {
-         case EncoderErrorHandler::Continue:
-            break;
-         case EncoderErrorHandler::SkipFile:
-            m_encoderState.m_errorCode = 4;
-            skipFile = true;
-            break;
-         case EncoderErrorHandler::StopEncode:
-            m_encoderState.m_errorCode = -4;
-            skipFile = true;
-            break;
-         default:
-            ATLASSERT(false);
-            break;
-         }
+         HandleError(m_encoderSettings.m_inputFilename, m_outputModule->GetModuleName(),
+            -ret, m_outputModule->GetLastError());
+
+         m_encoderState.m_errorCode = 4;
+         skipFile = true;
       }
 
       // check if we should stop the thread
@@ -605,4 +554,15 @@ void EncoderImpl::WritePlaylistEntry(const CString& outputFilename)
    // write to playlist file
    _ftprintf(fd, _T("%s\n"), filename.GetString());
    fclose(fd);
+}
+
+void EncoderImpl::HandleError(LPCTSTR inputFilename, LPCTSTR moduleName, int errorNumber, LPCTSTR errorMessage)
+{
+   ErrorInfo errorInfo;
+   errorInfo.m_inputFilename = inputFilename;
+   errorInfo.m_moduleName = moduleName;
+   errorInfo.m_errorNumber = errorNumber;
+   errorInfo.m_errorMessage = errorMessage;
+
+   m_allErrorsList.push_back(errorInfo);
 }

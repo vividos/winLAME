@@ -21,7 +21,6 @@
 //
 #pragma once
 
-#include "TestEncoderErrorHandler.hpp"
 #include "TrackInfo.hpp"
 
 namespace Encoder
@@ -61,9 +60,6 @@ namespace unittest
 
       /// instance of static module manager
       static std::shared_ptr<Encoder::ModuleManager> m_spModuleManager;
-
-      /// instance of static encoding error handler
-      static TestEncoderErrorHandler m_encodingErrorHandler;
    };
 
 } // namespace unittest

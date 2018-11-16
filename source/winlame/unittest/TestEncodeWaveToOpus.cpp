@@ -28,7 +28,6 @@
 #include "EncoderImpl.hpp"
 #include "ModuleManager.hpp"
 #include "ModuleManagerImpl.hpp"
-#include "TestEncoderErrorHandler.hpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

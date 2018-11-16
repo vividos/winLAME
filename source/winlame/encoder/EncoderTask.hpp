@@ -25,7 +25,6 @@
 #include "TrackInfo.hpp"
 #include "SettingsManager.hpp"
 #include "EncoderImpl.hpp"
-#include "AlwaysSkipErrorHandler.hpp"
 
 namespace Encoder
 {
@@ -71,15 +70,12 @@ namespace Encoder
       CString GenerateOutputFilename(const CString& inputFilename);
 
    private:
-      /// adds error texts from error handler to task result
-      void AddErrorText();
+      /// checks errors and adds error texts from error handler to task result
+      void CheckErrors();
 
    private:
       /// encoder task settings
       EncoderTaskSettings m_settings;
-
-      /// error handler for task
-      AlwaysSkipErrorHandler m_taskErrorHandler;
 
       /// output filename
       CString m_outputFilename;

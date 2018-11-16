@@ -57,16 +57,18 @@ namespace Encoder
          return m_encoderState;
       }
 
+      /// returns list of all error infos occured (so far)
+      virtual std::vector<ErrorInfo> GetAllErrorInfos() const override
+      {
+         std::unique_lock<std::recursive_mutex> lock(m_mutex);
+
+         return m_allErrorsList;
+      }
+
       /// sets the settings manager to use
       virtual void SetSettingsManager(SettingsManager* settingsManager) override
       {
          m_settingsManager = settingsManager;
-      }
-
-      /// sets error m_errorHandler to use if an error occurs
-      virtual void SetErrorHandler(EncoderErrorHandler* errorHandler) override
-      {
-         m_errorHandler = errorHandler;
       }
 
       /// starts encoding thread; returns immediately
@@ -120,6 +122,9 @@ namespace Encoder
       /// writes playlist entry
       void WritePlaylistEntry(const CString& outputFilename);
 
+      /// error handler function
+      void HandleError(LPCTSTR inputFilename, LPCTSTR moduleName, int errorNumber, LPCTSTR errorMessage);
+
       /// returns encoder settings; const version
       const EncoderSettings& GetEncoderSettings() const { return m_encoderSettings; }
 
@@ -138,8 +143,8 @@ namespace Encoder
       /// module manager
       ModuleManager& m_moduleManager;
 
-      /// error m_errorHandler interface
-      EncoderErrorHandler* m_errorHandler;
+      /// list of all errors
+      std::vector<ErrorInfo> m_allErrorsList;
 
       /// current encoder state
       EncoderState m_encoderState;

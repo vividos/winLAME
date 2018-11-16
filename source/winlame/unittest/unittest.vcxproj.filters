@@ -27,9 +27,6 @@
     <ClInclude Include="resource_unittest.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="TestEncoderErrorHandler.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EncoderTestFixture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

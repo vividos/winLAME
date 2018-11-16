@@ -36,9 +36,6 @@ std::shared_ptr<Encoder::LameNogapInstanceManager> EncoderTestFixture::m_spLameN
 /// instance of static module manager
 std::shared_ptr<Encoder::ModuleManager> EncoderTestFixture::m_spModuleManager;
 
-/// instance of static encoding error handler
-TestEncoderErrorHandler EncoderTestFixture::m_encodingErrorHandler;
-
 void EncoderTestFixture::SetUp()
 {
    // register objects in IoC container
@@ -67,8 +64,6 @@ void EncoderTestFixture::ExtractFromResource(UINT resourceId, LPCTSTR filename)
 
 void EncoderTestFixture::StartEncodeAndWaitForFinish(Encoder::EncoderImpl& encoder)
 {
-   encoder.SetErrorHandler(&m_encodingErrorHandler);
-
    encoder.StartEncode();
 
    // wait for encoding to finish

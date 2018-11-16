@@ -33,7 +33,6 @@ EncoderTask::EncoderTask(unsigned int dependentTaskId, const EncoderTaskSettings
    EncoderImpl::SetEncoderSettings(m_settings);
 
    EncoderImpl::SetSettingsManager(&m_settings.m_settingsManager);
-   EncoderImpl::SetErrorHandler(&m_taskErrorHandler);
 }
 
 CString EncoderTask::GenerateOutputFilename(const CString& inputFilename)
@@ -85,10 +84,7 @@ void EncoderTask::Run()
 
    EncoderImpl::Encode();
 
-   if (!m_taskErrorHandler.AllErrors().empty())
-   {
-      AddErrorText();
-   }
+   CheckErrors();
 }
 
 void EncoderTask::Stop()
@@ -97,14 +93,16 @@ void EncoderTask::Stop()
    EncoderImpl::StopEncode();
 }
 
-void EncoderTask::AddErrorText()
+void EncoderTask::CheckErrors()
 {
-   CString errorText;
+   auto allErrors = EncoderImpl::GetAllErrorInfos();
+   if (allErrors.empty())
+      return;
 
+   CString errorText;
    bool isFirst = true;
 
-   std::for_each(m_taskErrorHandler.AllErrors().begin(), m_taskErrorHandler.AllErrors().end(),
-      [&](const AlwaysSkipErrorHandler::ErrorInfo& info)
+   std::for_each(allErrors.begin(), allErrors.end(), [&](const ErrorInfo& info)
    {
       if (isFirst)
       {

@@ -41,7 +41,6 @@ class ModuleManager;
 /// contains all classes and functions that have to do with encoding
 namespace Encoder
 {
-   class EncoderErrorHandler;
    struct EncoderSettings;
 
    /// encoder job
@@ -79,6 +78,21 @@ namespace Encoder
       TrackInfo m_trackInfo;     ///< track info
    };
 
+   /// error info
+   struct ErrorInfo
+   {
+      /// ctor
+      ErrorInfo()
+         :m_errorNumber(0)
+      {
+      }
+
+      CString m_inputFilename;   ///< input filename
+      CString m_moduleName;      ///< module name
+      int m_errorNumber;         ///< error number
+      CString m_errorMessage;    ///< error message
+   };
+
    /// encoder interface
    class EncoderInterface
    {
@@ -94,11 +108,11 @@ namespace Encoder
       /// returns encoder state
       virtual EncoderState GetEncoderState() const = 0;
 
+      /// returns list of all error infos occured (so far)
+      virtual std::vector<ErrorInfo> GetAllErrorInfos() const = 0;
+
       /// sets the settings manager to use
       virtual void SetSettingsManager(SettingsManager* settingsManager) = 0;
-
-      /// sets error handler to use if an error occurs
-      virtual void SetErrorHandler(EncoderErrorHandler* handler) = 0;
 
       /// starts encoding thread; returns immediately
       virtual void StartEncode() = 0;

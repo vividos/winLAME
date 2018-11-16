@@ -85,13 +85,11 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="AacInputModule.hpp" />
     <ClInclude Include="AacOutputModule.hpp" />
-    <ClInclude Include="AlwaysSkipErrorHandler.hpp" />
     <ClInclude Include="BassInputModule.hpp" />
     <ClInclude Include="BassWmaOutputModule.hpp" />
     <ClInclude Include="CDExtractTask.hpp" />
     <ClInclude Include="CDReadJob.hpp" />
     <ClInclude Include="CreatePlaylistTask.hpp" />
-    <ClInclude Include="EncoderErrorHandler.hpp" />
     <ClInclude Include="EncoderImpl.hpp" />
     <ClInclude Include="EncoderSettings.hpp" />
     <ClInclude Include="EncoderState.hpp" />
