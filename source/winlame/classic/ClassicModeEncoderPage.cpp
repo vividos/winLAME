@@ -79,7 +79,7 @@ LRESULT ClassicModeEncoderPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, H
    if (!CheckRunningTasksAndQuit())
    {
       bHandled = true;
-      return 0;
+      return 1; // cancel leaving dialog
    }
 
    m_taskManager.StopAll();
@@ -93,7 +93,7 @@ LRESULT ClassicModeEncoderPage::OnButtonCancel(WORD /*wNotifyCode*/, WORD /*wID*
    if (!CheckRunningTasksAndQuit())
    {
       bHandled = true;
-      return 0;
+      return 1; // cancel leaving dialog
    }
 
    m_taskManager.StopAll();
@@ -107,7 +107,7 @@ LRESULT ClassicModeEncoderPage::OnButtonBack(WORD /*wNotifyCode*/, WORD /*wID*/,
    if (!CheckRunningTasksAndQuit())
    {
       bHandled = true;
-      return 0;
+      return 1; // cancel leaving dialog
    }
 
    m_taskManager.StopAll();
