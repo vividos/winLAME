@@ -49,7 +49,7 @@ LRESULT ClassicModeEncoderPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, L
    ATLASSERT(pLoop != NULL);
    pLoop->AddIdleHandler(this);
 
-   m_win7TaskBar = Win32::Taskbar(m_hWnd);
+   m_win7TaskBar = Win32::Taskbar(GetParent());
 
    SetupToolbar();
    SetupView();
