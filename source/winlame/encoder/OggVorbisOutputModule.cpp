@@ -449,7 +449,14 @@ int OggVorbisOutputModule::EncodeSamples(SampleContainer& samples)
    // tell the library how much we actually submitted
    vorbis_analysis_wrote(&m_vd, numSamples);
 
-   // vorbis does some data preanalysis, then divvies up blocks for
+   WriteBlocks();
+
+   return numSamples;
+}
+
+void OggVorbisOutputModule::WriteBlocks()
+{
+   // vorbis does some data preanalysis, then divides up blocks for
    // more involved (potentially parallel) processing.  Get a single
    // block for encoding now
    while (vorbis_analysis_blockout(&m_vd, &m_vb) == 1)
@@ -480,8 +487,6 @@ int OggVorbisOutputModule::EncodeSamples(SampleContainer& samples)
          }
       }
    }
-
-   return numSamples;
 }
 
 void OggVorbisOutputModule::DoneOutput()
@@ -491,12 +496,8 @@ void OggVorbisOutputModule::DoneOutput()
 
    vorbis_analysis_wrote(&m_vd, 0);
 
-   // put out the last ogg block
-
-   // this is a very bad hack, don't do this at home!
-   SampleContainer samples;
-   samples.PutSamplesInterleaved(nullptr, 0);
-   EncodeSamples(samples);
+   // put out the last ogg blocks
+   WriteBlocks();
 
    // clean up and exit.  vorbis_info_clear() must be called last
    ogg_stream_clear(&m_os);
