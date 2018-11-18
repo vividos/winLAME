@@ -270,6 +270,8 @@ int FlacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    memset((void*)m_flacContext, 0, sizeof(FLAC_context));
    m_flacContext->trackInfo = &trackinfo;
 
+   m_flacDecoder = FLAC__stream_decoder_new();
+
    // open stream
    CStringA ansiFilename = GetAnsiCompatFilename(infilename);
    FLAC__StreamDecoderInitStatus initStatus = FLAC__stream_decoder_init_file(m_flacDecoder,
@@ -279,7 +281,7 @@ int FlacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
       FLAC_ErrorCallback,
       m_flacContext);
 
-   if (!m_flacDecoder || initStatus == FLAC__STREAM_DECODER_INIT_STATUS_OK)
+   if (!m_flacDecoder || initStatus != FLAC__STREAM_DECODER_INIT_STATUS_OK)
    {
       m_lastError.LoadString(IDS_ENCODER_ERROR_INIT_DECODER);
       return -1;
