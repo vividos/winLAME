@@ -369,7 +369,10 @@ void TaskManager::StoreCompletedTaskInfo(std::shared_ptr<Task> spTask, CString& 
       if (info.Progress() > 100)
          info.Progress(100);
 
-      info.Description(info.Description() + _T("\r\n") + errorText);
+      CString description = info.Description() + _T("\r\n") + errorText;
+      description.TrimLeft();
+
+      info.Description(description);
    }
 
    if (info.Status() == TaskInfo::statusCompleted)
