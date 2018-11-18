@@ -54,10 +54,10 @@ InputModule* GetNewInputModule(int index)
    switch (index)
    {
    case 0:
-      inputModule = new SndFileInputModule;
+      inputModule = new LibMpg123InputModule;
       break;
    case 1:
-      inputModule = new LibMpg123InputModule;
+      inputModule = new OpusInputModule;
       break;
    case 2:
       inputModule = new OggVorbisInputModule;
@@ -78,7 +78,7 @@ InputModule* GetNewInputModule(int index)
       inputModule = new SpeexInputModule;
       break;
    case 8:
-      inputModule = new OpusInputModule;
+      inputModule = new SndFileInputModule;
       break;
    default:
       ATLASSERT(false);
