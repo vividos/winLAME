@@ -50,7 +50,7 @@ FILE_STREAM *open_filestream(LPCTSTR filename)
          OPEN_EXISTING, FILE_FLAG_SEQUENTIAL_SCAN, 0);
       if (fs->stream == INVALID_HANDLE_VALUE)
       {
-         LocalFree(fs);
+         free(fs);
          return NULL;
       }
    }
