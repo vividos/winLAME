@@ -38,7 +38,7 @@ namespace Encoder
 #define ID_OM_WAVE                      3
 #define ID_OM_AAC                       4
 #define ID_IM_SNDFILE                   5
-#define ID_IM_MAD                       6
+// 6 was ID_IM_MAD
 #define ID_IM_OGGV                      7
 #define ID_IM_AAC                       8
 #define ID_IM_FLAC                      10

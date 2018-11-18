@@ -147,10 +147,6 @@ CString AboutDlg::GetAboutHtmlText()
          moduleManager.GetModuleVersionString(varname, ID_OM_LAME, 2);
       else if (varname == _T("libsndfileversion"))
          moduleManager.GetModuleVersionString(varname, ID_IM_SNDFILE);
-      else if (varname == _T("madversion"))
-         moduleManager.GetModuleVersionString(varname, ID_IM_MAD, 0);
-      else if (varname == _T("madbuild"))
-         moduleManager.GetModuleVersionString(varname, ID_IM_MAD, 3);
       else if (varname == _T("vorbisversion"))
          moduleManager.GetModuleVersionString(varname, ID_OM_OGGV);
       else if (varname == _T("bassver"))

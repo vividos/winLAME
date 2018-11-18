@@ -99,7 +99,6 @@
     <ClInclude Include="InputModule.hpp" />
     <ClInclude Include="LameNogapInstanceManager.hpp" />
     <ClInclude Include="LameOutputModule.hpp" />
-    <ClInclude Include="MadMpegInputModule.hpp" />
     <ClInclude Include="ModuleBase.hpp" />
     <ClInclude Include="ModuleInterface.hpp" />
     <ClInclude Include="ModuleManagerImpl.hpp" />
@@ -136,7 +135,6 @@
     <ClCompile Include="LameNogapInstanceManager.cpp" />
     <ClCompile Include="LameOutputModule.cpp" />
     <ClCompile Include="LibMpg123InputModule.cpp" />
-    <ClCompile Include="MadMpegInputModule.cpp" />
     <ClCompile Include="ModuleManagerImpl.cpp" />
     <ClCompile Include="MonkeysAudioInputModule.cpp" />
     <ClCompile Include="OggVorbisInputModule.cpp" />

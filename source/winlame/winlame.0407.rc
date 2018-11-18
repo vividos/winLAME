@@ -913,8 +913,6 @@ BEGIN
     IDS_FILTER_BASS_WMA_INPUT 
                             "Windows Media Audio-Dateien [*.wma, *.asf]|*.wma;*.asf|"
     IDS_FILTER_FLAC_INPUT   "FLAC-Dateien [*.flac]|*.flac|"
-    IDS_FILTER_MAD_MPEG_INPUT 
-                            "MP3-Dateien [*.mp3]|*.mp3|MPEG-Dateien [*.mp2, *.mpg]|*.mp2;*.mpg|"
     IDS_FILTER_MONKEYS_AUDIO_INPUT 
                             "Monkey's Audio [*.ape, *.apl] |*.ape;*.apl|"
     IDS_FILTER_OGG_VORBIS_INPUT "Ogg Vorbis-Dateien [*.ogg]|*.ogg|"
@@ -939,7 +937,6 @@ BEGIN
     IDS_FORMAT_INFO_LAME_ABR "ABR-Modus (%u kbps), "
     IDS_FORMAT_INFO_LAME_CBR "CBR-Modus (%u kbps), "
     IDS_FORMAT_INFO_LAME_VBR "Qualitäts-Modus (Qualität: %u), VBR-Modus: %s, "
-    IDS_FORMAT_INFO_MAD_MPEG "MPEG-%s Layer %u, %u kbps, %u Hz, %s%s"
     IDS_FORMAT_INFO_MONKEYS_AUDIO "Monkey's Audio, %s, %d Hz, %d Kanäle"
     IDS_FORMAT_INFO_OGGV_INPUT_VBR 
                             "Ogg Vorbis, %u kbps - %u kbps, %u Kanäle, %u Hz"

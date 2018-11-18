@@ -21,7 +21,6 @@ copy bass.dll %TARGET%
 copy basscd.dll %TARGET%
 copy basswma.dll %TARGET%
 copy libFLAC_dynamic.dll %TARGET%
-copy libmad.dll %TARGET%
 copy libmp3lame.dll %TARGET%
 copy libsndfile-1.dll %TARGET%
 copy libvorbis.dll %TARGET%

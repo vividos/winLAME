@@ -453,7 +453,6 @@ void EncoderImpl::FormatEncodingDescription()
 bool EncoderImpl::IsLossyInputModule(int inputModuleID)
 {
    return
-      inputModuleID == ID_IM_MAD ||
       inputModuleID == ID_IM_OGGV ||
       inputModuleID == ID_IM_AAC ||
       inputModuleID == ID_IM_BASS ||

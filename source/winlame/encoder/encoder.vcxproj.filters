@@ -49,9 +49,6 @@
     <ClCompile Include="LibMpg123InputModule.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MadMpegInputModule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleManagerImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -163,9 +160,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LibMpg123InputModule.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MadMpegInputModule.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ModuleBase.hpp">
