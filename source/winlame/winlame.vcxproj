@@ -158,9 +158,9 @@
     <ClInclude Include="ui\RedrawLock.hpp" />
     <ClInclude Include="ui\TaskDetailsView.hpp" />
     <ClInclude Include="ui\WMASettingsPage.hpp" />
-    <ClInclude Include="preset\PresetManagerImpl.h" />
-    <ClInclude Include="preset\PropertyDlg.h" />
-    <ClInclude Include="preset\PropertyListBox.h" />
+    <ClInclude Include="preset\PresetManagerImpl.hpp" />
+    <ClInclude Include="preset\PropertyDlg.hpp" />
+    <ClInclude Include="preset\PropertyListBox.hpp" />
     <ClInclude Include="App.hpp" />
     <ClInclude Include="LangCountryMapper.hpp" />
     <ClInclude Include="LanguageResourceManager.hpp" />

@@ -189,15 +189,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="preset\PresetManagerImpl.h">
-      <Filter>Preset Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="preset\PropertyDlg.h">
-      <Filter>Preset Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="preset\PropertyListBox.h">
-      <Filter>Preset Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LangCountryMapper.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
@@ -371,6 +362,15 @@
     </ClInclude>
     <ClInclude Include="classic\ClassicModeEncoderPage.hpp">
       <Filter>Classic UI Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="preset\PresetManagerImpl.hpp">
+      <Filter>Preset Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="preset\PropertyDlg.hpp">
+      <Filter>Preset Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="preset\PropertyListBox.hpp">
+      <Filter>Preset Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

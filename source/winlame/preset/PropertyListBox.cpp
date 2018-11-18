@@ -20,7 +20,7 @@
 /// \brief contains implementation of the preset selection page
 //
 #include "stdafx.h"
-#include "PropertyListBox.h"
+#include "PropertyListBox.hpp"
 
 // consts
 

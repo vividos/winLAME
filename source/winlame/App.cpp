@@ -26,7 +26,7 @@
 #include "classic/ClassicModeStartPage.hpp"
 #include "ui/InputFilesPage.hpp"
 #include "ui/InputCDPage.hpp"
-#include "preset/PresetManagerImpl.h"
+#include "preset/PresetManagerImpl.hpp"
 #include "encoder/ModuleManagerImpl.hpp"
 #include "encoder/LameNogapInstanceManager.hpp"
 #include "TaskManager.hpp"

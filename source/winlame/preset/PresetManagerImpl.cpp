@@ -20,8 +20,8 @@
 /// \brief contains the preset manager implementation
 //
 #include "stdafx.h"
-#include "PresetManagerImpl.h"
-#include "PropertyDlg.h"
+#include "PresetManagerImpl.hpp"
+#include "PropertyDlg.hpp"
 #include <ulib/UTF8.hpp>
 #include <fstream>
 
