@@ -104,6 +104,7 @@ void AudioFileInfoManager::WorkerGetAudioFileInfo(std::atomic<bool>& stopping,
 
    bool ret = GetAudioFileInfo(filename, lengthInSeconds, bitrateInBps, sampleFrequencyInHz, errorMessage);
 
+   // NOSONAR
    if (stopping)
       return;
 
