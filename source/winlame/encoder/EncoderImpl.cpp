@@ -152,6 +152,16 @@ void EncoderImpl::Encode()
       m_encoderState.m_running = false;
       m_encoderState.m_paused = false;
       m_encoderState.m_finished = true;
+      m_encoderState.m_errorCode = -1;
+
+      if (m_inputModule == nullptr)
+      {
+         CString errorMessage;
+         errorMessage.LoadString(IDS_ENCODER_MISSING_INPUT_MOD);
+
+         HandleError(m_encoderSettings.m_inputFilename, _T("Encoder"), -1, errorMessage);
+      }
+
       return;
    }
 
