@@ -27,6 +27,12 @@
 /// HTTP response
 struct HttpResponse
 {
+   /// ctor
+   HttpResponse()
+      :status_code(0)
+   {
+   }
+
    /// HTTP status code, e.g. 200 or 404
    unsigned int status_code;
 

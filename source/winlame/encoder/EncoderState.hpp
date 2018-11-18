@@ -79,8 +79,8 @@ namespace Encoder
 
       /// \brief current error code
       /// \details 0 means no error, a positive integer indictates an error, a
-      // negative one is a fatal error and should stop the whole encoding
-      // process
+      /// negative one is a fatal error and should stop the whole encoding
+      /// process
       std::atomic<int> m_errorCode;
    };
 
