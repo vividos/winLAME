@@ -440,30 +440,6 @@ void EncoderImpl::FormatEncodingDescription()
       outputDescription.GetString());
 }
 
-CString GetLastErrorString()
-{
-   DWORD dwError = GetLastError();
-
-   LPVOID lpMsgBuf = nullptr;
-   ::FormatMessage(
-      FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-      nullptr,
-      dwError,
-      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // default language
-      reinterpret_cast<LPTSTR>(&lpMsgBuf), 0, nullptr);
-
-   CString errorMessage;
-   if (lpMsgBuf)
-   {
-      errorMessage = reinterpret_cast<LPTSTR>(lpMsgBuf);
-      LocalFree(lpMsgBuf);
-   }
-
-   errorMessage.TrimRight(_T("\r\n"));
-
-   return errorMessage;
-}
-
 bool EncoderImpl::IsLossyInputModule(int inputModuleID)
 {
    return

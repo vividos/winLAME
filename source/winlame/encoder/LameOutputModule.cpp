@@ -28,6 +28,7 @@
 #include "WaveMp3Header.hpp"
 #include "Id3v1Tag.hpp"
 #include "AudioFileTag.hpp"
+#include <ulib/win32/ErrorMessage.hpp>
 
 using Encoder::LameOutputModule;
 using Encoder::TrackInfo;
@@ -102,8 +103,6 @@ void LameErrorCallback(const char* format, va_list args)
    ATLTRACE(_T("%hs"), buffer.GetString());
 }
 
-extern CString GetLastErrorString();
-
 int LameOutputModule::InitOutput(LPCTSTR outfilename,
    SettingsManager& mgr, const TrackInfo& trackInfo,
    SampleContainer& samples)
@@ -114,7 +113,7 @@ int LameOutputModule::InitOutput(LPCTSTR outfilename,
    m_outputFile.open(outfilename, std::ios::out | std::ios::binary);
    if (!m_outputFile.is_open())
    {
-      CString lastErrorText = GetLastErrorString();
+      CString lastErrorText = Win32::ErrorMessage().ToString();
 
       m_lastError.LoadString(IDS_ENCODER_OUTPUT_FILE_CREATE_ERROR);
       m_lastError.AppendFormat(_T(" (message \"%s\", filename \"%s\")"), lastErrorText.GetString(), outfilename);
