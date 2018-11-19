@@ -17,13 +17,11 @@ call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
 REM
 REM Extract SonarQube build tools
 REM
-cd ..\buildtools\SonarQube
-
+pushd ..\buildtools\SonarQube
 "%ProgramFiles%\7-Zip\7z.exe" x -y build-wrapper-win-x86.zip
-"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-4.3.1.1372-net46.zip
-cd ..\..\source
-
-PATH=%PATH%;%CD%\..\buildtools\SonarQube\build-wrapper-win-x86;%CD%\..\buildtools\SonarQube\sonar-scanner-msbuild
+"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-4.4.2.1543-net46.zip
+PATH=%PATH%;%CD%\build-wrapper-win-x86;%CD%\sonar-scanner-msbuild
+popd
 
 REM
 REM Build using SonarQube scanner for MSBuild
