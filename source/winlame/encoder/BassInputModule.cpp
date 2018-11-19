@@ -244,39 +244,34 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
          CString cszValue = cszTag.Mid(iPos + 1);
          cszValue.TrimLeft();
 
-         if (cszName == WMA_TITLE_TAG) trackinfo.TextInfo(TrackInfoTitle, cszValue); else
-            if (cszName == WMA_AUTHOR_TAG) trackinfo.TextInfo(TrackInfoArtist, cszValue); else
-               if (cszName == WMA_ALBUM_TAG) trackinfo.TextInfo(TrackInfoAlbum, cszValue); else
-                  if (cszName == WMA_DESC_TAG) trackinfo.TextInfo(TrackInfoComment, cszValue); else
-                     if (cszName == WMA_GENRE_TAG) trackinfo.TextInfo(TrackInfoGenre, cszValue); else
-                        if (cszName == WMA_YEAR_TAG)
-                        {
-                           int iYear = _ttoi(cszValue);
-                           trackinfo.NumberInfo(TrackInfoYear, iYear);
-                        }
-                        else
-                           if (cszName == WMA_TRACKNO_TAG)
-                           {
-                              int iTrackNo = _ttoi(cszValue);
-                              trackinfo.NumberInfo(TrackInfoTrack, iTrackNo);
-                           }
-                           else
-                              if (cszName == WMA_BITRATE_TAG)
-                              {
-                                 int bitrate = _ttoi(cszValue);
-                                 m_bitrateInBps = bitrate;
-                              }
-                              else
-                                 if (cszName == WMA_ALBUM_ARTIST_TAG)
-                                    trackinfo.TextInfo(TrackInfoDiscArtist, cszValue);
-                                 else
-                                    if (cszName == WMA_COMPOSER_TAG)
-                                       trackinfo.TextInfo(TrackInfoComposer, cszValue);
-                                    else
-                                       if (cszName == WMA_PICTURE_TAG)
-                                       {
-                                          ReadWmaPictureTag(m_channel, trackinfo);
-                                       }
+         if (cszName == WMA_TITLE_TAG) trackinfo.TextInfo(TrackInfoTitle, cszValue);
+         else if (cszName == WMA_AUTHOR_TAG) trackinfo.TextInfo(TrackInfoArtist, cszValue);
+         else if (cszName == WMA_ALBUM_TAG) trackinfo.TextInfo(TrackInfoAlbum, cszValue);
+         else if (cszName == WMA_DESC_TAG) trackinfo.TextInfo(TrackInfoComment, cszValue);
+         else if (cszName == WMA_GENRE_TAG) trackinfo.TextInfo(TrackInfoGenre, cszValue);
+         else if (cszName == WMA_YEAR_TAG)
+         {
+            int iYear = _ttoi(cszValue);
+            trackinfo.SetNumberInfo(TrackInfoYear, iYear);
+         }
+         else if (cszName == WMA_TRACKNO_TAG)
+         {
+            int iTrackNo = _ttoi(cszValue);
+            trackinfo.NumberInfo(TrackInfoTrack, iTrackNo);
+         }
+         else if (cszName == WMA_BITRATE_TAG)
+         {
+            int bitrate = _ttoi(cszValue);
+            m_bitrateInBps = bitrate;
+         }
+         else if (cszName == WMA_ALBUM_ARTIST_TAG)
+            trackinfo.TextInfo(TrackInfoDiscArtist, cszValue);
+         else if (cszName == WMA_COMPOSER_TAG)
+            trackinfo.TextInfo(TrackInfoComposer, cszValue);
+         else if (cszName == WMA_PICTURE_TAG)
+         {
+            ReadWmaPictureTag(m_channel, trackinfo);
+         }
       }
    }
 
