@@ -153,10 +153,10 @@ namespace unittest
 
          for (Encoder::TrackInfoNumberType numberType : numberTypesList)
          {
-            int numberInfo = inputTrackInfo.NumberInfo(numberType, isAvailInput);
+            int numberInfo = inputTrackInfo.GetNumberInfo(numberType, isAvailInput);
 
             if (isAvailInput &&
-               (numberInfo != outputTrackInfo.NumberInfo(numberType, isAvailOutput) ||
+               (numberInfo != outputTrackInfo.GetNumberInfo(numberType, isAvailOutput) ||
                isAvailInput != isAvailOutput))
             {
                return false;
@@ -176,10 +176,10 @@ namespace unittest
 
          for (Encoder::TrackInfoTextType textType : textTypesList)
          {
-            CString textInfo = inputTrackInfo.TextInfo(textType, isAvailInput);
+            CString textInfo = inputTrackInfo.GetTextInfo(textType, isAvailInput);
 
             if (isAvailInput &&
-               (textInfo != outputTrackInfo.TextInfo(textType, isAvailOutput) ||
+               (textInfo != outputTrackInfo.GetTextInfo(textType, isAvailOutput) ||
                   isAvailInput != isAvailOutput))
             {
                return false;
@@ -187,8 +187,8 @@ namespace unittest
          }
 
          std::vector<unsigned char> inputBinaryInfo, outputBinaryInfo;
-         isAvailInput = inputTrackInfo.BinaryInfo(Encoder::TrackInfoBinaryType::TrackInfoFrontCover, inputBinaryInfo);
-         isAvailOutput = outputTrackInfo.BinaryInfo(Encoder::TrackInfoBinaryType::TrackInfoFrontCover, outputBinaryInfo);
+         isAvailInput = inputTrackInfo.GetBinaryInfo(Encoder::TrackInfoBinaryType::TrackInfoFrontCover, inputBinaryInfo);
+         isAvailOutput = outputTrackInfo.GetBinaryInfo(Encoder::TrackInfoBinaryType::TrackInfoFrontCover, outputBinaryInfo);
 
          if (isAvailInput &&
             (isAvailInput != isAvailOutput || inputBinaryInfo != outputBinaryInfo))

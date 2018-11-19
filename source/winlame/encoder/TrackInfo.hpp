@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -71,40 +71,27 @@ namespace Encoder
       }
 
       /// sets a text info value
-      void TextInfo(TrackInfoTextType type, CString value)
+      void SetTextInfo(TrackInfoTextType type, CString value)
       {
          m_mapTextInfos[type] = value;
       }
 
       /// retrieves a text info value
-      CString TextInfo(TrackInfoTextType type, bool& avail) const
+      CString GetTextInfo(TrackInfoTextType type, bool& avail) const
       {
          std::map<TrackInfoTextType, CString>::const_iterator iter = m_mapTextInfos.find(type);
          avail = iter != m_mapTextInfos.end();
          return avail ? iter->second : CString();
       }
 
-      /// retrieves a text info value
-      bool TextInfo(TrackInfoTextType type, CString& text) const
-      {
-         std::map<TrackInfoTextType, CString>::const_iterator iter = m_mapTextInfos.find(type);
-         bool avail = iter != m_mapTextInfos.end();
-         if (avail)
-            text = iter->second;
-         else
-            text.Empty();
-
-         return avail;
-      }
-
       /// sets a number info value
-      void NumberInfo(TrackInfoNumberType type, int value)
+      void SetNumberInfo(TrackInfoNumberType type, int value)
       {
          m_mapNumberInfos[type] = value;
       }
 
       /// retrieves a number info value
-      int NumberInfo(TrackInfoNumberType type, bool& avail) const
+      int GetNumberInfo(TrackInfoNumberType type, bool& avail) const
       {
          auto iter = m_mapNumberInfos.find(type);
          avail = iter != m_mapNumberInfos.end();
@@ -112,13 +99,13 @@ namespace Encoder
       }
 
       /// sets a binary info value
-      void BinaryInfo(TrackInfoBinaryType type, const std::vector<unsigned char>& value)
+      void SetBinaryInfo(TrackInfoBinaryType type, const std::vector<unsigned char>& value)
       {
          m_mapBinaryInfos[type] = value;
       }
 
       /// retrieves a binary info value
-      bool BinaryInfo(TrackInfoBinaryType type, std::vector<unsigned char>& binaryInfo) const
+      bool GetBinaryInfo(TrackInfoBinaryType type, std::vector<unsigned char>& binaryInfo) const
       {
          auto iter = m_mapBinaryInfos.find(type);
          bool avail = iter != m_mapBinaryInfos.end();

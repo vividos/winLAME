@@ -57,32 +57,32 @@ namespace unittest
          // check
          bool isAvail = false;
 
-         CString textValue = trackInfo.TextInfo(Encoder::TrackInfoTitle, isAvail);
+         CString textValue = trackInfo.GetTextInfo(Encoder::TrackInfoTitle, isAvail);
          Assert::IsTrue(isAvail && !textValue.IsEmpty(), _T("tag value must have been read"));
 
-         textValue = trackInfo.TextInfo(Encoder::TrackInfoArtist, isAvail);
+         textValue = trackInfo.GetTextInfo(Encoder::TrackInfoArtist, isAvail);
          Assert::IsTrue(isAvail && !textValue.IsEmpty(), _T("tag value must have been read"));
 
-         textValue = trackInfo.TextInfo(Encoder::TrackInfoDiscArtist, isAvail);
+         textValue = trackInfo.GetTextInfo(Encoder::TrackInfoDiscArtist, isAvail);
          Assert::IsTrue(isAvail && !textValue.IsEmpty(), _T("tag value must have been read"));
 
-         textValue = trackInfo.TextInfo(Encoder::TrackInfoAlbum, isAvail);
+         textValue = trackInfo.GetTextInfo(Encoder::TrackInfoAlbum, isAvail);
          Assert::IsTrue(isAvail && !textValue.IsEmpty(), _T("tag value must have been read"));
 
-         textValue = trackInfo.TextInfo(Encoder::TrackInfoComment, isAvail);
+         textValue = trackInfo.GetTextInfo(Encoder::TrackInfoComment, isAvail);
          Assert::IsTrue(isAvail && !textValue.IsEmpty(), _T("tag value must have been read"));
 
-         textValue = trackInfo.TextInfo(Encoder::TrackInfoGenre, isAvail);
+         textValue = trackInfo.GetTextInfo(Encoder::TrackInfoGenre, isAvail);
          Assert::IsTrue(isAvail && !textValue.IsEmpty(), _T("tag value must have been read"));
 
-         textValue = trackInfo.TextInfo(Encoder::TrackInfoComposer, isAvail);
+         textValue = trackInfo.GetTextInfo(Encoder::TrackInfoComposer, isAvail);
          Assert::IsTrue(isAvail && !textValue.IsEmpty(), _T("tag value must have been read"));
 
          const Encoder::TrackInfo& constTrackInfo = trackInfo;
-         int intValue = constTrackInfo.NumberInfo(Encoder::TrackInfoYear, isAvail);
+         int intValue = constTrackInfo.GetNumberInfo(Encoder::TrackInfoYear, isAvail);
          Assert::IsTrue(isAvail && intValue != 0, _T("tag value must have been read"));
 
-         intValue = constTrackInfo.NumberInfo(Encoder::TrackInfoTrack, isAvail);
+         intValue = constTrackInfo.GetNumberInfo(Encoder::TrackInfoTrack, isAvail);
          Assert::IsTrue(isAvail && intValue != 0, _T("tag value must have been read"));
 
          // note: Encoder::TrackInfoDiscNumber is not set in the sample mp3 file
@@ -90,7 +90,7 @@ namespace unittest
          //Assert::IsTrue(isAvail && intValue != 0, _T("tag value must have been read"));
 
          std::vector<unsigned char> binaryInfo;
-         isAvail = constTrackInfo.BinaryInfo(Encoder::TrackInfoFrontCover, binaryInfo);
+         isAvail = constTrackInfo.GetBinaryInfo(Encoder::TrackInfoFrontCover, binaryInfo);
          Assert::IsTrue(isAvail && !binaryInfo.empty(), _T("tag value must have been read"));
       }
 

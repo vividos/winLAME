@@ -1,7 +1,7 @@
 //
 // winLAME - a frontend for the LAME encoding engine
 // Copyright (c) 2004 DeXT
-// Copyright (c) 2009-2017 Michael Fink
+// Copyright (c) 2009-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -244,11 +244,11 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
          CString cszValue = cszTag.Mid(iPos + 1);
          cszValue.TrimLeft();
 
-         if (cszName == WMA_TITLE_TAG) trackinfo.TextInfo(TrackInfoTitle, cszValue);
-         else if (cszName == WMA_AUTHOR_TAG) trackinfo.TextInfo(TrackInfoArtist, cszValue);
-         else if (cszName == WMA_ALBUM_TAG) trackinfo.TextInfo(TrackInfoAlbum, cszValue);
-         else if (cszName == WMA_DESC_TAG) trackinfo.TextInfo(TrackInfoComment, cszValue);
-         else if (cszName == WMA_GENRE_TAG) trackinfo.TextInfo(TrackInfoGenre, cszValue);
+         if (cszName == WMA_TITLE_TAG) trackinfo.SetTextInfo(TrackInfoTitle, cszValue);
+         else if (cszName == WMA_AUTHOR_TAG) trackinfo.SetTextInfo(TrackInfoArtist, cszValue);
+         else if (cszName == WMA_ALBUM_TAG) trackinfo.SetTextInfo(TrackInfoAlbum, cszValue);
+         else if (cszName == WMA_DESC_TAG) trackinfo.SetTextInfo(TrackInfoComment, cszValue);
+         else if (cszName == WMA_GENRE_TAG) trackinfo.SetTextInfo(TrackInfoGenre, cszValue);
          else if (cszName == WMA_YEAR_TAG)
          {
             int iYear = _ttoi(cszValue);
@@ -257,7 +257,7 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
          else if (cszName == WMA_TRACKNO_TAG)
          {
             int iTrackNo = _ttoi(cszValue);
-            trackinfo.NumberInfo(TrackInfoTrack, iTrackNo);
+            trackinfo.SetNumberInfo(TrackInfoTrack, iTrackNo);
          }
          else if (cszName == WMA_BITRATE_TAG)
          {
@@ -265,9 +265,9 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
             m_bitrateInBps = bitrate;
          }
          else if (cszName == WMA_ALBUM_ARTIST_TAG)
-            trackinfo.TextInfo(TrackInfoDiscArtist, cszValue);
+            trackinfo.SetTextInfo(TrackInfoDiscArtist, cszValue);
          else if (cszName == WMA_COMPOSER_TAG)
-            trackinfo.TextInfo(TrackInfoComposer, cszValue);
+            trackinfo.SetTextInfo(TrackInfoComposer, cszValue);
          else if (cszName == WMA_PICTURE_TAG)
          {
             ReadWmaPictureTag(m_channel, trackinfo);
@@ -380,7 +380,7 @@ void BassInputModule::ReadWmaPictureTag(DWORD channel, TrackInfo& trackInfo)
                      picture->pbData,
                      picture->pbData + picture->dwDataLen);
 
-                  trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+                  trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryInfo);
                }
             }
          }

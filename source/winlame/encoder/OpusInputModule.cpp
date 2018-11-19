@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014-2016 Michael Fink
+// Copyright (c) 2014-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -180,7 +180,7 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = opus_tags_query(tags, "artist", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoArtist, text);
+      trackInfo.SetTextInfo(TrackInfoArtist, text);
    }
 
    if (opus_tags_query_count(tags, "title") > 0)
@@ -188,7 +188,7 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = opus_tags_query(tags, "title", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoTitle, text);
+      trackInfo.SetTextInfo(TrackInfoTitle, text);
    }
 
    if (opus_tags_query_count(tags, "album") > 0)
@@ -196,7 +196,7 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = opus_tags_query(tags, "album", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoAlbum, text);
+      trackInfo.SetTextInfo(TrackInfoAlbum, text);
    }
 
    if (opus_tags_query_count(tags, "albumartist") > 0)
@@ -204,7 +204,7 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = opus_tags_query(tags, "albumartist", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoDiscArtist, text);
+      trackInfo.SetTextInfo(TrackInfoDiscArtist, text);
    }
 
    if (opus_tags_query_count(tags, "composer") > 0)
@@ -212,7 +212,7 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = opus_tags_query(tags, "composer", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoComposer, text);
+      trackInfo.SetTextInfo(TrackInfoComposer, text);
    }
 
    if (opus_tags_query_count(tags, "comment") > 0)
@@ -220,7 +220,7 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = opus_tags_query(tags, "comment", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoComment, text);
+      trackInfo.SetTextInfo(TrackInfoComment, text);
    }
 
    if (opus_tags_query_count(tags, "genre") > 0)
@@ -228,7 +228,7 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = opus_tags_query(tags, "genre", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoGenre, text);
+      trackInfo.SetTextInfo(TrackInfoGenre, text);
    }
 
    if (opus_tags_query_count(tags, "date") > 0)
@@ -239,7 +239,7 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
       int year = _ttoi(text);
 
       if (year > 0)
-         trackInfo.NumberInfo(TrackInfoYear, year);
+         trackInfo.SetNumberInfo(TrackInfoYear, year);
    }
 
    if (opus_tags_query_count(tags, "tracknumber") > 0)
@@ -250,7 +250,7 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
       int trackNumber = _ttoi(text);
 
       if (trackNumber > 0)
-         trackInfo.NumberInfo(TrackInfoTrack, trackNumber);
+         trackInfo.SetNumberInfo(TrackInfoTrack, trackNumber);
    }
 
    if (opus_tags_query_count(tags, "METADATA_BLOCK_PICTURE") > 0)
@@ -270,7 +270,7 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
          const std::vector<unsigned char> binaryData(
             pictureTag.data, pictureTag.data + pictureTag.data_length);
 
-         trackInfo.BinaryInfo(TrackInfoFrontCover, binaryData);
+         trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
       }
 
       opus_picture_tag_clear(&pictureTag);

@@ -283,7 +283,7 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
    std::vector<char> buffer;
 
    bool avail = false;
-   CString text = trackInfo.TextInfo(TrackInfoTitle, avail);
+   CString text = trackInfo.GetTextInfo(TrackInfoTitle, avail);
    if (avail && !text.IsEmpty())
    {
       // note: ogg vorbis tag values are stored as UTF-8, so convert here
@@ -291,35 +291,35 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
       vorbis_comment_add_tag(&m_vc, "TITLE", buffer.data());
    }
 
-   text = trackInfo.TextInfo(TrackInfoArtist, avail);
+   text = trackInfo.GetTextInfo(TrackInfoArtist, avail);
    if (avail && !text.IsEmpty())
    {
       StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "ARTIST", buffer.data());
    }
 
-   text = trackInfo.TextInfo(TrackInfoDiscArtist, avail);
+   text = trackInfo.GetTextInfo(TrackInfoDiscArtist, avail);
    if (avail && !text.IsEmpty())
    {
       StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "ALBUMARTIST", buffer.data());
    }
 
-   text = trackInfo.TextInfo(TrackInfoComposer, avail);
+   text = trackInfo.GetTextInfo(TrackInfoComposer, avail);
    if (avail && !text.IsEmpty())
    {
       StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "COMPOSER", buffer.data());
    }
 
-   text = trackInfo.TextInfo(TrackInfoAlbum, avail);
+   text = trackInfo.GetTextInfo(TrackInfoAlbum, avail);
    if (avail && !text.IsEmpty())
    {
       StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "ALBUM", buffer.data());
    }
 
-   int year = trackInfo.NumberInfo(TrackInfoYear, avail);
+   int year = trackInfo.GetNumberInfo(TrackInfoYear, avail);
    if (avail && year > 0)
    {
       text.Format(_T("%i"), year);
@@ -327,14 +327,14 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
       vorbis_comment_add_tag(&m_vc, "DATE", buffer.data());
    }
 
-   text = trackInfo.TextInfo(TrackInfoComment, avail);
+   text = trackInfo.GetTextInfo(TrackInfoComment, avail);
    if (avail && !text.IsEmpty())
    {
       StringToUTF8(text, buffer);
       vorbis_comment_add_tag(&m_vc, "COMMENT", buffer.data());
    }
 
-   int trackNumber = trackInfo.NumberInfo(TrackInfoTrack, avail);
+   int trackNumber = trackInfo.GetNumberInfo(TrackInfoTrack, avail);
    if (avail && trackNumber >= 0)
    {
       text.Format(_T("%i"), trackNumber);
@@ -342,7 +342,7 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
       vorbis_comment_add_tag(&m_vc, "TRACKNUMBER", buffer.data());
    }
 
-   text = trackInfo.TextInfo(TrackInfoGenre, avail);
+   text = trackInfo.GetTextInfo(TrackInfoGenre, avail);
    if (avail && !text.IsEmpty())
    {
       StringToUTF8(text, buffer);
@@ -350,7 +350,7 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
    }
 
    std::vector<unsigned char> binaryInfo;
-   avail = trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+   avail = trackInfo.GetBinaryInfo(TrackInfoFrontCover, binaryInfo);
    if (avail)
    {
       std::string pictureData = OpusOutputModule::GetMetadataBlockPicture(binaryInfo);

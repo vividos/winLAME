@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -274,7 +274,7 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = vorbis_comment_query(comment, "artist", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoArtist, text);
+      trackInfo.SetTextInfo(TrackInfoArtist, text);
    }
 
    if (vorbis_comment_query_count(comment, "title") > 0)
@@ -282,7 +282,7 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = vorbis_comment_query(comment, "title", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoTitle, text);
+      trackInfo.SetTextInfo(TrackInfoTitle, text);
    }
 
    if (vorbis_comment_query_count(comment, "album") > 0)
@@ -290,7 +290,7 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = vorbis_comment_query(comment, "album", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoAlbum, text);
+      trackInfo.SetTextInfo(TrackInfoAlbum, text);
    }
 
    if (vorbis_comment_query_count(comment, "albumartist") > 0)
@@ -298,7 +298,7 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = vorbis_comment_query(comment, "albumartist", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoDiscArtist, text);
+      trackInfo.SetTextInfo(TrackInfoDiscArtist, text);
    }
 
    if (vorbis_comment_query_count(comment, "composer") > 0)
@@ -306,7 +306,7 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = vorbis_comment_query(comment, "composer", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoComposer, text);
+      trackInfo.SetTextInfo(TrackInfoComposer, text);
    }
 
    if (vorbis_comment_query_count(comment, "comment") > 0)
@@ -314,7 +314,7 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = vorbis_comment_query(comment, "comment", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoComment, text);
+      trackInfo.SetTextInfo(TrackInfoComment, text);
    }
 
    if (vorbis_comment_query_count(comment, "genre") > 0)
@@ -322,7 +322,7 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
       utf8text = vorbis_comment_query(comment, "genre", 0);
       text = UTF8ToString(utf8text);
 
-      trackInfo.TextInfo(TrackInfoGenre, text);
+      trackInfo.SetTextInfo(TrackInfoGenre, text);
    }
 
    if (vorbis_comment_query_count(comment, "date") > 0)
@@ -333,7 +333,7 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
       int year = _ttoi(text);
 
       if (year > 0)
-         trackInfo.NumberInfo(TrackInfoYear, year);
+         trackInfo.SetNumberInfo(TrackInfoYear, year);
    }
 
    if (vorbis_comment_query_count(comment, "tracknumber") > 0)
@@ -344,7 +344,7 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
       int trackNumber = _ttoi(text);
 
       if (trackNumber > 0)
-         trackInfo.NumberInfo(TrackInfoTrack, trackNumber);
+         trackInfo.SetNumberInfo(TrackInfoTrack, trackNumber);
    }
 
    if (vorbis_comment_query_count(comment, "METADATA_BLOCK_PICTURE") > 0)
@@ -362,7 +362,7 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
          const std::vector<unsigned char> binaryData(
             pictureTag.data, pictureTag.data + pictureTag.data_length);
 
-         trackInfo.BinaryInfo(TrackInfoFrontCover, binaryData);
+         trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
       }
 
       opus_picture_tag_clear(&pictureTag);

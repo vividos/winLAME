@@ -215,42 +215,42 @@ void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
 
    std::vector<char> utf8Buffer;
 
-   CString textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
+   CString textValue = trackInfo.GetTextInfo(TrackInfoTitle, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
       StringToUTF8(textValue, utf8Buffer);
       BASS_WMA_EncodeSetTag(m_handle, "Title", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoArtist, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoArtist, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
       StringToUTF8(textValue, utf8Buffer);
       BASS_WMA_EncodeSetTag(m_handle, "Author", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoDiscArtist, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoDiscArtist, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
       StringToUTF8(textValue, utf8Buffer);
       BASS_WMA_EncodeSetTag(m_handle, "WM/AlbumArtist", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoComposer, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoComposer, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
       StringToUTF8(textValue, utf8Buffer);
       BASS_WMA_EncodeSetTag(m_handle, "WM/Composer", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoAlbum, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoAlbum, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
       StringToUTF8(textValue, utf8Buffer);
       BASS_WMA_EncodeSetTag(m_handle, "WM/AlbumTitle", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
-   int intValue = trackInfo.NumberInfo(TrackInfoYear, isAvail);
+   int intValue = trackInfo.GetNumberInfo(TrackInfoYear, isAvail);
    if (isAvail && intValue != -1)
    {
       textValue.Format(_T("%i"), intValue);
@@ -258,14 +258,14 @@ void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
       BASS_WMA_EncodeSetTag(m_handle, "WM/Year", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoComment, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoComment, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
       StringToUTF8(textValue, utf8Buffer);
       BASS_WMA_EncodeSetTag(m_handle, "Description", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
-   intValue = trackInfo.NumberInfo(TrackInfoTrack, isAvail);
+   intValue = trackInfo.GetNumberInfo(TrackInfoTrack, isAvail);
    if (isAvail && intValue != -1)
    {
       textValue.Format(_T("%i"), intValue);
@@ -273,7 +273,7 @@ void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
       BASS_WMA_EncodeSetTag(m_handle, "WM/TrackNumber", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoGenre, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoGenre, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
       StringToUTF8(textValue, utf8Buffer);
@@ -286,7 +286,7 @@ void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
    BASS_WMA_EncodeSetTag(m_handle, "WM/ToolVersion", version, BASS_WMA_TAG_UTF8);
 
    std::vector<unsigned char> binaryInfo;
-   isAvail = trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+   isAvail = trackInfo.GetBinaryInfo(TrackInfoFrontCover, binaryInfo);
    if (isAvail)
    {
       // BASS WMA just takes a WM_PICTURE struct and hands it over to the WMA

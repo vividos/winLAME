@@ -543,49 +543,49 @@ void LameOutputModule::AddLameID3v2Tag(const TrackInfo& trackInfo)
 
    // LAME (and nlame) can't write Album Artist and Composer, so add some bytes for padding
    bool isAvail = false;
-   CString textValue = trackInfo.TextInfo(TrackInfoDiscArtist, isAvail);
+   CString textValue = trackInfo.GetTextInfo(TrackInfoDiscArtist, isAvail);
    if (isAvail)
       lamePaddingSize += textValue.GetLength() + 4 + 3; // tag ID + tag header + string length
 
-   textValue = trackInfo.TextInfo(TrackInfoComposer, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoComposer, isAvail);
    if (isAvail)
       lamePaddingSize += textValue.GetLength() + 4 + 3; // tag ID + tag header + string length
 
    nlame_id3tag_init(m_instance, false, true, lamePaddingSize);
 
    // add all tags
-   textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoTitle, isAvail);
    if (isAvail)
       nlame_id3tag_setfield_latin1(m_instance, nif_title, CStringA(textValue));
 
-   textValue = trackInfo.TextInfo(TrackInfoArtist, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoArtist, isAvail);
    if (isAvail)
       nlame_id3tag_setfield_latin1(m_instance, nif_artist, CStringA(textValue));
 
-   textValue = trackInfo.TextInfo(TrackInfoComment, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoComment, isAvail);
    if (isAvail)
       nlame_id3tag_setfield_latin1(m_instance, nif_comment, CStringA(textValue));
 
-   textValue = trackInfo.TextInfo(TrackInfoAlbum, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoAlbum, isAvail);
    if (isAvail)
       nlame_id3tag_setfield_latin1(m_instance, nif_album, CStringA(textValue));
 
    // numeric
-   int intValue = trackInfo.NumberInfo(TrackInfoYear, isAvail);
+   int intValue = trackInfo.GetNumberInfo(TrackInfoYear, isAvail);
    if (isAvail)
    {
       textValue.Format(_T("%i"), intValue);
       nlame_id3tag_setfield_latin1(m_instance, nif_year, CStringA(textValue));
    }
 
-   intValue = trackInfo.NumberInfo(TrackInfoTrack, isAvail);
+   intValue = trackInfo.GetNumberInfo(TrackInfoTrack, isAvail);
    if (isAvail)
    {
       textValue.Format(_T("%i"), intValue);
       nlame_id3tag_setfield_latin1(m_instance, nif_track, CStringA(textValue));
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoGenre, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoGenre, isAvail);
    if (isAvail)
    {
       nlame_id3tag_setfield_latin1(m_instance, nif_genre, CStringA(textValue));
@@ -593,7 +593,7 @@ void LameOutputModule::AddLameID3v2Tag(const TrackInfo& trackInfo)
 
    std::vector<unsigned char> binaryInfo;
 
-   isAvail = trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+   isAvail = trackInfo.GetBinaryInfo(TrackInfoFrontCover, binaryInfo);
    if (isAvail)
    {
       nlame_id3tag_set_albumart(m_instance, reinterpret_cast<const char*>(binaryInfo.data()), binaryInfo.size());

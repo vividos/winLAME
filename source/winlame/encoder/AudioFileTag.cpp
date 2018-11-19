@@ -118,42 +118,42 @@ bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id
    if (tag->title() != TagLib::String::null)
    {
       textValue = tag->title().toCWString();
-      m_trackInfo.TextInfo(TrackInfoTitle, textValue);
+      m_trackInfo.SetTextInfo(TrackInfoTitle, textValue);
    }
 
    if (tag->artist() != TagLib::String::null)
    {
       textValue = tag->artist().toCWString();
-      m_trackInfo.TextInfo(TrackInfoArtist, textValue);
+      m_trackInfo.SetTextInfo(TrackInfoArtist, textValue);
    }
 
    if (tag->comment() != TagLib::String::null)
    {
       textValue = tag->comment().toCWString();
-      m_trackInfo.TextInfo(TrackInfoComment, textValue);
+      m_trackInfo.SetTextInfo(TrackInfoComment, textValue);
    }
 
    if (tag->album() != TagLib::String::null)
    {
       textValue = tag->album().toCWString();
-      m_trackInfo.TextInfo(TrackInfoAlbum, textValue);
+      m_trackInfo.SetTextInfo(TrackInfoAlbum, textValue);
    }
 
    if (tag->year() != 0)
    {
-      m_trackInfo.NumberInfo(TrackInfoYear, static_cast<int>(tag->year()));
+      m_trackInfo.SetNumberInfo(TrackInfoYear, static_cast<int>(tag->year()));
    }
 
    if (tag->track() != 0)
    {
-      m_trackInfo.NumberInfo(TrackInfoTrack, static_cast<int>(tag->track()));
+      m_trackInfo.SetNumberInfo(TrackInfoTrack, static_cast<int>(tag->track()));
    }
 
    if (tag->genre() != TagLib::String::null)
    {
       textValue = tag->genre().toCWString();
       if (!textValue.IsEmpty())
-         m_trackInfo.TextInfo(TrackInfoGenre, textValue);
+         m_trackInfo.SetTextInfo(TrackInfoGenre, textValue);
    }
 
    if (id3v2tag != nullptr)
@@ -163,13 +163,13 @@ bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id
       if (propertyMap.contains(TagLib::String("ALBUMARTIST")))
       {
          textValue = propertyMap[TagLib::String("ALBUMARTIST")].toString().toCWString();
-         m_trackInfo.TextInfo(TrackInfoDiscArtist, textValue);
+         m_trackInfo.SetTextInfo(TrackInfoDiscArtist, textValue);
       }
 
       if (propertyMap.contains(TagLib::String("COMPOSER")))
       {
          textValue = propertyMap[TagLib::String("COMPOSER")].toString().toCWString();
-         m_trackInfo.TextInfo(TrackInfoComposer, textValue);
+         m_trackInfo.SetTextInfo(TrackInfoComposer, textValue);
       }
 
       for (auto frame : id3v2tag->frameList())
@@ -187,7 +187,7 @@ bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id
                data + pictureFrame->picture().size());
 
             if (!binaryData.empty())
-               m_trackInfo.BinaryInfo(TrackInfoFrontCover, binaryData);
+               m_trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
          }
       }
    }
@@ -228,19 +228,19 @@ void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3
 {
    // add all frames
    bool isAvail = false;
-   CString textValue = m_trackInfo.TextInfo(TrackInfoTitle, isAvail);
+   CString textValue = m_trackInfo.GetTextInfo(TrackInfoTitle, isAvail);
    if (isAvail)
       tag->setTitle(TagLib::String(textValue));
 
    const TrackInfo& trackInfo = m_trackInfo;
 
-   textValue = trackInfo.TextInfo(TrackInfoArtist, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoArtist, isAvail);
    if (isAvail)
    {
       tag->setArtist(TagLib::String(textValue));
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoDiscArtist, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoDiscArtist, isAvail);
    if (isAvail)
    {
       if (id3v2tag != nullptr)
@@ -253,7 +253,7 @@ void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3
       }
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoComposer, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoComposer, isAvail);
    if (isAvail)
    {
       if (id3v2tag != nullptr)
@@ -266,19 +266,19 @@ void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3
       }
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoComment, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoComment, isAvail);
    if (isAvail)
    {
       tag->setComment(TagLib::String(textValue));
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoAlbum, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoAlbum, isAvail);
    if (isAvail)
    {
       tag->setAlbum(TagLib::String(textValue));
    }
 
-   textValue = trackInfo.TextInfo(TrackInfoGenre, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoGenre, isAvail);
    if (isAvail)
    {
       tag->setGenre(TagLib::String(textValue));
@@ -286,13 +286,13 @@ void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3
 
    // numeric
 
-   int intValue = trackInfo.NumberInfo(TrackInfoYear, isAvail);
+   int intValue = trackInfo.GetNumberInfo(TrackInfoYear, isAvail);
    if (isAvail)
    {
       tag->setYear(static_cast<unsigned int>(intValue));
    }
 
-   intValue = trackInfo.NumberInfo(TrackInfoTrack, isAvail);
+   intValue = trackInfo.GetNumberInfo(TrackInfoTrack, isAvail);
    if (isAvail)
    {
       tag->setTrack(static_cast<unsigned int>(intValue));
@@ -302,7 +302,7 @@ void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3
 
    std::vector<unsigned char> binaryInfo;
 
-   isAvail = trackInfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+   isAvail = trackInfo.GetBinaryInfo(TrackInfoFrontCover, binaryInfo);
    if (isAvail)
    {
       if (id3v2tag != nullptr)

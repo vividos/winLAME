@@ -104,32 +104,32 @@ static void FLAC_MetadataCallback(const FLAC__StreamDecoder* decoder,
 
          if (name.CompareNoCase(_T("title")) == 0)
          {
-            context->trackInfo->TextInfo(Encoder::TrackInfoTitle, value);
+            context->trackInfo->SetTextInfo(Encoder::TrackInfoTitle, value);
          }
          else if (name.CompareNoCase(_T("artist")) == 0)
          {
-            context->trackInfo->TextInfo(Encoder::TrackInfoArtist, value);
+            context->trackInfo->SetTextInfo(Encoder::TrackInfoArtist, value);
          }
          else if (name.CompareNoCase(_T("album")) == 0)
          {
-            context->trackInfo->TextInfo(Encoder::TrackInfoAlbum, value);
+            context->trackInfo->SetTextInfo(Encoder::TrackInfoAlbum, value);
          }
          else if (name.CompareNoCase(_T("comment")) == 0)
          {
-            context->trackInfo->TextInfo(Encoder::TrackInfoComment, value);
+            context->trackInfo->SetTextInfo(Encoder::TrackInfoComment, value);
          }
          else if (name.CompareNoCase(_T("genre")) == 0)
          {
             if (!value.IsEmpty())
-               context->trackInfo->TextInfo(Encoder::TrackInfoGenre, value);
+               context->trackInfo->SetTextInfo(Encoder::TrackInfoGenre, value);
          }
          else if (name.CompareNoCase(_T("tracknumber")) == 0)
          {
-            context->trackInfo->NumberInfo(Encoder::TrackInfoTrack, _ttoi(value));
+            context->trackInfo->SetNumberInfo(Encoder::TrackInfoTrack, _ttoi(value));
          }
          else if (name.CompareNoCase(_T("year")) == 0)
          {
-            context->trackInfo->NumberInfo(Encoder::TrackInfoYear, _ttoi(value));
+            context->trackInfo->SetNumberInfo(Encoder::TrackInfoYear, _ttoi(value));
          }
          else if (name.CompareNoCase(_T("date")) == 0)
          {
@@ -138,7 +138,7 @@ static void FLAC_MetadataCallback(const FLAC__StreamDecoder* decoder,
             if (value.GetLength() == 4 &&
                value.SpanIncluding(_T("0123456789")).GetLength() == 4)
             {
-               context->trackInfo->NumberInfo(Encoder::TrackInfoYear, _ttoi(value));
+               context->trackInfo->SetNumberInfo(Encoder::TrackInfoYear, _ttoi(value));
             }
          }
       }

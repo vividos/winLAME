@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -217,28 +217,28 @@ void CDExtractTask::SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, cons
    // disc info
    const CDRipDiscInfo& discInfo = cdReadJob.DiscInfo();
 
-   encodeTrackInfo.TextInfo(TrackInfoDiscArtist, discInfo.m_discArtist);
-   encodeTrackInfo.TextInfo(TrackInfoAlbum, discInfo.m_discTitle);
+   encodeTrackInfo.SetTextInfo(TrackInfoDiscArtist, discInfo.m_discArtist);
+   encodeTrackInfo.SetTextInfo(TrackInfoAlbum, discInfo.m_discTitle);
 
    if (discInfo.m_year != 0)
-      encodeTrackInfo.NumberInfo(TrackInfoYear, discInfo.m_year);
+      encodeTrackInfo.SetNumberInfo(TrackInfoYear, discInfo.m_year);
 
    if (!discInfo.m_genre.IsEmpty())
-      encodeTrackInfo.TextInfo(TrackInfoGenre, discInfo.m_genre);
+      encodeTrackInfo.SetTextInfo(TrackInfoGenre, discInfo.m_genre);
 
    // add track info
    const CDRipTrackInfo& cdTrackInfo = cdReadJob.TrackInfo();
 
-   encodeTrackInfo.TextInfo(TrackInfoTitle, cdTrackInfo.m_trackTitle);
+   encodeTrackInfo.SetTextInfo(TrackInfoTitle, cdTrackInfo.m_trackTitle);
 
    CString trackArist = cdTrackInfo.m_trackArtist;
-   encodeTrackInfo.TextInfo(TrackInfoArtist, trackArist);
+   encodeTrackInfo.SetTextInfo(TrackInfoArtist, trackArist);
 
-   encodeTrackInfo.NumberInfo(TrackInfoTrack, cdTrackInfo.m_numTrackOnDisc + 1);
+   encodeTrackInfo.SetNumberInfo(TrackInfoTrack, cdTrackInfo.m_numTrackOnDisc + 1);
 
    // cover art
    if (!cdReadJob.FrontCoverArtImage().empty())
    {
-      encodeTrackInfo.BinaryInfo(TrackInfoFrontCover, cdReadJob.FrontCoverArtImage());
+      encodeTrackInfo.SetBinaryInfo(TrackInfoFrontCover, cdReadJob.FrontCoverArtImage());
    }
 }

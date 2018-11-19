@@ -425,17 +425,17 @@ void SndFileInputModule::GetTrackInfos(TrackInfo& trackInfo)
    const char* utf8text = sf_get_string(m_sndfile, SF_STR_TITLE);
    CString text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
-      trackInfo.TextInfo(TrackInfoTitle, text);
+      trackInfo.SetTextInfo(TrackInfoTitle, text);
 
    utf8text = sf_get_string(m_sndfile, SF_STR_ARTIST);
    text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
-      trackInfo.TextInfo(TrackInfoArtist, text);
+      trackInfo.SetTextInfo(TrackInfoArtist, text);
 
    utf8text = sf_get_string(m_sndfile, SF_STR_ALBUM);
    text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
-      trackInfo.TextInfo(TrackInfoAlbum, text);
+      trackInfo.SetTextInfo(TrackInfoAlbum, text);
 
    utf8text = sf_get_string(m_sndfile, SF_STR_DATE);
    text = UTF8ToString(utf8text);
@@ -443,13 +443,13 @@ void SndFileInputModule::GetTrackInfos(TrackInfo& trackInfo)
    {
       int year = _ttoi(text);
       if (year > 0)
-         trackInfo.NumberInfo(TrackInfoYear, year);
+         trackInfo.SetNumberInfo(TrackInfoYear, year);
    }
 
    utf8text = sf_get_string(m_sndfile, SF_STR_COMMENT);
    text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
-      trackInfo.TextInfo(TrackInfoComment, text);
+      trackInfo.SetTextInfo(TrackInfoComment, text);
 
    utf8text = sf_get_string(m_sndfile, SF_STR_TRACKNUMBER);
    text = UTF8ToString(utf8text);
@@ -457,13 +457,13 @@ void SndFileInputModule::GetTrackInfos(TrackInfo& trackInfo)
    {
       int trackNumber = _ttoi(text);
       if (trackNumber > 0)
-         trackInfo.NumberInfo(TrackInfoTrack, trackNumber);
+         trackInfo.SetNumberInfo(TrackInfoTrack, trackNumber);
    }
 
    utf8text = sf_get_string(m_sndfile, SF_STR_GENRE);
    text = UTF8ToString(utf8text);
    if (!text.IsEmpty())
-      trackInfo.TextInfo(TrackInfoGenre, text);
+      trackInfo.SetTextInfo(TrackInfoGenre, text);
 
    utf8text = sf_get_string(m_sndfile, SF_STR_SOFTWARE);
    text = UTF8ToString(utf8text);

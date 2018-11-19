@@ -288,46 +288,52 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
 
    ope_comments_add(comments, "ENCODER_OPTIONS", CStringA(encoderOptions).GetString());
 
-   CString text;
    std::vector<char> utf8Buffer;
-   if (trackinfo.TextInfo(TrackInfoArtist, text))
+
+   bool avail = false;
+   CString text = trackinfo.GetTextInfo(TrackInfoArtist, avail);
+   if (avail)
    {
       StringToUTF8(text, utf8Buffer);
       ope_comments_add(comments, "artist", utf8Buffer.data());
    }
 
-   if (trackinfo.TextInfo(TrackInfoTitle, text))
+   text = trackinfo.GetTextInfo(TrackInfoTitle, avail);
+   if (avail)
    {
       StringToUTF8(text, utf8Buffer);
       ope_comments_add(comments, "title", utf8Buffer.data());
    }
 
-   if (trackinfo.TextInfo(TrackInfoAlbum, text))
+   text = trackinfo.GetTextInfo(TrackInfoAlbum, avail);
+   if (avail)
    {
       StringToUTF8(text, utf8Buffer);
       ope_comments_add(comments, "album", utf8Buffer.data());
    }
 
-   if (trackinfo.TextInfo(TrackInfoDiscArtist, text))
+   text = trackinfo.GetTextInfo(TrackInfoDiscArtist, avail);
+   if (avail)
    {
       StringToUTF8(text, utf8Buffer);
       ope_comments_add(comments, "albumartist", utf8Buffer.data());
    }
 
-   if (trackinfo.TextInfo(TrackInfoComposer, text))
+   text = trackinfo.GetTextInfo(TrackInfoComposer, avail);
+   if (avail)
    {
       StringToUTF8(text, utf8Buffer);
       ope_comments_add(comments, "composer", utf8Buffer.data());
    }
 
-   if (trackinfo.TextInfo(TrackInfoComment, text))
+   text = trackinfo.GetTextInfo(TrackInfoComment, avail);
+   if (avail)
    {
       StringToUTF8(text, utf8Buffer);
       ope_comments_add(comments, "comment", utf8Buffer.data());
    }
 
-   bool avail = false;
-   int year = trackinfo.NumberInfo(TrackInfoYear, avail);
+   int year = trackinfo.GetNumberInfo(TrackInfoYear, avail);
    if (avail && year != -1)
    {
       text.Format(_T("%i"), year);
@@ -335,7 +341,7 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
       ope_comments_add(comments, "date", utf8Buffer.data());
    }
 
-   int trackNumber = trackinfo.NumberInfo(TrackInfoTrack, avail);
+   int trackNumber = trackinfo.GetNumberInfo(TrackInfoTrack, avail);
    if (avail && trackNumber > 0)
    {
       text.Format(_T("%i"), trackNumber);
@@ -343,14 +349,15 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
       ope_comments_add(comments, "tracknumber", utf8Buffer.data());
    }
 
-   if (trackinfo.TextInfo(TrackInfoGenre, text))
+   text = trackinfo.GetTextInfo(TrackInfoGenre, avail);
+   if (avail)
    {
       StringToUTF8(text, utf8Buffer);
       ope_comments_add(comments, "genre", utf8Buffer.data());
    }
 
    std::vector<unsigned char> binaryInfo;
-   avail = trackinfo.BinaryInfo(TrackInfoFrontCover, binaryInfo);
+   avail = trackinfo.GetBinaryInfo(TrackInfoFrontCover, binaryInfo);
    if (avail && !binaryInfo.empty())
    {
       ope_comments_add_picture_from_memory(comments, reinterpret_cast<const char*>(binaryInfo.data()), binaryInfo.size(), -1, nullptr);

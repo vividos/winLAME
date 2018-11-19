@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2018 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -34,38 +34,38 @@ void Id3v1Tag::ToTrackInfo(TrackInfo& trackInfo) const
    // title
    CString textValue = CString(CStringA(this->title), 30);
    if (this->title[0] != 0)
-      trackInfo.TextInfo(TrackInfoTitle, textValue);
+      trackInfo.SetTextInfo(TrackInfoTitle, textValue);
 
    // artist
    textValue = CString(CStringA(this->artist), 30);
    if (this->artist[0] != 0)
-      trackInfo.TextInfo(TrackInfoArtist, textValue);
+      trackInfo.SetTextInfo(TrackInfoArtist, textValue);
 
    // album
    textValue = CString(CStringA(this->album), 30);
    if (this->album[0] != 0)
-      trackInfo.TextInfo(TrackInfoAlbum, textValue);
+      trackInfo.SetTextInfo(TrackInfoAlbum, textValue);
 
    // year
    textValue = CString(CStringA(this->year), 4);
    int intValue = (int)_tcstoul(textValue, NULL, 10);
    if (intValue != 0)
-      trackInfo.NumberInfo(TrackInfoYear, intValue);
+      trackInfo.SetNumberInfo(TrackInfoYear, intValue);
 
    // comment
    textValue = CString(CStringA(this->comment), 29);
    if (this->comment[0] != 0)
-      trackInfo.TextInfo(TrackInfoComment, textValue);
+      trackInfo.SetTextInfo(TrackInfoComment, textValue);
 
    // track number
    if (this->track != 0 && this->track != this->comment[28])
-      trackInfo.NumberInfo(TrackInfoTrack, (int)this->track);
+      trackInfo.SetNumberInfo(TrackInfoTrack, (int)this->track);
 
    // genre
    if (this->genre != 0xff)
    {
       CString cszGenre = TrackInfo::GenreIDToText(this->genre);
-      trackInfo.TextInfo(TrackInfoGenre, cszGenre);
+      trackInfo.SetTextInfo(TrackInfoGenre, cszGenre);
    }
 }
 
@@ -75,31 +75,31 @@ void Id3v1Tag::FromTrackInfo(const TrackInfo& trackInfo)
    memcpy(this->tag, "TAG", 3);
 
    bool isAvail;
-   CString textValue = trackInfo.TextInfo(TrackInfoTitle, isAvail);
+   CString textValue = trackInfo.GetTextInfo(TrackInfoTitle, isAvail);
    if (isAvail)
       _snprintf(this->title, sizeof(this->title) / sizeof(*this->title), "%.30ls", textValue.Left(30).GetString());
 
-   textValue = trackInfo.TextInfo(TrackInfoArtist, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoArtist, isAvail);
    if (isAvail)
       _snprintf(this->artist, sizeof(this->artist) / sizeof(*this->artist), "%.30ls", textValue.Left(30).GetString());
 
-   textValue = trackInfo.TextInfo(TrackInfoAlbum, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoAlbum, isAvail);
    if (isAvail)
       _snprintf(this->album, sizeof(this->album) / sizeof(*this->album), "%.30ls", textValue.Left(30).GetString());
 
-   int intValue = trackInfo.NumberInfo(TrackInfoYear, isAvail);
+   int intValue = trackInfo.GetNumberInfo(TrackInfoYear, isAvail);
    if (isAvail)
       _snprintf(this->year, sizeof(this->year) / sizeof(*this->year), "%.4u", static_cast<unsigned int>(intValue));
 
-   textValue = trackInfo.TextInfo(TrackInfoComment, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoComment, isAvail);
    if (isAvail)
       _snprintf(this->comment, sizeof(this->comment) / sizeof(*this->comment), "%.29ls", textValue.Left(29).GetString());
 
-   intValue = trackInfo.NumberInfo(TrackInfoTrack, isAvail);
+   intValue = trackInfo.GetNumberInfo(TrackInfoTrack, isAvail);
    if (isAvail)
       this->track = (unsigned char)intValue;
 
-   textValue = trackInfo.TextInfo(TrackInfoGenre, isAvail);
+   textValue = trackInfo.GetTextInfo(TrackInfoGenre, isAvail);
    if (isAvail)
       this->genre = static_cast<unsigned char>(TrackInfo::TextToGenreID(textValue));
 }
