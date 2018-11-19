@@ -11,5 +11,5 @@ unusedStructMember:..\winlame\encoder\id3\File.cpp
 knownConditionTrueFalse:..\winlame\encoder\EncoderTask.cpp:109
 mismatchAllocDealloc:..\winlame\encoder\CreatePlaylistTask.cpp:95
 mismatchAllocDealloc:..\winlame\encoder\SndFileInputModule.cpp:316
-deallocuse:..\winlame\encoder\OpusOutputModule.cpp:673
+deallocuse:..\winlame\encoder\OpusOutputModule.cpp:680
 mismatchAllocDealloc:..\winlame\encoder\aacinfo\filestream.c:53
