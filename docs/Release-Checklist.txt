@@ -7,19 +7,20 @@ Here's a checklist of what to do before each release:
   * winlame.rc
   * winlame.????.rc
   * config.wxi
-  * doxygen.cfg,
+  * doxygen.cfg
   * source\portable\App\AppInfo\appinfo.ini
   * AppVeyor Settings
   * SonarQube build script
 - Update copyright year in the following files:
   * about.html
   * about.????.html
-  * docs\License.winLAME.rtf,
+  * docs\License.winLAME.rtf
   * htmlhelp index page
   * readme.txt
 - Check all external libraries for updates and update them
+- Check all NuGet packages and update them
 - Check external tools for updates and update them (doxygen, cppcheck, wix)
-- Build all projects in Win32 | Release
+- Build all projects in Release|Win32
 - Run all unit tests
 - Fix cppcheck errors and doxygen warnings
 - Compile all project with /analyze and fix all warnings
