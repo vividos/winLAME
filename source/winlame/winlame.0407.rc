@@ -776,7 +776,6 @@ BEGIN
     IDS_HTML_ENCODE         "/html/pages/encode.html"
     IDS_HTML_OPUS           "/html/pages/opus.html"
     IDS_HTML_WMA            "/html/pages/wma.html"
-    IDS_HTML_CDRIP          "/html/pages/cdaudio.html"
     IDS_HTML_FINISH         "/html/pages/finish.html"
     IDS_HTML_SETTINGS_CDREAD "/html/pages/settings_cdread.html"
     IDS_HTML_SETTINGS_GENERAL "/html/pages/settings_general.html"

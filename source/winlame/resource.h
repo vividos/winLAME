@@ -243,7 +243,6 @@
 #define IDS_HTML_ENCODE                 40807
 #define IDS_HTML_OPUS                   40808
 #define IDS_HTML_WMA                    40810
-#define IDS_HTML_CDRIP                  40811
 #define IDS_HTML_FINISH                 40812
 #define IDS_HTML_SETTINGS_CDREAD        40813
 #define IDS_HTML_SETTINGS_GENERAL       40814

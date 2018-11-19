@@ -97,10 +97,6 @@
 			<param name="Local" value="html\pages\aac.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="CD Audio Extraction">
-			<param name="Local" value="html\pages\cdaudio.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Finish">
 			<param name="Local" value="html\pages\finish.html">
 			</OBJECT>

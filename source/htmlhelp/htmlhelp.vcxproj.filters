@@ -61,9 +61,6 @@
     <None Include="html\pages\sndfile.html">
       <Filter>html\pages</Filter>
     </None>
-    <None Include="html\pages\cdaudio.html">
-      <Filter>html\pages</Filter>
-    </None>
     <None Include="html\pages\opus.html">
       <Filter>html\pages</Filter>
     </None>

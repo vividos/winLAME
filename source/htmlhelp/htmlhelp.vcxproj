@@ -79,7 +79,6 @@ exit 0</NMakeCleanCommandLine>
     <None Include="html\misc\intromp3.html" />
     <None Include="html\misc\licenses.html" />
     <None Include="html\pages\aac.html" />
-    <None Include="html\pages\cdaudio.html" />
     <None Include="html\pages\classicui.html" />
     <None Include="html\pages\classic_start.html" />
     <None Include="html\pages\encode.html" />
