@@ -39,7 +39,7 @@ copy %ROOT%\bin\Release\*.exe winLAMEPortable\App\winLAME\
 copy %ROOT%\bin\Release\*.chm winLAMEPortable\App\winLAME\
 copy %ROOT%\readme.txt winLAMEPortable\App\winLAME\Readme.txt
 copy %ROOT%\Copying winLAMEPortable\App\winLAME\Copying.txt
-copy "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.12.25810\vc_redist.x86.exe" winLAMEPortable\App\winLAME\vcredist_x86_vc141.exe
+copy "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.15.26706\vcredist_x86.exe" winLAMEPortable\App\winLAME\vcredist_x86_vc141.exe
 
 mkdir winLAMEPortable\Data
 copy %ROOT%\source\presets.xml  winLAMEPortable\App\winLAME\
