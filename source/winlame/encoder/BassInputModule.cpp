@@ -35,7 +35,7 @@ using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
 /// BASS API usage count
-std::atomic<unsigned int> s_bassApiusageCount = 0;
+std::atomic<unsigned int> s_bassApiusageCount = { 0 };
 
 // constants
 
@@ -152,7 +152,7 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    }
 
    // try streaming the file/url
-   CStringA ansiFilename = GetAnsiCompatFilename(infilename);
+   CStringA ansiFilename(GetAnsiCompatFilename(infilename));
 
    m_channel = BASS_WMA_StreamCreateFile(FALSE, ansiFilename, 0, 0, BASS_STREAM_DECODE);
 

@@ -273,7 +273,7 @@ int FlacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    m_flacDecoder = FLAC__stream_decoder_new();
 
    // open stream
-   CStringA ansiFilename = GetAnsiCompatFilename(infilename);
+   CStringA ansiFilename(GetAnsiCompatFilename(infilename));
    FLAC__StreamDecoderInitStatus initStatus = FLAC__stream_decoder_init_file(m_flacDecoder,
       ansiFilename,
       FLAC_WriteCallback,

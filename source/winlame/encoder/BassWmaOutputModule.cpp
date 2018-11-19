@@ -282,7 +282,7 @@ void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
 
    BASS_WMA_EncodeSetTag(m_handle, "WM/ToolName", "winLAME", BASS_WMA_TAG_UTF8);
 
-   CStringA version = App::Version();
+   CStringA version(App::Version());
    BASS_WMA_EncodeSetTag(m_handle, "WM/ToolVersion", version, BASS_WMA_TAG_UTF8);
 
    std::vector<unsigned char> binaryInfo;

@@ -203,19 +203,19 @@ void SndFileOutputModule::SetTrackInfo(const TrackInfo& trackInfo)
    // know how the values are stored; at least for RIFF Wave INFO header, it
    // seems that UTF-8 as text would be ignored.
    bool avail;
-   CStringA text = trackInfo.GetTextInfo(TrackInfoTitle, avail);
+   CStringA text(trackInfo.GetTextInfo(TrackInfoTitle, avail));
    if (avail && !text.IsEmpty())
    {
       sf_set_string(m_sndfile, SF_STR_TITLE, text.GetString());
    }
 
-   text = trackInfo.GetTextInfo(TrackInfoArtist, avail);
+   text = CStringA(trackInfo.GetTextInfo(TrackInfoArtist, avail));
    if (avail && !text.IsEmpty())
    {
       sf_set_string(m_sndfile, SF_STR_ARTIST, text.GetString());
    }
 
-   text = trackInfo.GetTextInfo(TrackInfoAlbum, avail);
+   text = CStringA(trackInfo.GetTextInfo(TrackInfoAlbum, avail));
    if (avail && !text.IsEmpty())
    {
       sf_set_string(m_sndfile, SF_STR_ALBUM, text.GetString());
@@ -228,7 +228,7 @@ void SndFileOutputModule::SetTrackInfo(const TrackInfo& trackInfo)
       sf_set_string(m_sndfile, SF_STR_DATE, text.GetString());
    }
 
-   text = trackInfo.GetTextInfo(TrackInfoComment, avail);
+   text = CStringA(trackInfo.GetTextInfo(TrackInfoComment, avail));
    if (avail && !text.IsEmpty())
    {
       sf_set_string(m_sndfile, SF_STR_COMMENT, text.GetString());
@@ -241,7 +241,7 @@ void SndFileOutputModule::SetTrackInfo(const TrackInfo& trackInfo)
       sf_set_string(m_sndfile, SF_STR_TRACKNUMBER, text.GetString());
    }
 
-   text = trackInfo.GetTextInfo(TrackInfoGenre, avail);
+   text = CStringA(trackInfo.GetTextInfo(TrackInfoGenre, avail));
    if (avail && !text.IsEmpty())
    {
       sf_set_string(m_sndfile, SF_STR_GENRE, text.GetString());

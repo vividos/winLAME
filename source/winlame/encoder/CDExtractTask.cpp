@@ -71,7 +71,7 @@ TaskInfo CDExtractTask::GetTaskInfo()
       m_running ? TaskInfo::statusRunning :
       TaskInfo::statusWaiting);
 
-   info.Progress(m_finished ? 100 : m_progressInPercent);
+   info.Progress(m_finished ? 100 : static_cast<unsigned int>(m_progressInPercent));
 
    return info;
 }
