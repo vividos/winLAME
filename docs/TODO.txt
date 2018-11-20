@@ -1,13 +1,14 @@
 TODO list for winLAME
 
-winLAME 2018 beta 1, bug fixes:
-- resizing dialogs
+winLAME 2018 beta 2, bug fixes:
+- prevent checking CD data tracks
+- prevent leaving CD read dialog with 0 tracks selected
+- find track length for writing playlists when encoding files
 
-winLAME 2018 beta 1, feature wishes:
+winLAME 2018 beta 2, feature wishes:
 - encoding of whole directory structure to another folder
 
-winLAME 2018 beta 1, nice-to-have:
-- remove code TODOs
+winLAME 2018 beta 2, nice-to-have:
 - fix remaining SonarQube bugs and vulnerabilities
 - update to libsndfile-1.0.29 for fixed FLAC support, once released
 - save all settings on custom module settings pages
