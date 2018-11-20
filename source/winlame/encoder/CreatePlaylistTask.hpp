@@ -57,6 +57,12 @@ namespace Encoder
       /// single playlist entry
       struct PlaylistEntry
       {
+         /// ctor
+         PlaylistEntry()
+            :m_trackLengthInSeconds(0)
+         {
+         }
+
          /// filename of playlist entry
          CString m_filename;
 
@@ -64,7 +70,7 @@ namespace Encoder
          CString m_title;
 
          /// track length, in seconds
-         unsigned m_trackLengthInSeconds;
+         unsigned int m_trackLengthInSeconds;
       };
 
       /// list of playlist entries

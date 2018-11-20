@@ -37,7 +37,7 @@ CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CStri
       PlaylistEntry entry;
 
       entry.m_filename = encoderJob.OutputFilename();
-      // TODO title, length
+      entry.m_title = Path(encoderJob.InputFilename()).FilenameAndExt();
 
       m_playlistEntries.push_back(entry);
    });
