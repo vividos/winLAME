@@ -33,7 +33,7 @@ msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target
 
 SonarScanner.MSBuild.exe begin ^
     /k:"winLAME" ^
-    /v:"2.18.1.0" ^
+    /v:"2.18.2.0" ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
     /d:"sonar.host.url=https://sonarcloud.io" ^
     /d:"sonar.organization=vividos-github" ^

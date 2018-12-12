@@ -561,8 +561,8 @@ IDR_MAINFRAME           ICON                    "res\\winlame.ico"
 //
 
 1 VERSIONINFO
- FILEVERSION 2,18,1,0
- PRODUCTVERSION 2,18,1,0
+ FILEVERSION 2,18,2,0
+ PRODUCTVERSION 2,18,2,0
  FILEFLAGSMASK 0x0L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -580,14 +580,14 @@ BEGIN
             VALUE "Comments", "winLAME ist ein einfach zu bedienender Encoder für viele Audio-Formate, inklusive MP3, Opus, Ogg Vorbis and weitere. winLAME verwendet den LAME mp3-Encoder."
             VALUE "CompanyName", "Michael Fink"
             VALUE "FileDescription", "winLAME"
-            VALUE "FileVersion", "2018 beta 1"
+            VALUE "FileVersion", "2018 release"
             VALUE "InternalName", "winLAME"
             VALUE "LegalCopyright", "Copyright © 2000-2018 Michael Fink"
             VALUE "LegalTrademarks", " "
             VALUE "OriginalFilename", "winLAME.exe"
             VALUE "PrivateBuild", " "
             VALUE "ProductName", "winLAME"
-            VALUE "ProductVersion", "2018 beta 1"
+            VALUE "ProductVersion", "2018 release"
             VALUE "SpecialBuild", " "
         END
     END
