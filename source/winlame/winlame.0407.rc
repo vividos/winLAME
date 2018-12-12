@@ -834,6 +834,7 @@ BEGIN
                             "Keine Album-Track-Informationen für diese CD verfügbar"
     IDS_CDRIP_ARTIST_VARIOUS "verschiedene"
     IDS_CDRIP_COVERART_ERROR_NOART "Kein Album-Cover für diese CD verfügbar"
+    IDS_CDRIP_ERROR_NOTRACKSELECTED "Es wurde kein Audio-Track angewählt."
 END
 
 STRINGTABLE

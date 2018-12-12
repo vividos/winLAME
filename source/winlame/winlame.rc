@@ -827,6 +827,7 @@ BEGIN
     IDS_CDRIP_ERROR_NOCDINFO "No album track infos available for this disc"
     IDS_CDRIP_ARTIST_VARIOUS "Various"
     IDS_CDRIP_COVERART_ERROR_NOART "No cover art available for this disc"
+    IDS_CDRIP_ERROR_NOTRACKSELECTED "No audio track was selected."
 END
 
 STRINGTABLE

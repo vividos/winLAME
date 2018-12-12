@@ -105,11 +105,19 @@ LRESULT InputCDPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lPa
    return 1;
 }
 
-LRESULT InputCDPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+LRESULT InputCDPage::OnButtonOK(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& bHandled)
 {
    KillTimer(IDT_CDRIP_CHECK);
 
    StoreSettings();
+
+   if (m_uiSettings.cdreadjoblist.empty())
+   {
+      AtlMessageBox(m_hWnd, IDS_CDRIP_ERROR_NOTRACKSELECTED, IDS_APP_CAPTION, MB_OK | MB_ICONSTOP);
+
+      bHandled = true;
+      return 1; // cancel leaving dialog
+   }
 
    m_uiSettings.m_bFromInputFilesPage = false;
    m_pageHost.SetWizardPage(std::shared_ptr<WizardPage>(new OutputSettingsPage(m_pageHost)));
@@ -186,6 +194,17 @@ LRESULT InputCDPage::OnListItemChanged(int /*idCtrl*/, LPNMHDR pnmh, BOOL& /*bHa
 
    if (prevState == isChecked) // no change in check box
       return 0;
+
+   if (isChecked &&
+      m_setDataTracks.find(nmListView.iItem) != m_setDataTracks.end())
+   {
+      s_ignoreChangedMessage = true;
+
+      m_listTracks.SetCheckState(nmListView.iItem, FALSE);
+
+      s_ignoreChangedMessage = false;
+      return 0;
+   }
 
    // when a check was changed of a selected item, change the check boxes of
    // the selected items, too
@@ -392,6 +411,7 @@ void InputCDPage::RefreshCDList()
 
    RedrawLock lock(m_listTracks);
    m_listTracks.DeleteAllItems();
+   m_setDataTracks.clear();
 
    m_buttonPlay.EnableWindow(false);
 
@@ -425,7 +445,10 @@ void InputCDPage::RefreshCDList()
 
       int nItem = m_listTracks.InsertItem(m_listTracks.GetItemCount(), text);
       m_listTracks.SetItemData(nItem, n);
-      m_listTracks.SetCheckState(nItem, true);
+      m_listTracks.SetCheckState(nItem, !bDataTrack);
+
+      if (bDataTrack)
+         m_setDataTracks.insert(nItem);
 
       text.Format(IDS_CDRIP_TRACK_U, n + 1);
       m_listTracks.SetItemText(nItem, 1, text);

@@ -1,8 +1,6 @@
 TODO list for winLAME
 
 winLAME 2018 beta 2, bug fixes:
-- prevent checking CD data tracks
-- prevent leaving CD read dialog with 0 tracks selected
 - find track length for writing playlists when encoding files
 
 winLAME 2018 beta 2, feature wishes:

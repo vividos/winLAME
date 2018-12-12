@@ -26,6 +26,7 @@
 #include "CDRipDiscInfo.hpp"
 #include "CDRipTrackInfo.hpp"
 #include "resource.h"
+#include <set>
 
 struct UISettings;
 class FreedbInfo;
@@ -270,6 +271,9 @@ namespace UI
 
       /// JPEG image data of last retrieved cover art
       std::vector<unsigned char> m_covertArtImageData;
+
+      /// track index of all data tracks
+      std::set<int> m_setDataTracks;
    };
 
 } // namespace UI
