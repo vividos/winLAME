@@ -141,7 +141,12 @@ CString AacInputModule::GetDescription() const
 
 void AacInputModule::GetVersionString(CString& version, int special) const
 {
-   version = "libfaad2 " FAAD2_VERSION;
+   char* id_string = nullptr;
+   char* copyright_string = nullptr;
+
+   NeAACDecGetVersion(&id_string, &copyright_string);
+
+   version.Format(_T("libfaad2 %hs"), id_string);
 }
 
 CString AacInputModule::GetFilterString() const
