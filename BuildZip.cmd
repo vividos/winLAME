@@ -1,7 +1,7 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2017 Michael Fink
+REM Copyright (c) 2000-2018 Michael Fink
 REM
 REM BuildZip.cmd - Builds winLAME zip redist
 REM
@@ -21,7 +21,7 @@ copy %ROOT%\bin\Release\*.chm zip\
 copy %ROOT%\source\presets.xml zip\
 copy %ROOT%\readme.txt zip\Readme.txt
 copy %ROOT%\Copying zip\Copying.txt
-copy "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.15.26706\vcredist_x86.exe" zip\vcredist_x86_vc141.exe
+copy "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.16.27012\vcredist_x86.exe" zip\vcredist_x86_vc141.exe
 
 set ZIP="%ProgramFiles%\7-Zip\7z.exe"
 
