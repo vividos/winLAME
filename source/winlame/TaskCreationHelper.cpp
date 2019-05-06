@@ -308,27 +308,6 @@ std::shared_ptr<Encoder::EncoderTask> TaskCreationHelper::CreateEncoderTaskForCD
    return std::make_shared<Encoder::EncoderTask>(cdReadTaskId, taskSettings);
 }
 
-CString Path_GetCommonRootPath(const CString& path1, const CString& path2)
-{
-   Path canonPath1(path1);
-   Path canonPath2(path2);
-   canonPath1.Canonicalize();
-   canonPath2.Canonicalize();
-
-   if (PathIsSameRoot(canonPath1.ToString(), canonPath2.ToString()) != TRUE)
-   {
-      return CString();
-   }
-
-   CString commonRootPath;
-   PathCommonPrefix(canonPath1.ToString(), canonPath2.ToString(), commonRootPath.GetBuffer(MAX_PATH));
-   commonRootPath.ReleaseBuffer();
-
-   Path::AddEndingBackslash(commonRootPath);
-
-   return commonRootPath;
-}
-
 CString TaskCreationHelper::FindCommonPlaylistOutputFolder() const
 {
    CString playlistOutputFolder = m_uiSettings.m_defaultSettings.outputdir;
@@ -347,7 +326,7 @@ CString TaskCreationHelper::FindCommonPlaylistOutputFolder() const
       {
          Path outputFilename(encoderJob.OutputFilename());
 
-         CString newCommonRootPath = Path_GetCommonRootPath(playlistOutputFolder, outputFilename.FolderName());
+         CString newCommonRootPath = Path::GetCommonRootPath(playlistOutputFolder, outputFilename.FolderName());
 
          if (newCommonRootPath.IsEmpty())
             break;
