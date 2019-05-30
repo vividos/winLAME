@@ -1,7 +1,7 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2018 Michael Fink
+REM Copyright (c) 2000-2019 Michael Fink
 REM
 REM BuildPortable.cmd - Builds winLAME Portable
 REM
@@ -17,15 +17,16 @@ echo Unpacking portable tools...
 echo.
 echo Note: Just click "Next" or "Finish" on any dialogs.
 echo.
-cd buildtools\portable
+pushd buildtools\portable
 PortableApps.comLauncher_2.2.1.paf.exe
 PortableApps.comInstaller_3.4.4.paf.exe
-cd ..\..
+pause
+popd
 
 REM
 REM Copy together all files for building portable app
 REM
-cd bin\Release
+pushd bin\Release
 
 rmdir /S /Q winLAMEPortable 2> nul
 
@@ -51,18 +52,13 @@ echo ******************************************************
 echo.
 echo Building portable app...
 echo.
-echo Note: When prompted "Create Launcher For", select the
-echo folder "{winLAME-folder}\bin\Release\winLAMEPortable\
-echo.
-echo Note: Uncheck the box "[x] Interactive Mode (prompts for missing information)"
-echo.
 cd winLAMEPortable
-..\..\..\buildtools\portable\PortableApps.comLauncher\PortableApps.comLauncherGenerator.exe
-..\..\..\buildtools\portable\PortableApps.comInstaller\PortableApps.comInstaller.exe
+..\..\..\buildtools\portable\PortableApps.comLauncher\PortableApps.comLauncherGenerator.exe %CD%
+..\..\..\buildtools\portable\PortableApps.comInstaller\PortableApps.comInstaller.exe %CD%
 cd ..
 move winLAME*.paf.exe ..
 
-cd ..\..
+popd
 
 REM
 REM Done
