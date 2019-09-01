@@ -356,7 +356,7 @@ LPCTSTR LangCountryMapper::CountryCodeFromLanguageCode(UINT uiLanguageCode) cons
    case 0x0427: return _T("lt"); // Lithuanian
    case 0x042F: return _T("mk"); // F.Y.R.O. Macedonia
    case 0x043E: return _T("ms-my"); // Malay - Malaysia
-   case 0x083E: return _T("ms-bn"); // Malay – Brunei
+   case 0x083E: return _T("ms-bn"); // Malay â€“ Brunei
    case 0x043A: return _T("mt"); // Maltese
    case 0x044E: return _T("mr"); // Marathi
    case 0x0414: return _T("no-no"); // Norwegian - Bokml
@@ -407,7 +407,7 @@ LPCTSTR LangCountryMapper::CountryCodeFromLanguageCode(UINT uiLanguageCode) cons
    case 0x0422: return _T("uk"); // Ukrainian
    case 0x0420: return _T("ur"); // Urdu
    case 0x0843: return _T("uz-uz"); // Uzbek - Cyrillic
-   case 0x0443: return _T("uz-uz"); // Uzbek – Latin
+   case 0x0443: return _T("uz-uz"); // Uzbek â€“ Latin
    case 0x042A: return _T("vi"); // Vietnamese
    case 0x0434: return _T("xh"); // Xhosa
    case 0x043D: return _T("yi"); // Yiddish
