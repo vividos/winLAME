@@ -43,7 +43,7 @@ REM copy artifacts
 mkdir include 2> nul
 xcopy /Y %PREFIX%\include\ogg\*.h include\
 
-copy %PREFIX%\win32\VS2015\Win32\ReleaseDLL\libogg.dll ..\source\libraries\
+copy %PREFIX%\win32\VS2015\Win32\ReleaseDLL\libogg.dll ..\source\libraries\ogg.dll
 copy %PREFIX%\win32\VS2015\Win32\ReleaseDLL\libogg.lib ..\source\libraries\lib\
 copy %PREFIX%\include\ogg\*.h ..\source\libraries\include\ogg\
 

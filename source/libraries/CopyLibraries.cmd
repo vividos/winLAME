@@ -27,7 +27,7 @@ copy libvorbis.dll %TARGET%
 copy libspeex.dll %TARGET%
 copy opus.dll %TARGET%
 copy opusenc.dll %TARGET%
-copy libogg.dll %TARGET%
+copy ogg.dll %TARGET%
 copy libfaac.dll %TARGET%
 copy libfaad2.dll %TARGET%
 copy MACDll.dll %TARGET%

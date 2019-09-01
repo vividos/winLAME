@@ -187,9 +187,9 @@
            Source="$(var.SolutionDir)source\libraries\libfaad2.dll" />
       </Component>
 
-      <Component Id="LibOggLibrary2" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibOggDll" Name="libogg.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libogg.dll" />
+      <Component Id="OggLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="OggDll" Name="ogg.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.SolutionDir)source\libraries\ogg.dll" />
       </Component>
 
       <Component Id="OpusLibrary" Guid="*" Directory="INSTALLDIR">
