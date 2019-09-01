@@ -163,7 +163,7 @@ CString AboutDlg::GetAboutHtmlText()
          moduleManager.GetModuleVersionString(varname, ID_OM_AAC);
       else if (varname == _T("wtlversion"))
       {
-         varname.Format(_T("%u.%u"),
+         varname.Format(_T("%x.%x"),
             _WTL_VER >> 8, (_WTL_VER >> 4) & 15);
       }
       else if (varname == _T("boostversion"))
