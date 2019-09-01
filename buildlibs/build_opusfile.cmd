@@ -1,7 +1,7 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2018 Michael Fink
+REM Copyright (c) 2000-2019 Michael Fink
 REM
 REM Downloads opusfile and compiles it
 REM
@@ -14,7 +14,7 @@ REM set this to the filename of the file to download
 set PREFIX=opusfile-0.11
 
 REM set this to your Visual Studio installation folder
-set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community
+set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
 
 REM download package
 set URL=https://downloads.xiph.org/releases/opus/%PREFIX%.tar.gz
@@ -31,15 +31,14 @@ del %PREFIX%.tar
 REM Prerequisite: Copy header files from libogg and opus
 xcopy include\*.h %PREFIX%\include\ogg\
 xcopy include\*.h %PREFIX%\include\
-REM xcopy lib\*.lib %PREFIX%\win32\VS2015\
 
 REM set up Visual Studio
 call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
 
 pushd %PREFIX%\win32\VS2015
 
-REM update Toolset to v141, in order to use VS2017
-powershell -Command "& {(Get-Content opusfile.vcxproj) -replace \"v140\",\"v141\" | out-file opusfile.vcxproj}"
+REM update Toolset to v142, in order to use VS2017
+powershell -Command "& {(Get-Content opusfile.vcxproj) -replace \"v140\",\"v142\" | out-file opusfile.vcxproj}"
 powershell -Command "& {(Get-Content opusfile.vcxproj) -replace \"MultiThreaded\",\"MultiThreadedDLL\" | out-file opusfile.vcxproj}"
 
 REM compile

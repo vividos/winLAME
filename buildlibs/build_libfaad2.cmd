@@ -1,7 +1,7 @@
 @echo on
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2018 Michael Fink
+REM Copyright (c) 2000-2019 Michael Fink
 REM
 REM Downloads libfaad2 from github.com/knik0 and compiles it
 REM
@@ -10,7 +10,7 @@ REM set this to the filename of the file to download
 set PREFIX=faad2-master
 
 REM set this to your Visual Studio installation folder
-set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community
+set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
 
 REM download package
 set URL=https://codeload.github.com/knik0/faad2/zip/master

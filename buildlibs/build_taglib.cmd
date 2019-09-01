@@ -1,7 +1,7 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2018 Michael Fink
+REM Copyright (c) 2000-2019 Michael Fink
 REM
 REM Downloads taglib and compiles it
 REM
@@ -10,7 +10,7 @@ REM set this to the filename of the file to download
 set PREFIX=taglib-1.11.1
 
 REM set this to your Visual Studio installation folder
-set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community
+set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
 
 REM download package
 set URL=https://taglib.org/releases/%PREFIX%.tar.gz

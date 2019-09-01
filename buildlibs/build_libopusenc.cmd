@@ -1,7 +1,7 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2018 Michael Fink
+REM Copyright (c) 2000-2019 Michael Fink
 REM
 REM Downloads libopusenc and compiles it
 REM
@@ -14,7 +14,7 @@ REM set this to the filename of the file to download
 set PREFIX=libopusenc-0.2.1
 
 REM set this to your Visual Studio installation folder
-set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community
+set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
 
 REM download package
 set URL=https://downloads.xiph.org/releases/opus/%PREFIX%.tar.gz
@@ -37,8 +37,8 @@ call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
 
 pushd %PREFIX%\win32\VS2015
 
-REM update Toolset to v141, in order to use VS2017
-powershell -Command "& {(Get-Content opusenc.vcxproj) -replace \"v140\",\"v141\" | out-file opusenc.vcxproj}"
+REM update Toolset to v142, in order to use VS2019
+powershell -Command "& {(Get-Content opusenc.vcxproj) -replace \"v140\",\"v142\" | out-file opusenc.vcxproj}"
 
 REM compile
 msbuild opusenc.vcxproj /m /property:Configuration=ReleaseDLL,Platform=Win32
