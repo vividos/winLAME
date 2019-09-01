@@ -1,10 +1,10 @@
 #
 # winLAME - a frontend for the LAME encoding engine
-# Copyright (c) 2000-2018 Michael Fink
+# Copyright (c) 2000-2019 Michael Fink
 #
 # AppVeyor build configuration file
 #
-version: 2.18.1.{build}
+version: 2.19.0.{build}
 
 image: Visual Studio 2019
 
