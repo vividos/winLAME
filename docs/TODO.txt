@@ -1,18 +1,21 @@
 TODO list for winLAME
 
-winLAME 2018 beta 2, bug fixes:
+winLAME 2019 release 1, bug fixes:
 - find track length for writing playlists when encoding files
+- fix crash in multicore encoding
 
-winLAME 2018 beta 2, feature wishes:
-- encoding of whole directory structure to another folder
-
-winLAME 2018 beta 2, nice-to-have:
+winLAME 2019 release 1, nice-to-have:
 - fix remaining SonarQube bugs and vulnerabilities
 - update to libsndfile-1.0.29 for fixed FLAC support, once released
 - save all settings on custom module settings pages
 - support multiple subfolders in cd title format strings
 
-winLAME 2019:
+winLAME 2019 release 2:
+- encoding of whole directory structure to another folder
+- let user select an output format, not a plugin; plugins can define one or
+  more "predefined" formats; with advanced "output plugin" selection mode.
+
+winLAME 2019 release 3:
 - remove Classic UI mode
 - remove toolbar mode
 - remove unused resources
