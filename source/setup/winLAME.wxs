@@ -50,7 +50,7 @@
     <Media Id="1" Cabinet="winLAME.cab" EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Merge Id="Msvcrt141Msm" Language="0" SourceFile="$(env.ProgramFiles(x86))\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.16.27012\MergeModules\Microsoft_VC141_CRT_x86.msm" DiskId="1" />
+      <Merge Id="Msvcrt142Msm" Language="0" SourceFile="$(env.ProgramFiles(x86))\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.22.27821\MergeModules\Microsoft_VC142_CRT_x86.msm" DiskId="1" />
       <Directory Id="ProgramFilesFolder">
         <Directory Id="WinLame" Name="winLAME">
           <Directory Id="INSTALLDIR" Name="." />
@@ -230,8 +230,8 @@
       <ComponentGroupRef Id="AllFiles" />
     </Feature>
 
-    <Feature Id="VCRedist" Title="Visual C++ 2017 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
-      <MergeRef Id="Msvcrt141Msm"/>
+    <Feature Id="VCRedist" Title="Visual C++ 2019 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="Msvcrt142Msm"/>
     </Feature>
 
     <Icon Id="WinLameShortcutIcon" SourceFile="$(var.winLAME.ProjectDir)res\winlame.ico" />
