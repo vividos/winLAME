@@ -93,7 +93,7 @@ struct ID3_TAG
 /*****************************************************************************************
 Footer (and header) flags
 *****************************************************************************************/
-#define APE_TAG_FLAG_CONTAINS_HEADER            (1 << 31)
+#define APE_TAG_FLAG_CONTAINS_HEADER            ((unsigned int) 1 << 31)
 #define APE_TAG_FLAG_CONTAINS_FOOTER            (1 << 30)
 #define APE_TAG_FLAG_IS_HEADER                  (1 << 29)
 
@@ -187,7 +187,7 @@ public:
     int GetFieldFlags();
     
     // output the entire field to a buffer (GetFieldSize() bytes)
-    int SaveField(char * pBuffer);
+    int SaveField(char * pBuffer, int nBytes);
 
     // checks to see if the field is read-only
     bool GetIsReadOnly() { return (m_nFieldFlags & TAG_FIELD_FLAG_READ_ONLY) ? true : false; }

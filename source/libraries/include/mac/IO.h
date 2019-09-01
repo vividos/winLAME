@@ -3,23 +3,19 @@
 namespace APE
 {
 
-#ifndef FILE_BEGIN
-    #define FILE_BEGIN        0
-#endif
-
-#ifndef FILE_CURRENT
-    #define FILE_CURRENT    1
-#endif
-
-#ifndef FILE_END
-    #define FILE_END        2
-#endif
+#define APE_FILE_BEGIN 0
+#define APE_FILE_CURRENT 1
+#define APE_FILE_END 2
 
 class CIO
 {   
 public:
     // construction / destruction
-    CIO() { }
+    CIO() 
+	{ 
+		m_nSeekPosition = 0;
+		m_nSeekMethod = APE_FILE_BEGIN;
+	}
     virtual ~CIO() { };
 
     // open / close
@@ -31,7 +27,15 @@ public:
     virtual int Write(const void * pBuffer, unsigned int nBytesToWrite, unsigned int * pBytesWritten) = 0;
     
     // seek
-    virtual int Seek(intn nDistance, unsigned int nMoveMode) = 0;
+	void SetSeekPosition(int64 nPosition)
+	{
+		m_nSeekPosition = nPosition;
+	}
+	void SetSeekMethod(unsigned int nMethod)
+	{
+		m_nSeekMethod = nMethod;
+	}
+    virtual int64 PerformSeek() = 0;
     
     // creation / destruction
     virtual int Create(const wchar_t * pName) = 0;
@@ -41,9 +45,14 @@ public:
     virtual int SetEOF() = 0;
 
     // attributes
-    virtual int GetPosition() = 0;
-    virtual unsigned int GetSize() = 0;
+    virtual int64 GetPosition() = 0;
+    virtual int64 GetSize() = 0;
     virtual int GetName(wchar_t * pBuffer) = 0;
+
+protected:
+
+	int64 m_nSeekPosition;
+	unsigned int m_nSeekMethod;
 };
 
 }

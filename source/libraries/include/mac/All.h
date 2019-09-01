@@ -13,6 +13,17 @@ PLATFORM_LINUX
 	#define PLATFORM_WINDOWS
 #endif
 
+#ifdef PLATFORM_ANDROID
+#undef MBN
+#undef ODN
+#undef ODS
+#undef CATCH_ERRORS
+#undef ASSERT
+#undef _totlower
+#undef ZeroMemory
+#undef __forceinline
+#endif
+
 /*****************************************************************************************
 Global includes
 *****************************************************************************************/
@@ -44,9 +55,16 @@ Global includes
 /*****************************************************************************************
 Global compiler settings (useful for porting)
 *****************************************************************************************/
+#pragma warning(disable: 4100)
+
 // assembly code (helps performance, but limits portability)
-#ifndef PLATFORM_ARM
-    #define ENABLE_SSE_ASSEMBLY
+#if !defined(PLATFORM_ARM) && !defined(PLATFORM_ANDROID)
+	#if defined __SSE2__ || _M_IX86_FP == 2 || defined _M_X64
+		#define ENABLE_SSE_ASSEMBLY
+	#elif defined(_M_IX86)
+		#define ENABLE_SSE_ASSEMBLY
+		#define ENABLE_SSE_ASSEMBLY_DETECT
+	#endif
 	#ifdef _MSC_VER // doesn't compile in gcc
 		#ifndef PLATFORM_x64
 			#define ENABLE_MMX_ASSEMBLY
@@ -59,9 +77,9 @@ Global compiler settings (useful for porting)
 // that disabling APE_BACKWARDS_COMPATIBILITY would have any effect on a normal user.  For
 // porting or third party usage, it's probably best to not bother with APE_BACKWARDS_COMPATIBILITY.
 // A future release of Monkey's Audio itself may remove support for these obsolete files.
-//#if defined(PLATFORM_WINDOWS)
+#if !defined(PLATFORM_ANDROID)
 	#define APE_BACKWARDS_COMPATIBILITY
-//#endif
+#endif
 
 // compression modes
 #define ENABLE_COMPRESSION_MODE_FAST
@@ -70,8 +88,16 @@ Global compiler settings (useful for porting)
 #define ENABLE_COMPRESSION_MODE_EXTRA_HIGH
 
 // 64 bit platform
-#if __x86_64__
-    #define PLATFORM_x64
+#ifdef PLATFORM_64BIT
+	#ifndef PLATFORM_x64
+		#define PLATFORM_x64
+	#endif
+#endif
+
+#if __x86_64__ || __aarch64__
+	#ifndef PLATFORM_x64
+		#define PLATFORM_x64
+	#endif
 #endif
 
 /*****************************************************************************************
@@ -81,18 +107,11 @@ namespace APE
 {
 	// integer types
 #if defined(PLATFORM_x64)
-	typedef	intptr_t                                    int64; // native integer, can safely hold a pointer
+    typedef	int64_t                                     int64; // native integer, can safely hold a pointer
     typedef int32_t                                     int32;
 #else
 	typedef	intptr_t                                    int32; // native integer, can safely hold a pointer
     typedef int64_t                                     int64;
-#endif
-    //typedef intptr_t                                  intn;
-	//typedef uintptr_t                                   uintn;
-
-// From GlobalIntTypes.h.
-#ifndef PLATFORM_WINDOWS
-#include <stdint.h>
 #endif
 
 #if defined(PLATFORM_x64)
@@ -138,6 +157,7 @@ Global macros
     #define TICK_COUNT_TYPE                             unsigned long
     #define TICK_COUNT_READ(VARIABLE)                   VARIABLE = GetTickCount()
     #define TICK_COUNT_FREQ                             1000
+
     #if !defined(ASSERT)
         #if defined(_DEBUG)
             #define ASSERT(e)                            assert(e)
@@ -153,11 +173,18 @@ Global macros
     #define SLEEP(MILLISECONDS)                         { struct timespec t; t.tv_sec = (MILLISECONDS) / 1000; t.tv_nsec = (MILLISECONDS) % 1000 * 1000000; nanosleep(&t, NULL); }
     #define MESSAGEBOX(PARENT, TEXT, CAPTION, TYPE)
     #define PUMP_MESSAGE_LOOP
+    #undef	ODS
     #define ODS                                         printf
     #define TICK_COUNT_TYPE                             unsigned long long
     #define TICK_COUNT_READ(VARIABLE)                   { struct timeval t; gettimeofday(&t, NULL); VARIABLE = t.tv_sec * 1000000LLU + t.tv_usec; }
     #define TICK_COUNT_FREQ                             1000000
-    #define ASSERT(e)                                    
+    #undef	ASSERT
+    #define ASSERT(e)
+	#define wcsncpy_s(A, B, COUNT) wcsncpy(A, B, COUNT)
+    #define wcscpy_s(A, B, C) wcscpy(A, C)
+    #define sprintf_s(A, B, C, D) sprintf(A, C, D)
+    #define strcpy_s(A, B, C) strcpy(A, C)
+    #define _tcscat_s(A, B, C) _tcscat(A, C)
 #endif
 
 /*****************************************************************************************
@@ -183,14 +210,35 @@ namespace APE
 /*****************************************************************************************
 Global defines
 *****************************************************************************************/
+
+// major version number
+#define VERSION_MAJOR 4
+
+// build version number
+#define VERSION_REVISION 92
+
+// year in the copyright strings
+#define MAC_YEAR 2019
+
+// Build the version string
+#define STRINGIZE2(s) #s
+#define STRINGIZE(s) STRINGIZE2(s)
+#define VER_FILE_VERSION_STR        STRINGIZE(VERSION_MAJOR) _T(".") STRINGIZE(VERSION_REVISION) 
+#define VER_FILE_VERSION_STR_NARROW STRINGIZE(VERSION_MAJOR) "." STRINGIZE(VERSION_REVISION) 
+#define VER_FILE_VERSION_STR_FULL	STRINGIZE(VERSION_MAJOR) _T(".") STRINGIZE(VERSION_REVISION) _T(".0.0")
+
 #define MAC_FILE_VERSION_NUMBER                         3990
-#define MAC_VERSION_STRING                              _T("4.32")
-#define MAC_NAME                                        _T("Monkey's Audio 4.32")
-#define PLUGIN_NAME                                     "Monkey's Audio Player v4.32"
-#define MJ_PLUGIN_NAME                                  _T("APE Plugin (v4.32)")
-#define CONSOLE_NAME                                    _T("--- Monkey's Audio Console Front End (v 4.32) (c) Matthew T. Ashland ---\n")
-#define PLUGIN_ABOUT                                    _T("Monkey's Audio Player v4.31\nCopyrighted (c) 2000-2018 by Matthew T. Ashland")
+#define MAC_VERSION_STRING                              VER_FILE_VERSION_STR
+#define MAC_NAME                                        _T("Monkey's Audio ") VER_FILE_VERSION_STR
+#define PLUGIN_NAME                                     "Monkey's Audio Player " VER_FILE_VERSION_STR_NARROW
+#define MJ_PLUGIN_NAME                                  _T("APE Plugin (v") VER_FILE_VERSION_STR _T(")")
+#define RESOURCE_VERSION_COMMA							VERSION_MAJOR, VERSION_REVISION, 0, 0
+#define RESOURCE_VERSION_STRING							VER_FILE_VERSION_STR_FULL
+#define RESOURCE_COPYRIGHT								"Copyright (c) 2000-" STRINGIZE(MAC_YEAR) " Matthew T. Ashland"
+#define CONSOLE_NAME                                    _T("--- Monkey's Audio Console Front End (v ") VER_FILE_VERSION_STR _T(") (c) Matthew T. Ashland ---\n")
+#define PLUGIN_ABOUT                                    _T("Monkey's Audio Player v") VER_FILE_VERSION_STR _T("\nCopyrighted (c) 2000-") STRINGIZE(MAC_YEAR) _T(" by Matthew T. Ashland")
 #define MAC_DLL_INTERFACE_VERSION_NUMBER                1000
+#define ONE_MILLION										1000000
 #ifdef PLATFORM_WINDOWS
 	#define APE_FILENAME_SLASH '\\'
 #else
@@ -219,11 +267,11 @@ Macros
 
 #define CATCH_ERRORS(CODE) try { CODE } catch(...) { }
 
-#define RETURN_ON_ERROR(FUNCTION) {    int nResult = FUNCTION; if (nResult != 0) { return nResult; } }
-#define RETURN_VALUE_ON_ERROR(FUNCTION, VALUE) { int nResult = FUNCTION; if (nResult != 0) { return VALUE; } }
+#define RETURN_ON_ERROR(FUNCTION) {    int nFunctionResult = FUNCTION; if (nFunctionResult != 0) { return nFunctionResult; } }
+#define RETURN_VALUE_ON_ERROR(FUNCTION, VALUE) { int nFunctionResult = FUNCTION; if (nFunctionResult != 0) { return VALUE; } }
 #define RETURN_ON_EXCEPTION(CODE, VALUE) { try { CODE } catch(...) { return VALUE; } }
 
-#define THROW_ON_ERROR(CODE) { intn nResult = CODE; if (nResult != 0) throw(nResult); }
+#define THROW_ON_ERROR(CODE) { intn nThrowResult = (intn) CODE; if (nThrowResult != 0) throw(nThrowResult); }
 
 #define EXPAND_1_TIMES(CODE) CODE
 #define EXPAND_2_TIMES(CODE) CODE CODE
@@ -299,28 +347,3 @@ Error Codes
 
 // unknown error
 #define ERROR_UNDEFINED                                -1
-
-#define ERROR_EXPLANATION \
-    { ERROR_IO_READ                               , _T("I/O read error") },                         \
-    { ERROR_IO_WRITE                              , _T("I/O write error") },                        \
-    { ERROR_INVALID_INPUT_FILE                    , _T("invalid input file") },                     \
-    { ERROR_INVALID_OUTPUT_FILE                   , _T("invalid output file") },                    \
-    { ERROR_INPUT_FILE_TOO_LARGE                  , _T("input file file too large") },              \
-    { ERROR_INPUT_FILE_UNSUPPORTED_BIT_DEPTH      , _T("input file unsupported bit depth") },       \
-    { ERROR_INPUT_FILE_UNSUPPORTED_SAMPLE_RATE    , _T("input file unsupported sample rate") },     \
-    { ERROR_INPUT_FILE_UNSUPPORTED_CHANNEL_COUNT  , _T("input file unsupported channel count") },   \
-    { ERROR_INPUT_FILE_TOO_SMALL                  , _T("input file too small") },                   \
-    { ERROR_INVALID_CHECKSUM                      , _T("invalid checksum") },                       \
-    { ERROR_DECOMPRESSING_FRAME                   , _T("decompressing frame") },                    \
-    { ERROR_INITIALIZING_UNMAC                    , _T("initializing unmac") },                     \
-    { ERROR_INVALID_FUNCTION_PARAMETER            , _T("invalid function parameter") },             \
-    { ERROR_UNSUPPORTED_FILE_TYPE                 , _T("unsupported file type") },                  \
-    { ERROR_INSUFFICIENT_MEMORY                   , _T("insufficient memory") },                    \
-    { ERROR_LOADINGAPE_DLL                        , _T("loading MAC.dll") },                        \
-    { ERROR_LOADINGAPE_INFO_DLL                   , _T("loading MACinfo.dll") },                    \
-    { ERROR_LOADING_UNMAC_DLL                     , _T("loading UnMAC.dll") },                      \
-    { ERROR_USER_STOPPED_PROCESSING               , _T("user stopped processing") },                \
-    { ERROR_SKIPPED                               , _T("skipped") },                                \
-    { ERROR_BAD_PARAMETER                         , _T("bad parameter") },                          \
-    { ERROR_APE_COMPRESS_TOO_MUCH_DATA            , _T("APE compress too much data") },             \
-    { ERROR_UNDEFINED                             , _T("undefined") },
