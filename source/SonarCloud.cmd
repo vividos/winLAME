@@ -1,13 +1,13 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2018 Michael Fink
+REM Copyright (c) 2000-2019 Michael Fink
 REM
 REM Runs SonarCloud analysis build
 REM
 
 REM set this to your Visual Studio installation folder
-set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community
+set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
 
 REM
 REM Preparations

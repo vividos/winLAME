@@ -37,7 +37,7 @@ call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
 
 pushd %PREFIX%\win32\VS2015
 
-REM update Toolset to v142, in order to use VS2017
+REM update Toolset to v142, in order to use VS2019
 powershell -Command "& {(Get-Content opusfile.vcxproj) -replace \"v140\",\"v142\" | out-file opusfile.vcxproj}"
 powershell -Command "& {(Get-Content opusfile.vcxproj) -replace \"MultiThreaded\",\"MultiThreadedDLL\" | out-file opusfile.vcxproj}"
 
