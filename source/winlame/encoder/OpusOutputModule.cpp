@@ -90,12 +90,26 @@ bool OpusEncData::Create(opus_int32 inputSampleRate, int channels, CString& last
    }
 
    ret = ope_encoder_ctl(enc, OPE_SET_PACKET_CALLBACK(packet_callback, this));
+   if (ret != 0)
+   {
+      lastError.Format(
+         _T("Error: failed to set packet callback: %hs"),
+         ope_strerror(ret));
+      return false;
+   }
 
    int serialno = 0;
    if (!GetRandomNumber(serialno))
       return false;
 
    ret = ope_encoder_ctl(enc, OPE_SET_SERIALNO(serialno));
+   if (ret != 0)
+   {
+      lastError.Format(
+         _T("Error: failed to set serial number: %hs"),
+         ope_strerror(ret));
+      return false;
+   }
 
    return true;
 }

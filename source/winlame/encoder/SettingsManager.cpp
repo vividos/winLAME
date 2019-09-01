@@ -48,6 +48,6 @@ void SettingsManager::setValue(unsigned short name, int val)
    }
    else
    {
-      (*iter).second = val;
+      settings[name] = val;
    }
 }
