@@ -24,7 +24,6 @@ Here's a checklist of what to do before each release:
 - Run all unit tests
 - Fix cppcheck errors and doxygen warnings
 - Compile all project with /analyze and fix all warnings
-- Use Coverity to find even more warnings and fix them
 - Use SonarQube to find even more warnings and fix them
 - Test built .msi setup if it installs properly
 - Do a short smoke test, encoding all test files
