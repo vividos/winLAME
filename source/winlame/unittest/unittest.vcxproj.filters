@@ -75,7 +75,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.aac">
       <Filter>Resource Files\res</Filter>
     </None>
@@ -106,5 +105,6 @@
     <None Include="res\alsa-6ch.opus">
       <Filter>Resource Files\res</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
