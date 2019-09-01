@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (C) 2016-2018 Michael Fink
+// Copyright (C) 2016-2019 Michael Fink
 //
 // this file lists all cppcheck warnings that will be suppressed
 //
@@ -8,8 +8,6 @@
 *:..\winlame\encoder\replaygain\gain_analysis.c
 unusedStructMember:..\winlame\encoder\id3\File.cpp
 *:..\winlame\atlribbon.h
-knownConditionTrueFalse:..\winlame\encoder\EncoderTask.cpp:109
 mismatchAllocDealloc:..\winlame\encoder\CreatePlaylistTask.cpp:95
 mismatchAllocDealloc:..\winlame\encoder\SndFileInputModule.cpp:316
-deallocuse:..\winlame\encoder\OpusOutputModule.cpp:680
-mismatchAllocDealloc:..\winlame\encoder\aacinfo\filestream.c:53
+deallocuse:..\winlame\encoder\OpusOutputModule.cpp:694
