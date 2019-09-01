@@ -14,12 +14,15 @@ REM Preparations
 REM
 call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
 
+if "%SONARLOGIN%" == "" echo "Environment variable SONARLOGIN is not set! Obtain a new token and set the environment variable!"
+if "%SONARLOGIN%" == "" exit 1
+
 REM
 REM Extract SonarQube build tools
 REM
 pushd ..\buildtools\SonarQube
 "%ProgramFiles%\7-Zip\7z.exe" x -y build-wrapper-win-x86.zip
-"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-4.4.2.1543-net46.zip
+"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-4.6.2.2108-net46.zip
 PATH=%PATH%;%CD%\build-wrapper-win-x86;%CD%\sonar-scanner-msbuild
 popd
 
@@ -27,6 +30,7 @@ REM
 REM Build using SonarQube scanner for MSBuild
 REM
 cd ..
+rmdir .\.sonarqube /s /q 2> nul
 rmdir .\bw-output /s /q 2> nul
 
 msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Clean
@@ -36,14 +40,17 @@ SonarScanner.MSBuild.exe begin ^
     /v:"2.19.0.0" ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
     /d:"sonar.host.url=https://sonarcloud.io" ^
-    /d:"sonar.organization=vividos-github" ^
+    /o:"vividos-github" ^
     /d:"sonar.login=%SONARLOGIN%"
+if errorlevel 1 goto end
 
 REM
 REM Rebuild Release|Win32
 REM
-build-wrapper-win-x86-64.exe --out-dir bw-output msbuild winlame.sln /property:Configuration=SonarCloud,Platform=Win32 /target:Build
+build-wrapper-win-x86-64.exe --out-dir bw-output msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Rebuild
 
 SonarScanner.MSBuild.exe end /d:"sonar.login=%SONARLOGIN%"
+
+:end
 
 pause
