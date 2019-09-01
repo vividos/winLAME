@@ -35,6 +35,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "encoder", "source\winlame\e
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unittest", "source\winlame\unittest\unittest.vcxproj", "{61ED36ED-A783-45EC-81D2-1225A8224ED2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1B3E2F5D-BAF3-4C3C-9D98-B1457948E2A8}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Release-Checklist.txt = docs\Release-Checklist.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
