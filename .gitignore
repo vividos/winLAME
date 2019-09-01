@@ -67,7 +67,6 @@ buildlibs/libogg-*/
 buildlibs/libopusenc-*/
 buildlibs/opusfile-*/
 buildlibs/opus-*/
-buildlibs/libmad-*/
 buildlibs/taglib-*/
 buildlibs/faac-master/
 buildlibs/faad2-master/
@@ -75,7 +74,6 @@ buildlibs/libogg-*.tar.gz
 buildlibs/libopusenc-*.tar.gz
 buildlibs/opusfile-*.tar.gz
 buildlibs/opus-*.tar.gz
-buildlibs/libmad-*.tar.gz
 buildlibs/taglib-*.tar.gz
 buildlibs/faac-master.zip
 buildlibs/faad2-master.zip

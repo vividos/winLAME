@@ -15,17 +15,6 @@ of the software source packages require, there are some statements to make.
 
   LAME is Copyright (c) 1999-2001 Mark Taylor
 
-* libmad
-
-  MAD and the library libmad are licensed and distributed under the GPL (GNU General Public
-  License). The full text of the license can be found in CVS at
-    $/docs/Copying.GPL
-
-  The source code used to build is available on the developer's site, at
-    http://mad.sourceforge.net
-
-  MAD/libmad is Copyright (C) 2000-2001 Robert Leslie
-
 * libsndfile
 
   The library libsndfile is licensed and distributed under the Lesser GPL (GNU Lesser General
