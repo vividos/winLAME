@@ -7,7 +7,7 @@ REM Downloads libogg and compiles it
 REM
 
 REM set this to the filename of the file to download
-set PREFIX=libogg-1.3.3
+set PREFIX=libogg-1.3.4
 
 REM set this to your Visual Studio installation folder
 set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
@@ -30,10 +30,12 @@ call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
 pushd %PREFIX%\win32\VS2015
 
 REM update Toolset to v142, in order to use VS2019
-powershell -Command "& {(Get-Content libogg_dynamic.vcxproj) -replace \"v120\",\"v142\" | out-file libogg_dynamic.vcxproj}"
+powershell -Command "& {(Get-Content libogg.vcxproj) -replace \"v140\",\"v142\" | out-file libogg.vcxproj}"
+REM also update framework
+powershell -Command "& {(Get-Content libogg.vcxproj) -replace \"8.1\",\"10.0\" | out-file libogg.vcxproj}"
 
 REM compile
-msbuild libogg_dynamic.vcxproj /m /property:Configuration=Release,Platform=Win32
+msbuild libogg.vcxproj /m /property:Configuration=ReleaseDLL,Platform=Win32
 
 popd
 
@@ -41,8 +43,8 @@ REM copy artifacts
 mkdir include 2> nul
 xcopy /Y %PREFIX%\include\ogg\*.h include\
 
-copy %PREFIX%\win32\VS2015\Win32\Release\libogg.dll ..\source\libraries\
-copy %PREFIX%\win32\VS2015\Win32\Release\libogg.lib ..\source\libraries\lib\
+copy %PREFIX%\win32\VS2015\Win32\ReleaseDLL\libogg.dll ..\source\libraries\
+copy %PREFIX%\win32\VS2015\Win32\ReleaseDLL\libogg.lib ..\source\libraries\lib\
 copy %PREFIX%\include\ogg\*.h ..\source\libraries\include\ogg\
 
 pause
