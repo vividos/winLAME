@@ -125,7 +125,7 @@ int SndFileOutputModule::InitOutput(LPCTSTR outfilename,
    SetTrackInfo(trackInfo);
 
    int numOutputBits;
-   switch (m_format & SF_FORMAT_SUBMASK)
+   switch (m_subType)
    {
    case SF_FORMAT_PCM_24:
    case SF_FORMAT_PCM_32:
@@ -162,15 +162,15 @@ int SndFileOutputModule::EncodeSamples(SampleContainer& samples)
    {
       ret = sf_write_short(m_sndfile, (short*)sampleBuffer, numSamples * m_sfinfo.channels);
    }
-   else if ((m_format & SF_FORMAT_SUBMASK) == SF_FORMAT_FLOAT ||
-      (m_format & SF_FORMAT_SUBMASK) == SF_FORMAT_DOUBLE)
+   else if (m_subType == SF_FORMAT_FLOAT ||
+      m_subType == SF_FORMAT_DOUBLE)
    {
       int* intSampleBuffer = (int*)sampleBuffer;
 
       std::vector<float> floatBuffer(numSamples * m_sfinfo.channels);
 
       for (int i = 0; i < numSamples * m_sfinfo.channels; i++)
-         floatBuffer[i] = float(intSampleBuffer[i]) / (1 << 31);
+         floatBuffer[i] = float(intSampleBuffer[i]) / (1UL << 31);
 
       ret = sf_write_float(m_sndfile, floatBuffer.data(), floatBuffer.size());
    }
