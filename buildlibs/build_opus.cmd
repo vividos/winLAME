@@ -7,7 +7,7 @@ REM Downloads Opus and compiles it
 REM
 
 REM set this to the filename of the file to download
-set PREFIX=opus-1.3
+set PREFIX=opus-1.3.1
 
 REM set this to your Visual Studio installation folder
 set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
