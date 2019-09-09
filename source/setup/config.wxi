@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Include>
-  <?define ProductName = "winLAME 2019 release 1" ?>
-  <?define Version = "2.19.0.0" ?>
+  <?define MajorVersion = "2" ?>
+  <?define MinorVersion = "19" ?>
+  <?define ReleaseNumber = "0" ?>
+  <?define BuildNumber = "0" ?>
+  <?define BuildYear = "2019" ?>
+
+  <?if $(var.ReleaseNumber) = 0 ?>
+  <?define ProductName = "winLAME $(var.BuildYear) beta" ?>
+  <?else?>
+  <?define ProductName = "winLAME $(var.BuildYear) release $(var.ReleaseNumber)" ?>
+  <?endif ?>
+
+  <?define Version = "$(var.MajorVersion).$(var.MinorVersion).$(var.ReleaseNumber).$(var.BuildNumber)" ?>
 </Include>
