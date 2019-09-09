@@ -4,8 +4,7 @@ Release checklist
 Here's a checklist of what to do before each release:
 
 - Update version number in the following files:
-  * winlame.rc
-  * winlame.????.rc
+  * version.h
   * config.wxi
   * doxygen.cfg
   * source\portable\App\AppInfo\appinfo.ini
