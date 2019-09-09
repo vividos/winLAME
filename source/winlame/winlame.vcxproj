@@ -215,6 +215,7 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\MainFrameRibbon.rc" />
+    <ResourceCompile Include="versioninfo.rc" />
     <ResourceCompile Include="winlame.rc">
       <Culture Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">0x0409</Culture>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">winlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

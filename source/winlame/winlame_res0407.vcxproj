@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="res\MainFrameRibbon.0407.rc" />
+    <ResourceCompile Include="versioninfo.0407.rc" />
     <ResourceCompile Include="winlame.0407.rc">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">winlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">winlame;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

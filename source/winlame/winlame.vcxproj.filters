@@ -457,6 +457,9 @@
     <ResourceCompile Include="res\MainFrameRibbon.rc">
       <Filter>Modern UI Files\Resource Files\Generated Files</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="versioninfo.rc">
+      <Filter>Modern UI Files\Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\presets.xml" />
