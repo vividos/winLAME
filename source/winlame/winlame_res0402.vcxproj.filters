@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{01c02cf6-4c33-46fd-a7dc-61187e4eafeb}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\Generated Files">
+      <UniqueIdentifier>{e10d8d6d-e2c2-4189-854e-cf50b86ac800}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\about.0402.html">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\MainFrameRibbon.0402.bml">
+      <Filter>Resource Files\Generated Files</Filter>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="res\MainFrameRibbon.0402.h">
+      <Filter>Resource Files\Generated Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="winlame.0402.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="res\MainFrameRibbon.0402.rc">
+      <Filter>Resource Files\Generated Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="res\MainFrameRibbon.0402.xml">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Toolbar32.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\open_files.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\read_cd.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\tasks_stop_all.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\tasks_remove_completed.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\settings_general.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\settings_freedb.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\finish_action.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\finish_action_none.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\finish_action_close.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\finish_action_standby.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\view_ribbon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\switch_classic.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\emoticon_grin.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\emoticon_unhappy.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\app_about.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\app_exit.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\btnicons.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\help.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\logo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\flags.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\tasks.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\winlame.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\working.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\idle.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

@@ -247,6 +247,9 @@
     <ProjectReference Include="encoder\encoder.vcxproj">
       <Project>{ae66a4eb-b54e-4572-9a4e-50c89a0c56c3}</Project>
     </ProjectReference>
+    <ProjectReference Include="winlame_res0402.vcxproj">
+      <Project>{f8a45388-1f66-4fc0-83ae-740e1972a65b}</Project>
+    </ProjectReference>
     <ProjectReference Include="winlame_res0407.vcxproj">
       <Project>{e2d89bae-7448-4af4-9ac9-9cc070e178bd}</Project>
     </ProjectReference>

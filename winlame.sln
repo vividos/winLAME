@@ -41,6 +41,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winLAME.0402", "source\winlame\winlame_res0402.vcxproj", "{F8A45388-1F66-4FC0-83AE-740E1972A65B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AppVeyor|Win32 = AppVeyor|Win32
@@ -114,6 +116,14 @@ Global
 		{61ED36ED-A783-45EC-81D2-1225A8224ED2}.Release|Win32.ActiveCfg = Release|Win32
 		{61ED36ED-A783-45EC-81D2-1225A8224ED2}.Release|Win32.Build.0 = Release|Win32
 		{61ED36ED-A783-45EC-81D2-1225A8224ED2}.SonarCloud|Win32.ActiveCfg = Release|Win32
+		{F8A45388-1F66-4FC0-83AE-740E1972A65B}.AppVeyor|Win32.ActiveCfg = Release|Win32
+		{F8A45388-1F66-4FC0-83AE-740E1972A65B}.AppVeyor|Win32.Build.0 = Release|Win32
+		{F8A45388-1F66-4FC0-83AE-740E1972A65B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F8A45388-1F66-4FC0-83AE-740E1972A65B}.Debug|Win32.Build.0 = Debug|Win32
+		{F8A45388-1F66-4FC0-83AE-740E1972A65B}.Release|Win32.ActiveCfg = Release|Win32
+		{F8A45388-1F66-4FC0-83AE-740E1972A65B}.Release|Win32.Build.0 = Release|Win32
+		{F8A45388-1F66-4FC0-83AE-740E1972A65B}.SonarCloud|Win32.ActiveCfg = Release|Win32
+		{F8A45388-1F66-4FC0-83AE-740E1972A65B}.SonarCloud|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +138,7 @@ Global
 		{75AC1AC1-F11F-40BC-8EE9-008FC4D854BE} = {2D022822-3443-4459-B1E1-36C79CBB3424}
 		{AE66A4EB-B54E-4572-9A4E-50C89A0C56C3} = {DB8BC13C-064C-4B6A-9370-2DC8B8E0E36B}
 		{61ED36ED-A783-45EC-81D2-1225A8224ED2} = {2D022822-3443-4459-B1E1-36C79CBB3424}
+		{F8A45388-1F66-4FC0-83AE-740E1972A65B} = {0103940F-0AD7-4CB6-B1BA-B665C3A64E8D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1DD184F5-C514-4799-9407-7F66952EA9B5}

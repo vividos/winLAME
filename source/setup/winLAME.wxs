@@ -131,6 +131,11 @@
            Source="$(var.OutputDir)winLAME.0407.dll" />
       </Component>
 
+      <Component Id="WinLameRes0402" Guid="*" Directory="INSTALLDIR">
+        <File Id="WinLame0402Dll" Name="winLAME.0402.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)winLAME.0402.dll" />
+      </Component>
+
       <Component Id="LibMp3LameLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibMp3LameDll" Name="libmp3lame.dll" DiskId="1" KeyPath="yes"
            Source="$(var.SolutionDir)source\libraries\libmp3lame.dll" />

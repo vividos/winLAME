@@ -47,6 +47,9 @@ source/winlame/res/MainFrameRibbon.rc
 source/winlame/res/MainFrameRibbon.0407.bml
 source/winlame/res/MainFrameRibbon.0407.h
 source/winlame/res/MainFrameRibbon.0407.rc
+source/winlame/res/MainFrameRibbon.0402.bml
+source/winlame/res/MainFrameRibbon.0402.h
+source/winlame/res/MainFrameRibbon.0402.rc
 *.VC.db
 *.VC.opendb
 source/cov-int/
