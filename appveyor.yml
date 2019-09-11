@@ -13,7 +13,7 @@ platform: Win32
 configuration: Release
 
 before_build:
-  - ps: source\Patch-BuildVersion.ps1 -version $env:appveyor_build_number
+  - ps: source\Patch-BuildVersion.ps1 -version $env:appveyor_build_version
   - nuget restore
 
 build:
