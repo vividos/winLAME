@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
 
  winLAME - a frontend for the LAME encoding engine
@@ -27,12 +27,13 @@
 
   <Product
       Id="*"
-      UpgradeCode="f36dad67-67a5-4d00-83fb-fe8a742c84f4"
       Name="$(var.ProductName)"
       Language="1033"
-      Version="$(var.Version)" Manufacturer="Michael Fink">
+      Version="$(var.Version)"
+      Manufacturer="Michael Fink"
+      UpgradeCode="f36dad67-67a5-4d00-83fb-fe8a742c84f4">
+
     <Package
-      Id="*"
       Description="$(var.ProductName) Setup"
       Comments="This installs $(var.ProductName)"
       Manufacturer="Michael Fink"
