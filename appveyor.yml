@@ -14,7 +14,8 @@ configuration: Release
 
 before_build:
   - ps: source\Patch-BuildVersion.ps1 -version $env:appveyor_build_version
-  - nuget restore
+  - cmd: call "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\Common7\Tools\VsDevCmd.bat"
+  - cmd: nuget restore
 
 build:
   project: winlame.sln
