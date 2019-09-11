@@ -6,7 +6,8 @@
     <ProductVersion>3.10</ProductVersion>
     <ProjectGuid>3c507c1a-ee7c-40d5-bd49-10c209d41846</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>winLAME-Setup</OutputName>
+    <OutputName Condition="'$(appveyor_build_version)' == '' ">winLAME-Setup</OutputName>
+    <OutputName Condition="'$(appveyor_build_version)' != '' ">winLAME-Setup-$(appveyor_build_version)</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
