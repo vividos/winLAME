@@ -21,7 +21,7 @@ copy %ROOT%\bin\Release\*.chm zip\
 copy %ROOT%\source\presets.xml zip\
 copy %ROOT%\readme.txt zip\Readme.txt
 copy %ROOT%\Copying zip\Copying.txt
-copy "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.22.27821\vcredist_x86.exe" zip\vcredist_x86_vc142.exe
+copy "%VCToolsRedistDir%\vcredist_x86.exe" zip\vcredist_x86_vc142.exe
 
 set ZIP="%ProgramFiles%\7-Zip\7z.exe"
 
