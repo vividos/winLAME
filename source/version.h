@@ -1,4 +1,4 @@
-//
+﻿//
 // winLAME - a frontend for the LAME encoding engine
 // Copyright (c) 2000-2019 Michael Fink
 //
@@ -36,4 +36,4 @@
 #  define VERSION_TEXT STRINGIFY(BUILD_YEAR) " release " STRINGIFY(RELEASE_NUMBER)
 #endif
 
-#define COPYRIGHT_TEXT "Copyright � 2000-" STRINGIFY(BUILD_YEAR) " Michael Fink"
+#define COPYRIGHT_TEXT "Copyright © 2000-" STRINGIFY(BUILD_YEAR) " Michael Fink"
