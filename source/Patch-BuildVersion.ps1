@@ -10,6 +10,8 @@ param (
 	[Parameter(Mandatory=$true)][string]$version = "1.0.0.0"
 )
 
+$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+
 Write-Host "Patching build version $version..."
 
 # split version number
@@ -21,7 +23,7 @@ $buildNumber = $array[3]
 $buildYear = Get-Date -format yyyy
 
 # modify version.h
-$versionHeader = Get-Content version.h
+$versionHeader = Get-Content "$scriptPath\version.h"
 
 $versionHeader = $versionHeader -replace "MAJOR_VERSION [0-9]+","MAJOR_VERSION $majorVersion"
 $versionHeader = $versionHeader -replace "MINOR_VERSION [0-9]+","MINOR_VERSION $minorVersion"
@@ -29,10 +31,10 @@ $versionHeader = $versionHeader -replace "RELEASE_NUMBER [0-9]+","RELEASE_NUMBER
 $versionHeader = $versionHeader -replace "BUILD_NUMBER [0-9]+","BUILD_NUMBER $buildNumber"
 $versionHeader = $versionHeader -replace "BUILD_YEAR [0-9]+","BUILD_YEAR $buildYear"
 
-Out-File -FilePath version.h -InputObject $versionHeader -Encoding UTF8
+Out-File -FilePath "$scriptPath\version.h" -InputObject $versionHeader -Encoding UTF8
 
 # modify config.wxi
-$configWxi = Get-Content setup\config.wxi
+$configWxi = Get-Content "$scriptPath\setup\config.wxi"
 
 $configWxi = $configWxi -replace "MajorVersion = ""[0-9]+""","MajorVersion = ""$majorVersion"""
 $configWxi = $configWxi -replace "MinorVersion = ""[0-9]+""","MinorVersion = ""$minorVersion"""
@@ -40,6 +42,6 @@ $configWxi = $configWxi -replace "ReleaseNumber = ""[0-9]+""","ReleaseNumber = "
 $configWxi = $configWxi -replace "BuildNumber = ""[0-9]+""","BuildNumber = ""$buildNumber"""
 $configWxi = $configWxi -replace "BuildYear = ""[0-9]+""","BuildYear = ""$buildYear"""
 
-Out-File -FilePath  setup\config.wxi -InputObject $configWxi -Encoding UTF8
+Out-File -FilePath "$scriptPath\setup\config.wxi" -InputObject $configWxi -Encoding UTF8
 
 Write-Host "Done patching."
