@@ -225,7 +225,7 @@ BEGIN
     LTEXT           "&Anzahl CPU-Kerne",IDC_STATIC,14,47,86,8
     EDITTEXT        IDC_SETTINGS_EDIT_CPU_CORES,101,43,31,12,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "",IDC_SETTINGS_SPIN_CPU_CORES,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ARROWKEYS | UDS_NOTHOUSANDS | WS_TABSTOP,132,41,11,15
-    LTEXT           "Hinweis: Diese Einstellung wird erst nach einem Neustart der Application wirksam!",IDC_SETTINGS_STATIC_NOTE_CPU_CORES,148,39,141,17
+    LTEXT           "Hinweis: Diese Einstellung wird erst nach einem Neustart der Applikation wirksam!",IDC_SETTINGS_STATIC_NOTE_CPU_CORES,148,39,141,17
     CONTROL         "&Automatisch optimale Anzahl an CPU-Kernen einstellen (%cores%)",IDC_SETTINGS_CHECK_AUTO_TASKS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,29,62,257,10
 END
