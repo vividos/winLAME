@@ -243,7 +243,7 @@
     <Property Id="ARPHELPLINK" Value="https://winlame.sourceforge.io/" />
 
     <Property Id="WIXUI_INSTALLDIR" Value="WinLame" />
-    <WixVariable Id="WixUILicenseRtf" Value="$(var.SolutionDir)docs\License.winLAME.rtf" />
+    <WixVariable Id="WixUILicenseRtf" Value="License.winLAME.rtf" />
 
     <UIRef Id="WixUI_InstallDir" />
 
