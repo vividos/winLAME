@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <RootNamespace>createzip</RootNamespace>
+    <Keyword>MakeFileProj</Keyword>
+    <ProjectGuid>{75533EAC-BD73-456C-8ECE-3B8C309D7935}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <NMakeBuildCommandLine>set VCToolsRedistDir=$(VCInstallDir)redist\MSVC\$(VCToolsRedistVersion)
+call CreateZip.cmd $(Configuration)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>set VCToolsRedistDir=$(VCInstallDir)redist\MSVC\$(VCToolsRedistVersion)
+call CreateZip.cmd $(Configuration)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>
+    </NMakeCleanCommandLine>
+    <NMakeOutput />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</IntDir>
+    <NMakeBuildCommandLine>set VCToolsRedistDir=$(VCInstallDir)redist\MSVC\$(VCToolsRedistVersion)
+call CreateZip.cmd $(Configuration)</NMakeBuildCommandLine>
+    <NMakeReBuildCommandLine>set VCToolsRedistDir=$(VCInstallDir)redist\MSVC\$(VCToolsRedistVersion)
+call CreateZip.cmd $(Configuration)</NMakeReBuildCommandLine>
+    <NMakeCleanCommandLine>
+    </NMakeCleanCommandLine>
+    <NMakeOutput />
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="CreateZip.cmd" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

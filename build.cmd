@@ -32,9 +32,6 @@ set ZIP="%ProgramFiles%\7-Zip\7z.exe"
 REM build winLAME Portable
 call BuildPortable.cmd
 
-REM build winLAME zip archive
-call BuildZip.cmd
-
 REM finished
 echo Finished!
 
