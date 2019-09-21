@@ -9,15 +9,19 @@ REM
 REM set this to your Visual Studio installation folder
 set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
 
-REM and this to your OpenCppCoverage folder
-set OPENCPPCOVERAGE=D:\devel\tools\OpenCppCoverage\
-
 REM
 REM Preparations
 REM
 call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
 
-set PATH=%PATH%;%OPENCPPCOVERAGE%
+REM
+REM Extract OpenCppCoverage build tools
+REM
+pushd ..\buildtools\OpenCppCoverage
+"%ProgramFiles%\7-Zip\7z.exe" x -y -oOpenCppCoverage OpenCppCoverage-x64-0.9.8.0.zip
+copy SonarQube.dll OpenCppCoverage\plugins\exporter
+PATH=%PATH%;%CD%\OpenCppCoverage
+popd
 
 REM
 REM Build Debug|x86
@@ -30,12 +34,10 @@ REM
 OpenCppCoverage.exe ^
    --continue_after_cpp_exception --cover_children ^
    --sources winlame\encoder ^
-   --export_type cobertura:winLAME-coverage.xml ^
+   --export_type SonarQube:winlame-coverage-SonarQube.xml ^
    --export_type html:CoverageReport ^
    --modules unittest.dll ^
    -- "%VSINSTALL%\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe" ^
    "..\bin\Debug\unittest.dll" /Platform:x86 /InIsolation /logger:trx
-
-REM   --excluded_sources packages\boost ^
 
 pause

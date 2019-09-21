@@ -79,3 +79,5 @@ buildlibs/faac-master.zip
 buildlibs/faad2-master.zip
 buildlibs/include/
 buildlibs/lib/
+/buildtools/OpenCppCoverage/OpenCppCoverage/
+/source/winlame-coverage-SonarQube.xml
