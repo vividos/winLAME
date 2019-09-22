@@ -94,18 +94,15 @@ CString CDExtractTask::GetTempFilename(const CString& discTrackTitle) const
    CString guid;
    guid.Format(_T("{%08x-%08x}"), ::GetCurrentProcessId(), ::GetCurrentThreadId());
 
-   // add slash to temp folder if necessary
-   CString tempFolder(m_uiSettings.cdrip_temp_folder);
-   Path::AddEndingBackslash(tempFolder);
-
    CString tempFilename;
-   tempFilename.Format(_T("%s\\(%02u) %s%s.wav"),
-      tempFolder.GetString(),
+   tempFilename.Format(_T("(%02u) %s%s.wav"),
       m_trackinfo.m_numTrackOnDisc + 1,
       discTrackTitle.GetString(),
       guid.GetString());
 
-   return tempFilename;
+   tempFilename.Replace(_T("\\"), _T("_"));
+
+   return Path::Combine(m_uiSettings.cdrip_temp_folder, tempFilename);
 }
 
 bool CDExtractTask::ExtractTrack(const CString& tempFilename)
@@ -160,6 +157,12 @@ bool CDExtractTask::ExtractTrack(const CString& tempFilename)
       SetTrackInfoFromCDTrackInfo(outputTrackInfo, cdReadJob);
 
       outputModule.PrepareOutput(mgr);
+
+      // create folder when it doesn't exist
+      CString tempOutputFolder = Path(tempFilename).FolderName();
+      if (!Path(tempOutputFolder).FolderExists())
+         Path::CreateDirectoryRecursive(tempOutputFolder);
+
       int ret = outputModule.InitOutput(tempFilename, mgr, outputTrackInfo, samples);
       if (ret < 0)
       {

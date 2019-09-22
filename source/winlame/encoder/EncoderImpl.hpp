@@ -84,6 +84,9 @@ namespace Encoder
       /// stops encoding
       virtual void StopEncode() override;
 
+      /// creates output filename from input title (for reading CDs)
+      static CString GetOutputFilenameByInputTitle(const CString& outputPath, const CString& inputTitle, OutputModule& outputModule);
+
       /// creates output filename from input filename
       static CString GetOutputFilename(const CString& outputPath, const CString& inputFilename, OutputModule& outputModule);
 

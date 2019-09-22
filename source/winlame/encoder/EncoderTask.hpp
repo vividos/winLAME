@@ -67,7 +67,7 @@ namespace Encoder
       const CString& OutputFilename() const { return EncoderImpl::GetEncoderSettings().m_outputFilename; }
 
       /// generates output filename for this task
-      CString GenerateOutputFilename(const CString& inputFilename);
+      CString GenerateOutputFilename(const CString& inputTitle);
 
    private:
       /// checks errors and adds error texts from error handler to task result

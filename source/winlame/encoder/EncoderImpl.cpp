@@ -193,6 +193,11 @@ void EncoderImpl::Encode()
          // generate temporary name, in case the output module doesn't support unicode filenames
          GenerateTempOutFilename(m_encoderSettings.m_outputFilename, tempOutputFilename);
 
+         // create folder when it doesn't exist
+         CString tempOutputFolder = Path(tempOutputFilename).FolderName();
+         if (!Path(tempOutputFolder).FolderExists())
+            Path::CreateDirectoryRecursive(tempOutputFolder);
+
          bool bRet = InitOutputModule(tempOutputFilename, trackInfo);
          initOutputModule = true;
 
@@ -310,6 +315,15 @@ bool EncoderImpl::PrepareOutputModule()
    }
 
    return true;
+}
+
+CString EncoderImpl::GetOutputFilenameByInputTitle(const CString& outputPath, const CString& inputTitle, OutputModule& outputModule)
+{
+   CString outputFilename = Path::Combine(outputPath, inputTitle);
+
+   outputFilename += _T(".") + outputModule.GetOutputExtension();
+
+   return outputFilename;
 }
 
 CString EncoderImpl::GetOutputFilename(const CString& outputPath, const CString& inputFilename, OutputModule& outputModule)

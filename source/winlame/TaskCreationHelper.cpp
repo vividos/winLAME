@@ -184,7 +184,8 @@ void TaskCreationHelper::AddInputFilesTasks()
 
       taskMgr.AddTask(spTask);
 
-      job.OutputFilename(spTask->GenerateOutputFilename(job.InputFilename()));
+      CString inputTitle = Path(job.InputFilename()).FilenameOnly();
+      job.OutputFilename(spTask->GenerateOutputFilename(inputTitle));
 
       m_lastTaskId = spTask->Id();
    }
@@ -261,12 +262,7 @@ void TaskCreationHelper::AddCDExtractTasks()
 
          CString titleFilename = CDRipTitleFormatManager::GetFilenameByTitle(cdReadJob.Title());
 
-         CString inputFilenameFromTitle =
-            Path::Combine(
-               Path(cdReadJob.OutputFilename()).FolderName(),
-               titleFilename + _T(".wav")).ToString();
-
-         cdReadJob.OutputFilename(spEncoderTask->GenerateOutputFilename(inputFilenameFromTitle));
+         cdReadJob.OutputFilename(spEncoderTask->GenerateOutputFilename(titleFilename));
 
          taskMgr.AddTask(spEncoderTask);
 

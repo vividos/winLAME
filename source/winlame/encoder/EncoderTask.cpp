@@ -35,7 +35,7 @@ EncoderTask::EncoderTask(unsigned int dependentTaskId, const EncoderTaskSettings
    EncoderImpl::SetSettingsManager(&m_settings.m_settingsManager);
 }
 
-CString EncoderTask::GenerateOutputFilename(const CString& inputFilename)
+CString EncoderTask::GenerateOutputFilename(const CString& inputTitle)
 {
    if (EncoderImpl::GetEncoderSettings().m_outputFilename.IsEmpty())
    {
@@ -47,7 +47,8 @@ CString EncoderTask::GenerateOutputFilename(const CString& inputFilename)
 
       outputModule->PrepareOutput(m_settings.m_settingsManager);
 
-      EncoderImpl::GetEncoderSettings().m_outputFilename = EncoderImpl::GetOutputFilename(m_settings.m_outputFolder, inputFilename, *outputModule.get());
+      EncoderImpl::GetEncoderSettings().m_outputFilename =
+         EncoderImpl::GetOutputFilenameByInputTitle(m_settings.m_outputFolder, inputTitle, *outputModule.get());
    }
 
    return EncoderImpl::GetEncoderSettings().m_outputFilename;

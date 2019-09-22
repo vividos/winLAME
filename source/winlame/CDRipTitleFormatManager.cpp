@@ -65,8 +65,7 @@ CString CDRipTitleFormatManager::GetFilenameByTitle(const CString& title)
 {
    CString filename = title;
 
-   filename.Replace(_T("\\"), _T(""));
-   filename.Replace(_T("/"), _T(""));
+   filename.Replace(_T("/"), _T("\\"));
    filename.Replace(_T(":"), _T(""));
    filename.Replace(_T("*"), _T(""));
    filename.Replace(_T("?"), _T(""));
