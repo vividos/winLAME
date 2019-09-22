@@ -177,7 +177,7 @@ Here's a checklist of what to do before each release:
 - Update copyright year in the following files:
   * about.html
   * about.????.html
-  * docs\License.winLAME.rtf
+  * setup\License.winLAME.rtf
   * htmlhelp index page
   * readme.txt
 - Check all external libraries for updates and update them
