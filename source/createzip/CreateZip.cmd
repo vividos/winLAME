@@ -18,6 +18,7 @@ del ..\winLAME-%appveyor_build_version%.zip 2> nul
 mkdir zip
 
 copy %ROOT%\bin\%CONFIG%\*.dll zip\
+del zip\unittest.dll
 copy %ROOT%\bin\%CONFIG%\*.exe zip\
 copy %ROOT%\bin\%CONFIG%\*.chm zip\
 copy %ROOT%\source\presets.xml zip\
