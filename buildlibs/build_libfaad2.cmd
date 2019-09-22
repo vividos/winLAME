@@ -7,18 +7,18 @@ REM Downloads libfaad2 from github.com/knik0 and compiles it
 REM
 
 REM set this to the filename of the file to download
-set PREFIX=faad2-master
+set PREFIX=faad2-2_9_0
 
 REM set this to your Visual Studio installation folder
 set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
 
 REM download package
-set URL=https://codeload.github.com/knik0/faad2/zip/master
+set URL=https://github.com/knik0/faad2/archive/2_9_0.zip
 
 if not exist %PREFIX%.zip powershell -Command "& {Invoke-WebRequest -Uri %URL% -Out %PREFIX%.zip}"
 
 REM unzip
-rmdir /s /q %PREFIX%\
+rmdir /s /q %PREFIX%\ 2> nul
 "c:\Program Files\7-Zip\7z.exe" x %PREFIX%.zip
 
 REM copy additional files
