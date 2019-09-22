@@ -31,7 +31,7 @@ set ZIPFILENAME=winLAME-zip.zip
 if not "%appveyor_build_version%" == "" set ZIPFILENAME=winLAME-%appveyor_build_version%.zip
 
 cd zip
-%ZIP% a ..\..\%ZIPFILENAME% *.*
+%ZIP% a ..\%ZIPFILENAME% *.*
 
 set ZIP=
 set ROOT=
