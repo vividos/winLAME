@@ -2,7 +2,7 @@
 // winLAME - a frontend for the LAME encoding engine
 // Copyright(c) 2004 Kjetil Haga
 // Copyright(c) 2004 DeXT
-// Copyright(c) 2007-2017 Michael Fink
+// Copyright(c) 2007-2019 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #include "resource.h"
 #include <cstdio>
 #include <cassert>
-#include "Id3v1Tag.hpp"
+#include "AudioFileTag.hpp"
 
 // Monkey's Audio header files have some incompatibilities; working around that
 #pragma warning(push)
@@ -45,9 +45,6 @@ using Encoder::SampleContainer;
 /// monkey namespace contains internal stuff used in MonkeysAudioInputModule
 namespace MonkeysAudio
 {
-   /// typedefs
-   typedef int(__stdcall * proc_APEGetID3Tag)(const char*, APE::ID3_TAG*);
-
    /// internal struct with pointers to mac dll functions
    struct MonkeysAudioDll
    {
@@ -58,8 +55,7 @@ namespace MonkeysAudio
          Destroy(nullptr),
          GetData(nullptr),
          Seek(nullptr),
-         GetInfo(nullptr),
-         GetID3Tag(nullptr)
+         GetInfo(nullptr)
       {
       }
 
@@ -86,7 +82,6 @@ namespace MonkeysAudio
          GetData = (proc_APEDecompress_GetData)GetProcAddress(m_module, "c_APEDecompress_GetData");
          Seek = (proc_APEDecompress_Seek)GetProcAddress(m_module, "c_APEDecompress_Seek");
          GetInfo = (proc_APEDecompress_GetInfo)GetProcAddress(m_module, "c_APEDecompress_GetInfo");
-         GetID3Tag = (proc_APEGetID3Tag)GetProcAddress(m_module, "GetID3Tag");
 
          // error check (unload dll on failure)
          if (Create == nullptr ||
@@ -128,7 +123,6 @@ namespace MonkeysAudio
       proc_APEDecompress_GetData       GetData;
       proc_APEDecompress_Seek          Seek;
       proc_APEDecompress_GetInfo       GetInfo;
-      proc_APEGetID3Tag                GetID3Tag;
    };
 
    /// buffer size for MonkeysAudio's audio module
@@ -329,7 +323,7 @@ int MonkeysAudioInputModule::InitInput(LPCTSTR infilename,
    m_numCurrentSamples = 0;
 
    // get id3 tag
-   GetID3Tag(infilename, trackInfo);
+   GetTrackInfo(infilename, trackInfo);
 
    // opens the file for reading
    m_handle = s_dll.Create(CStringA(GetAnsiCompatFilename(infilename)), &retval);
@@ -419,17 +413,8 @@ void MonkeysAudioInputModule::DoneInput()
    }
 }
 
-bool MonkeysAudioInputModule::GetID3Tag(LPCTSTR filename, TrackInfo& trackInfo)
+bool MonkeysAudioInputModule::GetTrackInfo(LPCTSTR filename, TrackInfo& trackInfo)
 {
-   ATLASSERT(s_dll.IsAvail());
-
-   Id3v1Tag id3tag;
-   APE::ID3_TAG* info = (APE::ID3_TAG *)id3tag.GetData();
-
-   if (ERROR_SUCCESS != s_dll.GetID3Tag(CStringA(GetAnsiCompatFilename(filename)), info))
-      return false;
-
-   id3tag.ToTrackInfo(trackInfo);
-
-   return true;
+   AudioFileTag tag(trackInfo);
+   return tag.ReadFromFile(filename);
 }

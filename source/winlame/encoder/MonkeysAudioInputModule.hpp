@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2019 Michael Fink
 // Copyright (c) Kjetil Haga
 //
 // This program is free software; you can redistribute it and/or modify
@@ -84,8 +84,8 @@ namespace Encoder
       virtual void DoneInput() override;
 
    private:
-      /// gets the id3 tag in ape files
-      bool GetID3Tag(LPCTSTR filename, TrackInfo& trackInfo);
+      /// gets the track info in ape files
+      bool GetTrackInfo(LPCTSTR filename, TrackInfo& trackInfo);
 
    private:
       /// pointers to functions
