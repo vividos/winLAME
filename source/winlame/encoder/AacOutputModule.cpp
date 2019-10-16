@@ -59,7 +59,7 @@ AacOutputModule::AacOutputModule()
 
 bool AacOutputModule::IsAvailable() const
 {
-   return DynamicLibrary(_T("libfaac.dll")).IsLoaded();
+   return DynamicLibrary(_T("libfaac_dll.dll")).IsLoaded();
 }
 
 CString AacOutputModule::GetDescription() const

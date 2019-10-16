@@ -184,8 +184,8 @@
       </Component>
 
       <Component Id="LibFaacLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibFaacDll" Name="libfaac.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libfaac.dll" />
+        <File Id="LibFaacDllDll" Name="libfaac_dll.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.SolutionDir)source\libraries\libfaac_dll.dll" />
       </Component>
 
       <Component Id="LibFaad2Library" Guid="*" Directory="INSTALLDIR">
