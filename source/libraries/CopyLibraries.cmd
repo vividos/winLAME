@@ -28,7 +28,7 @@ copy libspeex.dll %TARGET%
 copy opus.dll %TARGET%
 copy opusenc.dll %TARGET%
 copy ogg.dll %TARGET%
-copy libfaac.dll %TARGET%
+copy libfaac_dll.dll %TARGET%
 copy libfaad2.dll %TARGET%
 copy MACDll.dll %TARGET%
 copy libmpg123-0.dll %TARGET%
