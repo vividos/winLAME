@@ -74,6 +74,7 @@ buildlibs/taglib-*/
 buildlibs/faac-master/
 buildlibs/faad2-2_9_0/
 buildlibs/faad2-master/
+buildlibs/faac-1_30/
 buildlibs/libogg-*.tar.gz
 buildlibs/libopusenc-*.tar.gz
 buildlibs/opusfile-*.tar.gz
@@ -82,6 +83,7 @@ buildlibs/taglib-*.tar.gz
 buildlibs/faac-master.zip
 buildlibs/faad2-master.zip
 buildlibs/faad2-2_9_0.zip
+buildlibs/faac-1_30.zip
 buildlibs/include/
 buildlibs/lib/
 /buildtools/OpenCppCoverage/OpenCppCoverage/
