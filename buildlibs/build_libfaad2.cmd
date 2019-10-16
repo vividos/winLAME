@@ -29,6 +29,11 @@ call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
 
 pushd %PREFIX%\project\msvc
 
+REM update Toolset to v142, in order to use VS2019
+powershell -Command "& {(Get-Content libfaad2_dll.vcxproj) -replace \"v141\",\"v142\" | out-file libfaad2_dll.vcxproj}"
+REM also update framework
+powershell -Command "& {(Get-Content libfaad2_dll.vcxproj) -replace \"8.1\",\"10.0\" | out-file libfaad2_dll.vcxproj}"
+
 REM compile
 msbuild libfaad2_dll.vcxproj /m /property:Configuration=Release,Platform=Win32
 
