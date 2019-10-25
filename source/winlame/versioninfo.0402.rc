@@ -7,8 +7,8 @@
 #include "..\version.h"
 
 /////////////////////////////////////////////////////////////////////////////
-// English (United States) resources
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+// Bulgarian (Bulgaria) resources
+LANGUAGE LANG_BULGARIAN, SUBLANG_DEFAULT
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -34,12 +34,12 @@ BEGIN
         BEGIN
             VALUE "Comments", "winLAME is an easy to use encoder for many audio formats, including MP3, Opus, Ogg Vorbis and more. winLAME uses the LAME mp3 encoder."
             VALUE "CompanyName", "Michael Fink"
-            VALUE "FileDescription", "winLAME"
+            VALUE "FileDescription", "winLAME bulgarian translation"
             VALUE "FileVersion", VERSION_TEXT
             VALUE "InternalName", "winLAME"
             VALUE "LegalCopyright", COPYRIGHT_TEXT
             VALUE "LegalTrademarks", " "
-            VALUE "OriginalFilename", "winLAME.exe"
+            VALUE "OriginalFilename", "winLAME.0402.dll"
             VALUE "PrivateBuild", " "
             VALUE "ProductName", "winLAME"
             VALUE "ProductVersion", VERSION_TEXT
@@ -48,6 +48,6 @@ BEGIN
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x409, 1200
+        VALUE "Translation", 0x402, 1200
     END
 END
