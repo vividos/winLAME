@@ -202,26 +202,26 @@ void nlame_delete(nlame_instance_t* inst)
 /*! sets a variable according to type, via a lame_set_* function */
 #define nlame_var_set_switch_type(type,func)    \
    case type:                                   \
-      ret = lame_set_##func##(inst->lgf,value); \
+      ret = lame_set_##func(inst->lgf,value); \
       break;
 
 /*! sets a variable according to type, via a lame_set_* function;
     uses the val given */
 #define nlame_var_set_switch_type_val(type,func,val) \
    case type:                                   \
-      ret = lame_set_##func##(inst->lgf,val);   \
+      ret = lame_set_##func(inst->lgf,val);   \
       break;
 
     /*! returns a variable according to type, via a lame_get_* function */
 #define nlame_var_get_switch_type(type,func)    \
    case type:                                   \
-      val = lame_get_##func##(inst->lgf);       \
+      val = lame_get_##func(inst->lgf);       \
       break;
 
 /*! returns a variable to a lvalue, according to type */
 #define nlame_var_get_switch_type_lval(type,func,lval) \
    case type:                                   \
-      lval lame_get_##func##(inst->lgf);        \
+      lval lame_get_##func(inst->lgf);        \
       break;
 
 
