@@ -22,7 +22,7 @@ REM Extract SonarQube build tools
 REM
 pushd ..\buildtools\SonarQube
 "%ProgramFiles%\7-Zip\7z.exe" x -y build-wrapper-win-x86.zip
-"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-4.6.2.2108-net46.zip
+"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-4.7.1.2311-net46.zip
 PATH=%PATH%;%CD%\build-wrapper-win-x86;%CD%\sonar-scanner-msbuild
 popd
 
