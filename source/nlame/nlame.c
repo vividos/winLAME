@@ -33,7 +33,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include <windows.h>
+#include <Windows.h>
 
 /*! sets id3 tag text info as UCS-2 value; not declared by lame.h, but exported from the
     library, so we declare it here. */
@@ -594,14 +594,13 @@ int nlame_reinit_bitstream(nlame_instance_t* inst)
 
 static long skipId3v2(FILE * fpStream);
 
-int nlame_get_vbr_infotag_length(nlame_instance_t* inst)
-{
-   /* code borrowed from InitVbrTag() */
-   /* NOSONAR */
 #define XING_BITRATE1 128
 #define XING_BITRATE2  64
 #define XING_BITRATE25 32
 
+int nlame_get_vbr_infotag_length(nlame_instance_t* inst)
+{
+   /* code borrowed from InitVbrTag() */
    int kbps_header;
    int version;
    int samplerate_out;
@@ -634,6 +633,8 @@ int nlame_get_vbr_infotag_length(nlame_instance_t* inst)
    return total_frame_size;
 }
 
+#define MAXFRAMESIZE 2880 /* or 0xB40, the max freeformat 640 32kHz framesize */
+
 void nlame_write_vbr_infotag(nlame_instance_t* inst, FILE* fd)
 {
    /* instead of just calling lame_mp3_tags_fid we have to do everything
@@ -641,8 +642,6 @@ void nlame_write_vbr_infotag(nlame_instance_t* inst, FILE* fd)
       C runtime (option /MT), and that C runtime manages its own FILE
       instances, and we can't fopen() a file and just pass the pointer.
    */
-   /* NOSONAR */
-#define MAXFRAMESIZE 2880 /* or 0xB40, the max freeformat 640 32kHz framesize */
 
    long lFileSize;
    long id3v2TagSize;
