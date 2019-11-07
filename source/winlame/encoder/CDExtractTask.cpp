@@ -183,8 +183,15 @@ bool CDExtractTask::ExtractTrack(const CString& tempFilename)
    {
       DWORD availBytes = BASS_ChannelGetData(hStream, &vecBuffer[0], bufferSize * sizeof(vecBuffer[0]));
 
+      if (availBytes < 0)
+         break; // channel ended or other error
+
       if (availBytes == 0)
-         break; // couldn't read more samples
+      {
+         // buffer is empty; wait a bit to fill it
+         Sleep(1);
+         continue;
+      }
 
       samples.PutSamplesInterleaved(&vecBuffer[0], availBytes / sizeof(vecBuffer[0]) / 2);
 
