@@ -243,10 +243,11 @@ void EncoderImpl::Encode()
       {
          if (m_encoderSettings.m_overwriteExisting)
             DeleteFile(m_encoderSettings.m_outputFilename);
-         else
-            // not overwriting, but "delete after encoding" flag set?
-            if (m_encoderSettings.m_deleteInputAfterEncode)
-               DeleteFile(m_encoderSettings.m_inputFilename);
+
+         // "delete after encoding" flag set, and output file is not input file ?
+         if (m_encoderSettings.m_deleteInputAfterEncode &&
+            m_encoderSettings.m_inputFilename != m_encoderSettings.m_outputFilename)
+            DeleteFile(m_encoderSettings.m_inputFilename);
 
          MoveFile(tempOutputFilename, m_encoderSettings.m_outputFilename);
       }
