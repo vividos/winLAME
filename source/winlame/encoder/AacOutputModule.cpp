@@ -180,30 +180,42 @@ int AacOutputModule::InitOutput(LPCTSTR outfilename,
 
 int AacOutputModule::EncodeSamples(SampleContainer& samples)
 {
-   // get samples
-   int numSamples = 0;
-   short* sampleBuffer = (short*)samples.GetSamplesInterleaved(numSamples);
+   // get input samples
+   int numInputSamplesPerChannel = 0;
+   short* inputSampleBuffer = (short*)samples.GetSamplesInterleaved(numInputSamplesPerChannel);
 
    // as faacEncEncode() always wants 'm_inputBufferSize' number of samples, we
    // have to store samples until a whole block of samples can be passed to
    // the function; otherwise faacEncEncode() would pad the buffer with 0's.
 
-   int size = numSamples * m_channels;
+   size_t numInputSamples = numInputSamplesPerChannel * m_channels;
+   size_t inputSamplePos = 0;
 
-   // check if input sample buffer is full
-   if (unsigned(m_sampleBufferHigh + size) >= m_inputBufferSize)
+   //ATLTRACE(_T("AacOutputModule: encoding 0x%04x fresh input samples\n"), numInputSamples);
+
+   // fill the sample buffer from the input samples
+   do
    {
-      int pos = 0;
-      while (unsigned(m_sampleBufferHigh + size) >= m_inputBufferSize)
+      size_t numSamplesToTransfer = std::min((size_t)m_inputBufferSize - m_sampleBufferHigh, numInputSamples - inputSamplePos);
+      if (numSamplesToTransfer > 0)
       {
-         memcpy(m_sampleBuffer.data() + m_sampleBufferHigh, sampleBuffer + pos, (m_inputBufferSize - m_sampleBufferHigh) * sizeof(short));
+         //ATLTRACE(_T("AacOutputModule: copying 0x%04x bytes to sample buffer\n"), numSamplesToTransfer);
+         memcpy(m_sampleBuffer.data() + m_sampleBufferHigh, inputSampleBuffer + inputSamplePos, numSamplesToTransfer * sizeof(short));
+         m_sampleBufferHigh += numSamplesToTransfer;
+         inputSamplePos += numSamplesToTransfer;
+      }
 
+      // if the sample buffer is full, encode one frame
+      if (m_inputBufferSize == m_sampleBufferHigh)
+      {
          // encode the samples
          int ret = faacEncEncode(m_handle,
             reinterpret_cast<int*>(m_sampleBuffer.data()),
             m_inputBufferSize,
             m_outputBuffer.data(),
             m_outputBuffer.size());
+
+         //ATLTRACE(_T("AacOutputModule: encoding the samples to %i output bytes\n"), ret);
 
          if (ret < 0)
             return ret;
@@ -212,28 +224,15 @@ int AacOutputModule::EncodeSamples(SampleContainer& samples)
          if (ret > 0)
             m_outputFile.write(reinterpret_cast<char*>(m_outputBuffer.data()), ret);
 
-         // copy / adjust buffer values
-         int rest = size - (m_inputBufferSize - m_sampleBufferHigh);
-
-         if (rest > 0)
-            memcpy(m_sampleBuffer.data(), sampleBuffer + (m_inputBufferSize - m_sampleBufferHigh), rest * sizeof(short));
-
-         // adjust values
-         m_sampleBufferHigh = rest;
-         size = 0;
-         pos += size;
+         m_sampleBufferHigh = 0;
       }
 
-      return numSamples;
-   }
-   else
-   {
-      // not enough samples yet, store them in the buffer, too
-      memcpy(m_sampleBuffer.data() + m_sampleBufferHigh, sampleBuffer, size * sizeof(short));
-      m_sampleBufferHigh += size;
+      // loop while the input samples are exhausted
+   } while (inputSamplePos < numInputSamples);
 
-      return 0;
-   }
+   //ATLTRACE(_T("AacOutputModule: finished encoding samples, 0x%04x samples are left in buffer\n"), m_sampleBufferHigh);
+
+   return numInputSamples;
 }
 
 void AacOutputModule::DoneOutput()
@@ -243,6 +242,8 @@ void AacOutputModule::DoneOutput()
    // encode the last samples in sample buffer
    if (m_sampleBufferHigh > 0)
    {
+      //ATLTRACE(_T("AacOutputModule: encoding remaining 0x%04x samples that were left in buffer\n"), m_sampleBufferHigh);
+
       ret = faacEncEncode(m_handle,
          reinterpret_cast<int*>(m_sampleBuffer.data()),
          m_sampleBufferHigh,

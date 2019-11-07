@@ -67,7 +67,7 @@ namespace Encoder
       /// encoder handle
       faacEncHandle m_handle;
 
-      /// size of input buffer in bytes
+      /// size of input buffer, in samples
       unsigned long m_inputBufferSize;
 
       /// size of output buffer in bytes
@@ -80,7 +80,7 @@ namespace Encoder
       std::vector<short> m_sampleBuffer;
 
       /// sample buffer high watermark
-      int m_sampleBufferHigh;
+      size_t m_sampleBufferHigh;
 
       /// bitrate control method
       int m_bitrateControlMethod;
