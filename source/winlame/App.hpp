@@ -86,8 +86,11 @@ public:
    /// returns app folder; ends with backslash
    static CString AppFolder();
 
-   /// retrieves app version number
+   /// retrieves app version name
    static CString Version();
+
+   /// retrieves app version number
+   static CString VersionNumber();
 
 private:
    /// runs "classic" winLAME dialog

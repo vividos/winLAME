@@ -111,7 +111,7 @@ CString AboutDlg::GetAboutHtmlText()
       if (varname == _T("winlamever"))
       {
          // find out winlame version from version resource
-         varname = App::Version();
+         varname = App::Version() + _T(" (") + App::VersionNumber() + _T(")");
       }
       else if (varname == _T("installedinputmodules"))
       {

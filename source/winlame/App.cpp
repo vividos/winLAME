@@ -306,6 +306,13 @@ CString App::Version()
    return fileVersion;
 }
 
+CString App::VersionNumber()
+{
+   Win32::VersionInfoResource versionInfo(Path::ModuleFilename());
+
+   return versionInfo.GetFixedFileInfo()->GetProductVersion();
+}
+
 void App::LoadPresetFile()
 {
    CString userSpecificAppFolder = AppDataFolder(false);
