@@ -810,6 +810,7 @@ skipId3v2(FILE * fpStream)
    if (!strncmp((char *)id3v2Header, "ID3", 3)) {
       /* the tag size (minus the 10-byte header) is encoded into four
       * bytes where the most significant bit is clear in each byte */
+      /* NOSONAR */
       id3v2TagSize = (((id3v2Header[6] & 0x7f) << 21)
          | ((id3v2Header[7] & 0x7f) << 14)
          | ((id3v2Header[8] & 0x7f) << 7)
