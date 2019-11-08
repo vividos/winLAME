@@ -28,6 +28,7 @@
 #include <sys/stat.h>
 #include "FLAC/metadata.h"
 #include <ulib/DynamicLibrary.hpp>
+#include "AudioFileTag.hpp"
 
 using Encoder::FlacInputModule;
 using Encoder::TrackInfo;
@@ -94,6 +95,9 @@ static void FLAC_MetadataCallback(const FLAC__StreamDecoder* decoder,
       break;
 
    case FLAC__METADATA_TYPE_VORBIS_COMMENT:
+      if (context->trackInfo == nullptr)
+         break;
+
       for (unsigned i = 0; i < metadata->data.vorbis_comment.num_comments; i++)
       {
          CString name, value;
@@ -261,6 +265,9 @@ CString FlacInputModule::GetFilterString() const
 int FlacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    TrackInfo& trackinfo, SampleContainer& samplecont)
 {
+   AudioFileTag tag{ trackinfo };
+   tag.ReadFromFile(infilename);
+
    // find out length of file
    struct _stat statbuf;
    ::_tstat(infilename, &statbuf);
@@ -268,7 +275,7 @@ int FlacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
 
    m_flacContext = new FLAC_context;
    memset((void*)m_flacContext, 0, sizeof(FLAC_context));
-   m_flacContext->trackInfo = &trackinfo;
+   //m_flacContext->trackInfo = &trackinfo;
 
    m_flacDecoder = FLAC__stream_decoder_new();
 
