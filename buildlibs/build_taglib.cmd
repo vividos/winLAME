@@ -49,5 +49,7 @@ xcopy /S /Y %PREFIX%\taglib\toolkit\*.h ..\source\libraries\include\taglib\toolk
 xcopy /S /Y %PREFIX%\taglib\toolkit\*.tcc ..\source\libraries\include\taglib\toolkit\
 xcopy /S /Y %PREFIX%\taglib\mpeg\*.h ..\source\libraries\include\taglib\mpeg\
 xcopy /S /Y %PREFIX%\taglib\mpeg\id3v2\*.h ..\source\libraries\include\taglib\mpeg\id3v2\
+xcopy /S /Y %PREFIX%\taglib\ogg\*.h ..\source\libraries\include\taglib\ogg\
+xcopy /S /Y %PREFIX%\taglib\flac\*.h ..\source\libraries\include\taglib\flac\
 
 pause
