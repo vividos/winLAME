@@ -55,7 +55,7 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;MAKE_TAGLIB_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)toolkit;$(ProjectDir)asf;$(ProjectDir)mpeg;$(ProjectDir)ogg;$(ProjectDir)ogg\flac;$(ProjectDir)flac;$(ProjectDir)mpc;$(ProjectDir)mp4;$(ProjectDir)ogg\vorbis;$(ProjectDir)ogg\speex;$(ProjectDir)ogg\opus;$(ProjectDir)mpeg\id3v2;$(ProjectDir)mpeg\id3v2\frames;$(ProjectDir)mpeg\id3v1;$(ProjectDir)ape;$(ProjectDir)wavpack;$(ProjectDir)trueaudio;$(ProjectDir)riff;$(ProjectDir)riff\aiff;$(ProjectDir)riff\wav;$(ProjectDir)mod;$(ProjectDir)s3m;$(ProjectDir)it;$(ProjectDir)xm</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4251;4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,7 +80,7 @@
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;MAKE_TAGLIB_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)toolkit;$(ProjectDir)asf;$(ProjectDir)mpeg;$(ProjectDir)ogg;$(ProjectDir)ogg\flac;$(ProjectDir)flac;$(ProjectDir)mpc;$(ProjectDir)mp4;$(ProjectDir)ogg\vorbis;$(ProjectDir)ogg\speex;$(ProjectDir)ogg\opus;$(ProjectDir)mpeg\id3v2;$(ProjectDir)mpeg\id3v2\frames;$(ProjectDir)mpeg\id3v1;$(ProjectDir)ape;$(ProjectDir)wavpack;$(ProjectDir)trueaudio;$(ProjectDir)riff;$(ProjectDir)riff\aiff;$(ProjectDir)riff\wav;$(ProjectDir)mod;$(ProjectDir)s3m;$(ProjectDir)it;$(ProjectDir)xm</AdditionalIncludeDirectories>
-      <DisableSpecificWarnings>4251</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4251;4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
