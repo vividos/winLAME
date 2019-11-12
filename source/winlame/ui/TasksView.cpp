@@ -75,7 +75,11 @@ LRESULT TasksView::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/
 LRESULT TasksView::OnTimer(UINT /*uMsg*/, WPARAM wParam, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
    if (wParam == c_timerIdUpdateList)
+   {
+      KillTimer(c_timerIdUpdateList);
       UpdateTasks();
+      SetTimer(c_timerIdUpdateList, c_updateCycleInMilliseconds);
+   }
 
    return 0;
 }
