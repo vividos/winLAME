@@ -265,8 +265,7 @@ CString FlacInputModule::GetFilterString() const
 int FlacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    TrackInfo& trackinfo, SampleContainer& samplecont)
 {
-   AudioFileTag tag{ trackinfo };
-   tag.ReadFromFile(infilename);
+   ReadTrackMetadata(infilename, trackinfo);
 
    // find out length of file
    struct _stat statbuf;
@@ -384,4 +383,49 @@ void FlacInputModule::DoneInput()
       delete m_flacContext;
       m_flacContext = nullptr;
    }
+}
+
+void FlacInputModule::ReadTrackMetadata(LPCTSTR filename, TrackInfo& trackInfo)
+{
+   AudioFileTag tag{ trackInfo };
+   tag.ReadFromFile(filename);
+
+   // since AudioFileTag (via TagLib library) can't currently read the PICTURE
+   // metadata block, read it using FLAC functions
+   CStringA ansiFilename{ GetAnsiCompatFilename(filename) };
+
+   // first, try to get front conver
+   FLAC__StreamMetadata* picture = nullptr;
+   FLAC__bool ret = FLAC__metadata_get_picture(
+      ansiFilename, &picture,
+      FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER,
+      nullptr, nullptr,
+      unsigned(-1),
+      unsigned(-1),
+      unsigned(-1),
+      unsigned(-1));
+
+   if (!ret && picture == nullptr)
+   {
+      // try to get any picture
+      ret = FLAC__metadata_get_picture(
+         ansiFilename, &picture,
+         (FLAC__StreamMetadata_Picture_Type)-1,
+         nullptr, nullptr,
+         unsigned(-1),
+         unsigned(-1),
+         unsigned(-1),
+         unsigned(-1));
+   }
+
+   if (picture != nullptr)
+   {
+      const std::vector<unsigned char> binaryData(
+         picture->data.picture.data,
+         picture->data.picture.data + picture->data.picture.data_length);
+
+      trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
+   }
+
+   FLAC__metadata_object_delete(picture);
 }

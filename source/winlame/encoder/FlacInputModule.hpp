@@ -93,6 +93,9 @@ namespace Encoder
       /// called when done with decoding
       virtual void DoneInput() override;
 
+      /// reads track metadata from file
+      void ReadTrackMetadata(LPCTSTR filename, TrackInfo& trackInfo);
+
    private:
       /// length of input file
       unsigned long m_fileLength;
