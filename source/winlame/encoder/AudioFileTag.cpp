@@ -30,6 +30,9 @@
 #include <taglib/mpeg/id3v2/id3v2tag.h>
 #include <taglib/mpeg/mpegfile.h>
 #include <taglib/mpeg/id3v2/frames/attachedpictureframe.h>
+#include <taglib/flac/flacfile.h>
+#include <taglib/ogg/flac/oggflacfile.h>
+#include <taglib/ogg/xiphcomment.h>
 #pragma warning(pop)
 
 #ifdef _DEBUG
@@ -54,7 +57,9 @@ bool AudioFileTag::ReadFromFile(const CString& filename, AudioFileType audioFile
 
    TagLib::ID3v2::Tag* id3v2tag = FindId3v2Tag(spFile);
 
-   return ReadTrackInfoFromTag(tag, id3v2tag);
+   TagLib::Ogg::XiphComment* oggXiphComment = FindOggXiphCommentTag(spFile);
+
+   return ReadTrackInfoFromTag(tag, id3v2tag, oggXiphComment);
 }
 
 std::shared_ptr<TagLib::File> AudioFileTag::OpenFile(const CString& filename, AudioFileType audioFileType)
@@ -94,7 +99,31 @@ TagLib::ID3v2::Tag* AudioFileTag::FindId3v2Tag(std::shared_ptr<TagLib::File> spF
    return nullptr;
 }
 
-bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag)
+TagLib::Ogg::XiphComment* AudioFileTag::FindOggXiphCommentTag(std::shared_ptr<TagLib::File> spFile)
+{
+   TagLib::Ogg::XiphComment* xiphComment = dynamic_cast<TagLib::Ogg::XiphComment*>(spFile->tag());
+   if (xiphComment != nullptr)
+      return xiphComment;
+
+   // try opening ogg flac file
+   std::shared_ptr<TagLib::Ogg::FLAC::File> oggFile = std::dynamic_pointer_cast<TagLib::Ogg::FLAC::File>(spFile);
+   if (oggFile != nullptr &&
+      oggFile->hasXiphComment())
+   {
+      return oggFile->tag();
+   }
+
+   // try opening flac file
+   std::shared_ptr<TagLib::FLAC::File> flacFile = std::dynamic_pointer_cast<TagLib::FLAC::File>(spFile);
+   if (flacFile != nullptr)
+   {
+      return flacFile->xiphComment(true); // create when it's not there yet
+   }
+
+   return nullptr;
+}
+
+bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphComment* xiphComment)
 {
    if (id3v2tag != nullptr)
    {
@@ -104,7 +133,7 @@ bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id
          if (frameId.size() != 4)
             continue;
 
-         ATLTRACE(_T("Frame: %c%c%c%c: %hs\n"),
+         ATLTRACE(_T("ID3v2 Frame: %c%c%c%c: %hs\n"),
             frameId[0],
             frameId[1],
             frameId[2],
@@ -189,6 +218,56 @@ bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id
             if (!binaryData.empty())
                m_trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
          }
+      }
+   }
+
+   if (xiphComment != nullptr)
+   {
+      for (auto field : xiphComment->fieldListMap())
+      {
+         ATLTRACE(_T("Xiph comment field: %hs: %hs\n"),
+            field.first.toCString(),
+            field.second.toString().toCString());
+      }
+
+      TagLib::PropertyMap propertyMap = xiphComment->properties();
+
+      if (propertyMap.contains(TagLib::String("ALBUMARTIST")))
+      {
+         textValue = propertyMap[TagLib::String("ALBUMARTIST")].toString().toCWString();
+         m_trackInfo.SetTextInfo(TrackInfoDiscArtist, textValue);
+      }
+
+      if (propertyMap.contains(TagLib::String("COMPOSER")))
+      {
+         textValue = propertyMap[TagLib::String("COMPOSER")].toString().toCWString();
+         m_trackInfo.SetTextInfo(TrackInfoComposer, textValue);
+      }
+
+      const TagLib::List<TagLib::FLAC::Picture*>& pictures = xiphComment->pictureList();
+
+      TagLib::List<TagLib::FLAC::Picture*>::ConstIterator iter = pictures.begin();
+      if (pictures.size() > 1)
+      {
+         // find front cover
+         while (iter != pictures.end() && (*iter)->type() != TagLib::FLAC::Picture::FrontCover)
+            iter++;
+
+         // when none was found, use the first
+         if (iter == pictures.end())
+            pictures.begin();
+      }
+
+      if (iter != pictures.end())
+      {
+         const TagLib::FLAC::Picture& picture = **iter;
+
+         const std::vector<unsigned char> binaryData(
+            picture.data().begin(),
+            picture.data().end());
+
+         if (!binaryData.empty())
+            m_trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
       }
    }
 

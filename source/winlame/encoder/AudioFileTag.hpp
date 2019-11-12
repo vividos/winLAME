@@ -31,6 +31,10 @@ namespace TagLib
    {
       class Tag;
    }
+   namespace Ogg
+   {
+      class XiphComment;
+   }
 }
 /// \endcond
 
@@ -71,8 +75,11 @@ namespace Encoder
       /// finds ID3v2 tag in given file, if available
       static TagLib::ID3v2::Tag* FindId3v2Tag(std::shared_ptr<TagLib::File> spFile);
 
+      /// finds Ogg comment tag in given file, if available
+      static TagLib::Ogg::XiphComment* AudioFileTag::FindOggXiphCommentTag(std::shared_ptr<TagLib::File> spFile);
+
       /// reads all track infos from tag
-      bool ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag);
+      bool ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphComment* xiphComment);
 
       /// stores all track infos in given tag
       void StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag) const;
