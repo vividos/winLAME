@@ -144,25 +144,25 @@ bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id
 
    // retrieve field values
    CString textValue;
-   if (tag->title() != TagLib::String::null)
+   if (!tag->title().isEmpty())
    {
       textValue = tag->title().toCWString();
       m_trackInfo.SetTextInfo(TrackInfoTitle, textValue);
    }
 
-   if (tag->artist() != TagLib::String::null)
+   if (!tag->artist().isEmpty())
    {
       textValue = tag->artist().toCWString();
       m_trackInfo.SetTextInfo(TrackInfoArtist, textValue);
    }
 
-   if (tag->comment() != TagLib::String::null)
+   if (!tag->comment().isEmpty())
    {
       textValue = tag->comment().toCWString();
       m_trackInfo.SetTextInfo(TrackInfoComment, textValue);
    }
 
-   if (tag->album() != TagLib::String::null)
+   if (!tag->album().isEmpty())
    {
       textValue = tag->album().toCWString();
       m_trackInfo.SetTextInfo(TrackInfoAlbum, textValue);
@@ -178,7 +178,7 @@ bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id
       m_trackInfo.SetNumberInfo(TrackInfoTrack, static_cast<int>(tag->track()));
    }
 
-   if (tag->genre() != TagLib::String::null)
+   if (!tag->genre().isEmpty())
    {
       textValue = tag->genre().toCWString();
       if (!textValue.IsEmpty())
