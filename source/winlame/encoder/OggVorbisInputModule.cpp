@@ -347,6 +347,17 @@ void OggVorbisInputModule::GetTrackInfo(TrackInfo& trackInfo)
          trackInfo.SetNumberInfo(TrackInfoTrack, trackNumber);
    }
 
+   if (vorbis_comment_query_count(comment, "discnumber") > 0)
+   {
+      utf8text = vorbis_comment_query(comment, "discnumber", 0);
+      text = UTF8ToString(utf8text);
+
+      int discNumber = _ttoi(text);
+
+      if (discNumber > 0)
+         trackInfo.SetNumberInfo(TrackInfoDiscNumber, discNumber);
+   }
+
    if (vorbis_comment_query_count(comment, "METADATA_BLOCK_PICTURE") > 0)
    {
       // reuse the code that is using opusfile functions

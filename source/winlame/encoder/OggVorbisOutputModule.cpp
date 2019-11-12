@@ -342,6 +342,14 @@ void OggVorbisOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
       vorbis_comment_add_tag(&m_vc, "TRACKNUMBER", buffer.data());
    }
 
+   int discNumber = trackInfo.GetNumberInfo(TrackInfoDiscNumber, avail);
+   if (avail && discNumber >= 0)
+   {
+      text.Format(_T("%i"), discNumber);
+      StringToUTF8(text, buffer);
+      vorbis_comment_add_tag(&m_vc, "DISCNUMBER", buffer.data());
+   }
+
    text = trackInfo.GetTextInfo(TrackInfoGenre, avail);
    if (avail && !text.IsEmpty())
    {

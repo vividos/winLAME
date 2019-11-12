@@ -363,6 +363,14 @@ bool OpusOutputModule::StoreTrackInfos(const TrackInfo& trackinfo)
       ope_comments_add(comments, "tracknumber", utf8Buffer.data());
    }
 
+   int discNumber = trackinfo.GetNumberInfo(TrackInfoDiscNumber, avail);
+   if (avail && discNumber > 0)
+   {
+      text.Format(_T("%i"), discNumber);
+      StringToUTF8(text, utf8Buffer);
+      ope_comments_add(comments, "discnumber", utf8Buffer.data());
+   }
+
    text = trackinfo.GetTextInfo(TrackInfoGenre, avail);
    if (avail)
    {

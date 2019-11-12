@@ -228,6 +228,7 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
       const TCHAR* WMA_YEAR_TAG = _T("WM/Year");
       const TCHAR* WMA_GENRE_TAG = _T("WM/Genre");
       const TCHAR* WMA_DESC_TAG = _T("Description");
+      const TCHAR* WMA_DISCNO_TAG = _T("WM/PartOfSet");
 
       CString wma_genre;
 
@@ -258,6 +259,11 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
          {
             int iTrackNo = _ttoi(cszValue);
             trackinfo.SetNumberInfo(TrackInfoTrack, iTrackNo);
+         }
+         else if (cszName == WMA_DISCNO_TAG)
+         {
+            int discNo = _ttoi(cszValue);
+            trackinfo.SetNumberInfo(TrackInfoDiscNumber, discNo);
          }
          else if (cszName == WMA_BITRATE_TAG)
          {

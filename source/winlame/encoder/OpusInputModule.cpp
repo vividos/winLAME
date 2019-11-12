@@ -253,6 +253,17 @@ void OpusInputModule::GetTrackInfo(TrackInfo& trackInfo)
          trackInfo.SetNumberInfo(TrackInfoTrack, trackNumber);
    }
 
+   if (opus_tags_query_count(tags, "discnumber") > 0)
+   {
+      utf8text = opus_tags_query(tags, "discnumber", 0);
+      text = UTF8ToString(utf8text);
+
+      int discNumber = _ttoi(text);
+
+      if (discNumber > 0)
+         trackInfo.SetNumberInfo(TrackInfoDiscNumber, discNumber);
+   }
+
    if (opus_tags_query_count(tags, "METADATA_BLOCK_PICTURE") > 0)
    {
       OpusPictureTag pictureTag = { 0 };

@@ -82,7 +82,7 @@ namespace Encoder
       bool ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphComment* xiphComment);
 
       /// stores all track infos in given tag
-      void StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag) const;
+      void StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphComment* oggXiphComment) const;
 
    private:
       /// track info to read or store

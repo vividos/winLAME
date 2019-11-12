@@ -273,6 +273,14 @@ void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
       BASS_WMA_EncodeSetTag(m_handle, "WM/TrackNumber", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
    }
 
+   intValue = trackInfo.GetNumberInfo(TrackInfoDiscNumber, isAvail);
+   if (isAvail && intValue != -1)
+   {
+      textValue.Format(_T("%i"), intValue);
+      StringToUTF8(textValue, utf8Buffer);
+      BASS_WMA_EncodeSetTag(m_handle, "WM/PartOfSet", utf8Buffer.data(), BASS_WMA_TAG_UTF8);
+   }
+
    textValue = trackInfo.GetTextInfo(TrackInfoGenre, isAvail);
    if (isAvail && !textValue.IsEmpty())
    {
