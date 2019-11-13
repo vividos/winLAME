@@ -42,7 +42,8 @@ namespace Encoder
 {
    class TrackInfo;
 
-   /// audio file tag
+   /// audio file tag reading/writing
+   /// \see https://help.mp3tag.de/main_tags.html
    class AudioFileTag
    {
    public:
@@ -79,10 +80,22 @@ namespace Encoder
       static TagLib::Ogg::XiphComment* AudioFileTag::FindOggXiphCommentTag(std::shared_ptr<TagLib::File> spFile);
 
       /// reads all track infos from tag
-      bool ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphComment* xiphComment);
+      void ReadTrackInfoFromTag(TagLib::Tag* tag);
+
+      /// reads extra track info from ID3v2 tag
+      void ReadTrackInfoFromId3v2Tag(TagLib::ID3v2::Tag* id3v2tag);
+
+      /// reads extra track info from Xiph Comment tag
+      void ReadTrackInfoFromXiphCommentTag(TagLib::Ogg::XiphComment* xiphComment);
 
       /// stores all track infos in given tag
-      void StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphComment* oggXiphComment) const;
+      void StoreTrackInfoInTag(TagLib::Tag* tag) const;
+
+      /// stores extra track infos in given ID3v2 tag
+      void StoreTrackInfoInId3v2Tag(TagLib::ID3v2::Tag* id3v2tag) const;
+
+      /// stores extra track infos in given Xiph Comment tag
+      void StoreTrackInfoInXiphCommentTag(TagLib::Ogg::XiphComment* oggXiphComment) const;
 
    private:
       /// track info to read or store

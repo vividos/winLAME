@@ -56,11 +56,17 @@ bool AudioFileTag::ReadFromFile(const CString& filename, AudioFileType audioFile
    if (tag == nullptr)
       return false;
 
+   ReadTrackInfoFromTag(tag);
+
    TagLib::ID3v2::Tag* id3v2tag = FindId3v2Tag(spFile);
+   if (id3v2tag != nullptr)
+      ReadTrackInfoFromId3v2Tag(id3v2tag);
 
    TagLib::Ogg::XiphComment* oggXiphComment = FindOggXiphCommentTag(spFile);
+   if (oggXiphComment != nullptr)
+      ReadTrackInfoFromXiphCommentTag(oggXiphComment);
 
-   return ReadTrackInfoFromTag(tag, id3v2tag, oggXiphComment);
+   return true;
 }
 
 std::shared_ptr<TagLib::File> AudioFileTag::OpenFile(const CString& filename, AudioFileType audioFileType)
@@ -124,30 +130,13 @@ TagLib::Ogg::XiphComment* AudioFileTag::FindOggXiphCommentTag(std::shared_ptr<Ta
    return nullptr;
 }
 
-bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphComment* xiphComment)
+void AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag)
 {
    for (auto property : tag->properties())
    {
       ATLTRACE(_T("TagLib property: %hs: %hs\n"),
          property.first.toCString(),
          property.second.toString().toCString());
-   }
-
-   if (id3v2tag != nullptr)
-   {
-      for (auto frame : id3v2tag->frameList())
-      {
-         auto frameId = frame->frameID();
-         if (frameId.size() != 4)
-            continue;
-
-         ATLTRACE(_T("ID3v2 Frame: %c%c%c%c: %hs\n"),
-            frameId[0],
-            frameId[1],
-            frameId[2],
-            frameId[3],
-            frame->toString().toCString());
-      }
    }
 
    // retrieve field values
@@ -192,115 +181,129 @@ bool AudioFileTag::ReadTrackInfoFromTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id
       if (!textValue.IsEmpty())
          m_trackInfo.SetTextInfo(TrackInfoGenre, textValue);
    }
+}
 
-   if (id3v2tag != nullptr)
+void AudioFileTag::ReadTrackInfoFromId3v2Tag(TagLib::ID3v2::Tag* id3v2tag)
+{
+   for (auto frame : id3v2tag->frameList())
    {
-      TagLib::PropertyMap propertyMap = id3v2tag->properties();
+      auto frameId = frame->frameID();
+      if (frameId.size() != 4)
+         continue;
 
-      if (propertyMap.contains(TagLib::String("ALBUMARTIST")))
-      {
-         textValue = propertyMap[TagLib::String("ALBUMARTIST")].toString().toCWString();
-         m_trackInfo.SetTextInfo(TrackInfoDiscArtist, textValue);
-      }
-
-      if (propertyMap.contains(TagLib::String("COMPOSER")))
-      {
-         textValue = propertyMap[TagLib::String("COMPOSER")].toString().toCWString();
-         m_trackInfo.SetTextInfo(TrackInfoComposer, textValue);
-      }
-
-      for (auto frame : id3v2tag->frameList())
-      {
-         auto tposTagName = TagLib::ByteVector::fromCString("TPOS");
-
-         auto tposFrameIter = id3v2tag->frameListMap().find(tposTagName);
-         if (tposFrameIter != id3v2tag->frameListMap().end())
-         {
-            // only use first
-            auto tposFrameList = tposFrameIter->second;
-            if (!tposFrameList.isEmpty())
-            {
-               int intValue = tposFrameList.front()->toString().toInt();
-               m_trackInfo.SetNumberInfo(TrackInfoDiscNumber, intValue);
-            }
-         }
-
-         // find picture frames
-         auto pictureFrame = dynamic_cast<TagLib::ID3v2::AttachedPictureFrame*>(frame);
-         if (pictureFrame != nullptr &&
-            pictureFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
-         {
-            const auto pictureData = pictureFrame->picture();
-            const unsigned char* data =
-               reinterpret_cast<const unsigned char*>(pictureData.data());
-
-            const std::vector<unsigned char> binaryData(
-               data,
-               data + pictureFrame->picture().size());
-
-            if (!binaryData.empty())
-               m_trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
-         }
-      }
+      ATLTRACE(_T("ID3v2 Frame: %c%c%c%c: %hs\n"),
+         frameId[0],
+         frameId[1],
+         frameId[2],
+         frameId[3],
+         frame->toString().toCString());
    }
 
-   if (xiphComment != nullptr)
+   TagLib::PropertyMap propertyMap = id3v2tag->properties();
+
+   CString textValue;
+   if (propertyMap.contains(TagLib::String("ALBUMARTIST")))
    {
-      for (auto field : xiphComment->fieldListMap())
+      textValue = propertyMap[TagLib::String("ALBUMARTIST")].toString().toCWString();
+      m_trackInfo.SetTextInfo(TrackInfoDiscArtist, textValue);
+   }
+
+   if (propertyMap.contains(TagLib::String("COMPOSER")))
+   {
+      textValue = propertyMap[TagLib::String("COMPOSER")].toString().toCWString();
+      m_trackInfo.SetTextInfo(TrackInfoComposer, textValue);
+   }
+
+   for (auto frame : id3v2tag->frameList())
+   {
+      auto tposTagName = TagLib::ByteVector::fromCString("TPOS");
+
+      auto tposFrameIter = id3v2tag->frameListMap().find(tposTagName);
+      if (tposFrameIter != id3v2tag->frameListMap().end())
       {
-         ATLTRACE(_T("Xiph comment field: %hs: %hs\n"),
-            field.first.toCString(),
-            field.second.toString().toCString());
+         // only use first
+         auto tposFrameList = tposFrameIter->second;
+         if (!tposFrameList.isEmpty())
+         {
+            int intValue = tposFrameList.front()->toString().toInt();
+            m_trackInfo.SetNumberInfo(TrackInfoDiscNumber, intValue);
+         }
       }
 
-      TagLib::PropertyMap propertyMap = xiphComment->properties();
-
-      if (propertyMap.contains(TagLib::String("ALBUMARTIST")))
+      // find picture frames
+      auto pictureFrame = dynamic_cast<TagLib::ID3v2::AttachedPictureFrame*>(frame);
+      if (pictureFrame != nullptr &&
+         pictureFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover)
       {
-         textValue = propertyMap[TagLib::String("ALBUMARTIST")].toString().toCWString();
-         m_trackInfo.SetTextInfo(TrackInfoDiscArtist, textValue);
-      }
-
-      if (propertyMap.contains(TagLib::String("COMPOSER")))
-      {
-         textValue = propertyMap[TagLib::String("COMPOSER")].toString().toCWString();
-         m_trackInfo.SetTextInfo(TrackInfoComposer, textValue);
-      }
-
-      if (propertyMap.contains(TagLib::String("DISCNUMBER")))
-      {
-         int intValue = propertyMap[TagLib::String("DISCNUMBER")].toString().toInt();
-         m_trackInfo.SetNumberInfo(TrackInfoDiscNumber, intValue);
-      }
-
-      const TagLib::List<TagLib::FLAC::Picture*>& pictures = xiphComment->pictureList();
-
-      TagLib::List<TagLib::FLAC::Picture*>::ConstIterator iter = pictures.begin();
-      if (pictures.size() > 1)
-      {
-         // find front cover
-         while (iter != pictures.end() && (*iter)->type() != TagLib::FLAC::Picture::FrontCover)
-            iter++;
-
-         // when none was found, use the first
-         if (iter == pictures.end())
-            pictures.begin();
-      }
-
-      if (iter != pictures.end())
-      {
-         const TagLib::FLAC::Picture& picture = **iter;
+         const auto pictureData = pictureFrame->picture();
+         const unsigned char* data =
+            reinterpret_cast<const unsigned char*>(pictureData.data());
 
          const std::vector<unsigned char> binaryData(
-            picture.data().begin(),
-            picture.data().end());
+            data,
+            data + pictureFrame->picture().size());
 
          if (!binaryData.empty())
             m_trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
       }
    }
+}
 
-   return true;
+void AudioFileTag::ReadTrackInfoFromXiphCommentTag(TagLib::Ogg::XiphComment* xiphComment)
+{
+   for (auto field : xiphComment->fieldListMap())
+   {
+      ATLTRACE(_T("Xiph comment field: %hs: %hs\n"),
+         field.first.toCString(),
+         field.second.toString().toCString());
+   }
+
+   TagLib::PropertyMap propertyMap = xiphComment->properties();
+
+   CString textValue;
+   if (propertyMap.contains(TagLib::String("ALBUMARTIST")))
+   {
+      textValue = propertyMap[TagLib::String("ALBUMARTIST")].toString().toCWString();
+      m_trackInfo.SetTextInfo(TrackInfoDiscArtist, textValue);
+   }
+
+   if (propertyMap.contains(TagLib::String("COMPOSER")))
+   {
+      textValue = propertyMap[TagLib::String("COMPOSER")].toString().toCWString();
+      m_trackInfo.SetTextInfo(TrackInfoComposer, textValue);
+   }
+
+   if (propertyMap.contains(TagLib::String("DISCNUMBER")))
+   {
+      int intValue = propertyMap[TagLib::String("DISCNUMBER")].toString().toInt();
+      m_trackInfo.SetNumberInfo(TrackInfoDiscNumber, intValue);
+   }
+
+   const TagLib::List<TagLib::FLAC::Picture*>& pictures = xiphComment->pictureList();
+
+   TagLib::List<TagLib::FLAC::Picture*>::ConstIterator iter = pictures.begin();
+   if (pictures.size() > 1)
+   {
+      // find front cover
+      while (iter != pictures.end() && (*iter)->type() != TagLib::FLAC::Picture::FrontCover)
+         iter++;
+
+      // when none was found, use the first
+      if (iter == pictures.end())
+         pictures.begin();
+   }
+
+   if (iter != pictures.end())
+   {
+      const TagLib::FLAC::Picture& picture = **iter;
+
+      const std::vector<unsigned char> binaryData(
+         picture.data().begin(),
+         picture.data().end());
+
+      if (!binaryData.empty())
+         m_trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
+   }
 }
 
 unsigned int AudioFileTag::GetTagLength() const
@@ -308,7 +311,8 @@ unsigned int AudioFileTag::GetTagLength() const
    // create an in-memory ID3v2 tag, fill and render it
    TagLib::ID3v2::Tag tag;
 
-   StoreTrackInfoInTag(&tag, &tag, nullptr);
+   StoreTrackInfoInTag(&tag);
+   StoreTrackInfoInId3v2Tag(&tag);
 
    unsigned int size = tag.render().size();
    return size;
@@ -325,33 +329,25 @@ bool AudioFileTag::WriteToFile(const CString& filename, AudioFileType audioFileT
    if (tag == nullptr)
       return false;
 
+   StoreTrackInfoInTag(tag);
+
    TagLib::ID3v2::Tag* id3v2tag = FindId3v2Tag(spFile);
+   if (id3v2tag != nullptr)
+      StoreTrackInfoInId3v2Tag(id3v2tag);
 
    TagLib::Ogg::XiphComment* oggXiphComment = FindOggXiphCommentTag(spFile);
-
-   StoreTrackInfoInTag(tag, id3v2tag, oggXiphComment);
+   if (oggXiphComment != nullptr)
+      StoreTrackInfoInXiphCommentTag(oggXiphComment);
 
    return spFile->save();
 }
 
-void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3v2tag, TagLib::Ogg::XiphComment* oggXiphComment) const
+void AudioFileTag::StoreTrackInfoInId3v2Tag(TagLib::ID3v2::Tag* id3v2tag) const
 {
-   // add all frames
    bool isAvail = false;
-   CString textValue = m_trackInfo.GetTextInfo(TrackInfoTitle, isAvail);
+
+   CString textValue = m_trackInfo.GetTextInfo(TrackInfoDiscArtist, isAvail);
    if (isAvail)
-      tag->setTitle(TagLib::String(textValue));
-
-   const TrackInfo& trackInfo = m_trackInfo;
-
-   textValue = trackInfo.GetTextInfo(TrackInfoArtist, isAvail);
-   if (isAvail)
-   {
-      tag->setArtist(TagLib::String(textValue));
-   }
-
-   textValue = trackInfo.GetTextInfo(TrackInfoDiscArtist, isAvail);
-   if (isAvail && id3v2tag != nullptr)
    {
       TagLib::PropertyMap propertyMap = id3v2tag->properties();
 
@@ -360,17 +356,83 @@ void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3
       id3v2tag->setProperties(propertyMap);
    }
 
-   textValue = trackInfo.GetTextInfo(TrackInfoComposer, isAvail);
+   textValue = m_trackInfo.GetTextInfo(TrackInfoComposer, isAvail);
    if (isAvail)
    {
-      if (id3v2tag != nullptr)
+      TagLib::PropertyMap propertyMap = id3v2tag->properties();
+
+      propertyMap.replace(TagLib::String("COMPOSER"), TagLib::StringList(TagLib::String(textValue)));
+
+      id3v2tag->setProperties(propertyMap);
+   }
+
+   int intValue = m_trackInfo.GetNumberInfo(TrackInfoDiscNumber, isAvail);
+   if (isAvail)
+   {
+      auto tposFrame = new TagLib::ID3v2::TextIdentificationFrame(
+         TagLib::ByteVector::fromCString("TPOS"),
+         TagLib::String::Type::Latin1);
+      tposFrame->setText(TagLib::String::number(intValue));
+      id3v2tag->addFrame(tposFrame);
+   }
+
+   std::vector<unsigned char> binaryInfo;
+
+   isAvail = m_trackInfo.GetBinaryInfo(TrackInfoFrontCover, binaryInfo);
+   if (isAvail)
+   {
+      for (auto frame : id3v2tag->frameList())
       {
-         TagLib::PropertyMap propertyMap = id3v2tag->properties();
-
-         propertyMap.replace(TagLib::String("COMPOSER"), TagLib::StringList(TagLib::String(textValue)));
-
-         id3v2tag->setProperties(propertyMap);
+         auto pictureFrame = dynamic_cast<TagLib::ID3v2::AttachedPictureFrame*>(frame);
+         if (pictureFrame != nullptr &&
+            (pictureFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover ||
+               pictureFrame->type() == TagLib::ID3v2::AttachedPictureFrame::Other))
+         {
+            id3v2tag->removeFrame(pictureFrame);
+            break;
+         }
       }
+
+      auto pictureFrame = new TagLib::ID3v2::AttachedPictureFrame;
+
+      pictureFrame->setPicture(TagLib::ByteVector(reinterpret_cast<const char*>(binaryInfo.data()), binaryInfo.size()));
+      pictureFrame->setType(TagLib::ID3v2::AttachedPictureFrame::FrontCover);
+      pictureFrame->setMimeType(TagLib::String("image/jpeg"));
+
+      id3v2tag->addFrame(pictureFrame);
+   }
+}
+
+void AudioFileTag::StoreTrackInfoInXiphCommentTag(TagLib::Ogg::XiphComment* oggXiphComment) const
+{
+   bool isAvail = false;
+   int intValue = m_trackInfo.GetNumberInfo(TrackInfoDiscNumber, isAvail);
+   if (isAvail)
+   {
+      TagLib::PropertyMap propertyMap = oggXiphComment->properties();
+
+      propertyMap.replace(TagLib::String("DISCNUMBER"), TagLib::StringList(TagLib::String::number(intValue)));
+
+      oggXiphComment->setProperties(propertyMap);
+   }
+}
+
+void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag) const
+{
+   // add all frames
+   bool isAvail = false;
+   CString textValue = m_trackInfo.GetTextInfo(TrackInfoTitle, isAvail);
+   if (isAvail)
+   {
+      tag->setTitle(TagLib::String(textValue));
+   }
+
+   const TrackInfo& trackInfo = m_trackInfo;
+
+   textValue = trackInfo.GetTextInfo(TrackInfoArtist, isAvail);
+   if (isAvail)
+   {
+      tag->setArtist(TagLib::String(textValue));
    }
 
    textValue = trackInfo.GetTextInfo(TrackInfoComment, isAvail);
@@ -391,8 +453,6 @@ void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3
       tag->setGenre(TagLib::String(textValue));
    }
 
-   // numeric
-
    int intValue = trackInfo.GetNumberInfo(TrackInfoYear, isAvail);
    if (isAvail)
    {
@@ -403,58 +463,5 @@ void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag, TagLib::ID3v2::Tag* id3
    if (isAvail)
    {
       tag->setTrack(static_cast<unsigned int>(intValue));
-   }
-
-   intValue = trackInfo.GetNumberInfo(TrackInfoDiscNumber, isAvail);
-   if (isAvail)
-   {
-      if (id3v2tag != nullptr)
-      {
-         auto tposFrame = new TagLib::ID3v2::TextIdentificationFrame(
-            TagLib::ByteVector::fromCString("TPOS"),
-            TagLib::String::Type::Latin1);
-         tposFrame->setText(TagLib::String::number(intValue));
-         id3v2tag->addFrame(tposFrame);
-      }
-
-      if (oggXiphComment != nullptr)
-      {
-         TagLib::PropertyMap propertyMap = oggXiphComment->properties();
-
-         propertyMap.replace(TagLib::String("DISCNUMBER"), TagLib::StringList(TagLib::String(textValue)));
-
-         id3v2tag->setProperties(propertyMap);
-      }
-   }
-
-   // binary
-
-   std::vector<unsigned char> binaryInfo;
-
-   isAvail = trackInfo.GetBinaryInfo(TrackInfoFrontCover, binaryInfo);
-   if (isAvail)
-   {
-      if (id3v2tag != nullptr)
-      {
-         for (auto frame : id3v2tag->frameList())
-         {
-            auto pictureFrame = dynamic_cast<TagLib::ID3v2::AttachedPictureFrame*>(frame);
-            if (pictureFrame != nullptr &&
-               (pictureFrame->type() == TagLib::ID3v2::AttachedPictureFrame::FrontCover ||
-                  pictureFrame->type() == TagLib::ID3v2::AttachedPictureFrame::Other))
-            {
-               id3v2tag->removeFrame(pictureFrame);
-               break;
-            }
-         }
-
-         auto pictureFrame = new TagLib::ID3v2::AttachedPictureFrame;
-
-         pictureFrame->setPicture(TagLib::ByteVector(reinterpret_cast<const char*>(binaryInfo.data()), binaryInfo.size()));
-         pictureFrame->setType(TagLib::ID3v2::AttachedPictureFrame::FrontCover);
-         pictureFrame->setMimeType(TagLib::String("image/jpeg"));
-
-         id3v2tag->addFrame(pictureFrame);
-      }
    }
 }
