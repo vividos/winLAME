@@ -9,8 +9,8 @@ PLATFORM_APPLE
 PLATFORM_LINUX
 *****************************************************************************************/
 #if !defined(PLATFORM_WINDOWS) && !defined(PLATFORM_APPLE) && !defined(PLATFORM_LINUX)
-	#pragma message("No platform set for MACLib, defaulting to Windows")
-	#define PLATFORM_WINDOWS
+    #pragma message("No platform set for MACLib, defaulting to Windows")
+    #define PLATFORM_WINDOWS
 #endif
 
 #ifdef PLATFORM_ANDROID
@@ -44,7 +44,7 @@ Global includes
     #include <sys/time.h>
     #include <sys/types.h>
     #include <sys/stat.h>
-	#include <wchar.h>
+    #include <wchar.h>
     #include "NoWindows.h"
 #endif
 #define ape_max(a,b)    (((a) > (b)) ? (a) : (b))
@@ -59,17 +59,16 @@ Global compiler settings (useful for porting)
 
 // assembly code (helps performance, but limits portability)
 #if !defined(PLATFORM_ARM) && !defined(PLATFORM_ANDROID)
-	#if defined __SSE2__ || _M_IX86_FP == 2 || defined _M_X64
-		#define ENABLE_SSE_ASSEMBLY
-	#elif defined(_M_IX86)
-		#define ENABLE_SSE_ASSEMBLY
-		#define ENABLE_SSE_ASSEMBLY_DETECT
-	#endif
-	#ifdef _MSC_VER // doesn't compile in gcc
-		#ifndef PLATFORM_x64
-			#define ENABLE_MMX_ASSEMBLY
-		#endif
-	#endif
+    #if defined __SSE2__ || _M_IX86_FP == 2 || defined _M_X64
+        #define ENABLE_SSE_ASSEMBLY
+    #elif defined(_M_IX86)
+        #define ENABLE_SSE_ASSEMBLY
+    #endif
+    #ifdef _MSC_VER // doesn't compile in gcc
+        #ifndef PLATFORM_x64
+            #define ENABLE_MMX_ASSEMBLY
+        #endif
+    #endif
 #endif
 
 // APE_BACKWARDS_COMPATIBILITY is only needed for decoding APE 3.92 or earlier files.  It
@@ -78,7 +77,7 @@ Global compiler settings (useful for porting)
 // porting or third party usage, it's probably best to not bother with APE_BACKWARDS_COMPATIBILITY.
 // A future release of Monkey's Audio itself may remove support for these obsolete files.
 #if !defined(PLATFORM_ANDROID)
-	#define APE_BACKWARDS_COMPATIBILITY
+    #define APE_BACKWARDS_COMPATIBILITY
 #endif
 
 // compression modes
@@ -89,15 +88,15 @@ Global compiler settings (useful for porting)
 
 // 64 bit platform
 #ifdef PLATFORM_64BIT
-	#ifndef PLATFORM_x64
-		#define PLATFORM_x64
-	#endif
+    #ifndef PLATFORM_x64
+        #define PLATFORM_x64
+    #endif
 #endif
 
 #if __x86_64__ || __aarch64__
-	#ifndef PLATFORM_x64
-		#define PLATFORM_x64
-	#endif
+    #ifndef PLATFORM_x64
+        #define PLATFORM_x64
+    #endif
 #endif
 
 /*****************************************************************************************
@@ -105,41 +104,41 @@ Global types
 *****************************************************************************************/
 namespace APE
 {
-	// integer types
+    // integer types
 #if defined(PLATFORM_x64)
-    typedef	int64_t                                     int64; // native integer, can safely hold a pointer
+    typedef int64_t                                     int64; // native integer, can safely hold a pointer
     typedef int32_t                                     int32;
 #else
-	typedef	intptr_t                                    int32; // native integer, can safely hold a pointer
+    typedef intptr_t                                    int32; // native integer, can safely hold a pointer
     typedef int64_t                                     int64;
 #endif
 
 #if defined(PLATFORM_x64)
 // DO NOT CHANGE THE FOLLOWING 6 LINES! They are necessary for building Media Center 64 bit on non-windows platforms!
     #ifndef PLATFORM_WINDOWS
-    	typedef long long intn;
-    	typedef unsigned long long uintn;
+        typedef long long intn;
+        typedef unsigned long long uintn;
     #else
-    	typedef int64_t intn;
-    	typedef uint64_t uintn;
+        typedef int64_t intn;
+        typedef uint64_t uintn;
     #endif    
 #else
     typedef int32_t intn;
     typedef uint32_t uintn;
 #endif
 
-	typedef uint64_t                                    uint64;
-	typedef uint32_t                                    uint32;
-	typedef uint16_t                                    uint16;
-	typedef int16_t                                     int16;
-	typedef uint8_t                                     uint8;
-	typedef int8_t                                      int8;
-	
-	// string types
-	typedef char                                        str_ansi;
-	typedef unsigned char                               str_utf8;
-	typedef int16										str_utf16;
-	typedef wchar_t                                     str_utfn; // could be UTF-16 or UTF-32 depending on platform
+    typedef uint64_t                                    uint64;
+    typedef uint32_t                                    uint32;
+    typedef uint16_t                                    uint16;
+    typedef int16_t                                     int16;
+    typedef uint8_t                                     uint8;
+    typedef int8_t                                      int8;
+    
+    // string types
+    typedef char                                        str_ansi;
+    typedef unsigned char                               str_utf8;
+    typedef int16                                       str_utf16;
+    typedef wchar_t                                     str_utfn; // could be UTF-16 or UTF-32 depending on platform
 }
 
 /*****************************************************************************************
@@ -173,14 +172,14 @@ Global macros
     #define SLEEP(MILLISECONDS)                         { struct timespec t; t.tv_sec = (MILLISECONDS) / 1000; t.tv_nsec = (MILLISECONDS) % 1000 * 1000000; nanosleep(&t, NULL); }
     #define MESSAGEBOX(PARENT, TEXT, CAPTION, TYPE)
     #define PUMP_MESSAGE_LOOP
-    #undef	ODS
+    #undef    ODS
     #define ODS                                         printf
     #define TICK_COUNT_TYPE                             unsigned long long
     #define TICK_COUNT_READ(VARIABLE)                   { struct timeval t; gettimeofday(&t, NULL); VARIABLE = t.tv_sec * 1000000LLU + t.tv_usec; }
     #define TICK_COUNT_FREQ                             1000000
-    #undef	ASSERT
+    #undef    ASSERT
     #define ASSERT(e)
-	#define wcsncpy_s(A, B, COUNT) wcsncpy(A, B, COUNT)
+    #define wcsncpy_s(A, B, COUNT) wcsncpy(A, B, COUNT)
     #define wcscpy_s(A, B, C) wcscpy(A, C)
     #define sprintf_s(A, B, C, D) sprintf(A, C, D)
     #define strcpy_s(A, B, C) strcpy(A, C)
@@ -193,17 +192,17 @@ WAVE format descriptor (binary compatible with Windows define, but in the APE na
 namespace APE
 {
 #pragma pack(push, 1)
-	typedef struct tWAVEFORMATEX
-	{
-		WORD        wFormatTag;         /* format type */
-		WORD        nChannels;          /* number of channels (i.e. mono, stereo...) */
-		uint32      nSamplesPerSec;     /* sample rate */
-		uint32      nAvgBytesPerSec;    /* for buffer estimation */
-		WORD        nBlockAlign;        /* block size of data */
-		WORD        wBitsPerSample;     /* number of bits per sample of mono data */
-		WORD        cbSize;             /* the count in bytes of the size of */
-		/* extra information (after cbSize) */
-	} WAVEFORMATEX, *PWAVEFORMATEX, NEAR *NPWAVEFORMATEX, FAR *LPWAVEFORMATEX;
+    typedef struct tWAVEFORMATEX
+    {
+        WORD        wFormatTag;         /* format type */
+        WORD        nChannels;          /* number of channels (i.e. mono, stereo...) */
+        uint32      nSamplesPerSec;     /* sample rate */
+        uint32      nAvgBytesPerSec;    /* for buffer estimation */
+        WORD        nBlockAlign;        /* block size of data */
+        WORD        wBitsPerSample;     /* number of bits per sample of mono data */
+        WORD        cbSize;             /* the count in bytes of the size of */
+        /* extra information (after cbSize) */
+    } WAVEFORMATEX, *PWAVEFORMATEX, NEAR *NPWAVEFORMATEX, FAR *LPWAVEFORMATEX;
 #pragma pack(pop)
 }
 
@@ -212,37 +211,37 @@ Global defines
 *****************************************************************************************/
 
 // major version number
-#define VERSION_MAJOR 4
+#define VERSION_MAJOR 5
 
 // build version number
-#define VERSION_REVISION 92
+#define VERSION_REVISION 11
 
 // year in the copyright strings
-#define MAC_YEAR 2019
+#define MAC_YEAR 2020
 
 // Build the version string
 #define STRINGIZE2(s) #s
 #define STRINGIZE(s) STRINGIZE2(s)
 #define VER_FILE_VERSION_STR        STRINGIZE(VERSION_MAJOR) _T(".") STRINGIZE(VERSION_REVISION) 
 #define VER_FILE_VERSION_STR_NARROW STRINGIZE(VERSION_MAJOR) "." STRINGIZE(VERSION_REVISION) 
-#define VER_FILE_VERSION_STR_FULL	STRINGIZE(VERSION_MAJOR) _T(".") STRINGIZE(VERSION_REVISION) _T(".0.0")
+#define VER_FILE_VERSION_STR_FULL    STRINGIZE(VERSION_MAJOR) _T(".") STRINGIZE(VERSION_REVISION) _T(".0.0")
 
 #define MAC_FILE_VERSION_NUMBER                         3990
 #define MAC_VERSION_STRING                              VER_FILE_VERSION_STR
 #define MAC_NAME                                        _T("Monkey's Audio ") VER_FILE_VERSION_STR
 #define PLUGIN_NAME                                     "Monkey's Audio Player " VER_FILE_VERSION_STR_NARROW
 #define MJ_PLUGIN_NAME                                  _T("APE Plugin (v") VER_FILE_VERSION_STR _T(")")
-#define RESOURCE_VERSION_COMMA							VERSION_MAJOR, VERSION_REVISION, 0, 0
-#define RESOURCE_VERSION_STRING							VER_FILE_VERSION_STR_FULL
-#define RESOURCE_COPYRIGHT								"Copyright (c) 2000-" STRINGIZE(MAC_YEAR) " Matthew T. Ashland"
+#define RESOURCE_VERSION_COMMA                          VERSION_MAJOR, VERSION_REVISION, 0, 0
+#define RESOURCE_VERSION_STRING                         VER_FILE_VERSION_STR_FULL
+#define RESOURCE_COPYRIGHT                              "Copyright (c) 2000-" STRINGIZE(MAC_YEAR) " Matthew T. Ashland"
 #define CONSOLE_NAME                                    _T("--- Monkey's Audio Console Front End (v ") VER_FILE_VERSION_STR _T(") (c) Matthew T. Ashland ---\n")
 #define PLUGIN_ABOUT                                    _T("Monkey's Audio Player v") VER_FILE_VERSION_STR _T("\nCopyrighted (c) 2000-") STRINGIZE(MAC_YEAR) _T(" by Matthew T. Ashland")
 #define MAC_DLL_INTERFACE_VERSION_NUMBER                1000
-#define ONE_MILLION										1000000
+#define ONE_MILLION                                     1000000
 #ifdef PLATFORM_WINDOWS
-	#define APE_FILENAME_SLASH '\\'
+    #define APE_FILENAME_SLASH '\\'
 #else
-	#define APE_FILENAME_SLASH '/'
+    #define APE_FILENAME_SLASH '/'
 #endif
 
 /*****************************************************************************************

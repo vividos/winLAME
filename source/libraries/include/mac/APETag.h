@@ -265,10 +265,10 @@ public:
     // options
     void SetIgnoreReadOnly(bool bIgnoreReadOnly) { m_bIgnoreReadOnly = bIgnoreReadOnly; }
 
-	// statics
-	static const int s_nID3GenreUndefined = 255;
-	static const int s_nID3GenreCount = 148;
-	static const wchar_t * s_aryID3GenreNames[s_nID3GenreCount];
+    // statics
+    static const int s_nID3GenreUndefined = 255;
+    static const int s_nID3GenreCount = 148;
+    static const wchar_t * s_aryID3GenreNames[s_nID3GenreCount];
 
 private:
     // private functions

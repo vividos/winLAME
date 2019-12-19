@@ -4,9 +4,9 @@
 
 // we treat bool as a global type, so don't declare it in the namespace
 #ifdef PLATFORM_APPLE
-	typedef signed char BOOL;  // this is the way it's defined in Obj-C
+    typedef signed char BOOL;  // this is the way it's defined in Obj-C
 #else
-	typedef unsigned char BOOL; // this is the way it's defined in X11
+    typedef unsigned char BOOL; // this is the way it's defined in X11
 #endif
 
 namespace APE
@@ -47,6 +47,10 @@ typedef long                LRESULT;
 #undef _totlower
 #define _totlower towlower
 #define _totupper towupper
+#define _tcschr wcschr
+#define _tcsicmp wcscasecmp
+#define _tcscpy wcscpy
+#define _tcslen wcslen
 
 #define MAX_PATH    4096
 

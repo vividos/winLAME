@@ -12,10 +12,10 @@ class CIO
 public:
     // construction / destruction
     CIO() 
-	{ 
-		m_nSeekPosition = 0;
-		m_nSeekMethod = APE_FILE_BEGIN;
-	}
+    { 
+        m_nSeekPosition = 0;
+        m_nSeekMethod = APE_FILE_BEGIN;
+    }
     virtual ~CIO() { };
 
     // open / close
@@ -27,14 +27,14 @@ public:
     virtual int Write(const void * pBuffer, unsigned int nBytesToWrite, unsigned int * pBytesWritten) = 0;
     
     // seek
-	void SetSeekPosition(int64 nPosition)
-	{
-		m_nSeekPosition = nPosition;
-	}
-	void SetSeekMethod(unsigned int nMethod)
-	{
-		m_nSeekMethod = nMethod;
-	}
+    void SetSeekPosition(int64 nPosition)
+    {
+        m_nSeekPosition = nPosition;
+    }
+    void SetSeekMethod(unsigned int nMethod)
+    {
+        m_nSeekMethod = nMethod;
+    }
     virtual int64 PerformSeek() = 0;
     
     // creation / destruction
@@ -51,8 +51,8 @@ public:
 
 protected:
 
-	int64 m_nSeekPosition;
-	unsigned int m_nSeekMethod;
+    int64 m_nSeekPosition;
+    unsigned int m_nSeekMethod;
 };
 
 }

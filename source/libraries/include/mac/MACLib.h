@@ -96,7 +96,7 @@ class IAPEProgressCallback
 {
 public:
     
-	virtual ~IAPEProgressCallback() { }
+    virtual ~IAPEProgressCallback() { }
     virtual void Progress(int nPercentageDone) = 0;
     virtual int GetKillFlag() = 0; // KILL_FLAG_CONTINUE to continue
 };
@@ -226,7 +226,7 @@ enum APE_DECOMPRESS_FIELDS
     APE_INFO_FRAME_BYTES = 1028,                // bytes (compressed) of the frame [frame index, ignored]
     APE_INFO_FRAME_BLOCKS = 1029,               // blocks in a given frame [frame index, ignored]
     APE_INFO_TAG = 1030,                        // point to tag (CAPETag *) [ignored, ignored]
-	APE_INFO_APL = 1031,                        // whether it's an APL file
+    APE_INFO_APL = 1031,                        // whether it's an APL file
     
     APE_DECOMPRESS_CURRENT_BLOCK = 2000,        // current block location [ignored, ignored]
     APE_DECOMPRESS_CURRENT_MS = 2001,           // current millisecond location [ignored, ignored]
@@ -340,7 +340,7 @@ public:
         const void * pHeaderData = NULL, int64 nHeaderBytes = CREATE_WAV_HEADER_ON_DECOMPRESSION) = 0;
 
     virtual int StartEx(CIO * pioOutput, const WAVEFORMATEX * pwfeInput, 
-		int64 nMaxAudioBytes = MAX_AUDIO_BYTES_UNKNOWN, intn nCompressionLevel = COMPRESSION_LEVEL_NORMAL,
+        int64 nMaxAudioBytes = MAX_AUDIO_BYTES_UNKNOWN, intn nCompressionLevel = COMPRESSION_LEVEL_NORMAL,
         const void * pHeaderData = NULL, int64 nHeaderBytes = CREATE_WAV_HEADER_ON_DECOMPRESSION) = 0;
     
     /*********************************************************************************************
