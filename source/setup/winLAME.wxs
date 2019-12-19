@@ -189,8 +189,8 @@
       </Component>
 
       <Component Id="LibFaad2Library" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibFaad2Dll" Name="libfaad2.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libfaad2.dll" />
+        <File Id="LibFaad2DllDll" Name="libfaad2_dll.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.SolutionDir)source\libraries\libfaad2_dll.dll" />
       </Component>
 
       <Component Id="OggLibrary" Guid="*" Directory="INSTALLDIR">

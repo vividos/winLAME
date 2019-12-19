@@ -65,7 +65,7 @@ Encoder::InputModule* AacInputModule::CloneModule()
 
 bool AacInputModule::IsAvailable() const
 {
-   return DynamicLibrary(_T("libfaad2.dll")).IsLoaded();
+   return DynamicLibrary(_T("libfaad2_dll.dll")).IsLoaded();
 }
 
 CString AacInputModule::GetDescription() const
