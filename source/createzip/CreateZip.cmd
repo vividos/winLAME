@@ -9,7 +9,9 @@ REM
 set ROOT=%CD%\..\..\
 set CONFIG=%1
 
-call "%CD%\..\libraries\CopyLibraries.cmd" %CONFIG%
+pushd "%CD%\..\libraries\"
+call CopyLibraries.cmd %CONFIG%
+popd
 
 pushd ..\..\bin\%CONFIG%
 
