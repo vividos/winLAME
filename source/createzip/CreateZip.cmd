@@ -9,6 +9,8 @@ REM
 set ROOT=%CD%\..\..\
 set CONFIG=%1
 
+call "%CD%\..\libraries\CopyLibraries.cmd" %CONFIG%
+
 pushd ..\..\bin\%CONFIG%
 
 rmdir /S /Q zip 2> nul
