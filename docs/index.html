@@ -73,6 +73,34 @@
     <div class="container">
         <h1>winLAME Latest news</h1>
 
+        <h2>2019-12-21 - winLAME 2019 release 1</h2>
+
+        <p>
+            Today I released winLAME 2019 release 1, which corresponds to the build number
+            2.19.1.66. The release contains the following updates since the version
+            "2018 release":
+            <ul>
+                <li>library updates: ogg 1.3.4, opus 1.3.1, FLAC 1.3.3, libfaac 1.30, libfaad2 2.9.1, libsndfile 1.0.29pre2, mpg123 1.25.13, Monkey's Audio 5.11, BASS 2.4.14 and BASSCD 2.4.7</li>
+                <li>bulgarian translation, contributed by Karlov Nider</li>
+                <li>format texts for reading CDs can now contain backslashes in order to create subfolders</li>
+                <li>implemented reading and writing disc number from Ogg Vorbis, Opus, WMA, ID3v2 and Xiph Comment tags</li>
+            </ul>
+
+            The following bug fixes are included:
+            <ul>
+                <li>fixed outputting 32-bit or 64-bit float wave files with libsndfile</li>
+                <li>fixed crash when reading Monkey's Audio .ape file ID3v1 tags</li>
+                <li>SourceForge bug 81: fixed leaving temp files in the temp folder when reading CD to non-16-bit-wave-format</li>
+                <li>fixed bug when reading CD track when BASS buffer is empty; result was that no samples were read at all, but encoding was successful</li>
+                <li>SourceForge bug 77: fixed reading tags and cover picture from FLAC files</li>
+            </ul>
+
+            To download the new version, head over to the
+            <a href="download.html" title="Download">Download page</a>.
+        </p>
+
+        <hr />
+
         <h2>2019-12-03 - winLAME on GitHub, automated builds on AppVeyor</h2>
 
         <p>
