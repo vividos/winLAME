@@ -89,7 +89,7 @@ namespace Encoder
       virtual void GetVersionString(CString& version, int special = 0) const override;
 
       /// returns the extension the output module produces
-      virtual CString GetOutputExtension() const override { return _T("opus"); }
+      virtual CString GetOutputExtension() const override { return _T("ogg"); }
 
       /// initializes the output module
       virtual int InitOutput(LPCTSTR outfilename, SettingsManager& mgr,
