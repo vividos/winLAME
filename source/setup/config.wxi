@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Include>
   <?define MajorVersion = "2" ?>
-  <?define MinorVersion = "19" ?>
-  <?define ReleaseNumber = "1" ?>
+  <?define MinorVersion = "20" ?>
+  <?define ReleaseNumber = "0" ?>
   <?define BuildNumber = "0" ?>
-  <?define BuildYear = "2019" ?>
+  <?define BuildYear = "2020" ?>
 
   <?if $(var.ReleaseNumber) = 0 ?>
   <?define ProductName = "winLAME $(var.BuildYear) beta" ?>

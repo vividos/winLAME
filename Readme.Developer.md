@@ -179,7 +179,7 @@ Here's a checklist of what to do before each release:
   * about.????.html
   * setup\License.winLAME.rtf
   * htmlhelp index page
-  * readme.txt
+  * setup\readme.txt
 - Check all external libraries for updates and update them
 - Check all NuGet packages and update them
 - Check external tools for updates and update them (doxygen, cppcheck, wix)
