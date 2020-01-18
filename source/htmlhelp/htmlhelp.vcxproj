@@ -113,7 +113,6 @@ exit 0</NMakeCleanCommandLine>
     <Image Include="html\pages\images\btn_play.png" />
     <Image Include="html\pages\images\btn_stop.png" />
     <Image Include="html\pages\images\btn_totray.png" />
-    <Image Include="html\pages\images\inmod_cfg.png" />
     <Image Include="html\pages\images\systemmenu.png" />
     <Image Include="html\winlame.png" />
   </ItemGroup>

@@ -140,9 +140,6 @@
     <Image Include="html\pages\images\btn_totray.png">
       <Filter>html\pages\images</Filter>
     </Image>
-    <Image Include="html\pages\images\inmod_cfg.png">
-      <Filter>html\pages\images</Filter>
-    </Image>
     <Image Include="html\pages\images\systemmenu.png">
       <Filter>html\pages\images</Filter>
     </Image>
