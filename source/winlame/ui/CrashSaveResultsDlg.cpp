@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "CrashSaveResultsDlg.hpp"
+#include "App.hpp"
 
 using UI::CrashSaveResultsDlg;
 
@@ -38,12 +39,8 @@ LRESULT CrashSaveResultsDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
    CenterWindow();
 
    // set icons
-   HICON hIcon = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDR_MAINFRAME),
-      IMAGE_ICON, ::GetSystemMetrics(SM_CXICON), ::GetSystemMetrics(SM_CYICON), LR_DEFAULTCOLOR);
-   SetIcon(hIcon, TRUE);
-   HICON hIconSmall = (HICON)::LoadImage(_Module.GetResourceInstance(), MAKEINTRESOURCE(IDR_MAINFRAME),
-      IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), LR_DEFAULTCOLOR);
-   SetIcon(hIconSmall, FALSE);
+   SetIcon(App::AppIcon(false), TRUE);
+   SetIcon(App::AppIcon(true), FALSE);
 
    // set up results list
    m_listResults.SetExtendedListViewStyle(LVS_EX_FULLROWSELECT);

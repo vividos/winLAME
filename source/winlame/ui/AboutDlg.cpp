@@ -1,6 +1,6 @@
 ///
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -34,9 +34,7 @@ LRESULT AboutDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
    CenterWindow(GetParent());
 
    // set window icon
-   m_hDlgIcon = (HICON)::LoadImage(_Module.GetResourceInstance(),
-      MAKEINTRESOURCE(IDI_ICON_WINLAME), IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-   SetIcon(m_hDlgIcon, FALSE);
+   SetIcon(App::AppIcon(true), FALSE);
 
    // create child control
    CRect rc;
@@ -59,9 +57,6 @@ LRESULT AboutDlg::OnExit(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, B
    // exits dialog
    m_browser.DestroyWindow();
    EndDialog(0);
-
-   // delete resources
-   ::DestroyIcon(m_hDlgIcon);
 
    return 0;
 }

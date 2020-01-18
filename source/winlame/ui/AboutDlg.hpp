@@ -1,6 +1,6 @@
 ///
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -34,12 +34,6 @@ namespace UI
       public CDialogResize<AboutDlg>
    {
    public:
-      /// ctor
-      AboutDlg()
-         :m_hDlgIcon(NULL)
-      {
-      }
-
       /// sets filename of presets.xml file
       void SetPresetsXmlFilename(const CString& cszFilename) { m_cszPresetsXmlFilename = cszFilename; }
 
@@ -80,9 +74,6 @@ namespace UI
 
       /// filename of presets.xml file
       CString m_cszPresetsXmlFilename;
-
-      /// window icon
-      HICON m_hDlgIcon;
    };
 
 } // namespace UI

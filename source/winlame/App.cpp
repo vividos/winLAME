@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -312,6 +312,13 @@ CString App::VersionNumber()
    Win32::VersionInfoResource versionInfo(Path::ModuleFilename());
 
    return versionInfo.GetFixedFileInfo()->GetProductVersion();
+}
+
+HICON App::AppIcon(bool smallIcon)
+{
+   return AtlLoadIconImage(IDR_MAINFRAME, LR_DEFAULTCOLOR,
+      ::GetSystemMetrics(smallIcon ? SM_CXSMICON : SM_CXICON),
+      ::GetSystemMetrics(smallIcon ? SM_CYSMICON : SM_CYICON));
 }
 
 void App::LoadPresetFile()
