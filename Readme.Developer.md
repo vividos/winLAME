@@ -172,7 +172,8 @@ Here's a checklist of what to do before each release:
   * config.wxi
   * doxygen.cfg
   * source\portable\App\AppInfo\appinfo.ini
-  * AppVeyor Settings
+  * appveyor.yml
+  * AppVeyor Settings on https://ci.appveyor.com/project/vividos/winlame/settings
   * SonarQube build script
 - Update copyright year in the following files:
   * about.html
