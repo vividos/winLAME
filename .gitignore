@@ -90,3 +90,5 @@ buildlibs/include/
 buildlibs/lib/
 /buildtools/OpenCppCoverage/OpenCppCoverage/
 /source/winlame-coverage-SonarQube.xml
+CoverageReport/
+/winlame-coverage.xml
