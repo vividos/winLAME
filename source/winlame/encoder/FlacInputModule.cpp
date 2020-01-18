@@ -425,7 +425,7 @@ void FlacInputModule::ReadTrackMetadata(LPCTSTR filename, TrackInfo& trackInfo)
          picture->data.picture.data + picture->data.picture.data_length);
 
       trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
-   }
 
-   FLAC__metadata_object_delete(picture);
+      FLAC__metadata_object_delete(picture);
+   }
 }
