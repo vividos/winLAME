@@ -138,7 +138,6 @@ Global
 		{75533EAC-BD73-456C-8ECE-3B8C309D7935}.Release|Win32.ActiveCfg = Release|Win32
 		{75533EAC-BD73-456C-8ECE-3B8C309D7935}.Release|Win32.Build.0 = Release|Win32
 		{75533EAC-BD73-456C-8ECE-3B8C309D7935}.SonarCloud|Win32.ActiveCfg = Release|Win32
-		{75533EAC-BD73-456C-8ECE-3B8C309D7935}.SonarCloud|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
