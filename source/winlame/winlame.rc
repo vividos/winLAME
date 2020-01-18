@@ -58,34 +58,6 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Toolbar
-//
-
-IDR_MAINFRAME TOOLBAR 16, 16
-BEGIN
-    BUTTON      ID_ENCODE_FILES
-    BUTTON      ID_ENCODE_CD
-    SEPARATOR
-    BUTTON      ID_TASKS_STOP_ALL
-    BUTTON      ID_TASKS_REMOVE_COMPLETED
-    SEPARATOR
-    BUTTON      ID_SETTINGS_GENERAL
-    BUTTON      ID_SETTINGS_CDREAD
-    SEPARATOR
-    BUTTON      ID_VIEW_RIBBON
-    BUTTON      ID_VIEW_SWITCH_CLASSIC
-    SEPARATOR
-    BUTTON      ID_FEEDBACK_POSITIVE
-    BUTTON      ID_FEEDBACK_NEGATIVE
-    SEPARATOR
-    BUTTON      ID_HELP
-    BUTTON      ID_APP_ABOUT
-    BUTTON      ID_APP_EXIT
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Bitmap
 //
 
@@ -110,8 +82,6 @@ ID_SETTINGS_FINISH_ACTION_NONE BITMAP                  "res\\finish_action_none.
 ID_SETTINGS_FINISH_ACTION_CLOSE BITMAP                  "res\\finish_action_close.bmp"
 
 ID_SETTINGS_FINISH_ACTION_STANDBY BITMAP                  "res\\finish_action_standby.bmp"
-
-ID_VIEW_RIBBON          BITMAP                  "res\\view_ribbon.bmp"
 
 ID_VIEW_SWITCH_CLASSIC  BITMAP                  "res\\switch_classic.bmp"
 
@@ -1002,11 +972,6 @@ BEGIN
     ID_SETTINGS_FINISH_ACTION_NONE "Do nothing\nDo nothing"
     ID_SETTINGS_FINISH_ACTION_CLOSE "Close winLAME\nClose winLAME"
     ID_SETTINGS_FINISH_ACTION_STANDBY "Standby PC\nStandby PC"
-END
-
-STRINGTABLE
-BEGIN
-    ID_VIEW_RIBBON          "Toggles between menu band and toolbar\nToggle Menu band"
 END
 
 STRINGTABLE

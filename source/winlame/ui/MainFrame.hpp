@@ -75,12 +75,11 @@ namespace UI
       END_RIBBON_CONTROL_MAP()
 
       BEGIN_UPDATE_UI_MAP(MainFrame)
-         UPDATE_ELEMENT(ID_VIEW_RIBBON, UPDUI_MENUPOPUP)
-         UPDATE_ELEMENT(ID_TASKS_STOP_ALL, UPDUI_MENUPOPUP | UPDUI_RIBBON | UPDUI_TOOLBAR)
-         UPDATE_ELEMENT(ID_TASKS_REMOVE_COMPLETED, UPDUI_MENUPOPUP | UPDUI_RIBBON | UPDUI_TOOLBAR)
-         UPDATE_ELEMENT(ID_SETTINGS_FINISH_ACTION, UPDUI_MENUPOPUP | UPDUI_RIBBON)
-         UPDATE_ELEMENT(ID_FEEDBACK_POSITIVE, UPDUI_MENUPOPUP | UPDUI_RIBBON | UPDUI_TOOLBAR)
-         UPDATE_ELEMENT(ID_FEEDBACK_NEGATIVE, UPDUI_MENUPOPUP | UPDUI_RIBBON | UPDUI_TOOLBAR)
+         UPDATE_ELEMENT(ID_TASKS_STOP_ALL, UPDUI_RIBBON)
+         UPDATE_ELEMENT(ID_TASKS_REMOVE_COMPLETED, UPDUI_RIBBON)
+         UPDATE_ELEMENT(ID_SETTINGS_FINISH_ACTION, UPDUI_RIBBON)
+         UPDATE_ELEMENT(ID_FEEDBACK_POSITIVE, UPDUI_RIBBON)
+         UPDATE_ELEMENT(ID_FEEDBACK_NEGATIVE, UPDUI_RIBBON)
       END_UPDATE_UI_MAP()
 
       BEGIN_MSG_MAP(MainFrame)
@@ -98,7 +97,6 @@ namespace UI
          COMMAND_ID_HANDLER(ID_SETTINGS_CDREAD, OnSettingsCDRead)
          RIBBON_GALLERY_CONTROL_HANDLER(ID_SETTINGS_FINISH_ACTION, OnSettingsFinishActionSelChanged)
          COMMAND_RANGE_HANDLER(ID_SETTINGS_FINISH_ACTION_NONE, ID_SETTINGS_FINISH_ACTION_STANDBY, OnSettingsFinishActionRange)
-         COMMAND_ID_HANDLER(ID_VIEW_RIBBON, OnToggleRibbon)
          COMMAND_ID_HANDLER(ID_VIEW_SWITCH_CLASSIC, OnViewSwitchToClassic)
          COMMAND_ID_HANDLER(ID_FEEDBACK_POSITIVE, OnFeedbackPositive)
          COMMAND_ID_HANDLER(ID_FEEDBACK_NEGATIVE, OnFeedbackNegative)
@@ -133,7 +131,6 @@ namespace UI
       /// called when an entry in "Settings | Finish action" submenu entry is being selected
       LRESULT OnSettingsFinishActionRange(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
-      LRESULT OnToggleRibbon(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
       LRESULT OnViewSwitchToClassic(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
       /// called when the positive feedback command has been invoked
@@ -155,13 +152,7 @@ namespace UI
       void SetupCmdBar();
 
       /// sets up ribbon bar
-      void SetupRibbonBar();
-
-      /// sets up toolbar
-      void SetupToolbar();
-
-      /// sets up status bar
-      void SetupStatusBar();
+      bool SetupRibbonBar();
 
       /// sets up view
       void SetupView();

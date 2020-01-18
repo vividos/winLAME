@@ -258,6 +258,7 @@ int App::RunMainFrame(int nCmdShow)
    if (wndMain.CreateEx() == NULL)
    {
       ATLTRACE(_T("Main window creation failed!\n"));
+      m_exit = true;
       return 0;
    }
 

@@ -205,7 +205,6 @@
     <Image Include="res\tasks_remove_completed.bmp" />
     <Image Include="res\tasks_stop_all.bmp" />
     <Image Include="res\Toolbar32.bmp" />
-    <Image Include="res\view_ribbon.bmp" />
     <Image Include="res\winlame.ico" />
   </ItemGroup>
   <ItemGroup>

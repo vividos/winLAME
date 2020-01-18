@@ -58,38 +58,8 @@ LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Toolbar
-//
-
-IDR_MAINFRAME TOOLBAR 16, 16
-BEGIN
-    BUTTON      ID_ENCODE_FILES
-    BUTTON      ID_ENCODE_CD
-    SEPARATOR
-    BUTTON      ID_TASKS_STOP_ALL
-    BUTTON      ID_TASKS_REMOVE_COMPLETED
-    SEPARATOR
-    BUTTON      ID_SETTINGS_GENERAL
-    BUTTON      ID_SETTINGS_CDREAD
-    SEPARATOR
-    BUTTON      ID_VIEW_RIBBON
-    BUTTON      ID_VIEW_SWITCH_CLASSIC
-    SEPARATOR
-    BUTTON      ID_FEEDBACK_POSITIVE
-    BUTTON      ID_FEEDBACK_NEGATIVE
-    SEPARATOR
-    BUTTON      ID_HELP
-    BUTTON      ID_APP_ABOUT
-    BUTTON      ID_APP_EXIT
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Bitmap
 //
-
-IDR_MAINFRAME           BITMAP                  "res\\Toolbar32.bmp"
 
 ID_ENCODE_FILES         BITMAP                  "res\\open_files.bmp"
 
@@ -110,8 +80,6 @@ ID_SETTINGS_FINISH_ACTION_NONE BITMAP                  "res\\finish_action_none.
 ID_SETTINGS_FINISH_ACTION_CLOSE BITMAP                  "res\\finish_action_close.bmp"
 
 ID_SETTINGS_FINISH_ACTION_STANDBY BITMAP                  "res\\finish_action_standby.bmp"
-
-ID_VIEW_RIBBON          BITMAP                  "res\\view_ribbon.bmp"
 
 ID_VIEW_SWITCH_CLASSIC  BITMAP                  "res\\switch_classic.bmp"
 
@@ -136,49 +104,6 @@ IDB_BITMAP_TASKS        BITMAP                  "res\\tasks.bmp"
 //
 // Menu
 //
-
-IDR_MAINFRAME MENU
-BEGIN
-    POPUP "&Kodieren"
-    BEGIN
-        MENUITEM "&Dateien öffnen...",          ID_ENCODE_FILES
-        MENUITEM "&CD einlesen...",             ID_ENCODE_CD
-        MENUITEM SEPARATOR
-        MENUITEM "&Beenden",                    ID_APP_EXIT
-    END
-    POPUP "&Aufgabe"
-    BEGIN
-        MENUITEM "&Alle anhalten",              ID_TASKS_STOP_ALL
-        MENUITEM "&Vollständige entfernen",     ID_TASKS_REMOVE_COMPLETED
-    END
-    POPUP "&Einstellungen"
-    BEGIN
-        MENUITEM "&Allgemeine Einstellungen",   ID_SETTINGS_GENERAL
-        MENUITEM "&CD-Lese-Einstellungen",      ID_SETTINGS_CDREAD
-        MENUITEM "Aktion nach dem &Encoden",    ID_SETTINGS_FINISH_ACTION
-        POPUP "&Beenden-Aktion"
-        BEGIN
-            MENUITEM "&Nichts tun",                 ID_SETTINGS_FINISH_ACTION_NONE
-            MENUITEM "winLAME &schließen",          ID_SETTINGS_FINISH_ACTION_CLOSE
-            MENUITEM "&Energie sparen",             ID_SETTINGS_FINISH_ACTION_STANDBY
-        END
-    END
-    POPUP "&Ansicht"
-    BEGIN
-        MENUITEM "&Menüband",                   ID_VIEW_RIBBON
-        MENUITEM "Zum &Klassischen Modus wechseln", ID_VIEW_SWITCH_CLASSIC
-    END
-    POPUP "Beta-&Feedback"
-    BEGIN
-        MENUITEM "Sende ein &Lächeln",          ID_FEEDBACK_POSITIVE
-        MENUITEM "Sende ein &Stirnrunzeln",     ID_FEEDBACK_NEGATIVE
-    END
-    POPUP "&Hilfe"
-    BEGIN
-        MENUITEM "&Hilfe anzeigen",             ID_HELP
-        MENUITEM "Über &winLAME...",            ID_APP_ABOUT
-    END
-END
 
 IDM_INPUT_LIST_MENU MENU
 BEGIN
@@ -1016,11 +941,6 @@ BEGIN
     ID_SETTINGS_FINISH_ACTION_NONE "Nichts tun\nNichts tun"
     ID_SETTINGS_FINISH_ACTION_CLOSE "winLAME schließen\nwinLAME schließen"
     ID_SETTINGS_FINISH_ACTION_STANDBY "Energie sparen\nEnergie sparen"
-END
-
-STRINGTABLE
-BEGIN
-    ID_VIEW_RIBBON          "Schaltet zwischen Menüband und Werkzeugleiste um\nMenüband umschalten"
 END
 
 STRINGTABLE

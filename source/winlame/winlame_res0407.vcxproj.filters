@@ -43,9 +43,6 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\Toolbar32.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\open_files.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -74,9 +71,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\finish_action_standby.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\view_ribbon.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\switch_classic.bmp">
