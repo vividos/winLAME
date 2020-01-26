@@ -24,7 +24,6 @@
 #include "CDExtractTask.hpp"
 #include "Task.hpp"
 #include <ulib/thread/Thread.hpp>
-#include <boost/foreach.hpp>
 #include <boost/bind.hpp>
 #include <algorithm>
 #include <set>
@@ -86,7 +85,7 @@ std::vector<TaskInfo> TaskManager::CurrentTasks()
 
    {
       std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
-      BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
+      for (std::shared_ptr<Task> spTask : m_deqTaskQueue)
       {
          auto iter = m_mapCompletedTaskInfos.find(spTask->Id());
          if (iter != m_mapCompletedTaskInfos.end())
@@ -263,7 +262,7 @@ void TaskManager::StopAll()
 {
    std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
-   BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
+   for (std::shared_ptr<Task> spTask : m_deqTaskQueue)
    {
       spTask->Stop();
 
@@ -279,13 +278,13 @@ void TaskManager::RemoveCompletedTasks()
    std::unique_lock<std::recursive_mutex> lock(m_mutexQueue);
 
    std::set<std::shared_ptr<Task>> setTasksToRemove;
-   BOOST_FOREACH(std::shared_ptr<Task> spTask, m_deqTaskQueue)
+   for (std::shared_ptr<Task> spTask : m_deqTaskQueue)
    {
       if (m_mapCompletedTaskInfos.find(spTask->Id()) != m_mapCompletedTaskInfos.end())
          setTasksToRemove.insert(spTask);
    }
 
-   BOOST_FOREACH(std::shared_ptr<Task> spTask, setTasksToRemove)
+   for (std::shared_ptr<Task> spTask : setTasksToRemove)
    {
       RemoveTask(spTask);
    }

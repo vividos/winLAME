@@ -35,7 +35,6 @@
 #include "ResourceInstanceSwitcher.hpp"
 #include "DropFilesManager.hpp"
 #include <ulib/CommandLineParser.hpp>
-#include <boost/foreach.hpp>
 
 using namespace UI;
 
