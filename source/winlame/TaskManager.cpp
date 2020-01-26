@@ -302,10 +302,16 @@ void TaskManager::RunThread(boost::asio::io_service& ioService, unsigned int thr
    {
       ioService.run();
    }
-   catch (boost::system::system_error& error)
+   catch (const std::system_error & error)
    {
       UNUSED(error);
-      ATLTRACE(_T("system_error: %hs\n"), error.what());
+      ATLTRACE(_T("std::system_error: %hs\n"), error.what());
+      ATLASSERT(false);
+   }
+   catch (const boost::system::system_error& error)
+   {
+      UNUSED(error);
+      ATLTRACE(_T("boost::system::system_error: %hs\n"), error.what());
       ATLASSERT(false);
    }
 }
