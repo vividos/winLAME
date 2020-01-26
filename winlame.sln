@@ -41,6 +41,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		source\libraries\CopyLibraries.cmd = source\libraries\CopyLibraries.cmd
 		Readme.Developer.md = Readme.Developer.md
 		Readme.md = Readme.md
+		TODO.txt = TODO.txt
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winLAME.0402", "source\winlame\winlame_res0402.vcxproj", "{F8A45388-1F66-4FC0-83AE-740E1972A65B}"

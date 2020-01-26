@@ -3,6 +3,7 @@ TODO list for winLAME
 winLAME 2020 release 1, bug fixes:
 - find track length for writing playlists when encoding files
 - fix crash in multicore encoding
+- fix noise in FLAC decoding
 
 winLAME 2020 release 1, nice-to-have:
 - fix remaining SonarQube bugs and vulnerabilities
@@ -13,3 +14,7 @@ winLAME 2020 release 1, nice-to-have:
   more "predefined" formats; with advanced "output plugin" selection mode.
 - remove unused resources
 - remove Classic UI mode
+- new icons based on VS Image Gallery
+- Opus option to use .ogg extension
+- write more test cases
+- update FLAC picture reading via TagLib
