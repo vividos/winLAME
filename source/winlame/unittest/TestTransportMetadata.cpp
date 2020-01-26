@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -98,18 +98,18 @@ namespace unittest
       {
          UnitTest::AutoCleanupFolder folder;
 
-         CString inputFilename = Path::Combine(folder.FolderName(), std::get<1>(inputInfos)).ToString();
+         CString inputFilename = Path::Combine(folder.FolderName(), std::get<1>(inputInfos));
          ExtractFromResource(std::get<0>(inputInfos), inputFilename);
 
          Encoder::TrackInfo inputTrackInfo = GetTrackInfo(inputFilename);
 
-         CString outputFilename = Path::Combine(folder.FolderName(), std::get<1>(outputInfos)).ToString();
+         CString outputFilename = Path::Combine(folder.FolderName(), std::get<1>(outputInfos));
 
          // encode file
          Encode(inputFilename, outputFilename, std::get<0>(outputInfos));
 
          // output file must exist
-         Assert::IsTrue(Path(outputFilename).FileExists(), _T("output file must exist"));
+         Assert::IsTrue(Path::FileExists(outputFilename), _T("output file must exist"));
 
          Encoder::TrackInfo outputTrackInfo = GetTrackInfo(outputFilename);
 

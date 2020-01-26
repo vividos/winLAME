@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ namespace unittest
       {
          UnitTest::AutoCleanupFolder folder;
 
-         CString filename = Path::Combine(folder.FolderName(), _T("sample.mp3")).ToString();
+         CString filename = Path::Combine(folder.FolderName(), _T("sample.mp3"));
          ExtractFromResource(IDR_SAMPLE_MP3, filename);
 
          // encode file
@@ -56,7 +56,7 @@ namespace unittest
 
          Encoder::EncoderSettings encoderSettings;
          encoderSettings.m_inputFilename = filename;
-         encoderSettings.m_outputFilename = Path::Combine(folder.FolderName(), _T("output.mp3")).ToString();
+         encoderSettings.m_outputFilename = Path::Combine(folder.FolderName(), _T("output.mp3"));
          encoderSettings.m_outputModuleID = ID_OM_LAME; // encode to LAME mp3
 
          encoder.SetEncoderSettings(encoderSettings);
@@ -71,7 +71,7 @@ namespace unittest
          StartEncodeAndWaitForFinish(encoder);
 
          // output file must exist
-         Assert::IsTrue(Path(encoderSettings.m_outputFilename).FileExists(), _T("output file must exist"));
+         Assert::IsTrue(Path::FileExists(encoderSettings.m_outputFilename), _T("output file must exist"));
       }
    };
 }

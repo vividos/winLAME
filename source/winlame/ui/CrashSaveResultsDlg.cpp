@@ -53,7 +53,7 @@ LRESULT CrashSaveResultsDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPAR
    {
       const CString& entry = m_resultFilenamesList[index];
 
-      int itemIndex = m_listResults.InsertItem(0, Path(entry).FilenameAndExt());
+      int itemIndex = m_listResults.InsertItem(0, Path::FilenameAndExt(entry));
       m_listResults.SetItemText(itemIndex, 1, entry);
       m_listResults.SetItemData(itemIndex, index);
    }
@@ -134,7 +134,7 @@ bool CrashSaveResultsDlg::SaveResultFiles()
          const CString& entry = m_resultFilenamesList[index];
 
          // get filename part
-         CString filenameAndExt = Path(entry).FilenameAndExt();
+         CString filenameAndExt = Path::FilenameAndExt(entry);
 
          ::MoveFile(entry, folderName + filenameAndExt);
       }

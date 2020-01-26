@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -37,7 +37,7 @@ CreatePlaylistTask::CreatePlaylistTask(unsigned int dependentTaskId, const CStri
       PlaylistEntry entry;
 
       entry.m_filename = encoderJob.OutputFilename();
-      entry.m_title = Path(encoderJob.InputFilename()).FilenameAndExt();
+      entry.m_title = Path::FilenameAndExt(encoderJob.InputFilename());
 
       m_playlistEntries.push_back(entry);
    });
@@ -66,7 +66,7 @@ TaskInfo CreatePlaylistTask::GetTaskInfo()
 {
    TaskInfo info(Id(), TaskInfo::taskWritePlaylist);
 
-   info.Name(_T("Playlist: ") + Path(m_playlistFilename).FilenameAndExt());
+   info.Name(_T("Playlist: ") + Path::FilenameAndExt(m_playlistFilename));
 
    CString description;
    description.Format(IDS_PLAYLIST_TASK_DESCRIPTION_SU, m_playlistFilename.GetString(), m_playlistEntries.size());
@@ -97,7 +97,7 @@ void CreatePlaylistTask::Run()
    if (m_extendedPlaylist)
       _ftprintf(fd, _T("#EXTM3U\n\n"));
 
-   CString rootFolder = Path(m_playlistFilename).FolderName();
+   CString rootFolder = Path::FolderName(m_playlistFilename);
 
    for (size_t entryIndex = 0, maxEntryIndex = m_playlistEntries.size(); entryIndex < maxEntryIndex; entryIndex++)
    {
@@ -106,7 +106,7 @@ void CreatePlaylistTask::Run()
       if (m_extendedPlaylist)
          _ftprintf(fd, _T("#EXTINF:%u,%s\n"), entry.m_trackLengthInSeconds, entry.m_title.GetString());
 
-      CString relativeFilename = Path(entry.m_filename).MakeRelativeTo(rootFolder);
+      CString relativeFilename = Path::MakeRelativeTo(entry.m_filename, rootFolder);
       if (relativeFilename.IsEmpty())
          relativeFilename = entry.m_filename;
 

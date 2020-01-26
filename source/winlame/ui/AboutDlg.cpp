@@ -187,7 +187,7 @@ CString AboutDlg::GetAboutHtmlText()
 
 CString AboutDlg::GetTagLibVersion()
 {
-   CString filename = Path::Combine(Path(Path::ModuleFilename()).FolderName(), _T("taglib.dll"));
+   CString filename = Path::Combine(Path::FolderName(Path::ModuleFilename()), _T("taglib.dll"));
    Win32::VersionInfoResource versionInfo(filename);
 
    // retrieve version language

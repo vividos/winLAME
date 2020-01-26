@@ -113,9 +113,9 @@ m_startInputCD(false)
       m_langResourceManager.LoadLangResource(m_settings.language_id);
 
    // check if html help file is available
-   m_helpFilename = Path::Combine(App::AppFolder(), "winLAME.chm").ToString();
+   m_helpFilename = Path::Combine(App::AppFolder(), "winLAME.chm");
 
-   m_helpAvailable = Path(m_helpFilename).FileExists();
+   m_helpAvailable = Path::FileExists(m_helpFilename);
 }
 
 App::~App()
@@ -139,14 +139,14 @@ App::~App()
 void App::InitCrashReporter()
 {
    // local app-data, non-roaming
-   CString folder = Path::Combine(Path::SpecialFolder(CSIDL_LOCAL_APPDATA), _T("winLAME")).ToString();
+   CString folder = Path::Combine(Path::SpecialFolder(CSIDL_LOCAL_APPDATA), _T("winLAME"));
 
-   if (!Path(folder).FolderExists())
+   if (!Path::FolderExists(folder))
       CreateDirectory(folder, nullptr);
 
-   folder = Path::Combine(folder, _T("crashdumps")).ToString();
+   folder = Path::Combine(folder, _T("crashdumps"));
 
-   if (!Path(folder).FolderExists())
+   if (!Path::FolderExists(folder))
       CreateDirectory(folder, nullptr);
 
    CrashReporter::Init(_T("winLAME"), folder, &App::ShowCrashErrorDialog);
@@ -281,14 +281,14 @@ CString App::AppDataFolder(bool machineWide)
    CString appDataPath =
       Path::SpecialFolder(machineWide ? CSIDL_COMMON_APPDATA : CSIDL_APPDATA);
 
-   return Path::Combine(appDataPath, _T("winLAME")).ToString();
+   return Path::Combine(appDataPath, _T("winLAME"));
 }
 
 CString App::AppFolder()
 {
    CString moduleFilename = Path::ModuleFilename();
 
-   return Path(moduleFilename).FolderName();
+   return Path::FolderName(moduleFilename);
 }
 
 CString App::Version()
@@ -327,17 +327,17 @@ void App::LoadPresetFile()
    CString machineWideAppFolder = AppDataFolder(true);
 
    // first, check if user has left a presets.xml around in the .exe folder
-   CString presetFilename = Path::Combine(AppFolder(), _T("presets.xml")).ToString();
+   CString presetFilename = Path::Combine(AppFolder(), _T("presets.xml"));
 
-   if (!Path(presetFilename).FileExists() &&
+   if (!Path::FileExists(presetFilename) &&
       !IsRunningAsUwpApp())
    {
       // next try to check for user-dependend config file
-      presetFilename = Path::Combine(userSpecificAppFolder, _T("presets.xml")).ToString();
-      if (!Path(presetFilename).FileExists())
+      presetFilename = Path::Combine(userSpecificAppFolder, _T("presets.xml"));
+      if (!Path::FileExists(presetFilename))
       {
          // not available: try to use machine-wide config file
-         presetFilename = Path::Combine(machineWideAppFolder, _T("presets.xml")).ToString();
+         presetFilename = Path::Combine(machineWideAppFolder, _T("presets.xml"));
       }
    }
 
@@ -346,7 +346,7 @@ void App::LoadPresetFile()
 
    PresetManagerInterface& presetManager = IoCContainer::Current().Resolve<PresetManagerInterface>();
 
-   if (Path(presetFilename).FileExists())
+   if (Path::FileExists(presetFilename))
       settings.preset_avail = presetManager.loadPreset(presetFilename);
    else
       settings.preset_avail = false;

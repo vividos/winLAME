@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -289,7 +289,7 @@ void InputFilesPage::AddFiles(const std::vector<CString>& inputFilesList)
 
    if (!parser.PlaylistName().IsEmpty())
    {
-      CString name = Path(parser.PlaylistName()).FilenameOnly();
+      CString name = Path::FilenameOnly(parser.PlaylistName());
       m_uiSettings.playlist_filename = name + _T(".m3u");
    }
 }

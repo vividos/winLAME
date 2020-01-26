@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -194,8 +194,8 @@ void EncoderImpl::Encode()
          GenerateTempOutFilename(m_encoderSettings.m_outputFilename, tempOutputFilename);
 
          // create folder when it doesn't exist
-         CString tempOutputFolder = Path(tempOutputFilename).FolderName();
-         if (!Path(tempOutputFolder).FolderExists())
+         CString tempOutputFolder = Path::FolderName(tempOutputFilename);
+         if (!Path::FolderExists(tempOutputFolder))
             Path::CreateDirectoryRecursive(tempOutputFolder);
 
          bool bRet = InitOutputModule(tempOutputFilename, trackInfo);
@@ -309,7 +309,7 @@ bool EncoderImpl::PrepareOutputModule()
 
    // check if outputFilename already exists
    if (!m_encoderSettings.m_overwriteExisting &&
-      Path(m_encoderSettings.m_outputFilename).FileExists())
+      Path::FileExists(m_encoderSettings.m_outputFilename))
    {
       m_encoderState.m_errorCode = 2;
       return false;
@@ -331,7 +331,7 @@ CString EncoderImpl::GetOutputFilename(const CString& outputPath, const CString&
 {
    CString outputFilename = outputPath;
 
-   CString filenameOnly = Path(inputFilename).FilenameOnly();
+   CString filenameOnly = Path::FilenameOnly(inputFilename);
    outputFilename += filenameOnly;
    outputFilename += _T(".");
    outputFilename += outputModule.GetOutputExtension();
@@ -345,12 +345,12 @@ bool EncoderImpl::CheckSameInputOutputFilenames(const CString& inputFilename,
    for (int i = 0; i < 2; i++)
    {
       // first, test if output filename already exists
-      if (!Path(outputFilename).FileExists())
+      if (!Path::FileExists(outputFilename))
          break; // no, so we don't need to test
 
       // check if the file's short name is the same
-      CString shortInputFilename = Path(inputFilename).ShortPathName();
-      CString shortOutputFilename = Path(outputFilename).ShortPathName();
+      CString shortInputFilename = Path::ShortPathName(inputFilename);
+      CString shortOutputFilename = Path::ShortPathName(outputFilename);
 
       if (0 == shortInputFilename.CompareNoCase(shortOutputFilename))
       {
@@ -388,12 +388,11 @@ void EncoderImpl::GenerateTempOutFilename(const CString& originalFilename, CStri
 
    tempFilename = originalFilename;
 
-   Path originalPath(originalFilename);
-   CString pathName = originalPath.FolderName();
-   CString fileName = originalPath.FilenameAndExt();
+   CString pathName = Path::FolderName(originalFilename);
+   CString fileName = Path::FilenameAndExt(originalFilename);
 
    // find short name of path
-   CString shortPathName = Path(pathName).ShortPathName();
+   CString shortPathName = Path::ShortPathName(pathName);
 
    // convert filename to ansi and back, and remove '?' chars
    fileName = CString(CStringA(fileName));
@@ -403,7 +402,7 @@ void EncoderImpl::GenerateTempOutFilename(const CString& originalFilename, CStri
    unsigned int fileIndex = 0;
    do
    {
-      tempFilename = Path::Combine(shortPathName, fileName).ToString();
+      tempFilename = Path::Combine(shortPathName, fileName);
       if (fileIndex == 0)
          tempFilename += _T(".temp");
       else
@@ -413,7 +412,7 @@ void EncoderImpl::GenerateTempOutFilename(const CString& originalFilename, CStri
 
       fileIndex++;
    }
-   while (Path(tempFilename).FileExists());
+   while (Path::FileExists(tempFilename));
 
    // create a dummy file so the next thread can't use this filename anymore
    FILE* fd = _tfopen(tempFilename, _T("wb"));
@@ -542,14 +541,14 @@ bool EncoderImpl::MainLoop()
 
 void EncoderImpl::WritePlaylistEntry(const CString& outputFilename)
 {
-   CString playlistPathAndFilename = Path::Combine(m_encoderSettings.m_outputFolder, m_encoderSettings.m_playlistFilename).ToString();
+   CString playlistPathAndFilename = Path::Combine(m_encoderSettings.m_outputFolder, m_encoderSettings.m_playlistFilename);
 
    FILE* fd = _tfopen(playlistPathAndFilename, _T("at"));
    if (fd == nullptr)
       return;
 
    // get filename, without path
-   CString filename = Path(outputFilename).FilenameAndExt();
+   CString filename = Path::FilenameAndExt(outputFilename);
 
    // write to playlist file
    _ftprintf(fd, _T("%s\n"), filename.GetString());

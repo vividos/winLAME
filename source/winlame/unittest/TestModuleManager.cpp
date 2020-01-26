@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ namespace unittest
          IoCContainer& ioc = IoCContainer::Current();
 
          m_spLameNogapInstanceManager.reset(new Encoder::LameNogapInstanceManager);
-         ioc.Register<Encoder::LameNogapInstanceManager>(boost::ref(*m_spLameNogapInstanceManager.get()));
+         ioc.Register<Encoder::LameNogapInstanceManager>(std::ref(*m_spLameNogapInstanceManager.get()));
       }
 
       /// tests default ctor of ModuleManagerImpl
@@ -179,7 +179,7 @@ namespace unittest
 
          UnitTest::AutoCleanupFolder folder;
 
-         CString filename = Path::Combine(folder.FolderName(), _T("sample.mp3")).ToString();
+         CString filename = Path::Combine(folder.FolderName(), _T("sample.mp3"));
          data.AsFile(filename);
 
          // run

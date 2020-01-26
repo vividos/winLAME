@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -509,7 +509,7 @@ bool InputCDPage::ReadCachedCDDB(bool& variousArtists)
 bool InputCDPage::ReadCdplayerIni(bool& variousArtists)
 {
    // retrieve info from cdplayer.ini
-   CString cdplayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini")).ToString();
+   CString cdplayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini"));
 
    DWORD driveIndex = GetCurrentDrive();
 
@@ -818,7 +818,7 @@ void InputCDPage::StoreInCdplayerIni(unsigned int driveIndex)
    if (!m_uiSettings.store_disc_infos_cdplayer_ini)
       return;
 
-   CString cdplayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini")).ToString();
+   CString cdplayerIniFilename = Path::Combine(Path::WindowsFolder(), _T("cdplayer.ini"));
 
    const char* cdplayer_id_raw = BASS_CD_GetID(driveIndex, BASS_CDID_CDPLAYER);
 

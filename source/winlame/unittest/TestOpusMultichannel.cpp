@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ namespace unittest
       {
          UnitTest::AutoCleanupFolder folder;
 
-         CString filename = Path::Combine(folder.FolderName(), _T("sample.opus")).ToString();
+         CString filename = Path::Combine(folder.FolderName(), _T("sample.opus"));
          ExtractFromResource(IDR_SAMPLE_OPUS_MULTICHANNEL, filename);
 
          // decode file
@@ -57,7 +57,7 @@ namespace unittest
 
          Encoder::EncoderSettings encoderSettings;
          encoderSettings.m_inputFilename = filename;
-         encoderSettings.m_outputFilename = Path::Combine(folder.FolderName(), _T("output.wav")).ToString();
+         encoderSettings.m_outputFilename = Path::Combine(folder.FolderName(), _T("output.wav"));
          encoderSettings.m_outputModuleID = ID_OM_WAVE; // decode to Wave
 
          encoder.SetEncoderSettings(encoderSettings);
@@ -71,7 +71,7 @@ namespace unittest
          StartEncodeAndWaitForFinish(encoder);
 
          // output file must exist
-         Assert::IsTrue(Path(encoderSettings.m_outputFilename).FileExists(), _T("output file must exist"));
+         Assert::IsTrue(Path::FileExists(encoderSettings.m_outputFilename), _T("output file must exist"));
 
          int inputNumChannels = 0;
          int outputNumChannels = 0;
@@ -89,7 +89,7 @@ namespace unittest
       {
          UnitTest::AutoCleanupFolder folder;
 
-         CString filename = Path::Combine(folder.FolderName(), _T("sample.opus")).ToString();
+         CString filename = Path::Combine(folder.FolderName(), _T("sample.opus"));
          ExtractFromResource(IDR_SAMPLE_OPUS_MULTICHANNEL, filename);
 
          // transcode file
@@ -97,7 +97,7 @@ namespace unittest
 
          Encoder::EncoderSettings encoderSettings;
          encoderSettings.m_inputFilename = filename;
-         encoderSettings.m_outputFilename = Path::Combine(folder.FolderName(), _T("output.opus")).ToString();
+         encoderSettings.m_outputFilename = Path::Combine(folder.FolderName(), _T("output.opus"));
          encoderSettings.m_outputModuleID = ID_OM_OPUS;
 
          encoder.SetEncoderSettings(encoderSettings);
@@ -112,7 +112,7 @@ namespace unittest
          StartEncodeAndWaitForFinish(encoder);
 
          // output file must exist
-         Assert::IsTrue(Path(encoderSettings.m_outputFilename).FileExists(), _T("output file must exist"));
+         Assert::IsTrue(Path::FileExists(encoderSettings.m_outputFilename), _T("output file must exist"));
 
          int outputNumChannels = 0;
          int dummy = 0;

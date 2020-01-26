@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -152,14 +152,12 @@ void TaskCreationHelper::AddInputFilesTasks()
 
       if (m_uiSettings.out_location_use_input_dir)
       {
-         Path outputPath(job.InputFilename());
-
-         taskSettings.m_outputFolder = outputPath.FolderName();
+         taskSettings.m_outputFolder = Path::FolderName(job.InputFilename());
       }
       else
          taskSettings.m_outputFolder = m_uiSettings.m_defaultSettings.outputdir;
 
-      taskSettings.m_title = Path(job.InputFilename()).FilenameAndExt();
+      taskSettings.m_title = Path::FilenameAndExt(job.InputFilename());
 
       taskSettings.m_outputModuleID = moduleManager.GetOutputModuleID(m_uiSettings.output_module);
 
@@ -184,7 +182,7 @@ void TaskCreationHelper::AddInputFilesTasks()
 
       taskMgr.AddTask(spTask);
 
-      CString inputTitle = Path(job.InputFilename()).FilenameOnly();
+      CString inputTitle = Path::FilenameOnly(job.InputFilename());
       job.OutputFilename(spTask->GenerateOutputFilename(inputTitle));
 
       m_lastTaskId = spTask->Id();
@@ -238,7 +236,7 @@ void TaskCreationHelper::AddCDExtractTasks()
 
          trackInfo.m_rippedFilename = Path::Combine(
             m_uiSettings.m_defaultSettings.outputdir,
-            titleFilename + _T(".wav")).ToString();
+            titleFilename + _T(".wav"));
       }
 
       std::shared_ptr<Encoder::CDExtractTask> spCDExtractTask(new Encoder::CDExtractTask(lastCDReadTaskId, discInfo, trackInfo));
@@ -316,13 +314,12 @@ CString TaskCreationHelper::FindCommonPlaylistOutputFolder() const
    if (m_uiSettings.m_bFromInputFilesPage)
    {
       if (!m_uiSettings.encoderjoblist.empty())
-         playlistOutputFolder = Path(m_uiSettings.encoderjoblist.front().OutputFilename()).FolderName();
+         playlistOutputFolder = Path::FolderName(m_uiSettings.encoderjoblist.front().OutputFilename());
 
       for (auto encoderJob : m_uiSettings.encoderjoblist)
       {
-         Path outputFilename(encoderJob.OutputFilename());
-
-         CString newCommonRootPath = Path::GetCommonRootPath(playlistOutputFolder, outputFilename.FolderName());
+         CString outputFolder = Path::FolderName(encoderJob.OutputFilename());
+         CString newCommonRootPath = Path::GetCommonRootPath(playlistOutputFolder, outputFolder);
 
          if (newCommonRootPath.IsEmpty())
             break;
@@ -345,7 +342,7 @@ void TaskCreationHelper::AddPlaylistTask()
    CString playlistOutputFolder = FindCommonPlaylistOutputFolder();
 
    CString playlistFilename =
-      Path::Combine(playlistOutputFolder, m_uiSettings.playlist_filename).ToString();
+      Path::Combine(playlistOutputFolder, m_uiSettings.playlist_filename);
 
    std::shared_ptr<Task> spTask;
    if (m_uiSettings.m_bFromInputFilesPage)
