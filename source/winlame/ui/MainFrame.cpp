@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -490,8 +490,8 @@ void MainFrame::GetCommandLineFiles()
 
 void MainFrame::UpdateWin7TaskBar()
 {
-   if (!m_win7TaskBar.is_initialized() ||
-      !m_win7TaskBar.get().IsAvailable())
+   if (!m_win7TaskBar.has_value() ||
+      !m_win7TaskBar.value().IsAvailable())
       return;
 
    bool hasActiveTasks = false;
@@ -503,13 +503,13 @@ void MainFrame::UpdateWin7TaskBar()
 
    if (hasActiveTasks || hasCompletedTasks)
    {
-      if (!m_win7TaskBarProgressBar.is_initialized())
-         m_win7TaskBarProgressBar = m_win7TaskBar.get().OpenProgressBar();
+      if (!m_win7TaskBarProgressBar.has_value())
+         m_win7TaskBarProgressBar.emplace(m_win7TaskBar.value().OpenProgressBar());
 
-      m_win7TaskBarProgressBar.get().SetState(
+      m_win7TaskBarProgressBar.value().SetState(
          hasErrorTasks ? Win32::TaskbarProgressBar::TBPF_ERROR : Win32::TaskbarProgressBar::TBPF_NORMAL);
 
-      m_win7TaskBarProgressBar.get().SetPos(percentComplete, 100);
+      m_win7TaskBarProgressBar.value().SetPos(percentComplete, 100);
    }
    else
       m_win7TaskBarProgressBar.reset();

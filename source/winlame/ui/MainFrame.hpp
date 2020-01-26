@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 #include <ulib/win32/Win7Taskbar.hpp>
 #include "HtmlHelper.hpp"
 #include "TaskDetailsView.hpp"
-#include <boost/optional.hpp>
+#include <optional>
 
 #define WM_CHECK_COMMAND_LINE WM_APP+2
 
@@ -186,10 +186,10 @@ namespace UI
       TaskDetailsView m_taskDetailsView;
 
       /// access to task bar
-      boost::optional<Win32::Taskbar> m_win7TaskBar;
+      std::optional<Win32::Taskbar> m_win7TaskBar;
 
       /// access to task bar progress bar
-      boost::optional<Win32::TaskbarProgressBar> m_win7TaskBarProgressBar;
+      std::optional<Win32::TaskbarProgressBar> m_win7TaskBarProgressBar;
 
       /// indicates if the dialog has been closed to change the app mode to classic mode
       bool m_isAppModeChanged;

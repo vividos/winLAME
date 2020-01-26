@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2018 Michael Fink
+// Copyright (c) 2018-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 #include "TasksView.hpp"
 #include "TaskDetailsView.hpp"
 #include <ulib/win32/Win7Taskbar.hpp>
-#include <boost/optional.hpp>
+#include <optional>
 #include "resource.h"
 
 class TaskManager;
@@ -156,10 +156,10 @@ namespace UI
       TaskDetailsView m_taskDetailsView;
 
       /// access to task bar
-      boost::optional<Win32::Taskbar> m_win7TaskBar;
+      std::optional<Win32::Taskbar> m_win7TaskBar;
 
       /// access to task bar progress bar
-      boost::optional<Win32::TaskbarProgressBar> m_win7TaskBarProgressBar;
+      std::optional<Win32::TaskbarProgressBar> m_win7TaskBarProgressBar;
    };
 
 } // namespace UI
