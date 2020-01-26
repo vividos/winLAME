@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include "stdafx.h"
 #include "AudioFileInfoManager.hpp"
 #include "ModuleManager.hpp"
-#include <boost/ref.hpp>
+#include <functional>
 
 AudioFileInfoManager::AudioFileInfoManager()
    :m_ioService(1), // one thread max.
@@ -63,7 +63,7 @@ void AudioFileInfoManager::AsyncGetAudioFileInfo(LPCTSTR filename, AudioFileInfo
 
    if (m_upThread == nullptr)
    {
-      m_upThread.reset(new std::thread(std::bind(&AudioFileInfoManager::RunThread, boost::ref(m_ioService))));
+      m_upThread.reset(new std::thread(std::bind(&AudioFileInfoManager::RunThread, std::ref(m_ioService))));
    }
 
    m_ioService.post(

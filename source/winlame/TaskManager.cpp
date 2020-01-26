@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ TaskManager::TaskManager(const TaskManagerConfig& config)
    {
       std::shared_ptr<std::thread> spThread(
          new std::thread(
-            std::bind(&TaskManager::RunThread, boost::ref(m_ioService), i)
+            std::bind(&TaskManager::RunThread, std::ref(m_ioService), i)
          ));
 
       SetBusyFlag(GetThreadId(spThread->native_handle()), false);

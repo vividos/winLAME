@@ -32,7 +32,7 @@
 #include "TaskManager.hpp"
 #include <ulib/CrashReporter.hpp>
 #include "CrashSaveResultsDlg.hpp"
-#include <boost/ref.hpp>
+#include <functional>
 #include <ulib/win32/VersionInfoResource.hpp>
 #include <ulib/CommandLineParser.hpp>
 
@@ -93,18 +93,18 @@ m_startInputCD(false)
    // register objects in IoC container
    IoCContainer& ioc = IoCContainer::Current();
 
-   ioc.Register<LanguageResourceManager>(boost::ref(m_langResourceManager));
-   ioc.Register<TaskManager>(boost::ref(*m_spTaskManager.get()));
-   ioc.Register<UISettings>(boost::ref(m_settings));
+   ioc.Register<LanguageResourceManager>(std::ref(m_langResourceManager));
+   ioc.Register<TaskManager>(std::ref(*m_spTaskManager.get()));
+   ioc.Register<UISettings>(std::ref(m_settings));
 
    m_spLameNogapInstanceManager.reset(new Encoder::LameNogapInstanceManager);
-   ioc.Register<Encoder::LameNogapInstanceManager>(boost::ref(*m_spLameNogapInstanceManager.get()));
+   ioc.Register<Encoder::LameNogapInstanceManager>(std::ref(*m_spLameNogapInstanceManager.get()));
 
    m_spPresetManager.reset(new PresetManagerImpl);
-   ioc.Register<PresetManagerInterface>(boost::ref(*m_spPresetManager.get()));
+   ioc.Register<PresetManagerInterface>(std::ref(*m_spPresetManager.get()));
 
    m_spModuleManager.reset(new Encoder::ModuleManagerImpl);
-   ioc.Register<Encoder::ModuleManager>(boost::ref(*m_spModuleManager.get()));
+   ioc.Register<Encoder::ModuleManager>(std::ref(*m_spModuleManager.get()));
 
    LoadPresetFile();
 

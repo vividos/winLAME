@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -44,13 +44,13 @@ void EncoderTestFixture::SetUp()
    if (m_spLameNogapInstanceManager == nullptr)
    {
       m_spLameNogapInstanceManager.reset(new Encoder::LameNogapInstanceManager);
-      ioc.Register<Encoder::LameNogapInstanceManager>(boost::ref(*m_spLameNogapInstanceManager.get()));
+      ioc.Register<Encoder::LameNogapInstanceManager>(std::ref(*m_spLameNogapInstanceManager.get()));
    }
 
    if (m_spModuleManager == nullptr)
    {
       m_spModuleManager.reset(new Encoder::ModuleManagerImpl);
-      ioc.Register<Encoder::ModuleManager>(boost::ref(*m_spModuleManager.get()));
+      ioc.Register<Encoder::ModuleManager>(std::ref(*m_spModuleManager.get()));
    }
 }
 
