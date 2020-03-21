@@ -27,6 +27,7 @@ namespace TagLib
 {
    class Tag;
    class File;
+   template <class T> class List;
    namespace ID3v2
    {
       class Tag;
@@ -34,6 +35,11 @@ namespace TagLib
    namespace Ogg
    {
       class XiphComment;
+   }
+   namespace FLAC
+   {
+      class File;
+      class Picture;
    }
 }
 /// \endcond
@@ -87,6 +93,12 @@ namespace Encoder
 
       /// reads extra track info from Xiph Comment tag
       void ReadTrackInfoFromXiphCommentTag(TagLib::Ogg::XiphComment* xiphComment);
+
+      /// reads extra track info from FLAC file
+      void ReadTrackInfoFromFlacFile(TagLib::FLAC::File* flacFile);
+
+      /// reads front cover picture from given picture list
+      void ReadFrontCoverPictureFromPictureList(const TagLib::List<TagLib::FLAC::Picture*>& pictures);
 
       /// stores all track infos in given tag
       void StoreTrackInfoInTag(TagLib::Tag* tag) const;

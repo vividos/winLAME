@@ -66,6 +66,10 @@ bool AudioFileTag::ReadFromFile(const CString& filename, AudioFileType audioFile
    if (oggXiphComment != nullptr)
       ReadTrackInfoFromXiphCommentTag(oggXiphComment);
 
+   std::shared_ptr<TagLib::FLAC::File> flacFile = std::dynamic_pointer_cast<TagLib::FLAC::File>(spFile);
+   if (flacFile != nullptr)
+      ReadTrackInfoFromFlacFile(&*flacFile);
+
    return true;
 }
 
@@ -281,6 +285,18 @@ void AudioFileTag::ReadTrackInfoFromXiphCommentTag(TagLib::Ogg::XiphComment* xip
 
    const TagLib::List<TagLib::FLAC::Picture*>& pictures = xiphComment->pictureList();
 
+   ReadFrontCoverPictureFromPictureList(pictures);
+}
+
+void AudioFileTag::ReadTrackInfoFromFlacFile(TagLib::FLAC::File* flacFile)
+{
+   TagLib::List<TagLib::FLAC::Picture*> pictureList = flacFile->pictureList();
+
+   ReadFrontCoverPictureFromPictureList(pictureList);
+}
+
+void Encoder::AudioFileTag::ReadFrontCoverPictureFromPictureList(const TagLib::List<TagLib::FLAC::Picture*>& pictures)
+{
    TagLib::List<TagLib::FLAC::Picture*>::ConstIterator iter = pictures.begin();
    if (pictures.size() > 1)
    {
@@ -297,12 +313,16 @@ void AudioFileTag::ReadTrackInfoFromXiphCommentTag(TagLib::Ogg::XiphComment* xip
    {
       const TagLib::FLAC::Picture& picture = **iter;
 
-      const std::vector<unsigned char> binaryData(
-         picture.data().begin(),
-         picture.data().end());
+      auto pictureData = picture.data();
+      if (!pictureData.isEmpty())
+      {
+         const std::vector<unsigned char> binaryData(
+            pictureData.begin(),
+            pictureData.end());
 
-      if (!binaryData.empty())
-         m_trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
+         if (!binaryData.empty())
+            m_trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
+      }
    }
 }
 
