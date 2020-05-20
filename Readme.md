@@ -16,7 +16,7 @@ This is the source code repository.
 winLAME uses Appveyor to build new versions of winLAME. Here's the Appveyor
 project page: https://ci.appveyor.com/project/vividos/winlame
 Here's the current build status:
-[![Build status](https://ci.appveyor.com/api/projects/status/52oljr0csio0u73d?svg=true)](https://ci.appveyor.com/project/vividos/winlame)
+[![Build status](https://ci.appveyor.com/api/projects/status/pk4ilnsqpe0owhmo?svg=true)](https://ci.appveyor.com/project/vividos/winlame)
 
 The project is occasionally checked with SonarCloud:
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=winLAME&metric=alert_status)](https://sonarcloud.io/dashboard?id=winLAME)
