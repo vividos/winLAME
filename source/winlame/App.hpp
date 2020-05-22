@@ -39,7 +39,7 @@ namespace UI
 }
 
 /// main application class
-class App
+class App : public boost::noncopyable
 {
 public:
    /// ctor

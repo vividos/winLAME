@@ -29,7 +29,7 @@
 namespace Encoder
 {
    /// module base class
-   class ModuleBase
+   class ModuleBase : public boost::noncopyable
    {
    public:
       /// dtor

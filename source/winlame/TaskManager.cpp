@@ -243,7 +243,7 @@ void TaskManager::GetTaskListState(bool& hasActiveTasks, bool& hasErrorTasks, un
 
       case TaskInfo::statusError:
          hasErrorTasks = true;
-         // fall-through
+         [[fallthrough]];
       case TaskInfo::statusCompleted:
          numTasks++;
          taskPercentageSum += 100;
