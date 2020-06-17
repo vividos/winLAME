@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -49,8 +49,32 @@ namespace Encoder
       {
       }
 
-      /// assignment operator
+      /// move ctor
+      EncoderState(const EncoderState&& otherState) noexcept
+         :m_running((bool)otherState.m_running),
+         m_paused((bool)otherState.m_paused),
+         m_finished((bool)otherState.m_finished),
+         m_percent((float)otherState.m_percent),
+         m_encodingDescription(otherState.m_encodingDescription),
+         m_errorCode((int)otherState.m_errorCode)
+      {
+      }
+
+      /// assignment copy operator
       EncoderState& operator=(const EncoderState& otherState)
+      {
+         m_running = (bool)otherState.m_running;
+         m_paused = (bool)otherState.m_paused;
+         m_finished = (bool)otherState.m_finished;
+         m_percent = (float)otherState.m_percent;
+         m_encodingDescription = otherState.m_encodingDescription;
+         m_errorCode = (int)otherState.m_errorCode;
+
+         return *this;
+      }
+
+      /// assignment move operator
+      EncoderState& operator=(const EncoderState&& otherState) noexcept
       {
          m_running = (bool)otherState.m_running;
          m_paused = (bool)otherState.m_paused;
