@@ -72,7 +72,7 @@ UISettings::UISettings()
    m_iLastSelectedPresetIndex(1), // first preset is the "best practice" preset
    last_page_was_cdrip_page(false),
    cdrip_temp_folder(Path::TempFolder()),
-   freedb_server(_T("freedb.freedb.org")),
+   freedb_server(_T("gnudb.gnudb.org")),
    store_disc_infos_cdplayer_ini(true),
    cdrip_format_various_track(_T("%track% - %album% - %artist% - %title%")),
    cdrip_format_album_track(_T("%track% - %albumartist% - %album% - %title%")),

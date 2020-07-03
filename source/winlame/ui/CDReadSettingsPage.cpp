@@ -41,7 +41,7 @@ LRESULT CDReadSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARA
       CString randomServer;
       randomServer.LoadString(IDS_CDRIP_RANDOM_FREEDB_SERVER);
 
-      m_comboFreedbServer.AddString(_T("freedb.freedb.org (") + randomServer + _T(")"));
+      m_comboFreedbServer.AddString(_T("gnudb.gnudb.org (") + randomServer + _T(")"));
       m_comboFreedbServer.SelectString(-1, m_settings.freedb_server);
    }
 
