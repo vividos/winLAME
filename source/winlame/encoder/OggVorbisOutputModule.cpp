@@ -38,6 +38,7 @@ extern bool GetRandomNumber(int& randomNumber);
 
 // link to libvorbis.dll
 #pragma comment(lib, "libvorbis.lib")
+#pragma comment(lib, "libvorbisfile.lib")
 
 // channel remap stuff
 const int MAX_CHANNELS = 6; ///< make this higher to support files with more channels
