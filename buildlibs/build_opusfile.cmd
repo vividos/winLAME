@@ -1,7 +1,7 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2019 Michael Fink
+REM Copyright (c) 2000-2020 Michael Fink
 REM
 REM Downloads opusfile and compiles it
 REM
@@ -11,7 +11,7 @@ cmd /c "build_ogg.cmd"
 cmd /c "build_opus.cmd"
 
 REM set this to the filename of the file to download
-set PREFIX=opusfile-0.11
+set PREFIX=opusfile-0.12
 
 REM set this to your Visual Studio installation folder
 set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
