@@ -88,6 +88,9 @@ buildlibs/faad2-2_9_1.zip
 buildlibs/faac-1_30.zip
 buildlibs/libvorbis-1.3.7/
 buildlibs/libvorbis-*.tar.gz
+buildlibs/lame-*.tar.gz
+buildlibs/lame-*/
+buildlibs/mpg123-x86.zip
 buildlibs/include/
 buildlibs/lib/
 /buildtools/OpenCppCoverage/OpenCppCoverage/
