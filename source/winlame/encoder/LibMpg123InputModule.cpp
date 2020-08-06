@@ -35,7 +35,7 @@ static std::once_flag s_libmpg123init;
 #pragma comment(lib, "libmpg123-0.lib")
 
 LibMpg123InputModule::LibMpg123InputModule()
-:m_isAtEndOfFile(false)
+   :m_isAtEndOfFile(false)
 {
    std::call_once(s_libmpg123init, []() { mpg123_init(); });
 
@@ -95,12 +95,10 @@ CString LibMpg123InputModule::GetDescription() const
 
       if (frameInfo.mode_ext & (MPG123_M_EXT_I_STERERO | MPG123_M_EXT_MS_STEREO))
          stereo = _T("Joint Stereo (Mixed)");
-      else
-         if (frameInfo.mode_ext & MPG123_M_EXT_I_STERERO)
-            stereo = _T("Joint Stereo (Intensity)");
-         else
-            if (frameInfo.mode_ext & MPG123_M_EXT_MS_STEREO)
-               stereo = _T("Joint Stereo (Mid/Side)");
+      else if (frameInfo.mode_ext & MPG123_M_EXT_I_STERERO)
+         stereo = _T("Joint Stereo (Intensity)");
+      else if (frameInfo.mode_ext & MPG123_M_EXT_MS_STEREO)
+         stereo = _T("Joint Stereo (Mid/Side)");
    }
 
    desc.Format(IDS_FORMAT_INFO_MPG123_INPUT,
