@@ -268,7 +268,9 @@ static ssize_t ReadFromFile(void* handle, void* buffer, size_t size)
 
 static off_t SeekInFile(void* handle, off_t offset, int direction)
 {
-   return fseek((FILE*)handle, offset, direction);
+   if (fseek((FILE*)handle, offset, direction) != 0)
+      return (off_t)-1;
+   return ftell((FILE*)handle);
 }
 
 static void CleanupFile(void* handle)
