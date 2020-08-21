@@ -36,9 +36,6 @@ pushd %PREFIX%\vc_solution\
 move mpg123-1.26.3-x86 mpg123
 popd
 
-REM copy additional files
-xcopy /s lame-msvc\*.* %PREFIX%\
-
 REM set up Visual Studio
 call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
 
