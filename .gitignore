@@ -97,3 +97,4 @@ buildlibs/lib/
 /source/winlame-coverage-SonarQube.xml
 CoverageReport/
 /winlame-coverage.xml
+/buildlibs/lame-svn-*.zip
