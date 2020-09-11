@@ -142,8 +142,8 @@
       </Component>
 
       <Component Id="SndFileLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibSndFileDll" Name="libsndfile-1.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libsndfile-1.dll" />
+        <File Id="SndFileDll" Name="sndfile.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.SolutionDir)source\libraries\sndfile.dll" />
       </Component>
 
       <Component Id="ReadmeFiles" Guid="5224ddc3-9b66-4277-9fae-7f0f296e2e28" Directory="INSTALLDIR">

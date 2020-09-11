@@ -7,7 +7,6 @@ winLAME 2020 release 1, bug fixes:
 
 winLAME 2020 release 1, nice-to-have:
 - fix remaining SonarQube bugs and vulnerabilities
-- update to libsndfile-1.0.29 for fixed FLAC support, once released
 - save all settings on custom module settings pages
 - encoding of whole directory structure to another folder
 - let user select an output format, not a plugin; plugins can define one or

@@ -214,6 +214,8 @@ enum
 
 	SFC_SET_VBR_ENCODING_QUALITY	= 0x1300,
 	SFC_SET_COMPRESSION_LEVEL		= 0x1301,
+    SFC_SET_OGG_PAGE_LATENCY_MS     = 0x1302,
+    SFC_SET_OGG_PAGE_LATENCY        = 0x1303,
 
 	/* Cart Chunk support */
 	SFC_SET_CART_INFO				= 0x1400,
@@ -502,7 +504,12 @@ typedef struct
 				uint32_t	time_reference_high ; \
 				short		version ; \
 				char		umid [64] ; \
-				char		reserved [190] ; \
+				int16_t	loudness_value ; \
+				int16_t	loudness_range ; \
+				int16_t	max_true_peak_level ; \
+				int16_t	max_momentary_loudness ; \
+				int16_t	max_shortterm_loudness ; \
+				char		reserved [180] ; \
 				uint32_t	coding_history_size ; \
 				char		coding_history [coding_hist_size] ; \
 			}
@@ -620,7 +627,9 @@ int		sf_perror		(SNDFILE *sndfile) ;
 int		sf_error_str	(SNDFILE *sndfile, char* str, size_t len) ;
 
 
-/* Return TRUE if fields of the SF_INFO struct are a valid combination of values. */
+/* Allow the caller to retrieve information from or change aspects of the
+** library behaviour.
+*/
 
 int		sf_command	(SNDFILE *sndfile, int command, void *data, int datasize) ;
 
@@ -864,4 +873,3 @@ sf_get_chunk_data (const SF_CHUNK_ITERATOR * it, SF_CHUNK_INFO * chunk_info) ;
 #endif	/* __cplusplus */
 
 #endif	/* SNDFILE_H */
-

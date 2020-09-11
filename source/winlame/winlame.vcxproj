@@ -52,9 +52,9 @@
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;version.lib;nlame.lib;libsndfile-1.lib;libfaac_dll.lib;libfaad2_dll.lib;bass.lib;basswma.lib;basscd.lib;libFLAC_dynamic.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;version.lib;nlame.lib;sndfile.lib;libfaac_dll.lib;libfaad2_dll.lib;bass.lib;basswma.lib;basscd.lib;libFLAC_dynamic.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <DelayLoadDLLs>libfaad2_dll.dll;libfaac_dll.dll;bass.dll;basscd.dll;basswma.dll;libflac_dynamic.dll;libsndfile-1.dll;libmp3lame.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>libfaad2_dll.dll;libfaac_dll.dll;bass.dll;basscd.dll;basswma.dll;libflac_dynamic.dll;sndfile.dll;libmp3lame.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
@@ -64,9 +64,9 @@
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;version.lib;nlame.lib;libsndfile-1.lib;libfaac_dll.lib;libfaad2_dll.lib;bass.lib;basswma.lib;basscd.lib;libFLAC_dynamic.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;version.lib;nlame.lib;sndfile.lib;libfaac_dll.lib;libfaad2_dll.lib;bass.lib;basswma.lib;basscd.lib;libFLAC_dynamic.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <DelayLoadDLLs>libfaad2_dll.dll;libfaac_dll.dll;bass.dll;basscd.dll;basswma.dll;libflac_dynamic.dll;libsndfile-1.dll;libmp3lame.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>libfaad2_dll.dll;libfaac_dll.dll;bass.dll;basscd.dll;basswma.dll;libflac_dynamic.dll;sndfile.dll;libmp3lame.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <IgnoreSpecificDefaultLibraries>msvcrt</IgnoreSpecificDefaultLibraries>
       <AdditionalOptions>/IGNORE:4075 %(AdditionalOptions)</AdditionalOptions>
     </Link>
