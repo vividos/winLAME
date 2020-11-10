@@ -55,6 +55,8 @@ AacInputModule::AacInputModule()
 {
    m_moduleId = ID_IM_AAC;
 
+   std::uninitialized_fill(std::begin(m_inputBuffer), std::end(m_inputBuffer), (unsigned char)0);
+
    memset(&m_info, 0, sizeof(m_info));
 }
 

@@ -35,7 +35,8 @@ static std::once_flag s_libmpg123init;
 #pragma comment(lib, "libmpg123-0.lib")
 
 LibMpg123InputModule::LibMpg123InputModule()
-   :m_isAtEndOfFile(false)
+:m_isAtEndOfFile(false),
+m_fileSize(0L)
 {
    std::call_once(s_libmpg123init, []() { mpg123_init(); });
 
