@@ -214,8 +214,8 @@ enum
 
 	SFC_SET_VBR_ENCODING_QUALITY	= 0x1300,
 	SFC_SET_COMPRESSION_LEVEL		= 0x1301,
-    SFC_SET_OGG_PAGE_LATENCY_MS     = 0x1302,
-    SFC_SET_OGG_PAGE_LATENCY        = 0x1303,
+	SFC_SET_OGG_PAGE_LATENCY_MS		= 0x1302,
+	SFC_SET_OGG_PAGE_LATENCY		= 0x1303,
 
 	/* Cart Chunk support */
 	SFC_SET_CART_INFO				= 0x1400,
@@ -345,11 +345,8 @@ typedef	struct SNDFILE_tag	SNDFILE ;
 ** and the Microsoft compiler.
 */
 
-#if (defined (_MSCVER) || defined (_MSC_VER) && (_MSC_VER < 1310))
-typedef __int64		sf_count_t ;
-#define SF_COUNT_MAX		0x7fffffffffffffffi64
-#else
 typedef __int64	sf_count_t ;
+#ifndef SF_COUNT_MAX
 #define SF_COUNT_MAX		0x7FFFFFFFFFFFFFFFLL
 #endif
 
