@@ -16,4 +16,3 @@ winLAME 2020 release 1, nice-to-have:
 - new icons based on VS Image Gallery
 - Opus option to use .ogg extension
 - write more test cases
-- update FLAC picture reading via TagLib
