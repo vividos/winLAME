@@ -83,7 +83,7 @@ namespace Encoder
       static TagLib::ID3v2::Tag* FindId3v2Tag(std::shared_ptr<TagLib::File> spFile);
 
       /// finds Ogg comment tag in given file, if available
-      static TagLib::Ogg::XiphComment* AudioFileTag::FindOggXiphCommentTag(std::shared_ptr<TagLib::File> spFile);
+      static TagLib::Ogg::XiphComment* FindOggXiphCommentTag(std::shared_ptr<TagLib::File> spFile);
 
       /// reads all track infos from tag
       void ReadTrackInfoFromTag(TagLib::Tag* tag);
