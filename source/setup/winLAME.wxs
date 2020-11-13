@@ -51,7 +51,9 @@
     <Media Id="1" Cabinet="winLAME.cab" EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Merge Id="Msvcrt142Msm" Language="0" SourceFile=".\Microsoft_VC142_CRT_x86.msm" DiskId="1" />
+      <Merge Id="Msvcrt142Msm" Language="0"
+             SourceFile="$(env.ProgramFiles(x86))\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\v142\MergeModules\Microsoft_VC142_CRT_x86.msm"
+             DiskId="1" />
       <Directory Id="ProgramFilesFolder">
         <Directory Id="WinLame" Name="winLAME">
           <Directory Id="INSTALLDIR" Name="." />
