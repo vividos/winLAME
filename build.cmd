@@ -15,9 +15,9 @@ REM -{ config end }------------------------------
 REM set up build environment
 call "%MSVC_PATH%\Common7\Tools\VsDevCmd.bat"
 
-cd source\libraries
+pushd source\libraries
 call CopyLibraries.cmd Release
-cd ..\..
+popd
 
 REM restore NuGet packages
 buildtools\nuget restore winlame.sln
