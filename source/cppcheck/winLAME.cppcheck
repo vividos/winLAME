@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="1">
-    <root name="D:/Projekte/winLAME/winLAME/source"/>
+    <root name="C:/Projekte/winLAME/source"/>
+    <platform>win32A</platform>
+    <importproject>../../winlame.sln</importproject>
+    <analyze-all-vs-configs>false</analyze-all-vs-configs>
+    <check-headers>true</check-headers>
+    <check-unused-templates>true</check-unused-templates>
+    <max-ctu-depth>2</max-ctu-depth>
+    <max-template-recursion>100</max-template-recursion>
     <defines>
         <define name="WIN32"/>
         <define name="_WINDOWS"/>
@@ -8,13 +15,18 @@
         <define name="NDEBUG"/>
         <define name="_MSC_VER=1900"/>
     </defines>
+    <vs-configurations>
+        <config>Release</config>
+    </vs-configurations>
     <paths>
         <dir name="winlame"/>
     </paths>
     <exclude>
-        <path name="libraries"/>
+        <path name="../libraries/"/>
     </exclude>
     <libraries>
+        <library>boost</library>
+        <library>microsoft_atl</library>
         <library>windows</library>
     </libraries>
 </project>
