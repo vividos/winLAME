@@ -44,6 +44,10 @@ rmdir .\bw-output /s /q 2> nul
 
 msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Clean
 
+pushd libraries
+call CopyLibraries.cmd Release
+popd
+
 SonarScanner.MSBuild.exe begin ^
     /k:"winLAME" ^
     /v:"2.20.0.0" ^
@@ -55,6 +59,11 @@ SonarScanner.MSBuild.exe begin ^
     /d:"sonar.login=%SONARLOGIN%" ^
     /d:sonar.cs.vstest.reportsPaths="%CD%\source\TestResults\*.trx"
 if errorlevel 1 goto end
+
+REM
+REM Restore NuGet packages
+REM
+buildtools\nuget restore winlame.sln
 
 REM
 REM Rebuild Release|Win32
