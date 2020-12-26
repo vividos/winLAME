@@ -100,3 +100,4 @@ buildlibs/lib/
 CoverageReport/
 /winlame-coverage.xml
 /buildlibs/lame-svn-*.zip
+/.sonar-cache/
