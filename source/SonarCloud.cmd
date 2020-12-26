@@ -44,7 +44,7 @@ rmdir .\bw-output /s /q 2> nul
 
 msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Clean
 
-pushd libraries
+pushd source\libraries
 call CopyLibraries.cmd Release
 popd
 
