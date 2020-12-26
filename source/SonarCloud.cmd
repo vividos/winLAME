@@ -50,7 +50,7 @@ popd
 
 SonarScanner.MSBuild.exe begin ^
     /k:"winLAME" ^
-    /v:"2.20.0.0" ^
+    /v:"2.20.1.0" ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
     /d:"sonar.coverageReportPaths=%CD%\source\winlame-coverage.xml" ^
     /d:"sonar.host.url=https://sonarcloud.io" ^
