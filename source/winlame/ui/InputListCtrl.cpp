@@ -450,6 +450,9 @@ void InputListCtrl::MoveItem(int moveTo)
 
    // create copy of entry
    DWORD_PTR dwData = GetItemData(lvi.iItem);
+   if (dwData == 0)
+      return;
+
    AudioFileEntry* pNewEntry = new AudioFileEntry(
       *reinterpret_cast<AudioFileEntry*>(dwData));
 
