@@ -38,6 +38,11 @@ namespace Encoder
       {
       }
 
+      /// dtor
+      ~EncoderState() noexcept
+      {
+      }
+
       /// copy ctor
       EncoderState(const EncoderState& otherState)
          :m_running((bool)otherState.m_running),

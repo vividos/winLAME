@@ -37,7 +37,7 @@ AudioFileInfoManager::~AudioFileInfoManager()
    {
       Stop();
    }
-   catch (...)
+   catch (...) // NOSONAR
    {
       // ignore errors when stopping
    }

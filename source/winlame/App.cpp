@@ -125,7 +125,7 @@ App::~App()
    {
       m_settings.StoreSettings();
    }
-   catch (...)
+   catch (...) // NOSONAR
    {
       // ignore errors when storing settings
    }
