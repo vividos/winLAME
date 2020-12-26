@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,14 +29,27 @@
 namespace Encoder
 {
    /// module base class
-   class ModuleBase : public boost::noncopyable
+   class ModuleBase
    {
    public:
+      /// ctor
+      ModuleBase()
+         :m_moduleId(-1),
+         m_channels(0),
+         m_samplerate(0)
+      {
+      }
+
       /// dtor
       virtual ~ModuleBase()
       {
          m_moduleId = 0;
       }
+
+      /// deleted copy ctor
+      ModuleBase(const ModuleBase&) = delete;
+      /// deleted copy assignment operator
+      ModuleBase& operator=(const ModuleBase&) = delete;
 
       /// returns the module name
       virtual CString GetModuleName() const = 0;
@@ -51,13 +64,23 @@ namespace Encoder
       int GetModuleID() const { return m_moduleId; }
 
       /// returns description of current file
-      virtual CString GetDescription() const { return CString(); }
+      virtual CString GetDescription() const
+      {
+         return CString();
+      }
 
       /// returns version string; value in special may denote special type of string
-      virtual void GetVersionString(CString& version, int special = 0) const { version.Empty(); UNUSED(special); }
+      virtual void GetVersionString(CString& version, int special = 0) const
+      {
+         UNUSED(special);
+         version.Empty();
+      }
 
       /// resolves possibly encoded filenames
-      virtual void ResolveRealFilename(CString& filename) { UNUSED(filename); }
+      virtual void ResolveRealFilename(CString& filename)
+      {
+         UNUSED(filename);
+      }
 
    protected:
       /// module id
