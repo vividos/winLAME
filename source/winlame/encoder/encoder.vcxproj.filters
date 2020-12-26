@@ -97,6 +97,9 @@
     <ClCompile Include="WaveMp3Header.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ChannelRemapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aacinfo\aacinfo.h">
@@ -222,6 +225,7 @@
     <ClInclude Include="WaveMp3Header.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ChannelRemapper.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

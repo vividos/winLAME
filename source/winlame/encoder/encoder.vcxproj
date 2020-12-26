@@ -79,6 +79,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AudioFileTag.hpp" />
+    <ClInclude Include="ChannelRemapper.hpp" />
     <ClInclude Include="EncoderInterface.hpp" />
     <ClInclude Include="LibMpg123InputModule.hpp" />
     <ClInclude Include="SettingsManager.hpp" />
@@ -127,6 +128,7 @@
     <ClCompile Include="BassInputModule.cpp" />
     <ClCompile Include="BassWmaOutputModule.cpp" />
     <ClCompile Include="CDExtractTask.cpp" />
+    <ClCompile Include="ChannelRemapper.cpp" />
     <ClCompile Include="CreatePlaylistTask.cpp" />
     <ClCompile Include="EncoderImpl.cpp" />
     <ClCompile Include="EncoderTask.cpp" />

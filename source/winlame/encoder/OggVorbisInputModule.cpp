@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -27,6 +27,7 @@
 #include "vorbis/vorbisfile.h"
 #include <ulib/UTF8.hpp>
 #include <opus/opusfile.h>
+#include "ChannelRemapper.hpp"
 
 using Encoder::OggVorbisInputModule;
 using Encoder::TrackInfo;
@@ -34,25 +35,8 @@ using Encoder::SampleContainer;
 
 extern CString GetOggVorbisVersionString();
 
-// constants
-
-// channel remap stuff
-
-const int MAX_CHANNELS = 6; ///< make this higher to support files with more channels
-
-/// channel remapping map
-const int chmap[MAX_CHANNELS][MAX_CHANNELS] =
-{
-   { 0, },               // mono
-   { 0, 1, },            // l, r
-   { 0, 2, 1, },         // l, c, r -> l, r, c
-   { 0, 1, 2, 3, },      // l, r, bl, br
-   { 0, 2, 1, 3, 4, },   // l, c, r, bl, br -> l, r, c, bl, br
-   { 0, 2, 1, 5, 3, 4 }  // l, c, r, bl, br, lfe -> l, r, c, lfe, bl, br
-};
-
 /// ogg vorbis input buffer size
-const int c_oggInputBufferSize = 512 * MAX_CHANNELS; // must be a multiple of max channels
+const int c_oggInputBufferSize = 512 * 6; // must be a multiple of max channels
 
 static size_t ReadDataSource(void* buffer, size_t size, size_t count, void* dataSource)
 {
@@ -233,17 +217,8 @@ int OggVorbisInputModule::DecodeSamples(SampleContainer& samples)
    if (m_channels > 2 && ret > 0)
    {
       outputBuffer = tempBuffer;
-      for (int i = 0; i < ret; i++)
-         for (int j = 0; j < std::min(m_channels, MAX_CHANNELS); j++)
-            outputBuffer[i*m_channels + j] = buffer[i*m_channels + (chmap[m_channels - 1][j])];
-
-      // copy the remaining channels
-      if (m_channels > MAX_CHANNELS)
-      {
-         for (int i = 0; i < ret; i++)
-            for (int j = MAX_CHANNELS; j < m_channels; j++)
-               outputBuffer[i*m_channels + j] = buffer[i*m_channels + j];
-      }
+      ChannelRemapper::RemapInterleaved(T_enChannelMapType::oggVorbisInputChannelMap,
+         buffer, ret, m_channels, outputBuffer);
    }
    else
       outputBuffer = buffer;

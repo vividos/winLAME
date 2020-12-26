@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -29,6 +29,7 @@
 #include <ctime>
 #include <cmath>
 #include <ulib/UTF8.hpp>
+#include "ChannelRemapper.hpp"
 
 using Encoder::OggVorbisOutputModule;
 using Encoder::TrackInfo;
@@ -39,19 +40,6 @@ extern bool GetRandomNumber(int& randomNumber);
 // link to libvorbis.dll
 #pragma comment(lib, "libvorbis.lib")
 #pragma comment(lib, "libvorbisfile.lib")
-
-// channel remap stuff
-const int MAX_CHANNELS = 6; ///< make this higher to support files with more channels
-
-/// channel remapping map
-const int chmap[MAX_CHANNELS][MAX_CHANNELS] = {
-   { 0, },               // mono
-   { 0, 1, },            // l, r
-   { 0, 2, 1, },         // l, r, c -> l, c, r
-   { 0, 1, 2, 3, },      // l, r, bl, br
-   { 0, 2, 1, 3, 4, },   // l, r, c, bl, br -> l, c, r, bl, br
-   { 0, 2, 1, 4, 5, 3 }  // l, r, c, lfe, bl, br -> l, c, r, bl, br, lfe
-};
 
 OggVorbisOutputModule::OggVorbisOutputModule()
    :m_bitrateMode(0),
@@ -435,23 +423,12 @@ int OggVorbisOutputModule::EncodeSamples(SampleContainer& samples)
       // copy samples to analysis buffer
       if (m_channels > 2)
       {
-         // channel remap
-         for (int ch = 0; ch < std::min(m_channels, MAX_CHANNELS); ch++)
-            for (int i = 0; i < numSamples; i++)
-               sampleBuffer[ch][i] = float(buffer[chmap[m_channels - 1][ch]][i]) / 32768.f;
-
-         if (m_channels > MAX_CHANNELS)
-         {
-            for (int ch = MAX_CHANNELS; ch < m_channels; ch++)
-               for (int i = 0; i < numSamples; i++)
-                  sampleBuffer[ch][i] = float(buffer[ch][i]) / 32768.f;
-         }
+         ChannelRemapper::RemapArrayToFloat(T_enChannelMapType::oggVorbisOutputChannelMap,
+            buffer, numSamples, m_channels, sampleBuffer);
       }
       else
       {
-         for (int ch = 0; ch < m_channels; ch++)
-            for (int i = 0; i < numSamples; i++)
-               sampleBuffer[ch][i] = float(buffer[ch][i]) / 32768.f;
+         ChannelRemapper::ConvertSamplesToFloat(buffer, numSamples, m_channels, sampleBuffer);
       }
    }
 

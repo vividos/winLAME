@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -28,24 +28,11 @@
 #include <sys/stat.h>
 #include <ulib/DynamicLibrary.hpp>
 #include "AudioFileTag.hpp"
+#include "ChannelRemapper.hpp"
 
 using Encoder::AacInputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
-
-// channel remap stuff
-
-const int MAX_CHANNELS = 6; ///< make this higher to support files with more channels
-
-/// channel remapping map
-const int chmap[MAX_CHANNELS][MAX_CHANNELS] = {
-   { 0, },               // mono
-   { 0, 1, },            // l, r
-   { 1, 2, 0, },         // c, l, r -> l, r, c
-   { 1, 2, 0, 3, },      // c, l, r, bc -> l, r, c, bc
-   { 1, 2, 0, 3, 4, },   // c, l, r, bl, br -> l, r, c, bl, br
-   { 1, 2, 0, 5, 3, 4 }  // c, l, r, bl, br, lfe -> l, r, c, lfe, bl, br
-};
 
 AacInputModule::AacInputModule()
    :m_decoder(nullptr),
@@ -300,17 +287,8 @@ int AacInputModule::DecodeSamples(SampleContainer& samples)
    if (frameInfo.channels > 2)
    {
       outputBuffer = tempBuffer;
-      for (int i = 0; i < numSamples; i++)
-         for (int j = 0; j < std::min(static_cast<int>(frameInfo.channels), MAX_CHANNELS); j++)
-            outputBuffer[i * frameInfo.channels + j] = sampleBuffer[i * frameInfo.channels + (chmap[frameInfo.channels - 1][j])];
-
-      // copy the remaining channels
-      if (frameInfo.channels > MAX_CHANNELS)
-      {
-         for (int i = 0; i < numSamples; i++)
-            for (int j = MAX_CHANNELS; j < frameInfo.channels; j++)
-               outputBuffer[i * frameInfo.channels + j] = sampleBuffer[i * frameInfo.channels + j];
-      }
+      ChannelRemapper::RemapInterleaved(T_enChannelMapType::aacInputChannelMap,
+         sampleBuffer, numSamples, frameInfo.channels, outputBuffer);
    }
    else
       outputBuffer = sampleBuffer;

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2020 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -26,24 +26,11 @@
 #include "AacOutputModule.hpp"
 #include "neaacdec.h"
 #include <ulib/DynamicLibrary.hpp>
+#include "ChannelRemapper.hpp"
 
 using Encoder::AacOutputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
-
-// channel remap stuff
-
-const int MAX_CHANNELS = 6; ///< make this higher to support files with more channels
-
-/// channel remapping map
-const int chmap[MAX_CHANNELS][MAX_CHANNELS] = {
-   { 0, },               // mono
-   { 0, 1, },            // l, r
-   { 2, 0, 1, },         // l, r, c -> c, l, r
-   { 2, 0, 1, 3, },      // l, r, c, bc -> c, l, r, bc
-   { 2, 0, 1, 3, 4, },   // l, r, c, bl, br -> c, l, r, bl, br
-   { 2, 0, 1, 4, 5, 3 }  // l, r, c, lfe, bl, br -> c, l, r, bl, br, lfe
-};
 
 // AacOutputModule methods
 
@@ -166,8 +153,9 @@ int AacOutputModule::InitOutput(LPCTSTR outfilename,
    }
 
    // channel remap
-   for (int i = 0; i < std::min(m_channels, MAX_CHANNELS); i++)
-      config->channel_map[i] = chmap[m_channels - 1][i];
+   for (size_t channelIndex = 0; channelIndex < std::min<size_t>(m_channels, ChannelRemapper::GetMaxMappedChannel()); channelIndex++)
+      config->channel_map[channelIndex] = (int)ChannelRemapper::GetMappedChannel(
+         T_enChannelMapType::aacOutputChannelMap, m_channels, channelIndex);
 
    // set new config
    faacEncSetConfiguration(m_handle, config);
