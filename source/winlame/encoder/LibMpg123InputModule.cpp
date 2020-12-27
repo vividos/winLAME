@@ -220,10 +220,12 @@ int LibMpg123InputModule::DecodeSamples(SampleContainer& samples)
 float LibMpg123InputModule::PercentDone() const
 {
    if (m_decoder == nullptr ||
+      m_inputFile == nullptr ||
       m_fileSize == 0)
       return 0.0f;
 
-   if (m_isAtEndOfFile)
+   if (feof(m_inputFile.get()) ||
+      m_isAtEndOfFile)
       return 100.0f;
 
    long pos = ftell(m_inputFile.get());
@@ -233,6 +235,8 @@ float LibMpg123InputModule::PercentDone() const
 
 void LibMpg123InputModule::DoneInput()
 {
+   m_isAtEndOfFile = true;
+
    if (m_decoder != nullptr)
       mpg123_close(m_decoder.get());
 
@@ -276,7 +280,8 @@ static off_t SeekInFile(void* handle, off_t offset, int direction)
 
 static void CleanupFile(void* handle)
 {
-   fclose((FILE*)handle);
+   // don't fclose the handle here, since m_inputFile will do that for us
+   UNUSED(handle);
 }
 
 bool LibMpg123InputModule::OpenStream()
