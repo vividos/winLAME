@@ -180,6 +180,11 @@
            Source="$(var.SolutionDir)source\libraries\libvorbis.dll" />
       </Component>
 
+      <Component Id="OggVorbisFileLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="LibVorbisFileDll" Name="libvorbisfile.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.SolutionDir)source\libraries\libvorbisfile.dll" />
+      </Component>
+
       <Component Id="MonkeysAudioLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="MacDllDll" Name="MACDll.dll" DiskId="1" KeyPath="yes"
            Source="$(var.SolutionDir)source\libraries\MACDll.dll" />
