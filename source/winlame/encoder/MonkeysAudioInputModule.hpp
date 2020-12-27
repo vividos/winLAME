@@ -95,10 +95,10 @@ namespace Encoder
       void* m_handle;
 
       /// counts the samples already decoded
-      int m_numCurrentSamples;
+      int64_t m_numCurrentSamples;
 
       /// number of samples in file
-      int m_numTotalSamples;
+      int64_t m_numTotalSamples;
 
       /// last error occured
       CString m_lastError;

@@ -39,9 +39,13 @@ Global includes
     #include <tchar.h>
     #include <assert.h>
 #else
-    #include <unistd.h>
+    #ifndef _MSC_VER
+        #include <unistd.h>
+    #endif
     #include <time.h>
-    #include <sys/time.h>
+    #ifndef _MSC_VER
+        #include <sys/time.h>
+    #endif
     #include <sys/types.h>
     #include <sys/stat.h>
     #include <wchar.h>
@@ -53,9 +57,40 @@ Global includes
 #include "SmartPtr.h"
 
 /*****************************************************************************************
+Version
+*****************************************************************************************/
+#include "Version.h"
+
+// year in the copyright strings
+#define MAC_YEAR 2021
+
+// build the version string
+#define STRINGIZE2(s) #s
+#define STRINGIZE(s) STRINGIZE2(s)
+#define MAC_VER_FILE_VERSION_STR        STRINGIZE(MAC_VERSION_MAJOR) _T(".") STRINGIZE(MAC_VERSION_REVISION) 
+#define MAC_VER_FILE_VERSION_STR_NARROW STRINGIZE(MAC_VERSION_MAJOR) "." STRINGIZE(MAC_VERSION_REVISION) 
+#define MAC_VER_FILE_VERSION_STR_FULL    STRINGIZE(MAC_VERSION_MAJOR) _T(".") STRINGIZE(MAC_VERSION_REVISION) _T(".0.0")
+#define MAC_VER_FILE_VERSION_FULL_NO_DOT APE_VERSION_MAJOR APE_VERSION_REVISION
+
+#define MAC_FILE_VERSION_NUMBER                         3990
+#define MAC_VERSION_STRING                              MAC_VER_FILE_VERSION_STR
+#define MAC_VERSION_NUMBER                              MAC_VERSION_MAJOR MAC_VERSION_REVISION
+#define MAC_NAME                                        _T("Monkey's Audio ") MAC_VER_FILE_VERSION_STR
+#define PLUGIN_NAME                                     "Monkey's Audio Player " MAC_VER_FILE_VERSION_STR_NARROW
+#define MJ_PLUGIN_NAME                                  _T("APE Plugin (v") MAC_VER_FILE_VERSION_STR _T(")")
+#define MAC_RESOURCE_VERSION_COMMA                      MAC_VERSION_MAJOR, MAC_VERSION_REVISION, 0, 0
+#define MAC_RESOURCE_VERSION_STRING                     MAC_VER_FILE_VERSION_STR_FULL
+#define MAC_RESOURCE_COPYRIGHT                          "Copyright (c) 2000-" STRINGIZE(MAC_YEAR) " Matthew T. Ashland"
+#define CONSOLE_NAME                                    _T("--- Monkey's Audio Console Front End (v ") MAC_VER_FILE_VERSION_STR _T(") (c) Matthew T. Ashland ---\n")
+#define PLUGIN_ABOUT                                    _T("Monkey's Audio Player v") MAC_VER_FILE_VERSION_STR _T("\nCopyrighted (c) 2000-") STRINGIZE(MAC_YEAR) _T(" by Matthew T. Ashland")
+#define MAC_DLL_INTERFACE_VERSION_NUMBER                1000
+
+/*****************************************************************************************
 Global compiler settings (useful for porting)
 *****************************************************************************************/
-#pragma warning(disable: 4100)
+#ifdef _MSC_VER
+    #pragma warning(disable: 4100)
+#endif
 
 // assembly code (helps performance, but limits portability)
 #if !defined(PLATFORM_ARM) && !defined(PLATFORM_ANDROID)
@@ -65,7 +100,7 @@ Global compiler settings (useful for porting)
         #define ENABLE_SSE_ASSEMBLY
     #endif
     #ifdef _MSC_VER // doesn't compile in gcc
-        #ifndef PLATFORM_x64
+        #if defined(_M_IX86)
             #define ENABLE_MMX_ASSEMBLY
         #endif
     #endif
@@ -86,54 +121,25 @@ Global compiler settings (useful for porting)
 #define ENABLE_COMPRESSION_MODE_HIGH
 #define ENABLE_COMPRESSION_MODE_EXTRA_HIGH
 
-// 64 bit platform
-#ifdef PLATFORM_64BIT
-    #ifndef PLATFORM_x64
-        #define PLATFORM_x64
-    #endif
-#endif
-
-#if __x86_64__ || __aarch64__
-    #ifndef PLATFORM_x64
-        #define PLATFORM_x64
-    #endif
-#endif
-
 /*****************************************************************************************
 Global types
 *****************************************************************************************/
 namespace APE
 {
     // integer types
-#if defined(PLATFORM_x64)
-    typedef int64_t                                     int64; // native integer, can safely hold a pointer
-    typedef int32_t                                     int32;
-#else
-    typedef intptr_t                                    int32; // native integer, can safely hold a pointer
-    typedef int64_t                                     int64;
-#endif
-
-#if defined(PLATFORM_x64)
-// DO NOT CHANGE THE FOLLOWING 6 LINES! They are necessary for building Media Center 64 bit on non-windows platforms!
-    #ifndef PLATFORM_WINDOWS
-        typedef long long intn;
-        typedef unsigned long long uintn;
-    #else
-        typedef int64_t intn;
-        typedef uint64_t uintn;
-    #endif    
-#else
-    typedef int32_t intn;
-    typedef uint32_t uintn;
-#endif
-
     typedef uint64_t                                    uint64;
     typedef uint32_t                                    uint32;
     typedef uint16_t                                    uint16;
-    typedef int16_t                                     int16;
     typedef uint8_t                                     uint8;
-    typedef int8_t                                      int8;
     
+    typedef int64_t                                     int64;
+    typedef int32_t                                     int32;
+    typedef int16_t                                     int16;
+    typedef int8_t                                      int8;
+
+    typedef intptr_t                                    intn; // native integer, can safely hold a pointer
+    typedef uintptr_t                                   uintn;
+
     // string types
     typedef char                                        str_ansi;
     typedef unsigned char                               str_utf8;
@@ -144,6 +150,11 @@ namespace APE
 /*****************************************************************************************
 Global macros
 *****************************************************************************************/
+#define WAVE_FORMAT_PCM 1
+#define WAVE_FORMAT_IEEE_FLOAT 0x0003
+#define WAVE_FORMAT_EXTENSIBLE 0xFFFE
+#define APE_TRUNCATE ((size_t)-1)
+
 #if defined(PLATFORM_WINDOWS)
     #define IO_USE_WIN_FILE_IO
     #define IO_HEADER_FILE                              "WinFileIO.h"
@@ -174,13 +185,12 @@ Global macros
     #define PUMP_MESSAGE_LOOP
     #undef    ODS
     #define ODS                                         printf
-    #define TICK_COUNT_TYPE                             unsigned long long
-    #define TICK_COUNT_READ(VARIABLE)                   { struct timeval t; gettimeofday(&t, NULL); VARIABLE = t.tv_sec * 1000000LLU + t.tv_usec; }
     #define TICK_COUNT_FREQ                             1000000
     #undef    ASSERT
     #define ASSERT(e)
-    #define wcsncpy_s(A, B, COUNT) wcsncpy(A, B, COUNT)
+    #define wcsncpy_s(A, B, C, D) wcsncpy(A, C, D)
     #define wcscpy_s(A, B, C) wcscpy(A, C)
+    #define wcscat_s(A, B, C) wcscat(A, C)
     #define sprintf_s(A, B, C, D) sprintf(A, C, D)
     #define strcpy_s(A, B, C) strcpy(A, C)
     #define _tcscat_s(A, B, C) _tcscat(A, C)
@@ -209,34 +219,6 @@ namespace APE
 /*****************************************************************************************
 Global defines
 *****************************************************************************************/
-
-// major version number
-#define VERSION_MAJOR 5
-
-// build version number
-#define VERSION_REVISION 11
-
-// year in the copyright strings
-#define MAC_YEAR 2020
-
-// Build the version string
-#define STRINGIZE2(s) #s
-#define STRINGIZE(s) STRINGIZE2(s)
-#define VER_FILE_VERSION_STR        STRINGIZE(VERSION_MAJOR) _T(".") STRINGIZE(VERSION_REVISION) 
-#define VER_FILE_VERSION_STR_NARROW STRINGIZE(VERSION_MAJOR) "." STRINGIZE(VERSION_REVISION) 
-#define VER_FILE_VERSION_STR_FULL    STRINGIZE(VERSION_MAJOR) _T(".") STRINGIZE(VERSION_REVISION) _T(".0.0")
-
-#define MAC_FILE_VERSION_NUMBER                         3990
-#define MAC_VERSION_STRING                              VER_FILE_VERSION_STR
-#define MAC_NAME                                        _T("Monkey's Audio ") VER_FILE_VERSION_STR
-#define PLUGIN_NAME                                     "Monkey's Audio Player " VER_FILE_VERSION_STR_NARROW
-#define MJ_PLUGIN_NAME                                  _T("APE Plugin (v") VER_FILE_VERSION_STR _T(")")
-#define RESOURCE_VERSION_COMMA                          VERSION_MAJOR, VERSION_REVISION, 0, 0
-#define RESOURCE_VERSION_STRING                         VER_FILE_VERSION_STR_FULL
-#define RESOURCE_COPYRIGHT                              "Copyright (c) 2000-" STRINGIZE(MAC_YEAR) " Matthew T. Ashland"
-#define CONSOLE_NAME                                    _T("--- Monkey's Audio Console Front End (v ") VER_FILE_VERSION_STR _T(") (c) Matthew T. Ashland ---\n")
-#define PLUGIN_ABOUT                                    _T("Monkey's Audio Player v") VER_FILE_VERSION_STR _T("\nCopyrighted (c) 2000-") STRINGIZE(MAC_YEAR) _T(" by Matthew T. Ashland")
-#define MAC_DLL_INTERFACE_VERSION_NUMBER                1000
 #define ONE_MILLION                                     1000000
 #ifdef PLATFORM_WINDOWS
     #define APE_FILENAME_SLASH '\\'
@@ -324,7 +306,7 @@ Error Codes
 #define ERROR_INITIALIZING_UNMAC                        1011
 #define ERROR_INVALID_FUNCTION_PARAMETER                1012
 #define ERROR_UNSUPPORTED_FILE_TYPE                     1013
-#define ERROR_UPSUPPORTED_FILE_VERSION                  1014
+#define ERROR_UNSUPPORTED_FILE_VERSION                  1014
 
 // memory errors (2000's)
 #define ERROR_INSUFFICIENT_MEMORY                       2000
