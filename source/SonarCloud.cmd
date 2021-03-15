@@ -1,7 +1,7 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2020 Michael Fink
+REM Copyright (c) 2000-2021 Michael Fink
 REM
 REM Runs SonarCloud analysis build
 REM
@@ -50,7 +50,7 @@ popd
 
 SonarScanner.MSBuild.exe begin ^
     /k:"winLAME" ^
-    /v:"2.20.1.0" ^
+    /v:"2.21.0.0" ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
     /d:"sonar.coverageReportPaths=%CD%\source\winlame-coverage.xml" ^
     /d:"sonar.host.url=https://sonarcloud.io" ^
