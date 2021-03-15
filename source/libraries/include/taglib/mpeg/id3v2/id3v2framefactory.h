@@ -46,7 +46,7 @@ namespace TagLib {
      *
      * Reimplementing this factory is the key to adding support for frame types
      * not directly supported by TagLib to your application.  To do so you would
-     * subclass this factory reimplement createFrame().  Then by setting your
+     * subclass this factory and reimplement createFrame().  Then by setting your
      * factory to be the default factory in ID3v2::Tag constructor you can
      * implement behavior that will allow for new ID3v2::Frame subclasses (also
      * provided by you) to be used.
@@ -74,7 +74,7 @@ namespace TagLib {
        * \deprecated Please use the method below that accepts a ID3v2::Header
        * instance in new code.
        */
-      Frame *createFrame(const ByteVector &data, bool synchSafeInts) const;
+      TAGLIB_DEPRECATED Frame *createFrame(const ByteVector &data, bool synchSafeInts) const;
 
       /*!
        * Create a frame based on \a data.  \a version should indicate the ID3v2
@@ -84,14 +84,19 @@ namespace TagLib {
        * \deprecated Please use the method below that accepts a ID3v2::Header
        * instance in new code.
        */
-      Frame *createFrame(const ByteVector &data, unsigned int version = 4) const;
+      TAGLIB_DEPRECATED Frame *createFrame(const ByteVector &data, unsigned int version = 4) const;
 
+      /*!
+       * \deprecated
+       */
+      // BIC: remove
+      Frame *createFrame(const ByteVector &data, Header *tagHeader) const;
       /*!
        * Create a frame based on \a data.  \a tagHeader should be a valid
        * ID3v2::Header instance.
        */
       // BIC: make virtual
-      Frame *createFrame(const ByteVector &data, Header *tagHeader) const;
+      Frame *createFrame(const ByteVector &data, const Header *tagHeader) const;
 
       /*!
        * After a tag has been read, this tries to rebuild some of them

@@ -12,8 +12,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,11,1,0
- PRODUCTVERSION 1,11,1,0
+ FILEVERSION 1,12,0,0
+ PRODUCTVERSION 1,12,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -31,14 +31,14 @@ BEGIN
             VALUE "Comments", ""
             VALUE "CompanyName", ""
             VALUE "FileDescription", "TagLib Audio Meta-Data Library"
-            VALUE "FileVersion", "1.11.1"
+            VALUE "FileVersion", "1.12.0"
             VALUE "InternalName", "TagLib"
             VALUE "LegalCopyright", "Copyright © Scott Wheeler et al."
             VALUE "LegalTrademarks", ""
             VALUE "OriginalFilename", "taglib.dll"
             VALUE "PrivateBuild", ""
             VALUE "ProductName", "TagLib Audio Meta-Data Library"
-            VALUE "ProductVersion", "1.11.1"
+            VALUE "ProductVersion", "1.12.0"
             VALUE "SpecialBuild", ""
         END
     END

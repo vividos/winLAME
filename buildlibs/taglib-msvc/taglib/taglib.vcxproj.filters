@@ -309,9 +309,6 @@
     <ClCompile Include="toolkit\tzlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="toolkit\unicode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="trueaudio\trueaudiofile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
