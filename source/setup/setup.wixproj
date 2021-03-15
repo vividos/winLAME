@@ -25,6 +25,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="config.wxi" />
+    <Content Include="License.winLAME.rtf" />
+    <Content Include="readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="winLAME.wxs" />
