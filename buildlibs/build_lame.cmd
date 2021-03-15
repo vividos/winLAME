@@ -1,13 +1,13 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2020 Michael Fink
+REM Copyright (c) 2000-2021 Michael Fink
 REM
 REM Downloads LAME and compiles it
 REM
 
 REM set this to the filename of the file to download
-set PREFIX=lame-svn-r6471-trunk
+set PREFIX=lame-svn-r6505-trunk
 
 REM set this to your Visual Studio installation folder
 set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
@@ -22,7 +22,7 @@ rmdir /s /q %PREFIX%\
 "c:\Program Files\7-Zip\7z.exe" x %PREFIX%.zip
 
 REM also download mpg123
-set URL=https://mpg123.de/download/win32/1.26.3/mpg123-1.26.3-x86.zip
+set URL=https://mpg123.de/download/win32/1.26.4/mpg123-1.26.4-x86.zip
 
 if not exist mpg123-x86.zip powershell -Command "& {Invoke-WebRequest -Uri %URL% -Out mpg123-x86.zip}"
 
@@ -30,7 +30,8 @@ REM unzip
 rmdir /s /q %PREFIX%\lame\vc_solution\mpg123\ 2> nul
 pushd %PREFIX%\lame\vc_solution\
 "c:\Program Files\7-Zip\7z.exe" x ..\..\..\mpg123-x86.zip
-move mpg123-1.26.3-x86 mpg123
+mkdir mpg123
+move mpg123-1.26.4-x86 mpg123\Win32
 popd
 
 REM set up Visual Studio
@@ -45,8 +46,8 @@ msbuild vs2019_libmp3lame_dll.vcxproj /m /property:Configuration=Release /proper
 popd
 
 REM copy artifacts
-copy %PREFIX%\lame\output\Release\libmp3lame.dll ..\source\libraries\
-copy %PREFIX%\lame\output\Release\libmp3lame.lib ..\source\libraries\lib\
+copy %PREFIX%\lame\output\Win32\Release\libmp3lame.dll ..\source\libraries\
+copy %PREFIX%\lame\output\Win32\Release\libmp3lame.lib ..\source\libraries\lib\
 copy %PREFIX%\lame\include\*.h ..\source\libraries\include\lame\
 
 pause
