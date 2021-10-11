@@ -55,4 +55,6 @@ protected:
     unsigned int m_nSeekMethod;
 };
 
+CIO * CreateCIO();
+
 }

@@ -9,10 +9,10 @@ namespace APE
     #pragma warning(disable : 4284)
 #endif
 
-/*************************************************************************************************
+/**************************************************************************************************
 CSmartPtr - a simple smart pointer class that can automatically initialize and free memory
     note: (doesn't do garbage collection / reference counting because of the many pitfalls)
-*************************************************************************************************/
+**************************************************************************************************/
 template <class TYPE> class CSmartPtr
 {
 public:

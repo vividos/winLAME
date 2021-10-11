@@ -1,11 +1,19 @@
 #pragma once
 
-// major version number
-#define MAC_VERSION_MAJOR 5
+#ifdef WINAMP_VERSION
+!define VERSION "7.12"
+!define ALT_VER "7_12"
+#endif
 
-// build version number
-#define MAC_VERSION_REVISION 70
+/* build batch file */
+/*
+#ifdef APE_BATCH_FILE_VERSION
+Set _MA=712
+#endif
+*/
 
-// Inno setup
-#define INNO_VERSION 570
-#define INNO_NAME "5.70"
+/* major version number */
+#define MAC_VERSION_MAJOR 7
+
+/* build version number */
+#define MAC_VERSION_REVISION 12

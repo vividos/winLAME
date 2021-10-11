@@ -21,7 +21,10 @@ namespace APE
 {
 #undef __forceinline
 #define __forceinline inline
+
+#ifndef __stdcall
 #define __stdcall
+#endif
 
 #define NEAR
 #define FAR
@@ -36,6 +39,12 @@ typedef long                LRESULT;
 typedef wchar_t *           LPTSTR;
 typedef const wchar_t *     LPCTSTR;
 typedef wchar_t             TCHAR;
+typedef struct _GUID {
+    unsigned long  Data1;
+    unsigned short Data2;
+    unsigned short Data3;
+    unsigned char  Data4[8];
+} GUID;
 
 #undef ZeroMemory
 #define ZeroMemory(POINTER, BYTES) memset(POINTER, 0, BYTES);

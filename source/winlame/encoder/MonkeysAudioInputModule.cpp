@@ -180,10 +180,10 @@ namespace MonkeysAudio
       case ERROR_INSUFFICIENT_MEMORY:
          desc += _T("insufficient memory");
          break;
-      case ERROR_LOADINGAPE_DLL:
+      case ERROR_LOADING_APE_DLL:
          desc += _T("loading MAC.dll");
          break;
-      case ERROR_LOADINGAPE_INFO_DLL:
+      case ERROR_LOADING_APE_INFO_DLL:
          desc += _T("loading MACinfo.dll");
          break;
       case ERROR_LOADING_UNMAC_DLL:
@@ -373,7 +373,7 @@ int MonkeysAudioInputModule::DecodeSamples(SampleContainer& samples)
 {
    ATLASSERT(s_dll.IsAvail() && m_handle != nullptr);
 
-   unsigned char buffer[MonkeysAudio::c_macBufferSize];
+   unsigned char buffer[MonkeysAudio::c_macBufferSize] = {};
    APE::int64 numBlocksRetrieved = 0;
 
    // get data from file
