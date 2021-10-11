@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2018 Michael Fink
+// Copyright (c) 2018-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,17 +29,12 @@ using Encoder::LibMpg123InputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
-/// flag to initialize libmpg123 library only once
-static std::once_flag s_libmpg123init;
-
 #pragma comment(lib, "libmpg123-0.lib")
 
 LibMpg123InputModule::LibMpg123InputModule()
 :m_isAtEndOfFile(false),
 m_fileSize(0L)
 {
-   std::call_once(s_libmpg123init, []() { mpg123_init(); });
-
    m_moduleId = ID_IM_LIBMPG123;
 }
 
@@ -266,7 +261,7 @@ bool LibMpg123InputModule::GetFileSize()
    return true;
 }
 
-static ssize_t ReadFromFile(void* handle, void* buffer, size_t size)
+static mpg123_ssize_t ReadFromFile(void* handle, void* buffer, size_t size)
 {
    return fread(buffer, 1, size, (FILE*)handle);
 }
