@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -103,19 +103,19 @@ void InputListCtrl::SetItemAudioInfos(int iItem, int length, int bitrate, int sa
 
    if (samplerate != -1)
    {
-      buffer.Format(_T("%u Hz"), samplerate);
+      buffer.Format(_T("%u Hz"), unsigned(samplerate));
       SetItemText(iItem, 1, buffer);
    }
 
    if (bitrate != -1)
    {
-      buffer.Format(_T("%u kbps"), bitrate / 1000);
+      buffer.Format(_T("%u kbps"), unsigned(bitrate / 1000));
       SetItemText(iItem, 2, buffer);
    }
 
    if (length != -1)
    {
-      buffer.Format(_T("%u:%02u"), length / 60, length % 60);
+      buffer.Format(_T("%u:%02u"), unsigned(length / 60), unsigned(length % 60));
       SetItemText(iItem, 3, buffer);
    }
 }
@@ -438,8 +438,8 @@ void InputListCtrl::MoveItem(int moveTo)
       return;
 
    // get info of dragged item
-   TCHAR szLabel[MAX_PATH];
-   LV_ITEM lvi;
+   TCHAR szLabel[MAX_PATH] = {};
+   LV_ITEM lvi = {};
    lvi.mask = LVIF_TEXT | LVIF_IMAGE | LVIF_STATE | LVIF_PARAM;
    lvi.stateMask = LVIS_DROPHILITED | LVIS_FOCUSED | LVIS_SELECTED | LVIS_STATEIMAGEMASK;
    lvi.pszText = szLabel;

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -85,10 +85,10 @@ namespace Encoder
       virtual void StopEncode() override;
 
       /// creates output filename from input title (for reading CDs)
-      static CString GetOutputFilenameByInputTitle(const CString& outputPath, const CString& inputTitle, OutputModule& outputModule);
+      static CString GetOutputFilenameByInputTitle(const CString& outputPath, const CString& inputTitle, const OutputModule& outputModule);
 
       /// creates output filename from input filename
-      static CString GetOutputFilename(const CString& outputPath, const CString& inputFilename, OutputModule& outputModule);
+      static CString GetOutputFilename(const CString& outputPath, const CString& inputFilename, const OutputModule& outputModule);
 
       /// returns if input module with given id is lossy
       static bool IsLossyInputModule(int inputModuleId);
@@ -114,7 +114,7 @@ namespace Encoder
       void GenerateTempOutFilename(const CString& originalFilename, CString& tempFilename);
 
       /// inits output module; step 2 of 2; see PrepareOutputModule()
-      bool InitOutputModule(const CString& tempOutputFilename, TrackInfo& trackInfo);
+      bool InitOutputModule(const CString& tempOutputFilename, const TrackInfo& trackInfo);
 
       /// formats encoding description
       void FormatEncodingDescription();

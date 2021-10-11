@@ -27,6 +27,8 @@
     <libraries>
         <library>boost</library>
         <library>microsoft_atl</library>
+        <library>microsoft_sal</library>
+        <library>microsoft_unittest</library>
         <library>windows</library>
     </libraries>
 </project>

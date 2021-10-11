@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014 Michael Fink
+// Copyright (c) 2014-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -153,7 +153,7 @@ void InputFilesParser::ImportM3uPlaylist(LPCTSTR filename)
       // check if path is relative
       if (_tcschr(line.c_str(), ':') == NULL && _tcsncmp(line.c_str(), _T("\\\\"), 2) != 0)
       {
-         if (line.size()>0 && line.at(0) != '\\')
+         if (line.size() > 0 && line.at(0) != '\\')
          {
             // relative to playlist file
             line.insert(0, _T("\\"));
@@ -255,7 +255,7 @@ void InputFilesParser::ImportCueSheet(LPCTSTR filename)
       if (line.empty()) continue;
 
       // trim
-      while (line.at(0) == ' ' && line.size() != 0) line.erase(0, 1);
+      while (line.size() != 0 && line.at(0) == ' ') line.erase(0, 1);
       if (line.empty()) continue;
 
       // file entry?
@@ -263,7 +263,7 @@ void InputFilesParser::ImportCueSheet(LPCTSTR filename)
       {
          // trim
          line.erase(0, 5);
-         while (line.at(0) == ' ' && line.size() != 0) line.erase(0, 1);
+         while (line.size() != 0 && line.at(0) == ' ') line.erase(0, 1);
          if (line.empty()) continue;
 
          // determine endchar

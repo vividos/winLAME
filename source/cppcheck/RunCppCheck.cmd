@@ -1,6 +1,6 @@
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (C) 2016 Michael Fink
+REM Copyright (C) 2016-2021 Michael Fink
 REM
 REM runs CppCheck to check sourcecode
 REM
@@ -30,7 +30,11 @@ REM --template vs       Output format for warnings
 REM --check-config
 cppcheck.exe ..\winlame ^
    -DWIN32 -D_WINDOWS -DNDEBUG -D_UNICODE -D__cplusplus -D_MSC_VER=1900 ^
-   -D__ATLAPP_H__ -DNTDDI_WIN7=0x06010000 -DNTDDI_VERSION=0x06010000 ^
+   -DNTDDI_WIN7=0x06010000 -DNTDDI_VERSION=0x06010000 ^
+   -DDECLARE_WND_SUPERCLASS ^
+   -DDECLARE_FRAME_WND_CLASS ^
+   -DBEGIN_MSG_MAP ^
+   -DBEGIN_DDX_MAP ^
    -i ..\winlame\unittest\ ^
    --suppressions-list=cppcheck-suppress.txt ^
    --platform=win32W --language=c++ --std=c++11 %FORMAT% --enable=all ^

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2020 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -183,7 +183,7 @@ bool CDExtractTask::ExtractTrack(const CString& tempFilename)
    {
       DWORD availBytes = BASS_ChannelGetData(hStream, &vecBuffer[0], bufferSize * sizeof(vecBuffer[0]));
 
-      if (availBytes < 0)
+      if (availBytes == DWORD(-1))
          break; // channel ended or other error
 
       if (availBytes == 0)

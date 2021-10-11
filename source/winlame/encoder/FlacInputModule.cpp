@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -169,13 +169,12 @@ unsigned FLAC__pack_pcm_signed_little_endian(FLAC__byte* data, FLAC__int32* inpu
    unsigned wide_samples, unsigned numChannels, unsigned sourceBitsPerSample)
 {
    FLAC__byte* const start = data;
-   FLAC__int32 sample;
    unsigned samples = wide_samples * numChannels;
    const unsigned bytesPerSample = sourceBitsPerSample / 8;
 
    while (samples--)
    {
-      sample = *input++;
+      FLAC__int32 sample = *input++;
 
       switch (sourceBitsPerSample)
       {
@@ -418,7 +417,7 @@ void FlacInputModule::ReadTrackMetadata(LPCTSTR filename, TrackInfo& trackInfo)
          unsigned(-1));
    }
 
-   if (picture != nullptr)
+   if (ret && picture != nullptr)
    {
       const std::vector<unsigned char> binaryData(
          picture->data.picture.data,

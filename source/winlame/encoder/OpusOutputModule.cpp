@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2016-2018 Michael Fink
+// Copyright (c) 2016-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -393,7 +393,7 @@ bool OpusOutputModule::InitEncoder()
    if (m_inputSampleRate < 100 || m_inputSampleRate > 768000)
    {
       // Crazy rates excluded to avoid excessive memory usage for padding/resampling.
-      m_lastError.Format(_T("Error parsing input file: unsupported  sample rate: %ld Hz"), m_inputSampleRate);
+      m_lastError.Format(_T("Error parsing input file: unsupported  sample rate: %i Hz"), m_inputSampleRate);
       return false;
    }
 
@@ -549,7 +549,7 @@ long OpusOutputModule::ReadFloatSamples16(float* buffer, int samples)
 
    //ATLTRACE(_T("ReadFloatSamples16: Requesting %i samples, returning %i samples\n"), samples, numSamples / m_channels);
 
-   const int16_t scaleFactor = std::numeric_limits<int16_t>::max();
+   constexpr int16_t scaleFactor = std::numeric_limits<int16_t>::max();
 
    for (int i = 0; i < numSamples; i++)
    {
@@ -568,7 +568,7 @@ long OpusOutputModule::ReadFloatSamples32(float* buffer, int samples)
 
    //ATLTRACE(_T("ReadFloatSamples32: Requesting %i samples, returning %i samples\n"), samples, numSamples / m_channels);
 
-   const int32_t scaleFactor = std::numeric_limits<int32_t>::max();
+   constexpr int32_t scaleFactor = std::numeric_limits<int32_t>::max();
 
    for (int i = 0; i < numSamples; i++)
    {
@@ -761,7 +761,7 @@ static const float stupid_matrix[7][8][2] =
 
 bool OpusOutputModule::SetupDownmix(size_t inputNumChannels, size_t outputNumChannels)
 {
-   if (inputNumChannels <= outputNumChannels || outputNumChannels > 2 || inputNumChannels <= 0 || outputNumChannels <= 0)
+   if (inputNumChannels <= outputNumChannels || outputNumChannels > 2 || inputNumChannels == 0 || outputNumChannels == 0)
    {
       m_lastError = _T("Downmix must actually downmix and only knows mono/stereo out.");
       return false;

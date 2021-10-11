@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2020 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -257,7 +257,7 @@ int AacInputModule::DecodeSamples(SampleContainer& samples)
    // fill input buffer
    if (m_inputBufferHigh < c_aacInputBufferSize)
    {
-      m_inputFile.read(reinterpret_cast<char*>(m_inputBuffer + m_inputBufferHigh), c_aacInputBufferSize - m_inputBufferHigh);
+      m_inputFile.read(reinterpret_cast<char*>(m_inputBuffer + m_inputBufferHigh), std::streamsize(c_aacInputBufferSize) - m_inputBufferHigh);
       int read = static_cast<int>(m_inputFile.gcount());
 
       if (read == 0 && m_inputBufferHigh == 0)

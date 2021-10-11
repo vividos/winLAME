@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2020 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -318,7 +318,7 @@ bool EncoderImpl::PrepareOutputModule()
    return true;
 }
 
-CString EncoderImpl::GetOutputFilenameByInputTitle(const CString& outputPath, const CString& inputTitle, OutputModule& outputModule)
+CString EncoderImpl::GetOutputFilenameByInputTitle(const CString& outputPath, const CString& inputTitle, const OutputModule& outputModule)
 {
    CString outputFilename = Path::Combine(outputPath, inputTitle);
 
@@ -327,7 +327,7 @@ CString EncoderImpl::GetOutputFilenameByInputTitle(const CString& outputPath, co
    return outputFilename;
 }
 
-CString EncoderImpl::GetOutputFilename(const CString& outputPath, const CString& inputFilename, OutputModule& outputModule)
+CString EncoderImpl::GetOutputFilename(const CString& outputPath, const CString& inputFilename, const OutputModule& outputModule)
 {
    CString outputFilename = outputPath;
 
@@ -420,7 +420,7 @@ void EncoderImpl::GenerateTempOutFilename(const CString& originalFilename, CStri
       fclose(fd);
 }
 
-bool EncoderImpl::InitOutputModule(const CString& tempOutputFilename, TrackInfo& trackInfo)
+bool EncoderImpl::InitOutputModule(const CString& tempOutputFilename, const TrackInfo& trackInfo)
 {
    // init output module
    int res = m_outputModule->InitOutput(tempOutputFilename, *m_settingsManager,

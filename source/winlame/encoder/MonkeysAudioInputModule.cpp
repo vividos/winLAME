@@ -2,7 +2,7 @@
 // winLAME - a frontend for the LAME encoding engine
 // Copyright(c) 2004 Kjetil Haga
 // Copyright(c) 2004 DeXT
-// Copyright(c) 2007-2020 Michael Fink
+// Copyright(c) 2007-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -104,11 +104,11 @@ namespace MonkeysAudio
          ATLASSERT(IsAvail());
 
          int ret = -1;
-         proc_GetInterfaceCompatibility GetInterfaceCompatibility =
+         proc_GetInterfaceCompatibility fnGetInterfaceCompatibility =
             (proc_GetInterfaceCompatibility)GetProcAddress(m_module, "GetInterfaceCompatibility");
-         if (GetInterfaceCompatibility)
+         if (fnGetInterfaceCompatibility)
          {
-            ret = GetInterfaceCompatibility(MAC_FILE_VERSION_NUMBER, TRUE, NULL);
+            ret = fnGetInterfaceCompatibility(MAC_FILE_VERSION_NUMBER, TRUE, NULL);
          }
 
          return ret == 0;

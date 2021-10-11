@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2020 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -160,7 +160,7 @@ int SndFileOutputModule::EncodeSamples(SampleContainer& samples)
    // write samples
    if (samples.GetOutputModuleBitsPerSample() == 16)
    {
-      ret = sf_write_short(m_sndfile, (short*)sampleBuffer, numSamples * m_sfinfo.channels);
+      ret = sf_write_short(m_sndfile, (short*)sampleBuffer, sf_count_t(numSamples) * m_sfinfo.channels);
    }
    else if (m_subType == SF_FORMAT_FLOAT ||
       m_subType == SF_FORMAT_DOUBLE)
@@ -176,7 +176,7 @@ int SndFileOutputModule::EncodeSamples(SampleContainer& samples)
    }
    else if (samples.GetOutputModuleBitsPerSample() == 32)
    {
-      ret = sf_write_int(m_sndfile, (int*)sampleBuffer, numSamples * m_sfinfo.channels);
+      ret = sf_write_int(m_sndfile, (int*)sampleBuffer, sf_count_t(numSamples) * m_sfinfo.channels);
    }
    else
       ret = -1;

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2020 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -313,7 +313,7 @@ bool SndFileInputModule::WaveGetID3Tag(LPCTSTR wavfile, TrackInfo& trackInfo)
    if (!wav)
       return false;
 
-   std::shared_ptr<FILE> wavFd(wav, fclose);
+   std::shared_ptr<FILE> wavFd{ wav, fclose };
 
    // first check for last 0x80 bytes for id3 tag
    {

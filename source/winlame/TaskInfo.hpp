@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2015 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ public:
    };
 
    /// ctor
-   TaskInfo(unsigned int taskId, enum TaskType taskType = taskUnknown)
+   explicit TaskInfo(unsigned int taskId, enum TaskType taskType = taskUnknown)
       :m_uiId(taskId),
        m_taskStatus(statusWaiting),
        m_taskType(taskType),

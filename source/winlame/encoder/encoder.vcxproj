@@ -55,6 +55,7 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..;..\..\libraries\include;..\..\nlame;..\..\libraries\include\speex;..\..\libraries\include\opus;..\..\libraries\include\taglib;..\..\libraries\include\taglib\toolkit;..\..\libraries\include\taglib\mpeg\id3v2;..\..\libraries\include\taglib\ogg;..\..\libraries\include\taglib\flac;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>6031;26812</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -67,6 +68,7 @@
     <ClCompile>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..;..\..\libraries\include;..\..\nlame;..\..\libraries\include\speex;..\..\libraries\include\opus;..\..\libraries\include\taglib;..\..\libraries\include\taglib\toolkit;..\..\libraries\include\taglib\mpeg\id3v2;..\..\libraries\include\taglib\ogg;..\..\libraries\include\taglib\flac;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>6031;26812</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
