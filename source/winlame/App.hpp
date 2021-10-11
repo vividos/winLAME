@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2020 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -39,13 +39,16 @@ namespace UI
 }
 
 /// main application class
-class App : public boost::noncopyable
+class App
 {
 public:
    /// ctor
    explicit App(HINSTANCE hInstance);
    /// dtor
    ~App();
+
+   App(const App&) = delete;
+   App& operator=(const App&) = delete;
 
    /// initialzes crash reporter
    static void InitCrashReporter();

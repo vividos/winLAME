@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2020 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@
 #include "CDExtractTask.hpp"
 #include "Task.hpp"
 #include <ulib/thread/Thread.hpp>
-#include <boost/bind.hpp>
 #include <algorithm>
 #include <set>
 
@@ -45,10 +44,8 @@ TaskManager::TaskManager(const TaskManagerConfig& config)
    // start up threads
    for (unsigned int i = 0; i < uiNumThreads; i++)
    {
-      std::shared_ptr<std::thread> spThread(
-         new std::thread(
-            std::bind(&TaskManager::RunThread, std::ref(m_ioService), i)
-         ));
+      std::shared_ptr<std::thread> spThread = std::make_shared<std::thread>(
+         std::bind(&TaskManager::RunThread, std::ref(m_ioService), i));
 
       SetBusyFlag(GetThreadId(spThread->native_handle()), false);
 

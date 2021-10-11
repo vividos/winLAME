@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2009-2020 Michael Fink
+// Copyright (c) 2009-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -43,11 +43,13 @@ private:
 };
 
 /// manager for all language resource files
-class LanguageResourceManager : public boost::noncopyable
+class LanguageResourceManager
 {
 public:
    LanguageResourceManager(LPCTSTR pszLangDllSearchPattern, UINT uiLangNameId, UINT uiLangNameNativeId);
    ~LanguageResourceManager();
+   LanguageResourceManager(const LanguageResourceManager&) = delete;
+   LanguageResourceManager& operator=(const LanguageResourceManager&) = delete;
 
    const std::vector<LanguageResourceInfo>& LanguageResourceList() const { return m_vecLangResourceInfo; }
 

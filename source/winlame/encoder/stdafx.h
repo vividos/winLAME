@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,8 +28,11 @@
 #include <ulib/config/Atl.hpp>
 
 #include "../StdCppLib.hpp"
-#include <boost/noncopyable.hpp>
-#include <ulib/config/BoostAsio.hpp>
+#include <algorithm>
+#include <array>
+#include <atomic>
+#include <mutex>
+#include <thread>
 
 /// define that is used to mark unused parameters or parameters only used in ATLASSERTs
 #ifndef UNUSED

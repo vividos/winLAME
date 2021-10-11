@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2020 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@
 #include <htmlhelp.h>
 
 /// html help support class
-class HtmlHelper : public boost::noncopyable
+class HtmlHelper
 {
 public:
    /// ctor
@@ -56,6 +56,9 @@ public:
    }
 
 private:
+   HtmlHelper(const HtmlHelper&) = delete;
+   HtmlHelper& operator=(const HtmlHelper&) = delete;
+
    /// parent window
    HWND m_parentHandle;
 

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,11 +22,10 @@
 #pragma once
 
 #include <string>
-#include <boost/noncopyable.hpp>
 #include "SettingsManager.hpp"
 
 /// encoder interface
-class PresetManagerInterface : public boost::noncopyable
+class PresetManagerInterface
 {
 public:
    /// loads preset from an xml file
@@ -59,4 +58,10 @@ public:
 protected:
    /// ctor
    PresetManagerInterface() {}
+
+   /// copy ctor
+   PresetManagerInterface(const PresetManagerInterface&) = delete;
+
+   /// copy assignment operator
+   PresetManagerInterface& operator=(const PresetManagerInterface&) = delete;
 };
