@@ -1,13 +1,13 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2019 Michael Fink
+REM Copyright (c) 2000-2021 Michael Fink
 REM
 REM Downloads libogg and compiles it
 REM
 
 REM set this to the filename of the file to download
-set PREFIX=libogg-1.3.4
+set PREFIX=libogg-1.3.5
 
 REM set this to your Visual Studio installation folder
 set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
