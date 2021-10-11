@@ -1,7 +1,7 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2020 Michael Fink
+REM Copyright (c) 2000-2021 Michael Fink
 REM
 REM Downloads opusfile and compiles it
 REM
@@ -48,7 +48,7 @@ popd
 
 REM copy artifacts
 copy %PREFIX%\win32\VS2015\Win32\Release-NoHTTP\opusfile.lib ..\source\libraries\lib\
-copy %PREFIX%\win32\VS2015\Win32\Release-NoHTTP\opusfile\opusfile.pdb ..\source\libraries\lib\
+copy %PREFIX%\win32\VS2015\Win32\Release-NoHTTP\opusfile.pdb ..\source\libraries\lib\
 copy %PREFIX%\include\opusfile.h ..\source\libraries\include\opus\
 
 pause
