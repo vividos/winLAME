@@ -200,6 +200,9 @@ namespace UI
          doNothing = 0, ///< do nothing after finished encoding
          closeApp = 1,  ///< close app after encoding
          standbyPC = 2, ///< switches PC to standby
+         hibernatePC = 3, ///< switches PC to standby
+         logoffUser = 4,///< logs off current user
+         shutdownPC = 5,///< shuts down PC
       };
 
       /// current encoding finish action

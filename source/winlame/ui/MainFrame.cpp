@@ -82,10 +82,10 @@ void EnableButtonText(CToolBarCtrl& tb, UINT uiId)
    cszText.LoadString(uiId);
    int iPos = cszText.ReverseFind(_T('\n'));
    if (iPos != -1)
-      cszText = cszText.Mid(iPos+1);
+      cszText = cszText.Mid(iPos + 1);
 
    // get infos
-   TBBUTTONINFO tbbi = {0};
+   TBBUTTONINFO tbbi = { 0 };
    tbbi.cbSize = sizeof(tbbi);
    tbbi.dwMask = TBIF_STYLE;
 
@@ -527,6 +527,32 @@ void MainFrame::OnClickedTaskItem(size_t clickedIndex)
    m_taskDetailsView.UpdateTaskDetails(taskInfoList[clickedIndex]);
 }
 
+/// adjust windows NT / 2000 privilege to shutdown the system
+bool EnableShutdownPrivilege()
+{
+   bool result = false;
+   HANDLE token = NULL;
+
+   if (TRUE == OpenProcessToken(GetCurrentProcess(),
+      TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &token))
+   {
+      TOKEN_PRIVILEGES tpriv;
+
+      // get luid of shutdown privilege
+      if (TRUE == LookupPrivilegeValue(NULL, SE_SHUTDOWN_NAME, &tpriv.Privileges[0].Luid))
+      {
+         // enable privilege
+         tpriv.PrivilegeCount = 1;
+         tpriv.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+         if (TRUE == AdjustTokenPrivileges(token, FALSE, &tpriv, 0, NULL, NULL))
+            result = true;
+      }
+
+      CloseHandle(token);
+   }
+
+   return result;
+}
 
 void MainFrame::CheckAllTasksFinished()
 {
@@ -544,6 +570,23 @@ void MainFrame::CheckAllTasksFinished()
 
       case T_enEncodingFinishAction::standbyPC:
          ::SetSystemPowerState(TRUE, FALSE);
+         PostMessage(WM_CLOSE);
+         break;
+
+      case T_enEncodingFinishAction::hibernatePC:
+         ::SetSystemPowerState(FALSE, FALSE);
+         PostMessage(WM_CLOSE);
+         break;
+
+      case T_enEncodingFinishAction::logoffUser:
+         EnableShutdownPrivilege();
+         ::ExitWindowsEx(EWX_LOGOFF, 0);
+         PostMessage(WM_CLOSE);
+         break;
+
+      case T_enEncodingFinishAction::shutdownPC:
+         EnableShutdownPrivilege();
+         ::ExitWindowsEx(EWX_POWEROFF, 0);
          PostMessage(WM_CLOSE);
          break;
 
