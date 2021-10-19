@@ -1,7 +1,7 @@
 //
 // winLAME - a frontend for the LAME encoding engine
 // Copyright (c) 2004 DeXT
-// Copyright (c) 2009-2018 Michael Fink
+// Copyright (c) 2009-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -152,12 +152,10 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    }
 
    // try streaming the file/url
-   CStringA ansiFilename(GetAnsiCompatFilename(infilename));
-
-   m_channel = BASS_WMA_StreamCreateFile(FALSE, ansiFilename, 0, 0, BASS_STREAM_DECODE);
+   m_channel = BASS_WMA_StreamCreateFile(FALSE, infilename, 0, 0, BASS_STREAM_DECODE | BASS_UNICODE);
 
    if (!m_channel)
-      m_channel = BASS_StreamCreateFile(FALSE, ansiFilename, 0, 0, BASS_STREAM_DECODE);
+      m_channel = BASS_StreamCreateFile(FALSE, infilename, 0, 0, BASS_STREAM_DECODE | BASS_UNICODE);
 
    if (m_channel)
    {
@@ -167,9 +165,9 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    else
    {
       // try loading the MOD (with sensitive ramping, and calculate the duration)
-      m_channel = BASS_MusicLoad(FALSE, ansiFilename, 0, 0,
+      m_channel = BASS_MusicLoad(FALSE, infilename, 0, 0,
          BASS_MUSIC_DECODE | BASS_MUSIC_RAMPS | BASS_MUSIC_SURROUND |
-         BASS_MUSIC_CALCLEN | BASS_MUSIC_STOPBACK, 0);
+         BASS_MUSIC_CALCLEN | BASS_MUSIC_STOPBACK | BASS_UNICODE, 0);
 
       if (m_channel)
       {
@@ -204,7 +202,7 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    // get tags
    if (m_isStream && (m_channelInfo.ctype & BASS_CTYPE_STREAM_WMA))
    {
-      const char* comments = BASS_WMA_GetTags(ansiFilename.GetString(), 0);
+      const char* comments = BASS_WMA_GetTags(infilename, BASS_UNICODE);
 
       std::vector<size_t> vecCommentIndices;
       if (comments)
