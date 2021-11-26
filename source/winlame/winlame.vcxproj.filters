@@ -52,9 +52,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="classic\CommonStuff.cpp">
-      <Filter>Classic UI Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="preset\PresetManagerImpl.cpp">
       <Filter>Preset Files\Source Files</Filter>
     </ClCompile>
@@ -186,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="classic\ClassicModeEncoderPage.cpp">
       <Filter>Classic UI Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\BrowseForFolder.cpp">
+      <Filter>Modern UI Files\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -336,9 +336,6 @@
     <ClInclude Include="TaskCreationHelper.hpp">
       <Filter>Main Program Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="classic\CommonStuff.hpp">
-      <Filter>Classic UI Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ui\CrashSaveResultsDlg.hpp">
       <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
@@ -371,6 +368,9 @@
     </ClInclude>
     <ClInclude Include="preset\PropertyListBox.hpp">
       <Filter>Preset Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\BrowseForFolder.hpp">
+      <Filter>Modern UI Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

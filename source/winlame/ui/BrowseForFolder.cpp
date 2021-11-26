@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,13 +16,12 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-/// \file CommonStuff.cpp
-/// \brief common UI function implementations
-/// \details contains the drawing code for the bevel line, and the tooltips and
-/// folder-browse function
+/// \file BrowseForFolder.cpp
+/// \brief folder-browse function
+/// \details contains code for the folder-browse function
 //
 #include "stdafx.h"
-#include "CommonStuff.hpp"
+#include "BrowseForFolder.hpp"
 #include "resource.h"
 
 #ifndef BIF_USENEWUI

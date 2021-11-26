@@ -79,12 +79,12 @@
     <ClCompile Include="FreedbInfo.cpp" />
     <ClCompile Include="HttpClient.cpp" />
     <ClCompile Include="InputFilesParser.cpp" />
-    <ClCompile Include="classic\CommonStuff.cpp" />
     <ClCompile Include="AudioFileInfoManager.cpp" />
     <ClCompile Include="TaskCreationHelper.cpp" />
     <ClCompile Include="ui\AACSettingsPage.cpp" />
     <ClCompile Include="ui\AboutDlg.cpp" />
     <ClCompile Include="ui\BevelLine.cpp" />
+    <ClCompile Include="ui\BrowseForFolder.cpp" />
     <ClCompile Include="UI\CoverArtDlg.cpp" />
     <ClCompile Include="ui\CrashSaveResultsDlg.cpp" />
     <ClCompile Include="ui\FinishPage.cpp" />
@@ -131,7 +131,6 @@
     <ClInclude Include="FreedbInfo.hpp" />
     <ClInclude Include="HttpClient.hpp" />
     <ClInclude Include="InputFilesParser.hpp" />
-    <ClInclude Include="classic\CommonStuff.hpp" />
     <ClInclude Include="HtmlHelper.hpp" />
     <ClInclude Include="StdCppLib.hpp" />
     <ClInclude Include="TaskCreationHelper.hpp" />
@@ -141,6 +140,7 @@
     <ClInclude Include="ui\AboutDlg.hpp" />
     <ClInclude Include="ui\AlternateColorsListCtrl.hpp" />
     <ClInclude Include="ui\BevelLine.hpp" />
+    <ClInclude Include="ui\BrowseForFolder.hpp" />
     <ClInclude Include="UI\CoverArtDlg.hpp" />
     <ClInclude Include="ui\CrashSaveResultsDlg.hpp" />
     <ClInclude Include="ui\FinishPage.hpp" />

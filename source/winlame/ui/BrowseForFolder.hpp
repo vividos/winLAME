@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,8 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 /// \file CommonStuff.hpp
-/// \brief commonly used functions and UI classes
-/// \details contains commonly used functions and UI classes, such as a bevel line
-/// control and functions to add tooltips and to browse for a folder
+/// \brief folder-browse function
+/// \details contains code for the folder-browse function
 //
 #pragma once
 
