@@ -169,6 +169,11 @@ bool CDExtractTask::ExtractTrack(const CString& tempFilename)
       {
          CString text;
          text.Format(IDS_CDRIP_PAGE_ERROR_CREATE_OUTPUT_FILE_S, tempFilename.GetString());
+
+         CString moduleError = outputModule.GetLastError();
+         text += _T("\n");
+         text += moduleError;
+
          SetTaskError(text);
          return false;
       }
