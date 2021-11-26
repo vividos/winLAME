@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -65,7 +65,7 @@ CString CDRipTitleFormatManager::GetFilenameByTitle(const CString& title)
 {
    CString filename = title;
 
-   filename.Replace(_T("/"), _T("\\"));
+   filename.Replace(_T("/"), _T(""));
    filename.Replace(_T(":"), _T(""));
    filename.Replace(_T("*"), _T(""));
    filename.Replace(_T("?"), _T(""));

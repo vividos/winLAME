@@ -101,6 +101,7 @@ CString CDExtractTask::GetTempFilename(const CString& discTrackTitle) const
       guid.GetString());
 
    tempFilename.Replace(_T("\\"), _T("_"));
+   tempFilename.Replace(_T("/"), _T("_"));
 
    return Path::Combine(m_uiSettings.cdrip_temp_folder, tempFilename);
 }

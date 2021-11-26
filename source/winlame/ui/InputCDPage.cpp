@@ -792,12 +792,12 @@ CDRipTrackInfo InputCDPage::ReadTrackInfo(DWORD driveIndex, unsigned int trackNu
    CString entry;
    m_listTracks.GetItemText(trackNum, 1, entry);
 
-   // try to split text by "/" or "-"
+   // try to split text by "/" or "-" for various artists
    int pos = entry.Find(_T('/'));
    if (pos == -1)
       pos = entry.Find(_T('-'));
 
-   if (pos == -1)
+   if (pos == -1 || !discInfo.m_variousArtists)
    {
       trackInfo.m_trackTitle = entry;
       trackInfo.m_trackArtist = discInfo.m_discArtist;
