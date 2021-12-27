@@ -43,6 +43,7 @@ public:
 
     // other functions
     virtual int SetEOF() = 0;
+    virtual int SetReadWholeFile() = 0;
 
     // attributes
     virtual int64 GetPosition() = 0;

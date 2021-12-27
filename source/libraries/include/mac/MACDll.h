@@ -1,6 +1,6 @@
 /**************************************************************************************************
 Monkey's Audio MACDll.h (include for using MACDll.dll in your projects)
-Copyright (C) 2000-2021 by Matthew T. Ashland   All Rights Reserved.
+Copyright (C) 2000-2022 by Matthew T. Ashland   All Rights Reserved.
 
 Overview:
 

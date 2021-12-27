@@ -62,7 +62,7 @@ Version
 #include "Version.h"
 
 // year in the copyright strings
-#define MAC_YEAR 2021
+#define MAC_YEAR 2022
 
 // build the version string
 #define STRINGIZE2(s) #s
@@ -237,9 +237,9 @@ Global defines
 /**************************************************************************************************
 Byte order
 **************************************************************************************************/
-#define __LITTLE_ENDIAN     1234
-#define __BIG_ENDIAN        4321
-#define __BYTE_ORDER        __LITTLE_ENDIAN
+#define APE_LITTLE_ENDIAN     1234
+#define APE_BIG_ENDIAN        4321
+#define APE_BYTE_ORDER        APE_LITTLE_ENDIAN
 
 /**************************************************************************************************
 Macros
