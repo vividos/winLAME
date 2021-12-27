@@ -44,12 +44,6 @@ const UINT c_uiTasksListRefreshCycleInMs = 500;
 /// ribbon registry key (subkey "Ribbon" is used)
 LPCTSTR c_pszRibbonRegkey = _T("Software\\winLAME");
 
-/// URL for positive feedback
-LPCTSTR c_urlFeedbackPositive = _T("https://winlame.sourceforge.io/feedback_positive.html");
-
-/// URL for negative feedback
-LPCTSTR c_urlFeedbackNegative = _T("https://winlame.sourceforge.io/feedback_negative.html");
-
 
 BOOL MainFrame::PreTranslateMessage(MSG* pMsg)
 {
@@ -145,15 +139,6 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 void MainFrame::SetupCmdBar()
 {
    CMenuHandle menu = GetMenu();
-
-   // remove feedback buttons in release
-   if (App::Version().Find(_T("release")) != -1)
-   {
-      menu.DeleteMenu(ID_FEEDBACK_POSITIVE, MF_BYCOMMAND);
-      menu.DeleteMenu(ID_FEEDBACK_NEGATIVE, MF_BYCOMMAND);
-
-      menu.DeleteMenu(menu.GetMenuItemCount() - 2, MF_BYPOSITION);
-   }
 
    // create the command bar
    m_CmdBar.Create(m_hWnd, rcDefault, nullptr, ATL_SIMPLE_CMDBAR_PANE_STYLE);
@@ -421,18 +406,6 @@ LRESULT MainFrame::OnViewSwitchToClassic(WORD /*wNotifyCode*/, WORD /*wID*/, HWN
 
    PostMessage(WM_CLOSE);
 
-   return 0;
-}
-
-LRESULT MainFrame::OnFeedbackPositive(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   ShellExecute(m_hWnd, _T("open"), c_urlFeedbackPositive, nullptr, nullptr, SW_SHOWNORMAL);
-   return 0;
-}
-
-LRESULT MainFrame::OnFeedbackNegative(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   ShellExecute(m_hWnd, _T("open"), c_urlFeedbackNegative, nullptr, nullptr, SW_SHOWNORMAL);
    return 0;
 }
 

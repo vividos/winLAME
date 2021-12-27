@@ -113,8 +113,6 @@
     <Image Include="res\app_about.bmp" />
     <Image Include="res\app_exit.bmp" />
     <Image Include="res\btnicons.bmp" />
-    <Image Include="res\emoticon_grin.bmp" />
-    <Image Include="res\emoticon_unhappy.bmp" />
     <Image Include="res\finish_action.bmp" />
     <Image Include="res\finish_action_close.bmp" />
     <Image Include="res\finish_action_none.bmp" />

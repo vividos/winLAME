@@ -85,10 +85,6 @@ ID_SETTINGS_FINISH_ACTION_STANDBY BITMAP                  "res\\finish_action_st
 
 ID_VIEW_SWITCH_CLASSIC  BITMAP                  "res\\switch_classic.bmp"
 
-ID_FEEDBACK_POSITIVE    BITMAP                  "res\\emoticon_grin.bmp"
-
-ID_FEEDBACK_NEGATIVE    BITMAP                  "res\\emoticon_unhappy.bmp"
-
 ID_APP_ABOUT            BITMAP                  "res\\app_about.bmp"
 
 ID_APP_EXIT             BITMAP                  "res\\app_exit.bmp"
@@ -138,11 +134,6 @@ BEGIN
         MENUITEM "&Menu band",                  ID_VIEW_RIBBON
         MENUITEM "Switch to &Classic mode",     ID_VIEW_SWITCH_CLASSIC
     END
-    POPUP "Beta &Feedback"
-    BEGIN
-        MENUITEM "Send a &Smile",               ID_FEEDBACK_POSITIVE
-        MENUITEM "Send a &Frown",               ID_FEEDBACK_NEGATIVE
-    END
     POPUP "&Help"
     BEGIN
         MENUITEM "Show &help",                  ID_HELP
@@ -178,8 +169,6 @@ BEGIN
     PUSHBUTTON      "Cancel",IDC_WIZARDPAGE_BUTTON_ACTION1,228,229,50,14
     PUSHBUTTON      "help",IDC_WIZARDPAGE_HELP,5,229,16,14,BS_ICON
     PUSHBUTTON      "Modern UI",ID_VIEW_SWITCH_MODERN,26,229,16,14,BS_ICON
-    PUSHBUTTON      "smile",ID_FEEDBACK_POSITIVE,47,229,16,14,BS_ICON
-    PUSHBUTTON      "frown",ID_FEEDBACK_NEGATIVE,68,229,16,14,BS_ICON
     LTEXT           "",IDC_WIZARDPAGE_STATIC_CAPTION,7,7,376,16,0,WS_EX_TRANSPARENT
     CONTROL         "",IDC_WIZARDPAGE_STATIC_BACKGROUND,"Static",SS_OWNERDRAW,0,0,393,35
     CONTROL         "",IDC_WIZARDPAGE_STATIC_FRAME,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,5,40,383,184
@@ -977,8 +966,6 @@ END
 STRINGTABLE
 BEGIN
     ID_VIEW_SWITCH_CLASSIC  "Switches to Classic mode\nClassic Mode"
-    ID_FEEDBACK_POSITIVE    "Sends a positive feedback\nSmile"
-    ID_FEEDBACK_NEGATIVE    "Sends a negative feedback\nFrown"
     ID_VIEW_SWITCH_MODERN   "Switches to Modern mode\nModern Mode"
 END
 

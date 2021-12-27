@@ -272,12 +272,6 @@ LRESULT WizardPageHost::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
    bmpIcons.LoadBitmap(IDR_MAINFRAME);
    feedbackIcons.Add(bmpIcons, RGB(0, 0, 0));
 
-   CButton positiveButton(GetDlgItem(ID_FEEDBACK_POSITIVE));
-   positiveButton.SetIcon(feedbackIcons.ExtractIcon(8));
-
-   CButton negativeButton(GetDlgItem(ID_FEEDBACK_NEGATIVE));
-   negativeButton.SetIcon(feedbackIcons.ExtractIcon(9));
-
    CButton switchModernButton(GetDlgItem(ID_VIEW_SWITCH_MODERN));
    switchModernButton.SetIcon(feedbackIcons.ExtractIcon(7));
 
@@ -285,13 +279,6 @@ LRESULT WizardPageHost::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*
    if (!IsClassicMode())
    {
       switchModernButton.ShowWindow(SW_HIDE);
-   }
-
-   // remove feedback buttons in release
-   if (App::Version().Find(_T("release")) != -1)
-   {
-      positiveButton.ShowWindow(SW_HIDE);
-      negativeButton.ShowWindow(SW_HIDE);
    }
 
    // check if help is available
@@ -515,22 +502,6 @@ LRESULT WizardPageHost::OnHelpButton(WORD wNotifyCode, WORD wID, HWND hWndCtl, B
 LRESULT WizardPageHost::OnViewSwitchToModern(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
    SwitchToModernMode();
-   return 0;
-}
-
-LRESULT WizardPageHost::OnFeedbackPositive(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   extern LPCTSTR c_urlFeedbackPositive;
-
-   ShellExecute(m_hWnd, _T("open"), c_urlFeedbackPositive, nullptr, nullptr, SW_SHOWNORMAL);
-   return 0;
-}
-
-LRESULT WizardPageHost::OnFeedbackNegative(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-   extern LPCTSTR c_urlFeedbackNegative;
-
-   ShellExecute(m_hWnd, _T("open"), c_urlFeedbackNegative, nullptr, nullptr, SW_SHOWNORMAL);
    return 0;
 }
 

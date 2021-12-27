@@ -419,12 +419,6 @@
     <Image Include="res\switch_classic.bmp">
       <Filter>Modern UI Files\Resource Files</Filter>
     </Image>
-    <Image Include="res\emoticon_grin.bmp">
-      <Filter>Modern UI Files\Resource Files</Filter>
-    </Image>
-    <Image Include="res\emoticon_unhappy.bmp">
-      <Filter>Modern UI Files\Resource Files</Filter>
-    </Image>
     <Image Include="res\app_about.bmp">
       <Filter>Modern UI Files\Resource Files</Filter>
     </Image>

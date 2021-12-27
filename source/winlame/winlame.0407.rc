@@ -83,10 +83,6 @@ ID_SETTINGS_FINISH_ACTION_STANDBY BITMAP                  "res\\finish_action_st
 
 ID_VIEW_SWITCH_CLASSIC  BITMAP                  "res\\switch_classic.bmp"
 
-ID_FEEDBACK_POSITIVE    BITMAP                  "res\\emoticon_grin.bmp"
-
-ID_FEEDBACK_NEGATIVE    BITMAP                  "res\\emoticon_unhappy.bmp"
-
 ID_APP_ABOUT            BITMAP                  "res\\app_about.bmp"
 
 ID_APP_EXIT             BITMAP                  "res\\app_exit.bmp"
@@ -133,8 +129,6 @@ BEGIN
     PUSHBUTTON      "Abbrechen",IDC_WIZARDPAGE_BUTTON_ACTION1,228,229,50,14
     PUSHBUTTON      "Hilfe",IDC_WIZARDPAGE_HELP,5,229,16,14,BS_ICON
     PUSHBUTTON      "Modernes UI",ID_VIEW_SWITCH_MODERN,26,229,16,14,BS_ICON
-    PUSHBUTTON      "Positiv",ID_FEEDBACK_POSITIVE,47,229,16,14,BS_ICON
-    PUSHBUTTON      "Negativ",ID_FEEDBACK_NEGATIVE,68,229,16,14,BS_ICON
     LTEXT           "",IDC_WIZARDPAGE_STATIC_CAPTION,7,7,376,16,0,WS_EX_TRANSPARENT
     CONTROL         "",IDC_WIZARDPAGE_STATIC_BACKGROUND,"Static",SS_OWNERDRAW,0,0,393,35
     CONTROL         "",IDC_WIZARDPAGE_STATIC_FRAME,"Static",SS_BLACKFRAME | NOT WS_VISIBLE,5,40,383,184
@@ -946,8 +940,6 @@ END
 STRINGTABLE
 BEGIN
     ID_VIEW_SWITCH_CLASSIC  "Wechselt zum klassischen Modus\nKlassischer Modus"
-    ID_FEEDBACK_POSITIVE    "Sendet ein Lächeln\nLächeln"
-    ID_FEEDBACK_NEGATIVE    "Sendet ein Stirnrunzeln\nStirnrunzeln"
     ID_VIEW_SWITCH_MODERN   "Wechselt zum modernen Modus\nModerner Modus"
 END
 

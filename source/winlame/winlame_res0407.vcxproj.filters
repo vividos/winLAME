@@ -76,12 +76,6 @@
     <Image Include="res\switch_classic.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\emoticon_grin.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\emoticon_unhappy.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\app_about.bmp">
       <Filter>Resource Files</Filter>
     </Image>

@@ -66,8 +66,6 @@ namespace UI
          DLGRESIZE_CONTROL(IDC_WIZARDPAGE_BUTTON_ACTION2, DLSZ_MOVE_X | DLSZ_MOVE_Y)
          DLGRESIZE_CONTROL(IDC_WIZARDPAGE_HELP, DLSZ_MOVE_Y)
          DLGRESIZE_CONTROL(ID_VIEW_SWITCH_MODERN, DLSZ_MOVE_Y)
-         DLGRESIZE_CONTROL(ID_FEEDBACK_POSITIVE, DLSZ_MOVE_Y)
-         DLGRESIZE_CONTROL(ID_FEEDBACK_NEGATIVE, DLSZ_MOVE_Y)
          DLGRESIZE_CONTROL(IDC_WIZARDPAGE_STATIC_CAPTION, DLSZ_SIZE_X)
          DLGRESIZE_CONTROL(IDC_WIZARDPAGE_STATIC_BACKGROUND, DLSZ_SIZE_X)
       END_DLGRESIZE_MAP()
@@ -93,8 +91,6 @@ namespace UI
          COMMAND_HANDLER(IDOK, BN_CLICKED, OnButtonClicked)
          COMMAND_HANDLER(IDC_WIZARDPAGE_HELP, BN_CLICKED, OnHelpButton)
          COMMAND_ID_HANDLER(ID_VIEW_SWITCH_MODERN, OnViewSwitchToModern)
-         COMMAND_HANDLER(ID_FEEDBACK_POSITIVE, BN_CLICKED, OnFeedbackPositive)
-         COMMAND_HANDLER(ID_FEEDBACK_NEGATIVE, BN_CLICKED, OnFeedbackNegative)
          MESSAGE_HANDLER(WM_SYSCOMMAND, OnSysCommand)
          CHAIN_MSG_MAP(CDialogResize<WizardPageHost>)
       END_MSG_MAP()
@@ -122,12 +118,6 @@ namespace UI
 
       /// called when clicking the "switch to Modern UI" button
       LRESULT OnViewSwitchToModern(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-
-      /// called when the positive feedback button has been pressed
-      LRESULT OnFeedbackPositive(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-
-      /// called when the negative feedback button has been pressed
-      LRESULT OnFeedbackNegative(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
       /// called for every system command; used for the about box system menu entry; only used in classic mode
       LRESULT OnSysCommand(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);

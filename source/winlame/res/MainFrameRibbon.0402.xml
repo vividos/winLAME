@@ -18,9 +18,6 @@
 
       <Command Name="winlame_VIEW_SWITCH_CLASSIC" Symbol="ID_VIEW_SWITCH_CLASSIC" Id="96"/>
 
-      <Command Name="wtl_FEEDBACK_POSITIVE" Symbol="ID_FEEDBACK_POSITIVE" Id="97"/>
-      <Command Name="wtl_FEEDBACK_NEGATIVE" Symbol="ID_FEEDBACK_NEGATIVE" Id="98"/>
-
       <Command Name="wtl_APP_ABOUT" Symbol="ID_APP_ABOUT" Id="0xE140"/>
       <Command Name="wtl_APP_EXIT" Symbol="ID_APP_EXIT" Id="0xE141"/>
 
@@ -38,8 +35,6 @@
                LabelTitle="Настройки" />
      <Command Name="GroupView" Symbol="ID_GROUP_VIEW"
               LabelTitle="Изглед" />
-     <Command Name="GroupFeedback" Symbol="ID_GROUP_FEEDBACK"
-              LabelTitle="Бета обратна връзка" />
 
      <!-- App Menu, MRU list, Help button and Quick Access Toolbar -->
       <Command Name="AppMenu" Symbol="ID_RIBBON_APP_MENU"/>
@@ -91,7 +86,6 @@
                         <Scale Group="GroupTasks" Size="Large"/>
                         <Scale Group="GroupSettings" Size="Large"/>
                         <Scale Group="GroupView" Size="Large"/>
-                        <!--<Scale Group="GroupFeedback" Size="Large"/>-->
                      </ScalingPolicy.IdealSizes>
                   </ScalingPolicy>
                </Tab.ScalingPolicy>
@@ -123,11 +117,6 @@
               <Group CommandName="GroupView" SizeDefinition="OneButton">
                 <Button CommandName="winlame_VIEW_SWITCH_CLASSIC"/>
               </Group>
-
-              <!--<Group CommandName="GroupFeedback" SizeDefinition="TwoButtons">
-                <Button CommandName="wtl_FEEDBACK_POSITIVE"/>
-                <Button CommandName="wtl_FEEDBACK_NEGATIVE"/>
-              </Group>-->
 
             </Tab>
          </Ribbon.Tabs>

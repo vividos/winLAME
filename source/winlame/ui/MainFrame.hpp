@@ -78,8 +78,6 @@ namespace UI
          UPDATE_ELEMENT(ID_TASKS_STOP_ALL, UPDUI_RIBBON)
          UPDATE_ELEMENT(ID_TASKS_REMOVE_COMPLETED, UPDUI_RIBBON)
          UPDATE_ELEMENT(ID_SETTINGS_FINISH_ACTION, UPDUI_RIBBON)
-         UPDATE_ELEMENT(ID_FEEDBACK_POSITIVE, UPDUI_RIBBON)
-         UPDATE_ELEMENT(ID_FEEDBACK_NEGATIVE, UPDUI_RIBBON)
       END_UPDATE_UI_MAP()
 
       BEGIN_MSG_MAP(MainFrame)
@@ -98,8 +96,6 @@ namespace UI
          RIBBON_GALLERY_CONTROL_HANDLER(ID_SETTINGS_FINISH_ACTION, OnSettingsFinishActionSelChanged)
          COMMAND_RANGE_HANDLER(ID_SETTINGS_FINISH_ACTION_NONE, ID_SETTINGS_FINISH_ACTION_STANDBY, OnSettingsFinishActionRange)
          COMMAND_ID_HANDLER(ID_VIEW_SWITCH_CLASSIC, OnViewSwitchToClassic)
-         COMMAND_ID_HANDLER(ID_FEEDBACK_POSITIVE, OnFeedbackPositive)
-         COMMAND_ID_HANDLER(ID_FEEDBACK_NEGATIVE, OnFeedbackNegative)
          COMMAND_ID_HANDLER(ID_APP_ABOUT, OnAppAbout)
          COMMAND_ID_HANDLER(ID_HELP, OnHelpCommand)
          MESSAGE_HANDLER(WM_HELP, OnHelp)
@@ -132,12 +128,6 @@ namespace UI
       LRESULT OnSettingsFinishActionRange(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
       LRESULT OnViewSwitchToClassic(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-
-      /// called when the positive feedback command has been invoked
-      LRESULT OnFeedbackPositive(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
-
-      /// called when the negative feedback command has been invoked
-      LRESULT OnFeedbackNegative(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
       LRESULT OnAppAbout(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
