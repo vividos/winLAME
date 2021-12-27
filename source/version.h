@@ -23,7 +23,7 @@
 
 #define MAJOR_VERSION 2
 #define MINOR_VERSION 21
-#define RELEASE_NUMBER 0
+#define RELEASE_NUMBER 1
 #define BUILD_NUMBER 0
 #define BUILD_YEAR 2021
 
