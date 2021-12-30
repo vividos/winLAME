@@ -41,6 +41,9 @@ TaskManager::TaskManager(const TaskManagerConfig& config)
          uiNumThreads = m_config.m_uiUseNumTasks;
    }
 
+   if (uiNumThreads == 0)
+      uiNumThreads = 2; // set to a sane value
+
    // start up threads
    for (unsigned int i = 0; i < uiNumThreads; i++)
    {
