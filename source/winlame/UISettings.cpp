@@ -205,7 +205,7 @@ void UISettings::ReadSettings()
    // read task manager config
    ReadBooleanValue(regRoot, g_pszAutoTasksPerCpu, m_taskManagerConfig.m_bAutoTasksPerCpu);
 
-   UINT numCpuCores = 1;
+   UINT numCpuCores = 0;
    ReadUIntValue(regRoot, g_pszUseNumTasks, numCpuCores);
    m_taskManagerConfig.m_uiUseNumTasks = numCpuCores;
 
