@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,33 +17,33 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 /// \file HttpClient.hpp
-/// \brief Simple HTTP client
+/// \brief HTTP client
 //
 #pragma once
-
-#include <ulib/config/BoostAsio.hpp>
-#include <string>
 
 /// HTTP response
 struct HttpResponse
 {
    /// ctor
-   HttpResponse()
-      :status_code(0)
+   HttpResponse(unsigned int statusCode = 0)
+      :m_statusCode(statusCode)
    {
    }
 
    /// HTTP status code, e.g. 200 or 404
-   unsigned int status_code;
+   unsigned int m_statusCode;
 
    /// returned header lines
-   std::vector<std::string> header_lines;
+   std::vector<std::string> m_headerLines;
 
    /// response data returned after header lines
-   std::vector<unsigned char> response_data;
+   std::vector<unsigned char> m_responseData;
+
+   /// error text
+   std::string m_errorText;
 };
 
-/// Simple HTTP client
+/// HTTP client
 class HttpClient
 {
 public:
@@ -54,12 +54,9 @@ public:
    }
 
    /// sends a request to host with given path and returns the HTTP response
-   HttpResponse Request(const std::string& host, const std::string& path);
+   HttpResponse Request(const CString& requestUrl);
 
 private:
    /// user agent to use for request
    std::string m_userAgent;
-
-   /// IO service used for request
-   boost::asio::io_service m_ioService;
 };

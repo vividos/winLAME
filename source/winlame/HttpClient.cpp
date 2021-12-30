@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,109 +17,133 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
 /// \file HttpClient.cpp
-/// \brief Simple HTTP client
-//
-
-// This file was taken from Boost.Asio examples, so it has another copyright:
-
-//
-// sync_client.cpp
-// ~~~~~~~~~~~~~~~
-//
-// Copyright (c) 2003-2016 Christopher M. Kohlhoff (chris at kohlhoff dot com)
-//
-// Distributed under the Boost Software License, Version 1.0. (See accompanying
-// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+/// \brief HTTP client
 //
 #include "stdafx.h"
 #include "HttpClient.hpp"
 #include <ulib/Exception.hpp>
-#include <istream>
+#include <ulib/thread/Event.hpp>
 
-using boost::asio::ip::tcp;
+#pragma comment(lib, "Urlmon.lib")
 
-HttpResponse HttpClient::Request(const std::string& host, const std::string& path)
+class HttpCallback : public IBindStatusCallback
 {
-   // Get a list of endpoints corresponding to the server name.
-   tcp::resolver resolver(m_ioService);
-   tcp::resolver::query query(host, "http");
-   tcp::resolver::iterator endpoint_iterator = resolver.resolve(query);
-
-   // Try each endpoint until we successfully establish a connection.
-   tcp::socket socket(m_ioService);
-   boost::asio::connect(socket, endpoint_iterator);
-
-   // Form the request. We specify the "Connection: close" header so that the
-   // server will close the socket after transmitting the response. This will
-   // allow us to treat all data up until the EOF as the content.
-   boost::asio::streambuf request;
-   std::ostream request_stream(&request);
-   request_stream << "GET " << path << " HTTP/1.0\r\n";
-   request_stream << "Host: " << host << "\r\n";
-   request_stream << "User-Agent: " << m_userAgent << "\r\n";
-   request_stream << "Accept: */*\r\n";
-   request_stream << "Connection: close\r\n\r\n";
-
-   // Send the request.
-   boost::asio::write(socket, request);
-
-   // Read the response status line. The response streambuf will automatically
-   // grow to accommodate the entire line. The growth may be limited by passing
-   // a maximum size to the streambuf constructor.
-   boost::asio::streambuf response;
-   boost::asio::read_until(socket, response, "\r\n");
-
-   // Check that response is OK.
-   HttpResponse httpResponse;
-   std::istream response_stream(&response);
-
-   std::string http_version;
-   response_stream >> http_version;
-
-   response_stream >> httpResponse.status_code;
-
-   std::string status_message;
-   std::getline(response_stream, status_message);
-   if (!response_stream || http_version.substr(0, 5) != "HTTP/")
+public:
+   HttpCallback()
+      :m_event(false)
    {
-      throw Exception(_T("Invalid response"), __FILE__, __LINE__);
    }
 
-   if (httpResponse.status_code >= 400 && httpResponse.status_code <= 599)
+   HttpResponse Wait()
    {
-      std::stringstream message;
-      message << "Response returned with status code " << httpResponse.status_code;
-
-      throw Exception(CString(message.str().c_str()), __FILE__, __LINE__);
+      m_event.Wait();
+      return m_message;
    }
 
-   // Read the response headers, which are terminated by a blank line.
-   boost::asio::read_until(socket, response, "\r\n\r\n");
-
-   // Process the response headers.
-   std::string header;
-   while (std::getline(response_stream, header) && header != "\r")
-      httpResponse.header_lines.push_back(header);
-
-   // Read until EOF, writing data to output as we go.
-   boost::system::error_code error;
-   while (boost::asio::read(socket, response,
-      boost::asio::transfer_at_least(1), error))
+private:
+   // Inherited via IBindStatusCallback
+   virtual HRESULT __stdcall QueryInterface(REFIID riid, void** ppvObject) override
    {
-      size_t data_size = response.size();
-      if (data_size > 0)
+      return E_NOTIMPL;
+   }
+   virtual ULONG __stdcall AddRef(void) override
+   {
+      return 1;
+   }
+   virtual ULONG __stdcall Release(void) override
+   {
+      return 1;
+   }
+   virtual HRESULT __stdcall OnStartBinding(DWORD dwReserved, IBinding* pib) override
+   {
+      return E_NOTIMPL;
+   }
+   virtual HRESULT __stdcall GetPriority(LONG* pnPriority) override
+   {
+      return E_NOTIMPL;
+   }
+   virtual HRESULT __stdcall OnLowResource(DWORD reserved) override
+   {
+      return E_NOTIMPL;
+   }
+   virtual HRESULT __stdcall OnProgress(ULONG ulProgress, ULONG ulProgressMax, ULONG ulStatusCode, LPCWSTR szStatusText) override
+   {
+      return E_NOTIMPL;
+   }
+   virtual HRESULT __stdcall OnStopBinding(HRESULT hresult, LPCWSTR szError) override
+   {
+      if (hresult == S_OK)
       {
-         std::copy(
-            boost::asio::buffer_cast<const unsigned char*>(response.data()),
-            boost::asio::buffer_cast<const unsigned char*>(response.data()) + response.size(),
-            std::back_inserter(httpResponse.response_data));
-
-         response.consume(data_size);
       }
+      else
+      {
+         //CString errorMessage{ szError };
+
+         //if (!errorMessage.IsEmpty())
+         //   m_message.m_errorMessage = errorMessage;
+      }
+
+      m_event.Set();
+
+      return S_OK;
    }
 
-   if (error != boost::asio::error::eof)
-      throw Exception(CString(_T("System error: ")) + error.message().c_str(), __FILE__, __LINE__);
+   virtual HRESULT __stdcall GetBindInfo(DWORD* grfBINDF, BINDINFO* pbindinfo) override
+   {
+      return E_NOTIMPL;
+   }
+   virtual HRESULT __stdcall OnDataAvailable(DWORD grfBSCF, DWORD dwSize, FORMATETC* pformatetc, STGMEDIUM* pstgmed) override
+   {
+      if ((grfBSCF & BSCF_LASTDATANOTIFICATION) == 0)
+         return S_OK; // wait for the last notification
 
-   return httpResponse;
+      // as URLOpenStream was used, an IStream is returned
+      if (pstgmed != nullptr &&
+         pstgmed->tymed == TYMED_ISTREAM)
+      {
+         CComPtr<IStream> stream;
+         stream.Attach(pstgmed->pstm);
+
+         m_message.m_responseData.resize(dwSize);
+         ULONG numReadBytes = 0;
+         HRESULT hr = stream->Read(m_message.m_responseData.data(), dwSize, &numReadBytes);
+         if (!SUCCEEDED(hr))
+         {
+            m_message.m_errorText = "Error reading from IStream";
+            m_message.m_statusCode = 500;
+         }
+         else
+            m_message.m_statusCode = 200;
+
+         m_event.Set();
+      }
+
+      return S_OK;
+   }
+   virtual HRESULT __stdcall OnObjectAvailable(REFIID riid, IUnknown* punk) override
+   {
+      return E_NOTIMPL;
+   }
+
+private:
+   ManualResetEvent m_event;
+   HttpResponse m_message;
+};
+
+HttpResponse HttpClient::Request(const CString& requestUrl)
+{
+   HttpCallback callback;
+
+   HRESULT hr = URLOpenStream(
+      nullptr,
+      requestUrl,
+      0,
+      &callback);
+
+   ATLVERIFY(SUCCEEDED(hr));
+
+   if (FAILED(hr))
+      return HttpResponse(500);
+
+   return callback.Wait();
 }

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2021 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -86,14 +86,14 @@ std::vector<CoverArtResult> CoverArtArchive::Request(const std::string& musicBra
 /// \throw Exception when a HTTP request fails
 std::string CoverArtArchive::GetMusicBrainzDiscIdInfo(const std::string& musicBrainzDiscId)
 {
-   HttpClient client(m_userAgent);
+   HttpClient client{ m_userAgent };
 
-   std::string urlPath = "/ws/2/discid/" + musicBrainzDiscId;
+   std::string urlPath = "https://musicbrainz.org/ws/2/discid/" + musicBrainzDiscId;
 
-   auto response = client.Request("musicbrainz.org", urlPath);
-   response.response_data.push_back(0);
+   auto response = client.Request(CString(urlPath.c_str()));
+   response.m_responseData.push_back(0);
 
-   return std::string(reinterpret_cast<char*>(response.response_data.data()));
+   return std::string(reinterpret_cast<char*>(response.m_responseData.data()));
 }
 
 void CoverArtArchive::CollectReleaseIds(rapidxml::xml_document<char>& responseXml, std::vector<std::string>& releaseIdList)
@@ -145,37 +145,29 @@ void CoverArtArchive::CollectReleaseIds(rapidxml::xml_document<char>& responseXm
 /// \throw Exception when downloading cover art failed
 void CoverArtArchive::DownloadCoverArt(const std::string& coverArtReleaseId, std::vector<CoverArtResult>& resultList)
 {
-   std::string urlPath = "/release/" + coverArtReleaseId + "/front-500";
+   std::string urlPath = "https://coverartarchive.org/release/" + coverArtReleaseId + "/front-500";
 
-   HttpClient client(m_userAgent);
+   HttpClient client{ m_userAgent };
 
-   auto response = client.Request("coverartarchive.org", urlPath);
-   while (response.status_code / 100 == 3)
+   auto response = client.Request(CString(urlPath.c_str()));
+   while (response.m_statusCode / 100 == 3)
    {
       // 3xx are redirect status codes, to point to the actual cover art
-      for (size_t headerIndex = 0, maxHeaderIndex = response.header_lines.size(); headerIndex < maxHeaderIndex; headerIndex++)
+      for (size_t headerIndex = 0, maxHeaderIndex = response.m_headerLines.size(); headerIndex < maxHeaderIndex; headerIndex++)
       {
-         std::string& headerLine = response.header_lines[headerIndex];
+         std::string& headerLine = response.m_headerLines[headerIndex];
          if (headerLine.find("Location: ") != std::string::npos)
          {
             CString url(headerLine.c_str());
             url.Trim();
             url.Replace(_T("Location: "), _T(""));
-            url.Replace(_T("http://"), _T(""));
 
-            int pos = url.Find(_T('/'));
-            if (pos != -1)
-            {
-               std::string host = CStringA(url.Left(pos)).GetString();
-               std::string path = CStringA(url.Mid(pos)).GetString();
-
-               response = client.Request(host, path);
-            }
+            response = client.Request(url);
          }
       }
    }
 
-   resultList.push_back(CoverArtResult(response.response_data));
+   resultList.push_back(CoverArtResult(response.m_responseData));
 }
 
 /// \see http://stackoverflow.com/questions/3514275/load-image-from-memory-buffer-using-atl-cimage
