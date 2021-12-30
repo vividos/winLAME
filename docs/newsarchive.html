@@ -52,6 +52,91 @@
     <div class="container" style="padding-top: 48px;">
         <h1>winLAME News archive</h1>
 
+        <h2>2020-07-03 - freedb replacement service</h2>
+
+        <p>
+            winLAME used the Freedb service for looking up CD disc and track metadata that is used
+            to fill the audio tags (like ID3v2) during encoding. It seems the Freedb service,
+            always provided for free by Magix, is no more. There are some alternatives, like
+            <a href="http://www.gnudb.org/">gnudb</a>, that provide similar services.
+        </p>
+
+        <p>
+            With the new AppVeyor build 2.20.0.79 (or any later build version) the default Freedb
+            service in winLAME is now gnudb. You always can get AppVeyor builds here:
+            <a href="https://ci.appveyor.com/project/vividos/winlame/build/artifacts">
+                https://ci.appveyor.com/project/vividos/winlame/build/artifacts
+            </a>
+        </p>
+
+        <hr />
+
+        <h2>2019-12-21 - winLAME 2019 release 1</h2>
+
+        <p>
+            Today I released winLAME 2019 release 1, which corresponds to the build number
+            2.19.1.66. The release contains the following updates since the version
+            "2018 release":
+            <ul>
+                <li>library updates: ogg 1.3.4, opus 1.3.1, FLAC 1.3.3, libfaac 1.30, libfaad2 2.9.1, libsndfile 1.0.29pre2, mpg123 1.25.13, Monkey's Audio 5.11, BASS 2.4.14 and BASSCD 2.4.7</li>
+                <li>bulgarian translation, contributed by Karlov Nider</li>
+                <li>format texts for reading CDs can now contain backslashes in order to create subfolders</li>
+                <li>implemented reading and writing disc number from Ogg Vorbis, Opus, WMA, ID3v2 and Xiph Comment tags</li>
+            </ul>
+
+            The following bug fixes are included:
+            <ul>
+                <li>fixed outputting 32-bit or 64-bit float wave files with libsndfile</li>
+                <li>fixed crash when reading Monkey's Audio .ape file ID3v1 tags</li>
+                <li>SourceForge bug 81: fixed leaving temp files in the temp folder when reading CD to non-16-bit-wave-format</li>
+                <li>fixed bug when reading CD track when BASS buffer is empty; result was that no samples were read at all, but encoding was successful</li>
+                <li>SourceForge bug 77: fixed reading tags and cover picture from FLAC files</li>
+            </ul>
+
+            To download the new version, head over to the
+            <a href="download.html" title="Download">Download page</a>.
+        </p>
+
+        <hr />
+
+        <h2>2019-12-03 - winLAME on GitHub, automated builds on AppVeyor</h2>
+
+        <p>
+            Today I'm not going to announce a new version (yet). Instead I have some
+            infrastructure news. First is, the winLAME source code is also hosted on
+            <a href="https://github.com/vividos/winLAME">GitHub</a> where the repository can be
+            cloned and forked by anyone. The Git repository on
+            <a href="https://sourceforge.net/p/winlame/code/ci/master/tree/">SourceForge</a> also
+            still exists and contains the same code.
+        </p>
+
+        <p>
+            The second news is that automatically built versions of winLAME are available via the
+            <a href="https://ci.appveyor.com/project/vividos/winlame/build/artifacts">AppVeyor build service</a>.
+            The automated build is always triggered when I commit changes to the source code
+            repository, while using an incremeted version number. That way, you as the winLAME
+            user always can download and use the latest winLAME version and don't have to wait for
+            an official release.
+        </p>
+
+        <p>
+            As the build artifacts on AppVeyor expire after 6 months, I will occasionally release
+            an "official" winLAME version that I will also put on the
+            <a href="download.html" title="Download">Download page</a>. Note that the version
+            numbers follow a scheme: The (at this moment) current version is 2.19.0.60. The first
+            two numbers describe the year of the release (2.19 = 2019, 2.20 = 2020). The next
+            number is the number of the release (0 means the beta version, 1 and avove the first
+            and following releases). 60 means it's the 60th build overall, and the number is
+            increasing all the time, without being reset to 0.
+        </p>
+
+        <p>
+            So enjoy the beta builds currently available on AppVeyor and report bugs, if you find
+            one. I'm planning to release a 2019 release version in a few weeks.
+        </p>
+
+        <hr />
+
         <h2>2018-12-24 - winLAME 2018 release</h2>
 
         <p>
