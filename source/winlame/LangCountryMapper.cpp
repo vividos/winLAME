@@ -276,7 +276,7 @@ LangCountryMapper::LangCountryMapper()
 
 LPCTSTR LangCountryMapper::CountryCodeFromLanguageCode(UINT uiLanguageCode) const
 {
-   // map country codes, according to http://msdn.microsoft.com/en-us/library/0h88fahh(VS.85).aspx
+   // map country codes, according to https://docs.microsoft.com/en-us/windows/win32/intl/locale-identifiers
    switch (uiLanguageCode)
    {
    case 0x0436: return _T("af"); // Afrikaans

@@ -61,7 +61,7 @@ This chapter describes how to translate winLAME into other languages. Since
 winLAME 2009 it is possible to provide the winLAME author with a translation
 for your native language. Note that you must provide translation under the
 Creative Commons Attribution Share Alike license. See here for more:
-   http://creativecommons.org/about/licenses/
+   https://creativecommons.org/licenses/
 
 There are two ways to translate the dialog and string resources from winLAME,
 depending on if you are a developer or not. The easy way is using Resource

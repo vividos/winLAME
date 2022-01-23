@@ -47,7 +47,7 @@
         This preset will produce a standard podcast with mono encoding and a
         constant bit rate of 64kbps.
         Command line used: "-b 64 -m m -q2 --cbr"
-        See: http://www.richardfarrar.com/how-to-use-winlame-to-encode-podcasts/
+        See: https://www.richardfarrar.com/how-to-use-winlame-to-encode-podcasts/
       </comment>
       <value name="lameEncodeQuality">2</value>
       <value name="lameMono">1</value>
@@ -131,7 +131,7 @@
         5 or, for lossless stereo coupling, 6. This preset uses quality 6.
         Yields ~192 kbit/s.
         Command line used: "-q 6"
-        See also: http://wiki.hydrogenaud.io/index.php?title=Recommended_Ogg_Vorbis
+        See also: https://wiki.hydrogenaud.io/index.php?title=Recommended_Ogg_Vorbis
       </comment>
       <value name="vorbisBitrateMode">0</value>
       <value name="vorbisBaseQuality">600</value>
@@ -143,7 +143,7 @@
         a smaller filesize and significantly better fidelity than .mp3
         compression at 128kbps. Yields ~112 kbit/s.
         Command line used: "-q 3"
-        See also: http://wiki.hydrogenaud.io/index.php?title=Recommended_Ogg_Vorbis
+        See also: https://wiki.hydrogenaud.io/index.php?title=Recommended_Ogg_Vorbis
       </comment>
       <value name="vorbisBitrateMode">0</value>
       <value name="vorbisBaseQuality">300</value>
@@ -178,7 +178,7 @@
         AAC and other compressed formats may provide better quality files at
         similar bitrates.
         Command line used: "-q 100"
-        See also: http://wiki.hydrogenaud.io/index.php?title=FAAC
+        See also: https://wiki.hydrogenaud.io/index.php?title=FAAC
       </comment>
       <value name="aacBRCmethod">0</value>
       <value name="aacQuality">100</value>
@@ -192,7 +192,7 @@
         is comparable in quality to proprietary AAC encoders at similar
         bitrates.
         Command line used: "-q 150"
-        See also: http://wiki.hydrogenaud.io/index.php?title=FAAC
+        See also: https://wiki.hydrogenaud.io/index.php?title=FAAC
       </comment>
       <value name="aacBRCmethod">0</value>
       <value name="aacQuality">150</value>

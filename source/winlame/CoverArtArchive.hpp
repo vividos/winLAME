@@ -52,7 +52,7 @@ private:
    std::vector<unsigned char> m_frontCover;
 };
 
-/// \brief Manages access to http://www.coverartarchive.org/
+/// \brief Manages access to https://coverartarchive.org/
 class CoverArtArchive
 {
 public:

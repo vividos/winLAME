@@ -62,7 +62,7 @@ m_startInputCD(false)
 
    // remove current directory from search path of LoadLibrary(); see also
    // Microsoft Security Advisory (2269637):
-   // http://www.microsoft.com/technet/security/advisory/2269637.mspx
+   // https://docs.microsoft.com/en-us/security-updates/SecurityAdvisories/2010/2269637
    BOOL ret = SetDllDirectory(_T(""));
    ATLASSERT(ret == TRUE);
    UNUSED(ret);

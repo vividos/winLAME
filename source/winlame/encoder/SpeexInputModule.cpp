@@ -337,7 +337,7 @@ int SpeexInputModule::DecodePacket(ogg_packet& packet, std::vector<short>& sampl
    return samples.size();
 }
 
-/// \see http://lists.xiph.org/pipermail/speex-dev/2003-September/001885.html
+/// \see https://lists.xiph.org/pipermail/speex-dev/2003-September/001885.html
 void SpeexInputModule::CalcSampleCount() const
 {
    if (m_inputStream == nullptr)

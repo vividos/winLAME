@@ -36,7 +36,7 @@ namespace UI
 {
    /// \brief application main frame
    /// \details uses ribbon for commands
-   /// \see http://www.codeproject.com/Articles/54116/Relook-your-Old-and-New-Native-Applications-with-a
+   /// \see https://www.codeproject.com/Articles/54116/Relook-your-Old-and-New-Native-Applications-with-a
    class MainFrame :
       public CRibbonFrameWindowImpl<MainFrame>,
       public CMessageFilter,

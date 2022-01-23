@@ -40,8 +40,7 @@ CoverArtArchive::~CoverArtArchive()
 /// \throw Exception when downloading cover art failed
 std::vector<CoverArtResult> CoverArtArchive::Request(const std::string& musicBrainzDiscId, bool onlyLoadFirst)
 {
-   //http:// 9712d52a-4509-3d4b-a1a2-67c88c643e31
-   //http://coverartarchive.org/release/0a7dd30c-ab7e-4a94-9607-00f02f4115be/front-500
+   // example: https://coverartarchive.org/release/0a7dd30c-ab7e-4a94-9607-00f02f4115be/front-500
 
    // first request: get release(s) from disc id
    std::string responseText = GetMusicBrainzDiscIdInfo(musicBrainzDiscId);
@@ -170,7 +169,7 @@ void CoverArtArchive::DownloadCoverArt(const std::string& coverArtReleaseId, std
    resultList.push_back(CoverArtResult(response.m_responseData));
 }
 
-/// \see http://stackoverflow.com/questions/3514275/load-image-from-memory-buffer-using-atl-cimage
+/// \see https://stackoverflow.com/questions/3514275/load-image-from-memory-buffer-using-atl-cimage
 bool CoverArtArchive::ImageFromJpegByteArray(const std::vector<unsigned char>& data, ATL::CImage& image)
 {
    HGLOBAL hGlobal = ::GlobalAlloc(GHND, data.size());

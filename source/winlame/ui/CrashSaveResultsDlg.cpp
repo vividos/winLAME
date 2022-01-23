@@ -92,7 +92,7 @@ LRESULT CrashSaveResultsDlg::OnDoubleClickedResultsList(int /*idCtrl*/, LPNMHDR 
    return 0;
 }
 
-/// \see http://stackoverflow.com/questions/3010305/programmatically-selecting-file-in-explorer
+/// \see https://stackoverflow.com/questions/3010305/programmatically-selecting-file-in-explorer
 void CrashSaveResultsDlg::OpenFolder(const CString& filename)
 {
    ITEMIDLIST* pidl = ILCreateFromPath(filename);

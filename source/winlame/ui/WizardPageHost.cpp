@@ -51,7 +51,7 @@ int WizardPageHost::Run(HWND hWndParent)
 
    // note: parent must be disabled after creating dialog, and enabled before
    // destroying dialog.
-   // see http://blogs.msdn.com/b/oldnewthing/archive/2004/02/27/81155.aspx
+   // see https://devblogs.microsoft.com/oldnewthing/20040227-00/?p=40463
 
    Create(hWndParent, CWindow::rcDefault);
 
