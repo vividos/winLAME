@@ -165,7 +165,7 @@
         for 16 bit audio files.
       </comment>
       <value name="sndFileFormat">1507328</value>
-      <value name="sndFileSubType">1</value>
+      <value name="sndFileSubType">2</value>
     </preset>
   </facility>
 
