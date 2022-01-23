@@ -17,7 +17,7 @@ Readme File for winLAME
   winLAME is available as source code and in binary form, at winLAME's home
   page at SourceForge:
 
-     http://winLAME.sourceforge.net
+     https://winlame.sourceforge.io/
 
 
 GNU General Public License
@@ -32,4 +32,4 @@ GNU General Public License
   along with this program; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-  winLAME is Copyright (c) 2000-2021 Michael Fink
+  winLAME is Copyright (c) 2000-2022 Michael Fink
