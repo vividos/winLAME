@@ -71,6 +71,7 @@ enum
 	SF_FORMAT_OGG			= 0x200000,		/* Xiph OGG container */
 	SF_FORMAT_MPC2K			= 0x210000,		/* Akai MPC 2000 sampler */
 	SF_FORMAT_RF64			= 0x220000,		/* RF64 WAV file */
+	SF_FORMAT_MPEG			= 0x230000,		/* MPEG-1/2 audio stream */
 
 	/* Subtypes from here on. */
 
@@ -115,6 +116,10 @@ enum
 	SF_FORMAT_ALAC_20		= 0x0071,		/* Apple Lossless Audio Codec (20 bit). */
 	SF_FORMAT_ALAC_24		= 0x0072,		/* Apple Lossless Audio Codec (24 bit). */
 	SF_FORMAT_ALAC_32		= 0x0073,		/* Apple Lossless Audio Codec (32 bit). */
+
+	SF_FORMAT_MPEG_LAYER_I	= 0x0080,		/* MPEG-1 Audio Layer I */
+	SF_FORMAT_MPEG_LAYER_II	= 0x0081,		/* MPEG-1 Audio Layer II */
+	SF_FORMAT_MPEG_LAYER_III = 0x0082,		/* MPEG-2 Audio Layer III */
 
 	/* Endian-ness options. */
 
@@ -173,6 +178,7 @@ enum
 
 	SFC_SET_RAW_START_OFFSET		= 0x1090,
 
+	/* Commands reserved for dithering, which is not implemented. */
 	SFC_SET_DITHER_ON_WRITE			= 0x10A0,
 	SFC_SET_DITHER_ON_READ			= 0x10A1,
 
@@ -216,6 +222,9 @@ enum
 	SFC_SET_COMPRESSION_LEVEL		= 0x1301,
 	SFC_SET_OGG_PAGE_LATENCY_MS		= 0x1302,
 	SFC_SET_OGG_PAGE_LATENCY		= 0x1303,
+
+	SFC_GET_BITRATE_MODE			= 0x1304,
+	SFC_SET_BITRATE_MODE			= 0x1305,
 
 	/* Cart Chunk support */
 	SFC_SET_CART_INFO				= 0x1400,
@@ -333,10 +342,18 @@ enum
 	SF_CHANNEL_MAP_MAX
 } ;
 
+/* Bitrate mode values (for use with SFC_GET/SET_BITRATE_MODE)
+*/
+enum
+{	SF_BITRATE_MODE_CONSTANT = 0,
+	SF_BITRATE_MODE_AVERAGE,
+	SF_BITRATE_MODE_VARIABLE
+} ;
+
 
 /* A SNDFILE* pointer can be passed around much like stdio.h's FILE* pointer. */
 
-typedef	struct SNDFILE_tag	SNDFILE ;
+typedef	struct sf_private_tag	SNDFILE ;
 
 /* The following typedef is system specific and is defined when libsndfile is
 ** compiled. sf_count_t will be a 64 bit value when the underlying OS allows
@@ -386,8 +403,7 @@ typedef struct
 
 /*
 ** Enums and typedefs for adding dither on read and write.
-** See the html documentation for sf_command(), SFC_SET_DITHER_ON_WRITE
-** and SFC_SET_DITHER_ON_READ.
+** Reserved for future implementation.
 */
 
 enum
@@ -755,16 +771,10 @@ void	sf_write_sync	(SNDFILE *sndfile) ;
 /* The function sf_wchar_open() is Windows Only!
 ** Open a file passing in a Windows Unicode filename. Otherwise, this is
 ** the same as sf_open().
-**
-** In order for this to work, you need to do the following:
-**
-**		#include <windows.h>
-**		#define ENABLE_SNDFILE_WINDOWS_PROTOTYPES 1
-**		#including <sndfile.h>
 */
 
-#if (defined (ENABLE_SNDFILE_WINDOWS_PROTOTYPES) && ENABLE_SNDFILE_WINDOWS_PROTOTYPES)
-SNDFILE* sf_wchar_open (LPCWSTR wpath, int mode, SF_INFO *sfinfo) ;
+#ifdef _WIN32
+SNDFILE* sf_wchar_open (const wchar_t *wpath, int mode, SF_INFO *sfinfo) ;
 #endif
 
 
