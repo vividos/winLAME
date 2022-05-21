@@ -16,7 +16,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-/// \file CommonStuff.hpp
+/// \file BrowseForFolder.hpp
 /// \brief folder-browse function
 /// \details contains code for the folder-browse function
 //
