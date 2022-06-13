@@ -1,7 +1,7 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2020 Michael Fink
+REM Copyright (c) 2000-2022 Michael Fink
 REM
 REM Copies libraries to bin folder
 REM
@@ -20,15 +20,7 @@ mkdir %TARGET% 2> nul
 copy bass.dll %TARGET%
 copy basscd.dll %TARGET%
 copy basswma.dll %TARGET%
-copy libFLAC_dynamic.dll %TARGET%
 copy libmp3lame.dll %TARGET%
-copy sndfile.dll %TARGET%
-copy libvorbis.dll %TARGET%
-copy libvorbisfile.dll %TARGET%
-copy libspeex.dll %TARGET%
-copy opus.dll %TARGET%
-copy opusenc.dll %TARGET%
-copy ogg.dll %TARGET%
 copy libfaac_dll.dll %TARGET%
 copy libfaad2_dll.dll %TARGET%
 copy MACDll.dll %TARGET%

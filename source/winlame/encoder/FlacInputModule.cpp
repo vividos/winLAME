@@ -219,7 +219,7 @@ Encoder::InputModule* FlacInputModule::CloneModule()
 
 bool FlacInputModule::IsAvailable() const
 {
-   DynamicLibrary lib(_T("libFLAC_dynamic.dll"));
+   DynamicLibrary lib(_T("FLAC.dll"));
 
    if (lib.IsLoaded())
    {
@@ -246,7 +246,7 @@ CString FlacInputModule::GetDescription() const
 
 void FlacInputModule::GetVersionString(CString& version, int special) const
 {
-   DynamicLibrary lib(_T("libFLAC_dynamic.dll"));
+   DynamicLibrary lib(_T("FLAC.dll"));
 
    if (lib.IsLoaded())
    {

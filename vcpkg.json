@@ -2,5 +2,16 @@
   "name": "winlame",
   "version-string": "2.22.0",
   "dependencies": [
+    "libogg",
+    "libvorbis",
+    "speex",
+    "opus",
+    "opusfile",
+    "libopusenc",
+    "libflac",
+    {
+      "name": "libsndfile",
+      "default-features": false
+    }
   ]
 }

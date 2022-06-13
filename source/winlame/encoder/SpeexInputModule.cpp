@@ -29,8 +29,6 @@ using Encoder::SpeexInputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
-#pragma comment(lib, "libspeex.lib")
-
 // define some symbols that seem to be missing from the lib file
 extern "C" void speex_header_free(void* ptr)
 {

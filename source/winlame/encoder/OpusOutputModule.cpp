@@ -29,10 +29,6 @@
 
 using Encoder::OpusEncData;
 
-#pragma comment(lib, "opus.lib")
-#pragma comment(lib, "opusenc.lib")
-#pragma comment(lib, "libogg.lib")
-
 bool GetRandomNumber(int& randomNumber)
 {
    HCRYPTPROV provider = 0;

@@ -37,10 +37,6 @@ using Encoder::SampleContainer;
 
 extern bool GetRandomNumber(int& randomNumber);
 
-// link to libvorbis.dll
-#pragma comment(lib, "libvorbis.lib")
-#pragma comment(lib, "libvorbisfile.lib")
-
 OggVorbisOutputModule::OggVorbisOutputModule()
    :m_bitrateMode(0),
    m_baseQuality(0.0),
