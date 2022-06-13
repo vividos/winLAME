@@ -24,9 +24,8 @@
 #include "OggVorbisInputModule.hpp"
 #include "resource.h"
 #include <fstream>
-#include "vorbis/vorbisfile.h"
 #include <ulib/UTF8.hpp>
-#include <opus/opusfile.h>
+#include <../include/opus/opusfile.h>
 #include "ChannelRemapper.hpp"
 
 using Encoder::OggVorbisInputModule;

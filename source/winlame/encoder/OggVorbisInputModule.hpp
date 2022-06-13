@@ -23,7 +23,7 @@
 
 #include "ModuleInterface.hpp"
 #include <cstdio>
-#include "vorbis/vorbisfile.h"
+#include <../include/vorbis/vorbisfile.h>
 
 namespace Encoder
 {

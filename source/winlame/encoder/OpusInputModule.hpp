@@ -22,7 +22,7 @@
 #pragma once
 
 #include "ModuleInterface.hpp"
-#include <opus/opusfile.h>
+#include <../include/opus/opusfile.h>
 
 namespace Encoder
 {
