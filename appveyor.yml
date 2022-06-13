@@ -12,6 +12,9 @@ platform: Win32
 
 configuration: AppVeyor
 
+cache:
+  - C:\Users\appveyor\AppData\Local\vcpkg\archives -> appveyor.yml
+
 before_build:
   - ps: source\Patch-BuildVersion.ps1 -version $env:appveyor_build_version
   - cmd: nuget restore

@@ -101,3 +101,4 @@ CoverageReport/
 /winlame-coverage.xml
 /buildlibs/lame-svn-*.zip
 /.sonar-cache/
+vcpkg_installed/
