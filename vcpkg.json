@@ -12,6 +12,7 @@
     {
       "name": "libsndfile",
       "default-features": false
-    }
+    },
+    "taglib"
   ]
 }

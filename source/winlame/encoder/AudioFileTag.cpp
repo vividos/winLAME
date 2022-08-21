@@ -26,21 +26,15 @@
 #pragma warning(push)
 #pragma warning(disable: 4251) // class 'T' needs to have dll-interface to be used by clients of class 'C'
 #include <taglib/fileref.h>
-#include <taglib/toolkit/tpropertymap.h>
-#include <taglib/mpeg/id3v2/id3v2tag.h>
-#include <taglib/mpeg/mpegfile.h>
-#include <taglib/mpeg/id3v2/frames/attachedpictureframe.h>
-#include <taglib/mpeg/id3v2/frames/textidentificationframe.h>
-#include <taglib/flac/flacfile.h>
-#include <taglib/ogg/flac/oggflacfile.h>
-#include <taglib/ogg/xiphcomment.h>
+#include <taglib/tpropertymap.h>
+#include <taglib/id3v2tag.h>
+#include <taglib/mpegfile.h>
+#include <taglib/attachedpictureframe.h>
+#include <taglib/textidentificationframe.h>
+#include <taglib/flacfile.h>
+#include <taglib/oggflacfile.h>
+#include <taglib/xiphcomment.h>
 #pragma warning(pop)
-
-#ifdef _DEBUG
-#pragma comment(lib, "taglib_debug.lib")
-#else
-#pragma comment(lib, "taglib.lib")
-#endif
 
 using Encoder::AudioFileTag;
 using Encoder::TrackInfo;

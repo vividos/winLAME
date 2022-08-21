@@ -25,8 +25,6 @@ copy libfaac_dll.dll %TARGET%
 copy libfaad2_dll.dll %TARGET%
 copy MACDll.dll %TARGET%
 copy libmpg123-0.dll %TARGET%
-if "%1" == "Release" copy taglib.dll %TARGET%
-if "%1" == "Debug" copy taglib_debug.dll %TARGET%\taglib.dll
 
 mkdir %ProgramData%\winLAME 2> nul
 copy ..\presets.xml %ProgramData%\winLAME\presets.xml
