@@ -29,8 +29,6 @@ using Encoder::LibMpg123InputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
-#pragma comment(lib, "libmpg123-0.lib")
-
 LibMpg123InputModule::LibMpg123InputModule()
 :m_isAtEndOfFile(false),
 m_fileSize(0L)

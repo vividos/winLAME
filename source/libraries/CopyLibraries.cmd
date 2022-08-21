@@ -24,7 +24,6 @@ copy libmp3lame.dll %TARGET%
 copy libfaac_dll.dll %TARGET%
 copy libfaad2_dll.dll %TARGET%
 copy MACDll.dll %TARGET%
-copy libmpg123-0.dll %TARGET%
 
 mkdir %ProgramData%\winLAME 2> nul
 copy ..\presets.xml %ProgramData%\winLAME\presets.xml
