@@ -2,7 +2,7 @@
 <!--
 
  winLAME - a frontend for the LAME encoding engine
- Copyright (c) 2005-2020 Michael Fink
+ Copyright (c) 2005-2022 Michael Fink
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -51,8 +51,8 @@
     <Media Id="1" Cabinet="winLAME.cab" EmbedCab="yes" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Merge Id="Msvcrt142Msm" Language="0"
-             SourceFile="$(env.ProgramFiles(x86))\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\v142\MergeModules\Microsoft_VC142_CRT_x86.msm"
+      <Merge Id="Msvcrt143Msm" Language="0"
+             SourceFile="$(env.ProgramW6432)\Microsoft Visual Studio\2022\Community\VC\Redist\MSVC\v143\MergeModules\Microsoft_VC143_CRT_x86.msm"
              DiskId="1" />
       <Directory Id="ProgramFilesFolder">
         <Directory Id="WinLame" Name="winLAME">
@@ -145,7 +145,7 @@
 
       <Component Id="SndFileLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="SndFileDll" Name="sndfile.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\sndfile.dll" />
+           Source="$(var.OutputDir)sndfile.dll" />
       </Component>
 
       <Component Id="ReadmeFiles" Guid="5224ddc3-9b66-4277-9fae-7f0f296e2e28" Directory="INSTALLDIR">
@@ -171,18 +171,18 @@
       </Component>
 
       <Component Id="FlacDynamicLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibFlacDynamicDll" Name="libFLAC_dynamic.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libFLAC_dynamic.dll" />
+        <File Id="FlacDll" Name="FLAC.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)FLAC.dll" />
       </Component>
 
       <Component Id="OggVorbisLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibVorbisDll" Name="libvorbis.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libvorbis.dll" />
+        <File Id="VorbisDll" Name="vorbis.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)vorbis.dll" />
       </Component>
 
       <Component Id="OggVorbisFileLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibVorbisFileDll" Name="libvorbisfile.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libvorbisfile.dll" />
+        <File Id="VorbisFileDll" Name="vorbisfile.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)vorbisfile.dll" />
       </Component>
 
       <Component Id="MonkeysAudioLibrary" Guid="*" Directory="INSTALLDIR">
@@ -202,32 +202,37 @@
 
       <Component Id="OggLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="OggDll" Name="ogg.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\ogg.dll" />
+           Source="$(var.OutputDir)ogg.dll" />
       </Component>
 
       <Component Id="OpusLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="OpusDll" Name="opus.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\opus.dll" />
+           Source="$(var.OutputDir)opus.dll" />
       </Component>
 
       <Component Id="OpusEncLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="OpusEncDll" Name="opusenc.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\opusenc.dll" />
+           Source="$(var.OutputDir)opusenc.dll" />
       </Component>
 
       <Component Id="LibSpeexLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibSpeexDll" Name="libspeex.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libspeex.dll" />
+           Source="$(var.OutputDir)libspeex.dll" />
       </Component>
 
       <Component Id="LibMpg123Library" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibMpg1230Dll" Name="libmpg123-0.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libmpg123-0.dll" />
+        <File Id="Mpg123Dll" Name="mpg123.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)mpg123.dll" />
       </Component>
 
       <Component Id="TagLibLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="TagLibDll" Name="taglib.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\taglib.dll" />
+        <File Id="TagDll" Name="tag.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)tag.dll" />
+      </Component>
+
+      <Component Id="ZlibLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="Zlib1Dll" Name="zlib1.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)zlib1.dll" />
       </Component>
 
       <Component Id="WinLameHelp" Guid="*" Directory="INSTALLDIR">
@@ -243,8 +248,8 @@
       <ComponentGroupRef Id="AllFiles" />
     </Feature>
 
-    <Feature Id="VCRedist" Title="Visual C++ 2019 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
-      <MergeRef Id="Msvcrt142Msm"/>
+    <Feature Id="VCRedist" Title="Visual C++ 2022 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="Msvcrt143Msm"/>
     </Feature>
 
     <Icon Id="WinLameShortcutIcon" SourceFile="$(var.winLAME.ProjectDir)res\winlame.ico" />
