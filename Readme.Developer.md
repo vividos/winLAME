@@ -2,7 +2,7 @@
 
 ## Compiling winLAME
 
-In order to compile winLAME, you just need Microsoft Visual Studio 2019. Any
+In order to compile winLAME, you just need Microsoft Visual Studio 2022. Any
 dition will do, including Community, which I use to develop winLAME.
 
 Open the winlame.sln in Visual Studio, set the startup project to "winLAME",
