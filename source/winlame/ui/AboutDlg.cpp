@@ -1,6 +1,6 @@
 ///
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2020 Michael Fink
+// Copyright (c) 2000-2022 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 #include "AboutDlg.hpp"
 #include "ModuleInterface.hpp"
 #include "App.hpp"
-#include <ulib/win32/VersionInfoResource.hpp>
+#include "encoder/AudioFileTag.hpp"
 
 using UI::AboutDlg;
 
@@ -187,17 +187,5 @@ CString AboutDlg::GetAboutHtmlText()
 
 CString AboutDlg::GetTagLibVersion()
 {
-   CString filename = Path::Combine(Path::FolderName(Path::ModuleFilename()), _T("tag.dll"));
-   Win32::VersionInfoResource versionInfo(filename);
-
-   // retrieve version language
-   std::vector<Win32::LANGANDCODEPAGE> langAndCodePagesList;
-   versionInfo.GetLangAndCodepages(langAndCodePagesList);
-
-   if (langAndCodePagesList.empty())
-      return _T("???");
-
-   CString fileVersion = versionInfo.GetStringValue(langAndCodePagesList[0], _T("FileVersion"));
-
-   return fileVersion;
+   return Encoder::AudioFileTag::GetTagLibVersion();
 }

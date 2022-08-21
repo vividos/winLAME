@@ -25,6 +25,7 @@
 #include "TrackInfo.hpp"
 #pragma warning(push)
 #pragma warning(disable: 4251) // class 'T' needs to have dll-interface to be used by clients of class 'C'
+#include <taglib/taglib.h>
 #include <taglib/fileref.h>
 #include <taglib/tpropertymap.h>
 #include <taglib/id3v2tag.h>
@@ -35,6 +36,8 @@
 #include <taglib/oggflacfile.h>
 #include <taglib/xiphcomment.h>
 #pragma warning(pop)
+#include <ulib/win32/VersionInfoResource.hpp>
+#include "../../version.h"
 
 using Encoder::AudioFileTag;
 using Encoder::TrackInfo;
@@ -478,4 +481,24 @@ void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag) const
    {
       tag->setTrack(static_cast<unsigned int>(intValue));
    }
+}
+
+CString Encoder::AudioFileTag::GetTagLibVersion()
+{
+   CString filename = Path::Combine(Path::FolderName(Path::ModuleFilename()), _T("tag.dll"));
+   Win32::VersionInfoResource versionInfo{ filename };
+
+   if (!versionInfo.IsAvail())
+      return STRINGIFY(TAGLIB_MAJOR_VERSION) _T(".") STRINGIFY(TAGLIB_MINOR_VERSION) _T(".") STRINGIFY(TAGLIB_PATCH_VERSION);
+
+   // retrieve version language
+   std::vector<Win32::LANGANDCODEPAGE> langAndCodePagesList;
+   versionInfo.GetLangAndCodepages(langAndCodePagesList);
+
+   if (langAndCodePagesList.empty())
+      return _T("???");
+
+   CString fileVersion = versionInfo.GetStringValue(langAndCodePagesList[0], _T("FileVersion"));
+
+   return fileVersion;
 }

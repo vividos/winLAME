@@ -75,6 +75,9 @@ namespace Encoder
       /// stores TrackInfo data to tag infos in audio file
       bool WriteToFile(const CString& filename, AudioFileType audioFileType = AudioFileType::FromExtension) const;
 
+      /// returns TagLib version number
+      static CString GetTagLibVersion();
+
    private:
       /// opens taglib file
       static std::shared_ptr<TagLib::File> OpenFile(const CString& filename, AudioFileType audioFileType);
