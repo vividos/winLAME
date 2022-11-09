@@ -216,8 +216,8 @@
       </Component>
 
       <Component Id="LibSpeexLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibSpeexDll" Name="libspeex.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.OutputDir)libspeex.dll" />
+        <File Id="Speex1Dll" Name="speex-1.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)speex-1.dll" />
       </Component>
 
       <Component Id="LibMpg123Library" Guid="*" Directory="INSTALLDIR">
