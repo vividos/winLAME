@@ -29,13 +29,6 @@ using Encoder::SpeexInputModule;
 using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 
-// define some symbols that seem to be missing from the lib file
-extern "C" void speex_header_free(void* ptr)
-{
-   // note: speex_free isn't exported by the lib as well
-   //speex_free(ptr);
-}
-
 SpeexInputModule::SpeexInputModule()
    :m_fileSize(0),
    m_packetCount(0),
