@@ -48,31 +48,31 @@ namespace Encoder
       // input module
 
       /// returns the number of available input modules
-      virtual int GetInputModuleCount() const override
+      virtual size_t GetInputModuleCount() const override
       {
          return m_inputModules.size();
       }
 
       /// returns the name of the input module
-      virtual CString GetInputModuleName(int index) const override
+      virtual CString GetInputModuleName(size_t index) const override
       {
          return m_inputModules[index]->GetModuleName();
       }
 
       /// returns the input module ID
-      virtual int GetInputModuleID(int index) const override
+      virtual int GetInputModuleID(size_t index) const override
       {
          return m_inputModules[index]->GetModuleID();
       }
 
       /// returns the input module filter string
-      virtual CString GetInputModuleFilterString(int index) const override
+      virtual CString GetInputModuleFilterString(size_t index) const override
       {
          return m_inputModules[index]->GetFilterString();
       }
 
       /// returns input module instance
-      virtual InputModule* GetInputModuleInstance(int index) override
+      virtual InputModule* GetInputModuleInstance(size_t index) override
       {
          return m_inputModules[index];
       }
@@ -84,19 +84,19 @@ namespace Encoder
       // output module
 
       /// returns the number of available output modules
-      virtual int GetOutputModuleCount() override
+      virtual size_t GetOutputModuleCount() override
       {
          return m_outputModules.size();
       }
 
       /// returns the name of an output module
-      virtual CString GetOutputModuleName(int index) override
+      virtual CString GetOutputModuleName(size_t index) override
       {
          return m_outputModules[index]->GetModuleName();
       }
 
       /// returns the output module ID
-      virtual int GetOutputModuleID(int index) override
+      virtual int GetOutputModuleID(size_t index) override
       {
          return m_outputModules[index]->GetModuleID();
       }
@@ -115,7 +115,7 @@ namespace Encoder
       std::vector<InputModule*> m_inputModules;
 
       /// output module ID to index mapping
-      std::map<int, int> m_mapOutputModuleIdToModuleIndex;
+      std::map<int, size_t> m_mapOutputModuleIdToModuleIndex;
    };
 
 } //namespace Encoder

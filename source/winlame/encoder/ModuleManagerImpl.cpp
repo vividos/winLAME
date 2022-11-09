@@ -45,10 +45,10 @@ using namespace Encoder;
 // global functions
 
 /// max number of input modules GetNewInputModule can return
-const int c_maxInputModule = 9;
+const size_t c_maxInputModule = 9;
 
 /// returns a new input module by index
-InputModule* GetNewInputModule(int index)
+InputModule* GetNewInputModule(size_t index)
 {
    InputModule* inputModule = nullptr;
    switch (index)
@@ -89,10 +89,10 @@ InputModule* GetNewInputModule(int index)
 }
 
 /// max number of output modules GetNewOutputModule can return
-const int c_maxOutputModule = 6;
+const size_t c_maxOutputModule = 6;
 
 /// returns a new output module by index
-OutputModule* GetNewOutputModule(int index)
+OutputModule* GetNewOutputModule(size_t index)
 {
    OutputModule* outputModule = NULL;
    switch (index)
@@ -127,8 +127,8 @@ void ModuleManagerImpl::GetFilterString(CString& filterstring) const
 {
    // get all filter strings
    CString filter;
-   int max = GetInputModuleCount();
-   for (int i = 0; i < max; i++)
+   size_t max = GetInputModuleCount();
+   for (size_t i = 0; i < max; i++)
       filter += GetInputModuleFilterString(i);
 
    // add an "all supported audio files" option
@@ -199,7 +199,7 @@ bool ModuleManagerImpl::GetAudioFileInfo(LPCTSTR filename,
 ModuleManagerImpl::ModuleManagerImpl()
 {
    // check which output modules are available
-   for (int i = 0; i < c_maxOutputModule; i++)
+   for (size_t i = 0; i < c_maxOutputModule; i++)
    {
       OutputModule* outputModule = GetNewOutputModule(i);
 
@@ -217,7 +217,7 @@ ModuleManagerImpl::ModuleManagerImpl()
    }
 
    // check which input modules are available
-   for (int i = 0; i < c_maxInputModule; i++)
+   for (size_t i = 0; i < c_maxInputModule; i++)
    {
       InputModule* inputModule = GetNewInputModule(i);
 
@@ -234,13 +234,13 @@ ModuleManagerImpl::ModuleManagerImpl()
 ModuleManagerImpl::~ModuleManagerImpl()
 {
    // delete all output modules
-   int max = m_outputModules.size();
-   for (int i = 0; i < max; i++)
+    size_t max = m_outputModules.size();
+   for (size_t i = 0; i < max; i++)
       delete m_outputModules[i];
 
    // delete all input modules
    max = m_inputModules.size();
-   for (int i = 0; i < max; i++)
+   for (size_t i = 0; i < max; i++)
       delete m_inputModules[i];
 }
 
@@ -260,8 +260,8 @@ InputModule* ModuleManagerImpl::ChooseInputModule(LPCTSTR filename)
    extension = lowerExtension.GetString();
 
    // search all filter strings for file extension
-   int max = GetInputModuleCount();
-   for (int i = 0; i < max && inputModule == nullptr; i++)
+   size_t max = GetInputModuleCount();
+   for (size_t i = 0; i < max && inputModule == nullptr; i++)
    {
       CString lowerFilter = GetInputModuleFilterString(i);
       lowerFilter.MakeLower();
@@ -295,17 +295,17 @@ InputModule* ModuleManagerImpl::ChooseInputModule(LPCTSTR filename)
    return inputModule;
 }
 
-OutputModule *ModuleManagerImpl::GetOutputModule(int m_moduleId)
+OutputModule* ModuleManagerImpl::GetOutputModule(int moduleId)
 {
    // search output module per id
-   OutputModule *outputModule = nullptr;
+   OutputModule* outputModule = nullptr;
 
-   int max = GetOutputModuleCount();
-   for (int i = 0; i < max; i++)
-      if (GetOutputModuleID(i) == m_moduleId)
+   size_t max = GetOutputModuleCount();
+   for (size_t i = 0; i < max; i++)
+      if (GetOutputModuleID(i) == moduleId)
       {
-         std::map<int, int>::iterator pos =
-            m_mapOutputModuleIdToModuleIndex.find(m_moduleId);
+         std::map<int, size_t>::iterator pos =
+            m_mapOutputModuleIdToModuleIndex.find(moduleId);
 
          if (pos == m_mapOutputModuleIdToModuleIndex.end())
             continue; // should not happen, normally
@@ -318,14 +318,12 @@ OutputModule *ModuleManagerImpl::GetOutputModule(int m_moduleId)
 }
 
 void ModuleManagerImpl::GetModuleVersionString(CString& version,
-   int m_moduleId, int special)
+   int moduleId, int special)
 {
-   int max, i;
-
    // search all input modules for module ID
-   max = GetInputModuleCount();
-   for (i = 0; i < max; i++)
-      if (GetInputModuleID(i) == m_moduleId)
+   size_t max = GetInputModuleCount();
+   for (size_t i = 0; i < max; i++)
+      if (GetInputModuleID(i) == moduleId)
       {
          m_inputModules[i]->GetVersionString(version, special);
          return;
@@ -333,8 +331,8 @@ void ModuleManagerImpl::GetModuleVersionString(CString& version,
 
    // and now all output modules
    max = GetOutputModuleCount();
-   for (i = 0; i < max; i++)
-      if (GetOutputModuleID(i) == m_moduleId)
+   for (size_t i = 0; i < max; i++)
+      if (GetOutputModuleID(i) == moduleId)
       {
          m_outputModules[i]->GetVersionString(version, special);
          return;

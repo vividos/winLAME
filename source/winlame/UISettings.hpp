@@ -94,7 +94,7 @@ struct UISettings
    int after_encoding_action;
 
    /// last selected output module id
-   int output_module;
+   size_t output_module;
 
    /// use input dir as output location
    bool out_location_use_input_dir;

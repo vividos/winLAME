@@ -154,7 +154,7 @@ bool OutputSettingsPage::SaveData(bool bSilent)
       BST_CHECKED == m_checkDeleteAfter.GetCheck();
 
    // output module combo box
-   m_uiSettings.output_module = m_comboOutputModule.GetCurSel();
+   m_uiSettings.output_module = static_cast<size_t>(m_comboOutputModule.GetCurSel());
 
    // "use input folder as output location" check
    m_uiSettings.out_location_use_input_dir =

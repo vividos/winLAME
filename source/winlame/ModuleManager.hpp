@@ -44,28 +44,28 @@ namespace Encoder
       // module functions
 
       /// returns the number of available input modules
-      virtual int GetInputModuleCount() const = 0;
+      virtual size_t GetInputModuleCount() const = 0;
 
       /// returns the name of the input module
-      virtual CString GetInputModuleName(int index) const = 0;
+      virtual CString GetInputModuleName(size_t index) const = 0;
 
       /// returns the input module ID
-      virtual int GetInputModuleID(int index) const = 0;
+      virtual int GetInputModuleID(size_t index) const = 0;
 
       /// returns the input module filter string
-      virtual CString GetInputModuleFilterString(int index) const = 0;
+      virtual CString GetInputModuleFilterString(size_t index) const = 0;
 
       /// returns the input module filter string
-      virtual InputModule* GetInputModuleInstance(int index) = 0;
+      virtual InputModule* GetInputModuleInstance(size_t index) = 0;
 
       /// returns the number of available output modules
-      virtual int GetOutputModuleCount() = 0;
+      virtual size_t GetOutputModuleCount() = 0;
 
       /// returns the name of the output module
-      virtual CString GetOutputModuleName(int index) = 0;
+      virtual CString GetOutputModuleName(size_t index) = 0;
 
       /// returns the output module ID
-      virtual int GetOutputModuleID(int index) = 0;
+      virtual int GetOutputModuleID(size_t index) = 0;
 
       /// retrieves a module version string
       virtual void GetModuleVersionString(CString& version, int m_moduleId, int special = 0) = 0;
