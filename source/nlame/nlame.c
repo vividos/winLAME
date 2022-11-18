@@ -646,7 +646,7 @@ void nlame_write_vbr_infotag(nlame_instance_t* inst, FILE* fd)
    long lFileSize;
    long id3v2TagSize;
    unsigned char buffer[MAXFRAMESIZE];
-   int length;
+   size_t length;
 
    if (!fd)
       return;
@@ -784,7 +784,7 @@ void nlame_id3tag_set_albumart(nlame_instance_t* inst, const char* image, size_t
    id3tag_set_albumart(inst->lgf, image, size);
 }
 
-int nlame_id3tag_get_id3v2_tag(nlame_instance_t* inst, unsigned char* buffer, size_t size)
+size_t nlame_id3tag_get_id3v2_tag(nlame_instance_t* inst, unsigned char* buffer, size_t size)
 {
    return lame_get_id3v2_tag(inst->lgf, buffer, size);
 }

@@ -39,7 +39,7 @@ LPCTSTR g_pszOverwriteExisting = _T("OverwriteExisting");
 LPCTSTR g_pszActionAfterEncoding = _T("ActionAfterEncoding");
 LPCTSTR g_pszLastSelectedPresetIndex = _T("LastSelectedPresetIndex");
 LPCTSTR g_pszCdripTempFolder = _T("CDExtractTempFolder");
-LPCTSTR g_pszOutputPathHistory = _T("OutputPathHistory%02u");
+LPCTSTR g_pszOutputPathHistory = _T("OutputPathHistory%02zu");
 LPCTSTR g_pszFreedbServer = _T("FreedbServer");
 LPCTSTR g_pszDiscInfosCdplayerIni = _T("StoreDiscInfosInCdplayerIni");
 LPCTSTR g_pszFormatVariousTrack = _T("CDExtractFormatVariousTrack");
@@ -135,7 +135,9 @@ void UISettings::ReadSettings()
       lastinputpath = cszLastInputPath;
 
    // read "output module" value
-   ReadUIntValue(regRoot, g_pszOutputModule, output_module);
+   UINT tempOutputModule = 0;
+   ReadUIntValue(regRoot, g_pszOutputModule, tempOutputModule);
+   output_module = tempOutputModule;
 
    // read "use input file's folder as output location" value
    ReadBooleanValue(regRoot, g_pszInputOutputSameFolder, out_location_use_input_dir);
@@ -233,7 +235,7 @@ void UISettings::StoreSettings()
    regRoot.SetValue(lastinputpath, g_pszLastInputPath);
 
    // write "output module" value
-   regRoot.SetValue(output_module, g_pszOutputModule);
+   regRoot.SetValue(static_cast<DWORD>(output_module), g_pszOutputModule);
 
    // write "use input file's folder as output location" value
    DWORD value = out_location_use_input_dir ? 1 : 0;
@@ -278,7 +280,7 @@ void UISettings::StoreSettings()
 
    // store "output path history" entries
    CString buffer;
-   int i, max = outputhistory.size() > 10 ? 10 : outputhistory.size();
+   size_t i, max = outputhistory.size() > 10 ? 10 : outputhistory.size();
    for (i = 0; i < max; i++)
    {
       buffer.Format(g_pszOutputPathHistory, i);

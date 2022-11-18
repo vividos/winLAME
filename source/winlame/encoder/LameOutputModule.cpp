@@ -600,12 +600,12 @@ void LameOutputModule::AddLameID3v2Tag(const TrackInfo& trackInfo)
    }
 
    // write out ID3v2 tag
-   int requiredSize = nlame_id3tag_get_id3v2_tag(m_instance, nullptr, 0);
+   size_t requiredSize = nlame_id3tag_get_id3v2_tag(m_instance, nullptr, 0);
    if (requiredSize > 0)
    {
       std::vector<unsigned char> id3v2tag(requiredSize, 0);
 
-      int ret = nlame_id3tag_get_id3v2_tag(m_instance, id3v2tag.data(), id3v2tag.size());
+      size_t ret = nlame_id3tag_get_id3v2_tag(m_instance, id3v2tag.data(), id3v2tag.size());
       ATLASSERT(ret == requiredSize);
       UNUSED(ret);
 

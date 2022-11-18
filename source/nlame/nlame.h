@@ -667,7 +667,7 @@ void nlame_id3tag_set_albumart(nlame_instance_t* inst, const char* image, size_t
     when you want to write the ID3v2 tag yourself. for this to happen, set the
     nle_var_id3tag_write_automatic value to 0. when you pass NULL as buffer,
     the required buffer size is returned. */
-int nlame_id3tag_get_id3v2_tag(nlame_instance_t* inst, unsigned char* buffer, size_t size);
+size_t nlame_id3tag_get_id3v2_tag(nlame_instance_t* inst, unsigned char* buffer, size_t size);
 
 
 /*! returns the version number of the nLAME API */
