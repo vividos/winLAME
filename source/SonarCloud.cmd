@@ -1,7 +1,7 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2022 Michael Fink
+REM Copyright (c) 2000-2023 Michael Fink
 REM
 REM Runs SonarCloud analysis build
 REM
@@ -22,7 +22,7 @@ REM Extract SonarQube build tools
 REM
 pushd ..\buildtools\SonarQube
 "%ProgramFiles%\7-Zip\7z.exe" x -y build-wrapper-win-x86.zip
-"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-5.3.1.36242-net46.zip
+"%ProgramFiles%\7-Zip\7z.exe" x -y -osonar-scanner-msbuild sonar-scanner-msbuild-5.10.0.59947-net46.zip
 PATH=%PATH%;%CD%\build-wrapper-win-x86;%CD%\sonar-scanner-msbuild
 popd
 
@@ -70,7 +70,9 @@ buildtools\nuget restore winlame.sln
 REM
 REM Rebuild Release|Win32
 REM
-build-wrapper-win-x86-64.exe --out-dir bw-output msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Restore;Rebuild
+build-wrapper-win-x86-64.exe ^
+   --out-dir bw-output ^
+   msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Restore;Rebuild
 
 REM
 REM Run unit tests
