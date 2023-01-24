@@ -1,6 +1,6 @@
 {
   "name": "winlame",
-  "version-string": "2.22.0",
+  "version-string": "2.23.0",
   "dependencies": [
     "mpg123",
     "libogg",
