@@ -1,6 +1,6 @@
 ///
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2022 Michael Fink
+// Copyright (c) 2000-2023 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include "AboutDlg.hpp"
 #include "ModuleInterface.hpp"
 #include "App.hpp"
+#include "version.h"
 #include "encoder/AudioFileTag.hpp"
 
 using UI::AboutDlg;
@@ -107,6 +108,10 @@ CString AboutDlg::GetAboutHtmlText()
       {
          // find out winlame version from version resource
          varname = App::Version() + _T(" (") + App::VersionNumber() + _T(")");
+      }
+      else if (varname == _T("buildyear"))
+      {
+          varname = STRINGIFY(BUILD_YEAR);
       }
       else if (varname == _T("installedinputmodules"))
       {

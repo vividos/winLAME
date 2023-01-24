@@ -176,8 +176,6 @@ Here's a checklist of what to do before each release:
   * AppVeyor Settings on https://ci.appveyor.com/project/vividos/winlame/settings
   * SonarQube build script
 - Update copyright year in the following files:
-  * about.html
-  * about.????.html
   * setup\License.winLAME.rtf
   * htmlhelp index page
   * setup\readme.txt
