@@ -1,6 +1,6 @@
 #
 # winLAME - a frontend for the LAME encoding engine
-# Copyright (c) 2000-2022 Michael Fink
+# Copyright (c) 2000-2023 Michael Fink
 #
 # AppVeyor build configuration file
 #
@@ -19,6 +19,10 @@ cache:
 before_build:
   - ps: source\Patch-BuildVersion.ps1 -version $env:appveyor_build_version
   - cmd: nuget restore
+  - cmd: |
+      cd "C:\Tools\vcpkg"
+      git pull > nul
+      call .\bootstrap-vcpkg.bat -disableMetrics
 
 build:
   project: winlame.sln
