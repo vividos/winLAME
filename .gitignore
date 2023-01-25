@@ -59,7 +59,7 @@ buildtools/portable/PortableApps.comLauncher/
 buildtools/SonarQube/build-wrapper-win-x86/
 buildtools/SonarQube/sonar-scanner-msbuild/
 .sonarqube/
-bw-output/
+.bw-output/
 .vs/
 packages/
 uwpapp/winlame/
@@ -100,5 +100,5 @@ buildlibs/lib/
 CoverageReport/
 /winlame-coverage.xml
 /buildlibs/lame-svn-*.zip
-/.sonar-cache/
+.sonar-cache/
 vcpkg_installed/

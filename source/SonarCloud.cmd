@@ -40,7 +40,8 @@ REM Build using SonarQube scanner for MSBuild
 REM
 cd ..
 rmdir .\.sonarqube /s /q 2> nul
-rmdir .\bw-output /s /q 2> nul
+rmdir .\.bw-output /s /q 2> nul
+mkdir .\.sonar-cache 2> nul
 
 msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Clean
 
@@ -51,7 +52,7 @@ popd
 SonarScanner.MSBuild.exe begin ^
     /k:"winLAME" ^
     /v:"2.23.0.0" ^
-    /d:"sonar.cfamily.build-wrapper-output=%CD%\bw-output" ^
+    /d:"sonar.cfamily.build-wrapper-output=%CD%\.bw-output" ^
     /d:"sonar.coverageReportPaths=%CD%\source\winlame-coverage.xml" ^
     /d:"sonar.host.url=https://sonarcloud.io" ^
     /d:"sonar.cfamily.threads=4" ^
@@ -71,7 +72,7 @@ REM
 REM Rebuild Release|Win32
 REM
 build-wrapper-win-x86-64.exe ^
-   --out-dir bw-output ^
+   --out-dir .bw-output ^
    msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Restore;Rebuild
 
 REM
