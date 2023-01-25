@@ -1,13 +1,13 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (C) 2000-2019 Michael Fink
+REM Copyright (C) 2000-2023 Michael Fink
 REM
 REM Runs winLAME Unit Tests and collects coverage information
 REM
 
 REM set this to your Visual Studio installation folder
-set VSINSTALL=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
+set VSINSTALL=%ProgramFiles%\Microsoft Visual Studio\2022\Community
 
 REM
 REM Preparations
