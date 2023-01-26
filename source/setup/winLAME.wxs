@@ -2,7 +2,7 @@
 <!--
 
  winLAME - a frontend for the LAME encoding engine
- Copyright (c) 2005-2022 Michael Fink
+ Copyright (c) 2005-2023 Michael Fink
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -183,6 +183,11 @@
       <Component Id="OggVorbisFileLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="VorbisFileDll" Name="vorbisfile.dll" DiskId="1" KeyPath="yes"
            Source="$(var.OutputDir)vorbisfile.dll" />
+      </Component>
+
+      <Component Id="OggVorbisEncLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="VorbisEncDll" Name="vorbisenc.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)vorbisenc.dll" />
       </Component>
 
       <Component Id="MonkeysAudioLibrary" Guid="*" Directory="INSTALLDIR">
