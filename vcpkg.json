@@ -17,7 +17,6 @@
     },
     "taglib",
     "wtl",
-    "boost-any",
     "boost-asio",
     "rapidxml"
   ]
