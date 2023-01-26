@@ -204,15 +204,18 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    {
       const char* comments = BASS_WMA_GetTags(infilename, BASS_UNICODE);
 
-      std::vector<size_t> vecCommentIndices;
+      std::vector<size_t> commentIndices;
       if (comments)
       {
-         size_t cur_index = 0;
-         const char* index = comments;
-         while (index && *index) {
-            vecCommentIndices.push_back(cur_index);
-            cur_index += strlen(index) + 1;
-            index += strlen(index) + 1;
+         size_t currentIndex = 0;
+         const char* currentTag = comments;
+         while (currentTag && *currentTag)
+         {
+            commentIndices.push_back(currentIndex);
+
+            size_t length = strlen(currentTag);
+            currentIndex += length + 1;
+            currentTag += length + 1;
          }
       }
 
@@ -230,9 +233,9 @@ int BassInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
 
       CString wma_genre;
 
-      for (size_t i = 0; i < vecCommentIndices.size(); i++)
+      for (size_t i = 0; i < commentIndices.size(); i++)
       {
-         CString cszTag = UTF8ToString(comments + vecCommentIndices[i]);
+         CString cszTag = UTF8ToString(comments + commentIndices[i]);
 
          // search for delimiting colon
          int iPos = cszTag.Find(_T('='));
