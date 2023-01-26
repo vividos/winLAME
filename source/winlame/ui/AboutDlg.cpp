@@ -25,7 +25,7 @@
 #include "AboutDlg.hpp"
 #include "ModuleInterface.hpp"
 #include "App.hpp"
-#include "version.h"
+#include "../../version.h"
 #include "encoder/AudioFileTag.hpp"
 
 using UI::AboutDlg;
