@@ -12,5 +12,11 @@
   <?define ProductName = "winLAME $(var.BuildYear) release $(var.ReleaseNumber)" ?>
   <?endif ?>
 
+  <?if $(var.Configuration) = Debug ?>
+  <?define DebugDllSuffix = "d" ?>
+  <?else?>
+  <?define DebugDllSuffix = "" ?>
+  <?endif ?>
+
   <?define Version = "$(var.MajorVersion).$(var.MinorVersion).$(var.ReleaseNumber).$(var.BuildNumber)" ?>
 </Include>
