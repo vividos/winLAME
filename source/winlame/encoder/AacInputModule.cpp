@@ -54,7 +54,7 @@ Encoder::InputModule* AacInputModule::CloneModule()
 
 bool AacInputModule::IsAvailable() const
 {
-   return DynamicLibrary(_T("libfaad2_dll.dll")).IsLoaded();
+   return DynamicLibrary(_T("faad.dll")).IsLoaded();
 }
 
 CString AacInputModule::GetDescription() const
@@ -135,7 +135,7 @@ void AacInputModule::GetVersionString(CString& version, int special) const
 
    NeAACDecGetVersion(&id_string, &copyright_string);
 
-   version.Format(_T("libfaad2 %hs"), id_string);
+   version.Format(_T("faad2 %hs"), id_string);
 }
 
 CString AacInputModule::GetFilterString() const
