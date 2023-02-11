@@ -11,6 +11,7 @@
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
+    <VcpkgAdditionalInstallOptions>--no-print-usage</VcpkgAdditionalInstallOptions>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Platform)'=='Win32'">
     <VcpkgTriplet>x86-windows</VcpkgTriplet>
