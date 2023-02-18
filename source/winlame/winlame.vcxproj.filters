@@ -456,9 +456,6 @@
     <Xml Include="..\presets.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\docs\TODO.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="res\MainFrameRibbon.xml">
       <Filter>Modern UI Files\Resource Files</Filter>
     </CustomBuild>

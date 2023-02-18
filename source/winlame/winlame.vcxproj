@@ -235,9 +235,6 @@
     <Xml Include="..\presets.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\docs\TODO.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\nlame\nlame.vcxproj">
       <Project>{0b3f6b1a-d78e-47db-a48c-d3daa16e17ce}</Project>
     </ProjectReference>
