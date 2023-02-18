@@ -96,7 +96,6 @@ void EnableButtonText(CToolBarCtrl& tb, UINT uiId)
 
 LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/)
 {
-   SetupCmdBar();
    if (!SetupRibbonBar())
       return -1;
 
@@ -131,22 +130,9 @@ LRESULT MainFrame::OnCreate(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
    if (App::Current().IsHelpAvailable())
       m_htmlHelper.Init(m_hWnd, App::Current().HelpFilename());
    else
-      m_CmdBar.GetMenu().RemoveMenu(ID_HELP, MF_BYCOMMAND);
+      UIEnable(ID_HELP, false);
 
    return 0;
-}
-
-void MainFrame::SetupCmdBar()
-{
-   CMenuHandle menu = GetMenu();
-
-   // create the command bar
-   m_CmdBar.Create(m_hWnd, rcDefault, nullptr, ATL_SIMPLE_CMDBAR_PANE_STYLE);
-
-   m_CmdBar.AttachMenu(GetMenu());
-
-   // remove old menu
-   SetMenu(nullptr);
 }
 
 bool MainFrame::SetupRibbonBar()
@@ -164,7 +150,10 @@ bool MainFrame::SetupRibbonBar()
       return false;
    }
 
-   UIAddMenu(m_CmdBar.GetMenu(), true);
+   // use the main frame's menu for ribbon command labels
+   CMenuHandle menu = GetMenu();
+   UIAddMenu(menu, true);
+   SetMenu(nullptr);
 
    CRibbonPersist(c_pszRibbonRegkey).Restore(ribbonUI, m_hgRibbonSettings);
 

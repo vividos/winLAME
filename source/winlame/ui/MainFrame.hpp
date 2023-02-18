@@ -61,9 +61,6 @@ namespace UI
 
       DECLARE_FRAME_WND_CLASS(NULL, IDR_MAINFRAME)
 
-      /// command bar
-      CCommandBarCtrl m_CmdBar;
-
       /// ribbon item gallery for settings "finish action" selection
       CRibbonItemGalleryCtrl<ID_SETTINGS_FINISH_ACTION, 3> m_cbSettingsFinishAction;
 
@@ -78,6 +75,7 @@ namespace UI
          UPDATE_ELEMENT(ID_TASKS_STOP_ALL, UPDUI_RIBBON)
          UPDATE_ELEMENT(ID_TASKS_REMOVE_COMPLETED, UPDUI_RIBBON)
          UPDATE_ELEMENT(ID_SETTINGS_FINISH_ACTION, UPDUI_RIBBON)
+         UPDATE_ELEMENT(ID_HELP, UPDUI_RIBBON)
       END_UPDATE_UI_MAP()
 
       BEGIN_MSG_MAP(MainFrame)
@@ -138,9 +136,6 @@ namespace UI
       LRESULT OnHelp(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled);
 
    private:
-      /// sets up command bar
-      void SetupCmdBar();
-
       /// sets up ribbon bar
       bool SetupRibbonBar();
 
