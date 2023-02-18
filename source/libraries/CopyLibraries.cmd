@@ -22,7 +22,6 @@ copy basscd.dll %TARGET%
 copy basswma.dll %TARGET%
 copy libmp3lame.dll %TARGET%
 copy libfaac_dll.dll %TARGET%
-copy MACDll.dll %TARGET%
 
 mkdir %ProgramData%\winLAME 2> nul
 copy ..\presets.xml %ProgramData%\winLAME\presets.xml

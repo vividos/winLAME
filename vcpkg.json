@@ -19,6 +19,7 @@
     "wtl",
     "boost-asio",
     "rapidxml",
-    "faad2"
+    "faad2",
+    "monkeys-audio"
   ]
 }

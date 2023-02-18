@@ -2,7 +2,7 @@
 // winLAME - a frontend for the LAME encoding engine
 // Copyright(c) 2004 Kjetil Haga
 // Copyright(c) 2004 DeXT
-// Copyright(c) 2007-2021 Michael Fink
+// Copyright(c) 2007-2023 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,14 +29,9 @@
 #include <cassert>
 #include "AudioFileTag.hpp"
 
-// Monkey's Audio header files have some incompatibilities; working around that
-#pragma warning(push)
-#pragma warning(disable: 4005)
-
 #define PLATFORM_WINDOWS
-#include "mac/MACDll.h"
-#include "mac/APETag.h"
-#pragma warning(pop)
+#include <monkeys-audio/MACDll.h>
+#include <monkeys-audio/APETag.h>
 
 using Encoder::MonkeysAudioInputModule;
 using Encoder::TrackInfo;
@@ -180,10 +175,10 @@ namespace MonkeysAudio
       case ERROR_INSUFFICIENT_MEMORY:
          desc += _T("insufficient memory");
          break;
-      case ERROR_LOADING_APE_DLL:
-         desc += _T("loading MAC.dll");
+      case ERROR_LOADINGAPE_DLL:
+         desc += _T("loading MACDll.dll");
          break;
-      case ERROR_LOADING_APE_INFO_DLL:
+      case ERROR_LOADINGAPE_INFO_DLL:
          desc += _T("loading MACinfo.dll");
          break;
       case ERROR_LOADING_UNMAC_DLL:
