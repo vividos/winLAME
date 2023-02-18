@@ -1,0 +1,30 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most .editorconfig file
+root = true
+
+# all files
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+tab_width = 3
+
+# Resource files
+[*.rc]
+charset = unset
+trim_trailing_whitespace = false
+
+# Ribbon .xml file
+[*.xml]
+indent_style = space
+indent_size = 2
+
+# code files
+[*.{cpp,hpp,c,h}]
+indent_style = space
+indent_size = 3
+
+# C++ rules
+vc_generate_documentation_comments = doxygen_triple_slash
