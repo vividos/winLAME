@@ -1,6 +1,6 @@
 /*
 	BASSCD 2.4 C/C++ header file
-	Copyright (c) 2003-2014 Un4seen Developments Ltd.
+	Copyright (c) 2003-2019 Un4seen Developments Ltd.
 
 	See the BASSCD.CHM file for more detailed documentation
 */
@@ -32,6 +32,8 @@ extern "C" {
 #define BASS_CONFIG_CD_RETRY		0x10201
 #define BASS_CONFIG_CD_AUTOSPEED	0x10202
 #define BASS_CONFIG_CD_SKIPERROR	0x10203
+#define BASS_CONFIG_CD_READ			0x10205
+#define BASS_CONFIG_CD_TIMEOUT		0x10206
 
 // additional BASS_SetConfigPtr options
 #define BASS_CONFIG_CD_CDDB_SERVER	0x10204
