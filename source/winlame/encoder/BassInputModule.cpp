@@ -106,6 +106,16 @@ void BassInputModule::GetVersionString(CString& version, int special) const
 
    DWORD bassVersion = BASS_GetVersion();
 
+   if (special == 1)
+   {
+      HPLUGIN plugin = BASS_PluginLoad(_T("basscd"), 0);
+      const BASS_PLUGININFO* pluginInfo = BASS_PluginGetInfo(plugin);
+
+      bassVersion = pluginInfo->version;
+
+      BASS_PluginFree(plugin);
+   }
+
    version.Format(_T("%u.%u.%u.%u"),
       HIBYTE(HIWORD(bassVersion)),
       LOBYTE(HIWORD(bassVersion)),

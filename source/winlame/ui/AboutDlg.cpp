@@ -151,6 +151,10 @@ CString AboutDlg::GetAboutHtmlText()
          moduleManager.GetModuleVersionString(varname, ID_OM_OGGV);
       else if (varname == _T("bassver"))
          moduleManager.GetModuleVersionString(varname, ID_IM_BASS);
+      else if (varname == _T("basswmaver"))
+         moduleManager.GetModuleVersionString(varname, ID_OM_BASSWMA);
+      else if (varname == _T("basscdver"))
+         moduleManager.GetModuleVersionString(varname, ID_IM_BASS, 1);
       else if (varname == _T("flacver"))
          moduleManager.GetModuleVersionString(varname, ID_IM_FLAC);
       else if (varname == _T("speexversion"))

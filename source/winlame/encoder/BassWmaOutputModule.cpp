@@ -71,7 +71,12 @@ void BassWmaOutputModule::GetVersionString(CString& version, int special) const
 {
    version.Empty();
 
-   DWORD bassVersion = BASS_GetVersion();
+   HPLUGIN plugin = BASS_PluginLoad(_T("basswma"), 0);
+   const BASS_PLUGININFO* pluginInfo = BASS_PluginGetInfo(plugin);
+
+   DWORD bassVersion = pluginInfo->version;
+
+   BASS_PluginFree(plugin);
 
    version.Format(_T("%u.%u.%u.%u"),
       HIBYTE(HIWORD(bassVersion)),
