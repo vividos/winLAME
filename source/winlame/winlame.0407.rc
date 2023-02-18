@@ -101,6 +101,43 @@ IDB_BITMAP_TASKS        BITMAP                  "res\\tasks.bmp"
 // Menu
 //
 
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&Encode"
+    BEGIN
+        MENUITEM "&Dateien öffnen...",          ID_ENCODE_FILES
+        MENUITEM "&CD einlesen...",             ID_ENCODE_CD
+        MENUITEM SEPARATOR
+        MENUITEM "&Beenden",                    ID_APP_EXIT
+    END
+    POPUP "&Tasks"
+    BEGIN
+        MENUITEM "&Alle anhalten",              ID_TASKS_STOP_ALL
+        MENUITEM "Entfernt &vollständige",      ID_TASKS_REMOVE_COMPLETED
+    END
+    POPUP "&Settings"
+    BEGIN
+        MENUITEM "&Allgemeine &Einstellungen",  ID_SETTINGS_GENERAL
+        MENUITEM "C&D-Auslese-Einstellungen",   ID_SETTINGS_CDREAD
+        MENUITEM "Beenden-A&ktion",             ID_SETTINGS_FINISH_ACTION
+        POPUP "&Finish action"
+        BEGIN
+            MENUITEM "Nichts t&un",                 ID_SETTINGS_FINISH_ACTION_NONE
+            MENUITEM "&winLAME schließen",          ID_SETTINGS_FINISH_ACTION_CLOSE
+            MENUITEM "Energie &sparen",             ID_SETTINGS_FINISH_ACTION_STANDBY
+        END
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Klassischer Modus",          ID_VIEW_SWITCH_CLASSIC
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Hilfe",                      ID_HELP
+        MENUITEM "&Über...",                    ID_APP_ABOUT
+    END
+END
+
 IDM_INPUT_LIST_MENU MENU
 BEGIN
     POPUP "input list context menu"
@@ -552,13 +589,13 @@ END
 STRINGTABLE
 BEGIN
     IDR_MAINFRAME           "winLAME"
-    ID_ENCODE_FILES         "Öffnet Dateien zum kodieren\nDateien öffnen"
+    ID_ENCODE_FILES         "Öffnet Dateien zum Kodieren\nDateien öffnen"
     ID_ENCODE_CD            "Liest Audio-Tracks von CD\nCD einlesen"
     ID_TASKS_STOP_ALL       "Halte alle laufenden Aufgaben an\nAlle anhalten"
     ID_TASKS_REMOVE_COMPLETED 
                             "Entfernt alle vollständigen Aufgaben\nEntfernt vollständige"
     ID_SETTINGS_GENERAL     "Zeit allgemeine Einstellungen an\nAllgemeine Einstellungen"
-    ID_SETTINGS_CDREAD      "Zeigt CD-Auslese-Einstellungen an\\CD-Auslese-Einstellungen"
+    ID_SETTINGS_CDREAD      "Zeigt CD-Auslese-Einstellungen an\nCD-Auslese-Einstellungen"
 END
 
 STRINGTABLE
