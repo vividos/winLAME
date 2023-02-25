@@ -175,10 +175,10 @@ namespace MonkeysAudio
       case ERROR_INSUFFICIENT_MEMORY:
          desc += _T("insufficient memory");
          break;
-      case ERROR_LOADINGAPE_DLL:
+      case ERROR_LOADING_APE_DLL:
          desc += _T("loading MACDll.dll");
          break;
-      case ERROR_LOADINGAPE_INFO_DLL:
+      case ERROR_LOADING_APE_INFO_DLL:
          desc += _T("loading MACinfo.dll");
          break;
       case ERROR_LOADING_UNMAC_DLL:
@@ -250,9 +250,9 @@ CString MonkeysAudioInputModule::GetDescription() const
       return CString();
 
    // get fileinfo
-   APE::int64 samplerateInHz = s_dll.GetInfo(m_handle, APE::APE_INFO_SAMPLE_RATE, 0, 0);
-   APE::int64 numChannels = s_dll.GetInfo(m_handle, APE::APE_INFO_CHANNELS, 0, 0);
-   APE::int64 level = s_dll.GetInfo(m_handle, APE::APE_INFO_COMPRESSION_LEVEL, 0, 0);
+   APE::int64 samplerateInHz = s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_SAMPLE_RATE, 0, 0);
+   APE::int64 numChannels = s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_CHANNELS, 0, 0);
+   APE::int64 level = s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_COMPRESSION_LEVEL, 0, 0);
 
    LPCTSTR compressionLevel;
    switch (level)
@@ -329,12 +329,12 @@ int MonkeysAudioInputModule::InitInput(LPCTSTR infilename,
    }
 
    // get some fileinfo
-   APE::int64 samplerateInHz = s_dll.GetInfo(m_handle, APE::APE_INFO_SAMPLE_RATE, 0, 0);
-   APE::int64 numChannels = s_dll.GetInfo(m_handle, APE::APE_INFO_CHANNELS, 0, 0);
-   APE::int64 bitrateInBps = s_dll.GetInfo(m_handle, APE::APE_INFO_BITS_PER_SAMPLE, 0, 0);
+   APE::int64 samplerateInHz = s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_SAMPLE_RATE, 0, 0);
+   APE::int64 numChannels = s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_CHANNELS, 0, 0);
+   APE::int64 bitrateInBps = s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_BITS_PER_SAMPLE, 0, 0);
 
    // set total samples in file (for stats update)
-   m_numTotalSamples = s_dll.GetInfo(m_handle, APE::APE_DECOMPRESS_TOTAL_BLOCKS, 0, 0);
+   m_numTotalSamples = s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_DECOMPRESS_TOTAL_BLOCKS, 0, 0);
 
    // set up input traits
    samples.SetInputModuleTraits(
@@ -353,13 +353,13 @@ void MonkeysAudioInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& 
    if (m_handle == nullptr)
       return;
 
-   int bitsPerSample = static_cast<int>(s_dll.GetInfo(m_handle, APE::APE_INFO_BITS_PER_SAMPLE, 0, 0));
+   int bitsPerSample = static_cast<int>(s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_BITS_PER_SAMPLE, 0, 0));
 
-   numChannels = static_cast<int>(s_dll.GetInfo(m_handle, APE::APE_INFO_CHANNELS, 0, 0));
+   numChannels = static_cast<int>(s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_CHANNELS, 0, 0));
 
-   samplerateInHz = static_cast<int>(s_dll.GetInfo(m_handle, APE::APE_INFO_SAMPLE_RATE, 0, 0));
+   samplerateInHz = static_cast<int>(s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_SAMPLE_RATE, 0, 0));
 
-   lengthInSeconds = static_cast<int>(s_dll.GetInfo(m_handle, APE::APE_DECOMPRESS_LENGTH_MS, 0, 0) / 1000);
+   lengthInSeconds = static_cast<int>(s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_DECOMPRESS_LENGTH_MS, 0, 0) / 1000);
 
    bitrateInBps = samplerateInHz * bitsPerSample;
 }
@@ -372,7 +372,7 @@ int MonkeysAudioInputModule::DecodeSamples(SampleContainer& samples)
    APE::int64 numBlocksRetrieved = 0;
 
    // get data from file
-   APE::int64 blockalign = s_dll.GetInfo(m_handle, APE::APE_INFO_BLOCK_ALIGN, 0, 0);
+   APE::int64 blockalign = s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_BLOCK_ALIGN, 0, 0);
    int retval = s_dll.GetData(m_handle, reinterpret_cast<char*>(buffer), MonkeysAudio::c_macBufferSize / blockalign, &numBlocksRetrieved);
 
    // success?
@@ -384,7 +384,7 @@ int MonkeysAudioInputModule::DecodeSamples(SampleContainer& samples)
 
    // if we are dealing with 8-bit samples, we have to convert them to signed samples
    // (8-bit samples from MonkeysAudio's audio are unsigned)
-   APE::int64 bitsPerSample = s_dll.GetInfo(m_handle, APE::APE_INFO_BITS_PER_SAMPLE, 0, 0);
+   APE::int64 bitsPerSample = s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_BITS_PER_SAMPLE, 0, 0);
    if (8 == bitsPerSample)
    {
       for (int i = 0; i < MonkeysAudio::c_macBufferSize; ++i)
