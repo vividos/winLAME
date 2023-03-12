@@ -52,7 +52,7 @@
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;version.lib;nlame.lib;libfaac_dll.lib;bass.lib;basswma.lib;basscd.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;version.lib;libfaac_dll.lib;bass.lib;basswma.lib;basscd.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DelayLoadDLLs>faad.dll;libfaac_dll.dll;bass.dll;basscd.dll;basswma.dll;FLAC.dll;sndfile.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
@@ -64,7 +64,7 @@
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;version.lib;nlame.lib;libfaac_dll.lib;bass.lib;basswma.lib;basscd.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;version.lib;libfaac_dll.lib;bass.lib;basswma.lib;basscd.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <DelayLoadDLLs>faad.dll;libfaac_dll.dll;bass.dll;basscd.dll;basswma.dll;FLAC.dll;sndfile.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <IgnoreSpecificDefaultLibraries>msvcrt</IgnoreSpecificDefaultLibraries>
@@ -235,9 +235,6 @@
     <Xml Include="..\presets.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\nlame\nlame.vcxproj">
-      <Project>{0b3f6b1a-d78e-47db-a48c-d3daa16e17ce}</Project>
-    </ProjectReference>
     <ProjectReference Include="encoder\encoder.vcxproj">
       <Project>{ae66a4eb-b54e-4572-9a4e-50c89a0c56c3}</Project>
     </ProjectReference>
