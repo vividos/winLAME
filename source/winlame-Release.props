@@ -10,6 +10,7 @@
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>true</VcpkgEnabled>
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
     <VcpkgAdditionalInstallOptions>--no-print-usage</VcpkgAdditionalInstallOptions>
   </PropertyGroup>
