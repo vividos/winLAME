@@ -439,7 +439,6 @@
     <None Include="res\MainFrameRibbon.bml">
       <Filter>Modern UI Files\Resource Files\Generated Files</Filter>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="winlame.rc">

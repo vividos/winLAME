@@ -1,0 +1,15 @@
+{
+  "default-registry": {
+    "kind": "git",
+    "repository": "https://github.com/Microsoft/vcpkg",
+    "baseline": "a7b6122f6b6504d16d96117336a0562693579933"
+  },
+  "registries": [
+    {
+      "kind": "git",
+      "repository": "https://github.com/vividos/vcpkg-registry",
+      "baseline": "e16bc7be0e752323175719c3051d70531dd55a98",
+      "packages": [ "vividos-ulibcpp" ]
+    }
+  ]
+}

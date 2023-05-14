@@ -3,6 +3,7 @@
   "name": "winlame",
   "version-string": "2.23.0",
   "dependencies": [
+    "vividos-ulibcpp",
     "mpg123",
     "libogg",
     "libvorbis",

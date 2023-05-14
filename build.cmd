@@ -19,9 +19,6 @@ pushd source\libraries
 call CopyLibraries.cmd Release
 popd
 
-REM restore NuGet packages
-buildtools\nuget restore winlame.sln
-
 REM build solution
 msbuild /m winlame.sln /property:Configuration=Release,Platform=Win32 /target:Rebuild
 

@@ -105,6 +105,5 @@
     <None Include="res\alsa-6ch.opus">
       <Filter>Resource Files\res</Filter>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
 </Project>

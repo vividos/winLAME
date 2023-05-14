@@ -25,7 +25,6 @@ install:
 
 before_build:
   - ps: source\Patch-BuildVersion.ps1 -version $env:appveyor_build_version
-  - cmd: nuget restore
 
 build:
   project: winlame.sln
