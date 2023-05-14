@@ -16,13 +16,16 @@ cache:
   - C:\Users\appveyor\AppData\Local\vcpkg\archives -> appveyor.yml
   - C:\projects\winlame\vcpkg_installed -> appveyor.yml
 
+install:
+  - cd C:\Tools\vcpkg
+  - git pull > nul
+  - call .\bootstrap-vcpkg.bat -disableMetrics
+  - .\vcpkg integrate install
+  - cd %APPVEYOR_BUILD_FOLDER%
+
 before_build:
   - ps: source\Patch-BuildVersion.ps1 -version $env:appveyor_build_version
   - cmd: nuget restore
-  - cmd: |
-      cd "C:\Tools\vcpkg"
-      git pull > nul
-      call .\bootstrap-vcpkg.bat -disableMetrics
 
 build:
   project: winlame.sln
