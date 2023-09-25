@@ -465,10 +465,12 @@ void AudioFileTag::StoreTrackInfoInTag(TagLib::Tag* tag) const
    }
 
    textValue = trackInfo.GetTextInfo(TrackInfoGenre, isAvail);
-   if (isAvail)
-   {
-      tag->setGenre(TagLib::String(textValue));
-   }
+
+   // set genre in all cases, causing removal of ID3v2 record when empty
+   if (!isAvail)
+      textValue.Empty();
+
+   tag->setGenre(TagLib::String(textValue));
 
    int intValue = trackInfo.GetNumberInfo(TrackInfoYear, isAvail);
    if (isAvail)

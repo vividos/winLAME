@@ -101,5 +101,7 @@ void Id3v1Tag::FromTrackInfo(const TrackInfo& trackInfo)
 
    textValue = trackInfo.GetTextInfo(TrackInfoGenre, isAvail);
    if (isAvail)
-      this->genre = static_cast<unsigned char>(TrackInfo::TextToGenreID(textValue));
+      this->genre = TrackInfo::TextToGenreID(textValue);
+   else
+      this->genre = 0xFF;
 }

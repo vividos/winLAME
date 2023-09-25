@@ -127,8 +127,8 @@ namespace Encoder
       /// converts genre ID to text
       static CString GenreIDToText(unsigned int genreID);
 
-      /// converts genre text to id
-      static unsigned int TextToGenreID(const CString& text);
+      /// converts genre text to ID
+      static unsigned char TextToGenreID(const CString& text);
 
       /// returns genre list
       static std::vector<CString> GetGenreList();

@@ -68,13 +68,13 @@ CString TrackInfo::GenreIDToText(unsigned int genreID)
    return g_ID3GenreIDtoText[genreID];
 }
 
-unsigned int TrackInfo::TextToGenreID(const CString& text)
+unsigned char TrackInfo::TextToGenreID(const CString& text)
 {
-   for (unsigned int i = 0; i < g_ID3GenreIDtoText.size(); i++)
+   for (unsigned char i = 0; i < g_ID3GenreIDtoText.size(); i++)
       if (g_ID3GenreIDtoText[i] == text)
          return i;
 
-   return (unsigned int)-1;
+   return 0xFF;
 }
 
 std::vector<CString> TrackInfo::GetGenreList()

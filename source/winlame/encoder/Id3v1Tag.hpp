@@ -37,12 +37,13 @@ namespace Encoder
       char year[4];     ///< year
       char comment[29]; ///< comment
       unsigned char track; ///< track
-      unsigned char genre; ///< genre id
+      unsigned char genre; ///< genre ID
 
       /// ctor
       Id3v1Tag()
       {
          memset(this, 0, sizeof(*this));
+         genre = 0xFF;
       }
 
       /// ctor; constructs id3 tag from track info
