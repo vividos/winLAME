@@ -192,7 +192,7 @@
 
       <Component Id="MonkeysAudioLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="MacDllDll" Name="MACDll.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.OutputDir)MACDll.dll" />
+           Source="$(var.SolutionDir)source\libraries\MACDll.dll" />
       </Component>
 
       <Component Id="LibFaacLibrary" Guid="*" Directory="INSTALLDIR">

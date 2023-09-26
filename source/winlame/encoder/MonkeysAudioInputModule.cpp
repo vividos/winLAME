@@ -30,8 +30,8 @@
 #include "AudioFileTag.hpp"
 
 #define PLATFORM_WINDOWS
-#include <monkeys-audio/MACDll.h>
-#include <monkeys-audio/APETag.h>
+#include "mac/MACDll.h"
+#include "mac/APETag.h"
 
 using Encoder::MonkeysAudioInputModule;
 using Encoder::TrackInfo;
@@ -103,7 +103,7 @@ namespace MonkeysAudio
             (proc_GetInterfaceCompatibility)GetProcAddress(m_module, "GetInterfaceCompatibility");
          if (fnGetInterfaceCompatibility)
          {
-            ret = fnGetInterfaceCompatibility(MAC_FILE_VERSION_NUMBER, TRUE, NULL);
+            ret = fnGetInterfaceCompatibility(APE_FILE_VERSION_NUMBER, TRUE, NULL);
          }
 
          return ret == 0;
@@ -257,19 +257,19 @@ CString MonkeysAudioInputModule::GetDescription() const
    LPCTSTR compressionLevel;
    switch (level)
    {
-   case MAC_COMPRESSION_LEVEL_FAST:
+   case APE_COMPRESSION_LEVEL_FAST:
       compressionLevel = _T("Fast compression");
       break;
-   case MAC_COMPRESSION_LEVEL_NORMAL:
+   case APE_COMPRESSION_LEVEL_NORMAL:
       compressionLevel = _T("Normal compression");
       break;
-   case MAC_COMPRESSION_LEVEL_HIGH:
+   case APE_COMPRESSION_LEVEL_HIGH:
       compressionLevel = _T("High compression");
       break;
-   case MAC_COMPRESSION_LEVEL_EXTRA_HIGH:
+   case APE_COMPRESSION_LEVEL_EXTRA_HIGH:
       compressionLevel = _T("Extra high compression");
       break;
-   case MAC_COMPRESSION_LEVEL_INSANE:
+   case APE_COMPRESSION_LEVEL_INSANE:
       compressionLevel = _T("Insane compression");
       break;
    default:
@@ -288,7 +288,7 @@ CString MonkeysAudioInputModule::GetDescription() const
 
 void MonkeysAudioInputModule::GetVersionString(CString& version, int special) const
 {
-   version = MAC_VERSION_STRING;
+   version = APE_VERSION_STRING;
 }
 
 CString MonkeysAudioInputModule::GetFilterString() const
@@ -373,7 +373,7 @@ int MonkeysAudioInputModule::DecodeSamples(SampleContainer& samples)
 
    // get data from file
    APE::int64 blockalign = s_dll.GetInfo(m_handle, APE::IAPEDecompress::APE_INFO_BLOCK_ALIGN, 0, 0);
-   int retval = s_dll.GetData(m_handle, reinterpret_cast<char*>(buffer), MonkeysAudio::c_macBufferSize / blockalign, &numBlocksRetrieved);
+   int retval = s_dll.GetData(m_handle, buffer, MonkeysAudio::c_macBufferSize / blockalign, &numBlocksRetrieved);
 
    // success?
    if (retval != 0)
