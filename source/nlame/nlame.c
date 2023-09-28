@@ -645,8 +645,6 @@ void nlame_write_vbr_infotag(nlame_instance_t* inst, FILE* fd)
 
    long lFileSize;
    long id3v2TagSize;
-   unsigned char buffer[MAXFRAMESIZE];
-   size_t length;
 
    if (!fd)
       return;
@@ -666,6 +664,14 @@ void nlame_write_vbr_infotag(nlame_instance_t* inst, FILE* fd)
 
    if (fseek(fd, id3v2TagSize, SEEK_SET) != 0)
       return;
+
+   nlame_write_vbr_infotag_offset(inst, fd);
+}
+
+void nlame_write_vbr_infotag_offset(nlame_instance_t* inst, FILE* fd)
+{
+   unsigned char buffer[MAXFRAMESIZE];
+   size_t length;
 
    length = lame_get_lametag_frame(inst->lgf, buffer, sizeof(buffer));
    if (length > 0)

@@ -1,6 +1,6 @@
 /*
    nlame - an alternative API for libmp3lame
-   copyright (c) 2001-2017 Michael Fink
+   copyright (c) 2001-2023 Michael Fink
    Copyright (c) 2004 DeXT
 
    This library is free software; you can redistribute it and/or
@@ -70,6 +70,9 @@
     Version 6: introduced on 2017-08-20
       The following new variable values were added:
       nle_var_is_avail_encode_buffer_interleaved_int
+
+    Version 7: introduced on 2023-09-28
+      Added nlame_write_vbr_infotag_offset()
 
 */
 /*! \defgroup nlame nlame Documentation
@@ -596,6 +599,19 @@ int nlame_get_vbr_infotag_length(nlame_instance_t* inst);
     http://gabriel.mp3-tech.org/mp3infotag.html
 */
 void nlame_write_vbr_infotag( nlame_instance_t* inst, FILE* fd );
+
+/*! writes VBR info tag to an open file descriptor fd at given offset */
+/*! This call assumes that the caller knows where the VBR info tag must be
+    placed and assumes that the file is seeked to the position.
+
+    NOTE:
+    if VBR tags are turned off by the user, or turned off by LAME because
+    the output is not a regular file, this call does nothing.
+
+    See also:
+    http://gabriel.mp3-tech.org/mp3infotag.html
+*/
+void nlame_write_vbr_infotag_offset(nlame_instance_t* inst, FILE* fd);
 
 
 /*! type of histogram to get in call to nlame_histogram_get */
