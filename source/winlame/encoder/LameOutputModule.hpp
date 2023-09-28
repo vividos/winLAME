@@ -89,17 +89,14 @@ namespace Encoder
       /// frees LAME instance (or stores it for next NoGap encoding)
       void FreeLameInstance();
 
-      /// adds id3v2 tag infos to nlame instance
-      void AddLameID3v2Tag(const TrackInfo& trackinfo);
-
-      /// estimate ID3v2 padding length
-      unsigned int GetID3v2PaddingLength();
+      /// adds padding to the output file for later writing ID3v2 and LAME Info tag
+      void AddPaddingForID3v2AndLameTag(const TrackInfo& trackinfo);
 
       /// writes out ID3v2 tag
       void WriteID3v2Tag();
 
       /// Writes VBR Info tag
-      static void WriteVBRInfoTag(nlame_instance_t* inst, LPCTSTR mp3filename);
+      void WriteVBRInfoTag(nlame_instance_t* inst, LPCTSTR mp3filename);
 
    private:
       /// nlame instance
@@ -155,6 +152,9 @@ namespace Encoder
 
       /// indicates if we should write a wave header
       bool m_writeWaveHeader;
+
+      /// file offset when the VBR Info tag should be written to
+      long m_fileOffsetVbrInfoTag = 0;
 
       /// number of samples encoded so gar
       unsigned int m_numSamplesEncoded;

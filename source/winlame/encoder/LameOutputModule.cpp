@@ -183,8 +183,7 @@ int LameOutputModule::InitOutput(LPCTSTR outfilename,
       }
    }
 
-   if (!m_writeWaveHeader)
-      AddLameID3v2Tag(m_trackInfoID3v2);
+   AddPaddingForID3v2AndLameTag(m_trackInfoID3v2);
 
    // do description string
    GenerateDescription(mgr);
@@ -369,18 +368,19 @@ void LameOutputModule::FinishEncoding()
    // close file
    m_outputFile.close();
 
-   // write ID3v2 tag
-   // note: we re-write the ID3v2 tag here, previously written by AddLameID3v2Tag().
-   // This converts the ID3v2.3 tag to ID3v2.4.
-   if (!m_writeWaveHeader)
-      WriteID3v2Tag();
-
    // add VBR info tag to mp3 file
    // note: since nlame_write_vbr_infotag() seeks to the front of the output
    //       file, the wave header might get overwritten, so we don't write a
    //       info tag when writing a wave header
+   // Write VBR Info tag before AudioFileTag has the chance to modify the file
    if (m_writeInfoTag && !m_writeWaveHeader)
       WriteVBRInfoTag(m_instance, m_mp3Filename);
+
+   // write ID3v2 tag
+   // note: we re-write the ID3v2 tag here into the padding space previously
+   // created by AddPaddingForID3v2AndLameTag().
+   if (!m_writeWaveHeader)
+      WriteID3v2Tag();
 }
 
 void LameOutputModule::FreeLameInstance()
@@ -532,119 +532,39 @@ void LameOutputModule::GenerateDescription(SettingsManager& mgr)
    m_description = text;
 }
 
-void LameOutputModule::AddLameID3v2Tag(const TrackInfo& trackInfo)
+void LameOutputModule::AddPaddingForID3v2AndLameTag(const TrackInfo& trackInfo)
 {
-   // add ID3v2 tags using LAME's functions; note that this writes ID3v2 version 2.3 tags
-   // with text encoded as ISO-8859-1 (Latin1) that may not be able to represent all
-   // characters we have
+   // add padding for writing ID3v2 tag and VBR Info tag at the end of
+   // encoding, using the AudioFileTag class, and don't use LAME's functions
+   unsigned int paddingSize = 0;
 
-   // leave some bytes as padding
-   unsigned int lamePaddingSize = 256;
-
-   // LAME (and nlame) can't write Album Artist and Composer, so add some bytes for padding
-   bool isAvail = false;
-   CString textValue = trackInfo.GetTextInfo(TrackInfoDiscArtist, isAvail);
-   if (isAvail)
-      lamePaddingSize += textValue.GetLength() + 4 + 3; // tag ID + tag header + string length
-
-   textValue = trackInfo.GetTextInfo(TrackInfoComposer, isAvail);
-   if (isAvail)
-      lamePaddingSize += textValue.GetLength() + 4 + 3; // tag ID + tag header + string length
-
-   nlame_id3tag_init(m_instance, false, true, lamePaddingSize);
-
-   // add all tags
-   textValue = trackInfo.GetTextInfo(TrackInfoTitle, isAvail);
-   if (isAvail)
-      nlame_id3tag_setfield_latin1(m_instance, nif_title, CStringA(textValue));
-
-   textValue = trackInfo.GetTextInfo(TrackInfoArtist, isAvail);
-   if (isAvail)
-      nlame_id3tag_setfield_latin1(m_instance, nif_artist, CStringA(textValue));
-
-   textValue = trackInfo.GetTextInfo(TrackInfoComment, isAvail);
-   if (isAvail)
-      nlame_id3tag_setfield_latin1(m_instance, nif_comment, CStringA(textValue));
-
-   textValue = trackInfo.GetTextInfo(TrackInfoAlbum, isAvail);
-   if (isAvail)
-      nlame_id3tag_setfield_latin1(m_instance, nif_album, CStringA(textValue));
-
-   // numeric
-   int intValue = trackInfo.GetNumberInfo(TrackInfoYear, isAvail);
-   if (isAvail)
-   {
-      textValue.Format(_T("%i"), intValue);
-      nlame_id3tag_setfield_latin1(m_instance, nif_year, CStringA(textValue));
-   }
-
-   intValue = trackInfo.GetNumberInfo(TrackInfoTrack, isAvail);
-   if (isAvail)
-   {
-      textValue.Format(_T("%i"), intValue);
-      nlame_id3tag_setfield_latin1(m_instance, nif_track, CStringA(textValue));
-   }
-
-   textValue = trackInfo.GetTextInfo(TrackInfoGenre, isAvail);
-   if (isAvail)
-   {
-      nlame_id3tag_setfield_latin1(m_instance, nif_genre, CStringA(textValue));
-   }
-
-   std::vector<unsigned char> binaryInfo;
-
-   isAvail = trackInfo.GetBinaryInfo(TrackInfoFrontCover, binaryInfo);
-   if (isAvail)
-   {
-      nlame_id3tag_set_albumart(m_instance, reinterpret_cast<const char*>(binaryInfo.data()), binaryInfo.size());
-   }
-
-   // write out ID3v2 tag
-   size_t requiredSize = nlame_id3tag_get_id3v2_tag(m_instance, nullptr, 0);
-   if (requiredSize > 0)
-   {
-      std::vector<unsigned char> id3v2tag(requiredSize, 0);
-
-      size_t ret = nlame_id3tag_get_id3v2_tag(m_instance, id3v2tag.data(), id3v2tag.size());
-      ATLASSERT(ret == requiredSize);
-      UNUSED(ret);
-
-      m_outputFile.write(reinterpret_cast<const char*>(id3v2tag.data()), id3v2tag.size());
-   }
-
-   // add remaining padding in order to write full ID3v2 tag after encoding has finished
-   unsigned int paddingLength = GetID3v2PaddingLength();
-
-   int paddingToAdd = int(paddingLength) - int(requiredSize);
-   if (paddingToAdd < 0)
-      paddingToAdd = 0;
+   AudioFileTag tag{ m_trackInfoID3v2 };
+   paddingSize += tag.GetTagLength();
 
    // add bytes for the VBR Info tag
-   if (m_writeInfoTag)
-      paddingToAdd += nlame_get_vbr_infotag_length(m_instance);
+   if (m_writeInfoTag && !m_writeWaveHeader)
+   {
+      paddingSize += nlame_get_vbr_infotag_length(m_instance);
 
-   if (paddingToAdd > 0)
+      m_fileOffsetVbrInfoTag = paddingSize + static_cast<long>(m_outputFile.tellp());
+   }
+
+   if (paddingSize > 0)
    {
       std::array<char, 4096> paddingBuffer = {};
-      while (paddingToAdd > 0)
+      while (paddingSize > 0)
       {
-         size_t sizeToWrite = std::min(size_t(paddingToAdd), paddingBuffer.size());
+         size_t sizeToWrite = std::min(size_t(paddingSize), paddingBuffer.size());
          m_outputFile.write(paddingBuffer.data(), sizeToWrite);
 
-         paddingToAdd -= int(sizeToWrite);
+         paddingSize -= int(sizeToWrite);
       }
    }
 }
 
-unsigned int LameOutputModule::GetID3v2PaddingLength()
-{
-   AudioFileTag tag(m_trackInfoID3v2);
-   return tag.GetTagLength();
-}
-
 void LameOutputModule::WriteID3v2Tag()
 {
-   AudioFileTag tag(m_trackInfoID3v2);
+   AudioFileTag tag{ m_trackInfoID3v2 };
    tag.WriteToFile(m_mp3Filename, AudioFileTag::AudioFileType::MPEG);
 }
 
@@ -654,7 +574,9 @@ void LameOutputModule::WriteVBRInfoTag(nlame_instance_t* instance, LPCTSTR mp3Fi
 
    if (fp != nullptr)
    {
-      nlame_write_vbr_infotag(instance, fp);
+      fseek(fp, m_fileOffsetVbrInfoTag, SEEK_SET);
+
+      nlame_write_vbr_infotag_offset(instance, fp);
 
       fclose(fp);
    }
