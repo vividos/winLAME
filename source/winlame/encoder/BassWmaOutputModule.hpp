@@ -71,15 +71,24 @@ namespace Encoder
       void AddTrackInfo(const TrackInfo& trackInfo);
 
    private:
+      /// WMA encoding bitrate mode
+      enum WmaBitrateMode
+      {
+         CBR = 0, ///< constant bitrate, using m_bitrateInBps
+         VBR = 1, ///< variable bitrate, using m_quality
+      };
+
       /// last error occured
       CString m_lastError;
 
       HWMENCODE m_handle;     ///< encoder handle
       int m_samplerateInHz;   ///< sample rate
       int m_numChannels;      ///< number of channels
-      int m_bitrateInBps;     ///< bitrate; in bitrate mode 0
-      int m_quality;          ///< quality; in bitrate mode 1
-      int m_bitrateMode;      ///< bitrate mode
+      int m_bitrateInBps;     ///< bitrate; in bitrate mode CBR
+      int m_quality;          ///< quality; in bitrate mode VBR
+
+      /// bitrate mode
+      WmaBitrateMode m_bitrateMode = WmaBitrateMode::CBR;
    };
 
 } // namespace Encoder

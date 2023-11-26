@@ -39,8 +39,7 @@ BassWmaOutputModule::BassWmaOutputModule()
    m_samplerateInHz(0),
    m_numChannels(0),
    m_bitrateInBps(0),
-   m_quality(0),
-   m_bitrateMode(0)
+   m_quality(0)
 {
    m_moduleId = ID_OM_BASSWMA;
 }
@@ -57,10 +56,10 @@ CString BassWmaOutputModule::GetDescription() const
 {
    CString desc;
    desc.Format(IDS_FORMAT_INFO_BASS_WMA_OUTPUT,
-      m_bitrateMode == 1 ? _T("Quality ") : _T(""),
-      m_bitrateMode == 1 ? m_quality : m_bitrateInBps / 1000,
-      m_bitrateMode == 1 ? _T("%") : _T(" kbps"),
-      m_bitrateMode == 1 ? _T("VBR") : _T("CBR"),
+      m_bitrateMode == WmaBitrateMode::VBR ? _T("Quality ") : _T(""),
+      m_bitrateMode == WmaBitrateMode::VBR ? m_quality : m_bitrateInBps / 1000,
+      m_bitrateMode == WmaBitrateMode::VBR ? _T("%") : _T(" kbps"),
+      m_bitrateMode == WmaBitrateMode::VBR ? _T("VBR") : _T("CBR"),
       m_samplerateInHz,
       m_numChannels);
 
@@ -87,14 +86,14 @@ void BassWmaOutputModule::GetVersionString(CString& version, int special) const
 
 void BassWmaOutputModule::PrepareOutput(SettingsManager& mgr)
 {
-   m_bitrateMode = mgr.QueryValueInt(WmaBitrateMode);
+   m_bitrateMode = (WmaBitrateMode)mgr.QueryValueInt(::WmaBitrateMode);
    switch (m_bitrateMode)
    {
-   case 1: // VBR
+   case WmaBitrateMode::VBR:
       m_quality = mgr.QueryValueInt(WmaQuality);
       break;
 
-   case 0: // CBR
+   case WmaBitrateMode::CBR:
    default:
       m_bitrateInBps = mgr.QueryValueInt(WmaBitrate) * 1000;
       break;
@@ -129,10 +128,19 @@ int BassWmaOutputModule::InitOutput(LPCTSTR outfilename,
    }
 
    // find nearest valid bitrate
-   DWORD bitrateOrQuality = m_bitrateMode == 1 ? m_bitrateInBps : m_quality;
+   DWORD bitrateOrQuality = m_bitrateMode == WmaBitrateMode::CBR
+      ? m_bitrateInBps
+      : m_quality;
+
    bool validRate = false;
    DWORD nearestRate = 0;
-   const DWORD* availableRates = BASS_WMA_EncodeGetRates(m_samplerateInHz, m_numChannels, m_bitrateMode == 1 ? BASS_WMA_ENCODE_RATES_VBR : 0);
+   const DWORD* availableRates = BASS_WMA_EncodeGetRates(
+      m_samplerateInHz,
+      m_numChannels,
+      m_bitrateMode == WmaBitrateMode::VBR
+         ? BASS_WMA_ENCODE_RATES_VBR
+         : 0);
+
    while (availableRates && *availableRates) {
       if (bitrateOrQuality == *availableRates)
       {
