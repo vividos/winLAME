@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2021 Michael Fink
+// Copyright (c) 2000-2023 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -45,6 +45,13 @@ CString CDRipTitleFormatManager::FormatTitle(const CString& format,
    int numDigits = discInfo.m_numTracks < 10 ? 1 : discInfo.m_numTracks < 100 ? 2 : 3;
    trackNumber.Format(_T("%0*u"), numDigits, trackInfo.m_numTrackOnDisc + 1);
    title.Replace(_T("%track%"), trackNumber);
+
+   if (discInfo.m_discNumber > 0)
+   {
+      CString discNumber;
+      discNumber.Format(_T("%u"), discInfo.m_discNumber);
+      title.Replace(_T("%disc%"), discNumber);
+   }
 
    CString year;
    year.Format(_T("%u"), discInfo.m_year);

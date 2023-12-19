@@ -64,6 +64,7 @@ namespace UI
          DDX_CONTROL_HANDLE(IDC_CDSELECT_COMBO_GENRE, m_comboGenre)
          DDX_CONTROL_HANDLE(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, m_checkVariousArtists)
          DDX_CONTROL_HANDLE(IDC_CDSELECT_STATIC_ALBUMART, m_staticAlbumArtImage)
+         DDX_CONTROL_HANDLE(IDC_CDSELECT_CHECK_DISCNUMBER, m_checkDiscNumber)
       END_DDX_MAP()
 
       BEGIN_DLGRESIZE_MAP(InputCDPage)
@@ -74,6 +75,8 @@ namespace UI
          DLGRESIZE_CONTROL(IDC_CDSELECT_EDIT_YEAR, DLSZ_MOVE_X | DLSZ_MOVE_Y)
          DLGRESIZE_CONTROL(IDC_CDSELECT_COMBO_GENRE, DLSZ_MOVE_X | DLSZ_MOVE_Y)
          DLGRESIZE_CONTROL(IDC_CDSELECT_CHECK_VARIOUS_ARTISTS, DLSZ_MOVE_Y)
+         DLGRESIZE_CONTROL(IDC_CDSELECT_CHECK_DISCNUMBER, DLSZ_MOVE_Y)
+         DLGRESIZE_CONTROL(IDC_CDSELECT_EDIT_DISCNUMBER, DLSZ_MOVE_Y)
          DLGRESIZE_CONTROL(IDC_CDSELECT_STATIC_TITLE, DLSZ_MOVE_Y)
          DLGRESIZE_CONTROL(IDC_CDSELECT_STATIC_ARTIST, DLSZ_MOVE_Y)
          DLGRESIZE_CONTROL(IDC_CDSELECT_STATIC_YEAR, DLSZ_MOVE_X | DLSZ_MOVE_Y)
@@ -105,6 +108,8 @@ namespace UI
          COMMAND_HANDLER(IDC_CDSELECT_EDIT_TITLE, EN_CHANGE, OnChangedEditCtrl)
          COMMAND_HANDLER(IDC_CDSELECT_EDIT_ARTIST, EN_CHANGE, OnChangedEditCtrl)
          COMMAND_HANDLER(IDC_CDSELECT_EDIT_YEAR, EN_CHANGE, OnChangedEditCtrl)
+         COMMAND_HANDLER(IDC_CDSELECT_CHECK_DISCNUMBER, BN_CLICKED, OnClickedCheckDiscNumber)
+         COMMAND_HANDLER(IDC_CDSELECT_EDIT_DISCNUMBER, EN_CHANGE, OnChangedEditCtrl)
          NOTIFY_CODE_HANDLER(LVN_ENDLABELEDIT, OnEndLabelEdit)
          CHAIN_MSG_MAP(CDialogResize<InputCDPage>)
          REFLECT_NOTIFICATIONS()
@@ -155,6 +160,9 @@ namespace UI
       /// called when the checkbox "various artists" was modified
       LRESULT OnClickedCheckVariousArtists(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
+      /// called when the checkbox "disc number" was modified
+      LRESULT OnClickedCheckDiscNumber(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
+
       /// called when any of the edit controls have been changed
       LRESULT OnChangedEditCtrl(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled);
 
@@ -204,6 +212,9 @@ namespace UI
       /// updates artist controls depending on "various artists" checkbox
       void UpdateVariousArtistsCheck();
 
+      /// updates controls depending on "disc number" checkbox
+      void UpdateDiscNumberCheck();
+
       /// updates CDReadJobList depending on current CD in drive
       void UpdateCDReadJobList(unsigned int driveIndex);
 
@@ -248,6 +259,9 @@ namespace UI
 
       /// album art static image
       CStatic m_staticAlbumArtImage;
+
+      /// disc number checkbox
+      CButton m_checkDiscNumber;
 
       /// current page width
       int m_pageWidth;

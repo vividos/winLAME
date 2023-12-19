@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2023 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -24,15 +24,6 @@
 /// contains infos about a CD disc to rip
 struct CDRipDiscInfo
 {
-   /// ctor
-   CDRipDiscInfo()
-      :m_variousArtists(false),
-      m_year(0),
-      m_discDrive(0),
-      m_numTracks(0)
-   {
-   }
-
    /// disc title
    CString m_discTitle;
 
@@ -40,13 +31,13 @@ struct CDRipDiscInfo
    CString m_discArtist;
 
    /// indicates if disc has various artists
-   bool m_variousArtists;
+   bool m_variousArtists = false;
 
    /// disc year
-   unsigned int m_year;
+   unsigned int m_year = 0;
 
    /// disc drive index
-   unsigned int m_discDrive;
+   unsigned int m_discDrive = 0;
 
    /// genre of CD
    CString m_genre;
@@ -55,5 +46,8 @@ struct CDRipDiscInfo
    CString m_CDID;
 
    /// number of tracks on the CD
-   unsigned int m_numTracks;
+   unsigned int m_numTracks = 0;
+
+   /// disc number; starts at 1
+   unsigned int m_discNumber = 0;
 };

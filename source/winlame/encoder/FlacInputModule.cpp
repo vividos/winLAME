@@ -131,6 +131,10 @@ static void FLAC_MetadataCallback(const FLAC__StreamDecoder* decoder,
          {
             context->trackInfo->SetNumberInfo(Encoder::TrackInfoTrack, _ttoi(value));
          }
+         else if (name.CompareNoCase(_T("discnumber")) == 0)
+         {
+            context->trackInfo->SetNumberInfo(Encoder::TrackInfoDiscNumber, _ttoi(value));
+         }
          else if (name.CompareNoCase(_T("year")) == 0)
          {
             context->trackInfo->SetNumberInfo(Encoder::TrackInfoYear, _ttoi(value));

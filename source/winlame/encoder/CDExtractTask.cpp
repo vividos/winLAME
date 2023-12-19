@@ -242,6 +242,9 @@ void CDExtractTask::SetTrackInfoFromCDTrackInfo(TrackInfo& encodeTrackInfo, cons
    if (!discInfo.m_genre.IsEmpty())
       encodeTrackInfo.SetTextInfo(TrackInfoGenre, discInfo.m_genre);
 
+   if (discInfo.m_discNumber > 0)
+      encodeTrackInfo.SetNumberInfo(TrackInfoDiscNumber, discInfo.m_discNumber);
+
    // add track info
    const CDRipTrackInfo& cdTrackInfo = cdReadJob.TrackInfo();
 

@@ -303,6 +303,12 @@ LRESULT InputCDPage::OnClickedCheckVariousArtists(WORD wNotifyCode, WORD wID, HW
    return 0;
 }
 
+LRESULT InputCDPage::OnClickedCheckDiscNumber(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
+{
+   UpdateDiscNumberCheck();
+   return 0;
+}
+
 LRESULT InputCDPage::OnChangedEditCtrl(WORD wNotifyCode, WORD wID, HWND hWndCtl, BOOL& bHandled)
 {
    m_editedTrack = true;
@@ -699,6 +705,13 @@ void InputCDPage::UpdateVariousArtistsCheck()
    GetDlgItem(IDC_CDSELECT_STATIC_ARTIST).EnableWindow(isChecked);
 }
 
+void InputCDPage::UpdateDiscNumberCheck()
+{
+   bool isChecked = BST_CHECKED == m_checkDiscNumber.GetCheck();
+
+   GetDlgItem(IDC_CDSELECT_EDIT_DISCNUMBER).EnableWindow(isChecked);
+}
+
 void InputCDPage::UpdateCDReadJobList(unsigned int driveIndex)
 {
    CDRipDiscInfo discInfo = ReadDiscInfo(driveIndex);
@@ -779,6 +792,11 @@ CDRipDiscInfo InputCDPage::ReadDiscInfo(DWORD driveIndex)
    discInfo.m_numTracks = BASS_CD_GetTracks(driveIndex);
    if (discInfo.m_numTracks == (DWORD)-1)
       discInfo.m_numTracks = 0;
+
+   discInfo.m_discNumber =
+      BST_CHECKED == m_checkDiscNumber.GetCheck()
+      ? GetDlgItemInt(IDC_CDSELECT_EDIT_DISCNUMBER, NULL, FALSE)
+      : 0;
 
    return discInfo;
 }
