@@ -4,7 +4,7 @@
 #
 # AppVeyor build configuration file.
 #
-version: 2.23.0.{build}
+version: 2.23.1.{build}
 
 image: Visual Studio 2022
 

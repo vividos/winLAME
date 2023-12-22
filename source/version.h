@@ -1,4 +1,4 @@
-﻿//
+//
 // winLAME - a frontend for the LAME encoding engine
 // Copyright (c) 2000-2023 Michael Fink
 //
@@ -23,7 +23,7 @@
 
 #define MAJOR_VERSION 2
 #define MINOR_VERSION 23
-#define RELEASE_NUMBER 0
+#define RELEASE_NUMBER 1
 #define BUILD_NUMBER 0
 #define BUILD_YEAR 2023
 
