@@ -37,6 +37,7 @@ LPCTSTR g_pszLastInputPath = _T("LastInputPath");
 LPCTSTR g_pszDeleteAfterEncode = _T("DeleteAfterEncode");
 LPCTSTR g_pszOverwriteExisting = _T("OverwriteExisting");
 LPCTSTR g_pszActionAfterEncoding = _T("ActionAfterEncoding");
+LPCTSTR g_pszEjectDiscAfterReading = _T("EjectDiscAfterReading");
 LPCTSTR g_pszLastSelectedPresetIndex = _T("LastSelectedPresetIndex");
 LPCTSTR g_pszCdripTempFolder = _T("CDExtractTempFolder");
 LPCTSTR g_pszOutputPathHistory = _T("OutputPathHistory%02zu");
@@ -167,6 +168,9 @@ void UISettings::ReadSettings()
    ReadStringValue(regRoot, g_pszFormatVariousTrack, MAX_PATH, cdrip_format_various_track);
    ReadStringValue(regRoot, g_pszFormatAlbumTrack, MAX_PATH, cdrip_format_album_track);
 
+   // read "eject disc after reading
+   ReadBooleanValue(regRoot, g_pszEjectDiscAfterReading, m_ejectDiscAfterReading);
+
    // read "language id" value
    ReadUIntValue(regRoot, g_pszLanguageId, language_id);
 
@@ -252,6 +256,10 @@ void UISettings::StoreSettings()
    // write "action after encoding" value
    value = after_encoding_action;
    regRoot.SetValue(value, g_pszActionAfterEncoding);
+
+   // write "eject disc after reading" value
+   value = m_ejectDiscAfterReading ? 1 : 0;
+   regRoot.SetValue(value, g_pszEjectDiscAfterReading);
 
    // write last selected preset index
    regRoot.SetValue(m_iLastSelectedPresetIndex, g_pszLastSelectedPresetIndex);

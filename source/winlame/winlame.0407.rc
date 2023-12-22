@@ -204,6 +204,8 @@ BEGIN
     LTEXT           "Format &Album-Track",IDC_STATIC,14,96,100,9
     EDITTEXT        IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK,116,93,116,12,ES_AUTOHSCROLL
     PUSHBUTTON      ">",IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS,237,92,16,13,BS_ICON
+    CONTROL         "CD A&uswerfen nach lesen",IDC_CDRIP_OPT_CHECK_EJECT_DISC,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,111,239,10
 END
 
 IDD_ABOUTDLG DIALOGEX 0, 0, 356, 236
@@ -725,6 +727,7 @@ BEGIN
     IDS_MAIN_TASKS_FILENAME_OR_TRACK_PLAYLIST "Playlist"
     IDS_MAIN_TASKS_TASK_DETAILS_SELECT_TASK 
                             "<Wähle eine Aufgabe, um Details anzuzeigen>"
+    IDS_MAIN_TASKS_TASKTYPE_EJECT_CD "CD auswerfen"
 END
 
 STRINGTABLE
@@ -819,6 +822,9 @@ BEGIN
                             "Fehler beim Erstellen der Playlist-Datei"
     IDS_PLAYLIST_TASK_DESCRIPTION_SU 
                             "Schreibe Playlist-Datei %s mit %u Einträgen"
+    IDS_EJECT_CD_TASK_TITLE "CD auswerfen"
+    IDS_EJECT_CD_TASK_DESCRIPTION 
+                            "Wirft die CD nach dem Lesen der CD aus."
 END
 
 STRINGTABLE

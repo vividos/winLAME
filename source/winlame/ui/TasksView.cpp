@@ -213,6 +213,7 @@ int TasksView::IconFromTaskType(const TaskInfo& info)
    case TaskInfo::taskEncoding:     return 1;
    case TaskInfo::taskCdExtraction: return 2;
    case TaskInfo::taskWritePlaylist: return 3;
+   case TaskInfo::taskEjectCD: return 2;
    case TaskInfo::taskUnknown:
    default:
       ATLASSERT(false);

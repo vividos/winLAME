@@ -62,6 +62,7 @@ namespace UI
          DDX_TEXT(IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK, m_settings.cdrip_format_album_track)
          DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_VARIOUS_TRACK_TAGS, m_buttonVariousTrackTags)
          DDX_CONTROL_HANDLE(IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS, m_buttonAlbumTrackTags)
+         DDX_CHECK(IDC_CDRIP_OPT_CHECK_EJECT_DISC, m_settings.m_ejectDiscAfterReading)
       END_DDX_MAP()
 
       BEGIN_DLGRESIZE_MAP(CDReadSettingsPage)

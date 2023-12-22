@@ -41,6 +41,7 @@ public:
       taskEncoding = 0,
       taskCdExtraction,
       taskWritePlaylist,
+      taskEjectCD,
       taskUnknown
    };
 

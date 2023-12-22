@@ -22,6 +22,7 @@
 #pragma once
 
 struct UISettings;
+struct CDRipDiscInfo;
 
 namespace Encoder
 {
@@ -59,6 +60,9 @@ private:
 
    /// finds playlist output folder that is common to all files on the playlist
    CString FindCommonPlaylistOutputFolder() const;
+
+   /// adds task to eject the CD after reading
+   void AddCDEjectTask(const CDRipDiscInfo& discInfo);
 
    /// adds task to create a playlist to task manager
    void AddPlaylistTask();

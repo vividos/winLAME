@@ -120,6 +120,9 @@ struct UISettings
    /// indicates if disc infos retrieved by freedb should be stored in cdplayer.ini
    bool store_disc_infos_cdplayer_ini;
 
+   /// indicates if disc tray is opened and/or CD is ejected
+   bool m_ejectDiscAfterReading = false;
+
    /// format string for various track
    CString cdrip_format_various_track;
 

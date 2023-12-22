@@ -82,6 +82,7 @@
   <ItemGroup>
     <ClInclude Include="AudioFileTag.hpp" />
     <ClInclude Include="ChannelRemapper.hpp" />
+    <ClInclude Include="EjectCDTask.hpp" />
     <ClInclude Include="EncoderInterface.hpp" />
     <ClInclude Include="LibMpg123InputModule.hpp" />
     <ClInclude Include="SettingsManager.hpp" />
@@ -132,6 +133,7 @@
     <ClCompile Include="CDExtractTask.cpp" />
     <ClCompile Include="ChannelRemapper.cpp" />
     <ClCompile Include="CreatePlaylistTask.cpp" />
+    <ClCompile Include="EjectCDTask.cpp" />
     <ClCompile Include="EncoderImpl.cpp" />
     <ClCompile Include="EncoderTask.cpp" />
     <ClCompile Include="FlacInputModule.cpp" />

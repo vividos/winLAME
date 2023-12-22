@@ -97,6 +97,7 @@ CString TaskDetailsView::TaskTypeFromInfo(const TaskInfo& info)
    case TaskInfo::taskEncoding: resourceID = IDS_MAIN_TASKS_TASKTYPE_ENCODE; break;
    case TaskInfo::taskCdExtraction: resourceID = IDS_MAIN_TASKS_TASKTYPE_CDREAD; break;
    case TaskInfo::taskWritePlaylist: resourceID = IDS_MAIN_TASKS_TASKTYPE_PLAYLIST; break;
+   case TaskInfo::taskEjectCD: resourceID = IDS_MAIN_TASKS_TASKTYPE_EJECT_CD; break;
    case TaskInfo::taskUnknown:
    default:
       ATLASSERT(false);

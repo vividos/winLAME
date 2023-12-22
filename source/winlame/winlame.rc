@@ -207,6 +207,8 @@ BEGIN
     LTEXT           "Format &album track",IDC_STATIC,14,96,100,9
     EDITTEXT        IDC_CDRIP_OPT_EDIT_FORMAT_ALBUM_TRACK,116,93,116,12,ES_AUTOHSCROLL
     PUSHBUTTON      ">",IDC_CDRIP_OPT_BUTTON_ALBUM_TRACK_TAGS,237,92,16,13,BS_ICON
+    CONTROL         "&Eject disc after reading",IDC_CDRIP_OPT_CHECK_EJECT_DISC,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,111,239,10
 END
 
 IDD_ABOUTDLG DIALOGEX 0, 0, 356, 236
@@ -723,6 +725,7 @@ BEGIN
     IDS_MAIN_TASKS_FILENAME_OR_TRACK_CDREAD "Track"
     IDS_MAIN_TASKS_FILENAME_OR_TRACK_PLAYLIST "Playlist"
     IDS_MAIN_TASKS_TASK_DETAILS_SELECT_TASK "<Select a task to show details>"
+    IDS_MAIN_TASKS_TASKTYPE_EJECT_CD "Eject CD"
 END
 
 STRINGTABLE
@@ -808,6 +811,9 @@ BEGIN
     IDS_ENCODER_ERROR_ERRORINFO_SSI "[%s] %s (error code %i)"
     IDS_PLAYLIST_TASK_ERROR_CREATE_FILE "Error while creating playlist file"
     IDS_PLAYLIST_TASK_DESCRIPTION_SU "Writing playlist %s with %u entries"
+    IDS_EJECT_CD_TASK_TITLE "Eject CD"
+    IDS_EJECT_CD_TASK_DESCRIPTION 
+                            "Ejects the CD after CD extraction has finished."
 END
 
 STRINGTABLE

@@ -25,6 +25,7 @@
 #include "EncoderTask.hpp"
 #include "CreatePlaylistTask.hpp"
 #include "CDExtractTask.hpp"
+#include "EjectCDTask.hpp"
 #include "CDRipTitleFormatManager.hpp"
 #include "LameNogapInstanceManager.hpp"
 #include <sndfile.h>
@@ -250,6 +251,10 @@ void TaskCreationHelper::AddCDExtractTasks()
       unsigned int cdReadTaskId = spCDExtractTask->Id();
       lastCDReadTaskId = cdReadTaskId;
 
+
+      if (m_uiSettings.m_ejectDiscAfterReading)
+         AddCDEjectTask(discInfo);
+
       if (!outputWaveFile16bit)
       {
          bool isLastTrack = jobIndex == maxJobIndex - 1;
@@ -333,6 +338,15 @@ CString TaskCreationHelper::FindCommonPlaylistOutputFolder() const
    }
 
    return playlistOutputFolder;
+}
+
+void TaskCreationHelper::AddCDEjectTask(const CDRipDiscInfo& discInfo)
+{
+   TaskManager& taskMgr = IoCContainer::Current().Resolve<TaskManager>();
+
+   std::shared_ptr<Task> spTask =
+      std::make_shared<Encoder::EjectCDTask>(m_lastTaskId, discInfo.m_discDrive);
+   taskMgr.AddTask(spTask);
 }
 
 void TaskCreationHelper::AddPlaylistTask()
