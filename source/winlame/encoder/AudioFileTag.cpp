@@ -491,7 +491,7 @@ CString Encoder::AudioFileTag::GetTagLibVersion()
    Win32::VersionInfoResource versionInfo{ filename };
 
    if (!versionInfo.IsAvail())
-      return STRINGIFY(TAGLIB_MAJOR_VERSION) _T(".") STRINGIFY(TAGLIB_MINOR_VERSION) _T(".") STRINGIFY(TAGLIB_PATCH_VERSION);
+      return STRINGIFY(TAGLIB_MAJOR_VERSION) "." STRINGIFY(TAGLIB_MINOR_VERSION) "." STRINGIFY(TAGLIB_PATCH_VERSION);
 
    // retrieve version language
    std::vector<Win32::LANGANDCODEPAGE> langAndCodePagesList;
