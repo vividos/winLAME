@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2020 Michael Fink
+// Copyright (c) 2000-2024 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -251,14 +251,14 @@ void TaskCreationHelper::AddCDExtractTasks()
       unsigned int cdReadTaskId = spCDExtractTask->Id();
       lastCDReadTaskId = cdReadTaskId;
 
+      bool isLastTrack = jobIndex == maxJobIndex - 1;
 
-      if (m_uiSettings.m_ejectDiscAfterReading)
+      if (isLastTrack &&
+         m_uiSettings.m_ejectDiscAfterReading)
          AddCDEjectTask(discInfo);
 
       if (!outputWaveFile16bit)
       {
-         bool isLastTrack = jobIndex == maxJobIndex - 1;
-
          // also add encode task
          std::shared_ptr<Encoder::EncoderTask> spEncoderTask =
             CreateEncoderTaskForCDReadJob(cdReadTaskId, cdReadJob, nogapInstanceId, isLastTrack);
