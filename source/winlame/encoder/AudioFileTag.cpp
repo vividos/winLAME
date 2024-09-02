@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2018 Michael Fink
+// Copyright (c) 2018,2024 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -44,61 +44,63 @@ using Encoder::TrackInfo;
 
 bool AudioFileTag::ReadFromFile(const CString& filename, AudioFileType audioFileType)
 {
-   std::shared_ptr<TagLib::File> spFile = OpenFile(filename, audioFileType);
+   std::shared_ptr<TagLib::FileRef> spFileRef = OpenFile(filename, audioFileType);
 
-   if (spFile == nullptr)
+   if (spFileRef == nullptr || spFileRef->isNull())
       return false;
 
-   TagLib::Tag* tag = spFile->tag();
+   TagLib::Tag* tag = spFileRef->file()->tag();
    if (tag == nullptr)
       return false;
 
    ReadTrackInfoFromTag(tag);
 
-   TagLib::ID3v2::Tag* id3v2tag = FindId3v2Tag(spFile);
+   TagLib::ID3v2::Tag* id3v2tag = FindId3v2Tag(spFileRef);
    if (id3v2tag != nullptr)
       ReadTrackInfoFromId3v2Tag(id3v2tag);
 
-   TagLib::Ogg::XiphComment* oggXiphComment = FindOggXiphCommentTag(spFile);
+   TagLib::Ogg::XiphComment* oggXiphComment = FindOggXiphCommentTag(spFileRef);
    if (oggXiphComment != nullptr)
       ReadTrackInfoFromXiphCommentTag(oggXiphComment);
 
-   std::shared_ptr<TagLib::FLAC::File> flacFile = std::dynamic_pointer_cast<TagLib::FLAC::File>(spFile);
+   TagLib::FLAC::File* flacFile = dynamic_cast<TagLib::FLAC::File*>(spFileRef->file());
    if (flacFile != nullptr)
       ReadTrackInfoFromFlacFile(&*flacFile);
 
    return true;
 }
 
-std::shared_ptr<TagLib::File> AudioFileTag::OpenFile(const CString& filename, AudioFileType audioFileType)
+std::shared_ptr<TagLib::FileRef> AudioFileTag::OpenFile(const CString& filename, AudioFileType audioFileType)
 {
-   std::shared_ptr<TagLib::File> spFile;
+   std::shared_ptr<TagLib::FileRef> spFileRef;
 
    if (audioFileType == AudioFileType::FromExtension)
    {
-      spFile.reset(TagLib::FileRef::create(
-         TagLib::FileName(filename),
-         true,
-         TagLib::AudioProperties::ReadStyle::Accurate));
-   }
-   else if (audioFileType == AudioFileType::MPEG)
-   {
-      spFile = std::make_shared<TagLib::MPEG::File>(
+      spFileRef = std::make_shared<TagLib::FileRef>(
          TagLib::FileName(filename),
          true,
          TagLib::AudioProperties::ReadStyle::Accurate);
    }
+   else if (audioFileType == AudioFileType::MPEG)
+   {
+      spFileRef.reset(
+         new TagLib::FileRef(
+            new TagLib::MPEG::File(
+               TagLib::FileName(filename),
+               true,
+               TagLib::AudioProperties::ReadStyle::Accurate)));
+   }
 
-   return spFile;
+   return spFileRef;
 }
 
-TagLib::ID3v2::Tag* AudioFileTag::FindId3v2Tag(std::shared_ptr<TagLib::File> spFile)
+TagLib::ID3v2::Tag* AudioFileTag::FindId3v2Tag(std::shared_ptr<TagLib::FileRef> spFileRef)
 {
-   TagLib::ID3v2::Tag* id3v2tag = dynamic_cast<TagLib::ID3v2::Tag*>(spFile->tag());
+   TagLib::ID3v2::Tag* id3v2tag = dynamic_cast<TagLib::ID3v2::Tag*>(spFileRef->file()->tag());
    if (id3v2tag != nullptr)
       return id3v2tag;
 
-   std::shared_ptr<TagLib::MPEG::File> mpegFile = std::dynamic_pointer_cast<TagLib::MPEG::File>(spFile);
+   TagLib::MPEG::File* mpegFile = dynamic_cast<TagLib::MPEG::File*>(spFileRef->file());
    if (mpegFile != nullptr)
    {
       return mpegFile->ID3v2Tag(true); // create when it's not there yet
@@ -107,14 +109,14 @@ TagLib::ID3v2::Tag* AudioFileTag::FindId3v2Tag(std::shared_ptr<TagLib::File> spF
    return nullptr;
 }
 
-TagLib::Ogg::XiphComment* AudioFileTag::FindOggXiphCommentTag(std::shared_ptr<TagLib::File> spFile)
+TagLib::Ogg::XiphComment* AudioFileTag::FindOggXiphCommentTag(std::shared_ptr<TagLib::FileRef> spFileRef)
 {
-   TagLib::Ogg::XiphComment* xiphComment = dynamic_cast<TagLib::Ogg::XiphComment*>(spFile->tag());
+   TagLib::Ogg::XiphComment* xiphComment = dynamic_cast<TagLib::Ogg::XiphComment*>(spFileRef->file()->tag());
    if (xiphComment != nullptr)
       return xiphComment;
 
    // try opening ogg flac file
-   std::shared_ptr<TagLib::Ogg::FLAC::File> oggFile = std::dynamic_pointer_cast<TagLib::Ogg::FLAC::File>(spFile);
+   TagLib::Ogg::FLAC::File* oggFile = dynamic_cast<TagLib::Ogg::FLAC::File*>(spFileRef->file());
    if (oggFile != nullptr &&
       oggFile->hasXiphComment())
    {
@@ -122,7 +124,7 @@ TagLib::Ogg::XiphComment* AudioFileTag::FindOggXiphCommentTag(std::shared_ptr<Ta
    }
 
    // try opening flac file
-   std::shared_ptr<TagLib::FLAC::File> flacFile = std::dynamic_pointer_cast<TagLib::FLAC::File>(spFile);
+   TagLib::FLAC::File* flacFile = dynamic_cast<TagLib::FLAC::File*>(spFileRef->file());
    if (flacFile != nullptr)
    {
       return flacFile->xiphComment(true); // create when it's not there yet
@@ -280,7 +282,7 @@ void AudioFileTag::ReadTrackInfoFromXiphCommentTag(TagLib::Ogg::XiphComment* xip
       m_trackInfo.SetNumberInfo(TrackInfoDiscNumber, intValue);
    }
 
-   const TagLib::List<TagLib::FLAC::Picture*>& pictures = xiphComment->pictureList();
+   TagLib::List<TagLib::FLAC::Picture*> pictures = xiphComment->pictureList();
 
    ReadFrontCoverPictureFromPictureList(pictures);
 }
@@ -337,26 +339,26 @@ unsigned int AudioFileTag::GetTagLength() const
 
 bool AudioFileTag::WriteToFile(const CString& filename, AudioFileType audioFileType) const
 {
-   std::shared_ptr<TagLib::File> spFile = OpenFile(filename, audioFileType);
+   std::shared_ptr<TagLib::FileRef> spFileRef = OpenFile(filename, audioFileType);
 
-   if (spFile == nullptr)
+   if (spFileRef == nullptr || spFileRef->isNull())
       return false;
 
-   TagLib::Tag* tag = spFile->tag();
+   TagLib::Tag* tag = spFileRef->file()->tag();
    if (tag == nullptr)
       return false;
 
    StoreTrackInfoInTag(tag);
 
-   TagLib::ID3v2::Tag* id3v2tag = FindId3v2Tag(spFile);
+   TagLib::ID3v2::Tag* id3v2tag = FindId3v2Tag(spFileRef);
    if (id3v2tag != nullptr)
       StoreTrackInfoInId3v2Tag(id3v2tag);
 
-   TagLib::Ogg::XiphComment* oggXiphComment = FindOggXiphCommentTag(spFile);
+   TagLib::Ogg::XiphComment* oggXiphComment = FindOggXiphCommentTag(spFileRef);
    if (oggXiphComment != nullptr)
       StoreTrackInfoInXiphCommentTag(oggXiphComment);
 
-   return spFile->save();
+   return spFileRef->save();
 }
 
 void AudioFileTag::StoreTrackInfoInId3v2Tag(TagLib::ID3v2::Tag* id3v2tag) const

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2018 Michael Fink
+// Copyright (c) 2018,2024 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ namespace TagLib
 {
    class Tag;
    class File;
+   class FileRef;
    template <class T> class List;
    namespace ID3v2
    {
@@ -80,13 +81,13 @@ namespace Encoder
 
    private:
       /// opens taglib file
-      static std::shared_ptr<TagLib::File> OpenFile(const CString& filename, AudioFileType audioFileType);
+      static std::shared_ptr<TagLib::FileRef> OpenFile(const CString& filename, AudioFileType audioFileType);
 
       /// finds ID3v2 tag in given file, if available
-      static TagLib::ID3v2::Tag* FindId3v2Tag(std::shared_ptr<TagLib::File> spFile);
+      static TagLib::ID3v2::Tag* FindId3v2Tag(std::shared_ptr<TagLib::FileRef> spFile);
 
       /// finds Ogg comment tag in given file, if available
-      static TagLib::Ogg::XiphComment* FindOggXiphCommentTag(std::shared_ptr<TagLib::File> spFile);
+      static TagLib::Ogg::XiphComment* FindOggXiphCommentTag(std::shared_ptr<TagLib::FileRef> spFile);
 
       /// reads all track infos from tag
       void ReadTrackInfoFromTag(TagLib::Tag* tag);
