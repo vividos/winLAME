@@ -200,9 +200,9 @@
            Source="$(var.SolutionDir)source\libraries\libfaac_dll.dll" />
       </Component>
 
-      <Component Id="FaadLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="FaadDll" Name="faad.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.OutputDir)faad.dll" />
+      <Component Id="Faad2Library" Guid="*" Directory="INSTALLDIR">
+        <File Id="FaadDll" Name="faad-2.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)faad-2.dll" />
       </Component>
 
       <Component Id="OggLibrary" Guid="*" Directory="INSTALLDIR">
