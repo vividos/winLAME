@@ -182,7 +182,8 @@ bool AACSettingsPage::SaveData()
 
    // Note: libfaac only supports LOW (=1) now, so disregard the selection
    //int value = m_comboObjectType.GetCurSel();
-   mgr.setValue(AacObjectType, 1);
+   int value = 1;
+   mgr.setValue(AacObjectType, value);
 
    // currently it is not possible to use LTP together with MPEG2
    if (mpeg == 0 && value == 2)
