@@ -189,7 +189,7 @@
             <tr><td>aacBitrate</td><td>Average bitrate in kbps per channel; used in bitrate mode</td><td>128</td></tr>
             <tr><td>aacBandwidth</td><td>Cutoff frequency for input, in Hz; only active when aacAutoBandwidth is 0</td><td>16000</td></tr>
             <tr><td>aacMpegVer</td><td>MPEG version: 2: MPEG2, 4: MPEG4; note that this value doesn't create .mp4 files!</td><td>2</td></tr>
-            <tr><td>aacObjectType</td><td>AAC object type; 0: Main, 1: Low complexity, 2: LTP</td><td>1</td></tr>
+            <tr><td>aacObjectType</td><td>AAC object type; 0: Main, 1: Low complexity, 2: LTP; Note: libfaac only produces correct files with "Low complexity"</td><td>1</td></tr>
             <tr><td>aacAllowMS</td><td>When 1, allows the AAC encoder to use Mid/Side encoding; 0 disables it</td><td>1</td></tr>
             <tr><td>aacUseTNS</td><td>When 1, uses Temporal Noise Shaping; 0 disables it</td><td>1</td></tr>
             <tr><td>aacUseLFE</td><td>When 1, uses one channel as LFE channel; 0 disables it - currently not supported by libfaac</td><td>1</td></tr>

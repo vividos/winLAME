@@ -67,9 +67,10 @@ LRESULT AACSettingsPage::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /
    m_comboMpegVersion.AddString(_T("MPEG4"));
 
    // combo box with aac object type
-   m_comboObjectType.AddString(_T("Main"));
+   // Note: libfaac only supports LOW (=1) now, so just add this
+   //m_comboObjectType.AddString(_T("Main"));
    m_comboObjectType.AddString(_T("Low Complexity"));
-   m_comboObjectType.AddString(_T("LTP"));
+   //m_comboObjectType.AddString(_T("LTP"));
 
    LoadData();
 
@@ -143,7 +144,9 @@ void AACSettingsPage::LoadData()
    // set combo box selections
    m_comboMpegVersion.SetCurSel(mgr.queryValueInt(AacMpegVersion) == 2 ? 0 : 1);
 
-   m_comboObjectType.SetCurSel(mgr.queryValueInt(AacObjectType));
+   // Note: libfaac only supports LOW (=1) now, so disregard the selection
+   //m_comboObjectType.SetCurSel(mgr.queryValueInt(AacObjectType));
+   m_comboObjectType.SetCurSel(0);
 
    // set checks
    m_checkMidSide.SetCheck(mgr.queryValueInt(AacAllowMS) == 0 ? BST_UNCHECKED : BST_CHECKED);
@@ -177,8 +180,9 @@ bool AACSettingsPage::SaveData()
    int mpeg = m_comboMpegVersion.GetCurSel();
    mgr.setValue(AacMpegVersion, mpeg == 0 ? 2 : 4);
 
-   int value = m_comboObjectType.GetCurSel();
-   mgr.setValue(AacObjectType, value);
+   // Note: libfaac only supports LOW (=1) now, so disregard the selection
+   //int value = m_comboObjectType.GetCurSel();
+   mgr.setValue(AacObjectType, 1);
 
    // currently it is not possible to use LTP together with MPEG2
    if (mpeg == 0 && value == 2)
