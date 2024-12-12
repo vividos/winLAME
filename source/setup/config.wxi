@@ -2,7 +2,7 @@
 <Include>
   <?define MajorVersion = "2" ?>
   <?define MinorVersion = "24" ?>
-  <?define ReleaseNumber = "0" ?>
+  <?define ReleaseNumber = "1" ?>
   <?define BuildNumber = "0" ?>
   <?define BuildYear = "2024" ?>
 
