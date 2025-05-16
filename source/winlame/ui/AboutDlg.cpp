@@ -45,7 +45,7 @@ LRESULT AboutDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
    m_browser.ShowWindow(SW_SHOW);
 
    // host webbrowser control
-   CComBSTR htmlstring = GetAboutHtmlText();
+   CComBSTR htmlstring { GetAboutHtmlText() };
    m_browser.CreateControl(htmlstring);
 
    CDialogResize<AboutDlg>::DlgResize_Init(true, true);

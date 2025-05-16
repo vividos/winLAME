@@ -317,8 +317,8 @@ void BassWmaOutputModule::AddTrackInfo(const TrackInfo& trackInfo)
       WM_PICTURE wmPictureData = { 0 };
 
       wmPictureData.bPictureType = 3; // 3: front cover
-      wmPictureData.pwszMIMEType = L"image/jpeg";
-      wmPictureData.pwszDescription = L"";
+      wmPictureData.pwszMIMEType = const_cast<LPWSTR>(L"image/jpeg");
+      wmPictureData.pwszDescription = const_cast<LPWSTR>(L"");
       wmPictureData.pbData = binaryInfo.data();
       wmPictureData.dwDataLen = binaryInfo.size();
 
