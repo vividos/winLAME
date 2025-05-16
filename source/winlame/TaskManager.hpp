@@ -75,7 +75,7 @@ public:
 
 private:
    /// thread function
-   static void RunThread(boost::asio::io_service& ioService, unsigned int threadNumber);
+   static void RunThread(boost::asio::io_context& ioContext, unsigned int threadNumber);
 
    /// returns if a task is runnable
    bool IsTaskRunnable(std::shared_ptr<Task> spTask) const;
@@ -123,11 +123,11 @@ private:
 
    // thread pool
 
-   /// io service
-   boost::asio::io_service m_ioService;
+   /// io context
+   boost::asio::io_context m_ioContext;
 
-   /// default work for io service
-   std::unique_ptr<boost::asio::io_service::work> m_upDefaultWork;
+   /// default work for io context
+   boost::asio::executor_work_guard<boost::asio::io_context::executor_type> m_defaultWork;
 
    /// thread pool
    std::vector<std::shared_ptr<std::thread>> m_vecThreadPool;

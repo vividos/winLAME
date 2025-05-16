@@ -30,7 +30,7 @@
 TaskManager::TaskManager(const TaskManagerConfig& config)
    :m_nextTaskId(1),
    m_config(config),
-   m_upDefaultWork(new boost::asio::io_service::work(m_ioService))
+   m_defaultWork(boost::asio::make_work_guard(m_ioContext))
 {
    // find out number of threads to start
    unsigned int uiNumThreads = m_config.m_uiUseNumTasks;
@@ -48,7 +48,7 @@ TaskManager::TaskManager(const TaskManagerConfig& config)
    for (unsigned int i = 0; i < uiNumThreads; i++)
    {
       std::shared_ptr<std::thread> spThread = std::make_shared<std::thread>(
-         std::bind(&TaskManager::RunThread, std::ref(m_ioService), i));
+         std::bind(&TaskManager::RunThread, std::ref(m_ioContext), i));
 
       SetBusyFlag(GetThreadId(spThread->native_handle()), false);
 
@@ -64,7 +64,7 @@ TaskManager::~TaskManager()
       StopAll();
 
       // stop threads
-      m_upDefaultWork.reset();
+      m_defaultWork.reset();
 
       for (unsigned int i = 0, iMax = m_vecThreadPool.size(); i < iMax; i++)
          m_vecThreadPool[i]->join();
@@ -120,7 +120,8 @@ void TaskManager::AddTask(std::shared_ptr<Task> spTask)
    {
       spTask->IsStarted(true);
 
-      m_ioService.post(
+      boost::asio::post(
+         m_ioContext.get_executor(),
          std::bind(&TaskManager::RunTask, this, spTask));
    }
 }
@@ -142,7 +143,8 @@ void TaskManager::CheckRunnableTasks()
       {
          spTask->IsStarted(true);
 
-         m_ioService.post(
+         boost::asio::post(
+            m_ioContext.get_executor(),
             std::bind(&TaskManager::RunTask, this, spTask));
       }
    });
@@ -290,7 +292,7 @@ void TaskManager::RemoveCompletedTasks()
    }
 }
 
-void TaskManager::RunThread(boost::asio::io_service& ioService, unsigned int threadNumber)
+void TaskManager::RunThread(boost::asio::io_context& ioContext, unsigned int threadNumber)
 {
    ATLTRACE(_T("starting worker thread #%u\n"), threadNumber);
 
@@ -300,7 +302,7 @@ void TaskManager::RunThread(boost::asio::io_service& ioService, unsigned int thr
 
    try
    {
-      ioService.run();
+      ioContext.run();
    }
    catch (const std::system_error & error)
    {

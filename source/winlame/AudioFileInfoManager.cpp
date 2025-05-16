@@ -25,8 +25,8 @@
 #include <functional>
 
 AudioFileInfoManager::AudioFileInfoManager()
-   :m_ioService(1), // one thread max.
-   m_upDefaultWork(new boost::asio::io_service::work(m_ioService)),
+   :m_ioContext(1), // one thread max.
+   m_defaultWork(boost::asio::make_work_guard(m_ioContext)),
    m_stopping(false)
 {
 }
@@ -63,25 +63,26 @@ void AudioFileInfoManager::AsyncGetAudioFileInfo(LPCTSTR filename, AudioFileInfo
 
    if (m_upThread == nullptr)
    {
-      m_upThread.reset(new std::thread(std::bind(&AudioFileInfoManager::RunThread, std::ref(m_ioService))));
+      m_upThread.reset(new std::thread(std::bind(&AudioFileInfoManager::RunThread, std::ref(m_ioContext))));
    }
 
-   m_ioService.post(
+   boost::asio::post(
+      m_ioContext.get_executor(),
       std::bind(&AudioFileInfoManager::WorkerGetAudioFileInfo, std::ref(m_stopping), CString(filename), fnCallback));
 }
 
 void AudioFileInfoManager::Stop()
 {
    m_stopping = true;
-   m_upDefaultWork.reset();
-   m_ioService.stop();
+   m_defaultWork.reset();
+   m_ioContext.stop();
 }
 
-void AudioFileInfoManager::RunThread(boost::asio::io_service& ioService)
+void AudioFileInfoManager::RunThread(boost::asio::io_context& ioContext)
 {
    try
    {
-      ioService.run();
+      ioContext.run();
    }
    catch (boost::system::system_error& error)
    {

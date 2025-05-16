@@ -49,7 +49,7 @@ public:
 
 private:
    /// thread function
-   static void RunThread(boost::asio::io_service& ioService);
+   static void RunThread(boost::asio::io_context& ioContext);
 
    /// worker thread function to get audio file infos and to call callback
    static void WorkerGetAudioFileInfo(std::atomic<bool>& stopping, const CString& filename, AudioFileInfoManager::T_fnCallback fnCallback);
@@ -58,11 +58,11 @@ private:
    /// worker thread
    std::unique_ptr<std::thread> m_upThread;
 
-   /// io service
-   boost::asio::io_service m_ioService;
+   /// io context
+   boost::asio::io_context m_ioContext;
 
-   /// default work for io service
-   std::unique_ptr<boost::asio::io_service::work> m_upDefaultWork;
+   /// default work for io context
+   boost::asio::executor_work_guard<boost::asio::io_context::executor_type> m_defaultWork;
 
    /// indicates when manager is currently stopping
    std::atomic<bool> m_stopping;
