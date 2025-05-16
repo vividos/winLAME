@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2024 Michael Fink
+// Copyright (c) 2000-2025 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,10 +22,10 @@
 #pragma once
 
 #define MAJOR_VERSION 2
-#define MINOR_VERSION 24
-#define RELEASE_NUMBER 1
+#define MINOR_VERSION 25
+#define RELEASE_NUMBER 0
 #define BUILD_NUMBER 0
-#define BUILD_YEAR 2024
+#define BUILD_YEAR 2025
 
 #define STRINGIFY(s) STRINGIFY2(s)
 #define STRINGIFY2(s) #s
