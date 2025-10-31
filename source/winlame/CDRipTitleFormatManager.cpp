@@ -63,8 +63,6 @@ CString CDRipTitleFormatManager::FormatTitle(const CString& format,
    lengthInSeconds.Format(_T("%u"), trackInfo.m_trackLengthInSeconds);
    title.Replace(_T("%length%"), lengthInSeconds);
 
-   //title.Replace(_T("%discnumber%"), discInfo.);
-
    return title;
 }
 
@@ -96,7 +94,7 @@ std::vector<CString> CDRipTitleFormatManager::GetAllTags()
       _T("year"),
       _T("albumartist"),
       _T("length"),
-      //_T("discnumber"),
+      _T("disc"),
    };
 
    return allTags;
