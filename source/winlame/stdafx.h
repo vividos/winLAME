@@ -33,7 +33,7 @@
 #include <ulib/config/Wtl.hpp>
 
 #include "StdCppLib.hpp"
-#include <ulib/config/BoostAsio.hpp>
+#include <boost/asio.hpp>
 
 /// define that is used to mark unused parameters or parameters only used in ATLASSERTs
 #ifndef UNUSED
