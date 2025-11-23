@@ -7,7 +7,7 @@
   "registries": [
     {
       "kind": "git",
-      "baseline": "1894539cbb12c02c27c51351e55a3813ed521e25",
+      "baseline": "857c540ff53c3492ea38338f44bac485c1989ad7",
       "repository": "https://github.com/vividos/vcpkg-registry",
       "packages": [
         "vividos-ulibcpp"
