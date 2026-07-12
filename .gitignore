@@ -67,6 +67,7 @@ source/CoverageReport/
 source/winLAME-coverage.xml
 
 buildlibs/lame-*.tar.gz
+buildlibs/lame-*.tar
 buildlibs/lame-*/
 buildlibs/mpg123-x86.zip
 /buildtools/OpenCppCoverage/OpenCppCoverage/
