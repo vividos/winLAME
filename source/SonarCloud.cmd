@@ -1,13 +1,13 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2025 Michael Fink
+REM Copyright (c) 2000-2026 Michael Fink
 REM
 REM Runs SonarCloud analysis build
 REM
 
 REM set this to your Visual Studio installation folder
-set VSINSTALL=%ProgramFiles%\Microsoft Visual Studio\2022\Community
+set VSINSTALL=%ProgramFiles%\Microsoft Visual Studio\18\Community
 
 REM
 REM Preparations
@@ -51,7 +51,7 @@ popd
 
 SonarScanner.MSBuild.exe begin ^
     /k:"winLAME" ^
-    /v:"2.25.1.0" ^
+    /v:"2.26.1.0" ^
     /d:"sonar.cfamily.build-wrapper-output=%CD%\.bw-output" ^
     /d:"sonar.coverageReportPaths=%CD%\source\winlame-coverage.xml" ^
     /d:"sonar.host.url=https://sonarcloud.io" ^
