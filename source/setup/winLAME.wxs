@@ -236,8 +236,8 @@
       </Component>
 
       <Component Id="ZlibLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="Zlib1Dll" Name="zlib$(var.DebugDllSuffix)1.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.OutputDir)zlib$(var.DebugDllSuffix)1.dll" />
+        <File Id="ZDll" Name="z$(var.DebugDllSuffix).dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)z$(var.DebugDllSuffix).dll" />
       </Component>
 
       <Component Id="WinLameHelp" Guid="*" Directory="INSTALLDIR">
