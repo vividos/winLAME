@@ -14,7 +14,7 @@ configuration: AppVeyor
 
 cache:
   - C:\Users\appveyor\AppData\Local\vcpkg\archives -> appveyor.yml
-  - C:\projects\winlame\vcpkg_installed -> appveyor.yml
+  - C:\projects\winlame\intermediate\vcpkg_installed -> appveyor.yml
 
 install:
   - cd C:\Tools\vcpkg

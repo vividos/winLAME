@@ -13,8 +13,8 @@ if "%1" == "" exit 0
 
 mkdir ..\..\bin 2> nul
 
-if "%1" == "Debug" set VCPKG_BIN_DIR=%CD%\..\..\vcpkg_installed\x86-windows\x86-windows\Debug\bin
-if "%1" == "Release" set VCPKG_BIN_DIR=%CD%\..\..\vcpkg_installed\x86-windows\x86-windows\bin
+if "%1" == "Debug" set VCPKG_BIN_DIR=%CD%\..\..\intermediate\vcpkg_installed\x86-windows\x86-windows\Debug\bin
+if "%1" == "Release" set VCPKG_BIN_DIR=%CD%\..\..\intermediate\vcpkg_installed\x86-windows\x86-windows\bin
 
 set TARGET=..\..\bin\%1
 
