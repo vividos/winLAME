@@ -28,8 +28,6 @@ copy libfaac_dll.dll %TARGET%
 copy MACDll.dll %TARGET%
 
 copy %VCPKG_BIN_DIR%\faad-2.dll %TARGET%
-copy %VCPKG_BIN_DIR%\FLAC.dll %TARGET%
-copy %VCPKG_BIN_DIR%\sndfile.dll %TARGET%
 
 mkdir %ProgramData%\winLAME 2> nul
 copy ..\presets.xml %ProgramData%\winLAME\presets.xml

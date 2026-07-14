@@ -27,7 +27,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "FLAC/metadata.h"
-#include <ulib/DynamicLibrary.hpp>
 #include "AudioFileTag.hpp"
 
 using Encoder::FlacInputModule;
@@ -223,14 +222,8 @@ Encoder::InputModule* FlacInputModule::CloneModule()
 
 bool FlacInputModule::IsAvailable() const
 {
-   DynamicLibrary lib(_T("FLAC.dll"));
-
-   if (lib.IsLoaded())
-   {
-      return lib.IsFunctionAvail("FLAC__stream_decoder_new");
-   }
-
-   return false;
+   // we don't do delay-loading anymore, so it's always available
+   return true;
 }
 
 CString FlacInputModule::GetDescription() const
@@ -250,12 +243,7 @@ CString FlacInputModule::GetDescription() const
 
 void FlacInputModule::GetVersionString(CString& version, int special) const
 {
-   DynamicLibrary lib(_T("FLAC.dll"));
-
-   if (lib.IsLoaded())
-   {
-      version = *(lib.GetFunction<const char**>("FLAC__VERSION_STRING"));
-   }
+   version = FLAC__VERSION_STRING;
 }
 
 CString FlacInputModule::GetFilterString() const

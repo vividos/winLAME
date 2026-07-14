@@ -25,7 +25,6 @@
 #include "resource.h"
 #include "Id3v1Tag.hpp"
 #include "SndFileFormats.hpp"
-#include <ulib/DynamicLibrary.hpp>
 #include <ulib/UTF8.hpp>
 
 using Encoder::SndFileInputModule;
@@ -51,15 +50,8 @@ Encoder::InputModule* SndFileInputModule::CloneModule()
 
 bool SndFileInputModule::IsAvailable() const
 {
-   DynamicLibrary dll(_T("sndfile.dll"));
-
-   bool avail = dll.IsLoaded();
-
-   // check for old libsndfile.dll (pre-1.x); not supported
-   if (dll.IsFunctionAvail("sf_get_lib_version"))
-      avail = false;
-
-   return avail;
+   // we don't do delay-loading anymore, so it's always available
+   return true;
 }
 
 CString SndFileInputModule::GetDescription() const
