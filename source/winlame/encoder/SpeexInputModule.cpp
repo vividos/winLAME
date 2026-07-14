@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2014-2017 Michael Fink
+// Copyright (c) 2014-2026 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -72,19 +72,25 @@ void SpeexInputModule::GetVersionString(CString& version, int special) const
    const char* fullVersion = nullptr;
    speex_lib_ctl(SPEEX_LIB_GET_VERSION_STRING, &fullVersion);
 
-   unsigned int uiVersion[4] = { 0 };
-   speex_lib_ctl(SPEEX_LIB_GET_MAJOR_VERSION, uiVersion + 0);
-   speex_lib_ctl(SPEEX_LIB_GET_MINOR_VERSION, uiVersion + 1);
-   speex_lib_ctl(SPEEX_LIB_GET_MICRO_VERSION, uiVersion + 2);
+   if (fullVersion != nullptr)
+      version = fullVersion;
+   else
+   {
+      unsigned int numericVersion[4] = { 0 };
+      speex_lib_ctl(SPEEX_LIB_GET_MAJOR_VERSION, numericVersion + 0);
+      speex_lib_ctl(SPEEX_LIB_GET_MINOR_VERSION, numericVersion + 1);
+      speex_lib_ctl(SPEEX_LIB_GET_MICRO_VERSION, numericVersion + 2);
+
+      version.Format(_T("%u.%u.%u)"),
+         fullVersion,
+         numericVersion[0], numericVersion[1], numericVersion[2]);
+   }
 
    const char* extraVersion = nullptr;
    speex_lib_ctl(SPEEX_LIB_GET_EXTRA_VERSION, &extraVersion);
 
-   version.Format(_T("%hs (%u.%u.%u%s%hs)"),
-      fullVersion,
-      uiVersion[0], uiVersion[1], uiVersion[2],
-      extraVersion != nullptr && strlen(extraVersion) > 0 ? _T(" ") : _T(""),
-      extraVersion);
+   if (extraVersion != nullptr && strlen(extraVersion) > 0)
+      version.AppendFormat(_T(" (%hs)"), extraVersion);
 }
 
 CString SpeexInputModule::GetFilterString() const
