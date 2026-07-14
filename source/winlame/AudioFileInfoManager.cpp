@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2020 Michael Fink
+// Copyright (c) 2000-2026 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 
 AudioFileInfoManager::AudioFileInfoManager()
    :m_ioContext(1), // one thread max.
-   m_defaultWork(boost::asio::make_work_guard(m_ioContext)),
+   m_defaultWork(asio::make_work_guard(m_ioContext)),
    m_stopping(false)
 {
 }
@@ -66,7 +66,7 @@ void AudioFileInfoManager::AsyncGetAudioFileInfo(LPCTSTR filename, AudioFileInfo
       m_upThread.reset(new std::thread(std::bind(&AudioFileInfoManager::RunThread, std::ref(m_ioContext))));
    }
 
-   boost::asio::post(
+   asio::post(
       m_ioContext.get_executor(),
       std::bind(&AudioFileInfoManager::WorkerGetAudioFileInfo, std::ref(m_stopping), CString(filename), fnCallback));
 }
@@ -78,16 +78,16 @@ void AudioFileInfoManager::Stop()
    m_ioContext.stop();
 }
 
-void AudioFileInfoManager::RunThread(boost::asio::io_context& ioContext)
+void AudioFileInfoManager::RunThread(asio::io_context& ioContext)
 {
    try
    {
       ioContext.run();
    }
-   catch (boost::system::system_error& error)
+   catch (const std::system_error& error)
    {
       UNUSED(error);
-      ATLTRACE(_T("system_error: %hs\n"), error.what());
+      ATLTRACE(_T("std::system_error: %hs\n"), error.what());
       ATLASSERT(false);
    }
 }

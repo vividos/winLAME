@@ -18,7 +18,7 @@
     },
     "taglib",
     "wtl",
-    "boost-asio",
+    "asio",
     "rapidxml",
     "faad2"
   ]

@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2018 Michael Fink
+// Copyright (c) 2000-2026 Michael Fink
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 #include <atomic>
 #include <mutex>
 #include <thread>
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include "TaskInfo.hpp"
 #include "TaskManagerConfig.hpp"
 
@@ -75,7 +75,7 @@ public:
 
 private:
    /// thread function
-   static void RunThread(boost::asio::io_context& ioContext, unsigned int threadNumber);
+   static void RunThread(asio::io_context& ioContext, unsigned int threadNumber);
 
    /// returns if a task is runnable
    bool IsTaskRunnable(std::shared_ptr<Task> spTask) const;
@@ -124,10 +124,10 @@ private:
    // thread pool
 
    /// io context
-   boost::asio::io_context m_ioContext;
+   asio::io_context m_ioContext;
 
    /// default work for io context
-   boost::asio::executor_work_guard<boost::asio::io_context::executor_type> m_defaultWork;
+   asio::executor_work_guard<asio::io_context::executor_type> m_defaultWork;
 
    /// thread pool
    std::vector<std::shared_ptr<std::thread>> m_vecThreadPool;

@@ -30,7 +30,7 @@
 TaskManager::TaskManager(const TaskManagerConfig& config)
    :m_nextTaskId(1),
    m_config(config),
-   m_defaultWork(boost::asio::make_work_guard(m_ioContext))
+   m_defaultWork(asio::make_work_guard(m_ioContext))
 {
    // find out number of threads to start
    unsigned int uiNumThreads = m_config.m_uiUseNumTasks;
@@ -120,7 +120,7 @@ void TaskManager::AddTask(std::shared_ptr<Task> spTask)
    {
       spTask->IsStarted(true);
 
-      boost::asio::post(
+      asio::post(
          m_ioContext.get_executor(),
          std::bind(&TaskManager::RunTask, this, spTask));
    }
@@ -143,7 +143,7 @@ void TaskManager::CheckRunnableTasks()
       {
          spTask->IsStarted(true);
 
-         boost::asio::post(
+         asio::post(
             m_ioContext.get_executor(),
             std::bind(&TaskManager::RunTask, this, spTask));
       }
@@ -292,7 +292,7 @@ void TaskManager::RemoveCompletedTasks()
    }
 }
 
-void TaskManager::RunThread(boost::asio::io_context& ioContext, unsigned int threadNumber)
+void TaskManager::RunThread(asio::io_context& ioContext, unsigned int threadNumber)
 {
    ATLTRACE(_T("starting worker thread #%u\n"), threadNumber);
 
@@ -308,12 +308,6 @@ void TaskManager::RunThread(boost::asio::io_context& ioContext, unsigned int thr
    {
       UNUSED(error);
       ATLTRACE(_T("std::system_error: %hs\n"), error.what());
-      ATLASSERT(false);
-   }
-   catch (const boost::system::system_error& error)
-   {
-      UNUSED(error);
-      ATLTRACE(_T("boost::system::system_error: %hs\n"), error.what());
       ATLASSERT(false);
    }
 }

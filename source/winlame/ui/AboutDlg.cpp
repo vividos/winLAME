@@ -170,12 +170,12 @@ CString AboutDlg::GetAboutHtmlText()
          varname.Format(_T("%x.%x"),
             _WTL_VER >> 8, (_WTL_VER >> 4) & 15);
       }
-      else if (varname == _T("boostversion"))
+      else if (varname == _T("asioversion"))
       {
          varname.Format(_T("%u.%u.%u"),
-            BOOST_VERSION / 100000,
-            BOOST_VERSION / 100 % 1000,
-            BOOST_VERSION % 100);
+            ASIO_VERSION / 100000,
+            ASIO_VERSION / 100 % 1000,
+            ASIO_VERSION % 100);
       }
       else if (varname == _T("taglibversion"))
          varname = GetTagLibVersion();
