@@ -1,6 +1,6 @@
 /*
    nlame - an alternative API for libmp3lame
-   copyright (c) 2001-2018 Michael Fink
+   copyright (c) 2001-2026 Michael Fink
    Copyright (c) 2004 DeXT
 
    This library is free software; you can redistribute it and/or
@@ -34,10 +34,6 @@
 #include <string.h>
 #include <assert.h>
 #include <Windows.h>
-
-/*! sets id3 tag text info as UCS-2 value; not declared by lame.h, but exported from the
-    library, so we declare it here. */
-extern int CDECL id3tag_set_textinfo_ucs2(lame_t gfp, char const *id, unsigned short const *text);
 
 /*! quality values to use in a call to nlame_var_set_int(nle_var_quality,x)
     note: these are now internal and can't be reached from nlame.h anymore.
@@ -766,18 +762,18 @@ void nlame_id3tag_setfield_latin1(nlame_instance_t* inst,
    }
 }
 
-void nlame_id3tag_setfield_ucs2(nlame_instance_t* inst,
-   enum nlame_id3tag_field field, const wchar_t* text)
+void nlame_id3tag_setfield_utf8(nlame_instance_t* inst,
+   enum nlame_id3tag_field field, const char* text)
 {
    switch (field)
    {
-   case nif_title:   id3tag_set_textinfo_ucs2(inst->lgf, "TIT2", text); break;
-   case nif_artist:  id3tag_set_textinfo_ucs2(inst->lgf, "TPE1", text); break;
-   case nif_album:   id3tag_set_textinfo_ucs2(inst->lgf, "TALB", text); break;
-   case nif_year:    id3tag_set_textinfo_ucs2(inst->lgf, "TYER", text); break;
-   case nif_comment: id3tag_set_textinfo_ucs2(inst->lgf, "COMM", text); break;
-   case nif_track:   id3tag_set_textinfo_ucs2(inst->lgf, "TRCK", text); break;
-   case nif_genre:   id3tag_set_textinfo_ucs2(inst->lgf, "TPOS", text); break;
+   case nif_title:   id3tag_set_textinfo_utf8(inst->lgf, "TIT2", text); break;
+   case nif_artist:  id3tag_set_textinfo_utf8(inst->lgf, "TPE1", text); break;
+   case nif_album:   id3tag_set_textinfo_utf8(inst->lgf, "TALB", text); break;
+   case nif_year:    id3tag_set_textinfo_utf8(inst->lgf, "TYER", text); break;
+   case nif_comment: id3tag_set_textinfo_utf8(inst->lgf, "COMM", text); break;
+   case nif_track:   id3tag_set_textinfo_utf8(inst->lgf, "TRCK", text); break;
+   case nif_genre:   id3tag_set_textinfo_utf8(inst->lgf, "TPOS", text); break;
 
    default:
       assert(0); /* invalid value */

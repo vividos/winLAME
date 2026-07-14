@@ -1,6 +1,6 @@
 /*
    nlame - an alternative API for libmp3lame
-   copyright (c) 2001-2023 Michael Fink
+   copyright (c) 2001-2026 Michael Fink
    Copyright (c) 2004 DeXT
 
    This library is free software; you can redistribute it and/or
@@ -73,6 +73,10 @@
 
     Version 7: introduced on 2023-09-28
       Added nlame_write_vbr_infotag_offset()
+
+    Version 8: introduced on 2026-07-14
+      Replaced nlame_id3tag_setfield_ucs2() with
+      nlame_id3tag_setfield_utf8()
 
 */
 /*! \defgroup nlame nlame Documentation
@@ -670,10 +674,10 @@ enum nlame_id3tag_field
 void nlame_id3tag_setfield_latin1( nlame_instance_t* inst,
    enum nlame_id3tag_field field, const char* text);
 
-/*! writes ucs2 string text field to stream */
+/*! writes utf8 string text field to stream */
 /*! must be called before any encoding happens */
-void nlame_id3tag_setfield_ucs2(nlame_instance_t* inst,
-   enum nlame_id3tag_field field, const wchar_t* text);
+void nlame_id3tag_setfield_utf8(nlame_instance_t* inst,
+   enum nlame_id3tag_field field, const char* text);
 
 /*! writes album art into id3v2 tag; must be a JPEG byte stream */
 /*! must be called before any encoding happens */
