@@ -75,6 +75,7 @@
       Added nlame_write_vbr_infotag_offset()
 
     Version 8: introduced on 2026-07-14
+      Removed nlame_write_vbr_infotag()
       Replaced nlame_id3tag_setfield_ucs2() with
       nlame_id3tag_setfield_utf8()
 
@@ -271,7 +272,8 @@ typedef enum
    /*! the average bitrate to use when nle_var_vbr_mode is vbr_abr, in kbps */
    nle_var_abr_mean_bitrate = 14,
    /*! when 1, tells LAME to collect data for the VBR info tag
-       after encoding, call nlame_write_vbr_infotag() to write VBR info tag */
+       after encoding, call nlame_write_vbr_infotag_offset() to write the VBR
+       info tag */
    nle_var_vbr_generate_info_tag = 15,
 
    /* filter settings */
@@ -588,21 +590,6 @@ int nlame_reinit_bitstream( nlame_instance_t* inst );
     nlame_init_params() or nlame_reinit_bitstream() was called. */
 int nlame_get_vbr_infotag_length(nlame_instance_t* inst);
 
-
-/*! writes VBR info tag to an open file descriptor fd */
-/*! These calls perform forward and backwards seeks, so make
-    sure fd is a real file. Make sure nlame_encode_flush has been called,
-    and all mp3 data has been written to the file before calling this
-    function.
-
-    NOTE:
-    if VBR tags are turned off by the user, or turned off by LAME because
-    the output is not a regular file, this call does nothing.
-
-    See also:
-    http://gabriel.mp3-tech.org/mp3infotag.html
-*/
-void nlame_write_vbr_infotag( nlame_instance_t* inst, FILE* fd );
 
 /*! writes VBR info tag to an open file descriptor fd at given offset */
 /*! This call assumes that the caller knows where the VBR info tag must be
