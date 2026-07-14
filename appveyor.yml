@@ -32,8 +32,8 @@ build:
   verbosity: minimal
 
 artifacts:
-- path: bin\Release\win*.dll
-- path: bin\Release\win*.exe
-- path: bin\Release\pdb\win*.pdb
-- path: bin\Release\*.msi
-- path: bin\Release\*.zip
+- path: bin\Release\Win32\win*.dll
+- path: bin\Release\Win32\win*.exe
+- path: bin\Release\Win32\pdb\win*.pdb
+- path: bin\Release\Win32\*.msi
+- path: bin\Release\Win32\*.zip

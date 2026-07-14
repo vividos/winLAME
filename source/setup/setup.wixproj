@@ -11,15 +11,15 @@
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</IntermediateOutputPath>
+    <OutputPath>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)intermediate\$(Configuration)\$(Platform)\$(ProjectName)\</IntermediateOutputPath>
     <DefineConstants>Debug</DefineConstants>
     <SuppressIces>ICE03;ICE82</SuppressIces>
     <Cultures>en-us</Cultures>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>$(SolutionDir)bin\$(Configuration)\</OutputPath>
-    <IntermediateOutputPath>$(SolutionDir)intermediate\$(Configuration)\$(ProjectName)\</IntermediateOutputPath>
+    <OutputPath>$(SolutionDir)bin\$(Configuration)\$(Platform)\</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)intermediate\$(Configuration)\$(Platform)\$(ProjectName)\</IntermediateOutputPath>
     <SuppressIces>ICE03;ICE82</SuppressIces>
     <Cultures>en-us</Cultures>
   </PropertyGroup>
