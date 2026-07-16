@@ -66,6 +66,8 @@ uwpapp/winlame/
 source/CoverageReport/
 source/winLAME-coverage.xml
 
+buildlibs/faac-1_30/
+buildlibs/faac-1_30.zip
 buildlibs/lame-*.tar.gz
 buildlibs/lame-*.tar
 buildlibs/lame-*/
