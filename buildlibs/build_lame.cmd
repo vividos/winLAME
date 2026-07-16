@@ -60,7 +60,7 @@ msbuild vs2019_libmp3lame_dll.vcxproj /m /property:Configuration=Release /proper
 popd
 
 REM copy artifacts
-copy %PREFIX%\output\Win32\Release\libmp3lame.dll ..\source\libraries\
+copy %PREFIX%\output\Win32\Release\libmp3lame.dll ..\source\libraries\bin\Win32\
 copy %PREFIX%\output\Win32\Release\libmp3lame.lib ..\source\libraries\lib\
 copy %PREFIX%\include\*.h ..\source\libraries\include\lame\
 
