@@ -140,7 +140,7 @@
 
       <Component Id="LibMp3LameLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibMp3LameDll" Name="libmp3lame.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libmp3lame.dll" />
+           Source="$(var.SolutionDir)source\libraries\bin\Win32\libmp3lame.dll" />
       </Component>
 
       <Component Id="SndFileLibrary" Guid="*" Directory="INSTALLDIR">
@@ -157,17 +157,17 @@
 
       <Component Id="BassLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="BassDll" Name="bass.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\bass.dll" />
+           Source="$(var.SolutionDir)source\libraries\bin\Win32\bass.dll" />
       </Component>
 
       <Component Id="BassCdLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="BassCdDll" Name="basscd.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\basscd.dll" />
+           Source="$(var.SolutionDir)source\libraries\bin\Win32\basscd.dll" />
       </Component>
 
       <Component Id="BassWmaLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="BassWmaDll" Name="basswma.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\basswma.dll" />
+           Source="$(var.SolutionDir)source\libraries\bin\Win32\basswma.dll" />
       </Component>
 
       <Component Id="FlacDynamicLibrary" Guid="*" Directory="INSTALLDIR">
@@ -192,12 +192,12 @@
 
       <Component Id="MonkeysAudioLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="MacDllDll" Name="MACDll.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\MACDll.dll" />
+           Source="$(var.SolutionDir)source\libraries\bin\Win32\MACDll.dll" />
       </Component>
 
       <Component Id="LibFaacLibrary" Guid="*" Directory="INSTALLDIR">
         <File Id="LibFaacDllDll" Name="libfaac_dll.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\libfaac_dll.dll" />
+           Source="$(var.SolutionDir)source\libraries\bin\Win32\libfaac_dll.dll" />
       </Component>
 
       <Component Id="Faad2Library" Guid="*" Directory="INSTALLDIR">
