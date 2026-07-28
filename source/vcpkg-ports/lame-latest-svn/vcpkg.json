@@ -1,0 +1,10 @@
+{
+  "name": "lame-latest-svn",
+  "version-string": "4.1-alpha-r6706",
+  "description": "LAME is a high quality MPEG Audio Layer III (MP3) encoder licensed under the LGPL.",
+  "homepage": "https://lame.sourceforge.io/",
+  "license": "LGPL-2.0-only",
+  "supports": "windows",
+  "dependencies": [
+  ]
+}

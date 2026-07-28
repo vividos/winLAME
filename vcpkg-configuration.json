@@ -13,5 +13,8 @@
         "vividos-ulibcpp"
       ]
     }
+  ],
+  "overlay-ports": [
+    "./source/vcpkg-ports"
   ]
 }
