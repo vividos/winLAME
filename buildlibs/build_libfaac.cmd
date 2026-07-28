@@ -31,8 +31,14 @@ xcopy /S faac\*.* faac-%PREFIX%\
 
 pushd faac-%PREFIX%\
 
-echo #define PACKAGE "%PREFIX%" > include\config.h
-echo #define PACKAGE_VERSION "%PREFIX%" >> include\config.h
+REM write config.h
+for /f "tokens=1,2 delims=-" %%a in ("%PREFIX%") do (
+	set PACKAGE=%%a
+	set PACKAGE_VERSION=%%b
+)
+
+echo #define PACKAGE "%PACKAGE%" > include\config.h
+echo #define PACKAGE_VERSION "%PACKAGE_VERSION%" >> include\config.h
 echo #define MAX_CHANNELS 8 >> include\config.h
 echo #define FAAC_SBR_DECIMATION 1 >> include\config.h
 echo #define FAACAPI __declspec(dllexport) >> include\config.h
