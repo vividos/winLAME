@@ -20,6 +20,7 @@
     "wtl",
     "asio",
     "rapidxml",
+    "faac",
     "faad2"
   ]
 }

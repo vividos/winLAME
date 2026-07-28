@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2026 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -64,14 +64,21 @@ namespace Encoder
       virtual void DoneOutput() override;
 
    private:
+      /// encodes number of samples from input buffer and writes frames to output file
+      int EncodeAndWrite(unsigned long inputBufferSize);
+
+   private:
+      /// encoder parameters
+      faac_params m_params = {};
+
       /// encoder handle
-      faacEncHandle m_handle;
+      std::shared_ptr<faac_encoder> m_handle;
 
       /// size of input buffer, in samples
-      unsigned long m_inputBufferSize;
+      unsigned long m_inputBufferSize = 0;
 
       /// size of output buffer in bytes
-      unsigned long m_outputBufferSize;
+      unsigned long m_outputBufferSize = 0;
 
       /// output buffer
       std::vector<unsigned char> m_outputBuffer;
@@ -80,10 +87,10 @@ namespace Encoder
       std::vector<short> m_sampleBuffer;
 
       /// sample buffer high watermark
-      size_t m_sampleBufferHigh;
+      size_t m_sampleBufferHigh = 0;
 
       /// bitrate control method
-      int m_bitrateControlMethod;
+      int m_bitrateControlMethod = 0;
 
       /// output file stream
       std::ofstream m_outputFile;

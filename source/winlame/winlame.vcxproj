@@ -52,9 +52,9 @@
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;version.lib;libfaac_dll.lib;bass.lib;basswma.lib;basscd.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;version.lib;faac.lib;bass.lib;basswma.lib;basscd.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <DelayLoadDLLs>faad-2.dll;libfaac_dll.dll;bass.dll;basscd.dll;basswma.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>faad-2.dll;bass.dll;basscd.dll;basswma.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
@@ -64,9 +64,9 @@
       <PreprocessorDefinitions>_ATL_NO_COM;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>comctl32.lib;version.lib;libfaac_dll.lib;bass.lib;basswma.lib;basscd.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>comctl32.lib;version.lib;faac.lib;bass.lib;basswma.lib;basscd.lib;delayimp.lib;Htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\libraries\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <DelayLoadDLLs>faad-2.dll;libfaac_dll.dll;bass.dll;basscd.dll;basswma.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <DelayLoadDLLs>faad-2.dll;bass.dll;basscd.dll;basswma.dll;propsys.dll;dwmapi.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
       <IgnoreSpecificDefaultLibraries>msvcrt</IgnoreSpecificDefaultLibraries>
       <AdditionalOptions>/IGNORE:4075 %(AdditionalOptions)</AdditionalOptions>
     </Link>

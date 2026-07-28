@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -186,13 +186,13 @@
     <p>
         <table class="table table-striped table-condensed" style="width: auto">
             <thead><th><b>Value Name</b></th><th><b>Description</b></th><th><b>Default Value</b></th></thead>
-            <tr><td>aacBitrate</td><td>Average bitrate in kbps per channel; used in bitrate mode</td><td>128</td></tr>
+            <tr><td>aacBitrate</td><td>Average bitrate in kbps for all channels; used in bitrate mode</td><td>128</td></tr>
             <tr><td>aacBandwidth</td><td>Cutoff frequency for input, in Hz; only active when aacAutoBandwidth is 0</td><td>16000</td></tr>
             <tr><td>aacMpegVer</td><td>MPEG version: 2: MPEG2, 4: MPEG4; note that this value doesn't create .mp4 files!</td><td>2</td></tr>
-            <tr><td>aacObjectType</td><td>AAC object type; 0: Main, 1: Low complexity, 2: LTP; Note: libfaac only produces correct files with "Low complexity"</td><td>1</td></tr>
+            <tr><td>aacObjectType</td><td>AAC object type; 0: Auto, 1: Low complexity (AAC-LC)</td><td>1</td></tr>
             <tr><td>aacAllowMS</td><td>When 1, allows the AAC encoder to use Mid/Side encoding; 0 disables it</td><td>1</td></tr>
             <tr><td>aacUseTNS</td><td>When 1, uses Temporal Noise Shaping; 0 disables it</td><td>1</td></tr>
-            <tr><td>aacUseLFE</td><td>When 1, uses one channel as LFE channel; 0 disables it - currently not supported by libfaac</td><td>1</td></tr>
+            <tr><td>aacUseLFE</td><td>When 1, uses last channel as LFE channel; 0 disables it</td><td>1</td></tr>
             <tr><td>aacBRCmethod</td><td>Bitrate control method; 0: quality mode, 1: bitrate mode</td><td>0</td></tr>
             <tr><td>aacQuality</td><td>Default VBR quality in percent; values between 10 and 500 are allowed; used in quality mode</td><td>100</td></tr>
             <tr><td>aacAutoBandwidth</td><td>When 1, automatically manages cutoff frequency; when 0, uses the frequency in aacBandwidth</td><td>1</td></tr>
