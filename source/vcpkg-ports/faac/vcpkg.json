@@ -1,0 +1,15 @@
+{
+  "name": "faac",
+  "version": "2.0",
+  "port-version": 0,
+  "description": "Free AAC Audio Codec",
+  "homepage": "https://github.com/knik0/faac/",
+  "license": "LGPL-2.1-only",
+  "supports": "windows",
+  "dependencies": [
+    {
+      "name": "vcpkg-tool-meson",
+      "host": true
+    }
+  ]
+}
