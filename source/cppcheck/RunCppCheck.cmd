@@ -1,8 +1,8 @@
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (C) 2016-2021 Michael Fink
+REM Copyright (C) 2016-2026 Michael Fink
 REM
-REM runs CppCheck to check sourcecode
+REM Runs CppCheck to check sourcecode
 REM
 
 set PATH=%PATH%;"C:\Program Files\Cppcheck\"
@@ -17,6 +17,8 @@ set OUTFILE=%INTDIR%cppcheck.txt
 if "%2" == "xml" set FORMAT=--xml
 if "%2" == "xml" set OUTFILE=%INTDIR%cppcheck-Results.xml
 
+mkdir ..\..\intermediate\cppcheck_build 2> nul
+
 REM run cppcheck
 REM -I <dir>            Include path
 REM -i <dir>            Ignore path
@@ -24,18 +26,31 @@ REM --suppressions-list=<file>   File with suppressed warnings
 REM -j 4                Multithreading
 REM --platform=win32W   Platform specific types
 REM --language=c++      Language (file extensions)
-REM --std=c++11         Language (syntax)%
+REM --std=c++20         Language (syntax)
 REM --enable=all        Enable warnings
-REM --template vs       Output format for warnings
+REM --template=vs       Output format for warnings
 REM --check-config
-cppcheck.exe ..\winlame ^
-   -DWIN32 -D_WINDOWS -DNDEBUG -D_UNICODE -D__cplusplus -D_MSC_VER=1900 ^
-   -DNTDDI_WIN7=0x06010000 -DNTDDI_VERSION=0x06010000 ^
-   -DDECLARE_WND_SUPERCLASS ^
-   -DDECLARE_FRAME_WND_CLASS ^
-   -DBEGIN_MSG_MAP ^
-   -DBEGIN_DDX_MAP ^
+cppcheck.exe ^
+   ..\winlame ^
+   -I "C:\Program Files\Microsoft Visual Studio\18\Community\VC\Tools\MSVC\14.51.36231\atlmfc\include" ^
+   -I ..\..\intermediate\vcpkg_installed\x86-windows\include\ ^
+   -I ..\winlame\ ^
+   -I ..\winlame\classic\ ^
+   -I ..\winlame\ui\ ^
    -i ..\winlame\unittest\ ^
+   -i ..\libraries\include\ ^
+   --cppcheck-build-dir=..\..\intermediate\cppcheck_build ^
+   --language=c++ ^
+   --std=c++20 ^
+   --library=windows.cfg ^
+   --library=microsoft_atl.cfg ^
+   --library=microsoft_sal.cfg ^
+   --library=microsoft_unittest.cfg ^
+   --library=wtl.cfg ^
+   -DWIN32 -D_WINDOWS -DNDEBUG -D_UNICODE -D__cplusplus ^
+   -D_MSC_VER=1951 ^
    --suppressions-list=cppcheck-suppress.txt ^
-   --platform=win32W --language=c++ --std=c++11 %FORMAT% --enable=all ^
-   -j 4 --template vs 2> %OUTFILE%
+   %FORMAT% ^
+   --enable=all ^
+   -j 4 ^
+   --template=vs 2> %OUTFILE%

@@ -25,10 +25,10 @@
         <path name="../libraries/"/>
     </exclude>
     <libraries>
-        <library>boost</library>
+        <library>windows</library>
         <library>microsoft_atl</library>
         <library>microsoft_sal</library>
-        <library>microsoft_unittest</library>
-        <library>windows</library>
+		  <library>microsoft_unittest</library>
+		  <library>wtl</library>
     </libraries>
 </project>
