@@ -24,10 +24,7 @@ copy bin\Win32\bass.dll %TARGET%
 copy bin\Win32\basscd.dll %TARGET%
 copy bin\Win32\basswma.dll %TARGET%
 copy bin\Win32\libmp3lame.dll %TARGET%
-copy bin\Win32\libfaac_dll.dll %TARGET%
 copy bin\Win32\MACDll.dll %TARGET%
-
-copy %VCPKG_BIN_DIR%\faad-2.dll %TARGET%
 
 mkdir %ProgramData%\winLAME 2> nul
 copy ..\presets.xml %ProgramData%\winLAME\presets.xml
