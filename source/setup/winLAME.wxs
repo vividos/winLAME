@@ -195,9 +195,9 @@
            Source="$(var.SolutionDir)source\libraries\bin\Win32\MACDll.dll" />
       </Component>
 
-      <Component Id="LibFaacLibrary" Guid="*" Directory="INSTALLDIR">
-        <File Id="LibFaacDllDll" Name="libfaac_dll.dll" DiskId="1" KeyPath="yes"
-           Source="$(var.SolutionDir)source\libraries\bin\Win32\libfaac_dll.dll" />
+      <Component Id="FaacLibrary" Guid="*" Directory="INSTALLDIR">
+        <File Id="FaacDll" Name="faac-1.dll" DiskId="1" KeyPath="yes"
+           Source="$(var.OutputDir)faac-1.dll" />
       </Component>
 
       <Component Id="Faad2Library" Guid="*" Directory="INSTALLDIR">
