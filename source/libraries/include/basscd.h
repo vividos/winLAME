@@ -1,6 +1,6 @@
 /*
 	BASSCD 2.4 C/C++ header file
-	Copyright (c) 2003-2019 Un4seen Developments Ltd.
+	Copyright (c) 2003-2024 Un4seen Developments Ltd.
 
 	See the BASSCD.CHM file for more detailed documentation
 */
@@ -25,7 +25,6 @@ extern "C" {
 // additional error codes returned by BASS_ErrorGetCode
 #define BASS_ERROR_NOCD		12	// no CD in drive
 #define BASS_ERROR_CDTRACK	13	// invalid track number
-#define BASS_ERROR_NOTAUDIO	17	// not an audio track
 
 // additional BASS_SetConfig options
 #define BASS_CONFIG_CD_FREEOLD		0x10200
@@ -37,6 +36,7 @@ extern "C" {
 
 // additional BASS_SetConfigPtr options
 #define BASS_CONFIG_CD_CDDB_SERVER	0x10204
+#define BASS_CONFIG_CD_CDDB_HELLO	0x10207
 
 // BASS_CD_SetInterface options
 #define BASS_CD_IF_AUTO		0
@@ -190,15 +190,15 @@ DWORD BASSCDDEF(BASS_CD_Analog_GetPosition)(DWORD drive);
 #ifdef __cplusplus
 }
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(NOBASSOVERLOADS)
 static inline HSTREAM BASS_CD_StreamCreateFile(const WCHAR *file, DWORD flags)
 {
-	return BASS_CD_StreamCreateFile((const char*)file, flags|BASS_UNICODE);
+	return BASS_CD_StreamCreateFile((const char*)file, flags | BASS_UNICODE);
 }
 
 static inline HSTREAM BASS_CD_StreamCreateFileEx(const WCHAR *file, DWORD flags, CDDATAPROC *proc, void *user)
 {
-	return BASS_CD_StreamCreateFileEx((const char*)file, flags|BASS_UNICODE, proc, user);
+	return BASS_CD_StreamCreateFileEx((const char*)file, flags | BASS_UNICODE, proc, user);
 }
 #endif
 #endif
