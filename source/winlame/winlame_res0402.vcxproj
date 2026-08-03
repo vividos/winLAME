@@ -57,6 +57,7 @@
       <NoEntryPoint>true</NoEntryPoint>
       <DataExecutionPrevention />
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <Bscmake />
     <ResourceCompile>
@@ -74,11 +75,11 @@
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <NoEntryPoint>true</NoEntryPoint>
       <DataExecutionPrevention />
+      <GenerateDebugInformation>false</GenerateDebugInformation>
     </Link>
     <Bscmake />
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="res\about.0402.html" />
     <None Include="res\MainFrameRibbon.0402.bml" />
   </ItemGroup>
