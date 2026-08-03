@@ -43,7 +43,7 @@ rmdir .\.sonarqube /s /q 2> nul
 rmdir .\.bw-output /s /q 2> nul
 mkdir .\.sonar-cache 2> nul
 
-msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Clean
+msbuild winlame.slnx /m /property:Configuration=SonarCloud,Platform=Win32 /target:Clean
 
 pushd source\libraries
 call CopyLibraries.cmd Release
@@ -64,16 +64,11 @@ SonarScanner.MSBuild.exe begin ^
 if errorlevel 1 goto end
 
 REM
-REM Restore NuGet packages
-REM
-buildtools\nuget restore winlame.sln
-
-REM
 REM Rebuild Release|Win32
 REM
 build-wrapper-win-x86-64.exe ^
    --out-dir .bw-output ^
-   msbuild winlame.sln /m /property:Configuration=SonarCloud,Platform=Win32 /target:Restore;Rebuild
+   msbuild winlame.slnx /m /property:Configuration=SonarCloud,Platform=Win32 /target:Restore;Rebuild
 
 REM
 REM Run unit tests

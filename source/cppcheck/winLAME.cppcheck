@@ -2,7 +2,7 @@
 <project version="1">
     <root name="C:/Projekte/winLAME/source"/>
     <platform>win32A</platform>
-    <importproject>../../winlame.sln</importproject>
+    <importproject>../../winlame.slnx</importproject>
     <analyze-all-vs-configs>false</analyze-all-vs-configs>
     <check-headers>true</check-headers>
     <check-unused-templates>true</check-unused-templates>

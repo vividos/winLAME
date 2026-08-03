@@ -5,7 +5,7 @@
 In order to compile winLAME, you just need Microsoft Visual Studio 2026. Any
 dition will do, including Community, which I use to develop winLAME.
 
-Open the winlame.sln in Visual Studio, set the startup project to "winLAME",
+Open the winlame.slnx in Visual Studio, set the startup project to "winLAME",
 the configuration to "Debug" and hit F5 to compile and run winLAME.
 
 For some of the projects, tools are necessary to be installed, e.g. doxygen,
@@ -90,7 +90,7 @@ Copy the german project file winlame_res0407.vcxproj and all other resource
 files with 0704 in the name and replace them with your language code. Also
 replace the file names in the .vcxproj file.
 
-After adding the newly created project file to the winlame.sln solution, you
+After adding the newly created project file to the winlame.slnx solution, you
 can use the Visual Studio resource view to translate any elements. Compile the
 project to produce the winLAME.XXXX.dll file in the "bin" folder. It is
 automatically recognized by winLAME and is shown in the settings dialog.

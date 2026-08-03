@@ -1,0 +1,85 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="AppVeyor" />
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <BuildType Name="SonarCloud" />
+    <Platform Name="Win32" />
+  </Configurations>
+  <Folder Name="/Application Projects/">
+    <Project Path="source/winlame/winlame.vcxproj">
+      <BuildDependency Project="source/htmlhelp/htmlhelp.vcxproj" />
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="source/winlame/winlame_res0402.vcxproj">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="source/winlame/winlame_res0407.vcxproj">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+  </Folder>
+  <Folder Name="/Library Projects/">
+    <Project Path="source/nlame/nlame.vcxproj">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+    <Project Path="source/winlame/encoder/encoder.vcxproj">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+  </Folder>
+  <Folder Name="/Misc Projects/">
+    <Project Path="source/cppcheck/cppcheck.vcxproj">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+      <Build Solution="AppVeyor|*" Project="false" />
+      <Build Solution="SonarCloud|*" Project="false" />
+    </Project>
+    <Project Path="source/createzip/createzip.vcxproj">
+      <BuildDependency Project="source/winlame/winlame.vcxproj" />
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+      <Build Solution="SonarCloud|*" Project="false" />
+    </Project>
+    <Project Path="source/doxygen/doxygen.vcxproj">
+      <BuildType Project="Default" />
+      <Build Solution="AppVeyor|*" Project="false" />
+      <Build Solution="SonarCloud|*" Project="false" />
+    </Project>
+    <Project Path="source/htmlhelp/htmlhelp.vcxproj">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+      <Build Solution="SonarCloud|*" Project="false" />
+    </Project>
+    <Project Path="source/setup/setup.wixproj">
+      <BuildDependency Project="source/htmlhelp/htmlhelp.vcxproj" />
+      <BuildDependency Project="source/winlame/winlame.vcxproj" />
+      <BuildDependency Project="source/winlame/winlame_res0407.vcxproj" />
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+      <Platform Project="x86" />
+      <Build Solution="AppVeyor|*" />
+      <Build Solution="Debug|*" />
+      <Build Solution="Release|*" />
+    </Project>
+    <Project Path="source/winlame/unittest/unittest.vcxproj">
+      <BuildType Solution="AppVeyor|*" Project="Release" />
+      <BuildType Solution="SonarCloud|*" Project="Release" />
+    </Project>
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="appveyor.yml" />
+    <File Path="Readme.Developer.md" />
+    <File Path="Readme.md" />
+    <File Path="source/.editorconfig" />
+    <File Path="source/libraries/CopyLibraries.cmd" />
+    <File Path="source/SonarCloud.cmd" />
+    <File Path="source/version.h" />
+    <File Path="TODO.txt" />
+    <File Path="vcpkg-configuration.json" />
+    <File Path="vcpkg.json" />
+  </Folder>
+</Solution>

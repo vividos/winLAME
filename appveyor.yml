@@ -27,7 +27,7 @@ before_build:
   - ps: source\Patch-BuildVersion.ps1 -version $env:appveyor_build_version
 
 build:
-  project: winlame.sln
+  project: winlame.slnx
   parallel: true
   verbosity: minimal
 

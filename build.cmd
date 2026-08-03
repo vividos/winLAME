@@ -1,14 +1,14 @@
 @echo off
 REM
 REM winLAME - a frontend for the LAME encoding engine
-REM Copyright (c) 2000-2019 Michael Fink
+REM Copyright (c) 2000-2026 Michael Fink
 REM
 REM Creates a winLAME build and installer
 REM
 
 REM -{ config here }-----------------------------
 
-set MSVC_PATH=%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community
+set MSVC_PATH=%ProgramFiles%\Microsoft Visual Studio\18\Community
 
 REM -{ config end }------------------------------
 
@@ -20,7 +20,7 @@ call CopyLibraries.cmd Release
 popd
 
 REM build solution
-msbuild /m winlame.sln /property:Configuration=Release,Platform=Win32 /target:Rebuild
+msbuild /m winlame.slnx /property:Configuration=Release,Platform=Win32 /target:Rebuild
 
 
 set ZIP="%ProgramFiles%\7-Zip\7z.exe"
