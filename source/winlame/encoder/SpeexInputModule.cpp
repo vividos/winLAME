@@ -58,7 +58,9 @@ CString SpeexInputModule::GetDescription() const
 
    CString desc;
    desc.Format(IDS_FORMAT_INFO_SPEEX_INPUT,
-      m_header->mode == 0 ? _T("narrow-band") : m_header->mode == 1 ? _T("wide-band") : _T("???"),
+      m_header->mode == SPEEX_MODEID_NB ? _T("narrow-band") :
+      m_header->mode == SPEEX_MODEID_WB ? _T("wide-band") :
+      m_header->mode == SPEEX_MODEID_UWB ? _T("ultra-wideband") : _T("???"),
       m_header->vbr == 1 ? _T(" VBR") : _T(""),
       m_header->nb_channels,
       m_header->rate,
@@ -258,10 +260,9 @@ void SpeexInputModule::DoneInput()
 
 void SpeexInputModule::InitDecoder()
 {
-   bool bWideband = m_header->mode == 1;
    const bool perceptualEnhancer = true;
 
-   const SpeexMode* mode = speex_lib_get_mode(bWideband ? SPEEX_MODEID_WB : SPEEX_MODEID_NB);
+   const SpeexMode* mode = speex_lib_get_mode(m_header->mode);
 
    void* p = speex_decoder_init(mode);
    m_decoderState.reset(p, speex_decoder_destroy);
