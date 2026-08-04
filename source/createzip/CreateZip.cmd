@@ -29,7 +29,7 @@ copy %ROOT%\bin\%CONFIG%\%PLATFORM%\*.chm zip\
 copy %ROOT%\source\presets.xml zip\
 copy %ROOT%\source\setup\readme.txt zip\Readme.txt
 copy %ROOT%\Copying zip\Copying.txt
-copy "%VCToolsRedistDir%\vc_redist.x86.exe" zip\vcredist_x86_vc143.exe
+copy "%VCToolsRedistDir%\vc_redist.x86.exe" zip\vcredist_x86_vc145.exe
 
 set ZIP="%ProgramW6432%\7-Zip\7z.exe"
 set ZIPFILENAME=winLAME-zip.zip
