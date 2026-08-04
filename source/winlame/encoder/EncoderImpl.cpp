@@ -259,6 +259,20 @@ void EncoderImpl::Encode()
             DeleteFile(m_encoderSettings.m_inputFilename);
       }
    }
+   else
+   {
+      // file was skipped; at least delete the temp / output file
+      if (!tempOutputFilename.IsEmpty())
+      {
+         DeleteFile(tempOutputFilename);
+      }
+
+      if (!m_encoderSettings.m_outputFilename.IsEmpty() &&
+         m_encoderSettings.m_outputFilename != tempOutputFilename)
+      {
+         DeleteFile(m_encoderSettings.m_outputFilename);
+      }
+   }
 
    // end thread
    m_encoderState.m_running = false;
@@ -398,7 +412,7 @@ void EncoderImpl::GenerateTempOutFilename(const CString& originalFilename, CStri
    fileName = CString(CStringA(fileName));
    fileName.Replace(_T('?'), _T('_'));
 
-   // now add a ".part" suffix
+   // now add a ".temp" suffix
    unsigned int fileIndex = 0;
    do
    {
