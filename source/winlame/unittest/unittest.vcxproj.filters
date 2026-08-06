@@ -106,4 +106,9 @@
       <Filter>Resource Files\res</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\Jungle_S-RepaidGa-10582_hifi.wav">
+      <Filter>Resource Files\res</Filter>
+    </Media>
+  </ItemGroup>
 </Project>

@@ -123,6 +123,9 @@
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.spx" />
     <None Include="res\Jungle_S-RepaidGa-10582_hifi.wma" />
   </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\Jungle_S-RepaidGa-10582_hifi.wav" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>
