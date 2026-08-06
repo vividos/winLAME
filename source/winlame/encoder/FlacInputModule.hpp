@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2017 Michael Fink
+// Copyright (c) 2000-2026 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -27,27 +27,7 @@
 
 namespace Encoder
 {
-   /// flac decoding context
-   struct FLAC_context
-   {
-      FLAC__StreamMetadata_StreamInfo streamInfo;  ///< stream info
-      FLAC__int32* reservoir;                      ///< reservoir
-      unsigned int numSamplesInReservoir;          ///< number of samples in reservoir
-      unsigned int totalLengthInMs;                ///< total length in ms
-      bool abortFlag;                              ///< abort flag
-      TrackInfo* trackInfo;                        ///< track info
-
-      /// ctor
-      FLAC_context()
-         :reservoir(nullptr),
-         numSamplesInReservoir(0),
-         totalLengthInMs(0),
-         abortFlag(false),
-         trackInfo(nullptr)
-      {
-         memset(&streamInfo, 0, sizeof(streamInfo));
-      }
-   };
+   struct FLAC_context;
 
    /// FLAC input module
    class FlacInputModule : public InputModule
@@ -93,12 +73,9 @@ namespace Encoder
       /// called when done with decoding
       virtual void DoneInput() override;
 
-      /// reads track metadata from file
-      void ReadTrackMetadata(LPCTSTR filename, TrackInfo& trackInfo);
-
    private:
       /// length of input file
-      unsigned long m_fileLength;
+      uint64_t m_fileLength;
 
       /// last error occured
       CString m_lastError;

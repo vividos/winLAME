@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2021 Michael Fink
+// Copyright (c) 2000-2026 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -34,6 +34,25 @@ using Encoder::TrackInfo;
 using Encoder::SampleContainer;
 using Encoder::FLAC_context;
 
+namespace Encoder
+{
+   /// flac decoding context
+   struct FLAC_context
+   {
+      FLAC__StreamMetadata_StreamInfo streamInfo;  ///< stream info
+      FLAC__int32* reservoir = nullptr;            ///< reservoir
+      unsigned int numSamplesInReservoir = 0;      ///< number of samples in reservoir
+      unsigned int totalLengthInMs = 0;            ///< total length in ms
+      bool abortFlag = false;                      ///< abort flag
+
+      /// ctor
+      FLAC_context()
+      {
+         memset(&streamInfo, 0, sizeof(streamInfo));
+      }
+   };
+}
+
 // constants
 
 /// frame size; default = 4608
@@ -50,14 +69,14 @@ static FLAC__StreamDecoderWriteStatus FLAC_WriteCallback(
    FLAC_context* context = (FLAC_context*)clientData;
 
    const unsigned numChannels = context->streamInfo.channels;
-   const unsigned wide_samples = frame->header.blocksize;
+   const unsigned numWideSamples = frame->header.blocksize;
    unsigned wide_sample, sample, channel;
 
    if (context->abortFlag)
       return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
 
    for (sample = context->numSamplesInReservoir * numChannels, wide_sample = 0;
-      wide_sample < wide_samples;
+      wide_sample < numWideSamples;
       wide_sample++)
    {
       for (channel = 0; channel < numChannels; channel++, sample++)
@@ -66,19 +85,9 @@ static FLAC__StreamDecoderWriteStatus FLAC_WriteCallback(
       }
    }
 
-   context->numSamplesInReservoir += wide_samples;
+   context->numSamplesInReservoir += numWideSamples;
 
    return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
-}
-
-static void FLAC_vorbis_comment_split_name_value(
-   const FLAC__StreamMetadata_VorbisComment_Entry entry,
-   CString& name, CString& value)
-{
-   CString temp(reinterpret_cast<char*>(entry.entry), entry.length);
-   int pos = temp.Find(_T('='));
-   name = temp.Left(pos);
-   value = temp.Mid(pos + 1);
 }
 
 static void FLAC_MetadataCallback(const FLAC__StreamDecoder* decoder,
@@ -93,66 +102,8 @@ static void FLAC_MetadataCallback(const FLAC__StreamDecoder* decoder,
       context->streamInfo = metadata->data.stream_info;
       break;
 
-   case FLAC__METADATA_TYPE_VORBIS_COMMENT:
-      if (context->trackInfo == nullptr)
-         break;
-
-      for (unsigned i = 0; i < metadata->data.vorbis_comment.num_comments; i++)
-      {
-         CString name, value;
-
-         FLAC_vorbis_comment_split_name_value(
-            metadata->data.vorbis_comment.comments[i],
-            name, value);
-
-         if (name.CompareNoCase(_T("title")) == 0)
-         {
-            context->trackInfo->SetTextInfo(Encoder::TrackInfoTitle, value);
-         }
-         else if (name.CompareNoCase(_T("artist")) == 0)
-         {
-            context->trackInfo->SetTextInfo(Encoder::TrackInfoArtist, value);
-         }
-         else if (name.CompareNoCase(_T("album")) == 0)
-         {
-            context->trackInfo->SetTextInfo(Encoder::TrackInfoAlbum, value);
-         }
-         else if (name.CompareNoCase(_T("comment")) == 0)
-         {
-            context->trackInfo->SetTextInfo(Encoder::TrackInfoComment, value);
-         }
-         else if (name.CompareNoCase(_T("genre")) == 0)
-         {
-            if (!value.IsEmpty())
-               context->trackInfo->SetTextInfo(Encoder::TrackInfoGenre, value);
-         }
-         else if (name.CompareNoCase(_T("tracknumber")) == 0)
-         {
-            context->trackInfo->SetNumberInfo(Encoder::TrackInfoTrack, _ttoi(value));
-         }
-         else if (name.CompareNoCase(_T("discnumber")) == 0)
-         {
-            context->trackInfo->SetNumberInfo(Encoder::TrackInfoDiscNumber, _ttoi(value));
-         }
-         else if (name.CompareNoCase(_T("year")) == 0)
-         {
-            context->trackInfo->SetNumberInfo(Encoder::TrackInfoYear, _ttoi(value));
-         }
-         else if (name.CompareNoCase(_T("date")) == 0)
-         {
-            // Sanity check: Many FLACs seem to have 'date' actually containing
-            // only 4-digit year. If this is the case, use 'date' for 'year'.
-            if (value.GetLength() == 4 &&
-               value.SpanIncluding(_T("0123456789")).GetLength() == 4)
-            {
-               context->trackInfo->SetNumberInfo(Encoder::TrackInfoYear, _ttoi(value));
-            }
-         }
-      }
-      break;
-
    default:
-      ATLASSERT(false);
+      // ignored metadata
       break;
    }
 }
@@ -233,7 +184,7 @@ CString FlacInputModule::GetDescription() const
 
    CString desc;
    desc.Format(IDS_FORMAT_INFO_FLAC_INPUT,
-      (m_fileLength << 3 / m_flacContext->totalLengthInMs) / 1000,
+      static_cast<unsigned int>((m_fileLength << 3 / m_flacContext->totalLengthInMs) / 1000),
       m_flacContext->streamInfo.sample_rate,
       m_flacContext->streamInfo.channels,
       m_flacContext->streamInfo.bits_per_sample);
@@ -256,12 +207,13 @@ CString FlacInputModule::GetFilterString() const
 int FlacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    TrackInfo& trackinfo, SampleContainer& samplecont)
 {
-   ReadTrackMetadata(infilename, trackinfo);
+   AudioFileTag tag{ trackinfo };
+   tag.ReadFromFile(infilename);
 
    // find out length of file
-   struct _stat statbuf;
-   ::_tstat(infilename, &statbuf);
-   m_fileLength = statbuf.st_size; // 32 bit max.
+   struct _stat64 statbuf;
+   ::_tstat64(infilename, &statbuf);
+   m_fileLength = statbuf.st_size;
 
    m_flacContext = new FLAC_context;
    memset((void*)m_flacContext, 0, sizeof(FLAC_context));
@@ -308,7 +260,7 @@ int FlacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
 void FlacInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthInSeconds, int& samplerateInHz) const
 {
    numChannels = m_flacContext->streamInfo.channels;
-   bitrateInBps = m_fileLength << 3 / m_flacContext->totalLengthInMs;
+   bitrateInBps = static_cast<int>(m_fileLength << 3 / m_flacContext->totalLengthInMs);
    lengthInSeconds = m_flacContext->totalLengthInMs / 1000;
    samplerateInHz = m_flacContext->streamInfo.sample_rate;
 }
@@ -373,50 +325,5 @@ void FlacInputModule::DoneInput()
 
       delete m_flacContext;
       m_flacContext = nullptr;
-   }
-}
-
-void FlacInputModule::ReadTrackMetadata(LPCTSTR filename, TrackInfo& trackInfo)
-{
-   AudioFileTag tag{ trackInfo };
-   tag.ReadFromFile(filename);
-
-   // since AudioFileTag (via TagLib library) can't currently read the PICTURE
-   // metadata block, read it using FLAC functions
-   CStringA ansiFilename{ GetAnsiCompatFilename(filename) };
-
-   // first, try to get front conver
-   FLAC__StreamMetadata* picture = nullptr;
-   FLAC__bool ret = FLAC__metadata_get_picture(
-      ansiFilename, &picture,
-      FLAC__STREAM_METADATA_PICTURE_TYPE_FRONT_COVER,
-      nullptr, nullptr,
-      unsigned(-1),
-      unsigned(-1),
-      unsigned(-1),
-      unsigned(-1));
-
-   if (!ret && picture == nullptr)
-   {
-      // try to get any picture
-      ret = FLAC__metadata_get_picture(
-         ansiFilename, &picture,
-         (FLAC__StreamMetadata_Picture_Type)-1,
-         nullptr, nullptr,
-         unsigned(-1),
-         unsigned(-1),
-         unsigned(-1),
-         unsigned(-1));
-   }
-
-   if (ret && picture != nullptr)
-   {
-      const std::vector<unsigned char> binaryData(
-         picture->data.picture.data,
-         picture->data.picture.data + picture->data.picture.data_length);
-
-      trackInfo.SetBinaryInfo(TrackInfoFrontCover, binaryData);
-
-      FLAC__metadata_object_delete(picture);
    }
 }
