@@ -228,8 +228,10 @@
     <ClInclude Include="WaveMp3Header.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ChannelRemapper.hpp" />
     <ClInclude Include="EjectCDTask.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChannelRemapper.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
