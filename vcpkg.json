@@ -14,7 +14,8 @@
     "libflac",
     {
       "name": "libsndfile",
-      "default-features": false
+      "default-features": false,
+      "features": [ "external-libs" ]
     },
     "taglib",
     "wtl",
