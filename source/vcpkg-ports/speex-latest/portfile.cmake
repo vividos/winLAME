@@ -3,7 +3,7 @@ vcpkg_from_gitlab(
     GITLAB_URL https://gitlab.xiph.org/
     REPO xiph/speex
     REF "a1b872e6704cc5825750098ce0e0c0b4aacaef4d"
-    SHA512 7661e5bae859cccbab057c91471fb839537a11fd98eabbe7831c510416e0af4839ecb70247e377ac54d5bca15de80bdad7909093b3f41d0d94140ce59bf91e34
+    SHA512 53fa16e5bc90a38a8d19c5b7b6c35489e2129af04951ae557110f8987c05f1e12608f76640774e33cee7335594e01fafad49d11117da822dc9d7df36ad5755c2
 )
 
 vcpkg_configure_meson(
