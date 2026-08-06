@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2016 Michael Fink
+// Copyright (c) 2000-2026 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -102,10 +102,10 @@ namespace Encoder
       int m_inputBufferHigh;
 
       /// length of input file
-      unsigned long m_inputFileLength;
+      uint64_t m_inputFileLength;
 
       /// current position
-      unsigned long m_currentFilePos;
+      uint64_t m_currentFilePos;
 
       /// aac file info
       faadAACInfo m_info;

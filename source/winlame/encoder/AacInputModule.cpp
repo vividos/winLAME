@@ -1,6 +1,6 @@
 //
 // winLAME - a frontend for the LAME encoding engine
-// Copyright (c) 2000-2021 Michael Fink
+// Copyright (c) 2000-2026 Michael Fink
 // Copyright (c) 2004 DeXT
 //
 // This program is free software; you can redistribute it and/or modify
@@ -135,7 +135,7 @@ void AacInputModule::GetVersionString(CString& version, int special) const
 
    NeAACDecGetVersion(&id_string, &copyright_string);
 
-   version.Format(_T("faad2 %hs"), id_string);
+   version.Format(_T("%hs"), id_string);
 }
 
 CString AacInputModule::GetFilterString() const
@@ -167,9 +167,9 @@ int AacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    }
 
    // find out length of aac file
-   struct _stat statbuf;
-   ::_tstat(infilename, &statbuf);
-   m_inputFileLength = statbuf.st_size; // 32 bit max.
+   struct _stat64 statbuf = {};
+   ::_tstat64(infilename, &statbuf);
+   m_inputFileLength = statbuf.st_size;
    m_currentFilePos = 0;
 
    // search for begin of aac stream, skipping id3v2 tags; modifies m_currentFilePos
@@ -196,9 +196,9 @@ int AacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    // read first frame(s) and get infos about the aac file
    m_inputFile.read(reinterpret_cast<char*>(m_inputBuffer), c_aacInputBufferSize);
 
-   unsigned long dummy;
-   unsigned char dummy2;
-   int result = NeAACDecInit(m_decoder, m_inputBuffer, sizeof(m_inputBuffer), &dummy, &dummy2);
+   unsigned long samplerate = 0;
+   unsigned char channels = 0;
+   int result = NeAACDecInit(m_decoder, m_inputBuffer, sizeof(m_inputBuffer), &samplerate, &channels);
 
    if (result < 0)
    {
@@ -213,7 +213,7 @@ int AacInputModule::InitInput(LPCTSTR infilename, SettingsManager& mgr,
    m_inputFile.seekg(m_currentFilePos, std::ios::beg);
 
    // get right file info (for HE AAC files)
-   NeAACDecFrameInfo frameInfo;
+   NeAACDecFrameInfo frameInfo{};
    NeAACDecDecode(m_decoder, &frameInfo, m_inputBuffer, sizeof(m_inputBuffer));
    if (frameInfo.error > 0)
    {
@@ -241,7 +241,7 @@ void AacInputModule::GetInfo(int& numChannels, int& bitrateInBps, int& lengthInS
 {
    numChannels = m_info.channels;
    bitrateInBps = m_info.bitrate;
-   lengthInSeconds = (m_inputFileLength << 3) / m_info.bitrate;
+   lengthInSeconds = static_cast<int>((m_inputFileLength << 3) / m_info.bitrate);
    samplerateInHz = m_info.sampling_rate;
 }
 
@@ -257,7 +257,10 @@ int AacInputModule::DecodeSamples(SampleContainer& samples)
    // fill input buffer
    if (m_inputBufferHigh < c_aacInputBufferSize)
    {
-      m_inputFile.read(reinterpret_cast<char*>(m_inputBuffer + m_inputBufferHigh), std::streamsize(c_aacInputBufferSize) - m_inputBufferHigh);
+      m_inputFile.read(
+         reinterpret_cast<char*>(m_inputBuffer + m_inputBufferHigh),
+         std::streamsize(c_aacInputBufferSize) - m_inputBufferHigh);
+
       int read = static_cast<int>(m_inputFile.gcount());
 
       if (read == 0 && m_inputBufferHigh == 0)
@@ -268,7 +271,7 @@ int AacInputModule::DecodeSamples(SampleContainer& samples)
    }
 
    // decode buffer
-   short* sampleBuffer = (short *)NeAACDecDecode(m_decoder, &frameInfo, m_inputBuffer, m_inputBufferHigh);
+   short* sampleBuffer = (short*)NeAACDecDecode(m_decoder, &frameInfo, m_inputBuffer, m_inputBufferHigh);
 
    m_inputBufferHigh -= frameInfo.bytesconsumed;
    memmove(m_inputBuffer, m_inputBuffer + frameInfo.bytesconsumed,
