@@ -1,0 +1,15 @@
+{
+  "name": "speex-latest",
+  "version-string": "1.2.1-a1b872e6",
+  "port-version": 0,
+  "description": "Speex is an Open Source/Free Software patent-free audio compression format designed for speech.",
+  "homepage": "https://www.speex.org/",
+  "license": "BSD-3-Clause",
+  "supports": "windows",
+  "dependencies": [
+    {
+      "name": "vcpkg-tool-meson",
+      "host": true
+    }
+  ]
+}
