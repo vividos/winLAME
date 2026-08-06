@@ -92,6 +92,7 @@
     </ClCompile>
     <ClCompile Include="TestAudioFileTag.cpp" />
     <ClCompile Include="TestDecodeLibMpg123.cpp" />
+    <ClCompile Include="TestEncodeDecodeFlac.cpp" />
     <ClCompile Include="TestEncodeLameMp3.cpp" />
     <ClCompile Include="TestEncodeMp3ToOggVorbis.cpp" />
     <ClCompile Include="TestEncodeWaveToOpus.cpp" />

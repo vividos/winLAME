@@ -65,6 +65,9 @@
     <ClCompile Include="TestOpusMultichannel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestEncodeDecodeFlac.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\winlame.rc">
