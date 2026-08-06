@@ -270,6 +270,11 @@ int AacInputModule::DecodeSamples(SampleContainer& samples)
       m_currentFilePos += read;
    }
 
+   // APE tag?
+   if (m_inputBufferHigh >= 6 &&
+      memcmp(m_inputBuffer, "APETAG", 6) == 0)
+      return 0;
+
    // decode buffer
    short* sampleBuffer = (short*)NeAACDecDecode(m_decoder, &frameInfo, m_inputBuffer, m_inputBufferHigh);
 

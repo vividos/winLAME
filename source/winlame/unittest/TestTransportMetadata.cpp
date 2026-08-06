@@ -42,7 +42,7 @@ namespace unittest
          std::make_tuple(IDR_SAMPLE_WAV, _T("sample.wav")),
          std::make_tuple(IDR_SAMPLE_OPUS, _T("sample.opus")),
          std::make_tuple(IDR_SAMPLE_OGGV, _T("sample.ogg")),
-         //std::make_tuple(IDR_SAMPLE_AAC, _T("sample.aac")), // bugged file
+         std::make_tuple(IDR_SAMPLE_AAC, _T("sample.aac")),
          std::make_tuple(IDR_SAMPLE_WMA, _T("sample.wma")),
          std::make_tuple(IDR_SAMPLE_FLAC, _T("sample.flac")),
          std::make_tuple(IDR_SAMPLE_AIFF, _T("sample.aiff")),
