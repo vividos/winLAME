@@ -31,6 +31,37 @@ if(VCPKG_CRT_LINKAGE STREQUAL "dynamic")
         "<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>")
 endif()
 
+if("mpg123" IN_LIST FEATURES)
+
+    # vs_libmpg123_config.props is expecting the binary distribution of
+    # mpg123; modify the file to use vcpkg include and lib files
+    list(APPEND FEATURE_OPTIONS "/p:HaveMpg123=true")
+    list(APPEND FEATURE_OPTIONS "/p:Mpg123Path=${CURRENT_INSTALLED_DIR}/include")
+
+    vcpkg_replace_string(
+        "${SOURCE_PATH}/lame/vc_solution/vs_libmpg123_config.props"
+        "<PreLinkEvent>"
+        "<PreLinkEvent Condition=\"false\">")
+
+    vcpkg_replace_string(
+        "${SOURCE_PATH}/lame/vc_solution/vs_libmpg123_config.props"
+        ";%(AdditionalLibraryDirectories)"
+        ";${CURRENT_INSTALLED_DIR}/lib;%(AdditionalLibraryDirectories)")
+
+    vcpkg_replace_string(
+        "${SOURCE_PATH}/lame/vc_solution/vs_libmpg123_config.props"
+        "libmpg123-0.lib"
+        "mpg123.lib")
+
+    vcpkg_replace_string(
+        "${SOURCE_PATH}/lame/vc_solution/vs_libmpg123_config.props"
+        "Condition=\"'$(HaveMpg123)' == 'true' And '$(ConfigurationType)' != 'StaticLibrary'\""
+        "Condition=\"false\"")
+
+else()
+    list(APPEND FEATURE_OPTIONS "/p:HaveMpg123=false")
+endif()
+
 # build static library
 vcpkg_install_msbuild(
     SOURCE_PATH ${SOURCE_PATH}/lame
@@ -39,7 +70,7 @@ vcpkg_install_msbuild(
     ALLOW_ROOT_INCLUDES
     LICENSE_SUBPATH COPYING
     OPTIONS
-        "/p:HaveMpg123=false"
+        ${FEATURE_OPTIONS}
         "/p:HaveLibsndfile=false"
 )
 
@@ -66,7 +97,7 @@ if(VCPKG_LIBRARY_LINKAGE STREQUAL "dynamic")
         PROJECT_SUBPATH vc_solution/vs_libmp3lame_dll.vcxproj
         LICENSE_SUBPATH COPYING
         OPTIONS
-            "/p:HaveMpg123=false"
+            ${FEATURE_OPTIONS}
             "/p:HaveLibsndfile=false"
     )
 

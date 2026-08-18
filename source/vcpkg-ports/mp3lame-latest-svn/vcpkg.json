@@ -5,6 +5,12 @@
   "homepage": "https://lame.sourceforge.io/",
   "license": "LGPL-2.0-only",
   "supports": "windows",
-  "dependencies": [
-  ]
+  "features": {
+    "mpg123": {
+      "description": "Build with mpg123 support",
+      "dependencies": [
+        "mpg123"
+      ]
+    }
+  }
 }
