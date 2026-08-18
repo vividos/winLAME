@@ -7,7 +7,7 @@ REM Downloads LAME and compiles it
 REM
 
 REM set this to the filename of the file to download
-set PREFIX=lame-svn-r6627-trunk
+set PREFIX=lame-svn-r6784-trunk
 
 REM set this to your Visual Studio installation folder
 set VSINSTALL=%ProgramFiles%\Microsoft Visual Studio\18\Community
@@ -24,7 +24,7 @@ rmdir /s /q %PREFIX%\ 2> nul
 "c:\Program Files\7-Zip\7z.exe" x %PREFIX%.zip
 
 REM also download mpg123
-set URL=https://mpg123.de/download/win32/1.33.5/mpg123-1.33.5-x86.zip
+set URL=https://mpg123.de/download/win32/1.33.7/mpg123-1.33.7-x86.zip
 
 if not exist mpg123-x86.zip (
 	powershell -Command "& {Invoke-WebRequest -Uri %URL% -Out mpg123-x86.zip}"
@@ -42,10 +42,6 @@ REM set up Visual Studio
 call "%VSINSTALL%\Common7\Tools\VsDevCmd.bat"
 
 pushd %PREFIX%\lame\vc_solution
-
-REM update Toolset to v145, in order to use VS2026
-REM powershell -Command "& {(Get-Content vs_libmp3lame.vcxproj) -replace \"v142\",\"v145\" | out-file vs_libmp3lame.vcxproj}"
-REM powershell -Command "& {(Get-Content vs_libmp3lame_dll.vcxproj) -replace \"v142\",\"v145\" | out-file vs_libmp3lame_dll.vcxproj}"
 
 REM vcpkg builds an mpg123.dll, but the libmp3lame projects expect a libmpg123-0.dll; adjust the .def file for that
 copy mpg123\Win32\libmpg123-0.def mpg123\Win32\mpg123.def
