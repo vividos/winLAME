@@ -3,7 +3,7 @@
 #
 
 # set this to the SVN revision to get
-set(REV r6706)
+set(REV r6784)
 
 # When this line doesn't work (anymore), visit this page to regenerate the tarball:
 # https://sourceforge.net/p/lame/svn/HEAD/tarball?path=
@@ -11,7 +11,7 @@ vcpkg_download_distfile(
     ARCHIVE
     URLS "https://sourceforge.net/code-snapshots/svn/l/la/lame/svn/lame-svn-${REV}-trunk.zip"
     FILENAME lame-svn-${REV}-trunk.zip
-    SHA512 d5630bc85937581189e233e008fd1836f2be76e2f13048e4f768c0b91b0ab946586154fca6917a68bc0a9a1db6710850ad70233d1b6c1523c472acd66e030b1c
+    SHA512 60eb319c0a43a4ea9fa94ed7aac56affea9a9b0b980f52cb97a1ab493d7f5002a47e54c9304d86be934f43aca82c5de84f69b93664fbb62592d572b4176034df
 )
 
 vcpkg_extract_source_archive(
