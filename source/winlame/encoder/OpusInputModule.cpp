@@ -68,6 +68,9 @@ CString OpusInputModule::GetDescription() const
 void OpusInputModule::GetVersionString(CString& version, int special) const
 {
    version = opus_get_version_string();
+
+   version.Replace(_T("libopus"), _T(""));
+   version.Trim();
 }
 
 CString OpusInputModule::GetFilterString() const
