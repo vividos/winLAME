@@ -32,7 +32,7 @@ struct CDRipTrackInfo
    {
    }
 
-   /// number of track on disc
+   /// number of track on disc, 0-based
    unsigned int m_numTrackOnDisc;
 
    /// track title

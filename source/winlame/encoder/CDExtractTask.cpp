@@ -62,7 +62,7 @@ TaskInfo CDExtractTask::GetTaskInfo()
 
    CString desc;
    desc.Format(IDS_CDEXTRACT_DESC_US,
-      m_trackinfo.m_numTrackOnDisc,
+      m_trackinfo.m_numTrackOnDisc +1,
       m_title.GetString());
    info.Description(desc);
 
